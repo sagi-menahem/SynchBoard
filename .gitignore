@@ -1,0 +1,28 @@
+# General & OS files
+.DS_Store
+*.log
+logs/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# --- Backend (Java/Gradle) ---
+.gradle
+build/
+out/
+*.class
+*.jar
+*.war
+
+# --- Frontend (Node/Vite) ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
