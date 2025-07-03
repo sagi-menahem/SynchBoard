@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// File: frontend/src/App.tsx
+
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthPage from './pages/AuthPage';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  // The App component is now responsible for setting up the application's routing.
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // <BrowserRouter> should wrap your entire application to enable routing.
+    <BrowserRouter>
+      {/* <Routes> is a container for all your individual routes. 
+          It will render the first <Route> that matches the current URL. */}
+      <Routes>
+        {/* This <Route> defines a rule:
+            - path="/": When the user is at the root URL (e.g., http://localhost:3000/).
+            - element={<AuthPage />}: Render the AuthPage component. 
+        */}
+        <Route path="/" element={<AuthPage />} />
+
+        {/* In the future, you will add more routes here. For example:
+            <Route path="/boards" element={<BoardListPage />} />
+            <Route path="/board/:boardId" element={<BoardPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+        */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
