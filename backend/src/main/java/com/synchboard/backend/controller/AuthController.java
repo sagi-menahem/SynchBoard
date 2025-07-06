@@ -4,7 +4,6 @@ package com.synchboard.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import com.synchboard.backend.service.UserService;
 // @CrossOrigin allows requests from the specified origin.
 // This is necessary because our React frontend will run on a different port (e.g., 3000)
 // than our Spring Boot backend (e.g., 8080).
-@CrossOrigin(origins = "http://localhost:3000") 
 @RestController // Marks this class as a REST controller, where every method returns a domain object instead of a view.
 @RequestMapping("/api/auth") // Maps all requests starting with /api/auth to this controller.
 public class AuthController {
