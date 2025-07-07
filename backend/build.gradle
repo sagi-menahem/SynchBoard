@@ -8,6 +8,8 @@ plugins {
 	id 'org.springframework.boot' version '3.5.3'
 	// The Spring Dependency Management plugin for managing dependency versions centrally.
 	id 'io.spring.dependency-management' version '1.1.7'
+
+    id 'checkstyle'
 }
 
 // Project coordinates used for packaging (e.g., when creating a JAR file).
@@ -74,4 +76,11 @@ dependencies {
 tasks.named('test') {
 	// Configures the 'test' task to use the JUnit Platform for running unit tests.
 	useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = '8.41' // Specify the version of Checkstyle to use
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml") // Path to your config file
+    ignoreFailures = false
+    maxWarnings = 0
 }

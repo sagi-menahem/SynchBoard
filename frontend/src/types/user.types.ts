@@ -12,5 +12,20 @@ export interface RegisterRequest {
   phoneNumber: string;
 }
 
+/**
+ * Defines the shape of the login request object sent to the API.
+ */
+export interface LoginRequest {
+    email:    string;
+    password: string;
+}
+
+/**
+ * Defines the shape of the successful authentication response from the API.
+ */
+export interface AuthResponse {
+    token: string;
+}
+
 // TODO: Add other user-related types here as the application grows.
 // e.g., User, LoginRequest, AuthResponse, etc.
