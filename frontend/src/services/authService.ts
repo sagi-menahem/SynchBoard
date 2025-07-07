@@ -1,27 +1,26 @@
-// File: frontend/src/services/authService.ts
+// Located at: frontend/src/services/authService.ts
 
 import apiClient from './apiClient';
-import type { RegisterRequest } from '../types/user.types';
+import type { RegisterRequest, LoginRequest, AuthResponse } from '../types/user.types';
 
 /**
  * Sends a registration request to the backend API.
  * @param userData - An object containing the new user's registration details.
- * @returns The response data from the server.
+ * @returns A promise that resolves to an AuthResponse object containing a JWT.
  */
-export const register = async (userData: RegisterRequest) => {
-  const response = await apiClient.post('/api/auth/register', userData);
+export const register = async (userData: RegisterRequest): Promise<AuthResponse> => {
+  // We specify that the expected response data will be of type AuthResponse
+  const response = await apiClient.post<AuthResponse>('/auth/register', userData);
   return response.data;
 };
 
-// TODO: Implement a login function to authenticate users.
-// It should accept credentials and return an authentication token.
-/*
-export const login = async (credentials: LoginRequest) => {
-  const response = await apiClient.post('/api/auth/login', credentials);
-  // Assuming the server returns a token
-  if (response.data.token) {
-    localStorage.setItem('authToken', response.data.token);
-  }
+/**
+ * Sends a login request to the backend API.
+ * @param credentials - An object containing the user's email and password.
+ * @returns A promise that resolves to an AuthResponse object containing a JWT.
+ */
+export const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
+  // We specify that the expected response data will be of type AuthResponse
+  const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
   return response.data;
 };
-*/

@@ -1,0 +1,21 @@
+{
+  "page_title": "ברוכים הבאים ל-SynchBoard",
+
+  "form_label_email": "אימייל:",
+  "form_label_password": "סיסמה:",
+  "form_label_firstName": "שם פרטי:",
+  "form_label_lastName": "שם משפחה:",
+  "form_label_phoneNumber": "מספר טלפון:",
+
+  "login_heading": "התחברות",
+  "login_button": "התחבר",
+  "login_failed_error": "ההתחברות נכשלה, אנא בדוק את פרטיך ונסה שנית.",
+  "login_prompt_to_register": "אין לך חשבון?",
+  "login_switch_to_register_button": "הרשם כאן",
+
+  "register_heading": "הרשמה",
+  "register_button": "הירשם",
+  "registration_failed_error": "ההרשמה נכשלה. אנא נסה שנית במועד מאוחר יותר.",
+  "register_prompt_to_login": "כבר יש לך חשבון?",
+  "register_switch_to_login_button": "התחבר כאן"
+}
