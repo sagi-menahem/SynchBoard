@@ -4,10 +4,12 @@ package com.synchboard.backend.dto.auth;
 
 import lombok.Data;
 
-@Data // Lombok annotation to generate getters, setters, toString, etc.
+/**
+ * Data Transfer Object for handling user registration requests from the client.
+ */
+@Data 
 public class RegisterRequest {
 
-    // These fields must match the JSON object sent from the frontend client.
     private String email;
     private String password;
     private String firstName;

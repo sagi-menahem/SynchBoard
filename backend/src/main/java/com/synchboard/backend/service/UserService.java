@@ -10,10 +10,12 @@ import com.synchboard.backend.dto.auth.RegisterRequest;
 import com.synchboard.backend.entity.User;
 import com.synchboard.backend.repository.UserRepository;
 
-@Service // Marks this class as a Service component in Spring.
+/**
+ * Service class for user-related business logic.
+ */
+@Service
 public class UserService {
 
-    // Spring will inject the beans we defined earlier. This is called Dependency Injection.
     @Autowired
     private UserRepository userRepository;
 
@@ -22,30 +24,33 @@ public class UserService {
 
     /**
      * Registers a new user in the system.
-     * @param request The registration data from the client.
-     * @return The saved User entity.
+     *
+     * @param request The DTO containing the registration details.
+     * @return The newly created and saved {@link User} entity.
+     * @throws RuntimeException if the email is already in use.
      */
     public User registerUser(RegisterRequest request) {
-        // 1. Check if a user with the given email already exists to prevent duplicates.
+        // Prevent registration with an email that is already in use.
         if (userRepository.existsById(request.getEmail())) {
-            // For now, we throw a simple exception. Later, this can be a custom, more specific exception.
             throw new RuntimeException("Error: Email is already in use!");
         }
 
-        // 2. Create a new User entity object.
-        User newUser = new User();
+        // TODO: Implement password strength validation as per phase B requirements.
 
-        // 3. Populate the new user's details from the request DTO.
+        User newUser = new User();
         newUser.setEmail(request.getEmail());
         newUser.setFirstName(request.getFirstName());
         newUser.setLastName(request.getLastName());
         newUser.setPhoneNumber(request.getPhoneNumber());
 
-        // 4. IMPORTANT: Encode the password before saving it to the database.
+        // Encode the password for security before persisting.
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // 5. Save the new User entity to the database using the repository.
-        // The save() method returns the saved entity, including any DB-generated values.
+        // TODO: Implement email verification logic (generate token, save it, and send verification email).
+
         return userRepository.save(newUser);
     }
+
+    // TODO: Implement login service method.
+    // TODO: Implement service methods for updating user details and password reset.
 }

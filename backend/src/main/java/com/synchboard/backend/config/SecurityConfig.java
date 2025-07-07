@@ -14,54 +14,66 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * Configures application-wide security, including CORS, CSRF, and authorization rules.
+ */
 @Configuration
-@EnableWebSecurity // This annotation enables Spring Security's web security support.
+@EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Provides the password hashing implementation (BCrypt) for the application.
+     * @return A {@link PasswordEncoder} instance.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Defines the main security filter chain for all HTTP requests.
+     * @param http The {@link HttpSecurity} to configure.
+     * @return The configured {@link SecurityFilterChain}.
+     * @throws Exception if an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // First, apply the global CORS configuration.
+            // Apply custom CORS configuration.
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             
-            // Then, disable CSRF protection (common for stateless REST APIs).
+            // Disable CSRF protection, common for stateless REST APIs.
             .csrf(csrf -> csrf.disable()) 
             
-            // Finally, define authorization rules.
+            // Define authorization rules for endpoints.
             .authorizeHttpRequests(auth -> auth
-                // Allow all requests to the /api/auth/** endpoints without authentication.
+                // Allow public access to all authentication-related endpoints.
                 .requestMatchers("/api/auth/**").permitAll() 
-                // Any other request must be authenticated (we will use this rule later).
+                // All other requests must be authenticated.
                 .anyRequest().authenticated() 
             );
+
+        // TODO: Configure session management to be stateless once JWT authentication is implemented.
             
         return http.build();
     }
 
+    /**
+     * Defines the Cross-Origin Resource Sharing (CORS) configuration.
+     * This allows the frontend client (e.g., from localhost:5173) to access the API.
+     * @return A source for CORS configurations.
+     */
     @Bean
-    // This bean defines the global CORS policy for the application.
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Specify the allowed origin (your frontend URL).
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        
-        // Specify the allowed HTTP methods.
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        
-        // Allow all headers.
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        
-        // Allow credentials (e.g., cookies, authorization headers).
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this configuration to all paths in the application.
+        // Apply this configuration to all URL paths.
         source.registerCorsConfiguration("/**", configuration);
         
         return source;

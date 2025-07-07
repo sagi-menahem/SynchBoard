@@ -5,10 +5,12 @@ import { register } from '../../services/authService';
 import type { RegisterRequest } from '../../types/user.types';
 import axios from 'axios';
 
-
+/**
+ * A form component for user registration.
+ * It manages its own state for form inputs and handles the submission process.
+ */
 const RegisterForm: React.FC = () => {
-  // 'useState' is a React Hook. It allows functional components to have state.
-  // We create a single state object to hold all the form's data.
+  // State to hold the form data. Initialized with empty strings.
   const [formData, setFormData] = useState<RegisterRequest>({
     email: '',
     password: '',
@@ -17,36 +19,42 @@ const RegisterForm: React.FC = () => {
     phoneNumber: '',
   });
 
-  // This function is called every time the user types into an input field.
+  /**
+   * A generic handler that updates the form state when an input value changes.
+   * It uses the input's 'name' attribute to determine which field in the state to update.
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // It updates the corresponding field in our formData state object.
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  // This function is called when the form's submit button is clicked.
+  /**
+   * Handles the form submission event.
+   * It prevents the default browser form submission, calls the registration service,
+   * and provides user feedback via alerts.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
-    // Prevents the default browser behavior of reloading the page on form submission.
     e.preventDefault(); 
     try {
-  // We call the register function from our authService, passing the form data.
       const response = await register(formData);
-      alert('Registration Successful!'); // Show a success message.
+      alert('Registration Successful!');
       console.log(response);
+      // TODO: Optionally, clear the form on successful registration.
+      // setFormData({ email: '', password: '', ... });
     } catch (error) {
       console.error('Registration failed', error);
       let errorMessage = 'An unexpected error occurred.';
 
-      // Check if this is an error from our server (an Axios error)
+      // Check if the error is from Axios to get a specific backend message.
       if (axios.isAxiosError(error) && error.response) {
-      // We use the specific error message from the server's response
+      // Assumes the backend sends a plain text error message in the response body.
       errorMessage = error.response.data;
       } else if (error instanceof Error) {
-      // This handles other types of JavaScript errors
       errorMessage = error.message;
 
+      // TODO: Display the error message in the UI instead of using an alert.
       alert(`Registration Failed: ${errorMessage}`);
   }
 
@@ -54,10 +62,7 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    // The 'onSubmit' event of the form is linked to our handleSubmit function.
     <form onSubmit={handleSubmit}>
-      {/* Each input is a "controlled component" - its value is tied to our React state. */}
-      {/* The 'name' attribute of each input must match the key in our formData state object. */}
       <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
       <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required />
       <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
