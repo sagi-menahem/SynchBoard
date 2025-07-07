@@ -3,25 +3,26 @@
 import React from 'react';
 import RegisterForm from '../components/auth/RegisterForm';
 
+/**
+ * The main authentication page for the application.
+ * It serves as a container for authentication-related components like registration and login forms.
+ */
 const AuthPage: React.FC = () => {
-  // This component's main job is to structure the page and render the components it needs.
   return (
     <div>
       <h1>Welcome to SynchBoard</h1>
       <section>
         <h2>Register</h2>
-        {/* Here we are using the RegisterForm component we created */}
         <RegisterForm />
       </section>
-      
-      {/* In the future, you could add more components to this page, 
-        for example, the login form.
-        
+
+      {/* TODO: Add the LoginForm component here once it's created.
         <section>
           <h2>Login</h2>
           <LoginForm />
         </section>
       */}
+
     </div>
   );
 };

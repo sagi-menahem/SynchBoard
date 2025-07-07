@@ -4,15 +4,24 @@ import apiClient from './apiClient';
 import type { RegisterRequest } from '../types/user.types';
 
 /**
- * Sends a user registration request to the server using the pre-configured apiClient.
- * @param userData The user's registration data, conforming to the RegisterRequest interface.
- * @returns The data from the server's response upon successful registration.
+ * Sends a registration request to the backend API.
+ * @param userData - An object containing the new user's registration details.
+ * @returns The response data from the server.
  */
 export const register = async (userData: RegisterRequest) => {
-  // We use the apiClient to send a POST request.
-  // The URL path '/api/auth/register' is automatically appended to the baseURL defined in apiClient.
   const response = await apiClient.post('/api/auth/register', userData);
-  
-  // We return the data part of the server's response (e.g., the success message).
   return response.data;
 };
+
+// TODO: Implement a login function to authenticate users.
+// It should accept credentials and return an authentication token.
+/*
+export const login = async (credentials: LoginRequest) => {
+  const response = await apiClient.post('/api/auth/login', credentials);
+  // Assuming the server returns a token
+  if (response.data.token) {
+    localStorage.setItem('authToken', response.data.token);
+  }
+  return response.data;
+};
+*/

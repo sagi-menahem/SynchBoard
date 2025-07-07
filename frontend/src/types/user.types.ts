@@ -1,7 +1,9 @@
 // File: frontend/src/types/user.types.ts
 
-// This interface defines the structure ("shape") of the registration data object.
-// The property names must exactly match the field names in the RegisterRequest DTO on the backend.
+/**
+ * Defines the data structure for a user registration request.
+ * This ensures type safety when sending data to the registration endpoint.
+ */
 export interface RegisterRequest {
   email: string;
   password: string;
@@ -9,3 +11,6 @@ export interface RegisterRequest {
   lastName: string;
   phoneNumber: string;
 }
+
+// TODO: Add other user-related types here as the application grows.
+// e.g., User, LoginRequest, AuthResponse, etc.

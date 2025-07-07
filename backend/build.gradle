@@ -1,3 +1,6 @@
+// This file defines the build configuration for the Spring Boot application using Gradle.
+
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.3'
