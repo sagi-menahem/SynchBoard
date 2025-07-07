@@ -11,15 +11,15 @@ const AuthPage: React.FC = () => {
 
     return (
         <div>
-            <h1>{t('page_title')}</h1>
+            <h1>{t('authPage.pageTitle')}</h1>
 
             {isLoginView ? (
                 <section>
                     <LoginForm />
                     <p>
-                        {t('login_prompt_to_register')}{' '}
+                        {t('authPage.promptToRegister')}{' '}
                         <button onClick={() => setIsLoginView(false)}>
-                            {t('login_switch_to_register_button')}
+                            {t('authPage.switchToRegisterButton')}
                         </button>
                     </p>
                 </section>
@@ -27,9 +27,9 @@ const AuthPage: React.FC = () => {
                 <section>
                     <RegisterForm />
                     <p>
-                        {t('register_prompt_to_login')}{' '}
+                        {t('authPage.promptToLogin')}{' '}
                         <button onClick={() => setIsLoginView(true)}>
-                            {t('register_switch_to_login_button')}
+                            {t('authPage.switchToLoginButton')}
                         </button>
                     </p>
                 </section>

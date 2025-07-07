@@ -25,9 +25,8 @@ const RegisterForm: React.FC = () => {
             console.log(response);
         } catch (err) {
             console.error('Registration failed', err);
-            let errorMessage = t('registration_failed_error');
+            let errorMessage = t('registerForm.failedError');
             if (axios.isAxiosError(err) && err.response?.data) {
-                // If the backend sends a specific error message, use it
                 errorMessage = err.response.data;
             }
             setError(errorMessage);
@@ -36,10 +35,10 @@ const RegisterForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>{t('register_heading')}</h2>
+            <h2>{t('registerForm.heading')}</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <div>
-                <label htmlFor="register-email">{t('form_label_email')}</label>
+                <label htmlFor="register-email">{t('common.form.label.email')}</label>
                 <input
                     id="register-email"
                     type="email"
@@ -49,7 +48,7 @@ const RegisterForm: React.FC = () => {
                 />
             </div>
             <div>
-                <label htmlFor="register-password">{t('form_label_password')}</label>
+                <label htmlFor="register-password">{t('common.form.label.password')}</label>
                 <input
                     id="register-password"
                     type="password"
@@ -59,7 +58,7 @@ const RegisterForm: React.FC = () => {
                 />
             </div>
             <div>
-                <label htmlFor="register-firstName">{t('form_label_firstName')}</label>
+                <label htmlFor="register-firstName">{t('common.form.label.firstName')}</label>
                 <input
                     id="register-firstName"
                     type="text"
@@ -69,7 +68,7 @@ const RegisterForm: React.FC = () => {
                 />
             </div>
             <div>
-                <label htmlFor="register-lastName">{t('form_label_lastName')}</label>
+                <label htmlFor="register-lastName">{t('common.form.label.lastName')}</label>
                 <input
                     id="register-lastName"
                     type="text"
@@ -79,7 +78,7 @@ const RegisterForm: React.FC = () => {
                 />
             </div>
             <div>
-                <label htmlFor="register-phoneNumber">{t('form_label_phoneNumber')}</label>
+                <label htmlFor="register-phoneNumber">{t('common.form.label.phoneNumber')}</label>
                 <input
                     id="register-phoneNumber"
                     type="tel"
@@ -88,7 +87,7 @@ const RegisterForm: React.FC = () => {
                     required
                 />
             </div>
-            <button type="submit">{t('register_button')}</button>
+            <button type="submit">{t('registerForm.button')}</button>
         </form>
     );
 };
