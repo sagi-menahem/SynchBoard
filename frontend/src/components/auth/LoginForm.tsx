@@ -23,16 +23,16 @@ const LoginForm: React.FC = () => {
             alert('Login successful! You will be redirected soon.');
         } catch (err) {
             console.error('Login failed:', err);
-            setError(t('login_failed_error'));
+            setError(t('loginForm.failedError'));
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>{t('login_heading')}</h2>
+            <h2>{t('loginForm.heading')}</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <div>
-                <label htmlFor="login-email">{t('form_label_email')}</label>
+                <label htmlFor="login-email">{t('common.form.label.email')}</label>
                 <input
                     id="login-email"
                     type="email"
@@ -42,7 +42,7 @@ const LoginForm: React.FC = () => {
                 />
             </div>
             <div>
-                <label htmlFor="login-password">{t('form_label_password')}</label>
+                <label htmlFor="login-password">{t('common.form.label.password')}</label>
                 <input
                     id="login-password"
                     type="password"
@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
                     required
                 />
             </div>
-            <button type="submit">{t('login_button')}</button>
+            <button type="submit">{t('loginForm.button')}</button>
         </form>
     );
 };

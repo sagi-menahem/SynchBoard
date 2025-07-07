@@ -1,21 +1,34 @@
 {
-  "page_title": "Welcome to SynchBoard",
-
-  "form_label_email": "Email:",
-  "form_label_password": "Password:",
-  "form_label_firstName": "First Name:",
-  "form_label_lastName": "Last Name:",
-  "form_label_phoneNumber": "Phone Number:",
-
-  "login_heading": "Login",
-  "login_button": "Login",
-  "login_failed_error": "Login failed, please check your details and try again.",
-  "login_prompt_to_register": "Don't have an account?",
-  "login_switch_to_register_button": "Register here",
-
-  "register_heading": "Register",
-  "register_button": "Register",
-  "registration_failed_error": "Registration failed. Please try again later.",
-  "register_prompt_to_login": "Already have an account?",
-  "register_switch_to_login_button": "Login here"
+  "common": {
+    "_comment": "Shared text used across multiple components",
+    "form": {
+      "label": {
+        "email": "Email:",
+        "password": "Password:",
+        "firstName": "First Name:",
+        "lastName": "Last Name:",
+        "phoneNumber": "Phone Number:"
+      }
+    }
+  },
+  "authPage": {
+    "_comment": "Texts for src/pages/AuthPage.tsx",
+    "pageTitle": "Welcome to SynchBoard",
+    "promptToRegister": "Don't have an account?",
+    "switchToRegisterButton": "Register here",
+    "promptToLogin": "Already have an account?",
+    "switchToLoginButton": "Login here"
+  },
+  "loginForm": {
+    "_comment": "Texts for src/components/auth/LoginForm.tsx",
+    "heading": "Login",
+    "button": "Login",
+    "failedError": "Login failed, please check your details and try again."
+  },
+  "registerForm": {
+    "_comment": "Texts for src/components/auth/RegisterForm.tsx",
+    "heading": "Register",
+    "button": "Register",
+    "failedError": "Registration failed. Please try again later."
+  }
 }
