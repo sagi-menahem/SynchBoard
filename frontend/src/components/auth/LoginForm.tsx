@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import * as authService from '../../services/authService';
 import type { LoginRequest } from '../../types/user.types';
 import { useAuth } from '../../hooks/useAuth';
@@ -12,6 +13,7 @@ const LoginForm: React.FC = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const { login } = useAuth();
+    const navigate = useNavigate(); // Initialize the navigate function
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -20,7 +22,8 @@ const LoginForm: React.FC = () => {
         try {
             const response = await authService.login(credentials);
             login(response.token);
-            alert('Login successful! You will be redirected soon.');
+            // Instead of an alert, navigate to the boards page
+            navigate('/boards'); 
         } catch (err) {
             console.error('Login failed:', err);
             setError(t('loginForm.failedError'));
