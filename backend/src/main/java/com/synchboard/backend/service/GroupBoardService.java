@@ -3,9 +3,15 @@
 package com.synchboard.backend.service;
 
 import com.synchboard.backend.dto.board.BoardResponse;
+import com.synchboard.backend.dto.board.CreateBoardRequest;
+import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.GroupMember;
+import com.synchboard.backend.entity.User;
+import com.synchboard.backend.repository.GroupBoardRepository;
 import com.synchboard.backend.repository.GroupMemberRepository;
+import com.synchboard.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,29 +26,58 @@ import java.util.stream.Collectors;
 public class GroupBoardService {
 
     private final GroupMemberRepository groupMemberRepository;
+    private final GroupBoardRepository groupBoardRepository; // Add this
+    private final UserRepository userRepository; // Add this
 
     /**
      * Retrieves all boards a user is a member of.
-     *
-     * @param userEmail The email of the user whose boards are to be fetched.
-     * @return A list of BoardResponse DTOs representing the boards.
      */
     @Transactional(readOnly = true)
     public List<BoardResponse> getBoardsForUser(String userEmail) {
-        // 1. Fetch all membership records for the given user email
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
-
-        // 2. Map the list of GroupMember entities to a list of BoardResponse DTOs
         return memberships.stream()
                 .map(this::mapToBoardResponse)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Helper method to convert a GroupMember entity to a BoardResponse DTO.
+     * Creates a new board and sets the creator as the first admin member.
+     * This operation is transactional.
      *
-     * @param membership The GroupMember entity to convert.
-     * @return A BoardResponse DTO.
+     * @param request    The DTO containing the new board's details.
+     * @param ownerEmail The email of the user creating the board.
+     * @return A DTO representing the newly created board.
+     */
+    @Transactional
+    public BoardResponse createBoard(CreateBoardRequest request, String ownerEmail) {
+        // 1. Find the user who is creating the board
+        User owner = userRepository.findById(ownerEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + ownerEmail));
+
+        // 2. Create and save the new GroupBoard entity
+        GroupBoard newBoard = GroupBoard.builder()
+                .boardGroupName(request.getName())
+                .groupDescription(request.getDescription())
+                .createdByUser(owner)
+                .build();
+        groupBoardRepository.save(newBoard);
+
+        // 3. Create and save the membership link, making the owner an admin
+        GroupMember newMembership = GroupMember.builder()
+                .user(owner)
+                .groupBoard(newBoard)
+                .userEmail(owner.getEmail())
+                .boardGroupId(newBoard.getBoardGroupId())
+                .isAdmin(true)
+                .build();
+        groupMemberRepository.save(newMembership);
+
+        // 4. Return the DTO for the new board
+        return mapToBoardResponse(newMembership);
+    }
+
+    /**
+     * Helper method to convert a GroupMember entity to a BoardResponse DTO.
      */
     private BoardResponse mapToBoardResponse(GroupMember membership) {
         return BoardResponse.builder()

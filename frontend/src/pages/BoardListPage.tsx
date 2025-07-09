@@ -3,32 +3,39 @@
 import React, { useState, useEffect } from 'react';
 import { getBoards } from '../services/boardService';
 import type { Board } from '../types/board.types';
+import Modal from '../components/common/Modal'; // 1. Import Modal
+import CreateBoardForm from '../components/board/CreateBoardForm'; // 2. Import CreateBoardForm
 
 const BoardListPage: React.FC = () => {
     const [boards, setBoards] = useState<Board[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // 3. State for modal visibility
 
     useEffect(() => {
         const fetchBoards = async () => {
             try {
-                // Fetch the boards from the API
                 const userBoards = await getBoards();
                 setBoards(userBoards);
             } catch (err) {
-                // If an error occurs, update the error state
                 setError('Failed to fetch boards. Please try again later.');
                 console.error(err);
             } finally {
-                // In any case, stop the loading indicator
                 setIsLoading(false);
             }
         };
 
         fetchBoards();
-    }, []); // The empty array ensures this effect runs only once when the component mounts
+    }, []);
 
-    // Conditional Rendering Logic
+    // 4. Handler for when a new board is successfully created
+    const handleBoardCreated = (newBoard: Board) => {
+        // Add the new board to the existing list
+        setBoards(prevBoards => [...prevBoards, newBoard]);
+        // Close the modal
+        setIsModalOpen(false);
+    };
+
     if (isLoading) {
         return <div>Loading your boards...</div>;
     }
@@ -39,7 +46,14 @@ const BoardListPage: React.FC = () => {
 
     return (
         <div>
-            <h1>My Boards</h1>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h1>My Boards</h1>
+                {/* 5. Button to open the modal */}
+                <button onClick={() => setIsModalOpen(true)} style={createButtonStyle}>
+                    + Create New Board
+                </button>
+            </div>
+
             {boards.length > 0 ? (
                 <ul>
                     {boards.map(board => (
@@ -52,11 +66,28 @@ const BoardListPage: React.FC = () => {
                     ))}
                 </ul>
             ) : (
-                <p>You are not a member of any boards yet.</p>
+                <p>You are not a member of any boards yet. Click "Create New Board" to get started!</p>
             )}
-            {/* TODO: Add a button or form to create a new board */}
+
+            {/* 6. Render the Modal and the Form inside it */}
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <CreateBoardForm 
+                    onBoardCreated={handleBoardCreated}
+                    onClose={() => setIsModalOpen(false)}
+                />
+            </Modal>
         </div>
     );
+};
+
+const createButtonStyle: React.CSSProperties = {
+    padding: '10px 15px',
+    border: 'none',
+    borderRadius: '4px',
+    backgroundColor: '#646cff',
+    color: 'white',
+    cursor: 'pointer',
+    fontSize: '1rem'
 };
 
 export default BoardListPage;
