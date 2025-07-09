@@ -21,7 +21,9 @@ const RegisterForm: React.FC = () => {
         const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
         try {
             const response = await authService.register(formData);
-            alert('Registration Successful! You can now log in.');
+            alert(t('registerForm.registrationSuccess'));
+
+            //TODO move to login Form after success register.
             console.log(response);
         } catch (err) {
             console.error('Registration failed', err);
