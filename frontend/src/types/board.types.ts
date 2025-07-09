@@ -9,6 +9,14 @@ export interface Board {
   name: string;
   description: string | null;
   pictureUrl: string | null;
-  lastModifiedDate: string;
+  lastModifiedDate: string; // ISO 8601 date string
   isAdmin: boolean;
+}
+
+/**
+ * Defines the data structure for the request to create a new board.
+ */
+export interface CreateBoardRequest {
+  name: string;
+  description?: string; // The '?' makes the description optional
 }
