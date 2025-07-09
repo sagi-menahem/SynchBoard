@@ -6,7 +6,12 @@ import * as authService from '../../services/authService';
 import type { RegisterRequest } from '../../types/user.types';
 import axios from 'axios';
 
-const RegisterForm: React.FC = () => {
+// 1. Define the props interface
+interface RegisterFormProps {
+  onRegistrationSuccess: () => void;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,16 +25,16 @@ const RegisterForm: React.FC = () => {
         setError(null);
         const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
         try {
-            const response = await authService.register(formData);
-            alert(t('registerForm.registrationSuccess'));
+            await authService.register(formData);
+            
+            // 2. Instead of alert or navigate, call the callback function
+            onRegistrationSuccess();
 
-            //TODO move to login Form after success register.
-            console.log(response);
         } catch (err) {
             console.error('Registration failed', err);
             let errorMessage = t('registerForm.failedError');
             if (axios.isAxiosError(err) && err.response?.data) {
-                errorMessage = err.response.data;
+                errorMessage = err.response.data.message || err.response.data;
             }
             setError(errorMessage);
         }
@@ -39,6 +44,8 @@ const RegisterForm: React.FC = () => {
         <form onSubmit={handleSubmit}>
             <h2>{t('registerForm.heading')}</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            
+            {/* The rest of the form remains the same... */}
             <div>
                 <label htmlFor="register-email">{t('common.form.label.email')}</label>
                 <input
