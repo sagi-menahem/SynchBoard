@@ -29,6 +29,7 @@
     "_comment": "Texts for src/components/auth/RegisterForm.tsx",
     "heading": "Register",
     "button": "Register",
+    "registrationSuccess": "Registration Successful! You can now log in.",
     "failedError": "Registration failed. Please try again later."
   }
 }

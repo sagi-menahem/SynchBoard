@@ -29,6 +29,7 @@
     "_comment": "Texts for src/components/auth/RegisterForm.tsx",
     "heading": "הרשמה",
     "button": "הירשם",
+    "registrationSuccess": "ההרשמה הושלמה, אתה יכול להתחבר עכשיו.",
     "failedError": "ההרשמה נכשלה. אנא נסה שנית במועד מאוחר יותר."
   }
 }

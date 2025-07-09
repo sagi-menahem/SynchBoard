@@ -1,5 +1,6 @@
 // File: frontend/src/App.tsx
 
+//TODO check import of react
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthPage from './pages/AuthPage';
