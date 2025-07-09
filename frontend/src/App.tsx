@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthPage from './pages/AuthPage';
 import BoardListPage from './pages/BoardListPage';
 import ProtectedRoute from './components/routing/ProtectedRoute';
+import BoardPage from './pages/BoardPage'; // 1. Import BoardPage
 
 function App() {
   return (
@@ -21,8 +22,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
+        {/* 2. Add the new dynamic and protected route for a single board */}
+        <Route
+          path="/board/:boardId"
+          element={
+            <ProtectedRoute>
+              <BoardPage />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* TODO: Add other routes here, e.g., for a specific board or settings */}
       </Routes>
     </BrowserRouter>
   );
