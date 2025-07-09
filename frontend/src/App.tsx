@@ -32,6 +32,4 @@ function App() {
   );
 }
 
-// TODO 
-
 export default App;

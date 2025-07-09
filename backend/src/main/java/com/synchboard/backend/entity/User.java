@@ -64,7 +64,7 @@ public class User implements UserDetails {
     @Column(name = "font_size_setting")
     private String fontSizeSetting;
 
-    @Column(name = "creation_date", updatable = false)
+    @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
     @Column(name = "email_verification_token")
@@ -78,6 +78,7 @@ public class User implements UserDetails {
     /**
      * Returns the authorities granted to the user.
      * For now, we are granting a simple "ROLE_USER" to every user.
+     * 
      * @return A collection of authorities.
      */
     @Override
@@ -89,6 +90,7 @@ public class User implements UserDetails {
     /**
      * Returns the username used to authenticate the user.
      * In our case, the email is the username.
+     * 
      * @return The user's email.
      */
     @Override
@@ -99,6 +101,7 @@ public class User implements UserDetails {
     /**
      * Indicates whether the user's account has expired.
      * An expired account cannot be authenticated.
+     * 
      * @return true if the user's account is valid (i.e., non-expired).
      */
     @Override
@@ -109,18 +112,22 @@ public class User implements UserDetails {
     /**
      * Indicates whether the user is locked or unlocked.
      * A locked user cannot be authenticated.
+     * 
      * @return true if the user is not locked.
      */
     @Override
     public boolean isAccountNonLocked() {
         return true; // Or logic for account locking
-        //TODO  Logic to check if the account is locked due to too many failed login attempts
-        // For example, you could add a field like `failedLoginAttempts` and lock the account if it exceeds a threshold.
+        // TODO Logic to check if the account is locked due to too many failed login
+        // attempts
+        // For example, you could add a field like `failedLoginAttempts` and lock the
+        // account if it exceeds a threshold.
     }
 
     /**
      * Indicates whether the user's credentials (password) has expired.
      * Expired credentials prevent authentication.
+     * 
      * @return true if the user's credentials are valid (i.e., non-expired).
      */
     @Override
@@ -131,12 +138,14 @@ public class User implements UserDetails {
     /**
      * Indicates whether the user is enabled or disabled.
      * A disabled user cannot be authenticated.
+     * 
      * @return true if the user is enabled.
      */
     @Override
     public boolean isEnabled() {
         return true;
-        //TODO  Logic to check if the user's email has been verified
-        // For example, you could add a field like `isEmailVerified` and return its value.
+        // TODO Logic to check if the user's email has been verified
+        // For example, you could add a field like `isEmailVerified` and return its
+        // value.
     }
 }
