@@ -46,6 +46,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'           // For building RESTful web services.
     implementation 'org.springframework.boot:spring-boot-starter-websocket'   // For WebSocket communication.
     implementation 'org.springframework.boot:spring-boot-starter-security'      // For handling security, authentication, and authorization.
+    implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
 
     // --- JWT (JSON Web Token) Dependencies ---
     // Provides the core JWT interfaces and classes.
