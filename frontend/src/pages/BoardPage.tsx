@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import websocketService from '../services/websocketService';
-import type { StompSubscription } from '@stomp/stompjs'; // Import the subscription type
+import * as boardService from '../services/boardService'; // <-- This is the corrected import
 import type { BoardActionResponse, SendBoardActionRequest, ChatMessageResponse, SendChatMessageRequest } from '../types/websocket.types';
 import BoardCanvas from '../components/board/BoardCanvas';
 
@@ -16,12 +16,35 @@ const BoardPage: React.FC = () => {
     const [newMessage, setNewMessage] = useState('');
     const [lastReceivedAction, setLastReceivedAction] = useState<BoardActionResponse | null>(null);
 
+    const [initialObjects, setInitialObjects] = useState<BoardActionResponse[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
-        if (!boardId || !isSocketConnected) return;
+        if (!boardId) return;
 
-        let subscription: StompSubscription | null = null;
+        const fetchBoardState = async () => {
+            try {
+                const numericBoardId = parseInt(boardId, 10);
+                if (isNaN(numericBoardId)) return;
+                const objects = await boardService.getBoardObjects(numericBoardId);
+                setInitialObjects(objects);
+            } catch (error) {
+                console.error("Failed to fetch initial board state:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchBoardState();
+    }, [boardId]);
+
+
+    useEffect(() => {
+        if (isLoading || !boardId || !isSocketConnected) {
+            return;
+        }
+
         const topic = `/topic/board/${boardId}`;
-
         const onMessageReceived = (payload: unknown) => {
             if (typeof payload === 'object' && payload && 'type' in payload && 'sender' in payload && 'payload' in payload) {
                 const action = payload as BoardActionResponse;
@@ -32,20 +55,20 @@ const BoardPage: React.FC = () => {
                 setMessages(prev => [...prev, payload as ChatMessageResponse]);
             }
         };
-        
-        // Subscribe and store the subscription object locally in the effect
-        subscription = websocketService.subscribe<unknown>(topic, onMessageReceived);
 
-        // The cleanup function now directly uses the subscription object
+        const subscription = websocketService.subscribe<unknown>(topic, onMessageReceived);
         return () => {
             if (subscription) {
-                console.log(`Unsubscribing from ${topic}`);
                 subscription.unsubscribe();
             }
         };
-    }, [boardId, isSocketConnected]);
+    }, [boardId, isSocketConnected, isLoading]);
 
-    // ... handleSendMessage and handleDrawAction functions remain the same
+    const handleDrawAction = (action: SendBoardActionRequest) => {
+        const actionWithInstanceId = { ...action, instanceId: instanceId.current };
+        websocketService.sendMessage('/app/board.drawAction', actionWithInstanceId);
+    };
+
     const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (newMessage.trim() && boardId) {
@@ -54,12 +77,11 @@ const BoardPage: React.FC = () => {
             setNewMessage('');
         }
     };
-    const handleDrawAction = (action: SendBoardActionRequest) => {
-        // The action object is already complete, just send it.
-        websocketService.sendMessage('/app/board.drawAction', action);
-    };
 
-    // The JSX remains the same
+    if (isLoading) {
+        return <div>Loading board...</div>;
+    }
+
     return (
         <div style={pageStyle}>
             <h1>Board Workspace (ID: {boardId})</h1>
@@ -67,14 +89,15 @@ const BoardPage: React.FC = () => {
                 <div style={canvasContainerStyle}>
                     <BoardCanvas 
                         boardId={parseInt(boardId || '0')}
-                        instanceId={instanceId.current} // <-- Pass the instanceId here
+                        instanceId={instanceId.current}
                         onDraw={handleDrawAction}
                         receivedAction={lastReceivedAction}
+                        initialObjects={initialObjects}
                     />
                 </div>
                 <div style={chatContainerStyle}>
-                   {/* ... (chat UI remains the same) */}
-                   <div style={messageListStyle}>
+                    {/* Chat UI */}
+                    <div style={messageListStyle}>
                         {messages.map((msg, index) => (
                             <div key={index} style={messageStyle}>
                                 <strong>{msg.sender}: </strong>

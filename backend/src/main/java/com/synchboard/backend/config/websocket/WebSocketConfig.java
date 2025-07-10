@@ -5,8 +5,6 @@ package com.synchboard.backend.config.websocket;
 import lombok.RequiredArgsConstructor; // 1. Add this import
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.messaging.simp.config.ChannelRegistration; // 1. Import ChannelRegistration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -16,7 +14,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor // 2. Use Lombok for constructor injection
-@Order(Ordered.HIGHEST_PRECEDENCE + 99) // 3. Set high precedence for security
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     // 2. Inject the interceptor via constructor

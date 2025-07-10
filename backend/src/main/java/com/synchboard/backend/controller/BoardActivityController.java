@@ -6,6 +6,7 @@ import com.synchboard.backend.dto.websocket.BoardActionResponse;
 import com.synchboard.backend.dto.websocket.ChatMessageResponse;
 import com.synchboard.backend.dto.websocket.SendBoardActionRequest;
 import com.synchboard.backend.dto.websocket.SendChatMessageRequest;
+import com.synchboard.backend.service.BoardObjectService; // 1. Import the new service
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 public class BoardActivityController {
 
     private final SimpMessageSendingOperations messagingTemplate;
-    // 2. Add a logger instance
+    private final BoardObjectService boardObjectService; // 2. Inject the service
     private static final Logger log = LoggerFactory.getLogger(BoardActivityController.class);
 
     @MessageMapping("/chat.sendMessage")
@@ -40,9 +41,7 @@ public class BoardActivityController {
 
     @MessageMapping("/board.drawAction")
     public void handleDrawAction(@Payload SendBoardActionRequest request, Principal principal) {
-        // 3. Add logging to this method
         log.info("Received draw action from user: {}", principal.getName());
-        log.info("Action details: {}", request);
 
         BoardActionResponse response = BoardActionResponse.builder()
                 .type(request.getType())
@@ -53,8 +52,16 @@ public class BoardActivityController {
 
         String destination = "/topic/board/" + request.getBoardId();
 
-        log.info("Broadcasting action response to destination: {}", destination);
+        // First, broadcast the action for immediate real-time feedback
         messagingTemplate.convertAndSend(destination, response);
-        log.info("Action response successfully sent to broker relay.");
+        log.info("Action response broadcast to destination: {}", destination);
+
+        // 3. Then, call the service to save the action to the database
+        try {
+            boardObjectService.saveDrawAction(request, principal.getName());
+        } catch (Exception e) {
+            log.error("Failed to save board object for boardId: {}", request.getBoardId(), e);
+            // In a real application, you might send an error message back to the user
+        }
     }
 }
