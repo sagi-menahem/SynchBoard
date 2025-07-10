@@ -7,20 +7,31 @@ import websocketService from '../services/websocketService';
 import * as boardService from '../services/boardService';
 import type { BoardActionResponse, SendBoardActionRequest, ChatMessageResponse, SendChatMessageRequest } from '../types/websocket.types';
 import BoardCanvas from '../components/board/BoardCanvas';
+import Toolbar from '../components/board/Toolbar';
 
 const BoardPage: React.FC = () => {
     const { boardId } = useParams<{ boardId: string }>();
     const { isSocketConnected } = useAuth();
     const instanceId = useRef(Math.random().toString(36).substring(2));
+    
+    // State for chat
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    
+    // State for drawing
     const [lastReceivedAction, setLastReceivedAction] = useState<BoardActionResponse | null>(null);
     const [initialObjects, setInitialObjects] = useState<BoardActionResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    // THIS IS THE CORRECTED LINE:
+    const [tool, setTool] = useState<'brush' | 'eraser' | 'rectangle' | 'circle'>('brush');
+    const [strokeColor, setStrokeColor] = useState<string>('#FFFFFF');
+    const [strokeWidth, setStrokeWidth] = useState<number>(3);
+
+
+    // useEffect hooks (no changes)
     useEffect(() => {
         if (!boardId) return;
-
         const fetchBoardState = async () => {
             try {
                 const numericBoardId = parseInt(boardId, 10);
@@ -33,31 +44,19 @@ const BoardPage: React.FC = () => {
                 setIsLoading(false);
             }
         };
-
         fetchBoardState();
     }, [boardId]);
 
     useEffect(() => {
-        if (isLoading || !boardId || !isSocketConnected) {
-            return;
-        }
-
+        if (isLoading || !boardId || !isSocketConnected) return;
         const topic = `/topic/board/${boardId}`;
         const onMessageReceived = (payload: unknown) => {
-            // Check for BoardActionResponse
             if (typeof payload === 'object' && payload && 'type' in payload && 'sender' in payload && 'payload' in payload) {
-                const action = payload as BoardActionResponse;
-                
-                // THE FIX: We REMOVED the instanceId check.
-                // Now we process ALL incoming actions, including our own echo,
-                // which acts as confirmation from the server.
-                setLastReceivedAction(action);
-
+                setLastReceivedAction(payload as BoardActionResponse);
             } else if (typeof payload === 'object' && payload && 'content' in payload && 'sender' in payload) {
                 setMessages(prev => [...prev, payload as ChatMessageResponse]);
             }
         };
-
         const subscription = websocketService.subscribe<unknown>(topic, onMessageReceived);
         return () => {
             if (subscription) {
@@ -66,12 +65,11 @@ const BoardPage: React.FC = () => {
         };
     }, [boardId, isSocketConnected, isLoading]);
 
+    // handler functions (no changes)
     const handleDrawAction = (action: SendBoardActionRequest) => {
-        // We still send the instanceId, it's useful for other potential features
-        // but we no longer use it for filtering this specific echo.
-        websocketService.sendMessage('/app/board.drawAction', action);
+        const actionWithInstanceId = { ...action, instanceId: instanceId.current };
+        websocketService.sendMessage('/app/board.drawAction', actionWithInstanceId);
     };
-
     const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (newMessage.trim() && boardId) {
@@ -88,6 +86,14 @@ const BoardPage: React.FC = () => {
     return (
         <div style={pageStyle}>
             <h1>Board Workspace (ID: {boardId})</h1>
+            <Toolbar 
+                strokeColor={strokeColor}
+                setStrokeColor={setStrokeColor}
+                strokeWidth={strokeWidth}
+                setStrokeWidth={setStrokeWidth}
+                tool={tool}
+                setTool={setTool}
+            />
             <div style={mainContentStyle}>
                 <div style={canvasContainerStyle}>
                     <BoardCanvas 
@@ -96,9 +102,13 @@ const BoardPage: React.FC = () => {
                         onDraw={handleDrawAction}
                         receivedAction={lastReceivedAction}
                         initialObjects={initialObjects}
+                        tool={tool}
+                        strokeColor={strokeColor}
+                        strokeWidth={strokeWidth}
                     />
                 </div>
                 <div style={chatContainerStyle}>
+                    {/* Chat UI */}
                     <div style={messageListStyle}>
                         {messages.map((msg, index) => (
                             <div key={index} style={messageStyle}>
@@ -129,7 +139,7 @@ const BoardPage: React.FC = () => {
 // Styles
 const pageStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', height: '90vh', width: '100%' };
 const mainContentStyle: React.CSSProperties = { display: 'flex', flex: 1, gap: '1rem', marginTop: '1rem' };
-const canvasContainerStyle: React.CSSProperties = { flex: 3 };
+const canvasContainerStyle: React.CSSProperties = { position: 'relative', flex: 3 };
 const chatContainerStyle: React.CSSProperties = { flex: 1, display: 'flex', flexDirection: 'column', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' };
 const messageListStyle: React.CSSProperties = { flex: 1, padding: '1rem', overflowY: 'auto' };
 const messageStyle: React.CSSProperties = { marginBottom: '0.5rem' };
