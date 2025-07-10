@@ -1,6 +1,6 @@
-// Located at: backend/src/main/java/com/synchboard/backend/config/ApplicationConfig.java
+// Located at: backend/src/main/java/com/synchboard/backend/config/security/ApplicationConfig.java
 
-package com.synchboard.backend.config;
+package com.synchboard.backend.config.security;
 
 import com.synchboard.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
