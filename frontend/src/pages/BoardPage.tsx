@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import websocketService from '../services/websocketService';
-import * as boardService from '../services/boardService'; // <-- This is the corrected import
+import * as boardService from '../services/boardService';
 import type { BoardActionResponse, SendBoardActionRequest, ChatMessageResponse, SendChatMessageRequest } from '../types/websocket.types';
 import BoardCanvas from '../components/board/BoardCanvas';
 
@@ -15,7 +15,6 @@ const BoardPage: React.FC = () => {
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const [lastReceivedAction, setLastReceivedAction] = useState<BoardActionResponse | null>(null);
-
     const [initialObjects, setInitialObjects] = useState<BoardActionResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -38,7 +37,6 @@ const BoardPage: React.FC = () => {
         fetchBoardState();
     }, [boardId]);
 
-
     useEffect(() => {
         if (isLoading || !boardId || !isSocketConnected) {
             return;
@@ -46,11 +44,15 @@ const BoardPage: React.FC = () => {
 
         const topic = `/topic/board/${boardId}`;
         const onMessageReceived = (payload: unknown) => {
+            // Check for BoardActionResponse
             if (typeof payload === 'object' && payload && 'type' in payload && 'sender' in payload && 'payload' in payload) {
                 const action = payload as BoardActionResponse;
-                if (action.instanceId !== instanceId.current) {
-                    setLastReceivedAction(action);
-                }
+                
+                // THE FIX: We REMOVED the instanceId check.
+                // Now we process ALL incoming actions, including our own echo,
+                // which acts as confirmation from the server.
+                setLastReceivedAction(action);
+
             } else if (typeof payload === 'object' && payload && 'content' in payload && 'sender' in payload) {
                 setMessages(prev => [...prev, payload as ChatMessageResponse]);
             }
@@ -65,8 +67,9 @@ const BoardPage: React.FC = () => {
     }, [boardId, isSocketConnected, isLoading]);
 
     const handleDrawAction = (action: SendBoardActionRequest) => {
-        const actionWithInstanceId = { ...action, instanceId: instanceId.current };
-        websocketService.sendMessage('/app/board.drawAction', actionWithInstanceId);
+        // We still send the instanceId, it's useful for other potential features
+        // but we no longer use it for filtering this specific echo.
+        websocketService.sendMessage('/app/board.drawAction', action);
     };
 
     const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
@@ -96,7 +99,6 @@ const BoardPage: React.FC = () => {
                     />
                 </div>
                 <div style={chatContainerStyle}>
-                    {/* Chat UI */}
                     <div style={messageListStyle}>
                         {messages.map((msg, index) => (
                             <div key={index} style={messageStyle}>

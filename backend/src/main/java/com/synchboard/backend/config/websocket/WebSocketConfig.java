@@ -2,21 +2,21 @@
 
 package com.synchboard.backend.config.websocket;
 
-import lombok.RequiredArgsConstructor; // 1. Add this import
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration; // 1. Import ChannelRegistration
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration; // 1. Add this import
 
 @Configuration
 @EnableWebSocketMessageBroker
-@RequiredArgsConstructor // 2. Use Lombok for constructor injection
+@RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    // 2. Inject the interceptor via constructor
     private final JwtChannelInterceptor jwtChannelInterceptor;
 
     @Value("${spring.activemq.stomp.broker-host}")
@@ -47,11 +47,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS();
     }
 
-    /**
-     * 4. Register our custom interceptor to secure the inbound channel.
-     */
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(jwtChannelInterceptor);
+    }
+
+    /**
+     * 2. Add this new method to increase message size limits.
+     */
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        // Default is 64KB (64 * 1024). We increase it to 512KB.
+        registration.setMessageSizeLimit(512 * 1024);
+        registration.setSendBufferSizeLimit(512 * 1024);
     }
 }
