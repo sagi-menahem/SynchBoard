@@ -1,6 +1,6 @@
-// Located at: backend/src/main/java/com/synchboard/backend/config/JwtAuthFilter.java
+// Located at: backend/src/main/java/com/synchboard/backend/config/security/JwtAuthFilter.java
 
-package com.synchboard.backend.config;
+package com.synchboard.backend.config.security;
 
 import com.synchboard.backend.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -30,14 +30,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
 
-        // If the Authorization header is missing or doesn't start with "Bearer ", pass the request to the next filter.
+        // If the Authorization header is missing or doesn't start with "Bearer ", pass
+        // the request to the next filter.
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -47,22 +47,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
 
-        // If we have a user email and the user is not already authenticated in the security context
+        // If we have a user email and the user is not already authenticated in the
+        // security context
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            
+
             // If the token is valid for this user
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 // Create an authentication token
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null, // Credentials are null since the user is already authenticated by the token
-                        userDetails.getAuthorities()
-                );
+                        userDetails.getAuthorities());
                 // Set additional details for the authentication token
                 authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                        new WebAuthenticationDetailsSource().buildDetails(request));
                 // Update the SecurityContextHolder with the new authentication token
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

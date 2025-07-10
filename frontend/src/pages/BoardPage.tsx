@@ -1,100 +1,110 @@
 // File: frontend/src/pages/BoardPage.tsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import websocketService from '../services/websocketService';
-import type { ChatMessageResponse } from '../types/websocket.types';
-import type { SendChatMessageRequest } from '../types/websocket.types'; // We need to create this type
-
-// Let's quickly add the SendChatMessageRequest to the types file if it's not there.
-// In frontend/src/types/websocket.types.ts, add:
-/*
-export interface SendChatMessageRequest {
-  content: string;
-  boardId: number;
-}
-*/
-// Assuming the above type is now created.
+import type { StompSubscription } from '@stomp/stompjs'; // Import the subscription type
+import type { BoardActionResponse, SendBoardActionRequest, ChatMessageResponse, SendChatMessageRequest } from '../types/websocket.types';
+import BoardCanvas from '../components/board/BoardCanvas';
 
 const BoardPage: React.FC = () => {
     const { boardId } = useParams<{ boardId: string }>();
-    const { token } = useAuth();
+    const { isSocketConnected } = useAuth();
+    const instanceId = useRef(Math.random().toString(36).substring(2));
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    const [lastReceivedAction, setLastReceivedAction] = useState<BoardActionResponse | null>(null);
 
     useEffect(() => {
-        if (!boardId || !token) return;
+        if (!boardId || !isSocketConnected) return;
 
-        // Function to handle incoming messages
-        const onMessageReceived = (payload: ChatMessageResponse) => {
-            setMessages(prevMessages => [...prevMessages, payload]);
-        };
+        let subscription: StompSubscription | null = null;
+        const topic = `/topic/board/${boardId}`;
 
-        // Function to run after connection is established
-        const onConnected = () => {
-            const topic = `/topic/board/${boardId}`;
-            websocketService.subscribe<ChatMessageResponse>(topic, onMessageReceived);
-
-            // TODO: Here we can send a "JOIN" message if we want
+        const onMessageReceived = (payload: unknown) => {
+            if (typeof payload === 'object' && payload && 'type' in payload && 'sender' in payload && 'payload' in payload) {
+                const action = payload as BoardActionResponse;
+                if (action.instanceId !== instanceId.current) {
+                    setLastReceivedAction(action);
+                }
+            } else if (typeof payload === 'object' && payload && 'content' in payload && 'sender' in payload) {
+                setMessages(prev => [...prev, payload as ChatMessageResponse]);
+            }
         };
         
-        // Connect to the WebSocket server
-        websocketService.connect(token, onConnected);
+        // Subscribe and store the subscription object locally in the effect
+        subscription = websocketService.subscribe<unknown>(topic, onMessageReceived);
 
-        // Cleanup on component unmount
+        // The cleanup function now directly uses the subscription object
         return () => {
-            console.log('Disconnecting from WebSocket...');
-            websocketService.disconnect();
+            if (subscription) {
+                console.log(`Unsubscribing from ${topic}`);
+                subscription.unsubscribe();
+            }
         };
-    }, [boardId, token]); // Rerun effect if boardId or token changes
+    }, [boardId, isSocketConnected]);
 
+    // ... handleSendMessage and handleDrawAction functions remain the same
     const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (newMessage.trim() && boardId) {
-            const request: SendChatMessageRequest = {
-                content: newMessage,
-                boardId: parseInt(boardId, 10),
-            };
+            const request: SendChatMessageRequest = { content: newMessage, boardId: parseInt(boardId) };
             websocketService.sendMessage('/app/chat.sendMessage', request);
-            setNewMessage(''); // Clear the input field
+            setNewMessage('');
         }
     };
+    const handleDrawAction = (action: SendBoardActionRequest) => {
+        // The action object is already complete, just send it.
+        websocketService.sendMessage('/app/board.drawAction', action);
+    };
 
+    // The JSX remains the same
     return (
         <div style={pageStyle}>
-            <h1>Board Chat (ID: {boardId})</h1>
-            
-            <div style={chatContainerStyle}>
-                <div style={messageListStyle}>
-                    {messages.map((msg, index) => (
-                        <div key={index} style={messageStyle}>
-                            <strong>{msg.sender}: </strong>
-                            <span>{msg.content}</span>
-                            <span style={timestampStyle}>
-                                {new Date(msg.timestamp).toLocaleTimeString()}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-                
-                <form onSubmit={handleSendMessage} style={formStyle}>
-                    <input
-                        type="text"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type a message..."
-                        style={inputStyle}
+            <h1>Board Workspace (ID: {boardId})</h1>
+            <div style={mainContentStyle}>
+                <div style={canvasContainerStyle}>
+                    <BoardCanvas 
+                        boardId={parseInt(boardId || '0')}
+                        instanceId={instanceId.current} // <-- Pass the instanceId here
+                        onDraw={handleDrawAction}
+                        receivedAction={lastReceivedAction}
                     />
-                    <button type="submit" style={buttonStyle}>Send</button>
-                </form>
+                </div>
+                <div style={chatContainerStyle}>
+                   {/* ... (chat UI remains the same) */}
+                   <div style={messageListStyle}>
+                        {messages.map((msg, index) => (
+                            <div key={index} style={messageStyle}>
+                                <strong>{msg.sender}: </strong>
+                                <span>{msg.content}</span>
+                                <span style={timestampStyle}>
+                                    {new Date(msg.timestamp).toLocaleTimeString()}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    <form onSubmit={handleSendMessage} style={formStyle}>
+                        <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Type a message..."
+                            style={inputStyle}
+                        />
+                        <button type="submit" style={buttonStyle}>Send</button>
+                    </form>
+                </div>
             </div>
         </div>
     );
 };
 
-// Basic inline styles for demonstration
-const pageStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', height: '90vh' };
+// Styles
+const pageStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', height: '90vh', width: '100%' };
+const mainContentStyle: React.CSSProperties = { display: 'flex', flex: 1, gap: '1rem', marginTop: '1rem' };
+const canvasContainerStyle: React.CSSProperties = { flex: 3 };
 const chatContainerStyle: React.CSSProperties = { flex: 1, display: 'flex', flexDirection: 'column', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' };
 const messageListStyle: React.CSSProperties = { flex: 1, padding: '1rem', overflowY: 'auto' };
 const messageStyle: React.CSSProperties = { marginBottom: '0.5rem' };

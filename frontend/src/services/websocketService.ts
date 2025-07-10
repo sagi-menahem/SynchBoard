@@ -5,61 +5,56 @@ import SockJS from 'sockjs-client';
 
 class WebSocketService {
     private stompClient: Client | null = null;
-    private subscriptions: Map<string, StompSubscription> = new Map();
+
+    // The subscriptions map is now REMOVED.
 
     public connect(token: string, onConnectedCallback: () => void) {
         if (this.stompClient?.active) {
-            console.log('Already connected to WebSocket.');
             onConnectedCallback();
             return;
         }
-
         this.stompClient = new Client({
             webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
-            connectHeaders: {
-                Authorization: `Bearer ${token}`,
-            },
+            connectHeaders: { Authorization: `Bearer ${token}` },
             onConnect: () => {
                 console.log('Connected to WebSocket server!');
                 onConnectedCallback();
             },
             onStompError: (frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
-                console.error('Additional details: ' + frame.body);
             },
         });
-
+        console.log('Activating STOMP client...');
         this.stompClient.activate();
     }
 
     public disconnect() {
-        this.stompClient?.deactivate();
-        console.log('Disconnected from WebSocket.');
+        if (this.stompClient?.active) {
+            this.stompClient.deactivate();
+            console.log('Disconnected from WebSocket.');
+            this.stompClient = null;
+        }
     }
-
+    
     /**
-     * Subscribes to a specific topic to receive messages of a generic type T.
-     * @param topic The destination topic (e.g., '/topic/board/123').
-     * @param onMessageReceived The callback function to handle incoming messages.
-     * @template T The expected type of the message payload.
+     * Subscribes to a topic and returns the subscription object.
+     * The component calling this function is responsible for unsubscribing.
      */
-    public subscribe<T>(topic: string, onMessageReceived: (message: T) => void) { // This line is fixed
+    public subscribe<T>(topic: string, onMessageReceived: (message: T) => void): StompSubscription | null {
         if (!this.stompClient?.active) {
             console.error('Cannot subscribe, STOMP client is not connected.');
-            return;
+            return null;
         }
         
-        if (this.subscriptions.has(topic)) {
-            this.subscriptions.get(topic)?.unsubscribe();
-        }
-
         const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
-            // The callback now receives a strongly-typed message
             onMessageReceived(JSON.parse(message.body) as T);
         });
         
-        this.subscriptions.set(topic, subscription);
+        console.log(`Subscribed to ${topic}`);
+        return subscription;
     }
+
+    // The unsubscribe method is REMOVED from the service.
 
     public sendMessage(destination: string, body: object) {
         if (!this.stompClient?.active) {

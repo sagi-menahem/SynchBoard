@@ -2,9 +2,13 @@
 
 package com.synchboard.backend.controller;
 
+import com.synchboard.backend.dto.websocket.BoardActionResponse;
 import com.synchboard.backend.dto.websocket.ChatMessageResponse;
+import com.synchboard.backend.dto.websocket.SendBoardActionRequest;
 import com.synchboard.backend.dto.websocket.SendChatMessageRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -13,39 +17,44 @@ import org.springframework.stereotype.Controller;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
-/**
- * Controller to handle WebSocket messages for board activities like chat.
- */
 @Controller
 @RequiredArgsConstructor
 public class BoardActivityController {
 
     private final SimpMessageSendingOperations messagingTemplate;
+    // 2. Add a logger instance
+    private static final Logger log = LoggerFactory.getLogger(BoardActivityController.class);
 
-    /**
-     * Handles incoming chat messages from a user.
-     * The message is enriched with server-side data (sender, timestamp) and then
-     * broadcast to all subscribers of the specific board's topic.
-     *
-     * @param request   The incoming message payload from the client.
-     * @param principal The currently authenticated user, injected by Spring
-     *                  Security.
-     */
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload SendChatMessageRequest request, Principal principal) {
-
-        // 1. Create the response object to be broadcast
+        // ... (this method remains the same)
         ChatMessageResponse response = ChatMessageResponse.builder()
                 .type(ChatMessageResponse.MessageType.CHAT)
                 .content(request.getContent())
-                .sender(principal.getName()) // Use the authenticated user's name
+                .sender(principal.getName())
                 .timestamp(LocalDateTime.now())
                 .build();
+        String destination = "/topic/board/" + request.getBoardId();
+        messagingTemplate.convertAndSend(destination, response);
+    }
 
-        // 2. Determine the destination topic based on the board ID
+    @MessageMapping("/board.drawAction")
+    public void handleDrawAction(@Payload SendBoardActionRequest request, Principal principal) {
+        // 3. Add logging to this method
+        log.info("Received draw action from user: {}", principal.getName());
+        log.info("Action details: {}", request);
+
+        BoardActionResponse response = BoardActionResponse.builder()
+                .type(request.getType())
+                .payload(request.getPayload())
+                .sender(principal.getName())
+                .instanceId(request.getInstanceId())
+                .build();
+
         String destination = "/topic/board/" + request.getBoardId();
 
-        // 3. Broadcast the message to all clients subscribed to the topic
+        log.info("Broadcasting action response to destination: {}", destination);
         messagingTemplate.convertAndSend(destination, response);
+        log.info("Action response successfully sent to broker relay.");
     }
 }
