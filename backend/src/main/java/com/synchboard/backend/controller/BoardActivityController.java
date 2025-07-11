@@ -2,10 +2,8 @@
 
 package com.synchboard.backend.controller;
 
-import com.synchboard.backend.dto.websocket.BoardActionResponse;
-import com.synchboard.backend.dto.websocket.ChatMessageResponse;
-import com.synchboard.backend.dto.websocket.SendBoardActionRequest;
-import com.synchboard.backend.dto.websocket.SendChatMessageRequest;
+import com.synchboard.backend.dto.websocket.BoardActionDTO;
+import com.synchboard.backend.dto.websocket.ChatMessageDTO;
 import com.synchboard.backend.service.BoardObjectService; // 1. Import the new service
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,10 +25,10 @@ public class BoardActivityController {
     private static final Logger log = LoggerFactory.getLogger(BoardActivityController.class);
 
     @MessageMapping("/chat.sendMessage")
-    public void sendMessage(@Payload SendChatMessageRequest request, Principal principal) {
+    public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
         // ... (this method remains the same)
-        ChatMessageResponse response = ChatMessageResponse.builder()
-                .type(ChatMessageResponse.MessageType.CHAT)
+        ChatMessageDTO.Response response = ChatMessageDTO.Response.builder()
+                .type(ChatMessageDTO.Response.MessageType.CHAT)
                 .content(request.getContent())
                 .sender(principal.getName())
                 .timestamp(LocalDateTime.now())
@@ -40,10 +38,10 @@ public class BoardActivityController {
     }
 
     @MessageMapping("/board.drawAction")
-    public void handleDrawAction(@Payload SendBoardActionRequest request, Principal principal) {
+    public void handleDrawAction(@Payload BoardActionDTO.Request request, Principal principal) {
         log.info("Received draw action from user: {}", principal.getName());
 
-        BoardActionResponse response = BoardActionResponse.builder()
+        BoardActionDTO.Response response = BoardActionDTO.Response.builder()
                 .type(request.getType())
                 .payload(request.getPayload())
                 .sender(principal.getName())
