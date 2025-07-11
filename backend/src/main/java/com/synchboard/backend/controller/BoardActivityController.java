@@ -1,13 +1,10 @@
 // File: backend/src/main/java/com/synchboard/backend/controller/BoardActivityController.java
-
 package com.synchboard.backend.controller;
 
 import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.dto.websocket.ChatMessageDTO;
-import com.synchboard.backend.service.BoardObjectService; // 1. Import the new service
+import com.synchboard.backend.service.BoardObjectService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -16,30 +13,49 @@ import org.springframework.stereotype.Controller;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+import static com.synchboard.backend.config.ApplicationConstants.*;
+
+/**
+ * Controller for handling real-time board activities via WebSockets.
+ * Manages chat messages and drawing actions on the board.
+ */
 @Controller
 @RequiredArgsConstructor
 public class BoardActivityController {
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final BoardObjectService boardObjectService; // 2. Inject the service
-    private static final Logger log = LoggerFactory.getLogger(BoardActivityController.class);
+    private final BoardObjectService boardObjectService;
 
-    @MessageMapping("/chat.sendMessage")
+    /**
+     * Handles incoming chat messages from users.
+     * It broadcasts the message to all subscribers of the specific board topic.
+     *
+     * @param request   the chat message request DTO.
+     * @param principal the authenticated user sending the message.
+     */
+    @MessageMapping(MAPPING_CHAT_SEND_MESSAGE)
     public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
-        // ... (this method remains the same)
         ChatMessageDTO.Response response = ChatMessageDTO.Response.builder()
                 .type(ChatMessageDTO.Response.MessageType.CHAT)
                 .content(request.getContent())
                 .sender(principal.getName())
                 .timestamp(LocalDateTime.now())
                 .build();
-        String destination = "/topic/board/" + request.getBoardId();
+        // Construct the destination topic for the specific board.
+        String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
         messagingTemplate.convertAndSend(destination, response);
     }
 
-    @MessageMapping("/board.drawAction")
+    /**
+     * Handles drawing actions performed by users on the board.
+     * It broadcasts the action to all other users on the same board and saves the
+     * action to the database.
+     *
+     * @param request   the board action request DTO.
+     * @param principal the authenticated user performing the action.
+     */
+    @MessageMapping(MAPPING_BOARD_DRAW_ACTION)
     public void handleDrawAction(@Payload BoardActionDTO.Request request, Principal principal) {
-        log.info("Received draw action from user: {}", principal.getName());
 
         BoardActionDTO.Response response = BoardActionDTO.Response.builder()
                 .type(request.getType())
@@ -48,18 +64,15 @@ public class BoardActivityController {
                 .instanceId(request.getInstanceId())
                 .build();
 
-        String destination = "/topic/board/" + request.getBoardId();
+        String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
 
-        // First, broadcast the action for immediate real-time feedback
+        // Broadcast the action to all clients subscribed to the board.
         messagingTemplate.convertAndSend(destination, response);
-        log.info("Action response broadcast to destination: {}", destination);
 
-        // 3. Then, call the service to save the action to the database
+        // Persist the drawing action to the database.
         try {
             boardObjectService.saveDrawAction(request, principal.getName());
         } catch (Exception e) {
-            log.error("Failed to save board object for boardId: {}", request.getBoardId(), e);
-            // In a real application, you might send an error message back to the user
         }
     }
 }

@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/entity/BoardObject.java
-
 package com.synchboard.backend.entity;
 
 import jakarta.persistence.*;
@@ -7,11 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode; // 1. Add this import
-import org.hibernate.type.SqlTypes; // 1. Add this import
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a single object on a collaborative board, such as a shape, text,
+ * or image.
+ * This entity is mapped to the "board_objects" table.
+ */
 @Entity
 @Table(name = "board_objects")
 @Data
@@ -46,17 +50,24 @@ public class BoardObject {
     @JoinColumn(name = "last_edited_by_user_email")
     private User lastEditedByUser;
 
-    // 2. Add this annotation to give Hibernate the correct type hint
+    /** The actual data of the object, stored as a JSONB string in the database. */
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "object_data", columnDefinition = "jsonb")
-    private String objectData; // Stores the JSON representation of the object's properties
+    private String objectData;
 
+    /**
+     * Sets the creation and last edited timestamps before the entity is first
+     * persisted.
+     */
     @PrePersist
     protected void onCreate() {
         this.creationTimestamp = LocalDateTime.now();
         this.lastEditedTimestamp = LocalDateTime.now();
     }
 
+    /**
+     * Updates the last edited timestamp before the entity is updated.
+     */
     @PreUpdate
     protected void onUpdate() {
         this.lastEditedTimestamp = LocalDateTime.now();

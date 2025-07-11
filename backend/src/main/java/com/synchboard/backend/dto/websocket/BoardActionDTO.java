@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/dto/websocket/BoardActionDTO.java
-
 package com.synchboard.backend.dto.websocket;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,21 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * A container class for all board-action-related Data Transfer Objects (DTOs).
- * This approach uses a shared enum and nested static classes for
- * request/response models.
+ * A container for board action DTOs, including request and response objects.
+ * This class is final and has a private constructor to prevent instantiation.
  */
 public final class BoardActionDTO {
 
     /**
-     * Private constructor to prevent instantiation of the container class.
+     * Private constructor to prevent instantiation of the utility class.
      */
     private BoardActionDTO() {
     }
 
     /**
-     * Shared enum for different types of board actions.
-     * Accessible via BoardActionDTO.ActionType
+     * Enum representing the types of actions that can be performed on a board
+     * object.
      */
     public enum ActionType {
         OBJECT_ADD,
@@ -32,32 +30,41 @@ public final class BoardActionDTO {
     }
 
     /**
-     * Represents a request from a client to perform an action on a specific board.
-     * This class replaces SendBoardActionRequest.java.
+     * DTO for an incoming board action request from a client.
      */
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+        /** The ID of the board where the action occurs. */
         private Long boardId;
+        /** The type of the action (e.g., ADD, UPDATE, DELETE). */
         private ActionType type;
+        /** The data payload for the action, represented as JSON. */
         private JsonNode payload;
+        /**
+         * A unique identifier for the object instance on the client-side, used for
+         * tracking.
+         */
         private String instanceId;
     }
 
     /**
-     * Represents a board action broadcast from the server to all clients.
-     * This class replaces BoardActionResponse.java.
+     * DTO for broadcasting a board action response to clients.
      */
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response {
+        /** The type of the action. */
         private ActionType type;
+        /** The data payload of the action. */
         private JsonNode payload;
+        /** The email of the user who initiated the action. */
         private String sender;
+        /** The unique client-side identifier for the object instance. */
         private String instanceId;
     }
 }

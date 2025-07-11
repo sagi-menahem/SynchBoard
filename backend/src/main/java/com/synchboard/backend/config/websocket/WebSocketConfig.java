@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/config/websocket/WebSocketConfig.java
-
 package com.synchboard.backend.config.websocket;
 
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,12 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
+import static com.synchboard.backend.config.ApplicationConstants.*;
+
+/**
+ * Configuration for WebSocket and STOMP messaging.
+ * Sets up the message broker, registers endpoints, and configures interceptors.
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
@@ -29,37 +34,61 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${spring.activemq.password}")
     private String brokerPassword;
 
+    /**
+     * Configures the message broker.
+     * Uses a STOMP broker relay to connect to an external message broker like
+     * ActiveMQ.
+     *
+     * @param config the message broker registry.
+     */
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay("/topic")
+        // Use a STOMP broker relay to connect to an external message broker.
+        config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
                 .setRelayHost(brokerHost)
                 .setRelayPort(brokerPort)
                 .setClientLogin(brokerUser)
                 .setClientPasscode(brokerPassword)
                 .setSystemLogin(brokerUser)
                 .setSystemPasscode(brokerPassword);
-        config.setApplicationDestinationPrefixes("/app");
+        // Defines the prefix for messages that are bound for @MessageMapping methods.
+        config.setApplicationDestinationPrefixes(WEBSOCKET_APP_PREFIX);
     }
 
+    /**
+     * Registers STOMP endpoints, mapping each to a specific URL and enabling SockJS
+     * fallback options.
+     *
+     * @param registry the STOMP endpoint registry.
+     */
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:5173")
+        registry.addEndpoint(WEBSOCKET_ENDPOINT)
+                .setAllowedOrigins(CLIENT_ORIGIN_URL)
+                // Use SockJS for fallback options if WebSocket is not available.
                 .withSockJS();
     }
 
+    /**
+     * Configures the client inbound channel with a custom interceptor for JWT
+     * authentication.
+     *
+     * @param registration the channel registration.
+     */
     @Override
     public void configureClientInboundChannel(@NonNull ChannelRegistration registration) {
         registration.interceptors(jwtChannelInterceptor);
     }
 
     /**
-     * Add this new method to increase message size limits.
+     * Configures WebSocket transport options.
+     *
+     * @param registration the WebSocket transport registration.
      */
     @Override
     public void configureWebSocketTransport(@NonNull WebSocketTransportRegistration registration) {
-        // Default is 64KB (64 * 1024). We increase it to 512KB.
-        registration.setMessageSizeLimit(512 * 1024);
-        registration.setSendBufferSizeLimit(512 * 1024);
+        // Increase the message size limits for WebSocket communication.
+        registration.setMessageSizeLimit(WEBSOCKET_MESSAGE_SIZE_LIMIT);
+        registration.setSendBufferSizeLimit(WEBSOCKET_SEND_BUFFER_SIZE_LIMIT);
     }
 }

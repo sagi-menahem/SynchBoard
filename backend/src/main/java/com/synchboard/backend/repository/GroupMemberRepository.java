@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/repository/GroupMemberRepository.java
-
 package com.synchboard.backend.repository;
 
 import com.synchboard.backend.entity.GroupMember;
@@ -10,18 +9,16 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Spring Data JPA repository for the {@link GroupMember} entity.
- * The primary key is the composite key {@link GroupMemberId}.
+ * Spring Data JPA repository for {@link GroupMember} entities.
+ * The primary key is a composite key of type {@link GroupMemberId}.
  */
 @Repository
 public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupMemberId> {
-
     /**
-     * Finds all group memberships for a specific user by their email.
-     * Spring Data JPA automatically generates the query from the method name.
+     * Finds all group memberships for a given user email.
      *
-     * @param userEmail The email of the user.
-     * @return A list of {@link GroupMember} entities associated with the user.
+     * @param userEmail the email of the user.
+     * @return a list of group memberships for the user.
      */
     List<GroupMember> findAllByUserEmail(String userEmail);
 }
