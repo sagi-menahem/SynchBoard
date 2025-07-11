@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import { ActionType, type BoardActionResponse, type SendBoardActionRequest } from '../../types/websocket.types';
 
-// --- Type Definitions ---
 interface BoardCanvasProps {
   boardId: number;
   instanceId: string;
@@ -30,7 +29,6 @@ type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
 
 // --- Component ---
 const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, receivedAction, initialObjects, tool, strokeColor, strokeWidth }) => {
-    // --- Refs and State (No changes here) ---
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -76,24 +74,17 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         }
     }, [receivedAction]);
 
-    // This is the main rendering effect
     useEffect(() => {
         const canvas = mainCanvasRef.current;
         const ctx = contextRef.current;
         if (!canvas || !ctx) return;
         
-        // 1. Redraw the main canvas with all confirmed objects
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         renderedObjects.forEach(obj => replayDrawAction(obj, ctx, canvas));
-        
-        // 2. THE FIX: After the main canvas is updated, clear the preview canvas.
-        // This eliminates the flicker by replacing the preview with the final drawing
-        // in the same rendering cycle.
         previewContextRef.current?.clearRect(0, 0, canvas.width, canvas.height);
         
     }, [renderedObjects, dimensions]);
 
-    // --- Drawing Event Handlers ---
     const startDrawing = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = mainCanvasRef.current;
         if (!canvas) return;
@@ -126,7 +117,6 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
 
         if (tool === 'brush' || tool === 'eraser') {
             previewCtx.beginPath();
-            // To draw a continuous line preview, we must redraw the entire path on each move
             if(currentPath.current.length > 0) {
                 previewCtx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
                 for(let i = 1; i < currentPath.current.length; i++) {
@@ -156,8 +146,6 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         setIsDrawing(false);
         const canvas = mainCanvasRef.current;
         if (!canvas) return;
-        
-        // We no longer clear the preview here. We let the main useEffect handle it.
         
         let payload: ActionPayload | null = null;
         if ((tool === 'brush' || tool === 'eraser') && currentPath.current.length > 1) {
