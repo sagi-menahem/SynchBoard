@@ -5,9 +5,8 @@ package com.synchboard.backend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.synchboard.backend.dto.websocket.BoardActionResponse;
-import com.synchboard.backend.dto.websocket.ActionType; // Import the shared enum
-import com.synchboard.backend.dto.websocket.SendBoardActionRequest;
+import com.synchboard.backend.dto.websocket.BoardActionDTO;
+import com.synchboard.backend.dto.websocket.BoardActionDTO.ActionType;
 import com.synchboard.backend.entity.BoardObject;
 import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.User;
@@ -34,7 +33,7 @@ public class BoardObjectService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public void saveDrawAction(SendBoardActionRequest request, String userEmail) {
+    public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
         // ... (saveDrawAction method remains the same)
         User user = userRepository.findById(userEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userEmail));
@@ -63,7 +62,7 @@ public class BoardObjectService {
      * @return A list of DTOs representing the drawing actions.
      */
     @Transactional(readOnly = true)
-    public List<BoardActionResponse> getObjectsForBoard(Long boardId) {
+    public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId) {
         List<BoardObject> boardObjects = boardObjectRepository.findAllByBoard_BoardGroupId(boardId);
 
         return boardObjects.stream()
@@ -74,12 +73,12 @@ public class BoardObjectService {
     /**
      * Helper method to map a BoardObject entity to a BoardActionResponse DTO.
      */
-    private BoardActionResponse mapEntityToResponse(BoardObject entity) {
+    private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
         try {
             // Convert the stored JSON string back to a JsonNode object
             JsonNode payload = objectMapper.readTree(entity.getObjectData());
 
-            return BoardActionResponse.builder()
+            return BoardActionDTO.Response.builder()
                     .type(ActionType.valueOf(entity.getObjectType())) // Convert string back to enum
                     .payload(payload)
                     .sender(entity.getCreatedByUser().getEmail())

@@ -2,9 +2,9 @@
 
 package com.synchboard.backend.controller;
 
-import com.synchboard.backend.dto.board.BoardResponse;
+import com.synchboard.backend.dto.board.BoardDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
-import com.synchboard.backend.dto.websocket.BoardActionResponse;
+import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.service.BoardObjectService;
 import com.synchboard.backend.service.GroupBoardService;
 import jakarta.validation.Valid;
@@ -25,17 +25,17 @@ public class GroupBoardController {
     private final BoardObjectService boardObjectService;
 
     @GetMapping
-    public ResponseEntity<List<BoardResponse>> getBoardsForCurrentUser(Authentication authentication) {
+    public ResponseEntity<List<BoardDTO>> getBoardsForCurrentUser(Authentication authentication) {
         String userEmail = authentication.getName();
-        List<BoardResponse> boards = groupBoardService.getBoardsForUser(userEmail);
+        List<BoardDTO> boards = groupBoardService.getBoardsForUser(userEmail);
         return ResponseEntity.ok(boards);
     }
 
     @PostMapping
-    public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody CreateBoardRequest request,
+    public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody CreateBoardRequest request,
             Authentication authentication) {
         String userEmail = authentication.getName();
-        BoardResponse newBoard = groupBoardService.createBoard(request, userEmail);
+        BoardDTO newBoard = groupBoardService.createBoard(request, userEmail);
         return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
     }
 
@@ -48,8 +48,8 @@ public class GroupBoardController {
      */
     @GetMapping("/{boardId}/objects")
     // THE ONLY CHANGE IS HERE: We explicitly name the PathVariable
-    public ResponseEntity<List<BoardActionResponse>> getBoardObjects(@PathVariable("boardId") Long boardId) {
-        List<BoardActionResponse> objects = boardObjectService.getObjectsForBoard(boardId);
+    public ResponseEntity<List<BoardActionDTO.Response>> getBoardObjects(@PathVariable("boardId") Long boardId) {
+        List<BoardActionDTO.Response> objects = boardObjectService.getObjectsForBoard(boardId);
         return ResponseEntity.ok(objects);
     }
 }

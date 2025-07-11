@@ -5,6 +5,7 @@ package com.synchboard.backend.config.websocket;
 import com.synchboard.backend.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -25,23 +26,26 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
     private final UserDetailsService userDetailsService;
 
     @Override
-    public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        log.info("Intercepting STOMP command: {}", accessor.getCommand());
 
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+    public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
+        if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
+            log.info("Intercepting STOMP CONNECT command for authentication");
             String authHeader = accessor.getFirstNativeHeader("Authorization");
+
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String jwt = authHeader.substring(7);
                 String userEmail = jwtService.extractUsername(jwt);
 
                 if (userEmail != null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
                     if (jwtService.isTokenValid(jwt, userDetails)) {
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                         accessor.setUser(authToken);
-                        log.info("STOMP user authenticated: {}", userEmail);
+                        log.info("STOMP user authenticated successfully: {}", userEmail);
                     }
                 }
             }
