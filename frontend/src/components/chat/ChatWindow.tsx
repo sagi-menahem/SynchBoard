@@ -1,4 +1,5 @@
 // File: frontend/src/components/chat/ChatWindow.tsx
+
 import React, { useState } from 'react';
 import type { ChatMessageResponse, SendChatMessageRequest } from '../../types/message.types';
 import Message from './Message';

@@ -1,4 +1,5 @@
 // File: frontend/src/hooks/useSocket.ts
+
 import { useEffect } from 'react';
 import websocketService from '../services/websocketService';
 import { useAuth } from './useAuth';

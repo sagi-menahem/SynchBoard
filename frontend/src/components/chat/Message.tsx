@@ -1,4 +1,5 @@
 // File: frontend/src/components/chat/Message.tsx
+
 import React from 'react';
 import type { ChatMessageResponse } from '../../types/message.types';
 
