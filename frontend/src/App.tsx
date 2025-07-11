@@ -24,7 +24,6 @@ function App() {
           path="/board/:boardId"
           element={
             <ProtectedRoute>
-              {/* 2. Wrap the page with the provider */}
               <BoardProvider>
                 <BoardPage />
               </BoardProvider>

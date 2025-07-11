@@ -1,4 +1,5 @@
 // File: frontend/src/hooks/useBoard.ts
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 import * as boardService from '../services/boardService';
 import websocketService from '../services/websocketService';

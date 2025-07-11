@@ -27,7 +27,6 @@ interface CirclePayload {
 }
 type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
 
-// --- Component ---
 const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, receivedAction, initialObjects, tool, strokeColor, strokeWidth }) => {
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -40,7 +39,6 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
     const [renderedObjects, setRenderedObjects] = useState<ActionPayload[]>([]);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-    // --- Effects ---
     useLayoutEffect(() => {
         const container = containerRef.current;
         if (!container) return;

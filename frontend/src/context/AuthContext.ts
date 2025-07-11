@@ -1,4 +1,5 @@
 // File: frontend/src/context/AuthContext.ts
+
 import { createContext } from 'react';
 
 export interface AuthContextType {

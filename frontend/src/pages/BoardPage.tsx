@@ -8,14 +8,13 @@ import Toolbar from '../components/board/Toolbar';
 import ChatWindow from '../components/chat/ChatWindow';
 
 const BoardPage: React.FC = () => {
-    // All the logic is gone. We just consume the ready-made data from the context.
     const {
         isLoading,
         initialObjects,
         lastReceivedAction,
         messages,
         instanceId,
-        boardId, // We can get the boardId from the context now
+        boardId,
         tool,
         setTool,
         strokeColor,
@@ -23,7 +22,7 @@ const BoardPage: React.FC = () => {
         strokeWidth,
         setStrokeWidth,
         handleDrawAction,
-    } = useBoardContext(); // 2. Use the context hook instead of useBoard
+    } = useBoardContext();
 
     if (isLoading) {
         return <div>Loading board...</div>;
@@ -45,7 +44,6 @@ const BoardPage: React.FC = () => {
                     <Canvas 
                         boardId={boardId}
                         instanceId={instanceId}
-                        // The onDraw prop now needs to be adapted slightly since handleDrawAction is memoized in the hook
                         onDraw={(action) => handleDrawAction({ type: action.type, payload: action.payload })}
                         receivedAction={lastReceivedAction}
                         initialObjects={initialObjects}
