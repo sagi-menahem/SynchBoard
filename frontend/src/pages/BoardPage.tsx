@@ -5,7 +5,8 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import websocketService from '../services/websocketService';
 import * as boardService from '../services/boardService';
-import type { BoardActionResponse, SendBoardActionRequest, ChatMessageResponse, SendChatMessageRequest } from '../types/websocket.types';
+import type { ChatMessageResponse, SendChatMessageRequest } from '../types/message.types';
+import type { BoardActionResponse, SendBoardActionRequest } from '../types/boardObject.types';
 import BoardCanvas from '../components/board/BoardCanvas';
 import Toolbar from '../components/board/Toolbar';
 
