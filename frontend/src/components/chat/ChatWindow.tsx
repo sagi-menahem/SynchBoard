@@ -1,9 +1,10 @@
 // File: frontend/src/components/chat/ChatWindow.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { ChatMessageResponse, SendChatMessageRequest } from '../../types/message.types';
 import Message from './Message';
 import websocketService from '../../services/websocketService';
+import Input from '../common/Input';
+import Button from '../common/Button';
 
 interface ChatWindowProps {
     boardId: number;
@@ -12,6 +13,13 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     const [newMessage, setNewMessage] = useState('');
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(scrollToBottom, [messages]);
 
     const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -28,25 +36,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
                 {messages.map((msg, index) => (
                     <Message key={index} message={msg} />
                 ))}
+                <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSendMessage} style={formStyle}>
-                <input
+                <Input
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type a message..."
-                    style={inputStyle}
                 />
-                <button type="submit" style={buttonStyle}>Send</button>
+                <Button type="submit" style={{ marginLeft: '10px' }}>Send</Button>
             </form>
         </div>
     );
 };
 
-const chatContainerStyle: React.CSSProperties = { flex: 1, display: 'flex', flexDirection: 'column', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' };
+// Styles
+const chatContainerStyle: React.CSSProperties = { height: '100%', display: 'flex', flexDirection: 'column', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' };
 const messageListStyle: React.CSSProperties = { flex: 1, padding: '1rem', overflowY: 'auto', backgroundColor: '#282828' };
-const formStyle: React.CSSProperties = { display: 'flex', padding: '1rem', borderTop: '1px solid #444' };
-const inputStyle: React.CSSProperties = { flex: 1, padding: '10px', border: '1px solid #555', borderRadius: '4px', backgroundColor: '#333', color: '#fff' };
-const buttonStyle: React.CSSProperties = { padding: '10px 15px', marginLeft: '10px', border: 'none', borderRadius: '4px', backgroundColor: '#646cff', color: 'white', cursor: 'pointer' };
+const formStyle: React.CSSProperties = { display: 'flex', padding: '1rem', borderTop: '1px solid #444', backgroundColor: '#2f2f2f' };
 
 export default ChatWindow;

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RegisterForm from '../components/auth/RegisterForm';
 import LoginForm from '../components/auth/LoginForm';
+import Button from '../components/common/Button';
 
 const AuthPage: React.FC = () => {
     const { t } = useTranslation();
@@ -16,7 +17,7 @@ const AuthPage: React.FC = () => {
     };
 
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>{t('authPage.pageTitle')}</h1>
             {showSuccessMessage && (
                 <p style={{ color: 'green' }}>
@@ -29,12 +30,16 @@ const AuthPage: React.FC = () => {
                     <LoginForm />
                     <p>
                         {t('authPage.promptToRegister')}{' '}
-                        <button onClick={() => {
-                            setIsLoginView(false);
-                            setShowSuccessMessage(false);
-                        }}>
+                        <Button 
+                            variant="secondary" 
+                            onClick={() => {
+                                setIsLoginView(false);
+                                setShowSuccessMessage(false);
+                            }}
+                            style={{ background: 'none', border: 'none', color: '#8186ff', padding: '0.2em', textDecoration: 'underline' }}
+                        >
                             {t('authPage.switchToRegisterButton')}
-                        </button>
+                        </Button>
                     </p>
                 </section>
             ) : (
@@ -42,9 +47,13 @@ const AuthPage: React.FC = () => {
                     <RegisterForm onRegistrationSuccess={handleRegistrationSuccess} />
                     <p>
                         {t('authPage.promptToLogin')}{' '}
-                        <button onClick={() => setIsLoginView(true)}>
+                        <Button 
+                            variant="secondary" 
+                            onClick={() => setIsLoginView(true)}
+                            style={{ background: 'none', border: 'none', color: '#8186ff', padding: '0.2em', textDecoration: 'underline' }}
+                        >
                             {t('authPage.switchToLoginButton')}
-                        </button>
+                        </Button>
                     </p>
                 </section>
             )}

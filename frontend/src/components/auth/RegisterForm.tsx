@@ -6,8 +6,11 @@ import * as authService from '../../services/authService';
 import type { RegisterRequest } from '../../types/user.types';
 import axios from 'axios';
 
+import Button from '../common/Button';
+import Input from '../common/Input';
+
 interface RegisterFormProps {
-  onRegistrationSuccess: () => void;
+    onRegistrationSuccess: () => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
@@ -37,60 +40,34 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ width: '300px' }}>
             <h2>{t('registerForm.heading')}</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+
             <div>
                 <label htmlFor="register-email">{t('common.form.label.email')}</label>
-                <input
-                    id="register-email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                <Input id="register-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
-            <div>
+            <div style={{ marginTop: '1rem' }}>
                 <label htmlFor="register-password">{t('common.form.label.password')}</label>
-                <input
-                    id="register-password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                <Input id="register-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
-            <div>
+            <div style={{ marginTop: '1rem' }}>
                 <label htmlFor="register-firstName">{t('common.form.label.firstName')}</label>
-                <input
-                    id="register-firstName"
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                />
+                <Input id="register-firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
             </div>
-            <div>
+            <div style={{ marginTop: '1rem' }}>
                 <label htmlFor="register-lastName">{t('common.form.label.lastName')}</label>
-                <input
-                    id="register-lastName"
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                />
+                <Input id="register-lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
             </div>
-            <div>
+            <div style={{ marginTop: '1rem' }}>
                 <label htmlFor="register-phoneNumber">{t('common.form.label.phoneNumber')}</label>
-                <input
-                    id="register-phoneNumber"
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required
-                />
+                <Input id="register-phoneNumber" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
             </div>
-            <button type="submit">{t('registerForm.button')}</button>
+
+            <Button type="submit" style={{ marginTop: '1.5rem', width: '100%' }}>
+                {t('registerForm.button')}
+            </Button>
         </form>
     );
 };

@@ -44,7 +44,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem('authToken');
     };
 
-    // Add isSocketConnected to the provided value
     const value = { token, userEmail, isSocketConnected, login, logout };
 
     return (

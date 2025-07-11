@@ -6,6 +6,7 @@ import { getBoards } from '../services/boardService';
 import type { Board } from '../types/board.types';
 import Modal from '../components/common/Modal';
 import CreateBoardForm from '../components/board/CreateBoardForm';
+import Button from '../components/common/Button';
 
 const BoardListPage: React.FC = () => {
     const [boards, setBoards] = useState<Board[]>([]);
@@ -43,22 +44,22 @@ const BoardListPage: React.FC = () => {
     }
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ width: '100%', maxWidth: '800px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <h1>My Boards</h1>
-                <button onClick={() => setIsModalOpen(true)} style={createButtonStyle}>
+                <Button onClick={() => setIsModalOpen(true)}>
                     + Create New Board
-                </button>
+                </Button>
             </div>
 
             {boards.length > 0 ? (
-                <div className="board-list"> 
+                <div className="board-list">
                     {boards.map(board => (
                         <Link key={board.id} to={`/board/${board.id}`} style={linkStyle}>
                             <div style={boardCardStyle}>
                                 <h2>{board.name}</h2>
                                 <p>{board.description || 'No description available.'}</p>
-                                {board.isAdmin && <span style={{ color: 'green' }}> (Admin)</span>}
+                                {board.isAdmin && <span style={{ color: '#4ade80' }}> (Admin)</span>}
                             </div>
                         </Link>
                     ))}
@@ -78,23 +79,18 @@ const BoardListPage: React.FC = () => {
 };
 
 // Styles
-const createButtonStyle: React.CSSProperties = {
-    padding: '10px 15px', border: 'none', borderRadius: '4px', backgroundColor: '#646cff',
-    color: 'white', cursor: 'pointer', fontSize: '1rem'
-};
-
 const linkStyle: React.CSSProperties = {
     textDecoration: 'none',
     color: 'inherit'
 };
 
 const boardCardStyle: React.CSSProperties = {
+    backgroundColor: '#2f2f2f',
     border: '1px solid #444',
     borderRadius: '8px',
     padding: '1rem',
     marginBottom: '1rem',
-    transition: 'background-color 0.2s'
+    transition: 'background-color 0.2s, transform 0.2s',
 };
-
 
 export default BoardListPage;
