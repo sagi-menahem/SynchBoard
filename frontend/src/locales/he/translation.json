@@ -9,6 +9,11 @@
         "lastName": "שם משפחה:",
         "phoneNumber": "מספר טלפון:"
       }
+    },
+    "button": {
+      "cancel": "ביטול",
+      "creating": "יוצר...",
+      "send": "שלח"
     }
   },
   "authPage": {
@@ -31,5 +36,60 @@
     "button": "הירשם",
     "registrationSuccess": "ההרשמה הושלמה, אתה יכול להתחבר עכשיו.",
     "failedError": "ההרשמה נכשלה. אנא נסה שנית במועד מאוחר יותר."
+  },
+  "navbar": {
+    "title": "SynchBoard",
+    "logout": "התנתק",
+    "language": {
+      "en": "English",
+      "he": "עברית"
+    }
+  },
+  "createBoardForm": {
+    "heading": "צור לוח חדש",
+    "nameLengthError": "שם הלוח חייב להכיל לפחות 3 תווים.",
+    "failedError": "יצירת הלוח נכשלה. אנא נסה שנית.",
+    "label": {
+      "boardName": "שם הלוח",
+      "description": "תיאור (אופציונלי)"
+    },
+    "placeholder": {
+      "name": "לדוגמה, תכנון פרויקט לרבעון 3",
+      "description": "על מה הלוח הזה?"
+    },
+    "button": {
+      "createBoard": "צור לוח"
+    }
+  },
+  "toolbar": {
+    "label": {
+      "color": "צבע",
+      "lineWidth": "עובי קו: {{width}}"
+    },
+    "tool": {
+      "brush": "מברשת",
+      "rectangle": "מלבן",
+      "circle": "עיגול",
+      "eraser": "מחק"
+    }
+  },
+  "chatWindow": {
+    "placeholder": "הקלד הודעה..."
+  },
+  "boardProvider": {
+    "invalidIdError": "מזהה לוח לא תקין סופק בכתובת."
+  },
+  "boardListPage": {
+    "heading": "הלוחות שלי",
+    "createNewBoardButton": "+ צור לוח חדש",
+    "loading": "טוען את הלוחות שלך...",
+    "fetchError": "טעינת הלוחות נכשלה. אנא נסה שוב מאוחר יותר.",
+    "noDescription": "אין תיאור זמין.",
+    "adminLabel": " (מנהל)",
+    "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!"
+  },
+  "boardPage": {
+    "heading": "סביבת עבודה בלוח (מזהה: {{boardId}})",
+    "loading": "טוען לוח..."
   }
 }

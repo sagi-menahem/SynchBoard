@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { getBoards } from '../services/boardService';
 import type { Board } from '../types/board.types';
 import Modal from '../components/common/Modal';
@@ -9,6 +10,7 @@ import CreateBoardForm from '../components/board/CreateBoardForm';
 import Button from '../components/common/Button';
 
 const BoardListPage: React.FC = () => {
+    const { t } = useTranslation();
     const [boards, setBoards] = useState<Board[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -20,7 +22,7 @@ const BoardListPage: React.FC = () => {
                 const userBoards = await getBoards();
                 setBoards(userBoards);
             } catch (err) {
-                setError('Failed to fetch boards. Please try again later.');
+                setError(t('boardListPage.fetchError'));
                 console.error(err);
             } finally {
                 setIsLoading(false);
@@ -28,7 +30,7 @@ const BoardListPage: React.FC = () => {
         };
 
         fetchBoards();
-    }, []);
+    }, [t]);
 
     const handleBoardCreated = (newBoard: Board) => {
         setBoards(prevBoards => [...prevBoards, newBoard]);
@@ -36,7 +38,7 @@ const BoardListPage: React.FC = () => {
     };
 
     if (isLoading) {
-        return <div>Loading your boards...</div>;
+        return <div>{t('boardListPage.loading')}</div>;
     }
 
     if (error) {
@@ -46,9 +48,9 @@ const BoardListPage: React.FC = () => {
     return (
         <div style={{ width: '100%', maxWidth: '800px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h1>My Boards</h1>
+                <h1>{t('boardListPage.heading')}</h1>
                 <Button onClick={() => setIsModalOpen(true)}>
-                    + Create New Board
+                    {t('boardListPage.createNewBoardButton')}
                 </Button>
             </div>
 
@@ -58,14 +60,14 @@ const BoardListPage: React.FC = () => {
                         <Link key={board.id} to={`/board/${board.id}`} style={linkStyle}>
                             <div style={boardCardStyle}>
                                 <h2>{board.name}</h2>
-                                <p>{board.description || 'No description available.'}</p>
-                                {board.isAdmin && <span style={{ color: '#4ade80' }}> (Admin)</span>}
+                                <p>{board.description || t('boardListPage.noDescription')}</p>
+                                {board.isAdmin && <span style={{ color: '#4ade80' }}>{t('boardListPage.adminLabel')}</span>}
                             </div>
                         </Link>
                     ))}
                 </div>
             ) : (
-                <p>You are not a member of any boards yet. Click "Create New Board" to get started!</p>
+                <p>{t('boardListPage.noBoardsMessage')}</p>
             )}
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -91,6 +93,7 @@ const boardCardStyle: React.CSSProperties = {
     padding: '1rem',
     marginBottom: '1rem',
     transition: 'background-color 0.2s, transform 0.2s',
+    textAlign: 'left'
 };
 
 export default BoardListPage;
