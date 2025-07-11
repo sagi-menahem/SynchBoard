@@ -1,5 +1,7 @@
 // File: frontend/src/components/chat/ChatWindow.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ChatMessageResponse, SendChatMessageRequest } from '../../types/message.types';
 import Message from './Message';
 import websocketService from '../../services/websocketService';
@@ -12,6 +14,7 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
+    const { t } = useTranslation();
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,15 +46,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type a message..."
+                    placeholder={t('chatWindow.placeholder')}
                 />
-                <Button type="submit" style={{ marginLeft: '10px' }}>Send</Button>
+                <Button type="submit" style={{ marginLeft: '10px' }}>{t('common.button.send')}</Button>
             </form>
         </div>
     );
 };
 
-// Styles
 const chatContainerStyle: React.CSSProperties = { height: '100%', display: 'flex', flexDirection: 'column', border: '1px solid #444', borderRadius: '8px', overflow: 'hidden' };
 const messageListStyle: React.CSSProperties = { flex: 1, padding: '1rem', overflowY: 'auto', backgroundColor: '#282828' };
 const formStyle: React.CSSProperties = { display: 'flex', padding: '1rem', borderTop: '1px solid #444', backgroundColor: '#2f2f2f' };

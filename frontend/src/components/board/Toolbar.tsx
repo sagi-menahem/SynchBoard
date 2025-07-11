@@ -1,6 +1,7 @@
 // File: frontend/src/components/board/Toolbar.tsx
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';
 
 type Tool = 'brush' | 'eraser' | 'rectangle' | 'circle';
@@ -22,13 +23,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
     tool,
     setTool,
 }) => {
-
+    const { t } = useTranslation();
     const tools: Tool[] = ['brush', 'rectangle', 'circle', 'eraser'];
 
     return (
         <div style={toolbarStyle}>
             <label style={labelStyle}>
-                Color
+                {t('toolbar.label.color')}
                 <input 
                     type="color" 
                     value={strokeColor}
@@ -38,7 +39,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             </label>
 
             <label style={labelStyle}>
-                Line Width: {strokeWidth}
+                {t('toolbar.label.lineWidth', { width: strokeWidth })}
                 <input
                     type="range"
                     min="1"
@@ -56,7 +57,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                         variant={tool === toolName ? 'primary' : 'secondary'}
                         onClick={() => setTool(toolName)}
                     >
-                        {toolName.charAt(0).toUpperCase() + toolName.slice(1)}
+                        {t(`toolbar.tool.${toolName}`)}
                     </Button>
                 ))}
             </div>

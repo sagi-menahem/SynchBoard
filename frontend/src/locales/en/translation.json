@@ -9,6 +9,11 @@
         "lastName": "Last Name:",
         "phoneNumber": "Phone Number:"
       }
+    },
+    "button": {
+      "cancel": "Cancel",
+      "creating": "Creating...",
+      "send": "Send"
     }
   },
   "authPage": {
@@ -31,5 +36,60 @@
     "button": "Register",
     "registrationSuccess": "Registration Successful! You can now log in.",
     "failedError": "Registration failed. Please try again later."
+  },
+  "navbar": {
+    "title": "SynchBoard",
+    "logout": "Logout",
+    "language": {
+      "en": "English",
+      "he": "Hebrew"
+    }
+  },
+  "createBoardForm": {
+    "heading": "Create a New Board",
+    "nameLengthError": "Board name must be at least 3 characters long.",
+    "failedError": "Failed to create board. Please try again.",
+    "label": {
+      "boardName": "Board Name",
+      "description": "Description (Optional)"
+    },
+    "placeholder": {
+      "name": "e.g., Q3 Project Planning",
+      "description": "What is this board about?"
+    },
+    "button": {
+      "createBoard": "Create Board"
+    }
+  },
+  "toolbar": {
+    "label": {
+      "color": "Color",
+      "lineWidth": "Line Width: {{width}}"
+    },
+    "tool": {
+      "brush": "Brush",
+      "rectangle": "Rectangle",
+      "circle": "Circle",
+      "eraser": "Eraser"
+    }
+  },
+  "chatWindow": {
+    "placeholder": "Type a message..."
+  },
+  "boardProvider": {
+    "invalidIdError": "Invalid Board ID provided in URL."
+  },
+  "boardListPage": {
+    "heading": "My Boards",
+    "createNewBoardButton": "+ Create New Board",
+    "loading": "Loading your boards...",
+    "fetchError": "Failed to fetch boards. Please try again later.",
+    "noDescription": "No description available.",
+    "adminLabel": " (Admin)",
+    "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!"
+  },
+  "boardPage": {
+    "heading": "Board Workspace (ID: {{boardId}})",
+    "loading": "Loading board..."
   }
 }
