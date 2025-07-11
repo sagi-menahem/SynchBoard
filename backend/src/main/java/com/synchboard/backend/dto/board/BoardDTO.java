@@ -1,4 +1,4 @@
-// File: backend/src/main/java/com/synchboard/backend/dto/board/BoardResponse.java
+// File: backend/src/main/java/com/synchboard/backend/dto/board/BoardDTO.java
 package com.synchboard.backend.dto.board;
 
 import lombok.AllArgsConstructor;
