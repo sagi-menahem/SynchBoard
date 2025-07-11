@@ -176,7 +176,6 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         startPoint.current = null;
     };
     
-    // --- Replay Function (No changes here) ---
     const replayDrawAction = (payload: ActionPayload, targetCtx: CanvasRenderingContext2D, targetCanvas: HTMLCanvasElement) => {
         targetCtx.globalCompositeOperation = 'source-over';
         if (payload.tool === 'brush' || payload.tool === 'eraser') {
@@ -209,7 +208,6 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         targetCtx.globalCompositeOperation = 'source-over';
     };
 
-    // --- JSX (No changes here) ---
     return (
         <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
             <canvas ref={mainCanvasRef} width={dimensions.width} height={dimensions.height} style={{ position: 'absolute', top: 0, left: 0, backgroundColor: '#222' }} />

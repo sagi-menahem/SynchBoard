@@ -7,6 +7,9 @@ import * as authService from '../../services/authService';
 import type { LoginRequest } from '../../types/user.types';
 import { useAuth } from '../../hooks/useAuth';
 
+import Button from '../common/Button';
+import Input from '../common/Input';
+
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
@@ -22,7 +25,7 @@ const LoginForm: React.FC = () => {
         try {
             const response = await authService.login(credentials);
             login(response.token);
-            navigate('/boards'); 
+            navigate('/boards');
         } catch (err) {
             console.error('Login failed:', err);
             setError(t('loginForm.failedError'));
@@ -30,12 +33,13 @@ const LoginForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ width: '300px' }}>
             <h2>{t('loginForm.heading')}</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+
             <div>
                 <label htmlFor="login-email">{t('common.form.label.email')}</label>
-                <input
+                <Input
                     id="login-email"
                     type="email"
                     value={email}
@@ -43,9 +47,10 @@ const LoginForm: React.FC = () => {
                     required
                 />
             </div>
-            <div>
+
+            <div style={{ marginTop: '1rem' }}>
                 <label htmlFor="login-password">{t('common.form.label.password')}</label>
-                <input
+                <Input
                     id="login-password"
                     type="password"
                     value={password}
@@ -53,7 +58,10 @@ const LoginForm: React.FC = () => {
                     required
                 />
             </div>
-            <button type="submit">{t('loginForm.button')}</button>
+
+            <Button type="submit" style={{ marginTop: '1.5rem', width: '100%' }}>
+                {t('loginForm.button')}
+            </Button>
         </form>
     );
 };
