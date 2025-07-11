@@ -1,19 +1,37 @@
 // File: backend/src/main/java/com/synchboard/backend/dto/auth/RegisterRequest.java
-
 package com.synchboard.backend.dto.auth;
 
 import lombok.Data;
 
 /**
- * Data Transfer Object for handling user registration requests from the client.
+ * DTO for user registration requests.
+ * Contains the necessary information to create a new user account.
  */
-@Data 
+@Data
 public class RegisterRequest {
 
+    /**
+     * The new user's email address.
+     */
     private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
 
+    /**
+     * The new user's password.
+     */
+    private String password;
+
+    /**
+     * The new user's first name.
+     */
+    private String firstName;
+
+    /**
+     * The new user's last name.
+     */
+    private String lastName;
+
+    /**
+     * The new user's phone number.
+     */
+    private String phoneNumber;
 }

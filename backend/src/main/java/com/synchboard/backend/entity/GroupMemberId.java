@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/entity/GroupMemberId.java
-
 package com.synchboard.backend.entity;
 
 import java.io.Serializable;
@@ -8,8 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents the composite primary key for the GroupMember entity.
- * It must implement Serializable and override equals() and hashCode().
+ * Represents the composite primary key for the {@link GroupMember} entity.
+ * It consists of the user's email and the group board's ID.
  */
 @NoArgsConstructor
 @AllArgsConstructor

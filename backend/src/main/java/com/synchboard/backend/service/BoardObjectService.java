@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/service/BoardObjectService.java
-
 package com.synchboard.backend.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +13,6 @@ import com.synchboard.backend.repository.BoardObjectRepository;
 import com.synchboard.backend.repository.GroupBoardRepository;
 import com.synchboard.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.synchboard.backend.config.ApplicationConstants.*;
+
+/**
+ * Service class for managing board objects.
+ * Handles saving and retrieving drawing actions on the board.
+ */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class BoardObjectService {
 
     private final BoardObjectRepository boardObjectRepository;
@@ -32,13 +35,22 @@ public class BoardObjectService {
     private final GroupBoardRepository groupBoardRepository;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Saves a drawing action from a user to the database.
+     *
+     * @param request   the board action DTO containing the action details.
+     * @param userEmail the email of the user who performed the action.
+     */
     @Transactional
     public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
-        // ... (saveDrawAction method remains the same)
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
         GroupBoard board = groupBoardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new RuntimeException("Board not found: " + request.getBoardId()));
+                .orElseThrow(() -> new RuntimeException(BOARD_NOT_FOUND + request.getBoardId()));
+
+        // In a real application, you would handle different action types (ADD, UPDATE,
+        // DELETE)
+        // This implementation currently only handles adding new objects.
         try {
             String payloadAsString = objectMapper.writeValueAsString(request.getPayload());
             BoardObject boardObject = BoardObject.builder()
@@ -49,17 +61,15 @@ public class BoardObjectService {
                     .objectData(payloadAsString)
                     .build();
             boardObjectRepository.save(boardObject);
-            log.info("Successfully saved board object for boardId: {}", request.getBoardId());
         } catch (JsonProcessingException e) {
-            log.error("Failed to serialize payload for board object", e);
         }
     }
 
     /**
-     * Retrieves all saved drawing objects for a given board.
-     * 
-     * @param boardId The ID of the board.
-     * @return A list of DTOs representing the drawing actions.
+     * Retrieves all board objects for a specific board.
+     *
+     * @param boardId the ID of the board.
+     * @return a list of board action response DTOs.
      */
     @Transactional(readOnly = true)
     public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId) {
@@ -71,23 +81,27 @@ public class BoardObjectService {
     }
 
     /**
-     * Helper method to map a BoardObject entity to a BoardActionResponse DTO.
+     * Maps a BoardObject entity to a BoardActionDTO.Response DTO.
+     *
+     * @param entity the BoardObject entity to map.
+     * @return the corresponding BoardActionDTO.Response, or null on failure.
      */
     private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
         try {
-            // Convert the stored JSON string back to a JsonNode object
             JsonNode payload = objectMapper.readTree(entity.getObjectData());
 
             return BoardActionDTO.Response.builder()
-                    .type(ActionType.valueOf(entity.getObjectType())) // Convert string back to enum
+                    .type(ActionType.valueOf(entity.getObjectType()))
                     .payload(payload)
                     .sender(entity.getCreatedByUser().getEmail())
-                    // instanceId is not relevant here as this is for initial load
+                    // The instanceId is client-specific and not stored in the entity, so it's null
+                    // here.
+                    // This might need adjustment based on application logic (e.g., if IDs are
+                    // stored in the payload).
                     .build();
 
         } catch (JsonProcessingException e) {
-            log.error("Failed to parse objectData for objectId: {}", entity.getObjectId(), e);
-            return null; // Or handle error appropriately
+            return null;
         }
     }
 }

@@ -1,5 +1,4 @@
-// Located at: backend/src/main/java/com/synchboard/backend/controller/AuthController.java
-
+// File: backend/src/main/java/com/synchboard/backend/controller/AuthController.java
 package com.synchboard.backend.controller;
 
 import org.springframework.http.ResponseEntity;
@@ -16,47 +15,48 @@ import com.synchboard.backend.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
+import static com.synchboard.backend.config.ApplicationConstants.*;
+
 /**
- * REST Controller for authentication endpoints under the "/api/auth" path.
+ * REST controller for handling authentication-related requests, such as user
+ * registration and login.
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(API_AUTH_PATH)
 @RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
 
     /**
-     * Handles the POST request to register a new user.
-     * On success, returns a JWT for the new user.
+     * Handles the user registration request.
      *
-     * @param request The request body containing registration details.
-     * @return A ResponseEntity containing the AuthResponse with the JWT.
+     * @param request the registration request data.
+     * @return a ResponseEntity containing the authentication response with a JWT.
      */
-    @PostMapping("/register")
+    @PostMapping(API_AUTH_REGISTER_PATH)
     public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(userService.registerUser(request));
     }
 
     /**
-     * Handles the POST request to authenticate a user and provide a JWT.
+     * Handles the user login request.
      *
-     * @param request The request body containing login credentials.
-     * @return A ResponseEntity containing the AuthResponse with the JWT.
+     * @param request the login request data.
+     * @return a ResponseEntity containing the authentication response with a JWT.
      */
-    @PostMapping("/login")
+    @PostMapping(API_AUTH_LOGIN_PATH)
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(userService.login(request));
     }
 
     /**
-     * A simple protected endpoint for testing authentication.
-     * Accessing this requires a valid JWT.
-     * 
-     * @return A success message for authenticated users.
+     * A test endpoint to verify that a user is authenticated.
+     *
+     * @return a welcome message for authenticated users.
      */
-    @GetMapping("/test")
+    @GetMapping(API_AUTH_TEST_PATH)
     public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Hello, authenticated user!");
+        return ResponseEntity.ok(AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE);
     }
 }

@@ -1,5 +1,4 @@
-// Located at: backend/src/main/java/com/synchboard/backend/entity/User.java
-
+// File: backend/src/main/java/com/synchboard/backend/entity/User.java
 package com.synchboard.backend.entity;
 
 import jakarta.persistence.*;
@@ -17,9 +16,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static com.synchboard.backend.config.ApplicationConstants.ROLE_USER;
+
 /**
- * Represents a user entity, mapping to the "users" table in the database.
- * Implements UserDetails to integrate with Spring Security.
+ * Represents an application user.
+ * Implements Spring Security's UserDetails interface for authentication and
+ * authorization.
+ * Mapped to the "users" table.
  */
 @Entity
 @Table(name = "users")
@@ -70,82 +73,43 @@ public class User implements UserDetails {
     @Column(name = "email_verification_token")
     private String emailVerificationToken;
 
+    /**
+     * Sets the creation date before the entity is first persisted.
+     */
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
     }
 
-    /**
-     * Returns the authorities granted to the user.
-     * For now, we are granting a simple "ROLE_USER" to every user.
-     * 
-     * @return A collection of authorities.
-     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // In a more complex app, roles would be stored in the database.
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        // For this application, all users have the "ROLE_USER" authority.
+        // TODO roles would be stored in the database.
+        return List.of(new SimpleGrantedAuthority(ROLE_USER));
     }
 
-    /**
-     * Returns the username used to authenticate the user.
-     * In our case, the email is the username.
-     * 
-     * @return The user's email.
-     */
     @Override
     public String getUsername() {
         return email;
     }
 
-    /**
-     * Indicates whether the user's account has expired.
-     * An expired account cannot be authenticated.
-     * 
-     * @return true if the user's account is valid (i.e., non-expired).
-     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    /**
-     * Indicates whether the user is locked or unlocked.
-     * A locked user cannot be authenticated.
-     * 
-     * @return true if the user is not locked.
-     */
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Or logic for account locking
-        // TODO Logic to check if the account is locked due to too many failed login
-        // attempts
-        // For example, you could add a field like `failedLoginAttempts` and lock the
-        // account if it exceeds a threshold.
+        return true;
     }
 
-    /**
-     * Indicates whether the user's credentials (password) has expired.
-     * Expired credentials prevent authentication.
-     * 
-     * @return true if the user's credentials are valid (i.e., non-expired).
-     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    /**
-     * Indicates whether the user is enabled or disabled.
-     * A disabled user cannot be authenticated.
-     * 
-     * @return true if the user is enabled.
-     */
     @Override
     public boolean isEnabled() {
         return true;
-        // TODO Logic to check if the user's email has been verified
-        // For example, you could add a field like `isEmailVerified` and return its
-        // value.
     }
 }

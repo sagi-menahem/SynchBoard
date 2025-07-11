@@ -1,5 +1,4 @@
 // File: backend/src/main/java/com/synchboard/backend/entity/GroupBoard.java
-
 package com.synchboard.backend.entity;
 
 import jakarta.persistence.*;
@@ -10,8 +9,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * Represents a group board entity, mapping to the "group_boards" table in the
- * database.
+ * Represents a collaborative board where users can interact.
+ * This entity is mapped to the "group_boards" table.
  */
 @Entity
 @Table(name = "group_boards")
@@ -49,7 +48,7 @@ public class GroupBoard {
     private LocalDateTime lastModifiedDate;
 
     /**
-     * Sets the creation and last modified timestamps before the entity is first
+     * Sets the creation and last modified dates before the entity is first
      * persisted.
      */
     @PrePersist
@@ -59,7 +58,7 @@ public class GroupBoard {
     }
 
     /**
-     * Updates the last modified timestamp before the entity is updated.
+     * Updates the last modified date before the entity is updated.
      */
     @PreUpdate
     protected void onUpdate() {
