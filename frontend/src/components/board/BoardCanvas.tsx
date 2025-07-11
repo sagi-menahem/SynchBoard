@@ -1,7 +1,7 @@
 // File: frontend/src/components/board/BoardCanvas.tsx
 
 import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
-import { ActionType, type BoardActionResponse, type SendBoardActionRequest } from '../../types/websocket.types';
+import { ActionType, type BoardActionResponse, type SendBoardActionRequest } from '../../types/boardObject.types';
 
 interface BoardCanvasProps {
   boardId: number;

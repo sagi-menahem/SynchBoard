@@ -2,7 +2,7 @@
 
 import apiClient from './apiClient';
 import type { Board, CreateBoardRequest } from '../types/board.types';
-import type { BoardActionResponse } from '../types/websocket.types';
+import type { BoardActionResponse } from '../types/boardObject.types';
 
 export const getBoards = async (): Promise<Board[]> => {
   const response = await apiClient.get<Board[]>('/boards');
