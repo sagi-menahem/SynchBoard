@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthPage from './pages/AuthPage';
 import BoardListPage from './pages/BoardListPage';
 import ProtectedRoute from './components/routing/ProtectedRoute';
+import { BoardProvider } from './context/BoardProvider';
 import BoardPage from './pages/BoardPage';
 
 function App() {
@@ -23,7 +24,10 @@ function App() {
           path="/board/:boardId"
           element={
             <ProtectedRoute>
-              <BoardPage />
+              {/* 2. Wrap the page with the provider */}
+              <BoardProvider>
+                <BoardPage />
+              </BoardProvider>
             </ProtectedRoute>
           }
         />

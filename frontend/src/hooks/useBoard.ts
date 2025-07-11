@@ -56,6 +56,7 @@ export const useBoard = (boardId: number) => {
         lastReceivedAction,
         messages,
         instanceId: instanceId.current,
+        boardId,
         tool,
         setTool,
         strokeColor,

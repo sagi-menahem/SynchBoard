@@ -1,23 +1,21 @@
 // File: frontend/src/pages/BoardPage.tsx
 
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useBoard } from '../hooks/useBoard';
+import { useBoardContext } from '../hooks/useBoardContext';
 
 import Canvas from '../components/board/Canvas';
 import Toolbar from '../components/board/Toolbar';
 import ChatWindow from '../components/chat/ChatWindow';
 
 const BoardPage: React.FC = () => {
-    const { boardId: boardIdString } = useParams<{ boardId: string }>();
-    const boardId = parseInt(boardIdString || '0', 10);
-
+    // All the logic is gone. We just consume the ready-made data from the context.
     const {
         isLoading,
         initialObjects,
         lastReceivedAction,
         messages,
         instanceId,
+        boardId, // We can get the boardId from the context now
         tool,
         setTool,
         strokeColor,
@@ -25,14 +23,10 @@ const BoardPage: React.FC = () => {
         strokeWidth,
         setStrokeWidth,
         handleDrawAction,
-    } = useBoard(boardId);
+    } = useBoardContext(); // 2. Use the context hook instead of useBoard
 
     if (isLoading) {
         return <div>Loading board...</div>;
-    }
-
-    if (isNaN(boardId) || boardId === 0) {
-        return <div>Invalid Board ID.</div>
     }
 
     return (
@@ -51,6 +45,7 @@ const BoardPage: React.FC = () => {
                     <Canvas 
                         boardId={boardId}
                         instanceId={instanceId}
+                        // The onDraw prop now needs to be adapted slightly since handleDrawAction is memoized in the hook
                         onDraw={(action) => handleDrawAction({ type: action.type, payload: action.payload })}
                         receivedAction={lastReceivedAction}
                         initialObjects={initialObjects}
