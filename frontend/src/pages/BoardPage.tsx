@@ -14,22 +14,17 @@ const BoardPage: React.FC = () => {
     const { isSocketConnected } = useAuth();
     const instanceId = useRef(Math.random().toString(36).substring(2));
     
-    // State for chat
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
     const [newMessage, setNewMessage] = useState('');
     
-    // State for drawing
     const [lastReceivedAction, setLastReceivedAction] = useState<BoardActionResponse | null>(null);
     const [initialObjects, setInitialObjects] = useState<BoardActionResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // THIS IS THE CORRECTED LINE:
     const [tool, setTool] = useState<'brush' | 'eraser' | 'rectangle' | 'circle'>('brush');
     const [strokeColor, setStrokeColor] = useState<string>('#FFFFFF');
     const [strokeWidth, setStrokeWidth] = useState<number>(3);
 
-
-    // useEffect hooks (no changes)
     useEffect(() => {
         if (!boardId) return;
         const fetchBoardState = async () => {
@@ -65,7 +60,6 @@ const BoardPage: React.FC = () => {
         };
     }, [boardId, isSocketConnected, isLoading]);
 
-    // handler functions (no changes)
     const handleDrawAction = (action: SendBoardActionRequest) => {
         const actionWithInstanceId = { ...action, instanceId: instanceId.current };
         websocketService.sendMessage('/app/board.drawAction', actionWithInstanceId);

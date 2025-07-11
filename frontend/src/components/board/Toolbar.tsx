@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-// 1. Update the type definition for the tool prop
 type Tool = 'brush' | 'eraser' | 'rectangle' | 'circle';
 
 interface ToolbarProps {
@@ -60,7 +59,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
         >
             Rectangle
         </button>
-        {/* 2. Add the new Circle tool button */}
         <button 
           style={{ ...buttonStyle, ...(tool === 'circle' ? activeButtonStyle : {}) }}
           onClick={() => setTool('circle')}

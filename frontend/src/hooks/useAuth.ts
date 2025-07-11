@@ -1,7 +1,6 @@
-// Located at: frontend/src/hooks/useAuth.ts
+// File: frontend/src/hooks/useAuth.ts
 
 import { useContext } from "react";
-// Update the import path to the new context definition file
 import { AuthContext } from "../context/AuthContext";
 
 export const useAuth = () => {

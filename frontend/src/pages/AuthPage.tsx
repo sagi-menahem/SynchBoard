@@ -1,4 +1,4 @@
-// Located at: frontend/src/pages/AuthPage.tsx
+// File: frontend/src/pages/AuthPage.tsx
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,18 +8,16 @@ import LoginForm from '../components/auth/LoginForm';
 const AuthPage: React.FC = () => {
     const { t } = useTranslation();
     const [isLoginView, setIsLoginView] = useState(true);
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false); // Optional: for a success message
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const handleRegistrationSuccess = () => {
-        setIsLoginView(true); // Switch to the login view
-        setShowSuccessMessage(true); // Show a success message to the user
+        setIsLoginView(true);
+        setShowSuccessMessage(true);
     };
 
     return (
         <div>
             <h1>{t('authPage.pageTitle')}</h1>
-
-            {/* Optional: Display a success message after registration */}
             {showSuccessMessage && (
                 <p style={{ color: 'green' }}>
                     {t('registerForm.registrationSuccess')}
@@ -33,7 +31,7 @@ const AuthPage: React.FC = () => {
                         {t('authPage.promptToRegister')}{' '}
                         <button onClick={() => {
                             setIsLoginView(false);
-                            setShowSuccessMessage(false); // Hide message when switching back to register
+                            setShowSuccessMessage(false);
                         }}>
                             {t('authPage.switchToRegisterButton')}
                         </button>
@@ -41,7 +39,6 @@ const AuthPage: React.FC = () => {
                 </section>
             ) : (
                 <section>
-                    {/* Pass the function as a prop */}
                     <RegisterForm onRegistrationSuccess={handleRegistrationSuccess} />
                     <p>
                         {t('authPage.promptToLogin')}{' '}

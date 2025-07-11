@@ -6,8 +6,6 @@ import SockJS from 'sockjs-client';
 class WebSocketService {
     private stompClient: Client | null = null;
 
-    // The subscriptions map is now REMOVED.
-
     public connect(token: string, onConnectedCallback: () => void) {
         if (this.stompClient?.active) {
             onConnectedCallback();
@@ -36,10 +34,6 @@ class WebSocketService {
         }
     }
     
-    /**
-     * Subscribes to a topic and returns the subscription object.
-     * The component calling this function is responsible for unsubscribing.
-     */
     public subscribe<T>(topic: string, onMessageReceived: (message: T) => void): StompSubscription | null {
         if (!this.stompClient?.active) {
             console.error('Cannot subscribe, STOMP client is not connected.');
@@ -53,8 +47,6 @@ class WebSocketService {
         console.log(`Subscribed to ${topic}`);
         return subscription;
     }
-
-    // The unsubscribe method is REMOVED from the service.
 
     public sendMessage(destination: string, body: object) {
         if (!this.stompClient?.active) {

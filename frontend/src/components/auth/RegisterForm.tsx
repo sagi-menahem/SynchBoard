@@ -1,4 +1,4 @@
-// Located at: frontend/src/components/auth/RegisterForm.tsx
+// File: frontend/src/components/auth/RegisterForm.tsx
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,6 @@ import * as authService from '../../services/authService';
 import type { RegisterRequest } from '../../types/user.types';
 import axios from 'axios';
 
-// 1. Define the props interface
 interface RegisterFormProps {
   onRegistrationSuccess: () => void;
 }
@@ -26,10 +25,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
         try {
             await authService.register(formData);
-            
-            // 2. Instead of alert or navigate, call the callback function
             onRegistrationSuccess();
-
         } catch (err) {
             console.error('Registration failed', err);
             let errorMessage = t('registerForm.failedError');
@@ -44,8 +40,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         <form onSubmit={handleSubmit}>
             <h2>{t('registerForm.heading')}</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            
-            {/* The rest of the form remains the same... */}
             <div>
                 <label htmlFor="register-email">{t('common.form.label.email')}</label>
                 <input

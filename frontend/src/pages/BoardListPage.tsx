@@ -1,7 +1,7 @@
 // File: frontend/src/pages/BoardListPage.tsx
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // 1. Import Link
+import { Link } from 'react-router-dom';
 import { getBoards } from '../services/boardService';
 import type { Board } from '../types/board.types';
 import Modal from '../components/common/Modal';
@@ -14,7 +14,6 @@ const BoardListPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        // ... (fetchBoards logic remains the same)
         const fetchBoards = async () => {
             try {
                 const userBoards = await getBoards();
@@ -53,10 +52,8 @@ const BoardListPage: React.FC = () => {
             </div>
 
             {boards.length > 0 ? (
-                // Changed from <ul> to <div> for easier styling of links
                 <div className="board-list"> 
                     {boards.map(board => (
-                        // 2. Wrap each board item with a Link component
                         <Link key={board.id} to={`/board/${board.id}`} style={linkStyle}>
                             <div style={boardCardStyle}>
                                 <h2>{board.name}</h2>

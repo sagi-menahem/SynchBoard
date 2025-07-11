@@ -11,26 +11,25 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
     const [userEmail, setUserEmail] = useState<string | null>(null);
-    const [isSocketConnected, setIsSocketConnected] = useState(false); // <-- Add state for socket status
+    const [isSocketConnected, setIsSocketConnected] = useState(false);
 
     useEffect(() => {
         if (token) {
             const decodedToken: { sub: string } = jwtDecode(token);
             setUserEmail(decodedToken.sub);
 
-            // Connect and update status in the callback
             websocketService.connect(token, () => {
                 console.log("WebSocket connection confirmed in AuthProvider.");
-                setIsSocketConnected(true); // <-- Set status to true on successful connect
+                setIsSocketConnected(true);
             });
         } else {
             setUserEmail(null);
-            setIsSocketConnected(false); // <-- Reset on logout
+            setIsSocketConnected(false);
         }
 
         return () => {
             websocketService.disconnect();
-            setIsSocketConnected(false); // <-- Reset on cleanup
+            setIsSocketConnected(false);
         };
     }, [token]);
 

@@ -1,7 +1,7 @@
 // File: frontend/src/components/board/CreateBoardForm.tsx
 
 import React, { useState } from 'react';
-import axios from 'axios'; // 1. Import axios
+import axios from 'axios';
 import { createBoard } from '../../services/boardService';
 import type { Board, CreateBoardRequest } from '../../types/board.types';
 
@@ -32,18 +32,15 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       const newBoard = await createBoard(boardData);
       onBoardCreated(newBoard);
     } catch (err) {
-      // 2. This is the updated error handling block
-      let errorMessage = 'Failed to create board. Please try again.'; // Default message
+      let errorMessage = 'Failed to create board. Please try again.';
       
-      // Check if the error is a known Axios error with a response
       if (axios.isAxiosError(err) && err.response) {
-        // Safely access the message from the response data
         if (err.response.data && typeof err.response.data.message === 'string') {
           errorMessage = err.response.data.message;
         }
       }
       
-      console.error(err); // Also log the full error for debugging
+      console.error(err);
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -92,7 +89,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   );
 };
 
-// Basic inline styles for demonstration
 const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '8px',

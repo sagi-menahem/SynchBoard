@@ -1,7 +1,5 @@
 // File: frontend/src/types/websocket.types.ts
 
-// --- Existing Chat Types ---
-
 export const MessageType = {
   CHAT: 'CHAT',
   JOIN: 'JOIN',
@@ -14,16 +12,13 @@ export interface ChatMessageResponse {
   type: MessageType;
   content: string;
   sender: string;
-  timestamp: string; // Received as an ISO date string
+  timestamp: string;
 }
 
 export interface SendChatMessageRequest {
   content: string;
   boardId: number;
 }
-
-
-// --- New Board Action Types ---
 
 export const ActionType = {
     OBJECT_ADD: 'OBJECT_ADD',
@@ -33,7 +28,6 @@ export const ActionType = {
 
 export type ActionType = typeof ActionType[keyof typeof ActionType];
 
-// For actions sent FROM the client TO the server
 export interface SendBoardActionRequest {
     boardId: number;
     type: ActionType;
@@ -41,7 +35,6 @@ export interface SendBoardActionRequest {
     instanceId: string;
 }
 
-// For actions received FROM the server
 export interface BoardActionResponse {
     type: ActionType;
     payload: unknown;
