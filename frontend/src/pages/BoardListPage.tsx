@@ -8,6 +8,8 @@ import type { Board } from '../types/board.types';
 import Modal from '../components/common/Modal';
 import CreateBoardForm from '../components/board/CreateBoardForm';
 import Button from '../components/common/Button';
+import { APP_ROUTES } from '../constants/routes.constants';
+import { COLORS } from '../constants/style.constants';
 
 const BoardListPage: React.FC = () => {
     const { t } = useTranslation();
@@ -42,7 +44,7 @@ const BoardListPage: React.FC = () => {
     }
 
     if (error) {
-        return <div style={{ color: 'red' }}>{error}</div>;
+        return <div style={{ color: COLORS.ERROR }}>{error}</div>;
     }
 
     return (
@@ -57,11 +59,11 @@ const BoardListPage: React.FC = () => {
             {boards.length > 0 ? (
                 <div className="board-list">
                     {boards.map(board => (
-                        <Link key={board.id} to={`/board/${board.id}`} style={linkStyle}>
+                        <Link key={board.id} to={APP_ROUTES.getBoardDetailRoute(board.id)} style={linkStyle}>
                             <div style={boardCardStyle}>
                                 <h2>{board.name}</h2>
                                 <p>{board.description || t('boardListPage.noDescription')}</p>
-                                {board.isAdmin && <span style={{ color: '#4ade80' }}>{t('boardListPage.adminLabel')}</span>}
+                                {board.isAdmin && <span style={{ color: COLORS.ADMIN_ACCENT }}>{t('boardListPage.adminLabel')}</span>}
                             </div>
                         </Link>
                     ))}

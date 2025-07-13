@@ -7,6 +7,7 @@ import Message from './Message';
 import websocketService from '../../services/websocketService';
 import Input from '../common/Input';
 import Button from '../common/Button';
+import { WEBSOCKET_DESTINATIONS } from '../../constants/api.constants';
 
 interface ChatWindowProps {
     boardId: number;
@@ -28,7 +29,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         event.preventDefault();
         if (newMessage.trim() && boardId) {
             const request: SendChatMessageRequest = { content: newMessage, boardId: boardId };
-            websocketService.sendMessage('/app/chat.sendMessage', request);
+            websocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, request);
             setNewMessage('');
         }
     };

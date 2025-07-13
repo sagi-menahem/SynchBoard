@@ -2,6 +2,7 @@
 
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from '../constants/api.constants';
 
 class WebSocketService {
     private stompClient: Client | null = null;
@@ -12,8 +13,10 @@ class WebSocketService {
             return;
         }
         this.stompClient = new Client({
-            webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
-            connectHeaders: { Authorization: `Bearer ${token}` },
+            webSocketFactory: () => new SockJS(WEBSOCKET_URL),
+            connectHeaders: { 
+                [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}` 
+            },
             onConnect: () => {
                 console.log('Connected to WebSocket server!');
                 onConnectedCallback();

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import RegisterForm from '../components/auth/RegisterForm';
 import LoginForm from '../components/auth/LoginForm';
 import Button from '../components/common/Button';
+import { COLORS } from '../constants/style.constants';
 
 const AuthPage: React.FC = () => {
     const { t } = useTranslation();
@@ -20,7 +21,7 @@ const AuthPage: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>{t('authPage.pageTitle')}</h1>
             {showSuccessMessage && (
-                <p style={{ color: 'green' }}>
+                <p style={{ color: COLORS.SUCCESS }}>
                     {t('registerForm.registrationSuccess')}
                 </p>
             )}
@@ -36,7 +37,7 @@ const AuthPage: React.FC = () => {
                                 setIsLoginView(false);
                                 setShowSuccessMessage(false);
                             }}
-                            style={{ background: 'none', border: 'none', color: '#8186ff', padding: '0.2em', textDecoration: 'underline' }}
+                            style={{ background: 'none', border: 'none', color: COLORS.PRIMARY_LINK, padding: '0.2em', textDecoration: 'underline' }}
                         >
                             {t('authPage.switchToRegisterButton')}
                         </Button>
@@ -50,7 +51,7 @@ const AuthPage: React.FC = () => {
                         <Button 
                             variant="secondary" 
                             onClick={() => setIsLoginView(true)}
-                            style={{ background: 'none', border: 'none', color: '#8186ff', padding: '0.2em', textDecoration: 'underline' }}
+                            style={{ background: 'none', border: 'none', color: COLORS.PRIMARY_LINK, padding: '0.2em', textDecoration: 'underline' }}
                         >
                             {t('authPage.switchToLoginButton')}
                         </Button>

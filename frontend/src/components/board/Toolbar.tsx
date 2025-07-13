@@ -3,8 +3,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';
+import { TOOL_LIST, STROKE_WIDTH_RANGE } from '../../constants/board.constants';
 
-type Tool = 'brush' | 'eraser' | 'rectangle' | 'circle';
+// The Tool type can now be more robustly defined
+type Tool = typeof TOOL_LIST[number];
 
 interface ToolbarProps {
     strokeColor: string;
@@ -24,7 +26,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setTool,
 }) => {
     const { t } = useTranslation();
-    const tools: Tool[] = ['brush', 'rectangle', 'circle', 'eraser'];
 
     return (
         <div style={toolbarStyle}>
@@ -42,8 +43,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
                 {t('toolbar.label.lineWidth', { width: strokeWidth })}
                 <input
                     type="range"
-                    min="1"
-                    max="50"
+                    min={STROKE_WIDTH_RANGE.MIN}
+                    max={STROKE_WIDTH_RANGE.MAX}
                     value={strokeWidth}
                     onChange={(e) => setStrokeWidth(parseInt(e.target.value, 10))}
                     style={{ ...inputStyle, width: '100px' }}
@@ -51,7 +52,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             </label>
             
             <div style={toolsContainerStyle}>
-                {tools.map(toolName => (
+                {TOOL_LIST.map(toolName => (
                     <Button
                         key={toolName}
                         variant={tool === toolName ? 'primary' : 'secondary'}

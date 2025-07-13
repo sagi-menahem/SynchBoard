@@ -6,6 +6,11 @@ import websocketService from '../services/websocketService';
 import { useSocket } from './useSocket';
 import type { BoardActionResponse, SendBoardActionRequest } from '../types/boardObject.types';
 import type { ChatMessageResponse } from '../types/message.types';
+import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from '../constants/api.constants';
+import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
+
+// The tool type can now be derived from the constants
+type Tool = typeof TOOL_LIST[number];
 
 export const useBoard = (boardId: number) => {
     const instanceId = useRef(Math.random().toString(36).substring(2));
@@ -17,9 +22,9 @@ export const useBoard = (boardId: number) => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [tool, setTool] = useState<'brush' | 'eraser' | 'rectangle' | 'circle'>('brush');
-    const [strokeColor, setStrokeColor] = useState<string>('#FFFFFF');
-    const [strokeWidth, setStrokeWidth] = useState<number>(3);
+    const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);
+    const [strokeColor, setStrokeColor] = useState<string>(DEFAULT_DRAWING_CONFIG.STROKE_COLOR);
+    const [strokeWidth, setStrokeWidth] = useState<number>(DEFAULT_DRAWING_CONFIG.STROKE_WIDTH);
 
     useEffect(() => {
         if (isNaN(boardId)) return;
@@ -40,7 +45,7 @@ export const useBoard = (boardId: number) => {
         }
     }, []);
 
-    useSocket(`/topic/board/${boardId}`, onMessageReceived);
+    useSocket(WEBSOCKET_TOPICS.BOARD(boardId), onMessageReceived);
 
     const handleDrawAction = useCallback((action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
         const actionToSend: SendBoardActionRequest = {
@@ -48,7 +53,7 @@ export const useBoard = (boardId: number) => {
             boardId,
             instanceId: instanceId.current,
         };
-        websocketService.sendMessage('/app/board.drawAction', actionToSend);
+        websocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionToSend);
     }, [boardId]);
 
     return {

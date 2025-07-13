@@ -1,21 +1,28 @@
 // File: frontend/src/services/apiClient.ts
 
 import axios from 'axios';
+import { API_BASE_URL, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from '../constants/api.constants';
+import { LOCAL_STORAGE_KEYS } from '../constants/app.constants';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/api',
-  
-  headers: {
-    'Content-Type': 'application/json',
-  },
+    baseURL: API_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 apiClient.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('authToken');
-        
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        // Check if the request URL is for a public endpoint.
+        const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
+
+        // If it's not a public endpoint, try to add the token.
+        if (!isPublicEndpoint) {
+            const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+            
+            if (token) {
+                config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] = `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
+            }
         }
         
         return config;
