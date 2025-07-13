@@ -1,13 +1,10 @@
 // File: frontend/src/components/auth/RegisterForm.tsx
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import * as authService from '../../services/authService';
-import type { RegisterRequest } from '../../types/user.types';
-import axios from 'axios';
-
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { useRegisterForm } from '../../hooks/useRegisterForm';
 
 interface RegisterFormProps {
     onRegistrationSuccess: () => void;
@@ -15,29 +12,10 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
     const { t } = useTranslation();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [error, setError] = useState<string | null>(null);
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setError(null);
-        const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
-        try {
-            await authService.register(formData);
-            onRegistrationSuccess();
-        } catch (err) {
-            console.error('Registration failed', err);
-            let errorMessage = t('registerForm.failedError');
-            if (axios.isAxiosError(err) && err.response?.data) {
-                errorMessage = err.response.data.message || err.response.data;
-            }
-            setError(errorMessage);
-        }
-    };
+    const {
+        email, password, firstName, lastName, phoneNumber, error,
+        setEmail, setPassword, setFirstName, setLastName, setPhoneNumber, handleSubmit,
+    } = useRegisterForm(onRegistrationSuccess);
 
     return (
         <form onSubmit={handleSubmit} style={{ width: '300px' }}>
