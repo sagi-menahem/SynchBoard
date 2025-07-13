@@ -83,8 +83,6 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // For this application, all users have the "ROLE_USER" authority.
-        // TODO roles would be stored in the database.
         return List.of(new SimpleGrantedAuthority(ROLE_USER));
     }
 

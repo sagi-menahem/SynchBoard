@@ -13,7 +13,9 @@
     "button": {
       "cancel": "Cancel",
       "creating": "Creating...",
-      "send": "Send"
+      "send": "Send",
+      "loggingIn": "Logging in...",
+      "registering": "Registering..."
     }
   },
   "authPage": {

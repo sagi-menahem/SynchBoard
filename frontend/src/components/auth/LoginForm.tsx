@@ -9,12 +9,11 @@ import styles from './AuthForm.module.css';
 
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();
-    const { email, password, error, setEmail, setPassword, handleSubmit } = useLoginForm();
+    const { email, password, isSubmitting, setEmail, setPassword, handleSubmit } = useLoginForm();
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h2>{t('loginForm.heading')}</h2>
-            {error && <p className={styles.error}>{error}</p>}
 
             <div className={styles.field}>
                 <label htmlFor="login-email">{t('common.form.label.email')}</label>
@@ -24,6 +23,7 @@ const LoginForm: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    disabled={isSubmitting}
                 />
             </div>
 
@@ -35,11 +35,12 @@ const LoginForm: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    disabled={isSubmitting}
                 />
             </div>
 
-            <Button type="submit" className={styles.submitButton}>
-                {t('loginForm.button')}
+            <Button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                {isSubmitting ? t('common.button.loggingIn') : t('loginForm.button')}
             </Button>
         </form>
     );

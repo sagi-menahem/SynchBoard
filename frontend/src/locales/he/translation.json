@@ -13,7 +13,9 @@
     "button": {
       "cancel": "ביטול",
       "creating": "יוצר...",
-      "send": "שלח"
+      "send": "שלח",
+      "loggingIn": "מתחבר...",
+      "registering": "רושם..."
     }
   },
   "authPage": {

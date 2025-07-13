@@ -5,32 +5,26 @@ import { useTranslation } from 'react-i18next';
 import RegisterForm from '../components/auth/RegisterForm';
 import LoginForm from '../components/auth/LoginForm';
 import Button from '../components/common/Button';
-import { COLORS } from '../constants/style.constants';
 import styles from './AuthPage.module.css';
 
 const AuthPage: React.FC = () => {
     const { t } = useTranslation();
     const [isLoginView, setIsLoginView] = useState(true);
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    // const [showSuccessMessage, setShowSuccessMessage] = useState(false); // No longer needed
 
     const handleRegistrationSuccess = () => {
         setIsLoginView(true);
-        setShowSuccessMessage(true);
+        // setShowSuccessMessage(true); // No longer needed
     };
     
     const toggleView = () => {
         setIsLoginView(prev => !prev);
-        setShowSuccessMessage(false);
     };
 
     return (
         <div className={styles.container}>
             <h1>{t('authPage.pageTitle')}</h1>
-            {showSuccessMessage && (
-                <p style={{ color: COLORS.SUCCESS }}>
-                    {t('registerForm.registrationSuccess')}
-                </p>
-            )}
+            {/* Success message is removed from here */}
 
             {isLoginView ? (
                 <section>

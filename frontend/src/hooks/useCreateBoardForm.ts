@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { createBoard } from '../services/boardService';
 import type { Board, CreateBoardRequest } from '../types/board.types';
 import { APP_CONFIG } from '../constants/app.constants';
@@ -11,20 +12,20 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const { t } = useTranslation();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [error, setError] = useState<string | null>(null);
+    // const [error, setError] = useState<string | null>(null); // No longer needed
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setError(null);
         if (name.trim().length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
-            setError(t('createBoardForm.nameLengthError'));
+            toast.error(t('createBoardForm.nameLengthError'));
             return;
         }
         setIsSubmitting(true);
         const boardData: CreateBoardRequest = { name, description };
         try {
             const newBoard = await createBoard(boardData);
+            toast.success(`Board "${newBoard.name}" created!`);
             onBoardCreated(newBoard);
         } catch (err) {
             let errorMessage = t('createBoardForm.failedError');
@@ -32,7 +33,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
                 errorMessage = err.response.data.message;
             }
             console.error(err);
-            setError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setIsSubmitting(false);
         }
@@ -41,7 +42,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     return {
         name,
         description,
-        error,
         isSubmitting,
         setName,
         setDescription,

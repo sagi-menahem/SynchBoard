@@ -15,12 +15,12 @@ interface CreateBoardFormProps {
 
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
     const { t } = useTranslation();
-    const { name, description, error, isSubmitting, setName, setDescription, handleSubmit } = useCreateBoardForm(onBoardCreated);
+    const { name, description, isSubmitting, setName, setDescription, handleSubmit } = useCreateBoardForm(onBoardCreated);
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h3>{t('createBoardForm.heading')}</h3>
-            {error && <p className={styles.error}>{error}</p>}
+            {/* The error message paragraph is removed */}
             
             <div className={styles.field}>
                 <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>
