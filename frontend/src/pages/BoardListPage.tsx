@@ -1,43 +1,18 @@
 // File: frontend/src/pages/BoardListPage.tsx
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { getBoards } from '../services/boardService';
-import type { Board } from '../types/board.types';
 import Modal from '../components/common/Modal';
 import CreateBoardForm from '../components/board/CreateBoardForm';
 import Button from '../components/common/Button';
 import { APP_ROUTES } from '../constants/routes.constants';
 import { COLORS } from '../constants/style.constants';
+import { useBoardList } from '../hooks/useBoardList';
 
 const BoardListPage: React.FC = () => {
     const { t } = useTranslation();
-    const [boards, setBoards] = useState<Board[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        const fetchBoards = async () => {
-            try {
-                const userBoards = await getBoards();
-                setBoards(userBoards);
-            } catch (err) {
-                setError(t('boardListPage.fetchError'));
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchBoards();
-    }, [t]);
-
-    const handleBoardCreated = (newBoard: Board) => {
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-        setIsModalOpen(false);
-    };
+    const { boards, isLoading, error, isModalOpen, handleBoardCreated, openModal, closeModal } = useBoardList();
 
     if (isLoading) {
         return <div>{t('boardListPage.loading')}</div>;
@@ -51,7 +26,7 @@ const BoardListPage: React.FC = () => {
         <div style={{ width: '100%', maxWidth: '800px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <h1>{t('boardListPage.heading')}</h1>
-                <Button onClick={() => setIsModalOpen(true)}>
+                <Button onClick={openModal}>
                     {t('boardListPage.createNewBoardButton')}
                 </Button>
             </div>
@@ -72,10 +47,10 @@ const BoardListPage: React.FC = () => {
                 <p>{t('boardListPage.noBoardsMessage')}</p>
             )}
 
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <CreateBoardForm 
                     onBoardCreated={handleBoardCreated}
-                    onClose={() => setIsModalOpen(false)}
+                    onClose={closeModal}
                 />
             </Modal>
         </div>
@@ -83,19 +58,7 @@ const BoardListPage: React.FC = () => {
 };
 
 // Styles
-const linkStyle: React.CSSProperties = {
-    textDecoration: 'none',
-    color: 'inherit'
-};
-
-const boardCardStyle: React.CSSProperties = {
-    backgroundColor: '#2f2f2f',
-    border: '1px solid #444',
-    borderRadius: '8px',
-    padding: '1rem',
-    marginBottom: '1rem',
-    transition: 'background-color 0.2s, transform 0.2s',
-    textAlign: 'left'
-};
+const linkStyle: React.CSSProperties = { textDecoration: 'none', color: 'inherit' };
+const boardCardStyle: React.CSSProperties = { backgroundColor: '#2f2f2f', border: '1px solid #444', borderRadius: '8px', padding: '1rem', marginBottom: '1rem', transition: 'background-color 0.2s, transform 0.2s', textAlign: 'left' };
 
 export default BoardListPage;

@@ -7,24 +7,18 @@ import { useSocket } from './useSocket';
 import type { BoardActionResponse, SendBoardActionRequest } from '../types/boardObject.types';
 import type { ChatMessageResponse } from '../types/message.types';
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from '../constants/api.constants';
-import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
 
-// The tool type can now be derived from the constants
-type Tool = typeof TOOL_LIST[number];
-
-export const useBoard = (boardId: number) => {
+/**
+ * This hook is responsible for synchronizing the board state (drawing objects and chat messages)
+ * with the backend via WebSocket and initial data fetching.
+ */
+export const useBoardSync = (boardId: number) => {
     const instanceId = useRef(Math.random().toString(36).substring(2));
 
     const [initialObjects, setInitialObjects] = useState<BoardActionResponse[]>([]);
     const [lastReceivedAction, setLastReceivedAction] = useState<BoardActionResponse | null>(null);
-
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
-
     const [isLoading, setIsLoading] = useState(true);
-
-    const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);
-    const [strokeColor, setStrokeColor] = useState<string>(DEFAULT_DRAWING_CONFIG.STROKE_COLOR);
-    const [strokeWidth, setStrokeWidth] = useState<number>(DEFAULT_DRAWING_CONFIG.STROKE_WIDTH);
 
     useEffect(() => {
         if (isNaN(boardId)) return;
@@ -62,13 +56,6 @@ export const useBoard = (boardId: number) => {
         lastReceivedAction,
         messages,
         instanceId: instanceId.current,
-        boardId,
-        tool,
-        setTool,
-        strokeColor,
-        setStrokeColor,
-        strokeWidth,
-        setStrokeWidth,
         handleDrawAction,
     };
 };
