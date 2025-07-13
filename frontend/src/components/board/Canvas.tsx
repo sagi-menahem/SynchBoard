@@ -5,6 +5,7 @@ import type { BoardActionResponse, SendBoardActionRequest } from '../../types/bo
 import { CANVAS_CONFIG } from '../../constants/board.constants';
 import { useBoardCanvas } from '../../hooks/useCanvas';
 import type { TOOL_LIST } from '../../constants/board.constants';
+import styles from './BoardCanvas.module.css';
 
 type Tool = typeof TOOL_LIST[number];
 
@@ -31,12 +32,13 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
     } = useBoardCanvas(props);
 
     return (
-        <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
+        <div ref={containerRef} className={styles.container}>
             <canvas
                 ref={mainCanvasRef}
                 width={dimensions.width}
                 height={dimensions.height}
-                style={{ position: 'absolute', top: 0, left: 0, backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
+                className={styles.mainCanvas}
+                style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
             />
             <canvas
                 ref={previewCanvasRef}
@@ -45,8 +47,9 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}
                 onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseUp} // Finish drawing if mouse leaves canvas
-                style={{ position: 'absolute', top: 0, left: 0, cursor: CANVAS_CONFIG.CURSOR }}
+                onMouseLeave={handleMouseUp}
+                className={styles.previewCanvas}
+                style={{ cursor: CANVAS_CONFIG.CURSOR }}
             />
         </div>
     );

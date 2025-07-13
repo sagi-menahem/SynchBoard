@@ -1,0 +1,12 @@
+/* File: frontend/src/components/chat/Message.module.css */
+
+.message {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.timestamp {
+    font-size: 0.7rem;
+    color: #888;
+    margin-left: 10px;
+}

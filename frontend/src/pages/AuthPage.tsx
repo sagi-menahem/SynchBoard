@@ -6,6 +6,7 @@ import RegisterForm from '../components/auth/RegisterForm';
 import LoginForm from '../components/auth/LoginForm';
 import Button from '../components/common/Button';
 import { COLORS } from '../constants/style.constants';
+import styles from './AuthPage.module.css';
 
 const AuthPage: React.FC = () => {
     const { t } = useTranslation();
@@ -16,9 +17,14 @@ const AuthPage: React.FC = () => {
         setIsLoginView(true);
         setShowSuccessMessage(true);
     };
+    
+    const toggleView = () => {
+        setIsLoginView(prev => !prev);
+        setShowSuccessMessage(false);
+    };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className={styles.container}>
             <h1>{t('authPage.pageTitle')}</h1>
             {showSuccessMessage && (
                 <p style={{ color: COLORS.SUCCESS }}>
@@ -29,16 +35,9 @@ const AuthPage: React.FC = () => {
             {isLoginView ? (
                 <section>
                     <LoginForm />
-                    <p>
+                    <p className={styles.toggleText}>
                         {t('authPage.promptToRegister')}{' '}
-                        <Button 
-                            variant="secondary" 
-                            onClick={() => {
-                                setIsLoginView(false);
-                                setShowSuccessMessage(false);
-                            }}
-                            style={{ background: 'none', border: 'none', color: COLORS.PRIMARY_LINK, padding: '0.2em', textDecoration: 'underline' }}
-                        >
+                        <Button variant="secondary" onClick={toggleView} className={styles.toggleButton}>
                             {t('authPage.switchToRegisterButton')}
                         </Button>
                     </p>
@@ -46,13 +45,9 @@ const AuthPage: React.FC = () => {
             ) : (
                 <section>
                     <RegisterForm onRegistrationSuccess={handleRegistrationSuccess} />
-                    <p>
+                    <p className={styles.toggleText}>
                         {t('authPage.promptToLogin')}{' '}
-                        <Button 
-                            variant="secondary" 
-                            onClick={() => setIsLoginView(true)}
-                            style={{ background: 'none', border: 'none', color: COLORS.PRIMARY_LINK, padding: '0.2em', textDecoration: 'underline' }}
-                        >
+                        <Button variant="secondary" onClick={toggleView} className={styles.toggleButton}>
                             {t('authPage.switchToLoginButton')}
                         </Button>
                     </p>

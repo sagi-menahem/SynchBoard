@@ -1,0 +1,14 @@
+/* File: frontend/src/components/common/Input.module.css */
+
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #fff;
+    font-size: inherit;
+    font-family: inherit;
+}

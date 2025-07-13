@@ -3,12 +3,13 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import styles from './Layout.module.css'; // Import the styles
 
 const Layout: React.FC = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', boxSizing: 'border-box' }}>
+    <div className={styles.container}>
       <Navbar />
-      <main style={{ flex: 1, display: 'flex', justifyContent: 'center', overflowY: 'auto', padding: '2rem', boxSizing: 'border-box' }}>
+      <main className={styles.mainContent}>
         <Outlet />
       </main>
     </div>

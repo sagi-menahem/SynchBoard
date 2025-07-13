@@ -4,19 +4,19 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';
 import Input from '../common/Input';
-import { COLORS } from '../../constants/style.constants';
 import { useLoginForm } from '../../hooks/useLoginForm';
+import styles from './AuthForm.module.css';
 
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();
     const { email, password, error, setEmail, setPassword, handleSubmit } = useLoginForm();
 
     return (
-        <form onSubmit={handleSubmit} style={{ width: '300px' }}>
+        <form onSubmit={handleSubmit} className={styles.form}>
             <h2>{t('loginForm.heading')}</h2>
-            {error && <p style={{ color: COLORS.ERROR }}>{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
 
-            <div>
+            <div className={styles.field}>
                 <label htmlFor="login-email">{t('common.form.label.email')}</label>
                 <Input
                     id="login-email"
@@ -27,7 +27,7 @@ const LoginForm: React.FC = () => {
                 />
             </div>
 
-            <div style={{ marginTop: '1rem' }}>
+            <div className={styles.field}>
                 <label htmlFor="login-password">{t('common.form.label.password')}</label>
                 <Input
                     id="login-password"
@@ -38,7 +38,7 @@ const LoginForm: React.FC = () => {
                 />
             </div>
 
-            <Button type="submit" style={{ marginTop: '1.5rem', width: '100%' }}>
+            <Button type="submit" className={styles.submitButton}>
                 {t('loginForm.button')}
             </Button>
         </form>

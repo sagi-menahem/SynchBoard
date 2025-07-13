@@ -1,10 +1,11 @@
 // File: frontend/src/components/layout/Sidebar.tsx
 
 import React from 'react';
+import styles from './Sidebar.module.css';
 
 const Sidebar: React.FC = () => {
     return (
-        <aside style={{ background: '#282828', padding: '1rem', color: 'white', width: '200px' }}>
+        <aside className={styles.aside}>
             <p>Sidebar</p>
             <p>Online Users:</p>
             
