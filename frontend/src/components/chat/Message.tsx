@@ -2,24 +2,22 @@
 
 import React from 'react';
 import type { ChatMessageResponse } from '../../types/message.types';
+import styles from './Message.module.css';
 
 interface MessageProps {
     message: ChatMessageResponse;
 }
 
-const Message: React.FC<MessageProps> = ({ message }) => {
+const Message: React.FC<MessageProps> = React.memo(({ message }) => {
     return (
-        <div style={messageStyle}>
+        <div className={styles.message}>
             <strong>{message.sender}: </strong>
             <span>{message.content}</span>
-            <span style={timestampStyle}>
+            <span className={styles.timestamp}>
                 {new Date(message.timestamp).toLocaleTimeString()}
             </span>
         </div>
     );
-};
-
-const messageStyle: React.CSSProperties = { marginBottom: '0.5rem' };
-const timestampStyle: React.CSSProperties = { fontSize: '0.7rem', color: '#888', marginLeft: '10px' };
+});
 
 export default Message;

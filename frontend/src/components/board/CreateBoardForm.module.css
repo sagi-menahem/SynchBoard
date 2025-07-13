@@ -1,0 +1,36 @@
+/* File: frontend/src/components/board/CreateBoardForm.module.css */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.description {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    resize: vertical;
+}
+
+.buttonGroup {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.error {
+    color: #f87171;
+}

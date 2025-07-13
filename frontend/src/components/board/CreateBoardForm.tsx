@@ -4,9 +4,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Input from '../common/Input';
 import Button from '../common/Button';
-import { COLORS } from '../../constants/style.constants';
 import { useCreateBoardForm } from '../../hooks/useCreateBoardForm';
 import type { Board } from '../../types/board.types';
+import styles from './CreateBoardForm.module.css';
 
 interface CreateBoardFormProps {
     onBoardCreated: (newBoard: Board) => void;
@@ -16,19 +16,13 @@ interface CreateBoardFormProps {
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
     const { t } = useTranslation();
     const { name, description, error, isSubmitting, setName, setDescription, handleSubmit } = useCreateBoardForm(onBoardCreated);
-    
-    const sharedInputStyle: React.CSSProperties = {
-        width: '100%', padding: '10px', marginTop: '4px', boxSizing: 'border-box',
-        backgroundColor: '#333', border: '1px solid #555', borderRadius: '4px',
-        color: '#fff', fontFamily: 'inherit', fontSize: 'inherit',
-    };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
             <h3>{t('createBoardForm.heading')}</h3>
-            {error && <p style={{ color: COLORS.ERROR }}>{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
             
-            <div>
+            <div className={styles.field}>
                 <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>
                 <Input
                     id="board-name" type="text" value={name} onChange={(e) => setName(e.target.value)}
@@ -36,15 +30,15 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                 />
             </div>
 
-            <div style={{ marginTop: '1rem' }}>
+            <div className={styles.field}>
                 <label htmlFor="board-description">{t('createBoardForm.label.description')}</label>
                 <textarea
                     id="board-description" value={description} onChange={(e) => setDescription(e.target.value)}
-                    placeholder={t('createBoardForm.placeholder.description')} rows={3} style={sharedInputStyle}
+                    placeholder={t('createBoardForm.placeholder.description')} rows={3} className={styles.description}
                 />
             </div>
 
-            <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+            <div className={styles.buttonGroup}>
                 <Button type="button" onClick={onClose} disabled={isSubmitting} variant="secondary">
                     {t('common.button.cancel')}
                 </Button>

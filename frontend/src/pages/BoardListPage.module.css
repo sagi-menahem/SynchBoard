@@ -1,0 +1,34 @@
+/* File: frontend/src/pages/BoardListPage.module.css */
+.container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.boardCard {
+    background-color: #2f2f2f;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s, transform 0.2s;
+    text-align: left;
+    display: block; /* To make the whole area clickable */
+    color: inherit;
+    text-decoration: none;
+}
+
+.boardCard:hover {
+    background-color: #3a3a3a;
+    transform: translateY(-2px);
+}
+
+.adminLabel {
+    color: #4ade80;
+}

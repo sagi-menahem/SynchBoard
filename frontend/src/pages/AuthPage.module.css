@@ -1,0 +1,18 @@
+/* File: frontend/src/pages/AuthPage.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toggleText {
+    margin-top: 1rem;
+}
+
+.toggleButton {
+    background: none;
+    border: none;
+    color: var(--color-primary-link, #8186ff); /* Using a fallback */
+    padding: 0.2em;
+    text-decoration: underline;
+}
