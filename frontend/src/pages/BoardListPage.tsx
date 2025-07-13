@@ -7,21 +7,18 @@ import Modal from '../components/common/Modal';
 import CreateBoardForm from '../components/board/CreateBoardForm';
 import Button from '../components/common/Button';
 import { APP_ROUTES } from '../constants/routes.constants';
-import { COLORS } from '../constants/style.constants';
 import { useBoardList } from '../hooks/useBoardList';
 import styles from './BoardListPage.module.css';
 
 const BoardListPage: React.FC = () => {
     const { t } = useTranslation();
-    const { boards, isLoading, error, isModalOpen, handleBoardCreated, openModal, closeModal } = useBoardList();
+    const { boards, isLoading, isModalOpen, handleBoardCreated, openModal, closeModal } = useBoardList();
 
     if (isLoading) {
         return <div>{t('boardListPage.loading')}</div>;
     }
 
-    if (error) {
-        return <div style={{ color: COLORS.ERROR }}>{error}</div>;
-    }
+    // The error is now handled by a toast, so we don't need to render it here.
 
     return (
         <div className={styles.container}>

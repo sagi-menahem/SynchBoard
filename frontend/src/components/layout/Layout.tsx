@@ -2,12 +2,25 @@
 
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast'; // Import the Toaster
 import Navbar from './Navbar';
-import styles from './Layout.module.css'; // Import the styles
+import styles from './Layout.module.css';
 
 const Layout: React.FC = () => {
   return (
     <div className={styles.container}>
+      {/* Add the Toaster component here */}
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          // Define default options
+          duration: 5000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+        }}
+      />
       <Navbar />
       <main className={styles.mainContent}>
         <Outlet />

@@ -14,38 +14,31 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
     const { t } = useTranslation();
     const {
-        email, password, firstName, lastName, phoneNumber, error,
+        email, password, firstName, lastName, phoneNumber, isSubmitting,
         setEmail, setPassword, setFirstName, setLastName, setPhoneNumber, handleSubmit,
     } = useRegisterForm(onRegistrationSuccess);
+
+    const inputs = [
+        { id: 'register-email', label: 'email', type: 'email', value: email, setter: setEmail },
+        { id: 'register-password', label: 'password', type: 'password', value: password, setter: setPassword },
+        { id: 'register-firstName', label: 'firstName', type: 'text', value: firstName, setter: setFirstName },
+        { id: 'register-lastName', label: 'lastName', type: 'text', value: lastName, setter: setLastName },
+        { id: 'register-phoneNumber', label: 'phoneNumber', type: 'tel', value: phoneNumber, setter: setPhoneNumber },
+    ];
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h2>{t('registerForm.heading')}</h2>
-            {error && <p className={styles.error}>{error}</p>}
 
-            <div className={styles.field}>
-                <label htmlFor="register-email">{t('common.form.label.email')}</label>
-                <Input id="register-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div className={styles.field}>
-                <label htmlFor="register-password">{t('common.form.label.password')}</label>
-                <Input id="register-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <div className={styles.field}>
-                <label htmlFor="register-firstName">{t('common.form.label.firstName')}</label>
-                <Input id="register-firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-            </div>
-            <div className={styles.field}>
-                <label htmlFor="register-lastName">{t('common.form.label.lastName')}</label>
-                <Input id="register-lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-            </div>
-            <div className={styles.field}>
-                <label htmlFor="register-phoneNumber">{t('common.form.label.phoneNumber')}</label>
-                <Input id="register-phoneNumber" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
-            </div>
+            {inputs.map(input => (
+                <div key={input.id} className={styles.field}>
+                    <label htmlFor={input.id}>{t(`common.form.label.${input.label}`)}</label>
+                    <Input id={input.id} type={input.type} value={input.value} onChange={(e) => input.setter(e.target.value)} required disabled={isSubmitting} />
+                </div>
+            ))}
 
-            <Button type="submit" className={styles.submitButton}>
-                {t('registerForm.button')}
+            <Button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                {isSubmitting ? t('common.button.registering') : t('registerForm.button')}
             </Button>
         </form>
     );
