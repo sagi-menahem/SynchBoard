@@ -9,6 +9,8 @@ import { useAuth } from '../../hooks/useAuth';
 
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { APP_ROUTES } from '../../constants/routes.constants';
+import { COLORS } from '../../constants/style.constants';
 
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();
@@ -25,7 +27,7 @@ const LoginForm: React.FC = () => {
         try {
             const response = await authService.login(credentials);
             login(response.token);
-            navigate('/boards');
+            navigate(APP_ROUTES.BOARD_LIST);
         } catch (err) {
             console.error('Login failed:', err);
             setError(t('loginForm.failedError'));
@@ -35,7 +37,7 @@ const LoginForm: React.FC = () => {
     return (
         <form onSubmit={handleSubmit} style={{ width: '300px' }}>
             <h2>{t('loginForm.heading')}</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: COLORS.ERROR }}>{error}</p>}
 
             <div>
                 <label htmlFor="login-email">{t('common.form.label.email')}</label>

@@ -4,13 +4,14 @@ import React, { useState, useEffect, type ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from './AuthContext';
 import websocketService from '../services/websocketService';
+import { LOCAL_STORAGE_KEYS } from '../constants/app.constants';
 
 interface AuthProviderProps {
     children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
+    const [token, setToken] = useState<string | null>(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN));
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
 
@@ -36,12 +37,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = (newToken: string) => {
         setToken(newToken);
-        localStorage.setItem('authToken', newToken);
+        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
     };
 
     const logout = () => {
         setToken(null);
-        localStorage.removeItem('authToken');
+        localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     };
 
     const value = { token, userEmail, isSocketConnected, login, logout };

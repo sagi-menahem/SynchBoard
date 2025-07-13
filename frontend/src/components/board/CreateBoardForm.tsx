@@ -7,6 +7,8 @@ import { createBoard } from '../../services/boardService';
 import type { Board, CreateBoardRequest } from '../../types/board.types';
 import Input from '../common/Input';
 import Button from '../common/Button';
+import { APP_CONFIG } from '../../constants/app.constants';
+import { COLORS } from '../../constants/style.constants';
 
 interface CreateBoardFormProps {
     onBoardCreated: (newBoard: Board) => void;
@@ -23,7 +25,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null);
-        if (name.trim().length < 3) {
+        if (name.trim().length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
             setError(t('createBoardForm.nameLengthError'));
             return;
         }
@@ -60,7 +62,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     return (
         <form onSubmit={handleSubmit}>
             <h3>{t('createBoardForm.heading')}</h3>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: COLORS.ERROR }}>{error}</p>}
             
             <div>
                 <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>

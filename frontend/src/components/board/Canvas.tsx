@@ -2,16 +2,19 @@
 
 import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import { ActionType, type BoardActionResponse, type SendBoardActionRequest } from '../../types/boardObject.types';
+import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from '../../constants/board.constants';
+
+type Tool = typeof TOOL_LIST[number];
 
 interface BoardCanvasProps {
-  boardId: number;
-  instanceId: string;
-  onDraw: (action: SendBoardActionRequest) => void;
-  receivedAction: BoardActionResponse | null;
-  initialObjects: BoardActionResponse[];
-  tool: 'brush' | 'eraser' | 'rectangle' | 'circle';
-  strokeColor: string;
-  strokeWidth: number;
+    boardId: number;
+    instanceId: string;
+    onDraw: (action: SendBoardActionRequest) => void;
+    receivedAction: BoardActionResponse | null;
+    initialObjects: BoardActionResponse[];
+    tool: Tool;
+    strokeColor: string;
+    strokeWidth: number;
 }
 type Point = { x: number; y: number };
 interface RectanglePayload {
@@ -56,8 +59,16 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         if (!mainCanvas || !previewCanvas) return;
         const mainCtx = mainCanvas.getContext('2d');
         const previewCtx = previewCanvas.getContext('2d');
-        if (mainCtx) { mainCtx.lineCap = 'round'; mainCtx.lineJoin = 'round'; contextRef.current = mainCtx; }
-        if (previewCtx) { previewCtx.lineCap = 'round'; previewCtx.lineJoin = 'round'; previewContextRef.current = previewCtx; }
+        if (mainCtx) { 
+            mainCtx.lineCap = CANVAS_CONFIG.LINE_STYLE; 
+            mainCtx.lineJoin = CANVAS_CONFIG.LINE_STYLE; 
+            contextRef.current = mainCtx; 
+        }
+        if (previewCtx) { 
+            previewCtx.lineCap = CANVAS_CONFIG.LINE_STYLE; 
+            previewCtx.lineJoin = CANVAS_CONFIG.LINE_STYLE; 
+            previewContextRef.current = previewCtx; 
+        }
     }, [dimensions]);
 
     useEffect(() => {
@@ -88,9 +99,9 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         if (!canvas) return;
         const { offsetX, offsetY } = nativeEvent;
         setIsDrawing(true);
-        if (tool === 'brush' || tool === 'eraser') {
+        if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
             currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
-        } else if (tool === 'rectangle' || tool === 'circle') {
+        } else if (tool === TOOLS.RECTANGLE || tool === TOOLS.CIRCLE) {
             startPoint.current = { x: offsetX, y: offsetY };
         }
     };
@@ -105,15 +116,15 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         
         previewCtx.clearRect(0, 0, canvas.width, canvas.height);
         
-        if (tool === 'eraser') {
-            previewCtx.strokeStyle = '#222';
+        if (tool === TOOLS.ERASER) {
+            previewCtx.strokeStyle = CANVAS_CONFIG.PREVIEW_ERASER_COLOR;
         } else {
             previewCtx.strokeStyle = strokeColor;
         }
         previewCtx.lineWidth = strokeWidth;
-        previewCtx.globalCompositeOperation = 'source-over';
+        previewCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
-        if (tool === 'brush' || tool === 'eraser') {
+        if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
             previewCtx.beginPath();
             if(currentPath.current.length > 0) {
                 previewCtx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
@@ -123,11 +134,11 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
                 previewCtx.lineTo(offsetX, offsetY);
                 previewCtx.stroke();
             }
-        } else if (tool === 'rectangle' && startPoint.current) {
+        } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
             const width = offsetX - startPoint.current.x;
             const height = offsetY - startPoint.current.y;
             previewCtx.strokeRect(startPoint.current.x, startPoint.current.y, width, height);
-        } else if (tool === 'circle' && startPoint.current) {
+        } else if (tool === TOOLS.CIRCLE && startPoint.current) {
             const deltaX = offsetX - startPoint.current.x;
             const deltaY = offsetY - startPoint.current.y;
             const radius = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -146,24 +157,24 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
         if (!canvas) return;
         
         let payload: ActionPayload | null = null;
-        if ((tool === 'brush' || tool === 'eraser') && currentPath.current.length > 1) {
+        if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
             payload = { tool, points: currentPath.current, color: strokeColor, lineWidth: strokeWidth };
-        } else if (tool === 'rectangle' && startPoint.current) {
+        } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
             const { offsetX, offsetY } = nativeEvent;
             const rectX = Math.min(startPoint.current.x, offsetX);
             const rectY = Math.min(startPoint.current.y, offsetY);
             const rectWidth = Math.abs(offsetX - startPoint.current.x);
             const rectHeight = Math.abs(offsetY - startPoint.current.y);
             if (rectWidth > 0 || rectHeight > 0) {
-                payload = { tool: 'rectangle', x: rectX / canvas.width, y: rectY / canvas.height, width: rectWidth / canvas.width, height: rectHeight / canvas.height, color: strokeColor, strokeWidth };
+                payload = { tool: TOOLS.RECTANGLE, x: rectX / canvas.width, y: rectY / canvas.height, width: rectWidth / canvas.width, height: rectHeight / canvas.height, color: strokeColor, strokeWidth };
             }
-        } else if (tool === 'circle' && startPoint.current) {
+        } else if (tool === TOOLS.CIRCLE && startPoint.current) {
             const { offsetX, offsetY } = nativeEvent;
             const deltaX = offsetX - startPoint.current.x;
             const deltaY = offsetY - startPoint.current.y;
             const radius = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
             if (radius > 0) {
-                payload = { tool: 'circle', x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius: radius / canvas.width, color: strokeColor, strokeWidth };
+                payload = { tool: TOOLS.CIRCLE, x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius: radius / canvas.width, color: strokeColor, strokeWidth };
             }
         }
 
@@ -177,14 +188,14 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
     };
     
     const replayDrawAction = (payload: ActionPayload, targetCtx: CanvasRenderingContext2D, targetCanvas: HTMLCanvasElement) => {
-        targetCtx.globalCompositeOperation = 'source-over';
-        if (payload.tool === 'brush' || payload.tool === 'eraser') {
+        targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
+        if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
             const lineData = payload;
             if (lineData.points.length < 2) return;
             targetCtx.strokeStyle = lineData.color;
             targetCtx.lineWidth = lineData.lineWidth;
-            if (lineData.tool === 'eraser') {
-                targetCtx.globalCompositeOperation = 'destination-out';
+            if (lineData.tool === TOOLS.ERASER) {
+                targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.ERASE;
             }
             targetCtx.beginPath();
             targetCtx.moveTo(lineData.points[0].x * targetCanvas.width, lineData.points[0].y * targetCanvas.height);
@@ -192,12 +203,12 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
                 targetCtx.lineTo(lineData.points[i].x * targetCanvas.width, lineData.points[i].y * targetCanvas.height);
             }
             targetCtx.stroke();
-        } else if (payload.tool === 'rectangle') {
+        } else if (payload.tool === TOOLS.RECTANGLE) {
             const rectData = payload;
             targetCtx.strokeStyle = rectData.color;
             targetCtx.lineWidth = rectData.strokeWidth;
             targetCtx.strokeRect(rectData.x * targetCanvas.width, rectData.y * targetCanvas.height, rectData.width * targetCanvas.width, rectData.height * targetCanvas.height);
-        } else if (payload.tool === 'circle') {
+        } else if (payload.tool === TOOLS.CIRCLE) {
             const circleData = payload;
             targetCtx.strokeStyle = circleData.color;
             targetCtx.lineWidth = circleData.strokeWidth;
@@ -205,12 +216,12 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
             targetCtx.arc(circleData.x * targetCanvas.width, circleData.y * targetCanvas.height, circleData.radius * targetCanvas.width, 0, 2 * Math.PI);
             targetCtx.stroke();
         }
-        targetCtx.globalCompositeOperation = 'source-over';
+        targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
     };
 
     return (
         <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <canvas ref={mainCanvasRef} width={dimensions.width} height={dimensions.height} style={{ position: 'absolute', top: 0, left: 0, backgroundColor: '#222' }} />
+            <canvas ref={mainCanvasRef} width={dimensions.width} height={dimensions.height} style={{ position: 'absolute', top: 0, left: 0, backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }} />
             <canvas
                 ref={previewCanvasRef}
                 width={dimensions.width}
@@ -219,7 +230,7 @@ const BoardCanvas: React.FC<BoardCanvasProps> = ({ boardId, instanceId, onDraw, 
                 onMouseUp={finishDrawing}
                 onMouseMove={draw}
                 onMouseLeave={finishDrawing}
-                style={{ position: 'absolute', top: 0, left: 0, cursor: 'crosshair' }}
+                style={{ position: 'absolute', top: 0, left: 0, cursor: CANVAS_CONFIG.CURSOR }}
             />
         </div>
     );
