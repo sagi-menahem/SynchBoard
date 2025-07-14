@@ -3,7 +3,7 @@
 import React, { type ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useBoardSync } from '../hooks/useBoard';
+import { useBoardSync } from '../hooks/useBoardSync';
 import { BoardContext } from './BoardContext';
 
 export const BoardProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

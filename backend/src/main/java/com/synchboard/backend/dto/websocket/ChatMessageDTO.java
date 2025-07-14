@@ -46,7 +46,7 @@ public final class ChatMessageDTO {
         private MessageType type;
         /** The content of the message. */
         private String content;
-        /** The email of the user who sent the message. */
+        /** The name of the user who sent the message. */
         private String sender;
         /** The timestamp when the message was sent. */
         private LocalDateTime timestamp;

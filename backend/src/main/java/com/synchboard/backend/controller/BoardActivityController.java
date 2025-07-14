@@ -3,11 +3,14 @@ package com.synchboard.backend.controller;
 
 import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.dto.websocket.ChatMessageDTO;
+import com.synchboard.backend.repository.UserRepository;
+import com.synchboard.backend.entity.User;
 import com.synchboard.backend.service.BoardObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -25,6 +28,7 @@ public class BoardActivityController {
 
     private final SimpMessageSendingOperations messagingTemplate;
     private final BoardObjectService boardObjectService;
+    private final UserRepository userRepository;
 
     /**
      * Handles incoming chat messages from users.
@@ -35,10 +39,22 @@ public class BoardActivityController {
      */
     @MessageMapping(MAPPING_CHAT_SEND_MESSAGE)
     public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
+
+        // 1. Get the user's email from the principal
+        String userEmail = principal.getName();
+
+        // 2. Find the user in the database by their email
+        User senderUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail));
+
+        // 3. Create the full name string
+        String fullName = senderUser.getFirstName() + " " + senderUser.getLastName();
+
         ChatMessageDTO.Response response = ChatMessageDTO.Response.builder()
                 .type(ChatMessageDTO.Response.MessageType.CHAT)
                 .content(request.getContent())
-                .sender(principal.getName())
+                .sender(fullName)
+                // .sender(principal.getName())
                 .timestamp(LocalDateTime.now())
                 .build();
         // Construct the destination topic for the specific board.
