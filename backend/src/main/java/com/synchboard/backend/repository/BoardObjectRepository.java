@@ -19,5 +19,5 @@ public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> 
      * @param boardGroupId the ID of the group board.
      * @return a list of board objects for the given board.
      */
-    List<BoardObject> findAllByBoard_BoardGroupId(Long boardGroupId);
+    List<BoardObject> findAllByBoard_BoardGroupIdAndIsActiveTrue(Long boardGroupId);
 }

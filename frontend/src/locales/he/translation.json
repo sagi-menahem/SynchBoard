@@ -72,7 +72,9 @@
       "brush": "מברשת",
       "rectangle": "מלבן",
       "circle": "עיגול",
-      "eraser": "מחק"
+      "eraser": "מחק",
+      "undo": "בטל",
+      "redo": "בצע שוב"
     }
   },
   "chatWindow": {

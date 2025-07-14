@@ -17,6 +17,10 @@ interface ToolbarProps {
     setStrokeWidth: (width: number) => void;
     tool: Tool;
     setTool: (tool: Tool) => void;
+    onUndo: () => void;
+    isUndoAvailable: boolean;
+    onRedo: () => void; // NEW: Prop for handling redo click
+    isRedoAvailable: boolean; // NEW: Prop to enable/disable redo
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -27,6 +31,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setStrokeWidth,
     tool,
     setTool,
+    onUndo,
+    isUndoAvailable,
+    onRedo,
+    isRedoAvailable,
 }) => {
     const { t } = useTranslation();
     const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
@@ -70,6 +78,17 @@ const Toolbar: React.FC<ToolbarProps> = ({
                         {t(`toolbar.tool.${toolName}`)}
                     </Button>
                 ))}
+            </div>
+
+            {/* NEW: Undo Button */}
+            <div className={styles.toolsContainer}>
+                 <Button onClick={onUndo} disabled={!isUndoAvailable} variant="secondary">
+                    {t('toolbar.tool.undo')}
+                 </Button>
+                 {/* NEW: Redo Button */}
+                 <Button onClick={onRedo} disabled={!isRedoAvailable} variant="secondary">
+                    {t('toolbar.tool.redo')}
+                 </Button>
             </div>
         </div>
     );

@@ -15,6 +15,8 @@ export const API_ENDPOINTS = {
     REGISTER: '/auth/register',
     BOARDS: '/boards',
     BOARD_OBJECTS: (boardId: number) => `/boards/${boardId}/objects`,
+    UNDO: (boardId: number) => `/boards/${boardId}/undo`,
+    REDO: (boardId: number) => `/boards/${boardId}/redo`,
 } as const;
 
 /**

@@ -8,14 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-
 import java.time.LocalDateTime;
 
-/**
- * Represents a single object on a collaborative board, such as a shape, text,
- * or image.
- * This entity is mapped to the "board_objects" table.
- */
+// Ensure List and ArrayList are NOT imported
 @Entity
 @Table(name = "board_objects")
 @Data
@@ -28,6 +23,9 @@ public class BoardObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "object_id")
     private Long objectId;
+
+    @Column(name = "instance_id", nullable = false, unique = true)
+    private String instanceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_group_id", nullable = false)
@@ -50,24 +48,20 @@ public class BoardObject {
     @JoinColumn(name = "last_edited_by_user_email")
     private User lastEditedByUser;
 
-    /** The actual data of the object, stored as a JSONB string in the database. */
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "object_data", columnDefinition = "jsonb")
     private String objectData;
 
-    /**
-     * Sets the creation and last edited timestamps before the entity is first
-     * persisted.
-     */
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
+
     @PrePersist
     protected void onCreate() {
         this.creationTimestamp = LocalDateTime.now();
         this.lastEditedTimestamp = LocalDateTime.now();
+        this.isActive = true;
     }
 
-    /**
-     * Updates the last edited timestamp before the entity is updated.
-     */
     @PreUpdate
     protected void onUpdate() {
         this.lastEditedTimestamp = LocalDateTime.now();
