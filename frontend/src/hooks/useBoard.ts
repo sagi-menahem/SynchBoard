@@ -8,10 +8,6 @@ import type { BoardActionResponse, SendBoardActionRequest } from '../types/board
 import type { ChatMessageResponse } from '../types/message.types';
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from '../constants/api.constants';
 
-/**
- * This hook is responsible for synchronizing the board state (drawing objects and chat messages)
- * with the backend via WebSocket and initial data fetching.
- */
 export const useBoardSync = (boardId: number) => {
     const instanceId = useRef(Math.random().toString(36).substring(2));
 

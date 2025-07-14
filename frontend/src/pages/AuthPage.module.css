@@ -1,4 +1,5 @@
 /* File: frontend/src/pages/AuthPage.module.css */
+
 .container {
     display: flex;
     flex-direction: column;
@@ -12,7 +13,7 @@
 .toggleButton {
     background: none;
     border: none;
-    color: var(--color-primary-link, #8186ff); /* Using a fallback */
+    color: var(--color-primary-link, #8186ff);
     padding: 0.2em;
     text-decoration: underline;
 }
