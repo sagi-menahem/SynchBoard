@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useBoardSync.ts
-
 import { useState, useEffect, useRef, useCallback } from 'react';
 import * as boardService from '../services/boardService';
 import websocketService from '../services/websocketService';
@@ -10,7 +9,6 @@ import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from '../constants/api.const
 import toast from 'react-hot-toast';
 
 export const useBoardSync = (boardId: number) => {
-    // This instanceId is now only for the WebSocket connection session, not for objects.
     const sessionInstanceId = useRef(Math.random().toString(36).substring(2)); 
     const [objects, setObjects] = useState<ActionPayload[]>([]);
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
@@ -31,8 +29,8 @@ export const useBoardSync = (boardId: number) => {
                     .filter(a => a.payload)
                     .map(a => ({ ...(a.payload as object), instanceId: a.instanceId } as ActionPayload));
                 setObjects(initialObjects);
-                setUndoCount(initialObjects.length); // Initialize undo count
-                setRedoCount(0); // Reset redo count on load
+                setUndoCount(initialObjects.length); 
+                setRedoCount(0); 
             })
             .catch(error => console.error("Failed to fetch initial board state:", error))
             .finally(() => setIsLoading(false));
@@ -43,7 +41,6 @@ export const useBoardSync = (boardId: number) => {
 
         if ('type' in payload && 'instanceId' in payload) {
             const action = payload as BoardActionResponse;
-            // The sender check is now the single source of truth to prevent echo.
             if (action.sender === sessionInstanceId.current) return;
 
             const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
@@ -60,9 +57,6 @@ export const useBoardSync = (boardId: number) => {
 
     useSocket(WEBSOCKET_TOPICS.BOARD(boardId), onMessageReceived);
 
-    // =================================================================
-    //  UPDATED LOGIC: Generate a unique ID for every single action.
-    // =================================================================
     const handleDrawAction = useCallback((action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
         const newInstanceId = Math.random().toString(36).substring(2);
         const fullPayload = { ...action.payload, instanceId: newInstanceId } as ActionPayload;
@@ -75,8 +69,8 @@ export const useBoardSync = (boardId: number) => {
         };
         
         setObjects(prev => [...prev, fullPayload]);
-        setUndoCount(prev => prev + 1); // A new action can be undone
-        setRedoCount(0); // A new action clears the redo stack
+        setUndoCount(prev => prev + 1); 
+        setRedoCount(0); 
         
         websocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionToSend);
     }, [boardId]);
@@ -88,7 +82,6 @@ const handleUndo = useCallback(async () => {
         }
         try {
             await boardService.undoLastAction(boardId);
-            // The WebSocket message will trigger the state update for 'objects'
             setUndoCount(prev => prev - 1);
             setRedoCount(prev => prev + 1);
         } catch (error) {
@@ -97,7 +90,6 @@ const handleUndo = useCallback(async () => {
         }
     }, [boardId, isLoading, undoCount]);
 
-    // NEW: Redo handler function
     const handleRedo = useCallback(async () => {
         if (isLoading || redoCount === 0) {
             toast.error("Nothing to redo.");
@@ -105,7 +97,6 @@ const handleUndo = useCallback(async () => {
         }
         try {
             await boardService.redoLastAction(boardId);
-            // The WebSocket message will trigger the state update for 'objects'
             setUndoCount(prev => prev + 1);
             setRedoCount(prev => prev - 1);
         } catch (error) {
@@ -121,8 +112,8 @@ const handleUndo = useCallback(async () => {
         instanceId: sessionInstanceId.current,
         handleDrawAction,
         handleUndo,
-        handleRedo, // Expose redo handler
-        isUndoAvailable: undoCount > 0, // Expose availability flags
+        handleRedo, 
+        isUndoAvailable: undoCount > 0, 
         isRedoAvailable: redoCount > 0,
     };
 };

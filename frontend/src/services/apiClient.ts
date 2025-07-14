@@ -1,5 +1,4 @@
 // File: frontend/src/services/apiClient.ts
-
 import axios from 'axios';
 import { API_BASE_URL, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from '../constants/api.constants';
 import { LOCAL_STORAGE_KEYS } from '../constants/app.constants';

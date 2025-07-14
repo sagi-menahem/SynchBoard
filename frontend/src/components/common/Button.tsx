@@ -1,5 +1,4 @@
 // File: frontend/src/components/common/Button.tsx
-
 import React from 'react';
 import styles from './Button.module.css';
 

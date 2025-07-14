@@ -1,5 +1,4 @@
 // File: frontend/src/components/routing/ProtectedRoute.tsx
-
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';

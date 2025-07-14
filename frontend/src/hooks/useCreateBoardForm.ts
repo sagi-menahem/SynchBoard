@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useCreateBoardForm.ts
-
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';

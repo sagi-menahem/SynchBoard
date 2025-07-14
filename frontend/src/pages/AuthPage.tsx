@@ -1,5 +1,4 @@
 // File: frontend/src/pages/AuthPage.tsx
-
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RegisterForm from '../components/auth/RegisterForm';

@@ -1,5 +1,4 @@
 // File: frontend/src/services/boardService.ts
-
 import apiClient from './apiClient';
 import type { Board, CreateBoardRequest } from '../types/board.types';
 import type { BoardActionResponse } from '../types/boardObject.types';
@@ -20,9 +19,6 @@ export const getBoardObjects = async (boardId: number): Promise<BoardActionRespo
     return response.data;
 };
 
-// =================================================================
-// NEW: Add a function to call the undo endpoint.
-// =================================================================
 export const undoLastAction = async (boardId: number): Promise<BoardActionResponse> => {
     const response = await apiClient.post<BoardActionResponse>(API_ENDPOINTS.UNDO(boardId));
     return response.data;

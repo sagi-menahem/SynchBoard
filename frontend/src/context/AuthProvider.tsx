@@ -1,5 +1,4 @@
 // File: frontend/src/context/AuthProvider.tsx
-
 import React, { useState, useEffect, type ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from './AuthContext';

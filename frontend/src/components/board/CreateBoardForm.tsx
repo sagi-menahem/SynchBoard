@@ -1,5 +1,4 @@
 // File: frontend/src/components/board/CreateBoardForm.tsx
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Input from '../common/Input';

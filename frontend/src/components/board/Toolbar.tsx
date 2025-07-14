@@ -1,5 +1,4 @@
 // File: frontend/src/components/board/Toolbar.tsx
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';
@@ -19,8 +18,8 @@ interface ToolbarProps {
     setTool: (tool: Tool) => void;
     onUndo: () => void;
     isUndoAvailable: boolean;
-    onRedo: () => void; // NEW: Prop for handling redo click
-    isRedoAvailable: boolean; // NEW: Prop to enable/disable redo
+    onRedo: () => void; 
+    isRedoAvailable: boolean; 
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({

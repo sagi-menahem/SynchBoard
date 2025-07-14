@@ -1,5 +1,4 @@
 // File: frontend/src/components/chat/ChatWindow.tsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ChatMessageResponse, SendChatMessageRequest } from '../../types/message.types';

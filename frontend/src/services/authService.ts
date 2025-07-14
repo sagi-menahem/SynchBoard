@@ -1,5 +1,4 @@
 // File: frontend/src/services/authService.ts
-
 import apiClient from './apiClient';
 import type { RegisterRequest, LoginRequest, AuthResponse } from '../types/user.types';
 import { API_ENDPOINTS } from '../constants/api.constants';

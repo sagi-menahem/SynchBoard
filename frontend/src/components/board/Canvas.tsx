@@ -28,7 +28,7 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
         handleMouseDown,
         handleMouseMove,
         handleMouseUp,
-    } = useCanvas(props); // Pass all props down to the hook
+    } = useCanvas(props); 
 
     return (
         <div ref={containerRef} className={styles.container}>
