@@ -19,3 +19,16 @@ export const getBoardObjects = async (boardId: number): Promise<BoardActionRespo
     const response = await apiClient.get<BoardActionResponse[]>(API_ENDPOINTS.BOARD_OBJECTS(boardId));
     return response.data;
 };
+
+// =================================================================
+// NEW: Add a function to call the undo endpoint.
+// =================================================================
+export const undoLastAction = async (boardId: number): Promise<BoardActionResponse> => {
+    const response = await apiClient.post<BoardActionResponse>(API_ENDPOINTS.UNDO(boardId));
+    return response.data;
+};
+
+export const redoLastAction = async (boardId: number): Promise<BoardActionResponse> => {
+    const response = await apiClient.post<BoardActionResponse>(API_ENDPOINTS.REDO(boardId));
+    return response.data;
+};

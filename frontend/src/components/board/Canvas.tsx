@@ -1,7 +1,7 @@
 // File: frontend/src/components/board/Canvas.tsx
 
 import React from 'react';
-import type { BoardActionResponse, SendBoardActionRequest } from '../../types/boardObject.types';
+import type { SendBoardActionRequest, ActionPayload } from '../../types/boardObject.types';
 import { CANVAS_CONFIG } from '../../constants/board.constants';
 import { useCanvas } from '../../hooks/useCanvas';
 import type { TOOL_LIST } from '../../constants/board.constants';
@@ -9,12 +9,11 @@ import styles from './Canvas.module.css';
 
 type Tool = typeof TOOL_LIST[number];
 
+// UPDATED PROPS
 interface BoardCanvasProps {
-    boardId: number;
     instanceId: string;
-    onDraw: (action: SendBoardActionRequest) => void;
-    receivedAction: BoardActionResponse | null;
-    initialObjects: BoardActionResponse[];
+    onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+    objects: ActionPayload[];
     tool: Tool;
     strokeColor: string;
     strokeWidth: number;
@@ -29,7 +28,7 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
         handleMouseDown,
         handleMouseMove,
         handleMouseUp,
-    } = useCanvas(props);
+    } = useCanvas(props); // Pass all props down to the hook
 
     return (
         <div ref={containerRef} className={styles.container}>

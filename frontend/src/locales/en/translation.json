@@ -72,7 +72,9 @@
       "brush": "Brush",
       "rectangle": "Rectangle",
       "circle": "Circle",
-      "eraser": "Eraser"
+      "eraser": "Eraser",
+      "undo": "Undo",
+      "redo": "Redo"
     }
   },
   "chatWindow": {

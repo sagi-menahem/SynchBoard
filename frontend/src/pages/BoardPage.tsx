@@ -20,11 +20,14 @@ const BoardPage: React.FC = () => {
 
     const {
         isLoading,
-        initialObjects,
-        lastReceivedAction,
+        objects,
         messages,
         instanceId,
         handleDrawAction,
+        handleUndo,
+        handleRedo,
+        isUndoAvailable,
+        isRedoAvailable,
     } = useBoardContext();
 
     const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);
@@ -38,7 +41,6 @@ const BoardPage: React.FC = () => {
     return (
         <div className={styles.page} ref={pageRef}>
             <h1 className={styles.header}>{t('boardPage.heading', { boardId })}</h1>
-            
             <Toolbar 
                 containerRef={pageRef}
                 strokeColor={strokeColor}
@@ -47,16 +49,18 @@ const BoardPage: React.FC = () => {
                 setStrokeWidth={setStrokeWidth}
                 tool={tool}
                 setTool={setTool}
+                onUndo={handleUndo}
+                isUndoAvailable={isUndoAvailable}
+                onRedo={handleRedo} // Pass redo props
+                isRedoAvailable={isRedoAvailable}
             />
 
             <div className={styles.mainContent}>
                 <div className={styles.canvasContainer}>
                     <Canvas 
-                        boardId={boardId}
                         instanceId={instanceId}
-                        onDraw={(action) => handleDrawAction({ type: action.type, payload: action.payload })}
-                        receivedAction={lastReceivedAction}
-                        initialObjects={initialObjects}
+                        onDraw={handleDrawAction}
+                        objects={objects}
                         tool={tool}
                         strokeColor={strokeColor}
                         strokeWidth={strokeWidth}
