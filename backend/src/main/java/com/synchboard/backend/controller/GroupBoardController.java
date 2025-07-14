@@ -27,8 +27,6 @@ public class GroupBoardController {
     private final BoardObjectService boardObjectService;
     private final ActionHistoryService actionHistoryService;
 
-    // ... (getBoardsForCurrentUser, createBoard, getBoardObjects methods remain the
-    // same) ...
     @GetMapping
     public ResponseEntity<List<BoardDTO>> getBoardsForCurrentUser(Authentication authentication) {
         String userEmail = authentication.getName();
@@ -50,15 +48,11 @@ public class GroupBoardController {
         return ResponseEntity.ok(objects);
     }
 
-    // =================================================================
-    // UPDATED: The undo endpoint now accepts the Authentication principal
-    // =================================================================
     @PostMapping("/{boardId}/undo")
     public ResponseEntity<?> undoLastAction(@PathVariable("boardId") Long boardId, Authentication authentication) {
         // Extract user's email from the security context
         String userEmail = authentication.getName();
 
-        // Pass both boardId and userEmail to the service for the authorization check
         BoardActionDTO.Response undoResult = actionHistoryService.undoLastAction(boardId, userEmail);
 
         if (undoResult != null) {

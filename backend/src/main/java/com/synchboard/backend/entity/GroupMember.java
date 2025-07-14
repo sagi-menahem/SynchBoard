@@ -8,12 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-/**
- * Represents the membership of a User in a GroupBoard.
- * This entity defines the relationship between users and boards, including
- * roles (e.g., admin).
- * It uses a composite primary key defined in {@link GroupMemberId}.
- */
 @Entity
 @Table(name = "group_members")
 @Data
@@ -45,9 +39,6 @@ public class GroupMember {
     @Column(name = "join_date", nullable = false, updatable = false)
     private LocalDateTime joinDate;
 
-    /**
-     * Sets the join date before the entity is first persisted.
-     */
     @PrePersist
     protected void onCreate() {
         this.joinDate = LocalDateTime.now();

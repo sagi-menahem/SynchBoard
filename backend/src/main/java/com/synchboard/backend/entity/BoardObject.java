@@ -10,7 +10,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 
-// Ensure List and ArrayList are NOT imported
 @Entity
 @Table(name = "board_objects")
 @Data

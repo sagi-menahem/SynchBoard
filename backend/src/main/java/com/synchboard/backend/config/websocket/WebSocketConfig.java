@@ -23,7 +23,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final JwtChannelInterceptor jwtChannelInterceptor;
     private final AppProperties appProperties;
 
-    // Use standard Spring properties for ActiveMQ credentials
     @Value("${spring.activemq.user}")
     private String brokerUser;
 
@@ -33,10 +32,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
         config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
-                // Use the type-safe properties from our AppProperties bean
                 .setRelayHost(appProperties.getStomp().getBrokerHost())
                 .setRelayPort(appProperties.getStomp().getBrokerPort())
-                // Use the standard Spring properties for credentials
                 .setClientLogin(brokerUser)
                 .setClientPasscode(brokerPassword)
                 .setSystemLogin(brokerUser)

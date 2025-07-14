@@ -18,10 +18,6 @@ import java.util.stream.Collectors;
 
 import static com.synchboard.backend.config.ApplicationConstants.USER_NOT_FOUND;;
 
-/**
- * Service class for managing group boards.
- * Handles creation of boards and retrieval of boards for a user.
- */
 @Service
 @RequiredArgsConstructor
 public class GroupBoardService {
@@ -30,12 +26,6 @@ public class GroupBoardService {
         private final GroupBoardRepository groupBoardRepository;
         private final UserRepository userRepository;
 
-        /**
-         * Retrieves a list of all boards that a user is a member of.
-         *
-         * @param userEmail the email of the user.
-         * @return a list of BoardDTOs representing the user's boards.
-         */
         @Transactional(readOnly = true)
         public List<BoardDTO> getBoardsForUser(String userEmail) {
                 List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
@@ -44,19 +34,11 @@ public class GroupBoardService {
                                 .collect(Collectors.toList());
         }
 
-        /**
-         * Creates a new board and assigns the creating user as the first admin member.
-         *
-         * @param request    the request DTO containing the new board's details.
-         * @param ownerEmail the email of the user creating the board.
-         * @return a BoardDTO representing the newly created board.
-         */
         @Transactional
         public BoardDTO createBoard(CreateBoardRequest request, String ownerEmail) {
                 User owner = userRepository.findById(ownerEmail)
                                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + ownerEmail));
 
-                // Create and save the new GroupBoard entity.
                 GroupBoard newBoard = GroupBoard.builder()
                                 .boardGroupName(request.getName())
                                 .groupDescription(request.getDescription())
@@ -64,7 +46,6 @@ public class GroupBoardService {
                                 .build();
                 groupBoardRepository.save(newBoard);
 
-                // Create the initial membership for the owner, making them an admin.
                 GroupMember newMembership = GroupMember.builder()
                                 .user(owner)
                                 .groupBoard(newBoard)
@@ -77,14 +58,6 @@ public class GroupBoardService {
                 return mapToBoardResponse(newMembership);
         }
 
-        /**
-         * Maps a GroupMember entity to a BoardDTO.
-         * This helper method simplifies the conversion of board data for client
-         * responses.
-         *
-         * @param membership the GroupMember entity to map from.
-         * @return the resulting BoardDTO.
-         */
         private BoardDTO mapToBoardResponse(GroupMember membership) {
                 return BoardDTO.builder()
                                 .id(membership.getGroupBoard().getBoardGroupId())

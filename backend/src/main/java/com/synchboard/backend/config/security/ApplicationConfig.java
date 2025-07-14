@@ -16,38 +16,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.synchboard.backend.config.ApplicationConstants.*;
 
-/**
- * Configuration class for Spring Security.
- * Sets up beans related to user details, authentication, and password encoding.
- */
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-    /**
-     * Defines the UserDetailsService bean which retrieves user details from the
-     * database.
-     *
-     * @return an implementation of UserDetailsService that loads user-specific
-     * data.
-     */
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException(ERROR_USER_NOT_FOUND_TEMPLATE + username));
     }
 
-    /**
-     * Defines the AuthenticationProvider bean.
-     * This bean is responsible for authenticating a user with a username and
-     * password.
-     *
-     * @param userDetailsService the user details service to use for retrieving user information.
-     * @param passwordEncoder the password encoder to use for verifying passwords.
-     * @return the configured DaoAuthenticationProvider.
-     */
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
@@ -55,24 +36,11 @@ public class ApplicationConfig {
         return authProvider;
     }
 
-    /**
-     * Exposes the AuthenticationManager from the security configuration as a bean.
-     *
-     * @param config the authentication configuration.
-     * @return the AuthenticationManager.
-     * @throws Exception if an error occurs while getting the authentication
-     * manager.
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    /**
-     * Defines the PasswordEncoder bean that uses the BCrypt hashing algorithm.
-     *
-     * @return the BCryptPasswordEncoder instance.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

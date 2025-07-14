@@ -82,7 +82,6 @@ public class ActionHistoryService {
             redoResponse = handleRedoAdd(lastUndoneAction);
         }
 
-        // Save the change to the isUndone flag after the operation
         actionHistoryRepository.save(lastUndoneAction);
 
         if (redoResponse != null) {
@@ -95,9 +94,8 @@ public class ActionHistoryService {
     private BoardActionDTO.Response handleUndoAdd(ActionHistory actionToUndo) {
         BoardObject objectToDeactivate = actionToUndo.getBoardObject();
         if (objectToDeactivate != null) {
-            // Instead of deleting, we set it to inactive
             objectToDeactivate.setActive(false);
-            boardObjectRepository.save(objectToDeactivate); // Save the change
+            boardObjectRepository.save(objectToDeactivate);
 
             return createDeleteResponse(objectToDeactivate.getInstanceId());
         }
@@ -105,7 +103,6 @@ public class ActionHistoryService {
     }
 
     private BoardActionDTO.Response handleRedoAdd(ActionHistory actionToRedo) {
-        // We no longer need to re-create the object. We just find it and activate it.
         BoardObject objectToReactivate = actionToRedo.getBoardObject();
         if (objectToReactivate != null) {
             objectToReactivate.setActive(true);

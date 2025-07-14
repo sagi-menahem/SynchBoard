@@ -6,10 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents the composite primary key for the {@link GroupMember} entity.
- * It consists of the user's email and the group board's ID.
- */
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode

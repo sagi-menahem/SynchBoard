@@ -25,13 +25,10 @@ public class JwtService {
     private final AppProperties appProperties;
     private Key signInKey;
 
-    // Constructor-based injection for the properties bean
     public JwtService(AppProperties appProperties) {
         this.appProperties = appProperties;
     }
 
-    // This method runs after the properties are injected, initializing the signing
-    // key
     @PostConstruct
     public void init() {
         byte[] keyBytes = Decoders.BASE64.decode(appProperties.getJwt().getSecretKey());

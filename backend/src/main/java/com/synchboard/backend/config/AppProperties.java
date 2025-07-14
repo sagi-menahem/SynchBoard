@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "app") // All properties will start with "app."
+@ConfigurationProperties(prefix = "app")
 public class AppProperties {
 
     private final Jwt jwt = new Jwt();
