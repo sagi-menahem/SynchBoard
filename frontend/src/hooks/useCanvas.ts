@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useCanvas.ts
-
 import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { ActionType, type SendBoardActionRequest, type ActionPayload, type LinePayload, type RectanglePayload, type CirclePayload } from '../types/boardObject.types';
 import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';

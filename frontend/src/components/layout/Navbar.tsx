@@ -1,5 +1,4 @@
 // File: frontend/src/components/layout/Navbar.tsx
-
 import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import Button from '../common/Button';

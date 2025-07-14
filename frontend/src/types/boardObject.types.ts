@@ -1,5 +1,4 @@
 // File: frontend/src/types/boardObject.types.ts
-
 export const ActionType = {
     OBJECT_ADD: 'OBJECT_ADD',
     OBJECT_UPDATE: 'OBJECT_UPDATE',
@@ -8,9 +7,6 @@ export const ActionType = {
 
 export type ActionType = typeof ActionType[keyof typeof ActionType];
 
-// =================================================================
-// NEW: Define all possible payload types here as the single source of truth.
-// =================================================================
 type Point = { x: number; y: number };
 
 export interface LinePayload {
@@ -44,14 +40,12 @@ export interface CirclePayload {
 
 export type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
 
-// =================================================================
-
 export interface SendBoardActionRequest {
     boardId: number;
     type: ActionType;
     payload: Omit<ActionPayload, 'instanceId'>;
     instanceId: string;
-    sender: string; // NEW: Add sender to the request
+    sender: string;
 }
 
 export interface BoardActionResponse {

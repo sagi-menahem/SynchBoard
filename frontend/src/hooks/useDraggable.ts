@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useDraggable.ts
-
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 interface UseDraggableProps {

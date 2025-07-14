@@ -1,5 +1,4 @@
 // File: frontend/src/components/auth/LoginForm.tsx
-
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';

@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useBoardList.ts
-
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';

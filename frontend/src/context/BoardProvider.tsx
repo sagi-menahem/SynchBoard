@@ -1,5 +1,4 @@
 // File: frontend/src/context/BoardProvider.tsx
-
 import React, { type ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
