@@ -15,7 +15,7 @@ interface UseCanvasProps {
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
 }
 
-export const useCanvas = ({ instanceId, tool, strokeColor, strokeWidth, objects, onDraw }: UseCanvasProps) => {
+export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth, objects, onDraw }: UseCanvasProps) => {
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +52,7 @@ export const useCanvas = ({ instanceId, tool, strokeColor, strokeWidth, objects,
         previewContextRef.current = setupContext(previewCanvasRef.current);
     }, [dimensions]);
 
+    // Callback to redraw an existing action on the canvas
     const replayDrawAction = useCallback((payload: ActionPayload, targetCtx: CanvasRenderingContext2D, targetCanvas: HTMLCanvasElement) => {
         targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
@@ -85,6 +86,7 @@ export const useCanvas = ({ instanceId, tool, strokeColor, strokeWidth, objects,
         targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
     }, []);
 
+    // Effect to redraw all objects when they change
     useEffect(() => {
         const canvas = mainCanvasRef.current;
         const ctx = contextRef.current;
@@ -95,6 +97,7 @@ export const useCanvas = ({ instanceId, tool, strokeColor, strokeWidth, objects,
 
     }, [objects, dimensions, replayDrawAction]);
 
+    // Mouse event handlers
     const handleMouseDown = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = previewCanvasRef.current;
         if (!canvas) return;
@@ -148,9 +151,14 @@ export const useCanvas = ({ instanceId, tool, strokeColor, strokeWidth, objects,
         
         previewCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let payload: Omit<ActionPayload, 'instanceId'> | null = null;
         if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
-            payload = { tool, points: [...currentPath.current], color: strokeColor, lineWidth: strokeWidth };
+            const payload: Omit<LinePayload, 'instanceId'> = { 
+                tool, 
+                points: [...currentPath.current], 
+                color: strokeColor, 
+                lineWidth: strokeWidth 
+            };
+            onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
             const { offsetX, offsetY } = event.nativeEvent;
             const rectX = Math.min(startPoint.current.x, offsetX) / canvas.width;
@@ -158,23 +166,25 @@ export const useCanvas = ({ instanceId, tool, strokeColor, strokeWidth, objects,
             const rectWidth = Math.abs(offsetX - startPoint.current.x) / canvas.width;
             const rectHeight = Math.abs(offsetY - startPoint.current.y) / canvas.height;
             if (rectWidth > 0 || rectHeight > 0) {
-                payload = { tool, x: rectX, y: rectY, width: rectWidth, height: rectHeight, color: strokeColor, strokeWidth };
+                const payload: Omit<RectanglePayload, 'instanceId'> = { 
+                    tool, x: rectX, y: rectY, width: rectWidth, height: rectHeight, color: strokeColor, strokeWidth 
+                };
+                onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
             }
         } else if (tool === TOOLS.CIRCLE && startPoint.current) {
             const { offsetX, offsetY } = event.nativeEvent;
             const radius = Math.sqrt(Math.pow(offsetX - startPoint.current.x, 2) + Math.pow(offsetY - startPoint.current.y, 2)) / canvas.width;
             if (radius > 0) {
-                payload = { tool, x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius, color: strokeColor, strokeWidth };
+                const payload: Omit<CirclePayload, 'instanceId'> = { 
+                    tool, x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius, color: strokeColor, strokeWidth 
+                };
+                onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
             }
         }
 
-        if (payload) {
-            onDraw({ type: ActionType.OBJECT_ADD, payload });
-        }
-        
         currentPath.current = [];
         startPoint.current = null;
-    }, [isDrawing, tool, strokeColor, strokeWidth, onDraw]);
+    }, [isDrawing, tool, strokeColor, strokeWidth, onDraw, senderId]);
 
     return {
         mainCanvasRef,
