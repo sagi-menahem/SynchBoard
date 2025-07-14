@@ -56,19 +56,12 @@ public class BoardObjectService {
                         .instanceId(request.getInstanceId())
                         .build();
 
-                // =================================================================
-                // THE FINAL FIX:
-                // 1. We save and flush the object to the database.
-                // 2. We capture the RETURNED entity, which is guaranteed to have the generated
-                // ID.
-                // =================================================================
                 BoardObject persistedBoardObject = boardObjectRepository.saveAndFlush(newBoardObject);
 
-                // 3. We use the 'persistedBoardObject' which now has a non-null ID.
                 ActionHistory historyRecord = ActionHistory.builder()
                         .board(board)
                         .user(user)
-                        .boardObject(persistedBoardObject) // Use the object returned from the save operation
+                        .boardObject(persistedBoardObject) 
                         .actionType(request.getType().name())
                         .stateBefore(null)
                         .stateAfter(payloadAsString)
@@ -85,7 +78,6 @@ public class BoardObjectService {
 
     @Transactional(readOnly = true)
     public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId) {
-        // Use the new repository method to fetch only active objects
         List<BoardObject> boardObjects = boardObjectRepository.findAllByBoard_BoardGroupIdAndIsActiveTrue(boardId);
 
         return boardObjects.stream()

@@ -21,7 +21,7 @@ import static com.synchboard.backend.config.ApplicationConstants.*;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // <-- NEW: Add this annotation to enable modern security checks
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 

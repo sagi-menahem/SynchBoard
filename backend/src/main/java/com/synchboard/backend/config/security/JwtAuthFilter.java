@@ -19,11 +19,6 @@ import java.io.IOException;
 
 import static com.synchboard.backend.config.ApplicationConstants.*;
 
-/**
- * A filter that handles JWT-based authentication for each HTTP request.
- * It extends OncePerRequestFilter to ensure it's executed only once per
- * request.
- */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -31,18 +26,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    /**
-     * Processes an incoming HTTP request to check for a valid JWT in the
-     * Authorization header.
-     * If a valid token is found, it sets the authentication in the security
-     * context.
-     *
-     * @param request     the HTTP request.
-     * @param response    the HTTP response.
-     * @param filterChain the filter chain.
-     * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException      if an I/O error occurs.
-     */
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -53,24 +36,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        // If the Authorization header is missing or doesn't start with "Bearer ", pass
-        // the request to the next filter.
         if (authHeader == null || !authHeader.startsWith(JWT_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extract the JWT from the "Bearer " prefix.
         jwt = authHeader.substring(JWT_PREFIX_LENGTH);
         userEmail = jwtService.extractUsername(jwt);
 
-        // If a user email is extracted and there's no existing authentication in the
-        // security context.
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            // If the token is valid, create an authentication token and set it in the
-            // security context.
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -81,7 +57,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        // Continue the filter chain.
         filterChain.doFilter(request, response);
     }
 }

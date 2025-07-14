@@ -18,12 +18,6 @@ import java.util.List;
 
 import static com.synchboard.backend.config.ApplicationConstants.ROLE_USER;
 
-/**
- * Represents an application user.
- * Implements Spring Security's UserDetails interface for authentication and
- * authorization.
- * Mapped to the "users" table.
- */
 @Entity
 @Table(name = "users")
 @Data
@@ -73,9 +67,6 @@ public class User implements UserDetails {
     @Column(name = "email_verification_token")
     private String emailVerificationToken;
 
-    /**
-     * Sets the creation date before the entity is first persisted.
-     */
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();

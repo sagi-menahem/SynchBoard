@@ -50,16 +50,11 @@ public class ActionHistory {
     @Column(name = "state_after", columnDefinition = "jsonb")
     private String stateAfter;
 
-    // =================================================================
-    // NEW: Add a flag to mark if an action has been undone.
-    // =================================================================
     @Column(name = "is_undone", nullable = false)
     private boolean isUndone;
 
     @PrePersist
     protected void onCreate() {
         this.timestamp = LocalDateTime.now();
-        // The default value for a boolean primitive is false, which is what we want.
-        // So no need to set isUndone here.
     }
 }

@@ -17,10 +17,6 @@ import lombok.RequiredArgsConstructor;
 
 import static com.synchboard.backend.config.ApplicationConstants.*;
 
-/**
- * REST controller for handling authentication-related requests, such as user
- * registration and login.
- */
 @RestController
 @RequestMapping(API_AUTH_PATH)
 @RequiredArgsConstructor
@@ -28,33 +24,16 @@ public class AuthController {
 
     private final UserService userService;
 
-    /**
-     * Handles the user registration request.
-     *
-     * @param request the registration request data.
-     * @return a ResponseEntity containing the authentication response with a JWT.
-     */
     @PostMapping(API_AUTH_REGISTER_PATH)
     public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(userService.registerUser(request));
     }
 
-    /**
-     * Handles the user login request.
-     *
-     * @param request the login request data.
-     * @return a ResponseEntity containing the authentication response with a JWT.
-     */
     @PostMapping(API_AUTH_LOGIN_PATH)
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(userService.login(request));
     }
 
-    /**
-     * A test endpoint to verify that a user is authenticated.
-     *
-     * @return a welcome message for authenticated users.
-     */
     @GetMapping(API_AUTH_TEST_PATH)
     public ResponseEntity<String> testEndpoint() {
         return ResponseEntity.ok(AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE);

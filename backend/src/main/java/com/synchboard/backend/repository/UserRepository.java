@@ -7,17 +7,8 @@ import java.util.Optional;
 
 import com.synchboard.backend.entity.User;
 
-/**
- * Spring Data JPA repository for {@link User} entities.
- * The primary key is the user's email (String).
- */
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    /**
-     * Finds a user by their email address.
-     *
-     * @param email the email of the user to find.
-     * @return an {@link Optional} containing the found user, or empty if not found.
-     */
+
     Optional<User> findByEmail(String email);
 }

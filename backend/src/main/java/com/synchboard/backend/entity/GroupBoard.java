@@ -8,10 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-/**
- * Represents a collaborative board where users can interact.
- * This entity is mapped to the "group_boards" table.
- */
 @Entity
 @Table(name = "group_boards")
 @Data
@@ -47,19 +43,12 @@ public class GroupBoard {
     @Column(name = "last_modified_date")
     private LocalDateTime lastModifiedDate;
 
-    /**
-     * Sets the creation and last modified dates before the entity is first
-     * persisted.
-     */
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
         this.lastModifiedDate = LocalDateTime.now();
     }
 
-    /**
-     * Updates the last modified date before the entity is updated.
-     */
     @PreUpdate
     protected void onUpdate() {
         this.lastModifiedDate = LocalDateTime.now();
