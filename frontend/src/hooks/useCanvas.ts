@@ -5,12 +5,14 @@ import type { BoardActionResponse, SendBoardActionRequest } from '../types/board
 import { ActionType } from '../types/boardObject.types';
 import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
 
+// --- Type definitions that were missing ---
 type Tool = typeof TOOL_LIST[number];
 type Point = { x: number; y: number };
 interface RectanglePayload { x: number; y: number; width: number; height: number; color: string; strokeWidth: number; tool: 'rectangle'; }
 interface LinePayload { points: Point[]; color: string; lineWidth: number; tool: 'brush' | 'eraser'; }
 interface CirclePayload { x: number; y: number; radius: number; color: string; strokeWidth: number; tool: 'circle'; }
 type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
+// -----------------------------------------
 
 interface UseBoardCanvasProps {
     boardId: number;
@@ -48,17 +50,17 @@ export const useBoardCanvas = ({ boardId, instanceId, tool, strokeColor, strokeW
     }, []);
 
     useEffect(() => {
-        const setupContext = (canvas: HTMLCanvasElement | null, contextSetter: (ctx: CanvasRenderingContext2D) => void) => {
-            if (!canvas) return;
+        const setupContext = (canvas: HTMLCanvasElement | null) => {
+            if (!canvas) return null;
             const ctx = canvas.getContext('2d');
             if (ctx) {
                 ctx.lineCap = CANVAS_CONFIG.LINE_STYLE;
                 ctx.lineJoin = CANVAS_CONFIG.LINE_STYLE;
-                contextSetter(ctx);
             }
+            return ctx;
         };
-        setupContext(mainCanvasRef.current, (ctx) => contextRef.current = ctx);
-        setupContext(previewCanvasRef.current, (ctx) => previewContextRef.current = ctx);
+        contextRef.current = setupContext(mainCanvasRef.current);
+        previewContextRef.current = setupContext(previewCanvasRef.current);
     }, [dimensions]);
 
     useEffect(() => {
@@ -116,7 +118,7 @@ export const useBoardCanvas = ({ boardId, instanceId, tool, strokeColor, strokeW
     }, [renderedObjects, dimensions, replayDrawAction]);
 
     const handleMouseDown = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
-        const canvas = mainCanvasRef.current;
+        const canvas = previewCanvasRef.current;
         if (!canvas) return;
         const { offsetX, offsetY } = event.nativeEvent;
         setIsDrawing(true);
@@ -130,7 +132,7 @@ export const useBoardCanvas = ({ boardId, instanceId, tool, strokeColor, strokeW
     const handleMouseMove = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
         if (!isDrawing) return;
         const previewCtx = previewContextRef.current;
-        const canvas = mainCanvasRef.current;
+        const canvas = previewCanvasRef.current;
         if (!previewCtx || !canvas) return;
         
         const { offsetX, offsetY } = event.nativeEvent;
@@ -140,12 +142,12 @@ export const useBoardCanvas = ({ boardId, instanceId, tool, strokeColor, strokeW
         previewCtx.strokeStyle = tool === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColor;
 
         if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
+            currentPath.current.push({ x: offsetX / canvas.width, y: offsetY / canvas.height });
             previewCtx.beginPath();
-            const fullPath = [...currentPath.current, { x: offsetX / canvas.width, y: offsetY / canvas.height }];
-            if (fullPath.length > 0) {
-                previewCtx.moveTo(fullPath[0].x * canvas.width, fullPath[0].y * canvas.height);
-                for (let i = 1; i < fullPath.length; i++) {
-                    previewCtx.lineTo(fullPath[i].x * canvas.width, fullPath[i].y * canvas.height);
+            if (currentPath.current.length > 0) {
+                previewCtx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
+                for (let i = 1; i < currentPath.current.length; i++) {
+                    previewCtx.lineTo(currentPath.current[i].x * canvas.width, currentPath.current[i].y * canvas.height);
                 }
                 previewCtx.stroke();
             }
@@ -157,13 +159,12 @@ export const useBoardCanvas = ({ boardId, instanceId, tool, strokeColor, strokeW
             previewCtx.arc(startPoint.current.x, startPoint.current.y, radius, 0, 2 * Math.PI);
             previewCtx.stroke();
         }
-        currentPath.current.push({ x: offsetX / canvas.width, y: offsetY / canvas.height });
     }, [isDrawing, tool, strokeColor, strokeWidth]);
 
     const handleMouseUp = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
         if (!isDrawing) return;
         setIsDrawing(false);
-        const canvas = mainCanvasRef.current;
+        const canvas = previewCanvasRef.current;
         if (!canvas) return;
         
         let payload: ActionPayload | null = null;

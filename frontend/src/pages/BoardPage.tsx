@@ -1,10 +1,10 @@
 // File: frontend/src/pages/BoardPage.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react'; // Import useRef
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useBoardContext } from '../hooks/useBoardContext';
-import BoardCanvas from '../components/board/Canvas';
+import Canvas from '../components/board/Canvas';
 import Toolbar from '../components/board/Toolbar';
 import ChatWindow from '../components/chat/ChatWindow';
 import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
@@ -16,6 +16,7 @@ const BoardPage: React.FC = () => {
     const { t } = useTranslation();
     const { boardId: boardIdString } = useParams<{ boardId: string }>();
     const boardId = parseInt(boardIdString || '0', 10);
+    const pageRef = useRef<HTMLDivElement>(null); // Create a ref for the container
 
     const {
         isLoading,
@@ -35,19 +36,22 @@ const BoardPage: React.FC = () => {
     }
 
     return (
-        <div className={styles.page}>
+        <div className={styles.page} ref={pageRef}> {/* Attach the ref to the container */}
             <h1 className={styles.header}>{t('boardPage.heading', { boardId })}</h1>
+            
+            <Toolbar 
+                containerRef={pageRef} // Pass the container ref to the Toolbar
+                strokeColor={strokeColor}
+                setStrokeColor={setStrokeColor}
+                strokeWidth={strokeWidth}
+                setStrokeWidth={setStrokeWidth}
+                tool={tool}
+                setTool={setTool}
+            />
+
             <div className={styles.mainContent}>
                 <div className={styles.canvasContainer}>
-                    <Toolbar 
-                        strokeColor={strokeColor}
-                        setStrokeColor={setStrokeColor}
-                        strokeWidth={strokeWidth}
-                        setStrokeWidth={setStrokeWidth}
-                        tool={tool}
-                        setTool={setTool}
-                    />
-                    <BoardCanvas 
+                    <Canvas 
                         boardId={boardId}
                         instanceId={instanceId}
                         onDraw={(action) => handleDrawAction({ type: action.type, payload: action.payload })}

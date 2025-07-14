@@ -1,10 +1,7 @@
 /* File: frontend/src/components/board/Toolbar.module.css */
 
 .toolbar {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    /* position is now set by the hook's style object */
     background-color: #2d2d2d;
     padding: 8px 12px;
     border-radius: 8px;
@@ -14,6 +11,8 @@
     gap: 1.5rem;
     border: 1px solid #444;
     z-index: 10;
+    cursor: move;
+    user-select: none;
 }
 
 .label {

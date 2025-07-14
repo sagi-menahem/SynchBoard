@@ -49,7 +49,6 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseUp}
                 className={styles.previewCanvas}
-                style={{ cursor: CANVAS_CONFIG.CURSOR }}
             />
         </div>
     );
