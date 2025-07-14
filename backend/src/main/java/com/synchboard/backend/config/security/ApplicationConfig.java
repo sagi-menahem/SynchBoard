@@ -31,7 +31,7 @@ public class ApplicationConfig {
      * database.
      *
      * @return an implementation of UserDetailsService that loads user-specific
-     *         data.
+     * data.
      */
     @Bean
     public UserDetailsService userDetailsService() {
@@ -44,13 +44,14 @@ public class ApplicationConfig {
      * This bean is responsible for authenticating a user with a username and
      * password.
      *
+     * @param userDetailsService the user details service to use for retrieving user information.
+     * @param passwordEncoder the password encoder to use for verifying passwords.
      * @return the configured DaoAuthenticationProvider.
      */
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
@@ -60,7 +61,7 @@ public class ApplicationConfig {
      * @param config the authentication configuration.
      * @return the AuthenticationManager.
      * @throws Exception if an error occurs while getting the authentication
-     *                   manager.
+     * manager.
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
