@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useBoardCanvas.ts
+// File: frontend/src/hooks/useCanvas.ts
 
 import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import type { BoardActionResponse, SendBoardActionRequest } from '../types/boardObject.types';
@@ -12,7 +12,7 @@ interface LinePayload { points: Point[]; color: string; lineWidth: number; tool:
 interface CirclePayload { x: number; y: number; radius: number; color: string; strokeWidth: number; tool: 'circle'; }
 type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
 
-interface UseBoardCanvasProps {
+interface UseCanvasProps {
     boardId: number;
     instanceId: string;
     tool: Tool;
@@ -23,7 +23,7 @@ interface UseBoardCanvasProps {
     onDraw: (action: SendBoardActionRequest) => void;
 }
 
-export const useBoardCanvas = ({ boardId, instanceId, tool, strokeColor, strokeWidth, initialObjects, receivedAction, onDraw }: UseBoardCanvasProps) => {
+export const useCanvas = ({ boardId, instanceId, tool, strokeColor, strokeWidth, initialObjects, receivedAction, onDraw }: UseCanvasProps) => {
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
