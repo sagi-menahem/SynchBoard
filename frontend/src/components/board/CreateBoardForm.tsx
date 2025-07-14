@@ -20,7 +20,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h3>{t('createBoardForm.heading')}</h3>
-            {/* The error message paragraph is removed */}
             
             <div className={styles.field}>
                 <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>

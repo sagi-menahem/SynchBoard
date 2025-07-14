@@ -10,7 +10,6 @@ export const useBoardList = () => {
     const { t } = useTranslation();
     const [boards, setBoards] = useState<Board[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    // const [error, setError] = useState<string | null>(null); // No longer needed
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchBoards = useCallback(async () => {
@@ -41,7 +40,6 @@ export const useBoardList = () => {
     return {
         boards,
         isLoading,
-        // error, // No longer returned
         isModalOpen,
         handleBoardCreated,
         openModal,

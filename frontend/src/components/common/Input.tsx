@@ -4,7 +4,6 @@ import React from 'react';
 import styles from './Input.module.css';
 
 const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({ className, style, ...props }) => {
-    // The style prop is kept for occasional one-off overrides if needed
     const inputClasses = `${styles.input} ${className || ''}`.trim();
     return (
         <input className={inputClasses} style={style} {...props} />

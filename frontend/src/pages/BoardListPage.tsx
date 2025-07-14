@@ -18,8 +18,6 @@ const BoardListPage: React.FC = () => {
         return <div>{t('boardListPage.loading')}</div>;
     }
 
-    // The error is now handled by a toast, so we don't need to render it here.
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>

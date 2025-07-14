@@ -13,11 +13,11 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false); // Add submitting state
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setIsSubmitting(true); // Set submitting to true
+        setIsSubmitting(true);
         const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
         try {
             await authService.register(formData);
@@ -31,7 +31,7 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
             }
             toast.error(errorMessage);
         } finally {
-            setIsSubmitting(false); // Reset on success or error
+            setIsSubmitting(false);
         }
     };
 

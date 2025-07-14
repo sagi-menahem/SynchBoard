@@ -1,6 +1,6 @@
 // File: frontend/src/pages/BoardPage.tsx
 
-import React, { useState, useRef } from 'react'; // Import useRef
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useBoardContext } from '../hooks/useBoardContext';
@@ -16,7 +16,7 @@ const BoardPage: React.FC = () => {
     const { t } = useTranslation();
     const { boardId: boardIdString } = useParams<{ boardId: string }>();
     const boardId = parseInt(boardIdString || '0', 10);
-    const pageRef = useRef<HTMLDivElement>(null); // Create a ref for the container
+    const pageRef = useRef<HTMLDivElement>(null);
 
     const {
         isLoading,
@@ -36,11 +36,11 @@ const BoardPage: React.FC = () => {
     }
 
     return (
-        <div className={styles.page} ref={pageRef}> {/* Attach the ref to the container */}
+        <div className={styles.page} ref={pageRef}>
             <h1 className={styles.header}>{t('boardPage.heading', { boardId })}</h1>
             
             <Toolbar 
-                containerRef={pageRef} // Pass the container ref to the Toolbar
+                containerRef={pageRef}
                 strokeColor={strokeColor}
                 setStrokeColor={setStrokeColor}
                 strokeWidth={strokeWidth}

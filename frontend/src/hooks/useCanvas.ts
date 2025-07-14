@@ -5,14 +5,12 @@ import type { BoardActionResponse, SendBoardActionRequest } from '../types/board
 import { ActionType } from '../types/boardObject.types';
 import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
 
-// --- Type definitions that were missing ---
 type Tool = typeof TOOL_LIST[number];
 type Point = { x: number; y: number };
 interface RectanglePayload { x: number; y: number; width: number; height: number; color: string; strokeWidth: number; tool: 'rectangle'; }
 interface LinePayload { points: Point[]; color: string; lineWidth: number; tool: 'brush' | 'eraser'; }
 interface CirclePayload { x: number; y: number; radius: number; color: string; strokeWidth: number; tool: 'circle'; }
 type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
-// -----------------------------------------
 
 interface UseBoardCanvasProps {
     boardId: number;

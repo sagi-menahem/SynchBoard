@@ -10,8 +10,6 @@ export const BoardProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const { t } = useTranslation();
     const { boardId: boardIdString } = useParams<{ boardId: string }>();
     const boardId = parseInt(boardIdString || '0', 10);
-
-    // Call the hook with its new name
     const boardData = useBoardSync(boardId);
 
     if (isNaN(boardId) || boardId === 0) {

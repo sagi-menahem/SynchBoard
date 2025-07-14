@@ -13,13 +13,13 @@ export const useLoginForm = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false); // Add submitting state
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setIsSubmitting(true); // Set submitting to true
+        setIsSubmitting(true);
         const credentials: LoginRequest = { email, password };
         try {
             const response = await authService.login(credentials);
@@ -29,7 +29,7 @@ export const useLoginForm = () => {
             console.error('Login failed:', err);
             toast.error(t('loginForm.failedError'));
         } finally {
-            setIsSubmitting(false); // Reset on success or error
+            setIsSubmitting(false);
         }
     };
 

@@ -10,11 +10,9 @@ import styles from './AuthPage.module.css';
 const AuthPage: React.FC = () => {
     const { t } = useTranslation();
     const [isLoginView, setIsLoginView] = useState(true);
-    // const [showSuccessMessage, setShowSuccessMessage] = useState(false); // No longer needed
 
     const handleRegistrationSuccess = () => {
         setIsLoginView(true);
-        // setShowSuccessMessage(true); // No longer needed
     };
     
     const toggleView = () => {
@@ -24,8 +22,6 @@ const AuthPage: React.FC = () => {
     return (
         <div className={styles.container}>
             <h1>{t('authPage.pageTitle')}</h1>
-            {/* Success message is removed from here */}
-
             {isLoginView ? (
                 <section>
                     <LoginForm />

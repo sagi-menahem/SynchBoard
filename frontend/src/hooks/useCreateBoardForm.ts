@@ -12,7 +12,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const { t } = useTranslation();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    // const [error, setError] = useState<string | null>(null); // No longer needed
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

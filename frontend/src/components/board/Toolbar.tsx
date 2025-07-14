@@ -10,7 +10,6 @@ import { useDraggable } from '../../hooks/useDraggable';
 type Tool = typeof TOOL_LIST[number];
 
 interface ToolbarProps {
-    // FIX: Allow the container ref to be null initially
     containerRef: React.RefObject<HTMLElement | null>;
     strokeColor: string;
     setStrokeColor: (color: string) => void;

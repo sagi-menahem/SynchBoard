@@ -13,10 +13,8 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
-        // Check if the request URL is for a public endpoint.
         const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
 
-        // If it's not a public endpoint, try to add the token.
         if (!isPublicEndpoint) {
             const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
             

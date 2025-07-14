@@ -1,7 +1,6 @@
 /* File: frontend/src/components/board/Toolbar.module.css */
 
 .toolbar {
-    /* position is now set by the hook's style object */
     background-color: #2d2d2d;
     padding: 8px 12px;
     border-radius: 8px;

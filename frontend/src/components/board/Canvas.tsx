@@ -5,7 +5,7 @@ import type { BoardActionResponse, SendBoardActionRequest } from '../../types/bo
 import { CANVAS_CONFIG } from '../../constants/board.constants';
 import { useBoardCanvas } from '../../hooks/useCanvas';
 import type { TOOL_LIST } from '../../constants/board.constants';
-import styles from './BoardCanvas.module.css';
+import styles from './Canvas.module.css';
 
 type Tool = typeof TOOL_LIST[number];
 

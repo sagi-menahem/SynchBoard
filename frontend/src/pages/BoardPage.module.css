@@ -1,11 +1,12 @@
 /* File: frontend/src/pages/BoardPage.module.css */
+
 .page {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
     align-items: center;
-    position: relative; /* Add relative position to act as a container for the toolbar */
+    position: relative;
 }
 
 .header {
@@ -15,7 +16,7 @@
     font-size: 1.75rem;
     line-height: 1.2;
     margin-bottom: 0.5rem;
-    margin-top: 0; /* This removes the extra space above the title */
+    margin-top: 0;
 }
 
 .mainContent {
