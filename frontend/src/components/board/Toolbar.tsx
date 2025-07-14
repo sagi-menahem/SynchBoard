@@ -5,10 +5,13 @@ import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';
 import { TOOL_LIST, STROKE_WIDTH_RANGE } from '../../constants/board.constants';
 import styles from './Toolbar.module.css';
+import { useDraggable } from '../../hooks/useDraggable';
 
 type Tool = typeof TOOL_LIST[number];
 
 interface ToolbarProps {
+    // FIX: Allow the container ref to be null initially
+    containerRef: React.RefObject<HTMLElement | null>;
     strokeColor: string;
     setStrokeColor: (color: string) => void;
     strokeWidth: number;
@@ -18,6 +21,7 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
+    containerRef,
     strokeColor,
     setStrokeColor,
     strokeWidth,
@@ -26,9 +30,15 @@ const Toolbar: React.FC<ToolbarProps> = ({
     setTool,
 }) => {
     const { t } = useTranslation();
+    const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
 
     return (
-        <div className={styles.toolbar}>
+        <div 
+            ref={draggableRef}
+            className={styles.toolbar} 
+            onMouseDown={handleMouseDown} 
+            style={draggableStyle}
+        >
             <label className={styles.label}>
                 {t('toolbar.label.color')}
                 <input 

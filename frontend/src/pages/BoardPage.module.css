@@ -5,19 +5,24 @@
     height: 100%;
     width: 100%;
     align-items: center;
+    position: relative; /* Add relative position to act as a container for the toolbar */
 }
 
 .header {
     text-align: left;
     align-self: flex-start;
     width: 100%;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    margin-top: 0; /* This removes the extra space above the title */
 }
 
 .mainContent {
     display: flex;
     flex: 1;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 0;
     width: 100%;
     overflow: hidden;
 }
