@@ -1,9 +1,9 @@
-// File: frontend/src/components/board/BoardCanvas.tsx
+// File: frontend/src/components/board/Canvas.tsx
 
 import React from 'react';
 import type { BoardActionResponse, SendBoardActionRequest } from '../../types/boardObject.types';
 import { CANVAS_CONFIG } from '../../constants/board.constants';
-import { useBoardCanvas } from '../../hooks/useCanvas';
+import { useCanvas } from '../../hooks/useCanvas';
 import type { TOOL_LIST } from '../../constants/board.constants';
 import styles from './Canvas.module.css';
 
@@ -29,7 +29,7 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
         handleMouseDown,
         handleMouseMove,
         handleMouseUp,
-    } = useBoardCanvas(props);
+    } = useCanvas(props);
 
     return (
         <div ref={containerRef} className={styles.container}>
