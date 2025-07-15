@@ -5,7 +5,7 @@ import Input from '../common/Input';
 import Button from '../common/Button';
 import { useCreateBoardForm } from '../../hooks/useCreateBoardForm';
 import type { Board } from '../../types/board.types';
-import styles from './CreateBoardForm.module.css';
+import styles from '../common/Form.module.css';
 
 interface CreateBoardFormProps {
     onBoardCreated: (newBoard: Board) => void;

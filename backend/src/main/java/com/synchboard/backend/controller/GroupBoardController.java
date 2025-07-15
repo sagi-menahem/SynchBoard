@@ -3,6 +3,8 @@ package com.synchboard.backend.controller;
 
 import com.synchboard.backend.dto.board.BoardDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
+import com.synchboard.backend.dto.board.InviteRequest;
+import com.synchboard.backend.dto.board.MemberDTO;
 import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.service.ActionHistoryService;
 import com.synchboard.backend.service.BoardObjectService;
@@ -48,13 +50,21 @@ public class GroupBoardController {
         return ResponseEntity.ok(objects);
     }
 
+    @PostMapping("/{boardId}/members")
+    public ResponseEntity<MemberDTO> inviteMember(
+            @PathVariable("boardId") Long boardId,
+            @Valid @RequestBody InviteRequest request,
+            Authentication authentication) {
+
+        String invitingUserEmail = authentication.getName();
+        MemberDTO newMember = groupBoardService.inviteMember(boardId, request.getEmail(), invitingUserEmail);
+        return new ResponseEntity<>(newMember, HttpStatus.CREATED);
+    }
+
     @PostMapping("/{boardId}/undo")
     public ResponseEntity<?> undoLastAction(@PathVariable("boardId") Long boardId, Authentication authentication) {
-        // Extract user's email from the security context
         String userEmail = authentication.getName();
-
         BoardActionDTO.Response undoResult = actionHistoryService.undoLastAction(boardId, userEmail);
-
         if (undoResult != null) {
             return ResponseEntity.ok(undoResult);
         } else {

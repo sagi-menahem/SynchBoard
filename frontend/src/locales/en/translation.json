@@ -40,6 +40,17 @@
     "registrationSuccess": "Registration Successful! You can now log in.",
     "failedError": "Registration failed. Please try again later."
   },
+  "inviteMemberForm": {
+    "heading": "Invite a Member",
+    "label": "User's Email:",
+    "placeholder": "e.g., user@example.com",
+    "emailRequiredError": "Email address is required.",
+    "inviteSuccess": "Invitation sent to {{email}}!",
+    "genericError": "Failed to send invitation. Please try again.",
+    "button": {
+        "sendInvite": "Send Invite"
+    }
+},
   "navbar": {
     "title": "SynchBoard",
     "logout": "Logout",
@@ -94,6 +105,7 @@
     "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!"
   },
   "boardPage": {
+    "inviteButton": "Invite Member",
     "heading": "Board Workspace (ID: {{boardId}})",
     "loading": "Loading board..."
   }

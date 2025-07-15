@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupMemberId> {
@@ -14,4 +15,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
     List<GroupMember> findAllByUserEmail(String userEmail);
 
     boolean existsByUserEmailAndBoardGroupId(String userEmail, Long boardGroupId);
+
+    Optional<GroupMember> findByBoardGroupIdAndUserEmail(Long boardGroupId, String userEmail);
+
 }
