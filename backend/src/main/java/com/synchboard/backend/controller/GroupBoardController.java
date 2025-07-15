@@ -72,6 +72,28 @@ public class GroupBoardController {
         return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{boardId}/members/{memberEmail}")
+    public ResponseEntity<?> removeMember(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("memberEmail") String memberEmail,
+            Authentication authentication) {
+
+        String requestingUserEmail = authentication.getName();
+        groupBoardService.removeMember(boardId, memberEmail, requestingUserEmail);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{boardId}/members/{memberEmail}/promote")
+    public ResponseEntity<MemberDTO> promoteMember(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("memberEmail") String memberEmail,
+            Authentication authentication) {
+
+        String requestingUserEmail = authentication.getName();
+        MemberDTO updatedMember = groupBoardService.promoteMember(boardId, memberEmail, requestingUserEmail);
+        return ResponseEntity.ok(updatedMember);
+    }
+
     @PostMapping("/{boardId}/undo")
     public ResponseEntity<?> undoLastAction(@PathVariable("boardId") Long boardId, Authentication authentication) {
         String userEmail = authentication.getName();

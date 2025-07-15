@@ -125,6 +125,55 @@ public class GroupBoardService {
                                 .build();
         }
 
+        @Transactional
+        public void removeMember(Long boardId, String emailToRemove, String requestingUserEmail) {
+                GroupMember requestingAdmin = groupMemberRepository
+                                .findByBoardGroupIdAndUserEmail(boardId, requestingUserEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                if (!requestingAdmin.getIsAdmin()) {
+                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
+                }
+
+                if (requestingUserEmail.equals(emailToRemove)) {
+                        throw new IllegalArgumentException(ERROR_CANNOT_REMOVE_SELF);
+                }
+
+                GroupMember memberToRemove = groupMemberRepository
+                                .findByBoardGroupIdAndUserEmail(boardId, emailToRemove)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Member with email " + emailToRemove + " not found in this board."));
+
+                groupMemberRepository.delete(memberToRemove);
+        }
+
+        @Transactional
+        public MemberDTO promoteMember(Long boardId, String emailToPromote, String requestingUserEmail) {
+                GroupMember requestingAdmin = groupMemberRepository
+                                .findByBoardGroupIdAndUserEmail(boardId, requestingUserEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                if (!requestingAdmin.getIsAdmin()) {
+                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
+                }
+
+                GroupMember memberToPromote = groupMemberRepository
+                                .findByBoardGroupIdAndUserEmail(boardId, emailToPromote)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Member with email " + emailToPromote + " not found in this board."));
+
+                if (memberToPromote.getIsAdmin()) {
+                        throw new IllegalArgumentException(ERROR_USER_IS_ALREADY_ADMIN);
+                }
+
+                memberToPromote.setIsAdmin(true);
+                groupMemberRepository.save(memberToPromote);
+
+                return mapToMemberDTO(memberToPromote);
+        }
+
         private BoardDTO mapToBoardResponse(GroupMember membership) {
                 return BoardDTO.builder()
                                 .id(membership.getGroupBoard().getBoardGroupId())
