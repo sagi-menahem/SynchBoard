@@ -1,4 +1,5 @@
 {
+  "_filePath": "frontend/src/locales/he/translation.json",
   "common": {
     "_comment": "Shared text used across multiple components",
     "form": {
