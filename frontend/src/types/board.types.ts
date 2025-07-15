@@ -24,3 +24,11 @@ export interface Member {
 export interface InviteMemberRequest {
     email: string;
 }
+
+export interface BoardDetails {
+    id: number;
+    name: string;
+    description: string | null;
+    pictureUrl: string | null;
+    members: Member[];
+}

@@ -2,6 +2,7 @@
 package com.synchboard.backend.controller;
 
 import com.synchboard.backend.dto.board.BoardDTO;
+import com.synchboard.backend.dto.board.BoardDetailsDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
 import com.synchboard.backend.dto.board.InviteRequest;
 import com.synchboard.backend.dto.board.MemberDTO;
@@ -34,6 +35,16 @@ public class GroupBoardController {
         String userEmail = authentication.getName();
         List<BoardDTO> boards = groupBoardService.getBoardsForUser(userEmail);
         return ResponseEntity.ok(boards);
+    }
+
+    @GetMapping("/{boardId}/details")
+    public ResponseEntity<BoardDetailsDTO> getBoardDetails(
+            @PathVariable("boardId") Long boardId,
+            Authentication authentication) {
+
+        String userEmail = authentication.getName();
+        BoardDetailsDTO boardDetails = groupBoardService.getBoardDetails(boardId, userEmail);
+        return ResponseEntity.ok(boardDetails);
     }
 
     @PostMapping

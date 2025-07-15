@@ -4,6 +4,8 @@ export const APP_ROUTES = {
     BOARD_LIST: '/boards',
     
     BOARD_DETAIL_PATTERN: '/board/:boardId',
-
     getBoardDetailRoute: (boardId: number | string) => `/board/${boardId}`,
+
+    BOARD_DETAILS_PATTERN: '/board/:boardId/details',
+    getBoardDetailsRoute: (boardId: number | string) => `/board/${boardId}/details`,
 } as const;

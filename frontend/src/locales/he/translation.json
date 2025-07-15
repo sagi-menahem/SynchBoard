@@ -104,7 +104,17 @@
     "adminLabel": " (מנהל)",
     "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!"
   },
+  "boardDetailsPage": {
+    "backToBoardButton": "חזרה ללוח",
+    "loading": "טוען פרטי לוח...",
+    "notFound": "הלוח לא נמצא או שאין לך גישה אליו.",
+    "noDescription": "לא סופק תיאור.",
+    "inviteButton": "+ הזמן חבר",
+    "membersHeader": "חברים",
+    "adminBadge": "מנהל"
+  },
   "boardPage": {
+    "backButton": "חזרה ללוחות",
     "inviteButton": "הזמן חבר",
     "heading": "סביבת עבודה בלוח (מזהה: {{boardId}})",
     "loading": "טוען לוח..."

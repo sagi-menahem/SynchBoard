@@ -104,9 +104,20 @@
     "adminLabel": " (Admin)",
     "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!"
   },
+  "boardDetailsPage": {
+    "backToBoardButton": "Back to Board",
+    "loading": "Loading board details...",
+    "notFound": "Board not found or you do not have access.",
+    "noDescription": "No description provided.",
+    "inviteButton": "+ Invite Member",
+    "membersHeader": "Members",
+    "adminBadge": "Admin"
+  },
   "boardPage": {
+    "backButton": "Back to Boards",
     "inviteButton": "Invite Member",
     "heading": "Board Workspace (ID: {{boardId}})",
     "loading": "Loading board..."
   }
+  
 }

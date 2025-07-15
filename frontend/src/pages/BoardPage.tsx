@@ -1,15 +1,14 @@
 // File: frontend/src/pages/BoardPage.tsx
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useBoardContext } from '../hooks/useBoardContext';
-import { useBoardPage } from '../hooks/useBoardPage';
+import { useToolbarState } from '../hooks/useToolbarState';
 import Canvas from '../components/board/Canvas';
 import Toolbar from '../components/board/Toolbar';
 import ChatWindow from '../components/chat/ChatWindow';
 import Button from '../components/common/Button';
-import Modal from '../components/common/Modal';
-import InviteMemberForm from '../components/board/InviteMemberForm';
+import { APP_ROUTES } from '../constants/routes.constants';
 import styles from './BoardPage.module.css';
 
 const BoardPage: React.FC = () => {
@@ -17,6 +16,7 @@ const BoardPage: React.FC = () => {
     const { boardId: boardIdString } = useParams<{ boardId: string }>();
     const boardId = parseInt(boardIdString || '0', 10);
     const pageRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const {
         isLoading,
@@ -30,21 +30,15 @@ const BoardPage: React.FC = () => {
         isUndoAvailable,
         isRedoAvailable,
     } = useBoardContext();
-
-    const isAdmin = boardDetails?.isAdmin || false;
-
+    
     const {
-        isInviteModalOpen,
-        openInviteModal,
-        closeInviteModal,
-        handleInviteSuccess,
         tool,
         setTool,
         strokeColor,
         setStrokeColor,
         strokeWidth,
         setStrokeWidth,
-    } = useBoardPage();
+    } = useToolbarState();
 
     if (isLoading) {
         return <div>{t('boardPage.loading')}</div>;
@@ -53,12 +47,15 @@ const BoardPage: React.FC = () => {
     return (
         <div className={styles.page} ref={pageRef}>
             <div className={styles.header}>
-                <h1>{boardDetails?.name || t('boardPage.loading')}</h1>
-                {isAdmin && (
-                    <Button onClick={openInviteModal} variant="secondary">
-                        {t('boardPage.inviteButton')}
+                <div className={styles.headerTitle}>
+                    {/* Add Back Button */}
+                    <Button onClick={() => navigate(APP_ROUTES.BOARD_LIST)}>
+                        &larr; {t('boardPage.backButton')}
                     </Button>
-                )}
+                    <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
+                        <h1>{boardDetails?.name || t('boardPage.loading')}</h1>
+                    </Link>
+                </div>
             </div>
             <Toolbar
                 containerRef={pageRef}
@@ -92,13 +89,6 @@ const BoardPage: React.FC = () => {
                     />
                 </div>
             </div>
-
-            <Modal isOpen={isInviteModalOpen} onClose={closeInviteModal}>
-                <InviteMemberForm
-                    boardId={boardId}
-                    onInviteSuccess={handleInviteSuccess}
-                />
-            </Modal>
         </div>
     );
 };

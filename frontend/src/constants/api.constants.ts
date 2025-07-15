@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     UNDO: (boardId: number) => `/boards/${boardId}/undo`,
     REDO: (boardId: number) => `/boards/${boardId}/redo`,
     INVITE_MEMBER: (boardId: number) => `/boards/${boardId}/members`,
+    GET_BOARD_DETAILS: (boardId: number) => `/boards/${boardId}/details`,
 } as const;
 
 export const PUBLIC_API_ENDPOINTS: readonly string[] = [
