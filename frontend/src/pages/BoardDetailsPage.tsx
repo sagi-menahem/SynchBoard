@@ -1,32 +1,33 @@
 // File: frontend/src/pages/BoardDetailsPage.tsx
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Import Link
+import React from 'react'; // Removed useState as it's no longer needed here
+import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useBoardDetails } from '../hooks/useBoardDetails';
-import { useAuth } from '../hooks/useAuth';
+import { useBoardDetailsPage } from '../hooks/useBoardDetailsPage';
 import styles from './BoardDetailsPage.module.css';
 import Button from '../components/common/Button';
 import Modal from '../components/common/Modal';
 import InviteMemberForm from '../components/board/InviteMemberForm';
-import type { Member } from '../types/board.types';
-import { APP_ROUTES } from '../constants/routes.constants'; // Import routes
+import { APP_ROUTES } from '../constants/routes.constants';
+import { ContextMenu } from '../components/common/ContextMenu';
+import { ContextMenuItem } from '../components/common/ContextMenuItem';
 
 const BoardDetailsPage: React.FC = () => {
     const { t } = useTranslation();
     const { boardId } = useParams<{ boardId: string }>();
     const numericBoardId = parseInt(boardId || '0', 10);
 
-    const { userEmail } = useAuth();
-    const { boardDetails, isLoading } = useBoardDetails(numericBoardId);
-    
-    const [isInviteModalOpen, setInviteModalOpen] = useState(false);
-
-    const currentUserIsAdmin = boardDetails?.members.find(member => member.email === userEmail)?.isAdmin || false;
-
-    const handleInviteSuccess = (newMember: Member) => {
-        console.log("Successfully invited:", newMember);
-        setInviteModalOpen(false);
-    };
+    const {
+        isLoading,
+        boardDetails,
+        currentUserIsAdmin,
+        contextMenu,
+        isInviteModalOpen,
+        setInviteModalOpen,
+        handleInviteSuccess,
+        handlePromote,
+        handleRemove,
+        handleRightClick // <-- Get the correct handler from the hook
+    } = useBoardDetailsPage(numericBoardId);
 
     if (isLoading) {
         return <div>{t('boardDetailsPage.loading')}</div>;
@@ -38,14 +39,13 @@ const BoardDetailsPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
+             <div className={styles.header}>
                 <div>
                     <h1>{boardDetails.name}</h1>
                     <p className={styles.description}>
                         {boardDetails.description || t('boardDetailsPage.noDescription')}
                     </p>
                 </div>
-                {/* Back Button */}
                 <Link to={APP_ROUTES.getBoardDetailRoute(numericBoardId)}>
                     <Button variant="secondary">
                         &larr; {t('boardDetailsPage.backToBoardButton')}
@@ -53,7 +53,6 @@ const BoardDetailsPage: React.FC = () => {
                 </Link>
             </div>
 
-            {/* The Invite button is now inside the members section */}
             <div className={styles.header}>
                 <h2>{t('boardDetailsPage.membersHeader')}</h2>
                 {currentUserIsAdmin && (
@@ -65,17 +64,31 @@ const BoardDetailsPage: React.FC = () => {
 
             <ul className={styles.membersList}>
                 {boardDetails.members.map(member => (
-                    <li key={member.email} className={styles.memberItem}>
-                        <div>
-                            <div className={styles.memberName}>{member.firstName} {member.lastName}</div>
-                            <div className={styles.memberEmail}>{member.email}</div>
-                        </div>
-                        {member.isAdmin && (
-                            <span className={styles.adminBadge}>{t('boardDetailsPage.adminBadge')}</span>
-                        )}
-                    </li>
+                    <div 
+                        key={member.email} 
+                        onContextMenu={(e) => handleRightClick(e, member)}
+                    >
+                        <li className={styles.memberItem}>
+                            <div>
+                                <div className={styles.memberName}>{member.firstName} {member.lastName}</div>
+                                <div className={styles.memberEmail}>{member.email}</div>
+                            </div>
+                            {member.isAdmin && (
+                                <span className={styles.adminBadge}>{t('boardDetailsPage.adminBadge')}</span>
+                            )}
+                        </li>
+                    </div>
                 ))}
             </ul>
+            
+            {contextMenu.isOpen && contextMenu.data && (
+                <ContextMenu x={contextMenu.anchorPoint.x} y={contextMenu.anchorPoint.y} onClose={contextMenu.closeMenu}>
+                    {!contextMenu.data.isAdmin && (
+                        <ContextMenuItem onClick={handlePromote}>Promote to Admin</ContextMenuItem>
+                    )}
+                    <ContextMenuItem onClick={handleRemove} destructive>Remove from Board</ContextMenuItem>
+                </ContextMenu>
+            )}
 
             <Modal isOpen={isInviteModalOpen} onClose={() => setInviteModalOpen(false)}>
                 <InviteMemberForm boardId={numericBoardId} onInviteSuccess={handleInviteSuccess} />

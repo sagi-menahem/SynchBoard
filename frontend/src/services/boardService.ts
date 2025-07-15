@@ -29,6 +29,15 @@ export const inviteMember = async (boardId: number, email: string): Promise<Memb
     return response.data;
 };
 
+export const removeMember = async (boardId: number, memberEmail: string): Promise<void> => {
+    await apiClient.delete(API_ENDPOINTS.REMOVE_MEMBER(boardId, memberEmail));
+};
+
+export const promoteMember = async (boardId: number, memberEmail: string): Promise<Member> => {
+    const response = await apiClient.put<Member>(API_ENDPOINTS.PROMOTE_MEMBER(boardId, memberEmail));
+    return response.data;
+};
+
 export const undoLastAction = async (boardId: number): Promise<BoardActionResponse> => {
     const response = await apiClient.post<BoardActionResponse>(API_ENDPOINTS.UNDO(boardId));
     return response.data;
