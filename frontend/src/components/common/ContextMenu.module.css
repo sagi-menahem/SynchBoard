@@ -1,0 +1,39 @@
+/* File: frontend/src/components/common/ContextMenu.module.css */
+.menu {
+    position: absolute;
+    z-index: 1000;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    min-width: 180px;
+}
+
+.item {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.item:hover {
+    background-color: #535bf2;
+    color: white;
+}
+
+.separator {
+    height: 1px;
+    background-color: #555;
+    margin: 4px 0;
+}
+
+.destructive {
+    color: #f87171;
+}
+
+.destructive:hover {
+    background-color: #f87171;
+    color: white;
+}
