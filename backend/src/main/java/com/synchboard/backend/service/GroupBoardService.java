@@ -2,15 +2,19 @@
 package com.synchboard.backend.service;
 
 import com.synchboard.backend.dto.board.BoardDTO;
+import com.synchboard.backend.dto.board.BoardDetailsDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
 import com.synchboard.backend.dto.board.MemberDTO;
 import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.GroupMember;
 import com.synchboard.backend.entity.User;
+import com.synchboard.backend.exception.ResourceNotFoundException; // Assuming this exists as per spec
 import com.synchboard.backend.repository.GroupBoardRepository;
 import com.synchboard.backend.repository.GroupMemberRepository;
 import com.synchboard.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,8 @@ import static com.synchboard.backend.config.ApplicationConstants.*;
 @Service
 @RequiredArgsConstructor
 public class GroupBoardService {
+
+        private static final Logger log = LoggerFactory.getLogger(GroupBoardService.class);
 
         private final GroupMemberRepository groupMemberRepository;
         private final GroupBoardRepository groupBoardRepository;
@@ -60,22 +66,14 @@ public class GroupBoardService {
                 return mapToBoardResponse(newMembership);
         }
 
-        private BoardDTO mapToBoardResponse(GroupMember membership) {
-                return BoardDTO.builder()
-                                .id(membership.getGroupBoard().getBoardGroupId())
-                                .name(membership.getGroupBoard().getBoardGroupName())
-                                .description(membership.getGroupBoard().getGroupDescription())
-                                .pictureUrl(membership.getGroupBoard().getGroupPictureUrl())
-                                .lastModifiedDate(membership.getGroupBoard().getLastModifiedDate())
-                                .isAdmin(membership.getIsAdmin())
-                                .build();
-        }
-
         @Transactional
         public MemberDTO inviteMember(Long boardId, String invitedUserEmail, String invitingUserEmail) {
                 GroupMember invitingMember = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, invitingUserEmail)
                                 .orElseThrow(() -> new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER));
+
+                log.info("Checking admin status for user: {}. Is admin? {}", invitingMember.getUserEmail(),
+                                invitingMember.getIsAdmin());
 
                 if (!invitingMember.getIsAdmin()) {
                         throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
@@ -100,6 +98,42 @@ public class GroupBoardService {
                 groupMemberRepository.save(newMembership);
 
                 return mapToMemberDTO(newMembership);
+        }
+
+        @Transactional(readOnly = true)
+        public BoardDetailsDTO getBoardDetails(Long boardId, String userEmail) {
+                if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
+                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+                }
+
+                GroupBoard board = groupBoardRepository.findById(boardId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Board not found with id: " + boardId));
+
+                List<GroupMember> members = groupMemberRepository.findAllByBoardGroupId(boardId);
+
+                List<MemberDTO> memberDTOs = members.stream()
+                                .map(this::mapToMemberDTO)
+                                .collect(Collectors.toList());
+
+                return BoardDetailsDTO.builder()
+                                .id(board.getBoardGroupId())
+                                .name(board.getBoardGroupName())
+                                .description(board.getGroupDescription())
+                                .pictureUrl(board.getGroupPictureUrl())
+                                .members(memberDTOs)
+                                .build();
+        }
+
+        private BoardDTO mapToBoardResponse(GroupMember membership) {
+                return BoardDTO.builder()
+                                .id(membership.getGroupBoard().getBoardGroupId())
+                                .name(membership.getGroupBoard().getBoardGroupName())
+                                .description(membership.getGroupBoard().getGroupDescription())
+                                .pictureUrl(membership.getGroupBoard().getGroupPictureUrl())
+                                .lastModifiedDate(membership.getGroupBoard().getLastModifiedDate())
+                                .isAdmin(membership.getIsAdmin())
+                                .build();
         }
 
         private MemberDTO mapToMemberDTO(GroupMember membership) {

@@ -9,13 +9,17 @@
 }
 
 .header {
-    text-align: left;
-    align-self: flex-start;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    font-size: 1.75rem;
-    line-height: 1.2;
     margin-bottom: 0.5rem;
-    margin-top: 0;
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .mainContent {
@@ -35,4 +39,14 @@
 .chatContainer {
     flex: 1;
     min-width: 300px;
+}
+
+.headerLink {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.headerLink:hover {
+    color: #8186ff;
 }

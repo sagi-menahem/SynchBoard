@@ -1,6 +1,6 @@
 // File: frontend/src/services/boardService.ts
 import apiClient from './apiClient';
-import type { Board, CreateBoardRequest, Member } from '../types/board.types';
+import type { Board, CreateBoardRequest, Member, BoardDetails } from '../types/board.types';
 import type { BoardActionResponse } from '../types/boardObject.types';
 import { API_ENDPOINTS } from '../constants/api.constants';
 
@@ -16,6 +16,11 @@ export const createBoard = async (boardData: CreateBoardRequest): Promise<Board>
 
 export const getBoardObjects = async (boardId: number): Promise<BoardActionResponse[]> => {
     const response = await apiClient.get<BoardActionResponse[]>(API_ENDPOINTS.BOARD_OBJECTS(boardId));
+    return response.data;
+};
+
+export const getBoardDetails = async (boardId: number): Promise<BoardDetails> => {
+    const response = await apiClient.get<BoardDetails>(API_ENDPOINTS.GET_BOARD_DETAILS(boardId));
     return response.data;
 };
 

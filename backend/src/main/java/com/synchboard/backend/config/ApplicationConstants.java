@@ -58,5 +58,6 @@ public final class ApplicationConstants {
     public static final String ERROR_USER_ALREADY_MEMBER = "User is already a member of this board";
     public static final String ERROR_ACCESS_DENIED_NOT_A_MEMBER = "Inviting user is not a member of the board.";
     public static final String ERROR_ACCESS_DENIED_NOT_AN_ADMIN = "User does not have admin privileges for this board.";
+    public static final String ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD = "User is not a member of this board.";
 
 }
