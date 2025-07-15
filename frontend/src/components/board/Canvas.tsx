@@ -9,8 +9,7 @@ import styles from './Canvas.module.css';
 
 type Tool = typeof TOOL_LIST[number];
 
-// UPDATED PROPS
-interface BoardCanvasProps {
+interface CanvasProps {
     instanceId: string;
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     objects: ActionPayload[];
@@ -19,7 +18,7 @@ interface BoardCanvasProps {
     strokeWidth: number;
 }
 
-const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
+const Canvas: React.FC<CanvasProps> = (props) => {
     const {
         mainCanvasRef,
         previewCanvasRef,
@@ -53,4 +52,4 @@ const BoardCanvas: React.FC<BoardCanvasProps> = (props) => {
     );
 };
 
-export default BoardCanvas;
+export default Canvas;
