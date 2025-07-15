@@ -55,4 +55,8 @@ public final class ApplicationConstants {
     public static final String BOARD_NOT_FOUND = "Board not found: ";
     public static final String ERROR_EMAIL_IN_USE = "Error: Email is already in use!";
     public static final String ERROR_USER_NOT_FOUND_AFTER_AUTH = "User not found after authentication";
+    public static final String ERROR_USER_ALREADY_MEMBER = "User is already a member of this board";
+    public static final String ERROR_ACCESS_DENIED_NOT_A_MEMBER = "Inviting user is not a member of the board.";
+    public static final String ERROR_ACCESS_DENIED_NOT_AN_ADMIN = "User does not have admin privileges for this board.";
+
 }

@@ -12,3 +12,15 @@ export interface CreateBoardRequest {
   name: string;
   description?: string;
 }
+
+export interface Member {
+    email: string;
+    firstName: string;
+    lastName: string;
+    profilePictureUrl: string | null;
+    isAdmin: boolean;
+}
+
+export interface InviteMemberRequest {
+    email: string;
+}

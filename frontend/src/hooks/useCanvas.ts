@@ -52,7 +52,6 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
         previewContextRef.current = setupContext(previewCanvasRef.current);
     }, [dimensions]);
 
-    // Callback to redraw an existing action on the canvas
     const replayDrawAction = useCallback((payload: ActionPayload, targetCtx: CanvasRenderingContext2D, targetCanvas: HTMLCanvasElement) => {
         targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
@@ -86,7 +85,6 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
         targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
     }, []);
 
-    // Effect to redraw all objects when they change
     useEffect(() => {
         const canvas = mainCanvasRef.current;
         const ctx = contextRef.current;
@@ -97,7 +95,6 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
 
     }, [objects, dimensions, replayDrawAction]);
 
-    // Mouse event handlers
     const handleMouseDown = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = previewCanvasRef.current;
         if (!canvas) return;

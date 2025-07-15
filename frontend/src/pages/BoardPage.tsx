@@ -1,15 +1,16 @@
 // File: frontend/src/pages/BoardPage.tsx
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useBoardContext } from '../hooks/useBoardContext';
+import { useBoardPage } from '../hooks/useBoardPage';
 import Canvas from '../components/board/Canvas';
 import Toolbar from '../components/board/Toolbar';
 import ChatWindow from '../components/chat/ChatWindow';
-import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
+import Button from '../components/common/Button';
+import Modal from '../components/common/Modal';
+import InviteMemberForm from '../components/board/InviteMemberForm';
 import styles from './BoardPage.module.css';
-
-type Tool = typeof TOOL_LIST[number];
 
 const BoardPage: React.FC = () => {
     const { t } = useTranslation();
@@ -21,6 +22,7 @@ const BoardPage: React.FC = () => {
         isLoading,
         objects,
         messages,
+        boardDetails,
         instanceId,
         handleDrawAction,
         handleUndo,
@@ -29,9 +31,20 @@ const BoardPage: React.FC = () => {
         isRedoAvailable,
     } = useBoardContext();
 
-    const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);
-    const [strokeColor, setStrokeColor] = useState<string>(DEFAULT_DRAWING_CONFIG.STROKE_COLOR);
-    const [strokeWidth, setStrokeWidth] = useState<number>(DEFAULT_DRAWING_CONFIG.STROKE_WIDTH);
+    const isAdmin = boardDetails?.isAdmin || false;
+
+    const {
+        isInviteModalOpen,
+        openInviteModal,
+        closeInviteModal,
+        handleInviteSuccess,
+        tool,
+        setTool,
+        strokeColor,
+        setStrokeColor,
+        strokeWidth,
+        setStrokeWidth,
+    } = useBoardPage();
 
     if (isLoading) {
         return <div>{t('boardPage.loading')}</div>;
@@ -39,8 +52,15 @@ const BoardPage: React.FC = () => {
 
     return (
         <div className={styles.page} ref={pageRef}>
-            <h1 className={styles.header}>{t('boardPage.heading', { boardId })}</h1>
-            <Toolbar 
+            <div className={styles.header}>
+                <h1>{boardDetails?.name || t('boardPage.loading')}</h1>
+                {isAdmin && (
+                    <Button onClick={openInviteModal} variant="secondary">
+                        {t('boardPage.inviteButton')}
+                    </Button>
+                )}
+            </div>
+            <Toolbar
                 containerRef={pageRef}
                 strokeColor={strokeColor}
                 setStrokeColor={setStrokeColor}
@@ -50,13 +70,13 @@ const BoardPage: React.FC = () => {
                 setTool={setTool}
                 onUndo={handleUndo}
                 isUndoAvailable={isUndoAvailable}
-                onRedo={handleRedo} // Pass redo props
+                onRedo={handleRedo}
                 isRedoAvailable={isRedoAvailable}
             />
 
             <div className={styles.mainContent}>
                 <div className={styles.canvasContainer}>
-                    <Canvas 
+                    <Canvas
                         instanceId={instanceId}
                         onDraw={handleDrawAction}
                         objects={objects}
@@ -66,12 +86,19 @@ const BoardPage: React.FC = () => {
                     />
                 </div>
                 <div className={styles.chatContainer}>
-                    <ChatWindow 
+                    <ChatWindow
                         boardId={boardId}
-                        messages={messages} 
+                        messages={messages}
                     />
                 </div>
             </div>
+
+            <Modal isOpen={isInviteModalOpen} onClose={closeInviteModal}>
+                <InviteMemberForm
+                    boardId={boardId}
+                    onInviteSuccess={handleInviteSuccess}
+                />
+            </Modal>
         </div>
     );
 };

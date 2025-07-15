@@ -29,7 +29,11 @@ const BoardListPage: React.FC = () => {
             {boards.length > 0 ? (
                 <div className={styles.boardList}>
                     {boards.map(board => (
-                        <Link key={board.id} to={APP_ROUTES.getBoardDetailRoute(board.id)} className={styles.boardCard}>
+                        <Link 
+                            key={board.id} 
+                            to={APP_ROUTES.getBoardDetailRoute(board.id)} 
+                            className={styles.boardCard}
+                        >
                             <h2>{board.name}</h2>
                             <p>{board.description || t('boardListPage.noDescription')}</p>
                             {board.isAdmin && <span className={styles.adminLabel}>{t('boardListPage.adminLabel')}</span>}

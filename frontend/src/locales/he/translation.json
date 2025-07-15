@@ -56,6 +56,17 @@
       "boardName": "שם הלוח",
       "description": "תיאור (אופציונלי)"
     },
+    "inviteMemberForm": {
+    "heading": "הזמן חבר חדש",
+    "label": "אימייל משתמש:",
+    "placeholder": "לדוגמה, user@example.com",
+    "emailRequiredError": "יש להזין כתובת אימייל.",
+    "inviteSuccess": "הזמנה נשלחה אל {{email}}!",
+    "genericError": "שליחת ההזמנה נכשלה. אנא נסה שנית.",
+    "button": {
+        "sendInvite": "שלח הזמנה"
+    }
+  },
     "placeholder": {
       "name": "לדוגמה, תכנון פרויקט לרבעון 3",
       "description": "על מה הלוח הזה?"
@@ -94,6 +105,7 @@
     "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!"
   },
   "boardPage": {
+    "inviteButton": "הזמן חבר",
     "heading": "סביבת עבודה בלוח (מזהה: {{boardId}})",
     "loading": "טוען לוח..."
   }

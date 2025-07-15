@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { useRegisterForm } from '../../hooks/useRegisterForm';
-import styles from './AuthForm.module.css';
+import styles from '../common/Form.module.css';
 
 interface RegisterFormProps {
     onRegistrationSuccess: () => void;
