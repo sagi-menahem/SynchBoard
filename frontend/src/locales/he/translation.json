@@ -17,7 +17,8 @@
       "loggingIn": "מתחבר...",
       "registering": "רושם...",
       "save": "שמור",
-      "saving": "שומר..."
+      "saving": "שומר...",
+      "confirm": "אישור"
     }
   },
   "authPage": {
