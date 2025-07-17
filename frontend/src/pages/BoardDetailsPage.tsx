@@ -9,9 +9,12 @@ import Modal from '../components/common/Modal';
 import InviteMemberForm from '../components/board/InviteMemberForm';
 import EditFieldForm from '../components/board/EditFieldForm';
 import { APP_ROUTES } from '../constants/routes.constants';
+import { API_BASE_URL } from '../constants/api.constants';
 import { ContextMenu } from '../components/common/ContextMenu';
 import { ContextMenuItem } from '../components/common/ContextMenuItem';
 import ConfirmationDialog from '../components/common/ConfirmationDialog';
+import PictureManagerModal from '../components/board/PictureManagerModal';
+import defaultBoardImage from '../assets/default-board-image.png';
 
 const BoardDetailsPage: React.FC = () => {
     const { t } = useTranslation();
@@ -29,6 +32,10 @@ const BoardDetailsPage: React.FC = () => {
         setEditingField,
         isLeaveConfirmOpen,
         setLeaveConfirmOpen,
+        isPictureModalOpen,
+        setPictureModalOpen,
+        isDeleteConfirmOpen,
+        setDeleteConfirmOpen,
         handleInviteSuccess,
         handlePromote,
         handleRemove,
@@ -36,6 +43,9 @@ const BoardDetailsPage: React.FC = () => {
         handleUpdateDescription,
         handleRightClick,
         handleLeaveBoard,
+        handlePictureUpload,
+        promptPictureDelete,
+        handleConfirmDeletePicture,
     } = useBoardDetailsPage(numericBoardId);
 
     if (isLoading) {
@@ -46,43 +56,45 @@ const BoardDetailsPage: React.FC = () => {
         return <div>{t('boardDetailsPage.notFound')}</div>;
     }
 
+    const imageSource = boardDetails.pictureUrl
+        ? `${API_BASE_URL.replace('/api', '')}${boardDetails.pictureUrl}`
+        : defaultBoardImage;
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <h1
-                        className={styles.editableText}
-                        onClick={() => setEditingField('name')}
-                    >
-                        {boardDetails.name}
-                    </h1>
-                    <p
-                        className={`${styles.description} ${styles.editableText}`}
-                        onClick={() => setEditingField('description')}
-                    >
-                        {boardDetails.description || t('boardDetailsPage.noDescription')}
-                    </p>
+                    <img
+                        src={imageSource}
+                        alt={`${boardDetails.name} picture`}
+                        className={styles.boardImage}
+                        onClick={() => setPictureModalOpen(true)}
+                    />
+                    <div>
+                        <h1 className={styles.editableText} onClick={() => setEditingField('name')}>
+                            {boardDetails.name}
+                        </h1>
+                        <p
+                            className={`${styles.description} ${styles.editableText}`}
+                            onClick={() => setEditingField('description')}
+                        >
+                            {boardDetails.description || t('boardDetailsPage.noDescription')}
+                        </p>
+                    </div>
                 </div>
                 <Link to={APP_ROUTES.getBoardDetailRoute(numericBoardId)}>
-                    <Button variant="secondary">
-                        &larr; {t('boardDetailsPage.backToBoardButton')}
-                    </Button>
+                    <Button variant="secondary">&larr; {t('boardDetailsPage.backToBoardButton')}</Button>
                 </Link>
             </div>
 
             <div className={styles.header}>
                 <h2>{t('boardDetailsPage.membersHeader')}</h2>
                 <div className={styles.headerActions}>
-                    <Button
-                        onClick={() => setLeaveConfirmOpen(true)}
-                        className={styles.destructiveButton}
-                    >
+                    <Button onClick={() => setLeaveConfirmOpen(true)} className={styles.destructiveButton}>
                         {t('leaveBoard.button')}
                     </Button>
                     {currentUserIsAdmin && (
-                        <Button onClick={() => setInviteModalOpen(true)}>
-                            {t('boardDetailsPage.inviteButton')}
-                        </Button>
+                        <Button onClick={() => setInviteModalOpen(true)}>{t('boardDetailsPage.inviteButton')}</Button>
                     )}
                 </div>
             </div>
@@ -146,6 +158,23 @@ const BoardDetailsPage: React.FC = () => {
                 onClose={() => setLeaveConfirmOpen(false)}
                 onConfirm={handleLeaveBoard}
                 title={t('leaveBoard.confirmTitle')}
+                message={t('leaveBoard.confirmText', { boardName: boardDetails.name })}
+            />
+
+            <PictureManagerModal
+                isOpen={isPictureModalOpen}
+                onClose={() => setPictureModalOpen(false)}
+                boardName={boardDetails.name}
+                pictureUrl={boardDetails.pictureUrl}
+                onPictureUpload={handlePictureUpload}
+                onPictureDelete={promptPictureDelete}
+            />
+
+            <ConfirmationDialog
+                isOpen={isDeleteConfirmOpen}
+                onClose={() => setDeleteConfirmOpen(false)}
+                onConfirm={handleConfirmDeletePicture}
+                title={t('pictureManager.deleteButton')}
                 message={t('leaveBoard.confirmText', { boardName: boardDetails.name })}
             />
         </div>

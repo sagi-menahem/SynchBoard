@@ -9,11 +9,32 @@
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-
+    align-items: flex-start;
+    gap: 1.5rem;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #444;
+}
+
+.boardImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: transparent;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.boardImage:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(169, 169, 255, 0.3);
 }
 
 .editableText {

@@ -140,5 +140,10 @@
     "inviteButton": "הזמן חבר",
     "heading": "סביבת עבודה בלוח (מזהה: {{boardId}})",
     "loading": "טוען לוח..."
+  },
+  "pictureManager": {
+    "title": "נהל תמונה עבור '{{boardName}}'",
+    "changeButton": "שנה תמונה",
+    "deleteButton": "מחק תמונה"
   }
 }
