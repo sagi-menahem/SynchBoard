@@ -1,5 +1,5 @@
 // File: frontend/src/pages/BoardDetailsPage.tsx
-import React from 'react'; // Removed useState as it's no longer needed here
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useBoardDetailsPage } from '../hooks/useBoardDetailsPage';
@@ -7,6 +7,7 @@ import styles from './BoardDetailsPage.module.css';
 import Button from '../components/common/Button';
 import Modal from '../components/common/Modal';
 import InviteMemberForm from '../components/board/InviteMemberForm';
+import EditFieldForm from '../components/board/EditFieldForm';
 import { APP_ROUTES } from '../constants/routes.constants';
 import { ContextMenu } from '../components/common/ContextMenu';
 import { ContextMenuItem } from '../components/common/ContextMenuItem';
@@ -26,7 +27,11 @@ const BoardDetailsPage: React.FC = () => {
         handleInviteSuccess,
         handlePromote,
         handleRemove,
-        handleRightClick // <-- Get the correct handler from the hook
+        handleRightClick,
+        editingField,
+        setEditingField,
+        handleUpdateName,
+        handleUpdateDescription
     } = useBoardDetailsPage(numericBoardId);
 
     if (isLoading) {
@@ -39,10 +44,18 @@ const BoardDetailsPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-             <div className={styles.header}>
-                <div>
-                    <h1>{boardDetails.name}</h1>
-                    <p className={styles.description}>
+            <div className={styles.header}>
+                <div className={styles.headerLeft}>
+                    <h1 
+                        className={styles.editableText} 
+                        onClick={() => setEditingField('name')}
+                    >
+                        {boardDetails.name}
+                    </h1>
+                    <p 
+                        className={`${styles.description} ${styles.editableText}`}
+                        onClick={() => setEditingField('description')}
+                    >
                         {boardDetails.description || t('boardDetailsPage.noDescription')}
                     </p>
                 </div>
@@ -63,7 +76,7 @@ const BoardDetailsPage: React.FC = () => {
             </div>
 
             <ul className={styles.membersList}>
-                {boardDetails.members.map(member => (
+                 {boardDetails.members.map(member => (
                     <div 
                         key={member.email} 
                         onContextMenu={(e) => handleRightClick(e, member)}
@@ -84,14 +97,36 @@ const BoardDetailsPage: React.FC = () => {
             {contextMenu.isOpen && contextMenu.data && (
                 <ContextMenu x={contextMenu.anchorPoint.x} y={contextMenu.anchorPoint.y} onClose={contextMenu.closeMenu}>
                     {!contextMenu.data.isAdmin && (
-                        <ContextMenuItem onClick={handlePromote}>Promote to Admin</ContextMenuItem>
+                        <ContextMenuItem onClick={handlePromote}>{t('contextMenu.promoteToAdmin')}</ContextMenuItem>
                     )}
-                    <ContextMenuItem onClick={handleRemove} destructive>Remove from Board</ContextMenuItem>
+                    <ContextMenuItem onClick={handleRemove} destructive>{t('contextMenu.removeFromBoard')}</ContextMenuItem>
                 </ContextMenu>
             )}
 
             <Modal isOpen={isInviteModalOpen} onClose={() => setInviteModalOpen(false)}>
                 <InviteMemberForm boardId={numericBoardId} onInviteSuccess={handleInviteSuccess} />
+            </Modal>
+
+            <Modal isOpen={editingField !== null} onClose={() => setEditingField(null)}>
+                {editingField === 'name' && (
+                    <EditFieldForm
+                        title={t('editBoardNameForm.title')}
+                        label={t('editBoardNameForm.label')}
+                        initialValue={boardDetails.name}
+                        onSave={handleUpdateName}
+                        onClose={() => setEditingField(null)}
+                    />
+                )}
+                {editingField === 'description' && (
+                    <EditFieldForm
+                        title={t('editBoardDescriptionForm.title')}
+                        label={t('editBoardDescriptionForm.label')}
+                        initialValue={boardDetails.description || ''}
+                        inputType="textarea"
+                        onSave={handleUpdateDescription}
+                        onClose={() => setEditingField(null)}
+                    />
+                )}
             </Modal>
         </div>
     );

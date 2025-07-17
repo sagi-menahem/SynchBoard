@@ -6,6 +6,8 @@ import com.synchboard.backend.dto.board.BoardDetailsDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
 import com.synchboard.backend.dto.board.InviteRequest;
 import com.synchboard.backend.dto.board.MemberDTO;
+import com.synchboard.backend.dto.board.UpdateBoardDescriptionRequest;
+import com.synchboard.backend.dto.board.UpdateBoardNameRequest;
 import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.service.ActionHistoryService;
 import com.synchboard.backend.service.BoardObjectService;
@@ -114,5 +116,27 @@ public class GroupBoardController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No actions available to redo.");
         }
+    }
+
+    @PutMapping("/{boardId}/name")
+    public ResponseEntity<BoardDTO> updateBoardName(
+            @PathVariable("boardId") Long boardId,
+            @Valid @RequestBody UpdateBoardNameRequest request,
+            Authentication authentication) {
+
+        String userEmail = authentication.getName();
+        BoardDTO updatedBoard = groupBoardService.updateBoardName(boardId, request.getName(), userEmail);
+        return ResponseEntity.ok(updatedBoard);
+    }
+
+    @PutMapping("/{boardId}/description")
+    public ResponseEntity<BoardDTO> updateBoardDescription(
+            @PathVariable("boardId") Long boardId,
+            @Valid @RequestBody UpdateBoardDescriptionRequest request,
+            Authentication authentication) {
+
+        String userEmail = authentication.getName();
+        BoardDTO updatedBoard = groupBoardService.updateBoardDescription(boardId, request.getDescription(), userEmail);
+        return ResponseEntity.ok(updatedBoard);
     }
 }

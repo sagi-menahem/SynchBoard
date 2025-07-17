@@ -1,4 +1,4 @@
-// This file defines the build configuration for the Spring Boot application using Gradle.
+// File: backend\build.gradle
 
 // The 'plugins' block applies necessary Gradle plugins for the project.
 plugins {

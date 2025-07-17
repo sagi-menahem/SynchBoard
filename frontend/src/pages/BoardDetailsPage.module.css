@@ -1,4 +1,5 @@
 /* File: frontend/src/pages/BoardDetailsPage.module.css */
+
 .container {
     width: 100%;
     max-width: 800px;
@@ -15,11 +16,23 @@
     border-bottom: 1px solid #444;
 }
 
+.editableText {
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.editableText:hover {
+    color: #a9a9ff; /* A slightly brighter color on hover */
+}
+
 .description {
     color: #ccc;
     margin-top: 0.5rem;
 }
 
+/* Styles for the members list remain the same */
 .membersList {
     margin-top: 2rem;
     list-style: none;

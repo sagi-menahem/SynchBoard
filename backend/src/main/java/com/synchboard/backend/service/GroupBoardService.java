@@ -174,6 +174,30 @@ public class GroupBoardService {
                 return mapToMemberDTO(memberToPromote);
         }
 
+        @Transactional
+        public BoardDTO updateBoardName(Long boardId, String newName, String userEmail) {
+                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                GroupBoard boardToUpdate = member.getGroupBoard();
+                boardToUpdate.setBoardGroupName(newName);
+
+                return mapToBoardResponse(member);
+        }
+
+        @Transactional
+        public BoardDTO updateBoardDescription(Long boardId, String newDescription, String userEmail) {
+                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                GroupBoard boardToUpdate = member.getGroupBoard();
+                boardToUpdate.setGroupDescription(newDescription);
+
+                return mapToBoardResponse(member);
+        }
+
         private BoardDTO mapToBoardResponse(GroupMember membership) {
                 return BoardDTO.builder()
                                 .id(membership.getGroupBoard().getBoardGroupId())
