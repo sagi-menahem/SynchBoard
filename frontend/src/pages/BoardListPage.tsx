@@ -8,10 +8,26 @@ import Button from '../components/common/Button';
 import { APP_ROUTES } from '../constants/routes.constants';
 import { useBoardList } from '../hooks/useBoardList';
 import styles from './BoardListPage.module.css';
+import { ContextMenu } from '../components/common/ContextMenu';
+import { ContextMenuItem } from '../components/common/ContextMenuItem';
+import ConfirmationDialog from '../components/common/ConfirmationDialog';
 
 const BoardListPage: React.FC = () => {
     const { t } = useTranslation();
-    const { boards, isLoading, isModalOpen, handleBoardCreated, openModal, closeModal } = useBoardList();
+    const {
+        boards,
+        isLoading,
+        isModalOpen,
+        contextMenu,
+        isLeaveConfirmOpen,
+        setLeaveConfirmOpen,
+        boardToLeave, // Use the new state variable
+        handleBoardCreated,
+        openModal,
+        closeModal,
+        handleConfirmLeave,
+        handleLeaveClick,
+    } = useBoardList();
 
     if (isLoading) {
         return <div>{t('boardListPage.loading')}</div>;
@@ -29,15 +45,19 @@ const BoardListPage: React.FC = () => {
             {boards.length > 0 ? (
                 <div className={styles.boardList}>
                     {boards.map(board => (
-                        <Link
+                        <div
                             key={board.id}
-                            to={APP_ROUTES.getBoardDetailRoute(board.id)}
-                            className={styles.boardCard}
+                            onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
                         >
-                            <h2>{board.name}</h2>
-                            <p>{board.description || t('boardListPage.noDescription')}</p>
-                            {board.isAdmin && <span className={styles.adminLabel}>{t('boardListPage.adminLabel')}</span>}
-                        </Link>
+                            <Link
+                                to={APP_ROUTES.getBoardDetailRoute(board.id)}
+                                className={styles.boardCard}
+                            >
+                                <h2>{board.name}</h2>
+                                <p>{board.description || t('boardListPage.noDescription')}</p>
+                                {board.isAdmin && <span className={styles.adminLabel}>{t('boardListPage.adminLabel')}</span>}
+                            </Link>
+                        </div>
                     ))}
                 </div>
             ) : (
@@ -50,6 +70,34 @@ const BoardListPage: React.FC = () => {
                     onClose={closeModal}
                 />
             </Modal>
+
+            {contextMenu.isOpen && (
+                <ContextMenu
+                    x={contextMenu.anchorPoint.x}
+                    y={contextMenu.anchorPoint.y}
+                    onClose={contextMenu.closeMenu}
+                >
+                    <ContextMenuItem onClick={handleLeaveClick} destructive>
+                        {t('leaveBoard.button')}
+                    </ContextMenuItem>
+                </ContextMenu>
+            )}
+
+            {/* --- FIX THE RENDERING CONDITION HERE --- */}
+            {/* We now check boardToLeave instead of contextMenu.data */}
+            {boardToLeave && (
+                <ConfirmationDialog
+                    isOpen={isLeaveConfirmOpen}
+                    onClose={() => {
+                        setLeaveConfirmOpen(false);
+                        // No need to close the context menu here, it's already closed.
+                    }}
+                    onConfirm={handleConfirmLeave}
+                    title={t('leaveBoard.confirmTitle')}
+                    // And we get the name from boardToLeave
+                    message={t('leaveBoard.confirmText', { boardName: boardToLeave.name })}
+                />
+            )}
         </div>
     );
 };

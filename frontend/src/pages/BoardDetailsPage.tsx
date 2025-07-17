@@ -11,12 +11,12 @@ import EditFieldForm from '../components/board/EditFieldForm';
 import { APP_ROUTES } from '../constants/routes.constants';
 import { ContextMenu } from '../components/common/ContextMenu';
 import { ContextMenuItem } from '../components/common/ContextMenuItem';
+import ConfirmationDialog from '../components/common/ConfirmationDialog';
 
 const BoardDetailsPage: React.FC = () => {
     const { t } = useTranslation();
     const { boardId } = useParams<{ boardId: string }>();
     const numericBoardId = parseInt(boardId || '0', 10);
-
 
     const {
         isLoading,
@@ -25,15 +25,17 @@ const BoardDetailsPage: React.FC = () => {
         contextMenu,
         isInviteModalOpen,
         setInviteModalOpen,
+        editingField,
+        setEditingField,
+        isLeaveConfirmOpen,
+        setLeaveConfirmOpen,
         handleInviteSuccess,
         handlePromote,
         handleRemove,
-        handleRightClick,
-        editingField,
-        setEditingField,
         handleUpdateName,
         handleUpdateDescription,
-        handleLeaveBoard
+        handleRightClick,
+        handleLeaveBoard,
     } = useBoardDetailsPage(numericBoardId);
 
     if (isLoading) {
@@ -72,7 +74,7 @@ const BoardDetailsPage: React.FC = () => {
                 <h2>{t('boardDetailsPage.membersHeader')}</h2>
                 <div className={styles.headerActions}>
                     <Button
-                        onClick={handleLeaveBoard}
+                        onClick={() => setLeaveConfirmOpen(true)}
                         className={styles.destructiveButton}
                     >
                         {t('leaveBoard.button')}
@@ -138,6 +140,14 @@ const BoardDetailsPage: React.FC = () => {
                     />
                 )}
             </Modal>
+
+            <ConfirmationDialog
+                isOpen={isLeaveConfirmOpen}
+                onClose={() => setLeaveConfirmOpen(false)}
+                onConfirm={handleLeaveBoard}
+                title={t('leaveBoard.confirmTitle')}
+                message={t('leaveBoard.confirmText', { boardName: boardDetails.name })}
+            />
         </div>
     );
 };

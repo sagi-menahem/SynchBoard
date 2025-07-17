@@ -1,4 +1,5 @@
 // File: frontend/src/hooks/useBoardDetailsPage.ts
+
 import { useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
@@ -11,18 +12,18 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { APP_ROUTES } from '../constants/routes.constants';
 
-//TODO move type to file DTO
 type EditingField = 'name' | 'description';
 
 export const useBoardDetailsPage = (boardId: number) => {
     const { boardDetails, isLoading, refetch } = useBoardDetails(boardId);
     const { userEmail } = useAuth();
     const contextMenu = useContextMenu<Member>();
+    const navigate = useNavigate();
+    const { t } = useTranslation();
+
     const [isInviteModalOpen, setInviteModalOpen] = useState(false);
     const [editingField, setEditingField] = useState<EditingField | null>(null);
-
-    const navigate = useNavigate(); // Initialize navigate
-    const { t } = useTranslation(); // Initialize translation
+    const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
     const currentUserIsAdmin = boardDetails?.members.find(member => member.email === userEmail)?.isAdmin || false;
 
@@ -92,14 +93,7 @@ export const useBoardDetailsPage = (boardId: number) => {
 
     const handleRightClick = useCallback((event: React.MouseEvent, member: Member) => {
         event.preventDefault();
-
-        console.log("--- Right Click Debug ---");
         const isAdmin = boardDetails?.members.find(m => m.email === userEmail)?.isAdmin || false;
-        console.log("Current user email:", userEmail);
-        console.log("Right-clicked member email:", member.email);
-        console.log("Is current user supposed to be admin?", isAdmin);
-        console.log("Condition to show menu:", `isAdmin (${isAdmin}) && member.email (${member.email}) !== userEmail (${userEmail})`);
-
         if (isAdmin && member.email !== userEmail) {
             contextMenu.handleContextMenu(event, member);
         }
@@ -107,15 +101,6 @@ export const useBoardDetailsPage = (boardId: number) => {
 
     const handleLeaveBoard = useCallback(async () => {
         if (!boardDetails) return;
-
-        const isConfirmed = window.confirm(
-            t('leaveBoard.confirmText', { boardName: boardDetails.name })
-        );
-
-        if (!isConfirmed) {
-            return;
-        }
-
         try {
             await boardService.leaveBoard(boardId);
             toast.success(t('leaveBoard.success'));
@@ -126,6 +111,8 @@ export const useBoardDetailsPage = (boardId: number) => {
                 ? error.response.data.message
                 : t('leaveBoard.error');
             toast.error(errorMessage);
+        } finally {
+            setLeaveConfirmOpen(false);
         }
     }, [boardId, boardDetails, navigate, t]);
 
@@ -137,14 +124,16 @@ export const useBoardDetailsPage = (boardId: number) => {
         contextMenu,
         isInviteModalOpen,
         setInviteModalOpen,
+        editingField,
+        setEditingField,
+        isLeaveConfirmOpen,
+        setLeaveConfirmOpen,
         handleInviteSuccess,
         handlePromote,
         handleRemove,
-        handleRightClick,
-        editingField,
-        setEditingField,
         handleUpdateName,
         handleUpdateDescription,
-        handleLeaveBoard
+        handleRightClick,
+        handleLeaveBoard,
     };
 };

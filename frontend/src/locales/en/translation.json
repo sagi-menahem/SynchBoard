@@ -17,7 +17,8 @@
       "loggingIn": "Logging in...",
       "registering": "Registering...",
       "save": "Save",
-      "saving": "Saving..."
+      "saving": "Saving...",
+      "confirm": "Confirm"
     }
   },
   "authPage": {
