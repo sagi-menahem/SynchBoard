@@ -17,6 +17,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ public class GroupBoardService {
         private final UserRepository userRepository;
         private final ActionHistoryRepository actionHistoryRepository;
         private final BoardObjectRepository boardObjectRepository;
+        private final FileStorageService fileStorageService;
 
         @Transactional(readOnly = true)
         public List<BoardDTO> getBoardsForUser(String userEmail) {
@@ -271,5 +273,48 @@ public class GroupBoardService {
                                 .profilePictureUrl(membership.getUser().getProfilePictureUrl())
                                 .isAdmin(membership.getIsAdmin())
                                 .build();
+        }
+
+        @Transactional
+        public BoardDTO updateBoardPicture(Long boardId, MultipartFile file, String userEmail) {
+                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                GroupBoard boardToUpdate = member.getGroupBoard();
+
+                if (boardToUpdate.getGroupPictureUrl() != null && !boardToUpdate.getGroupPictureUrl().isBlank()) {
+                        String fullUrl = boardToUpdate.getGroupPictureUrl();
+                        String filename = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
+                        fileStorageService.delete(filename);
+                }
+
+                String newFilename = fileStorageService.store(file);
+
+                String newPictureUrl = "/images/" + newFilename;
+
+                boardToUpdate.setGroupPictureUrl(newPictureUrl);
+
+                return mapToBoardResponse(member);
+        }
+
+        @Transactional
+        public BoardDTO deleteBoardPicture(Long boardId, String userEmail) {
+                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                GroupBoard boardToUpdate = member.getGroupBoard();
+
+                if (boardToUpdate.getGroupPictureUrl() != null && !boardToUpdate.getGroupPictureUrl().isBlank()) {
+                        String fullUrl = boardToUpdate.getGroupPictureUrl();
+                        String filename = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
+
+                        fileStorageService.delete(filename);
+
+                        boardToUpdate.setGroupPictureUrl(null);
+                }
+
+                return mapToBoardResponse(member);
         }
 }

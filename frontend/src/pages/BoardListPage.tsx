@@ -21,7 +21,7 @@ const BoardListPage: React.FC = () => {
         contextMenu,
         isLeaveConfirmOpen,
         setLeaveConfirmOpen,
-        boardToLeave, // Use the new state variable
+        boardToLeave,
         handleBoardCreated,
         openModal,
         closeModal,
@@ -83,18 +83,14 @@ const BoardListPage: React.FC = () => {
                 </ContextMenu>
             )}
 
-            {/* --- FIX THE RENDERING CONDITION HERE --- */}
-            {/* We now check boardToLeave instead of contextMenu.data */}
             {boardToLeave && (
                 <ConfirmationDialog
                     isOpen={isLeaveConfirmOpen}
                     onClose={() => {
                         setLeaveConfirmOpen(false);
-                        // No need to close the context menu here, it's already closed.
                     }}
                     onConfirm={handleConfirmLeave}
                     title={t('leaveBoard.confirmTitle')}
-                    // And we get the name from boardToLeave
                     message={t('leaveBoard.confirmText', { boardName: boardToLeave.name })}
                 />
             )}
