@@ -46,7 +46,7 @@ export const undoLastAction = async (boardId: number): Promise<BoardActionRespon
 export const redoLastAction = async (boardId: number): Promise<BoardActionResponse> => {
     const response = await apiClient.post<BoardActionResponse>(API_ENDPOINTS.REDO(boardId));
     return response.data;
-    
+
 };
 
 export const updateBoardName = async (boardId: number, name: string): Promise<Board> => {
@@ -57,4 +57,8 @@ export const updateBoardName = async (boardId: number, name: string): Promise<Bo
 export const updateBoardDescription = async (boardId: number, description: string): Promise<Board> => {
     const response = await apiClient.put<Board>(API_ENDPOINTS.UPDATE_BOARD_DESCRIPTION(boardId), { description });
     return response.data;
+};
+
+export const leaveBoard = async (boardId: number): Promise<void> => {
+    await apiClient.delete(API_ENDPOINTS.LEAVE_BOARD(boardId));
 };

@@ -85,6 +85,16 @@ public class GroupBoardController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{boardId}/members/leave")
+    public ResponseEntity<?> leaveBoard(
+            @PathVariable("boardId") Long boardId,
+            Authentication authentication) {
+
+        String userEmail = authentication.getName();
+        groupBoardService.leaveBoard(boardId, userEmail);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/{boardId}/members/{memberEmail}/promote")
     public ResponseEntity<MemberDTO> promoteMember(
             @PathVariable("boardId") Long boardId,

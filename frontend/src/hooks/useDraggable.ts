@@ -30,7 +30,7 @@ export const useDraggable = ({ containerRef }: UseDraggableProps) => {
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
         if (!dragInfo.current.isDragging || !elementRef.current || !containerRef.current) return;
-        
+
         const deltaX = e.clientX - dragInfo.current.startMouseX;
         const deltaY = e.clientY - dragInfo.current.startMouseY;
 
@@ -47,7 +47,7 @@ export const useDraggable = ({ containerRef }: UseDraggableProps) => {
 
         const clampedX = Math.max(minX, Math.min(newX, maxX));
         const clampedY = Math.max(minY, Math.min(newY, maxY));
-        
+
         setPosition({ x: clampedX, y: clampedY });
     }, [containerRef]);
 
@@ -62,7 +62,7 @@ export const useDraggable = ({ containerRef }: UseDraggableProps) => {
         if (e.target instanceof HTMLInputElement || e.target instanceof HTMLButtonElement) {
             return;
         }
-        
+
         document.body.style.cursor = 'move';
         dragInfo.current = {
             isDragging: true,

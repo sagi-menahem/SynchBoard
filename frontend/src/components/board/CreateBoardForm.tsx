@@ -19,7 +19,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h3>{t('createBoardForm.heading')}</h3>
-            
+
             <div className={styles.field}>
                 <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>
                 <Input

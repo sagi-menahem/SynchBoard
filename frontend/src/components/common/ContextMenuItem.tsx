@@ -10,7 +10,7 @@ interface ContextMenuItemProps {
 
 export const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ onClick, children, destructive = false }) => {
     const itemClasses = `${styles.item} ${destructive ? styles.destructive : ''}`;
-    
+
     return (
         <div className={itemClasses} onClick={onClick}>
             {children}

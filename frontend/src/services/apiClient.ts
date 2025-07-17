@@ -16,12 +16,12 @@ apiClient.interceptors.request.use(
 
         if (!isPublicEndpoint) {
             const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-            
+
             if (token) {
                 config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] = `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
             }
         }
-        
+
         return config;
     },
     (error) => {

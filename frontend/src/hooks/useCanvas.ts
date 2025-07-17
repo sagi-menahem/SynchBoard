@@ -89,7 +89,7 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
         const canvas = mainCanvasRef.current;
         const ctx = contextRef.current;
         if (!canvas || !ctx) return;
-        
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         objects.forEach(obj => replayDrawAction(obj, ctx, canvas));
 
@@ -112,7 +112,7 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
         const previewCtx = previewContextRef.current;
         const canvas = previewCanvasRef.current;
         if (!previewCtx || !canvas) return;
-        
+
         const { offsetX, offsetY } = event.nativeEvent;
         previewCtx.clearRect(0, 0, canvas.width, canvas.height);
         previewCtx.lineWidth = strokeWidth;
@@ -145,15 +145,15 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
         const canvas = previewCanvasRef.current;
         const previewCtx = previewContextRef.current;
         if (!canvas || !previewCtx) return;
-        
+
         previewCtx.clearRect(0, 0, canvas.width, canvas.height);
 
         if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
-            const payload: Omit<LinePayload, 'instanceId'> = { 
-                tool, 
-                points: [...currentPath.current], 
-                color: strokeColor, 
-                lineWidth: strokeWidth 
+            const payload: Omit<LinePayload, 'instanceId'> = {
+                tool,
+                points: [...currentPath.current],
+                color: strokeColor,
+                lineWidth: strokeWidth
             };
             onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
@@ -163,8 +163,8 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
             const rectWidth = Math.abs(offsetX - startPoint.current.x) / canvas.width;
             const rectHeight = Math.abs(offsetY - startPoint.current.y) / canvas.height;
             if (rectWidth > 0 || rectHeight > 0) {
-                const payload: Omit<RectanglePayload, 'instanceId'> = { 
-                    tool, x: rectX, y: rectY, width: rectWidth, height: rectHeight, color: strokeColor, strokeWidth 
+                const payload: Omit<RectanglePayload, 'instanceId'> = {
+                    tool, x: rectX, y: rectY, width: rectWidth, height: rectHeight, color: strokeColor, strokeWidth
                 };
                 onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
             }
@@ -172,8 +172,8 @@ export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth
             const { offsetX, offsetY } = event.nativeEvent;
             const radius = Math.sqrt(Math.pow(offsetX - startPoint.current.x, 2) + Math.pow(offsetY - startPoint.current.y, 2)) / canvas.width;
             if (radius > 0) {
-                const payload: Omit<CirclePayload, 'instanceId'> = { 
-                    tool, x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius, color: strokeColor, strokeWidth 
+                const payload: Omit<CirclePayload, 'instanceId'> = {
+                    tool, x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius, color: strokeColor, strokeWidth
                 };
                 onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
             }

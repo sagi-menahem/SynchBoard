@@ -18,8 +18,8 @@ interface ToolbarProps {
     setTool: (tool: Tool) => void;
     onUndo: () => void;
     isUndoAvailable: boolean;
-    onRedo: () => void; 
-    isRedoAvailable: boolean; 
+    onRedo: () => void;
+    isRedoAvailable: boolean;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -39,16 +39,16 @@ const Toolbar: React.FC<ToolbarProps> = ({
     const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
 
     return (
-        <div 
+        <div
             ref={draggableRef}
-            className={styles.toolbar} 
-            onMouseDown={handleMouseDown} 
+            className={styles.toolbar}
+            onMouseDown={handleMouseDown}
             style={draggableStyle}
         >
             <label className={styles.label}>
                 {t('toolbar.label.color')}
-                <input 
-                    type="color" 
+                <input
+                    type="color"
                     value={strokeColor}
                     onChange={(e) => setStrokeColor(e.target.value)}
                     className={styles.colorInput}
@@ -66,7 +66,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                     className={styles.rangeInput}
                 />
             </label>
-            
+
             <div className={styles.toolsContainer}>
                 {TOOL_LIST.map(toolName => (
                     <Button
@@ -81,13 +81,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
             {/* NEW: Undo Button */}
             <div className={styles.toolsContainer}>
-                 <Button onClick={onUndo} disabled={!isUndoAvailable} variant="secondary">
+                <Button onClick={onUndo} disabled={!isUndoAvailable} variant="secondary">
                     {t('toolbar.tool.undo')}
-                 </Button>
-                 {/* NEW: Redo Button */}
-                 <Button onClick={onRedo} disabled={!isRedoAvailable} variant="secondary">
+                </Button>
+                {/* NEW: Redo Button */}
+                <Button onClick={onRedo} disabled={!isRedoAvailable} variant="secondary">
                     {t('toolbar.tool.redo')}
-                 </Button>
+                </Button>
             </div>
         </div>
     );

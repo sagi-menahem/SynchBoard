@@ -24,7 +24,8 @@
 }
 
 .editableText:hover {
-    color: #a9a9ff; /* A slightly brighter color on hover */
+    color: #a9a9ff;
+    /* A slightly brighter color on hover */
 }
 
 .description {
@@ -67,4 +68,20 @@
     border-radius: 12px;
     font-size: 0.8rem;
     font-weight: bold;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.destructiveButton {
+    background-color: #c93434;
+    border-color: transparent;
+}
+
+.destructiveButton:hover:not(:disabled) {
+    background-color: #a52a2a;
+    border-color: #a52a2a;
 }

@@ -4,6 +4,7 @@ package com.synchboard.backend.repository;
 import com.synchboard.backend.entity.BoardObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,4 +12,7 @@ import java.util.List;
 public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> {
 
     List<BoardObject> findAllByBoard_BoardGroupIdAndIsActiveTrue(Long boardGroupId);
+
+    @Transactional
+    void deleteAllByBoard_BoardGroupId(Long boardGroupId);
 }

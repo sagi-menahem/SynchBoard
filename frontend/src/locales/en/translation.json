@@ -124,8 +124,15 @@
     "adminBadge": "Admin"
   },
   "contextMenu": {
-        "promoteToAdmin": "Promote to Admin",
-        "removeFromBoard": "Remove from Board"
+    "promoteToAdmin": "Promote to Admin",
+    "removeFromBoard": "Remove from Board"
+  },
+  "leaveBoard": {
+    "button": "Leave Board",
+    "confirmTitle": "Leave Board?",
+    "confirmText": "Are you sure you want to leave '{{boardName}}'? This action cannot be undone.",
+    "success": "You have successfully left the board.",
+    "error": "Failed to leave the board."
   },
   "boardPage": {
     "backButton": "Back to Boards",

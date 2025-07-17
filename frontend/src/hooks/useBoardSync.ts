@@ -10,7 +10,7 @@ import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from '../constants/api.const
 import toast from 'react-hot-toast';
 
 export const useBoardSync = (boardId: number) => {
-    const sessionInstanceId = useRef(Math.random().toString(36).substring(2)); 
+    const sessionInstanceId = useRef(Math.random().toString(36).substring(2));
     const [objects, setObjects] = useState<ActionPayload[]>([]);
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
     const [boardDetails, setBoardDetails] = useState<Board | null>(null);
@@ -24,7 +24,7 @@ export const useBoardSync = (boardId: number) => {
             setIsLoading(false);
             return;
         }
-    
+
         const fetchBoardData = async () => {
             try {
                 setIsLoading(true);
@@ -32,13 +32,13 @@ export const useBoardSync = (boardId: number) => {
                     boardService.getBoardObjects(boardId),
                     boardService.getBoards()
                 ]);
-    
+
                 const initialObjects = objectActions
                     .filter(a => a.payload)
                     .map(a => ({ ...(a.payload as object), instanceId: a.instanceId } as ActionPayload));
                 setObjects(initialObjects);
-                setUndoCount(initialObjects.length); 
-                setRedoCount(0); 
+                setUndoCount(initialObjects.length);
+                setRedoCount(0);
 
                 const currentBoard = userBoards.find(board => board.id === boardId);
                 if (currentBoard) {
@@ -48,7 +48,7 @@ export const useBoardSync = (boardId: number) => {
                     toast.error("You do not have access to this board.");
                     setBoardDetails(null);
                 }
-    
+
             } catch (error) {
                 console.error("Failed to fetch initial board state:", error);
                 toast.error("Failed to load board data.");
@@ -56,7 +56,7 @@ export const useBoardSync = (boardId: number) => {
                 setIsLoading(false);
             }
         };
-    
+
         fetchBoardData();
 
     }, [boardId]);
@@ -90,16 +90,16 @@ export const useBoardSync = (boardId: number) => {
             ...action,
             boardId,
             instanceId: newInstanceId,
-            sender: sessionInstanceId.current 
+            sender: sessionInstanceId.current
         };
-        
+
         setObjects(prev => [...prev, fullPayload]);
-        setUndoCount(prev => prev + 1); 
-        setRedoCount(0); 
-        
+        setUndoCount(prev => prev + 1);
+        setRedoCount(0);
+
         websocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionToSend);
     }, [boardId]);
-    
+
     const handleUndo = useCallback(async () => {
         if (isLoading || undoCount === 0) {
             toast.error("Nothing to undo.");
@@ -138,8 +138,8 @@ export const useBoardSync = (boardId: number) => {
         instanceId: sessionInstanceId.current,
         handleDrawAction,
         handleUndo,
-        handleRedo, 
-        isUndoAvailable: undoCount > 0, 
+        handleRedo,
+        isUndoAvailable: undoCount > 0,
         isRedoAvailable: redoCount > 0,
     };
 };

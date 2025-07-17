@@ -124,8 +124,15 @@
     "adminBadge": "מנהל"
   },
   "contextMenu": {
-        "promoteToAdmin": "קדם למנהל",
-        "removeFromBoard": "הסר מהלוח"
+    "promoteToAdmin": "קדם למנהל",
+    "removeFromBoard": "הסר מהלוח"
+  },
+  "leaveBoard": {
+    "button": "עזוב קבוצה",
+    "confirmTitle": "לעזוב את הקבוצה?",
+    "confirmText": "האם אתה בטוח שברצונך לעזוב את הלוח '{{boardName}}'? לא ניתן לבטל פעולה זו.",
+    "success": "עזבת את הלוח בהצלחה.",
+    "error": "עזיבת הלוח נכשלה."
   },
   "boardPage": {
     "backButton": "חזרה ללוחות",

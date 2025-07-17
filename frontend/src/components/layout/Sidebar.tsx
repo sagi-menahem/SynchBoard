@@ -7,7 +7,7 @@ const Sidebar: React.FC = () => {
         <aside className={styles.aside}>
             <p>Sidebar</p>
             <p>Online Users:</p>
-            
+
         </aside>
     );
 };

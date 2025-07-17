@@ -42,7 +42,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <h3>{title}</h3>
-            
+
             <div className={styles.field}>
                 <label htmlFor="edit-field">{label}</label>
                 {inputType === 'textarea' ? (
@@ -71,7 +71,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
                     {t('common.button.cancel')}
                 </Button>
                 <Button type="submit" disabled={isSubmitting} variant="primary">
-                    {isSubmitting ? t('common.button.creating') : t('common.button.save')} 
+                    {isSubmitting ? t('common.button.creating') : t('common.button.save')}
                 </Button>
             </div>
         </form>

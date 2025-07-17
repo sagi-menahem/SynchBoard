@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
             <div className={styles.section}>
                 <span className={styles.title}>{t('navbar.title')}</span>
             </div>
-            
+
             <div className={styles.section}>
                 <Button onClick={() => changeLanguage('en')} variant="secondary" className={styles.langButton}>
                     {t('navbar.language.en')}

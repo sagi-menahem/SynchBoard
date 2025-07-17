@@ -30,7 +30,7 @@ const BoardPage: React.FC = () => {
         isUndoAvailable,
         isRedoAvailable,
     } = useBoardContext();
-    
+
     const {
         tool,
         setTool,
@@ -52,7 +52,9 @@ const BoardPage: React.FC = () => {
                     <Button onClick={() => navigate(APP_ROUTES.BOARD_LIST)}>
                         &larr; {t('boardPage.backButton')}
                     </Button>
-                    <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
+                    <Link
+                        to={APP_ROUTES.getBoardDetailsRoute(boardId)}
+                        className={styles.headerLink}>
                         <h1>{boardDetails?.name || t('boardPage.loading')}</h1>
                     </Link>
                 </div>
@@ -83,10 +85,7 @@ const BoardPage: React.FC = () => {
                     />
                 </div>
                 <div className={styles.chatContainer}>
-                    <ChatWindow
-                        boardId={boardId}
-                        messages={messages}
-                    />
+                    <ChatWindow boardId={boardId} messages={messages} />
                 </div>
             </div>
         </div>

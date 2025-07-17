@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     PROMOTE_MEMBER: (boardId: number, memberEmail: string) => `/boards/${boardId}/members/${memberEmail}/promote`,
     UPDATE_BOARD_NAME: (boardId: number) => `/boards/${boardId}/name`,
     UPDATE_BOARD_DESCRIPTION: (boardId: number) => `/boards/${boardId}/description`,
+    LEAVE_BOARD: (boardId: number) => `/boards/${boardId}/members/leave`,
 } as const;
 
 export const PUBLIC_API_ENDPOINTS: readonly string[] = [

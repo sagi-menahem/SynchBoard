@@ -13,8 +13,8 @@ class WebSocketService {
         }
         this.stompClient = new Client({
             webSocketFactory: () => new SockJS(WEBSOCKET_URL),
-            connectHeaders: { 
-                [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}` 
+            connectHeaders: {
+                [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`
             },
             onConnect: () => {
                 console.log('Connected to WebSocket server!');
@@ -35,17 +35,17 @@ class WebSocketService {
             this.stompClient = null;
         }
     }
-    
+
     public subscribe<T>(topic: string, onMessageReceived: (message: T) => void): StompSubscription | null {
         if (!this.stompClient?.active) {
             console.error('Cannot subscribe, STOMP client is not connected.');
             return null;
         }
-        
+
         const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
             onMessageReceived(JSON.parse(message.body) as T);
         });
-        
+
         console.log(`Subscribed to ${topic}`);
         return subscription;
     }
@@ -55,7 +55,7 @@ class WebSocketService {
             console.error('Cannot send message, STOMP client is not connected.');
             return;
         }
-        
+
         this.stompClient.publish({
             destination: destination,
             body: JSON.stringify(body),
