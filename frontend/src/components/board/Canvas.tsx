@@ -27,7 +27,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         handleMouseDown,
         handleMouseMove,
         handleMouseUp,
-    } = useCanvas(props); 
+    } = useCanvas(props);
 
     return (
         <div ref={containerRef} className={styles.container}>

@@ -14,8 +14,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path={APP_ROUTES.AUTH} element={<AuthPage />} />
-                
-                <Route 
+
+                <Route
                     element={
                         <ProtectedRoute>
                             <Layout />

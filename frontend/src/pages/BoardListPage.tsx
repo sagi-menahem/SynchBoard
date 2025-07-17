@@ -29,9 +29,9 @@ const BoardListPage: React.FC = () => {
             {boards.length > 0 ? (
                 <div className={styles.boardList}>
                     {boards.map(board => (
-                        <Link 
-                            key={board.id} 
-                            to={APP_ROUTES.getBoardDetailRoute(board.id)} 
+                        <Link
+                            key={board.id}
+                            to={APP_ROUTES.getBoardDetailRoute(board.id)}
                             className={styles.boardCard}
                         >
                             <h2>{board.name}</h2>
@@ -45,7 +45,7 @@ const BoardListPage: React.FC = () => {
             )}
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <CreateBoardForm 
+                <CreateBoardForm
                     onBoardCreated={handleBoardCreated}
                     onClose={closeModal}
                 />

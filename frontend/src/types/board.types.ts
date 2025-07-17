@@ -14,21 +14,21 @@ export interface CreateBoardRequest {
 }
 
 export interface Member {
-    email: string;
-    firstName: string;
-    lastName: string;
-    profilePictureUrl: string | null;
-    isAdmin: boolean;
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string | null;
+  isAdmin: boolean;
 }
 
 export interface InviteMemberRequest {
-    email: string;
+  email: string;
 }
 
 export interface BoardDetails {
-    id: number;
-    name: string;
-    description: string | null;
-    pictureUrl: string | null;
-    members: Member[];
+  id: number;
+  name: string;
+  description: string | null;
+  pictureUrl: string | null;
+  members: Member[];
 }

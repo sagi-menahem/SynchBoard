@@ -17,6 +17,7 @@ const BoardDetailsPage: React.FC = () => {
     const { boardId } = useParams<{ boardId: string }>();
     const numericBoardId = parseInt(boardId || '0', 10);
 
+
     const {
         isLoading,
         boardDetails,
@@ -31,7 +32,8 @@ const BoardDetailsPage: React.FC = () => {
         editingField,
         setEditingField,
         handleUpdateName,
-        handleUpdateDescription
+        handleUpdateDescription,
+        handleLeaveBoard
     } = useBoardDetailsPage(numericBoardId);
 
     if (isLoading) {
@@ -46,13 +48,13 @@ const BoardDetailsPage: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <h1 
-                        className={styles.editableText} 
+                    <h1
+                        className={styles.editableText}
                         onClick={() => setEditingField('name')}
                     >
                         {boardDetails.name}
                     </h1>
-                    <p 
+                    <p
                         className={`${styles.description} ${styles.editableText}`}
                         onClick={() => setEditingField('description')}
                     >
@@ -68,17 +70,25 @@ const BoardDetailsPage: React.FC = () => {
 
             <div className={styles.header}>
                 <h2>{t('boardDetailsPage.membersHeader')}</h2>
-                {currentUserIsAdmin && (
-                    <Button onClick={() => setInviteModalOpen(true)}>
-                        {t('boardDetailsPage.inviteButton')}
+                <div className={styles.headerActions}>
+                    <Button
+                        onClick={handleLeaveBoard}
+                        className={styles.destructiveButton}
+                    >
+                        {t('leaveBoard.button')}
                     </Button>
-                )}
+                    {currentUserIsAdmin && (
+                        <Button onClick={() => setInviteModalOpen(true)}>
+                            {t('boardDetailsPage.inviteButton')}
+                        </Button>
+                    )}
+                </div>
             </div>
 
             <ul className={styles.membersList}>
-                 {boardDetails.members.map(member => (
-                    <div 
-                        key={member.email} 
+                {boardDetails.members.map(member => (
+                    <div
+                        key={member.email}
                         onContextMenu={(e) => handleRightClick(e, member)}
                     >
                         <li className={styles.memberItem}>
@@ -93,7 +103,7 @@ const BoardDetailsPage: React.FC = () => {
                     </div>
                 ))}
             </ul>
-            
+
             {contextMenu.isOpen && contextMenu.data && (
                 <ContextMenu x={contextMenu.anchorPoint.x} y={contextMenu.anchorPoint.y} onClose={contextMenu.closeMenu}>
                     {!contextMenu.data.isAdmin && (

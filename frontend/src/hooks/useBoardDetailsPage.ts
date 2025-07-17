@@ -7,6 +7,9 @@ import { useAuth } from './useAuth';
 import { useContextMenu } from './useContextMenu';
 import * as boardService from '../services/boardService';
 import type { Member } from '../types/board.types';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { APP_ROUTES } from '../constants/routes.constants';
 
 //TODO move type to file DTO
 type EditingField = 'name' | 'description';
@@ -17,6 +20,9 @@ export const useBoardDetailsPage = (boardId: number) => {
     const contextMenu = useContextMenu<Member>();
     const [isInviteModalOpen, setInviteModalOpen] = useState(false);
     const [editingField, setEditingField] = useState<EditingField | null>(null);
+
+    const navigate = useNavigate(); // Initialize navigate
+    const { t } = useTranslation(); // Initialize translation
 
     const currentUserIsAdmin = boardDetails?.members.find(member => member.email === userEmail)?.isAdmin || false;
 
@@ -86,7 +92,7 @@ export const useBoardDetailsPage = (boardId: number) => {
 
     const handleRightClick = useCallback((event: React.MouseEvent, member: Member) => {
         event.preventDefault();
-        
+
         console.log("--- Right Click Debug ---");
         const isAdmin = boardDetails?.members.find(m => m.email === userEmail)?.isAdmin || false;
         console.log("Current user email:", userEmail);
@@ -98,6 +104,30 @@ export const useBoardDetailsPage = (boardId: number) => {
             contextMenu.handleContextMenu(event, member);
         }
     }, [boardDetails, userEmail, contextMenu]);
+
+    const handleLeaveBoard = useCallback(async () => {
+        if (!boardDetails) return;
+
+        const isConfirmed = window.confirm(
+            t('leaveBoard.confirmText', { boardName: boardDetails.name })
+        );
+
+        if (!isConfirmed) {
+            return;
+        }
+
+        try {
+            await boardService.leaveBoard(boardId);
+            toast.success(t('leaveBoard.success'));
+            navigate(APP_ROUTES.BOARD_LIST);
+        } catch (error) {
+            console.error("Failed to leave board:", error);
+            const errorMessage = error instanceof AxiosError && error.response?.data?.message
+                ? error.response.data.message
+                : t('leaveBoard.error');
+            toast.error(errorMessage);
+        }
+    }, [boardId, boardDetails, navigate, t]);
 
     return {
         isLoading,
@@ -114,6 +144,7 @@ export const useBoardDetailsPage = (boardId: number) => {
         editingField,
         setEditingField,
         handleUpdateName,
-        handleUpdateDescription
+        handleUpdateDescription,
+        handleLeaveBoard
     };
 };

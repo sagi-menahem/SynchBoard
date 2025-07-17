@@ -5,6 +5,7 @@ import com.synchboard.backend.entity.GroupMember;
 import com.synchboard.backend.entity.GroupMemberId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +20,8 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
     Optional<GroupMember> findByBoardGroupIdAndUserEmail(Long boardGroupId, String userEmail);
 
     List<GroupMember> findAllByBoardGroupId(Long boardGroupId);
+
+    @Transactional
+    void deleteAllByBoardGroupId(Long boardGroupId);
 
 }

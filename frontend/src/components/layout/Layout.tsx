@@ -8,7 +8,7 @@ import styles from './Layout.module.css';
 const Layout: React.FC = () => {
   return (
     <div className={styles.container}>
-      <Toaster 
+      <Toaster
         position="top-center"
         toastOptions={{
           duration: 5000,

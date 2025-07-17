@@ -13,7 +13,7 @@ const AuthPage: React.FC = () => {
     const handleRegistrationSuccess = () => {
         setIsLoginView(true);
     };
-    
+
     const toggleView = () => {
         setIsLoginView(prev => !prev);
     };
