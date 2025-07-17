@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -147,6 +148,27 @@ public class GroupBoardController {
 
         String userEmail = authentication.getName();
         BoardDTO updatedBoard = groupBoardService.updateBoardDescription(boardId, request.getDescription(), userEmail);
+        return ResponseEntity.ok(updatedBoard);
+    }
+
+    @PostMapping("/{boardId}/picture")
+    public ResponseEntity<BoardDTO> uploadBoardPicture(
+            @PathVariable("boardId") Long boardId,
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication) {
+
+        String userEmail = authentication.getName();
+        BoardDTO updatedBoard = groupBoardService.updateBoardPicture(boardId, file, userEmail);
+        return ResponseEntity.ok(updatedBoard);
+    }
+
+    @DeleteMapping("/{boardId}/picture")
+    public ResponseEntity<BoardDTO> deleteBoardPicture(
+            @PathVariable("boardId") Long boardId,
+            Authentication authentication) {
+
+        String userEmail = authentication.getName();
+        BoardDTO updatedBoard = groupBoardService.deleteBoardPicture(boardId, userEmail);
         return ResponseEntity.ok(updatedBoard);
     }
 }

@@ -10,6 +10,7 @@ public class AppProperties {
 
     private final Jwt jwt = new Jwt();
     private final Stomp stomp = new Stomp();
+    private final Upload upload = new Upload();
 
     public Jwt getJwt() {
         return jwt;
@@ -17,6 +18,10 @@ public class AppProperties {
 
     public Stomp getStomp() {
         return stomp;
+    }
+
+    public Upload getUpload() {
+        return upload;
     }
 
     public static class Jwt {
@@ -49,6 +54,18 @@ public class AppProperties {
 
         public void setBrokerPort(int brokerPort) {
             this.brokerPort = brokerPort;
+        }
+    }
+
+    public static class Upload {
+        private String dir;
+
+        public String getDir() {
+            return dir;
+        }
+
+        public void setDir(String dir) {
+            this.dir = dir;
         }
     }
 }
