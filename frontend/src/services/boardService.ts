@@ -62,3 +62,24 @@ export const updateBoardDescription = async (boardId: number, description: strin
 export const leaveBoard = async (boardId: number): Promise<void> => {
     await apiClient.delete(API_ENDPOINTS.LEAVE_BOARD(boardId));
 };
+
+export const uploadBoardPicture = async (boardId: number, file: File): Promise<Board> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await apiClient.post<Board>(
+        API_ENDPOINTS.UPLOAD_BOARD_PICTURE(boardId),
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    );
+    return response.data;
+};
+
+export const deleteBoardPicture = async (boardId: number): Promise<Board> => {
+    const response = await apiClient.delete<Board>(API_ENDPOINTS.DELETE_BOARD_PICTURE(boardId));
+    return response.data;
+};

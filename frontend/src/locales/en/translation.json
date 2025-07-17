@@ -140,5 +140,10 @@
     "inviteButton": "Invite Member",
     "heading": "Board Workspace (ID: {{boardId}})",
     "loading": "Loading board..."
+  },
+  "pictureManager": {
+    "title": "Manage picture for '{{boardName}}'",
+    "changeButton": "Change Picture",
+    "deleteButton": "Delete Picture"
   }
 }

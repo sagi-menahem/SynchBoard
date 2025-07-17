@@ -24,11 +24,13 @@ export const useBoardDetailsPage = (boardId: number) => {
     const [isInviteModalOpen, setInviteModalOpen] = useState(false);
     const [editingField, setEditingField] = useState<EditingField | null>(null);
     const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+    const [isPictureModalOpen, setPictureModalOpen] = useState(false);
+    const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
     const currentUserIsAdmin = boardDetails?.members.find(member => member.email === userEmail)?.isAdmin || false;
 
     const handleInviteSuccess = useCallback((newMember: Member) => {
-        console.log("Successfully invited:", newMember);
+        console.log("New member invited:", newMember);
         refetch();
         setInviteModalOpen(false);
     }, [refetch]);
@@ -116,6 +118,35 @@ export const useBoardDetailsPage = (boardId: number) => {
         }
     }, [boardId, boardDetails, navigate, t]);
 
+    const handlePictureUpload = useCallback(async (file: File) => {
+        try {
+            await boardService.uploadBoardPicture(boardId, file);
+            toast.success("Picture updated successfully!");
+            refetch();
+        } catch (error) {
+            toast.error("Failed to upload picture.");
+            console.error(error);
+        } finally {
+            setPictureModalOpen(false);
+        }
+    }, [boardId, refetch]);
+
+    const promptPictureDelete = useCallback(() => {
+        setPictureModalOpen(false);
+        setDeleteConfirmOpen(true);
+    }, []);
+
+    const handleConfirmDeletePicture = useCallback(async () => {
+        try {
+            await boardService.deleteBoardPicture(boardId);
+            toast.success("Picture deleted successfully.");
+            refetch();
+        } catch (error) {
+            toast.error("Failed to delete picture.");
+            console.error(error);
+        }
+    }, [boardId, refetch]);
+
     return {
         isLoading,
         boardDetails,
@@ -128,6 +159,10 @@ export const useBoardDetailsPage = (boardId: number) => {
         setEditingField,
         isLeaveConfirmOpen,
         setLeaveConfirmOpen,
+        isPictureModalOpen,
+        setPictureModalOpen,
+        isDeleteConfirmOpen,
+        setDeleteConfirmOpen,
         handleInviteSuccess,
         handlePromote,
         handleRemove,
@@ -135,5 +170,8 @@ export const useBoardDetailsPage = (boardId: number) => {
         handleUpdateDescription,
         handleRightClick,
         handleLeaveBoard,
+        handlePictureUpload,
+        promptPictureDelete,
+        handleConfirmDeletePicture,
     };
 };
