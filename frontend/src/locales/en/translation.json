@@ -1,5 +1,4 @@
 {
-  "_filePath": "frontend/src/locales/en/translation.json",
   "common": {
     "_comment": "Shared text used across multiple components",
     "form": {
@@ -16,7 +15,9 @@
       "creating": "Creating...",
       "send": "Send",
       "loggingIn": "Logging in...",
-      "registering": "Registering..."
+      "registering": "Registering...",
+      "save": "Save",
+      "saving": "Saving..."
     }
   },
   "authPage": {
@@ -48,9 +49,18 @@
     "inviteSuccess": "Invitation sent to {{email}}!",
     "genericError": "Failed to send invitation. Please try again.",
     "button": {
-        "sendInvite": "Send Invite"
+      "sendInvite": "Send Invite",
+      "sendingInvite": "Sending..."
     }
-},
+  },
+  "editBoardNameForm": {
+    "title": "Edit Board Name",
+    "label": "Board Name"
+  },
+  "editBoardDescriptionForm": {
+    "title": "Edit Board Description",
+    "label": "Description"
+  },
   "navbar": {
     "title": "SynchBoard",
     "logout": "Logout",
@@ -113,11 +123,14 @@
     "membersHeader": "Members",
     "adminBadge": "Admin"
   },
+  "contextMenu": {
+        "promoteToAdmin": "Promote to Admin",
+        "removeFromBoard": "Remove from Board"
+  },
   "boardPage": {
     "backButton": "Back to Boards",
     "inviteButton": "Invite Member",
     "heading": "Board Workspace (ID: {{boardId}})",
     "loading": "Loading board..."
   }
-  
 }

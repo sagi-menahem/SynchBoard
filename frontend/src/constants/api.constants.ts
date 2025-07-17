@@ -14,6 +14,8 @@ export const API_ENDPOINTS = {
     GET_BOARD_DETAILS: (boardId: number) => `/boards/${boardId}/details`,
     REMOVE_MEMBER: (boardId: number, memberEmail: string) => `/boards/${boardId}/members/${memberEmail}`,
     PROMOTE_MEMBER: (boardId: number, memberEmail: string) => `/boards/${boardId}/members/${memberEmail}/promote`,
+    UPDATE_BOARD_NAME: (boardId: number) => `/boards/${boardId}/name`,
+    UPDATE_BOARD_DESCRIPTION: (boardId: number) => `/boards/${boardId}/description`,
 } as const;
 
 export const PUBLIC_API_ENDPOINTS: readonly string[] = [

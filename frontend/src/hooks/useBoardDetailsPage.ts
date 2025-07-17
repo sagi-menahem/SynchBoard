@@ -8,11 +8,15 @@ import { useContextMenu } from './useContextMenu';
 import * as boardService from '../services/boardService';
 import type { Member } from '../types/board.types';
 
+//TODO move type to file DTO
+type EditingField = 'name' | 'description';
+
 export const useBoardDetailsPage = (boardId: number) => {
     const { boardDetails, isLoading, refetch } = useBoardDetails(boardId);
     const { userEmail } = useAuth();
     const contextMenu = useContextMenu<Member>();
     const [isInviteModalOpen, setInviteModalOpen] = useState(false);
+    const [editingField, setEditingField] = useState<EditingField | null>(null);
 
     const currentUserIsAdmin = boardDetails?.members.find(member => member.email === userEmail)?.isAdmin || false;
 
@@ -54,17 +58,41 @@ export const useBoardDetailsPage = (boardId: number) => {
         contextMenu.closeMenu();
     }, [boardId, contextMenu, refetch]);
 
+    const handleUpdateName = useCallback(async (newName: string) => {
+        if (!boardId) return;
+        try {
+            await boardService.updateBoardName(boardId, newName);
+            toast.success("Board name updated successfully!");
+            refetch();
+        } catch (error) {
+            toast.error("Failed to update board name.");
+            console.error("Update name error:", error);
+            throw error;
+        }
+    }, [boardId, refetch]);
+
+    const handleUpdateDescription = useCallback(async (newDescription: string) => {
+        if (!boardId) return;
+        try {
+            await boardService.updateBoardDescription(boardId, newDescription);
+            toast.success("Board description updated successfully!");
+            refetch();
+        } catch (error) {
+            toast.error("Failed to update board description.");
+            console.error("Update description error:", error);
+            throw error;
+        }
+    }, [boardId, refetch]);
+
     const handleRightClick = useCallback((event: React.MouseEvent, member: Member) => {
         event.preventDefault();
         
-        // --- DEBUGGING CONSOLE LOGS ---
         console.log("--- Right Click Debug ---");
         const isAdmin = boardDetails?.members.find(m => m.email === userEmail)?.isAdmin || false;
         console.log("Current user email:", userEmail);
         console.log("Right-clicked member email:", member.email);
         console.log("Is current user supposed to be admin?", isAdmin);
         console.log("Condition to show menu:", `isAdmin (${isAdmin}) && member.email (${member.email}) !== userEmail (${userEmail})`);
-        // --- END DEBUGGING ---
 
         if (isAdmin && member.email !== userEmail) {
             contextMenu.handleContextMenu(event, member);
@@ -82,6 +110,10 @@ export const useBoardDetailsPage = (boardId: number) => {
         handleInviteSuccess,
         handlePromote,
         handleRemove,
-        handleRightClick
+        handleRightClick,
+        editingField,
+        setEditingField,
+        handleUpdateName,
+        handleUpdateDescription
     };
 };

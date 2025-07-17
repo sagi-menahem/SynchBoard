@@ -1,5 +1,4 @@
 {
-  "_filePath": "frontend/src/locales/he/translation.json",
   "common": {
     "_comment": "Shared text used across multiple components",
     "form": {
@@ -16,7 +15,9 @@
       "creating": "יוצר...",
       "send": "שלח",
       "loggingIn": "מתחבר...",
-      "registering": "רושם..."
+      "registering": "רושם...",
+      "save": "שמור",
+      "saving": "שומר..."
     }
   },
   "authPage": {
@@ -56,17 +57,6 @@
       "boardName": "שם הלוח",
       "description": "תיאור (אופציונלי)"
     },
-    "inviteMemberForm": {
-    "heading": "הזמן חבר חדש",
-    "label": "אימייל משתמש:",
-    "placeholder": "לדוגמה, user@example.com",
-    "emailRequiredError": "יש להזין כתובת אימייל.",
-    "inviteSuccess": "הזמנה נשלחה אל {{email}}!",
-    "genericError": "שליחת ההזמנה נכשלה. אנא נסה שנית.",
-    "button": {
-        "sendInvite": "שלח הזמנה"
-    }
-  },
     "placeholder": {
       "name": "לדוגמה, תכנון פרויקט לרבעון 3",
       "description": "על מה הלוח הזה?"
@@ -74,6 +64,26 @@
     "button": {
       "createBoard": "צור לוח"
     }
+  },
+  "inviteMemberForm": {
+    "heading": "הזמן חבר חדש",
+    "label": "אימייל משתמש:",
+    "placeholder": "לדוגמה, user@example.com",
+    "emailRequiredError": "יש להזין כתובת אימייל.",
+    "inviteSuccess": "הזמנה נשלחה אל {{email}}!",
+    "genericError": "שליחת ההזמנה נכשלה. אנא נסה שנית.",
+    "button": {
+      "sendInvite": "שלח הזמנה",
+      "sendingInvite": "שולח..."
+    }
+  },
+  "editBoardNameForm": {
+    "title": "ערוך שם לוח",
+    "label": "שם הלוח"
+  },
+  "editBoardDescriptionForm": {
+    "title": "ערוך תיאור לוח",
+    "label": "תיאור"
   },
   "toolbar": {
     "label": {
@@ -112,6 +122,10 @@
     "inviteButton": "+ הזמן חבר",
     "membersHeader": "חברים",
     "adminBadge": "מנהל"
+  },
+  "contextMenu": {
+        "promoteToAdmin": "קדם למנהל",
+        "removeFromBoard": "הסר מהלוח"
   },
   "boardPage": {
     "backButton": "חזרה ללוחות",
