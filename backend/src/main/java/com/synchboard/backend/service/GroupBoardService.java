@@ -313,7 +313,6 @@ public class GroupBoardService {
                                 .email(membership.getUser().getEmail())
                                 .firstName(membership.getUser().getFirstName())
                                 .lastName(membership.getUser().getLastName())
-                                .profilePictureUrl(membership.getUser().getProfilePictureUrl())
                                 .isAdmin(membership.getIsAdmin())
                                 .build();
         }
