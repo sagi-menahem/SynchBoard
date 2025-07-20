@@ -5,6 +5,8 @@ import com.synchboard.backend.dto.board.BoardDTO;
 import com.synchboard.backend.dto.board.BoardDetailsDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
 import com.synchboard.backend.dto.board.MemberDTO;
+import com.synchboard.backend.dto.websocket.BoardUpdateDTO;
+import com.synchboard.backend.dto.websocket.UserUpdateDTO;
 import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.GroupMember;
 import com.synchboard.backend.entity.User;
@@ -13,11 +15,13 @@ import com.synchboard.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +39,23 @@ public class GroupBoardService {
         private final ActionHistoryRepository actionHistoryRepository;
         private final BoardObjectRepository boardObjectRepository;
         private final FileStorageService fileStorageService;
+        private final SimpMessageSendingOperations messagingTemplate;
+
+        private void broadcastBoardUpdate(Long boardId, BoardUpdateDTO.UpdateType updateType, String sourceUserEmail) {
+                BoardUpdateDTO payload = new BoardUpdateDTO(updateType, sourceUserEmail);
+                String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + boardId;
+
+                log.info("Broadcasting update of type {} to destination {} from user {}", updateType, destination,
+                                sourceUserEmail);
+                messagingTemplate.convertAndSend(destination, payload);
+        }
+
+        private void broadcastUserUpdate(String userEmail) {
+                UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED);
+                String destination = WEBSOCKET_USER_TOPIC_PREFIX + userEmail;
+                log.info("Sending user-specific update to {}", destination);
+                messagingTemplate.convertAndSend(destination, payload);
+        }
 
         @Transactional(readOnly = true)
         public List<BoardDTO> getBoardsForUser(String userEmail) {
@@ -65,6 +86,8 @@ public class GroupBoardService {
                                 .build();
                 groupMemberRepository.save(newMembership);
 
+                // TODO check if this its nessesery
+                broadcastUserUpdate(ownerEmail);
                 return mapToBoardResponse(newMembership);
         }
 
@@ -99,6 +122,8 @@ public class GroupBoardService {
 
                 groupMemberRepository.save(newMembership);
 
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, invitingUserEmail);
+                broadcastUserUpdate(invitedUserEmail);
                 return mapToMemberDTO(newMembership);
         }
 
@@ -148,6 +173,9 @@ public class GroupBoardService {
                                                 "Member with email " + emailToRemove + " not found in this board."));
 
                 groupMemberRepository.delete(memberToRemove);
+
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, requestingUserEmail);
+                broadcastUserUpdate(emailToRemove);
         }
 
         @Transactional
@@ -173,6 +201,8 @@ public class GroupBoardService {
                 memberToPromote.setIsAdmin(true);
                 groupMemberRepository.save(memberToPromote);
 
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, requestingUserEmail);
+                broadcastUserUpdate(emailToPromote);
                 return mapToMemberDTO(memberToPromote);
         }
 
@@ -185,6 +215,10 @@ public class GroupBoardService {
                 GroupBoard boardToUpdate = member.getGroupBoard();
                 boardToUpdate.setBoardGroupName(newName);
 
+                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
+
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
                 return mapToBoardResponse(member);
         }
 
@@ -197,6 +231,10 @@ public class GroupBoardService {
                 GroupBoard boardToUpdate = member.getGroupBoard();
                 boardToUpdate.setGroupDescription(newDescription);
 
+                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
+
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
                 return mapToBoardResponse(member);
         }
 
@@ -243,6 +281,10 @@ public class GroupBoardService {
                         log.warn("User {} is the last member. Deleting board {}.", userEmail, boardId);
                         deleteBoardAndAssociatedData(boardId, userEmail);
                 }
+
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
+                // TODO check if this its nessesery
+                broadcastUserUpdate(userEmail);
         }
 
         private void deleteBoardAndAssociatedData(Long boardId, String userEmail) {
@@ -296,6 +338,7 @@ public class GroupBoardService {
 
                 boardToUpdate.setGroupPictureUrl(newPictureUrl);
 
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
                 return mapToBoardResponse(member);
         }
 
@@ -316,6 +359,7 @@ public class GroupBoardService {
                         boardToUpdate.setGroupPictureUrl(null);
                 }
 
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
                 return mapToBoardResponse(member);
         }
 }

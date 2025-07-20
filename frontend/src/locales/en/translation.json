@@ -111,7 +111,7 @@
     "createNewBoardButton": "+ Create New Board",
     "loading": "Loading your boards...",
     "fetchError": "Failed to fetch boards. Please try again later.",
-    "noDescription": "No description available.",
+    "noDescription": "No description.",
     "adminLabel": " (Admin)",
     "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!"
   },
@@ -119,7 +119,7 @@
     "backToBoardButton": "Back to Board",
     "loading": "Loading board details...",
     "notFound": "Board not found or you do not have access.",
-    "noDescription": "No description provided.",
+    "noDescription": "No description.",
     "inviteButton": "+ Invite Member",
     "membersHeader": "Members",
     "adminBadge": "Admin"

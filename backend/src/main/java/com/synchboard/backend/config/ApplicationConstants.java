@@ -32,6 +32,7 @@ public final class ApplicationConstants {
     public static final String WEBSOCKET_APP_PREFIX = "/app";
     public static final String WEBSOCKET_TOPIC_PREFIX = "/topic";
     public static final String WEBSOCKET_BOARD_TOPIC_PREFIX = "/topic/board/";
+    public static final String WEBSOCKET_USER_TOPIC_PREFIX = "/topic/user/";
 
     // WebSocket Message Mappings
     public static final String MAPPING_CHAT_SEND_MESSAGE = "/chat.sendMessage";

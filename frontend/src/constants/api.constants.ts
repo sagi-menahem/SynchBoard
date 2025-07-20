@@ -33,6 +33,8 @@ export const WEBSOCKET_DESTINATIONS = {
 
 export const WEBSOCKET_TOPICS = {
     BOARD: (boardId: number) => `/topic/board/${boardId}`,
+    USER: (userEmail: string) => `/topic/user/${userEmail}`,
+
 } as const;
 
 export const AUTH_HEADER_CONFIG = {
