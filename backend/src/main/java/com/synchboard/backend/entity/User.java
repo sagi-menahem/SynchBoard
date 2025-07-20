@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static com.synchboard.backend.config.ApplicationConstants.ROLE_USER;
@@ -41,19 +40,6 @@ public class User implements UserDetails {
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-
-    @Column(name = "is_online")
-    private Boolean isOnline;
-
-    @Column(name = "status_message")
-    private String statusMessage;
-
-    @Column(name = "last_active_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastActiveDate;
-
-    @Column(name = "profile_picture_url")
-    private String profilePictureUrl;
 
     @Column(name = "chat_background_setting")
     private String chatBackgroundSetting;
