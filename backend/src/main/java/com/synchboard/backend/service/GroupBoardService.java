@@ -241,12 +241,13 @@ public class GroupBoardService {
                                         });
                 } else {
                         log.warn("User {} is the last member. Deleting board {}.", userEmail, boardId);
-                        deleteBoardAndAssociatedData(boardId);
+                        deleteBoardAndAssociatedData(boardId, userEmail);
                 }
         }
 
-        private void deleteBoardAndAssociatedData(Long boardId) {
+        private void deleteBoardAndAssociatedData(Long boardId, String userEmail) {
                 log.info("Deleting all data associated with boardId {}", boardId);
+                deleteBoardPicture(boardId, userEmail);
                 actionHistoryRepository.deleteAllByBoard_BoardGroupId(boardId);
                 boardObjectRepository.deleteAllByBoard_BoardGroupId(boardId);
                 groupMemberRepository.deleteAllByBoardGroupId(boardId);
