@@ -45,9 +45,11 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         <div className={styles.page} ref={pageRef}>
             <div className={styles.header}>
                 <div className={styles.headerTitle}>
-                    <Button onClick={() => window.history.back()}>
-                        &larr; {t('boardPage.backButton')}
-                    </Button>
+                    <Link to={APP_ROUTES.BOARD_LIST}>
+                        <Button>
+                            &larr; {t('boardPage.backButton')}
+                        </Button>
+                    </Link>
                     <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
                         <h1>{boardName || t('boardPage.loading')}</h1>
                     </Link>
