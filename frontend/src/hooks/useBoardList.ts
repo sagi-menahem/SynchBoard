@@ -6,6 +6,10 @@ import { AxiosError } from 'axios';
 import { getBoards, leaveBoard } from '../services/boardService';
 import type { Board } from '../types/board.types';
 import { useContextMenu } from './useContextMenu';
+import { useSocket } from './useSocket';
+import { useAuth } from './useAuth';
+import { WEBSOCKET_TOPICS } from '../constants/api.constants';
+import type { UserUpdateDTO } from '../types/websocket.types';
 
 export const useBoardList = () => {
     const { t } = useTranslation();
@@ -15,9 +19,7 @@ export const useBoardList = () => {
     const contextMenu = useContextMenu<Board>();
     const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
     const [boardToLeave, setBoardToLeave] = useState<Board | null>(null);
-
-    console.log(`[useBoardList Render] isLeaveConfirmOpen: ${isLeaveConfirmOpen}, boardToLeave: ${boardToLeave?.name || 'null'}`);
-
+    const { userEmail } = useAuth();
 
     const fetchBoards = useCallback(async () => {
         if (!boards.length) {
@@ -86,6 +88,14 @@ export const useBoardList = () => {
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const handleUserUpdate = useCallback((message: UserUpdateDTO) => {
+        console.log(`[useBoardList] Received user update of type: ${message.updateType}. Refetching board list.`);
+        fetchBoards();
+    }, [fetchBoards]);
+
+    // Subscribe to the user-specific topic
+    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
 
     return {
         boards,
