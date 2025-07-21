@@ -19,11 +19,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.synchboard.backend.dto.websocket.ChatMessageDTO;
+import com.synchboard.backend.service.ChatService;
 
 import java.util.List;
 
 import static com.synchboard.backend.config.ApplicationConstants.*;
 
+//TODO use service
 @RestController
 @RequestMapping(API_BOARDS_PATH)
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class GroupBoardController {
     private final GroupBoardService groupBoardService;
     private final BoardObjectService boardObjectService;
     private final ActionHistoryService actionHistoryService;
+    private final ChatService chatService;
 
     @GetMapping
     public ResponseEntity<List<BoardDTO>> getBoardsForCurrentUser(Authentication authentication) {
@@ -58,9 +62,12 @@ public class GroupBoardController {
         return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
     }
 
+    // TODO move to board activity
     @GetMapping(API_BOARDS_OBJECT)
-    public ResponseEntity<List<BoardActionDTO.Response>> getBoardObjects(@PathVariable("boardId") Long boardId) {
-        List<BoardActionDTO.Response> objects = boardObjectService.getObjectsForBoard(boardId);
+    public ResponseEntity<List<BoardActionDTO.Response>> getBoardObjects(
+            @PathVariable("boardId") Long boardId, Authentication authentication) {
+        List<BoardActionDTO.Response> objects = boardObjectService.getObjectsForBoard(boardId,
+                authentication.getName());
         return ResponseEntity.ok(objects);
     }
 
@@ -170,5 +177,12 @@ public class GroupBoardController {
         String userEmail = authentication.getName();
         BoardDTO updatedBoard = groupBoardService.deleteBoardPicture(boardId, userEmail);
         return ResponseEntity.ok(updatedBoard);
+    }
+
+    @GetMapping("/{boardId}/messages")
+    public ResponseEntity<List<ChatMessageDTO.Response>> getBoardMessages(
+            @PathVariable("boardId") Long boardId, Authentication authentication) {
+        List<ChatMessageDTO.Response> messages = chatService.getMessagesForBoard(boardId, authentication.getName());
+        return ResponseEntity.ok(messages);
     }
 }

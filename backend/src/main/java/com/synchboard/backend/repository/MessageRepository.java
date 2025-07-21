@@ -1,0 +1,14 @@
+// File: backend/src/main/java/com/synchboard/backend/repository/MessageRepository.java
+package com.synchboard.backend.repository;
+
+import com.synchboard.backend.entity.Message;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface MessageRepository extends JpaRepository<Message, Long> {
+
+    List<Message> findAllByBoard_BoardGroupIdOrderByTimestampAsc(Long boardId);
+}

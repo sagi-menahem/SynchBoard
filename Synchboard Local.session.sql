@@ -1,0 +1,7 @@
+DROP TABLE action_history CASCADE;
+DROP TABLE board_objects CASCADE;
+DROP TABLE group_boards CASCADE;
+DROP TABLE group_members CASCADE;
+DROP TABLE message_reads CASCADE;
+DROP TABLE messages CASCADE;
+DROP TABLE users CASCADE;

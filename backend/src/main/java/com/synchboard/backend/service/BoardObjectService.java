@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.synchboard.backend.repository.GroupMemberRepository;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,9 +37,15 @@ public class BoardObjectService {
     private final GroupBoardRepository groupBoardRepository;
     private final ObjectMapper objectMapper;
     private final ActionHistoryRepository actionHistoryRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Transactional
     public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
+
+        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, request.getBoardId())) {
+            throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+        }
+
         User user = userRepository.findById(userEmail)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
         GroupBoard board = groupBoardRepository.findById(request.getBoardId())
@@ -61,7 +69,7 @@ public class BoardObjectService {
                 ActionHistory historyRecord = ActionHistory.builder()
                         .board(board)
                         .user(user)
-                        .boardObject(persistedBoardObject) 
+                        .boardObject(persistedBoardObject)
                         .actionType(request.getType().name())
                         .stateBefore(null)
                         .stateAfter(payloadAsString)
@@ -77,7 +85,11 @@ public class BoardObjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId) {
+    public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId, String userEmail) {
+        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
+            throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+        }
+
         List<BoardObject> boardObjects = boardObjectRepository.findAllByBoard_BoardGroupIdAndIsActiveTrue(boardId);
 
         return boardObjects.stream()
@@ -88,10 +100,16 @@ public class BoardObjectService {
     private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
         try {
             JsonNode payload = objectMapper.readTree(entity.getObjectData());
+
+            String senderEmail = "unknown";
+            if (entity.getCreatedByUser() != null) {
+                senderEmail = entity.getCreatedByUser().getEmail();
+            }
+
             return BoardActionDTO.Response.builder()
                     .type(ActionType.valueOf(entity.getObjectType()))
                     .payload(payload)
-                    .sender(entity.getCreatedByUser().getEmail())
+                    .sender(senderEmail)
                     .instanceId(entity.getInstanceId())
                     .build();
         } catch (JsonProcessingException e) {
