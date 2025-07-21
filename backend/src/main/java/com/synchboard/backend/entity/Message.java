@@ -36,6 +36,9 @@ public class Message {
     @Column(name = "message_content", nullable = false, columnDefinition = "TEXT")
     private String messageContent;
 
+    @Column(name = "sender_full_name_snapshot", nullable = false)
+    private String senderFullNameSnapshot;
+
     @PrePersist
     protected void onCreate() {
         this.timestamp = LocalDateTime.now();

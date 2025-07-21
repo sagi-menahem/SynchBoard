@@ -6,21 +6,19 @@ import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.Message;
 import com.synchboard.backend.entity.User;
 import com.synchboard.backend.repository.GroupBoardRepository;
+import com.synchboard.backend.repository.GroupMemberRepository;
 import com.synchboard.backend.repository.MessageRepository;
 import com.synchboard.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.synchboard.backend.exception.ResourceNotFoundException;
-import com.synchboard.backend.repository.GroupMemberRepository;
-import org.springframework.security.access.AccessDeniedException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.synchboard.backend.config.ApplicationConstants.*;
 
@@ -31,8 +29,8 @@ public class ChatService {
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
     private final GroupBoardRepository groupBoardRepository;
-    private final SimpMessageSendingOperations messagingTemplate;
     private final GroupMemberRepository groupMemberRepository;
+    private final SimpMessageSendingOperations messagingTemplate;
 
     @Transactional
     public void processAndSaveMessage(ChatMessageDTO.Request request, Principal principal) {
@@ -44,21 +42,18 @@ public class ChatService {
         GroupBoard board = groupBoardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new RuntimeException(BOARD_NOT_FOUND + request.getBoardId()));
 
+        String fullNameSnapshot = senderUser.getFirstName() + " " + senderUser.getLastName();
+
         Message messageToSave = Message.builder()
                 .board(board)
                 .sender(senderUser)
                 .messageContent(request.getContent())
+                .senderFullNameSnapshot(fullNameSnapshot)
                 .build();
+
         messageRepository.save(messageToSave);
 
-        String fullName = senderUser.getFirstName() + " " + senderUser.getLastName();
-        // TODO name of the sender
-        ChatMessageDTO.Response response = ChatMessageDTO.Response.builder()
-                .type(ChatMessageDTO.Response.MessageType.CHAT)
-                .content(request.getContent())
-                .sender(fullName)
-                .timestamp(LocalDateTime.now())
-                .build();
+        ChatMessageDTO.Response response = mapMessageToDto(messageToSave);
 
         String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
         messagingTemplate.convertAndSend(destination, response);
@@ -66,13 +61,8 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public List<ChatMessageDTO.Response> getMessagesForBoard(Long boardId, String userEmail) {
-
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
             throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
-        }
-
-        if (!groupBoardRepository.existsById(boardId)) {
-            throw new ResourceNotFoundException(BOARD_NOT_FOUND + boardId);
         }
 
         List<Message> messages = messageRepository.findAllByBoard_BoardGroupIdOrderByTimestampAsc(boardId);
@@ -83,16 +73,28 @@ public class ChatService {
     }
 
     private ChatMessageDTO.Response mapMessageToDto(Message message) {
-        String senderName = "Unknown User";
+        String senderEmail;
+        String senderFullName;
+        String senderProfilePictureUrl;
+
         if (message.getSender() != null) {
-            senderName = message.getSender().getFirstName() + " " + message.getSender().getLastName();
+            User sender = message.getSender();
+            senderEmail = sender.getEmail();
+            senderFullName = sender.getFirstName() + " " + sender.getLastName();
+            senderProfilePictureUrl = sender.getProfilePictureUrl();
+        } else {
+            senderEmail = "deleted-user";
+            senderFullName = message.getSenderFullNameSnapshot();
+            senderProfilePictureUrl = null;
         }
 
         return ChatMessageDTO.Response.builder()
                 .type(ChatMessageDTO.Response.MessageType.CHAT)
                 .content(message.getMessageContent())
-                .sender(senderName)
                 .timestamp(message.getTimestamp())
+                .senderEmail(senderEmail)
+                .senderFullName(senderFullName)
+                .senderProfilePictureUrl(senderProfilePictureUrl)
                 .build();
     }
 }

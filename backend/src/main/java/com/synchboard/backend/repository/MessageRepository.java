@@ -3,6 +3,9 @@ package com.synchboard.backend.repository;
 
 import com.synchboard.backend.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,4 +14,8 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findAllByBoard_BoardGroupIdOrderByTimestampAsc(Long boardId);
+
+    @Modifying
+    @Query("UPDATE Message m SET m.sender = NULL WHERE m.sender.email = :userEmail")
+    void nullifySenderByUserEmail(@Param("userEmail") String userEmail);
 }
