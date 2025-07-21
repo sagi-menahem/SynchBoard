@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
     LEAVE_BOARD: (boardId: number) => `/boards/${boardId}/members/leave`,
     UPLOAD_BOARD_PICTURE: (boardId: number) => `/boards/${boardId}/picture`,
     DELETE_BOARD_PICTURE: (boardId: number) => `/boards/${boardId}/picture`,
+    GET_BOARD_MESSAGES: (boardId: number) => `/boards/${boardId}/messages`,
     // User
     GET_USER_PROFILE: '/user/profile',
     UPDATE_USER_PROFILE: '/user/profile',

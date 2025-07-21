@@ -2,6 +2,7 @@
 import apiClient from './apiClient';
 import type { Board, CreateBoardRequest, Member, BoardDetails } from '../types/board.types';
 import type { BoardActionResponse } from '../types/boardObject.types';
+import type { ChatMessageResponse } from '../types/message.types';
 import { API_ENDPOINTS } from '../constants/api.constants';
 
 export const getBoards = async (): Promise<Board[]> => {
@@ -81,5 +82,10 @@ export const uploadBoardPicture = async (boardId: number, file: File): Promise<B
 
 export const deleteBoardPicture = async (boardId: number): Promise<Board> => {
     const response = await apiClient.delete<Board>(API_ENDPOINTS.DELETE_BOARD_PICTURE(boardId));
+    return response.data;
+};
+
+export const getBoardMessages = async (boardId: number): Promise<ChatMessageResponse[]> => {
+    const response = await apiClient.get<ChatMessageResponse[]>(API_ENDPOINTS.GET_BOARD_MESSAGES(boardId));
     return response.data;
 };

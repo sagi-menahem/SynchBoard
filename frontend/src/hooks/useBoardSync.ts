@@ -14,7 +14,10 @@ import { APP_ROUTES } from '../constants/routes.constants';
 import { AxiosError } from 'axios';
 
 export const useBoardSync = (boardId: number) => {
-    console.log(`%c[useBoardSync] Hook initialized with boardId: ${boardId}`, 'color: yellow;');
+    // --- DEBUG: Add a render counter to distinguish StrictMode runs ---
+    const renderCount = useRef(0);
+
+    console.log(`%c[useBoardSync Hook initialized with boardId: ${boardId}`, 'color: yellow;');
 
     const { userEmail } = useAuth();
     const navigate = useNavigate();
@@ -29,41 +32,63 @@ export const useBoardSync = (boardId: number) => {
     const [redoCount, setRedoCount] = useState(0);
 
     useEffect(() => {
-        console.log(`[useBoardSync] Initial useEffect running with boardId: ${boardId}`);
+        renderCount.current += 1;
+        const instanceId = `Instance ${renderCount.current}`;
+
+        console.log(`[useBoardSync ${instanceId}] useEffect TRIGGERED. boardId: ${boardId}`);
         if (isNaN(boardId) || boardId === 0) {
-            console.error(`[useBoardSync] Invalid boardId (${boardId}). Setting accessLost to true.`);
+            console.error(`[useBoardSync ${instanceId}] Invalid boardId (${boardId}). Setting accessLost to true.`);
             setIsLoading(false);
             setAccessLost(true);
             return;
         }
 
         const fetchInitialData = async () => {
-            try {
-                console.log("[useBoardSync] Starting fetchInitialData...");
-                setIsLoading(true);
-                const [details, objectActions] = await Promise.all([
-                    boardService.getBoardDetails(boardId),
-                    boardService.getBoardObjects(boardId)
-                ]);
+            console.log(`[useBoardSync ${instanceId}] Starting fetchInitialData...`);
+            setIsLoading(true);
+            console.time(`[useBoardSync ${instanceId}] Total Fetch Time`); // DEBUG: Start timer
 
-                console.log("%c[useBoardSync] fetchInitialData SUCCEEDED.", 'color: green;');
+            try {
+                console.log(`[useBoardSync ${instanceId}] STEP 1: Awaiting boardService.getBoardDetails(${boardId})...`);
+                const details = await boardService.getBoardDetails(boardId);
+                console.log(`%c[useBoardSync ${instanceId}] STEP 1: getBoardDetails SUCCEEDED.`, 'color: lightgreen;', details);
                 setBoardName(details.name);
+
+                console.log(`[useBoardSync ${instanceId}] STEP 2: Awaiting Promise.all for objects and messages...`);
+                const [objectActions, messageHistory] = await Promise.all([
+                    boardService.getBoardObjects(boardId),
+                    boardService.getBoardMessages(boardId)
+                ]);
+                console.log(`%c[useBoardSync ${instanceId}] STEP 2: Promise.all SUCCEEDED.`, 'color: lightgreen;');
+
                 const initialObjects = objectActions
                     .filter(a => a.payload)
                     .map(a => ({ ...(a.payload as object), instanceId: a.instanceId } as ActionPayload));
                 setObjects(initialObjects);
+
+                setMessages(messageHistory);
+
                 setUndoCount(initialObjects.length);
                 setRedoCount(0);
 
             } catch (error) {
-                console.error("%c[useBoardSync] fetchInitialData FAILED. Error details:", 'color: red;', error);
-                if (error instanceof AxiosError && error.response?.status === 403) {
-                    console.error("[useBoardSync] fetchInitialData caught 403 Forbidden. Setting accessLost to true.");
-                    setAccessLost(true);
+                console.error(`%c[useBoardSync ${instanceId}] fetchInitialData FAILED. Full error object:`, 'color: red;', error);
+                if (error instanceof AxiosError) {
+                    console.error(`[useBoardSync ${instanceId}] Axios error details:`, {
+                        message: error.message,
+                        status: error.response?.status,
+                        url: error.config?.url,
+                        method: error.config?.method,
+                    });
+                    if (error.response?.status === 403) {
+                        console.error(`%c[useBoardSync ${instanceId}] CAUGHT 403 FORBIDDEN. Setting accessLost to true.`, 'font-weight: bold; color: red;');
+                        setAccessLost(true);
+                    }
                 } else {
                     toast.error("Failed to load board data.");
                 }
             } finally {
+                console.timeEnd(`[useBoardSync ${instanceId}] Total Fetch Time`); // DEBUG: End timer
                 setIsLoading(false);
             }
         };
@@ -148,9 +173,8 @@ export const useBoardSync = (boardId: number) => {
     }, [boardId, isLoading, redoCount]);
 
     useEffect(() => {
-        console.log(`[useBoardSync] accessLost effect running. Current value: ${accessLost}`);
         if (accessLost) {
-            console.warn("[useBoardSync] accessLost is true. Navigating to board list...");
+            console.warn(`[useBoardSync] accessLost is true. Navigating to board list...`);
             navigate(APP_ROUTES.BOARD_LIST);
         }
     }, [accessLost, navigate]);
