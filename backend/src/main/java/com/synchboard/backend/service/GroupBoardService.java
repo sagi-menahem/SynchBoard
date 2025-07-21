@@ -86,7 +86,6 @@ public class GroupBoardService {
                                 .build();
                 groupMemberRepository.save(newMembership);
 
-                // TODO check if this its nessesery
                 broadcastUserUpdate(ownerEmail);
                 return mapToBoardResponse(newMembership);
         }
@@ -246,54 +245,50 @@ public class GroupBoardService {
                                 .orElseThrow(() -> new ResourceNotFoundException("Cannot leave board: User " + userEmail
                                                 + " is not a member of board " + boardId));
 
-                if (!leavingMember.getIsAdmin()) {
-                        log.info("User {} is a regular member. Removing from board {}.", userEmail, boardId);
-                        groupMemberRepository.delete(leavingMember);
-                        return;
-                }
-
-                log.info("User {} is an admin. Checking for other admins in board {}.", userEmail, boardId);
                 List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-                long adminCount = allMembers.stream().filter(GroupMember::getIsAdmin).count();
 
-                if (adminCount > 1) {
-                        log.info("Other admins found. User {} can safely leave board {}.", userEmail, boardId);
-                        groupMemberRepository.delete(leavingMember);
-                        return;
+                if (leavingMember.getIsAdmin()) {
+                        log.info("User {} is an admin. Checking for other admins in board {}.", userEmail, boardId);
+                        long adminCount = allMembers.stream().filter(GroupMember::getIsAdmin).count();
+
+                        if (adminCount <= 1) {
+                                log.warn("User {} is the last admin of board {}.", userEmail, boardId);
+
+                                if (allMembers.size() > 1) {
+                                        log.info("Promoting a new admin for board {}.", boardId);
+                                        allMembers.stream()
+                                                        .filter(member -> !member.getUserEmail().equals(userEmail))
+                                                        .findFirst()
+                                                        .ifPresent(memberToPromote -> {
+                                                                log.warn("Promoting user {} to admin for board {}.",
+                                                                                memberToPromote.getUserEmail(),
+                                                                                boardId);
+                                                                memberToPromote.setIsAdmin(true);
+                                                                groupMemberRepository.save(memberToPromote);
+                                                        });
+                                } else {
+                                        log.warn("User {} is the last member. Deleting board {}.", userEmail, boardId);
+                                        deleteBoardAndAssociatedData(boardId, userEmail, allMembers);
+                                        return;
+                                }
+                        }
                 }
 
-                log.warn("User {} is the last admin of board {}.", userEmail, boardId);
-
-                if (allMembers.size() > 1) {
-                        log.info("Promoting a new admin for board {}.", boardId);
-                        groupMemberRepository.delete(leavingMember);
-
-                        allMembers.stream()
-                                        .filter(member -> !member.getUserEmail().equals(userEmail))
-                                        .findFirst()
-                                        .ifPresent(memberToPromote -> {
-                                                log.warn("Promoting user {} to admin for board {}.",
-                                                                memberToPromote.getUserEmail(), boardId);
-                                                memberToPromote.setIsAdmin(true);
-                                                groupMemberRepository.save(memberToPromote);
-                                        });
-                } else {
-                        log.warn("User {} is the last member. Deleting board {}.", userEmail, boardId);
-                        deleteBoardAndAssociatedData(boardId, userEmail);
-                }
+                groupMemberRepository.delete(leavingMember);
 
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
-                // TODO check if this its nessesery
                 broadcastUserUpdate(userEmail);
         }
 
-        private void deleteBoardAndAssociatedData(Long boardId, String userEmail) {
+        private void deleteBoardAndAssociatedData(Long boardId, String userEmail, List<GroupMember> membersToNotify) {
                 log.info("Deleting all data associated with boardId {}", boardId);
+                membersToNotify.forEach(member -> broadcastUserUpdate(member.getUserEmail()));
                 deleteBoardPicture(boardId, userEmail);
                 actionHistoryRepository.deleteAllByBoard_BoardGroupId(boardId);
                 boardObjectRepository.deleteAllByBoard_BoardGroupId(boardId);
                 groupMemberRepository.deleteAllByBoardGroupId(boardId);
                 groupBoardRepository.deleteById(boardId);
+
                 log.info("Successfully deleted board {}", boardId);
         }
 
