@@ -18,7 +18,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-        // Expose the 'uploads' directory to be accessible via the "/images/**" URL path
         exposeDirectory("images", appProperties.getUpload().getDir(), registry);
     }
 
@@ -29,7 +28,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/" + urlPath + "/**")
                 .addResourceLocations(location);
 
-        // TODO
         System.out.println("Exposing directory: " + urlPath + " at " + location);
     }
 }

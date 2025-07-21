@@ -46,7 +46,6 @@
 
 .editableText:hover {
     color: #a9a9ff;
-    /* A slightly brighter color on hover */
 }
 
 .description {
@@ -54,7 +53,6 @@
     margin-top: 0.5rem;
 }
 
-/* Styles for the members list remain the same */
 .membersList {
     margin-top: 2rem;
     list-style: none;

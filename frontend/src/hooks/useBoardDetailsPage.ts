@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useBoardDetailsPage.ts
-
 import { useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';

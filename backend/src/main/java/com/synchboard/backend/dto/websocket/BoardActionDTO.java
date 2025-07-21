@@ -26,14 +26,10 @@ public final class BoardActionDTO {
         private Long boardId;
         private ActionType type;
         private JsonNode payload;
-        
-        // A unique identifier for the object instance on the client-side, used for tracking.
+
         private String instanceId;
     }
 
-    /**
-     * DTO for broadcasting a board action response to clients.
-     */
     @Data
     @Builder
     @NoArgsConstructor

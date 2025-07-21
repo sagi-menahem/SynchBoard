@@ -47,7 +47,6 @@ export const useBoardList = () => {
     };
 
     const handleConfirmLeave = useCallback(async () => {
-        // --- DEBUG LOG ---
         console.log(`[handleConfirmLeave] Triggered. boardToLeave:`, boardToLeave);
 
         if (!boardToLeave) {
@@ -73,7 +72,6 @@ export const useBoardList = () => {
     }, [boardToLeave, t, fetchBoards]);
 
     const handleLeaveClick = () => {
-        // --- DEBUG LOG ---
         console.log(`[handleLeaveClick] Triggered. contextMenu.data:`, contextMenu.data);
 
         if (!contextMenu.data) {
@@ -94,7 +92,6 @@ export const useBoardList = () => {
         fetchBoards();
     }, [fetchBoards]);
 
-    // Subscribe to the user-specific topic
     useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
 
     return {

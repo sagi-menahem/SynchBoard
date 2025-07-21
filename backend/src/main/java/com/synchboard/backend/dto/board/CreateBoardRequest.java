@@ -16,7 +16,7 @@ public class CreateBoardRequest {
 
     @NotBlank(message = BOARD_NAME_CANT_BE_EMPTY)
     @Size(min = 3, max = 100, message = BOARD_NAME_LENGHT)
-    
+
     private String name;
 
     private String description;
