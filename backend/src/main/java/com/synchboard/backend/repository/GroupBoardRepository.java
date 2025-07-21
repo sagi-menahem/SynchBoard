@@ -3,8 +3,15 @@ package com.synchboard.backend.repository;
 
 import com.synchboard.backend.entity.GroupBoard;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GroupBoardRepository extends JpaRepository<GroupBoard, Long> {
+
+    @Modifying
+    @Query("UPDATE GroupBoard gb SET gb.createdByUser = NULL WHERE gb.createdByUser.email = :userEmail")
+    void nullifyCreatedByUser(@Param("userEmail") String userEmail);
 }

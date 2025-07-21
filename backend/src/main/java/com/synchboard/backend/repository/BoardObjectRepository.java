@@ -3,6 +3,9 @@ package com.synchboard.backend.repository;
 
 import com.synchboard.backend.entity.BoardObject;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,4 +18,13 @@ public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> 
 
     @Transactional
     void deleteAllByBoard_BoardGroupId(Long boardGroupId);
+
+    // Add these two methods
+    @Modifying
+    @Query("UPDATE BoardObject bo SET bo.createdByUser = NULL WHERE bo.createdByUser.email = :userEmail")
+    void nullifyCreatedByUser(@Param("userEmail") String userEmail);
+
+    @Modifying
+    @Query("UPDATE BoardObject bo SET bo.lastEditedByUser = NULL WHERE bo.lastEditedByUser.email = :userEmail")
+    void nullifyLastEditedByUser(@Param("userEmail") String userEmail);
 }

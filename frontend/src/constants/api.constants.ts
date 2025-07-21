@@ -4,8 +4,10 @@ export const API_BASE_URL = 'http://localhost:8080/api';
 export const WEBSOCKET_URL = 'http://localhost:8080/ws';
 
 export const API_ENDPOINTS = {
+    // Auth
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
+    // Boards
     BOARDS: '/boards',
     BOARD_OBJECTS: (boardId: number) => `/boards/${boardId}/objects`,
     UNDO: (boardId: number) => `/boards/${boardId}/undo`,
@@ -19,6 +21,14 @@ export const API_ENDPOINTS = {
     LEAVE_BOARD: (boardId: number) => `/boards/${boardId}/members/leave`,
     UPLOAD_BOARD_PICTURE: (boardId: number) => `/boards/${boardId}/picture`,
     DELETE_BOARD_PICTURE: (boardId: number) => `/boards/${boardId}/picture`,
+    // User
+    GET_USER_PROFILE: '/user/profile',
+    UPDATE_USER_PROFILE: '/user/profile',
+    UPDATE_PASSWORD: '/user/password',
+    UPLOAD_PROFILE_PICTURE: '/user/profile-picture',
+    DELETE_PROFILE_PICTURE: '/user/profile-picture',
+    UPDATE_USER_PREFERENCES: '/user/preferences',
+    DELETE_ACCOUNT: '/user/account',
 } as const;
 
 export const PUBLIC_API_ENDPOINTS: readonly string[] = [

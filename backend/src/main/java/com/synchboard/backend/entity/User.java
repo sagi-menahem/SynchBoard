@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
     @Column(name = "chat_background_setting")
     private String chatBackgroundSetting;
 

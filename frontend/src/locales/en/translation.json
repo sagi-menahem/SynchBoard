@@ -113,7 +113,8 @@
     "fetchError": "Failed to fetch boards. Please try again later.",
     "noDescription": "No description.",
     "adminLabel": " (Admin)",
-    "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!"
+    "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
+    "setting": "Setting"
   },
   "boardDetailsPage": {
     "backToBoardButton": "Back to Board",
@@ -145,5 +146,42 @@
     "title": "Manage picture for '{{boardName}}'",
     "changeButton": "Change Picture",
     "deleteButton": "Delete Picture"
+  },
+  "settingsPage": {
+    "heading": "Account Settings",
+    "loading": "Loading your settings...",
+    "loadError": "Could not load user data.",
+    "profileSectionHeader": "Profile Information",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "phoneNumberLabel": "Phone Number",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Failed to update profile.",
+    "buttons": {
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "save": "Save Changes"
+    },
+    "passwordSectionHeader": "Change Password",
+    "currentPasswordLabel": "Current Password",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "passwordUpdateSuccess": "Password updated successfully!",
+    "passwordUpdateError": "Failed to update password. Please check your current password.",
+    "passwordsDoNotMatch": "New passwords do not match.",
+    "passwordTooShort": "New password must be at least 8 characters long.",
+    "pictureSectionHeader": "Profile Picture",
+    "deletePictureConfirmTitle": "Delete Picture?",
+    "deletePictureConfirmText": "Are you sure you want to delete your profile picture?",
+    "pictureUpdateSuccess": "Profile picture updated!",
+    "pictureDeleteSuccess": "Profile picture removed.",
+    "pictureUploadError": "Failed to upload picture.",
+    "dangerZoneHeader": "Danger Zone",
+    "deleteAccountButton": "Delete My Account",
+    "deleteAccountConfirmTitle": "Delete Account?",
+    "deleteAccountConfirmText": "Are you absolutely sure? This action cannot be undone. All your data, including boards you own as the last admin, will be permanently deleted.",
+    "accountDeleteSuccess": "Your account has been deleted.",
+    "accountDeleteError": "Failed to delete your account.",
+    "backToBoards": "Back to Boards"
   }
 }

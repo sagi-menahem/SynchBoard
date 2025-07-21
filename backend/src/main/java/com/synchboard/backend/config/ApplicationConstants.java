@@ -19,6 +19,7 @@ public final class ApplicationConstants {
     public static final String API_BOARDS_PATH = "/api/boards";
     public static final String API_BOARDS_WITH_SUBPATHS = "/api/boards/**";
     public static final String API_BOARDS_OBJECT = "/{boardId}/objects";
+    public static final String API_USER_PATH = "/api/user/**";
 
     // JWT (JSON Web Token) Constants
     public static final String JWT_PREFIX = "Bearer ";
@@ -62,4 +63,5 @@ public final class ApplicationConstants {
     public static final String ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD = "User is not a member of this board.";
     public static final String ERROR_CANNOT_REMOVE_SELF = "You cannot remove yourself from the board via this action.";
     public static final String ERROR_USER_IS_ALREADY_ADMIN = "User is already an admin of this board.";
+    public static final String ERROR_INCORRECT_CURRENT_PASSWORD = "The current password provided is incorrect.";
 }

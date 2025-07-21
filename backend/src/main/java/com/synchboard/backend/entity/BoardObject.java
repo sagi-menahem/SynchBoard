@@ -31,7 +31,7 @@ public class BoardObject {
     private GroupBoard board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_user_email", nullable = false)
+    @JoinColumn(name = "created_by_user_email", nullable = true)
     private User createdByUser;
 
     @Column(name = "object_type", nullable = false)
