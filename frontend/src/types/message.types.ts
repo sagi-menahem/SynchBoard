@@ -10,8 +10,10 @@ export type MessageType = typeof MessageType[keyof typeof MessageType];
 export interface ChatMessageResponse {
   type: MessageType;
   content: string;
-  sender: string;
   timestamp: string;
+  senderEmail: string;
+  senderFullName: string;
+  senderProfilePictureUrl: string | null;
 }
 
 export interface SendChatMessageRequest {

@@ -29,8 +29,11 @@ public final class ChatMessageDTO {
 
         private MessageType type;
         private String content;
-        private String sender;
         private LocalDateTime timestamp;
+
+        private String senderEmail;
+        private String senderFullName;
+        private String senderProfilePictureUrl;
 
         public enum MessageType {
             CHAT,

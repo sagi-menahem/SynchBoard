@@ -42,13 +42,14 @@ public class UserService {
     private final ActionHistoryRepository actionHistoryRepository;
     private final BoardObjectRepository boardObjectRepository;
     private final GroupBoardRepository groupBoardRepository;
+    private final MessageRepository messageRepository;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService, AuthenticationManager authenticationManager,
             FileStorageService fileStorageService, GroupMemberRepository groupMemberRepository,
             @Lazy GroupBoardService groupBoardService, SimpMessageSendingOperations messagingTemplate,
             ActionHistoryRepository actionHistoryRepository, BoardObjectRepository boardObjectRepository,
-            GroupBoardRepository groupBoardRepository) {
+            GroupBoardRepository groupBoardRepository, MessageRepository messageRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -60,6 +61,7 @@ public class UserService {
         this.actionHistoryRepository = actionHistoryRepository;
         this.boardObjectRepository = boardObjectRepository;
         this.groupBoardRepository = groupBoardRepository;
+        this.messageRepository = messageRepository;
     }
 
     public AuthResponse registerUser(RegisterRequest request) {
@@ -168,16 +170,14 @@ public class UserService {
 
     @Transactional
     public void deleteAccount(String userEmail) {
-        // Step 0: Find the user
         User user = userRepository.findById(userEmail)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
 
         boardObjectRepository.nullifyCreatedByUser(userEmail);
         boardObjectRepository.nullifyLastEditedByUser(userEmail);
-
         groupBoardRepository.nullifyCreatedByUser(userEmail);
-
         actionHistoryRepository.deleteAllByUser_Email(userEmail);
+        messageRepository.nullifySenderByUserEmail(userEmail);
 
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
         List<Long> boardIds = memberships.stream()

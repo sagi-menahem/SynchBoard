@@ -14,11 +14,6 @@ import { APP_ROUTES } from '../constants/routes.constants';
 import { AxiosError } from 'axios';
 
 export const useBoardSync = (boardId: number) => {
-    // --- DEBUG: Add a render counter to distinguish StrictMode runs ---
-    const renderCount = useRef(0);
-
-    console.log(`%c[useBoardSync Hook initialized with boardId: ${boardId}`, 'color: yellow;');
-
     const { userEmail } = useAuth();
     const navigate = useNavigate();
     const sessionInstanceId = useRef(Date.now().toString());
@@ -31,70 +26,47 @@ export const useBoardSync = (boardId: number) => {
     const [undoCount, setUndoCount] = useState(0);
     const [redoCount, setRedoCount] = useState(0);
 
-    useEffect(() => {
-        renderCount.current += 1;
-        const instanceId = `Instance ${renderCount.current}`;
+    const fetchInitialData = useCallback(async () => {
+        try {
+            setIsLoading(true);
 
-        console.log(`[useBoardSync ${instanceId}] useEffect TRIGGERED. boardId: ${boardId}`);
-        if (isNaN(boardId) || boardId === 0) {
-            console.error(`[useBoardSync ${instanceId}] Invalid boardId (${boardId}). Setting accessLost to true.`);
+            const details = await boardService.getBoardDetails(boardId);
+            setBoardName(details.name);
+
+            const [objectActions, messageHistory] = await Promise.all([
+                boardService.getBoardObjects(boardId),
+                boardService.getBoardMessages(boardId)
+            ]);
+
+            const initialObjects = objectActions
+                .filter(a => a.payload)
+                .map(a => ({ ...(a.payload as object), instanceId: a.instanceId } as ActionPayload));
+            setObjects(initialObjects);
+
+            setMessages(messageHistory);
+
+            setUndoCount(initialObjects.length);
+            setRedoCount(0);
+
+        } catch (error) {
+            console.error("Failed to fetch initial board data:", error);
+            if (error instanceof AxiosError && error.response?.status === 403) {
+                setAccessLost(true);
+            } else {
+                toast.error("Failed to load board data.");
+            }
+        } finally {
             setIsLoading(false);
+        }
+    }, [boardId]);
+
+    useEffect(() => {
+        if (isNaN(boardId) || boardId === 0) {
             setAccessLost(true);
             return;
         }
-
-        const fetchInitialData = async () => {
-            console.log(`[useBoardSync ${instanceId}] Starting fetchInitialData...`);
-            setIsLoading(true);
-            console.time(`[useBoardSync ${instanceId}] Total Fetch Time`); // DEBUG: Start timer
-
-            try {
-                console.log(`[useBoardSync ${instanceId}] STEP 1: Awaiting boardService.getBoardDetails(${boardId})...`);
-                const details = await boardService.getBoardDetails(boardId);
-                console.log(`%c[useBoardSync ${instanceId}] STEP 1: getBoardDetails SUCCEEDED.`, 'color: lightgreen;', details);
-                setBoardName(details.name);
-
-                console.log(`[useBoardSync ${instanceId}] STEP 2: Awaiting Promise.all for objects and messages...`);
-                const [objectActions, messageHistory] = await Promise.all([
-                    boardService.getBoardObjects(boardId),
-                    boardService.getBoardMessages(boardId)
-                ]);
-                console.log(`%c[useBoardSync ${instanceId}] STEP 2: Promise.all SUCCEEDED.`, 'color: lightgreen;');
-
-                const initialObjects = objectActions
-                    .filter(a => a.payload)
-                    .map(a => ({ ...(a.payload as object), instanceId: a.instanceId } as ActionPayload));
-                setObjects(initialObjects);
-
-                setMessages(messageHistory);
-
-                setUndoCount(initialObjects.length);
-                setRedoCount(0);
-
-            } catch (error) {
-                console.error(`%c[useBoardSync ${instanceId}] fetchInitialData FAILED. Full error object:`, 'color: red;', error);
-                if (error instanceof AxiosError) {
-                    console.error(`[useBoardSync ${instanceId}] Axios error details:`, {
-                        message: error.message,
-                        status: error.response?.status,
-                        url: error.config?.url,
-                        method: error.config?.method,
-                    });
-                    if (error.response?.status === 403) {
-                        console.error(`%c[useBoardSync ${instanceId}] CAUGHT 403 FORBIDDEN. Setting accessLost to true.`, 'font-weight: bold; color: red;');
-                        setAccessLost(true);
-                    }
-                } else {
-                    toast.error("Failed to load board data.");
-                }
-            } finally {
-                console.timeEnd(`[useBoardSync ${instanceId}] Total Fetch Time`); // DEBUG: End timer
-                setIsLoading(false);
-            }
-        };
-
         fetchInitialData();
-    }, [boardId]);
+    }, [boardId, fetchInitialData]);
 
     const onMessageReceived = useCallback((payload: unknown) => {
         if (typeof payload !== 'object' || !payload) return;
@@ -102,6 +74,10 @@ export const useBoardSync = (boardId: number) => {
         if ('updateType' in payload && 'sourceUserEmail' in payload) {
             const update = payload as BoardUpdateDTO;
             if (update.sourceUserEmail === userEmail) return;
+
+            if (update.updateType === 'MEMBERS_UPDATED') {
+                boardService.getBoardMessages(boardId).then(setMessages);
+            }
 
             boardService.getBoardDetails(boardId).then(details => {
                 setBoardName(details.name);
@@ -111,6 +87,7 @@ export const useBoardSync = (boardId: number) => {
                     setAccessLost(true);
                 }
             });
+
         } else if ('type' in payload && 'instanceId' in payload) {
             const action = payload as BoardActionResponse;
             if (action.sender === sessionInstanceId.current) return;
@@ -120,7 +97,7 @@ export const useBoardSync = (boardId: number) => {
             } else if (action.type === ActionType.OBJECT_DELETE) {
                 setObjects(prev => prev.filter(obj => obj.instanceId !== action.instanceId));
             }
-        } else if ('content' in payload && 'sender' in payload) {
+        } else if ('content' in payload && 'senderFullName' in payload) {
             setMessages(prev => [...prev, payload as ChatMessageResponse]);
         }
     }, [boardId, userEmail]);
