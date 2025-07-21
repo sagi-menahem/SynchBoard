@@ -22,7 +22,6 @@ public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findById(username)
@@ -30,7 +29,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;

@@ -32,11 +32,9 @@ export const useBoardDetails = (boardId: number | undefined) => {
         } catch (error) {
             console.error("Failed to fetch board details:", error);
 
-            // --- THIS IS THE CRITICAL CHANGE ---
-            // If the error is a 403 Forbidden, it means the user was removed.
             if (error instanceof AxiosError && error.response?.status === 403) {
                 toast.error("You have been removed from this board.");
-                navigate(APP_ROUTES.BOARD_LIST); // Redirect to the board list
+                navigate(APP_ROUTES.BOARD_LIST);
             } else {
                 toast.error("Could not load board details.");
             }
@@ -52,20 +50,16 @@ export const useBoardDetails = (boardId: number | undefined) => {
     }, [boardId]);
 
     const handleBoardUpdate = useCallback((message: BoardUpdateDTO) => {
-        // Ignore updates that were initiated by the current user to prevent redundant refetching.
         if (message.sourceUserEmail === userEmail) {
             return;
         }
 
         console.log(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
-        // Refetch board details to get the latest state from the server.
         fetchDetails();
 
     }, [fetchDetails, userEmail]);
 
-    // Subscribe to the specific board's topic
     useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate);
-
 
     return { boardDetails, isLoading, refetch: fetchDetails };
 };
