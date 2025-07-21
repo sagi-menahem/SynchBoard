@@ -25,7 +25,7 @@ public class GroupBoard {
     private String boardGroupName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_user_email", referencedColumnName = "email", nullable = false)
+    @JoinColumn(name = "created_by_user_email", referencedColumnName = "email", nullable = true)
     private User createdByUser;
 
     @Column(name = "invite_code", unique = true)

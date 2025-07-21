@@ -7,6 +7,7 @@ import BoardPage from './pages/BoardPage';
 import Layout from './components/layout/Layout';
 import { APP_ROUTES } from './constants/routes.constants';
 import BoardDetailsPage from './pages/BoardDetailsPage';
+import SettingsPage from './pages/SettingsPage';
 
 function App() {
     return (
@@ -32,6 +33,10 @@ function App() {
                     <Route
                         path={APP_ROUTES.BOARD_DETAILS_PATTERN}
                         element={<BoardDetailsPage />}
+                    />
+                    <Route
+                        path={APP_ROUTES.SETTINGS}
+                        element={<SettingsPage />}
                     />
                 </Route>
 

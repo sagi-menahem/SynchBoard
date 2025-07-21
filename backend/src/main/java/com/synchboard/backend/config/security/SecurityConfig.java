@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(API_AUTH_PATH).permitAll()
                         .requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+                        .requestMatchers(API_USER_PATH).authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

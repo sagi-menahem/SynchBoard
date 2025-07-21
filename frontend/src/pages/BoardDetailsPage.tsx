@@ -15,6 +15,8 @@ import { ContextMenuItem } from '../components/common/ContextMenuItem';
 import ConfirmationDialog from '../components/common/ConfirmationDialog';
 import PictureManagerModal from '../components/board/PictureManagerModal';
 import defaultBoardImage from '../assets/default-board-image.png';
+import defaultUserImage from '../assets/default-user-image.png';
+
 
 const BoardDetailsPage: React.FC = () => {
     const { t } = useTranslation();
@@ -106,6 +108,15 @@ const BoardDetailsPage: React.FC = () => {
                         onContextMenu={(e) => handleRightClick(e, member)}
                     >
                         <li className={styles.memberItem}>
+                            {/* 2. Add the image element */}
+                            <img
+                                src={member.profilePictureUrl
+                                    ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
+                                    : defaultUserImage
+                                }
+                                alt={`${member.firstName} ${member.lastName}`}
+                                className={styles.memberAvatar}
+                            />
                             <div>
                                 <div className={styles.memberName}>{member.firstName} {member.lastName}</div>
                                 <div className={styles.memberEmail}>{member.email}</div>

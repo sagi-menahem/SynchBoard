@@ -113,7 +113,8 @@
     "fetchError": "טעינת הלוחות נכשלה. אנא נסה שוב מאוחר יותר.",
     "noDescription": "אין תיאור.",
     "adminLabel": " (מנהל)",
-    "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!"
+    "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!",
+    "setting": "הגדרות"
   },
   "boardDetailsPage": {
     "backToBoardButton": "חזרה ללוח",
@@ -145,5 +146,42 @@
     "title": "נהל תמונה עבור '{{boardName}}'",
     "changeButton": "שנה תמונה",
     "deleteButton": "מחק תמונה"
+  },
+  "settingsPage": {
+    "heading": "הגדרות חשבון",
+    "loading": "טוען את ההגדרות שלך...",
+    "loadError": "לא ניתן היה לטעון את נתוני המשתמש.",
+    "profileSectionHeader": "פרטי פרופיל",
+    "firstNameLabel": "שם פרטי",
+    "lastNameLabel": "שם משפחה",
+    "phoneNumberLabel": "מספר טלפון",
+    "updateSuccess": "הפרופיל עודכן בהצלחה!",
+    "updateError": "עדכון הפרופיל נכשל.",
+    "buttons": {
+      "edit": "עריכה",
+      "cancel": "ביטול",
+      "save": "שמור שינויים"
+    },
+    "passwordSectionHeader": "שינוי סיסמה",
+    "currentPasswordLabel": "סיסמה נוכחית",
+    "newPasswordLabel": "סיסמה חדשה",
+    "confirmPasswordLabel": "אימות סיסמה חדשה",
+    "passwordUpdateSuccess": "הסיסמה עודכנה בהצלחה!",
+    "passwordUpdateError": "עדכון הסיסמה נכשל. אנא בדוק את הסיסמה הנוכחית שלך.",
+    "passwordsDoNotMatch": "הסיסמאות החדשות אינן תואמות.",
+    "passwordTooShort": "סיסמה חדשה חייבת להכיל לפחות 8 תווים.",
+    "pictureSectionHeader": "תמונת פרופיל",
+    "deletePictureConfirmTitle": "למחוק את התמונה?",
+    "deletePictureConfirmText": "האם אתה בטוח שברצונך למחוק את תמונת הפרופיל שלך?",
+    "pictureUpdateSuccess": "תמונת הפרופיל עודכנה!",
+    "pictureDeleteSuccess": "תמונת הפרופיל הוסרה.",
+    "pictureUploadError": "העלאת התמונה נכשלה.",
+    "dangerZoneHeader": "אזור מסוכן",
+    "deleteAccountButton": "מחק את החשבון שלי",
+    "deleteAccountConfirmTitle": "למחוק את החשבון?",
+    "deleteAccountConfirmText": "האם אתה בטוח לחלוטין? לא ניתן לבטל פעולה זו. כל הנתונים שלך, כולל לוחות שאתה המנהל האחרון בהם, יימחקו לצמיתות.",
+    "accountDeleteSuccess": "החשבון שלך נמחק.",
+    "accountDeleteError": "מחיקת החשבון נכשלה.",
+    "backToBoards": "חזרה לרשימת הלוחות"
   }
 }

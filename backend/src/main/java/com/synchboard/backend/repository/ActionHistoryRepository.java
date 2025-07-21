@@ -17,4 +17,7 @@ public interface ActionHistoryRepository extends JpaRepository<ActionHistory, Lo
 
     @Transactional
     void deleteAllByBoard_BoardGroupId(Long boardGroupId);
+
+    @Transactional
+    void deleteAllByUser_Email(String userEmail);
 }

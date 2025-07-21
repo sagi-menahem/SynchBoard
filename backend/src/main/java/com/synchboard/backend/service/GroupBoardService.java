@@ -288,7 +288,6 @@ public class GroupBoardService {
                 boardObjectRepository.deleteAllByBoard_BoardGroupId(boardId);
                 groupMemberRepository.deleteAllByBoardGroupId(boardId);
                 groupBoardRepository.deleteById(boardId);
-
                 log.info("Successfully deleted board {}", boardId);
         }
 
@@ -308,6 +307,7 @@ public class GroupBoardService {
                                 .email(membership.getUser().getEmail())
                                 .firstName(membership.getUser().getFirstName())
                                 .lastName(membership.getUser().getLastName())
+                                .profilePictureUrl(membership.getUser().getProfilePictureUrl())
                                 .isAdmin(membership.getIsAdmin())
                                 .build();
         }
@@ -333,6 +333,8 @@ public class GroupBoardService {
                 boardToUpdate.setGroupPictureUrl(newPictureUrl);
 
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
                 return mapToBoardResponse(member);
         }
 
@@ -354,6 +356,8 @@ public class GroupBoardService {
                 }
 
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
                 return mapToBoardResponse(member);
         }
 }
