@@ -30,7 +30,6 @@ public class BoardActivityController {
 
     @MessageMapping(MAPPING_BOARD_DRAW_ACTION)
     public void handleDrawAction(@Payload BoardActionDTO.Request request, Principal principal) {
-        // TODO
         BoardActionDTO.Response response = BoardActionDTO.Response.builder()
                 .type(request.getType())
                 .payload(request.getPayload())

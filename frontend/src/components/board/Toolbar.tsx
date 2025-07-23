@@ -79,12 +79,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
                 ))}
             </div>
 
-            {/* NEW: Undo Button */}
             <div className={styles.toolsContainer}>
                 <Button onClick={onUndo} disabled={!isUndoAvailable} variant="secondary">
                     {t('toolbar.tool.undo')}
                 </Button>
-                {/* NEW: Redo Button */}
                 <Button onClick={onRedo} disabled={!isRedoAvailable} variant="secondary">
                     {t('toolbar.tool.redo')}
                 </Button>

@@ -108,7 +108,6 @@ const BoardDetailsPage: React.FC = () => {
                         onContextMenu={(e) => handleRightClick(e, member)}
                     >
                         <li className={styles.memberItem}>
-                            {/* 2. Add the image element */}
                             <img
                                 src={member.profilePictureUrl
                                     ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
