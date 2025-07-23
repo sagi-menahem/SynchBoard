@@ -8,3 +8,17 @@ export const COLORS = {
 
     CANVAS_BACKGROUND: '#222',
 } as const;
+
+export const CHAT_BACKGROUND_OPTIONS = [
+    { name: 'Default', color: '#282828' },
+    { name: 'Midnight Blue', color: '#2a2d35' },
+    { name: 'Warm Ember', color: '#332f2f' },
+    { name: 'Forest Green', color: '#2f3d30' },
+    { name: 'Deep Purple', color: '#302a35' },
+];
+
+export const CHAT_FONT_SIZE_OPTIONS = [
+    { name: 'Small', value: 'small' },
+    { name: 'Regular', value: 'medium' },
+    { name: 'Large', value: 'large' },
+];

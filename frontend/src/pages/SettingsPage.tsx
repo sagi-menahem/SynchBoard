@@ -11,6 +11,8 @@ import Input from '../components/common/Input';
 import ChangePasswordForm from '../components/settings/ChangePasswordForm';
 import ProfilePictureManager from '../components/settings/ProfilePictureManager';
 import ConfirmationDialog from '../components/common/ConfirmationDialog';
+import { useAuth } from '../hooks/useAuth';
+import { CHAT_BACKGROUND_OPTIONS, CHAT_FONT_SIZE_OPTIONS } from '../constants/style.constants';
 
 const SettingsPage: React.FC = () => {
     const { t } = useTranslation();
@@ -27,6 +29,8 @@ const SettingsPage: React.FC = () => {
         handlePictureDelete,
         handleDeleteAccount,
     } = useSettingsPage();
+
+    const { preferences, updatePreferences } = useAuth();
 
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<UpdateUserProfileRequest>({
@@ -153,6 +157,41 @@ const SettingsPage: React.FC = () => {
                 </h2>
                 <ChangePasswordForm onSubmit={handleChangePassword} />
             </section>
+
+            <section className={styles.section}>
+                <h2 className={styles.sectionHeader}>
+                    Chat Appearance
+                </h2>
+                <div className={styles.field}>
+                    <label>Background Color</label>
+                    <div className={styles.colorSwatchContainer}>
+                        {CHAT_BACKGROUND_OPTIONS.map(option => (
+                            <div
+                                key={option.color}
+                                className={`${styles.colorSwatch} ${preferences.chatBackgroundSetting === option.color ? styles.active : ''}`}
+                                style={{ backgroundColor: option.color }}
+                                onClick={() => updatePreferences({ ...preferences, chatBackgroundSetting: option.color })}
+                                title={option.name}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className={styles.field}>
+                    <label>Font Size</label>
+                    <div className={styles.fontButtonGroup}>
+                        {CHAT_FONT_SIZE_OPTIONS.map(option => (
+                            <Button
+                                key={option.value}
+                                variant={preferences.fontSizeSetting === option.value ? 'primary' : 'secondary'}
+                                onClick={() => updatePreferences({ ...preferences, fontSizeSetting: option.value })}
+                            >
+                                {option.name}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             <section className={`${styles.section} ${styles.dangerZone}`}>
                 <h2 className={styles.sectionHeader}>
                     {t('settingsPage.dangerZoneHeader')}

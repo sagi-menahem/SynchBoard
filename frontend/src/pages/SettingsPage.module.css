@@ -42,6 +42,36 @@
     font-size: 1.1em;
 }
 
+.colorSwatchContainer {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.colorSwatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.colorSwatch:hover {
+    transform: scale(1.1);
+}
+
+.colorSwatch.active {
+    border-color: #a9a9ff;
+    transform: scale(1.1);
+}
+
+.fontButtonGroup {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
 .buttonGroup {
     display: flex;
     gap: 0.5rem;
