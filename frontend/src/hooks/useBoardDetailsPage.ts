@@ -1,15 +1,14 @@
 // File: frontend/src/hooks/useBoardDetailsPage.ts
-import { useState, useCallback } from 'react';
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/useAuth';
+import { useBoardDetails } from 'hooks/useBoardDetails';
+import { useContextMenu } from 'hooks/useContextMenu';
+import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
-import { AxiosError } from 'axios';
-import { useBoardDetails } from './useBoardDetails';
-import { useAuth } from './useAuth';
-import { useContextMenu } from './useContextMenu';
-import * as boardService from '../services/boardService';
-import type { Member } from '../types/board.types';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { APP_ROUTES } from '../constants/routes.constants';
+import { useNavigate } from 'react-router-dom';
+import * as boardService from 'services/boardService';
+import type { Member } from 'types/board.types';
 
 type EditingField = 'name' | 'description';
 
@@ -34,63 +33,59 @@ export const useBoardDetailsPage = (boardId: number) => {
         setInviteModalOpen(false);
     }, [refetch]);
 
-    const handlePromote = useCallback(async () => {
+    const handlePromote = useCallback(() => {
         if (!contextMenu.data || !boardId) return;
-        try {
-            await boardService.promoteMember(boardId, contextMenu.data.email);
-            toast.success(`${contextMenu.data.firstName} has been promoted to admin.`);
-            refetch();
-        } catch (error) {
-            toast.error(
-                error instanceof AxiosError && error.response?.data?.message
-                    ? error.response.data.message
-                    : "Failed to promote member."
-            );
-        }
-        contextMenu.closeMenu();
-    }, [boardId, contextMenu, refetch]);
 
-    const handleRemove = useCallback(async () => {
+        const memberToPromote = contextMenu.data;
+
+        boardService.promoteMember(boardId, memberToPromote.email)
+            .then(() => {
+                toast.success(t('promoteSuccess', { userName: memberToPromote.firstName }));
+                refetch();
+            })
+            .catch(error => console.error("Failed to promote member:", error))
+            .finally(() => contextMenu.closeMenu());
+
+    }, [boardId, contextMenu, refetch, t]);
+
+    const handleRemove = useCallback(() => {
         if (!contextMenu.data || !boardId) return;
-        try {
-            await boardService.removeMember(boardId, contextMenu.data.email);
-            toast.success(`${contextMenu.data.firstName} has been removed from the board.`);
-            refetch();
-        } catch (error) {
-            toast.error(
-                error instanceof AxiosError && error.response?.data?.message
-                    ? error.response.data.message
-                    : "Failed to remove member."
-            );
-        }
-        contextMenu.closeMenu();
-    }, [boardId, contextMenu, refetch]);
 
-    const handleUpdateName = useCallback(async (newName: string) => {
+        const memberToRemove = contextMenu.data;
+
+        boardService.removeMember(boardId, memberToRemove.email)
+            .then(() => {
+                toast.success(t('removeSuccess', { userName: memberToRemove.firstName }));
+                refetch();
+            })
+            .catch(error => console.error("Failed to remove member:", error))
+            .finally(() => contextMenu.closeMenu());
+
+    }, [boardId, contextMenu, refetch, t]);
+
+    const handleUpdateName = async (newName: string) => {
         if (!boardId) return;
         try {
             await boardService.updateBoardName(boardId, newName);
             toast.success("Board name updated successfully!");
             refetch();
         } catch (error) {
-            toast.error("Failed to update board name.");
             console.error("Update name error:", error);
             throw error;
         }
-    }, [boardId, refetch]);
+    };
 
-    const handleUpdateDescription = useCallback(async (newDescription: string) => {
+    const handleUpdateDescription = async (newDescription: string) => {
         if (!boardId) return;
         try {
             await boardService.updateBoardDescription(boardId, newDescription);
             toast.success("Board description updated successfully!");
             refetch();
         } catch (error) {
-            toast.error("Failed to update board description.");
             console.error("Update description error:", error);
             throw error;
         }
-    }, [boardId, refetch]);
+    };
 
     const handleRightClick = useCallback((event: React.MouseEvent, member: Member) => {
         event.preventDefault();
@@ -100,21 +95,17 @@ export const useBoardDetailsPage = (boardId: number) => {
         }
     }, [boardDetails, userEmail, contextMenu]);
 
-    const handleLeaveBoard = useCallback(async () => {
+    const handleLeaveBoard = useCallback(() => {
         if (!boardDetails) return;
-        try {
-            await boardService.leaveBoard(boardId);
-            toast.success(t('leaveBoard.success'));
-            navigate(APP_ROUTES.BOARD_LIST);
-        } catch (error) {
-            console.error("Failed to leave board:", error);
-            const errorMessage = error instanceof AxiosError && error.response?.data?.message
-                ? error.response.data.message
-                : t('leaveBoard.error');
-            toast.error(errorMessage);
-        } finally {
-            setLeaveConfirmOpen(false);
-        }
+
+        boardService.leaveBoard(boardId)
+            .then(() => {
+                toast.success(t('leaveBoard.success', { boardName: boardDetails.name }));
+                navigate(APP_ROUTES.BOARD_LIST);
+            })
+            .catch(error => console.error("Failed to leave board:", error))
+            .finally(() => setLeaveConfirmOpen(false));
+
     }, [boardId, boardDetails, navigate, t]);
 
     const handlePictureUpload = useCallback(async (file: File) => {
@@ -123,7 +114,6 @@ export const useBoardDetailsPage = (boardId: number) => {
             toast.success("Picture updated successfully!");
             refetch();
         } catch (error) {
-            toast.error("Failed to upload picture.");
             console.error(error);
         } finally {
             setPictureModalOpen(false);
@@ -135,15 +125,13 @@ export const useBoardDetailsPage = (boardId: number) => {
         setDeleteConfirmOpen(true);
     }, []);
 
-    const handleConfirmDeletePicture = useCallback(async () => {
-        try {
-            await boardService.deleteBoardPicture(boardId);
-            toast.success("Picture deleted successfully.");
-            refetch();
-        } catch (error) {
-            toast.error("Failed to delete picture.");
-            console.error(error);
-        }
+    const handleConfirmDeletePicture = useCallback(() => {
+        boardService.deleteBoardPicture(boardId)
+            .then(() => {
+                toast.success("Picture deleted successfully.");
+                refetch();
+            })
+            .catch(error => console.error(error));
     }, [boardId, refetch]);
 
     return {

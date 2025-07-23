@@ -1,7 +1,7 @@
 // File: frontend/src/services/userService.ts
+import { API_ENDPOINTS } from 'constants/api.constants';
+import type { ChangePasswordRequest, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'types/user.types';
 import apiClient from './apiClient';
-import { API_ENDPOINTS } from '../constants/api.constants';
-import type { UserProfile, UpdateUserProfileRequest, ChangePasswordRequest, UserPreferences } from '../types/user.types';
 
 export const getUserProfile = async (): Promise<UserProfile> => {
     const response = await apiClient.get<UserProfile>(API_ENDPOINTS.GET_USER_PROFILE);

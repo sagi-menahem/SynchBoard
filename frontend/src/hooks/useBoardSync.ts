@@ -1,17 +1,17 @@
 // File: frontend/src/hooks/useBoardSync.ts
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as boardService from '../services/boardService';
-import websocketService from '../services/websocketService';
-import { useSocket } from './useSocket';
-import { useAuth } from './useAuth';
-import { ActionType, type BoardActionResponse, type SendBoardActionRequest, type ActionPayload } from '../types/boardObject.types';
-import type { ChatMessageResponse } from '../types/message.types';
-import type { BoardUpdateDTO } from '../types/websocket.types';
-import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from '../constants/api.constants';
-import toast from 'react-hot-toast';
-import { APP_ROUTES } from '../constants/routes.constants';
 import { AxiosError } from 'axios';
+import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constants';
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import * as boardService from 'services/boardService';
+import websocketService from 'services/websocketService';
+import { ActionType, type ActionPayload, type BoardActionResponse, type SendBoardActionRequest } from 'types/boardObject.types';
+import type { ChatMessageResponse } from 'types/message.types';
+import type { BoardUpdateDTO } from 'types/websocket.types';
+import { useAuth } from './useAuth';
+import { useSocket } from './useSocket';
 
 export const useBoardSync = (boardId: number) => {
     const { userEmail } = useAuth();
