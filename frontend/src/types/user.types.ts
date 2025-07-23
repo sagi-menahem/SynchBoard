@@ -1,6 +1,5 @@
 // File: frontend/src/types/user.types.ts
 
-// --- Auth Types ---
 export interface RegisterRequest {
   email: string;
   password: string;
@@ -17,7 +16,6 @@ export interface AuthResponse {
   token: string;
 }
 
-// --- User Profile Types ---
 export interface UserProfile {
   email: string;
   firstName: string;

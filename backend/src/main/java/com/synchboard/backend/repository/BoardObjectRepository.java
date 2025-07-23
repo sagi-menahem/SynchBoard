@@ -19,7 +19,6 @@ public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> 
     @Transactional
     void deleteAllByBoard_BoardGroupId(Long boardGroupId);
 
-    // Add these two methods
     @Modifying
     @Query("UPDATE BoardObject bo SET bo.createdByUser = NULL WHERE bo.createdByUser.email = :userEmail")
     void nullifyCreatedByUser(@Param("userEmail") String userEmail);

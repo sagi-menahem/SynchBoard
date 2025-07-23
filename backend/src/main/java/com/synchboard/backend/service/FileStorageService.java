@@ -48,7 +48,6 @@ public class FileStorageService {
         try {
             fileExtension = cleanedFilename.substring(cleanedFilename.lastIndexOf("."));
         } catch (Exception e) {
-            // No extension, which is fine
         }
 
         String uniqueFilename = UUID.randomUUID().toString() + fileExtension;

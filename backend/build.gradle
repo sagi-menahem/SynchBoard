@@ -1,79 +1,54 @@
 // File: backend\build.gradle
-
-// The 'plugins' block applies necessary Gradle plugins for the project.
 plugins {
-	// The core Java plugin for compiling Java code.
 	id 'java'
-	// The Spring Boot plugin, which simplifies building and running Spring Boot applications.
 	id 'org.springframework.boot' version '3.5.3'
-	// The Spring Dependency Management plugin for managing dependency versions centrally.
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-// Project coordinates used for packaging (e.g., when creating a JAR file).
 group = 'com.synchboard'
 version = '0.0.1-SNAPSHOT'
 
-// Configuration for the Java compiler.
 java {
 	toolchain {
-		// Sets the Java version to be used for compiling and running the project.
 		languageVersion = JavaLanguageVersion.of(24)
 	}
 }
 
-// Advanced dependency configuration.
 configurations {
-	// Configures the 'compileOnly' scope. Dependencies here are available at compile time
-    // but are not included in the final packaged application.
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
 
-// Specifies the repositories where Gradle should look for project dependencies.
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	// --- Spring Boot Starters ---
-    implementation 'org.springframework.boot:spring-boot-starter-activemq'      // For JMS messaging with Apache ActiveMQ.
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'       // For database access using Java Persistence API (JPA).
-    implementation 'org.springframework.boot:spring-boot-starter-validation'   // For data validation.
-    implementation 'org.springframework.boot:spring-boot-starter-web'           // For building RESTful web services.
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'   // For WebSocket communication.
-    implementation 'org.springframework.boot:spring-boot-starter-security'      // For handling security, authentication, and authorization.
+    implementation 'org.springframework.boot:spring-boot-starter-activemq'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    // --- JWT (JSON Web Token) Dependencies ---
-    // Provides the core JWT interfaces and classes.
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    // Provides the runtime implementation for creating and parsing JWTs.
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    // Provides JSON processing support for JWTs using the Jackson library.
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    // --- Utility Libraries ---
-    // Lombok is used to reduce boilerplate code (e.g., getters, setters).
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // --- Development & Runtime Dependencies ---
-    // Spring Boot DevTools provides development-time features like automatic restarts.
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     
-    // The PostgreSQL JDBC driver, required at runtime to connect to the database.
     runtimeOnly 'org.postgresql:postgresql'
 
-    // --- Testing Dependencies ---
-    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Core starter for testing.
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'      // Required to run tests with JUnit Platform.
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// Configuration for Gradle tasks.
 tasks.named('test') {
-	// Configures the 'test' task to use the JUnit Platform for running unit tests.
 	useJUnitPlatform()
 }

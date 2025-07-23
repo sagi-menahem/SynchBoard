@@ -26,7 +26,6 @@ import java.util.List;
 
 import static com.synchboard.backend.config.ApplicationConstants.*;
 
-//TODO use service
 @RestController
 @RequestMapping(API_BOARDS_PATH)
 @RequiredArgsConstructor
@@ -62,7 +61,6 @@ public class GroupBoardController {
         return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
     }
 
-    // TODO move to board activity
     @GetMapping(API_BOARDS_OBJECT)
     public ResponseEntity<List<BoardActionDTO.Response>> getBoardObjects(
             @PathVariable("boardId") Long boardId, Authentication authentication) {

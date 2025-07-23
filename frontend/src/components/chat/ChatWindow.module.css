@@ -7,14 +7,12 @@
     border-radius: 8px;
     overflow: hidden;
     transition: background-color 0.3s ease;
-    /* Add a smooth transition for color changes */
 }
 
 .messageList {
     flex: 1;
     padding: 1rem;
     overflow-y: auto;
-    /* background-color: #282828; <-- REMOVE THIS LINE */
 }
 
 .form {
@@ -25,18 +23,14 @@
     gap: 10px;
 }
 
-/* --- ADD THESE NEW CLASSES FOR FONT SIZES --- */
 .fontSize-small {
     font-size: 0.875rem;
-    /* 14px */
 }
 
 .fontSize-medium {
     font-size: 1rem;
-    /* 16px */
 }
 
 .fontSize-large {
     font-size: 1.125rem;
-    /* 18px */
 }
