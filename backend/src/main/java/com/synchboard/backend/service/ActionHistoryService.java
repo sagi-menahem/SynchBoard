@@ -36,7 +36,7 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response undoLastAction(Long boardId, String userEmail) {
         if (!isUserMember(boardId, userEmail)) {
-            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
         ActionHistory lastAction = actionHistoryRepository
@@ -66,7 +66,7 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response redoLastAction(Long boardId, String userEmail) {
         if (!isUserMember(boardId, userEmail)) {
-            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
         ActionHistory lastUndoneAction = actionHistoryRepository

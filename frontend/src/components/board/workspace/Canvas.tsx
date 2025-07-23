@@ -1,10 +1,9 @@
 // File: frontend/src/components/board/Canvas.tsx
-
+import type { TOOL_LIST } from 'constants/board.constants';
+import { CANVAS_CONFIG } from 'constants/board.constants';
+import { useCanvas } from 'hooks/useCanvas';
 import React from 'react';
-import type { SendBoardActionRequest, ActionPayload } from '../../types/boardObject.types';
-import { CANVAS_CONFIG } from '../../constants/board.constants';
-import { useCanvas } from '../../hooks/useCanvas';
-import type { TOOL_LIST } from '../../constants/board.constants';
+import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import styles from './Canvas.module.css';
 
 type Tool = typeof TOOL_LIST[number];
@@ -25,8 +24,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         containerRef,
         dimensions,
         handleMouseDown,
-        handleMouseMove,
-        handleMouseUp,
     } = useCanvas(props);
 
     return (
@@ -43,9 +40,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
                 width={dimensions.width}
                 height={dimensions.height}
                 onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseUp}
                 className={styles.previewCanvas}
             />
         </div>

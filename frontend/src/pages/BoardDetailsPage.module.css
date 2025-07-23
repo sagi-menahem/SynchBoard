@@ -1,115 +1,12 @@
 /* File: frontend/src/pages/BoardDetailsPage.module.css */
-
 .container {
     width: 100%;
     max-width: 800px;
     text-align: left;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #444;
-}
-
-.headerLeft {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.boardImage {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    background-color: transparent;
-}
-
-.boardImage:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(169, 169, 255, 0.5), 0 0 0 8px rgba(169, 169, 255, 0.3);
-}
-
-.editableText {
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-.editableText:hover {
-    color: #a9a9ff;
-}
-
-.description {
-    color: #ccc;
-    margin-top: 0.5rem;
-}
-
-.membersList {
-    margin-top: 2rem;
+.membersListContainer {
     list-style: none;
     padding: 0;
-}
-
-.memberItem {
-    background-color: #2f2f2f;
-    border: 1px solid #444;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.memberAvatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.memberName {
-    font-weight: bold;
-}
-
-.memberEmail {
-    color: #a0a0a0;
-    font-size: 0.9rem;
-    margin-top: 4px;
-}
-
-.adminBadge {
-    background-color: #4ade80;
-    color: #111;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-left: auto;
-
-}
-
-.headerActions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.destructiveButton {
-    background-color: #c93434;
-    border-color: transparent;
-}
-
-.destructiveButton:hover:not(:disabled) {
-    background-color: #a52a2a;
-    border-color: #a52a2a;
+    margin-top: 1rem;
 }

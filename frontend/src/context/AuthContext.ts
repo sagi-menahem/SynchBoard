@@ -1,6 +1,6 @@
 // File: frontend/src/context/AuthContext.ts
 import { createContext } from 'react';
-import type { UserPreferences } from '../types/user.types';
+import type { UserPreferences } from 'types/user.types';
 
 export interface AuthContextType {
     token: string | null;

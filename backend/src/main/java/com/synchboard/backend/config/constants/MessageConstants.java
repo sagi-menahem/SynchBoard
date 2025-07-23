@@ -11,24 +11,25 @@ public final class MessageConstants {
 
     public static final List<String> ALLOWED_FONT_SIZES = Arrays.asList("small", "medium", "large");
 
+    // Validation Message Keys (sent as is, not translated by key on frontend)
     public static final String ERROR_EMAIL_CANT_BE_EMPTY = "Email cannot be empty";
     public static final String ERROR_EMAIL_SHOULD_BE_VALID = "Email should be valid";
     public static final String ERROR_PASSWORD_CANT_BE_EMPTY = "Password cannot be empty";
-    public static final String ERROR_USER_NOT_FOUND_TEMPLATE = "User not found with email: ";
     public static final String BOARD_NAME_CANT_BE_EMPTY = "Board name cannot be empty.";
     public static final String BOARD_NAME_LENGHT = "Board name must be between 3 and 100 characters.";
-    public static final String USER_NOT_FOUND = "User not found: ";
-    public static final String BOARD_NOT_FOUND = "Board not found: ";
-    public static final String ERROR_EMAIL_IN_USE = "Error: Email is already in use!";
-    public static final String ERROR_USER_NOT_FOUND_AFTER_AUTH = "User not found after authentication";
-    public static final String ERROR_USER_ALREADY_MEMBER = "User is already a member of this board";
-    public static final String ERROR_ACCESS_DENIED_NOT_A_MEMBER = "Inviting user is not a member of the board.";
-    public static final String ERROR_ACCESS_DENIED_NOT_AN_ADMIN = "User does not have admin privileges for this board.";
-    public static final String ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD = "User is not a member of this board.";
-    public static final String ERROR_CANNOT_REMOVE_SELF = "You cannot remove yourself from the board via this action.";
-    public static final String ERROR_USER_IS_ALREADY_ADMIN = "User is already an admin of this board.";
-    public static final String ERROR_INCORRECT_CURRENT_PASSWORD = "The current password provided is incorrect.";
-    public static final String ERROR_UNEXPECTED = "An unexpected error occurred. Please try again later.";
-    public static final String ERROR_PASSWORD_SAME_AS_OLD = "New password cannot be the same as the old password.";
-    public static final String ERROR_INVALID_FONT_SIZE = "Invalid font size setting provided.";
+
+    // General Error Message Keys (to be translated by frontend)
+    public static final String USER_NOT_FOUND = "user.notFound";
+    public static final String BOARD_NOT_FOUND = "board.notFound";
+    public static final String EMAIL_IN_USE = "email.inUse";
+    public static final String USER_ALREADY_MEMBER = "user.alreadyMember";
+    public static final String AUTH_NOT_ADMIN = "auth.notAdmin";
+    public static final String AUTH_NOT_MEMBER = "auth.notMember";
+    public static final String BOARD_CANNOT_REMOVE_SELF = "board.cannotRemoveSelf";
+    public static final String USER_IS_ALREADY_ADMIN = "user.alreadyAdmin";
+    public static final String PASSWORD_INCORRECT = "password.incorrect";
+    public static final String UNEXPECTED_ERROR = "unexpected";
+    public static final String PASSWORD_SAME_AS_OLD = "password.sameAsOld";
+    public static final String FONT_SIZE_INVALID = "fontSize.invalid";
+    public static final String AUTH_BAD_CREDENTIALS = "auth.badCredentials";
 }

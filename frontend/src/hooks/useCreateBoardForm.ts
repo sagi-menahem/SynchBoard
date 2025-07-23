@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useCreateBoardForm.ts
-import axios from 'axios';
 import { APP_CONFIG } from 'constants/app.constants';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -13,36 +12,26 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const [description, setDescription] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (name.trim().length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
-            toast.error(t('createBoardForm.nameLengthError'));
+            toast.error(t('createBoardForm.nameLengthError')); // This is client-side validation
             return;
         }
         setIsSubmitting(true);
         const boardData: CreateBoardRequest = { name, description };
-        try {
-            const newBoard = await createBoard(boardData);
-            toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
-            onBoardCreated(newBoard);
-        } catch (err) {
-            let errorMessage = t('createBoardForm.failedError');
-            if (axios.isAxiosError(err) && err.response?.data?.message) {
-                errorMessage = err.response.data.message;
-            }
-            console.error(err);
-            toast.error(errorMessage);
-        } finally {
-            setIsSubmitting(false);
-        }
+
+        createBoard(boardData)
+            .then(newBoard => {
+                toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
+                onBoardCreated(newBoard);
+            })
+            .catch(err => console.error(err)) // Interceptor shows the toast
+            .finally(() => setIsSubmitting(false));
     };
 
     return {
-        name,
-        description,
-        isSubmitting,
-        setName,
-        setDescription,
-        handleSubmit,
+        name, description, isSubmitting, setName,
+        setDescription, handleSubmit,
     };
 };

@@ -1,9 +1,9 @@
 // File: frontend/src/components/board/EditFieldForm.tsx
+import Button from 'components/common/Button';
+import styles from 'components/common/Form.module.css';
+import Input from 'components/common/Input';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Input from '../common/Input';
-import Button from '../common/Button';
-import styles from '../common/Form.module.css';
 
 interface EditFieldFormProps {
     title: string;

@@ -1,15 +1,15 @@
 // File: frontend/src/pages/BoardPage.tsx
+import Canvas from 'components/board/workspace/Canvas';
+import Toolbar from 'components/board/workspace/Toolbar';
+import ChatWindow from 'components/chat/ChatWindow';
+import Button from 'components/common/Button';
+import { APP_ROUTES } from 'constants/routes.constants';
+import { BoardProvider } from 'context/BoardProvider';
+import { useBoardContext } from 'hooks/useBoardContext';
+import { useToolbarState } from 'hooks/useToolbarState';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, Link } from 'react-router-dom';
-import { useBoardContext } from '../hooks/useBoardContext';
-import { useToolbarState } from '../hooks/useToolbarState';
-import { BoardProvider } from '../context/BoardProvider';
-import Canvas from '../components/board/Canvas';
-import Toolbar from '../components/board/Toolbar';
-import ChatWindow from '../components/chat/ChatWindow';
-import Button from '../components/common/Button';
-import { APP_ROUTES } from '../constants/routes.constants';
+import { Link, useParams } from 'react-router-dom';
 import styles from './BoardPage.module.css';
 
 interface BoardPageContentProps {

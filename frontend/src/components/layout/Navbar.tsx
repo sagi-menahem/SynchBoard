@@ -1,7 +1,7 @@
 // File: frontend/src/components/layout/Navbar.tsx
+import Button from 'components/common/Button';
+import { useAuth } from 'hooks/useAuth';
 import React from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import Button from '../common/Button';
 import { useTranslation } from 'react-i18next';
 import styles from './Navbar.module.css';
 

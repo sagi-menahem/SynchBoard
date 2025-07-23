@@ -2,11 +2,14 @@
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/useAuth';
 import { useState } from 'react';
+import toast from 'react-hot-toast'; // Import toast
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { useNavigate } from 'react-router-dom';
 import * as authService from 'services/authService';
 import type { LoginRequest } from 'types/user.types';
 
 export const useLoginForm = () => {
+    const { t } = useTranslation(); // Initialize t
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,6 +23,7 @@ export const useLoginForm = () => {
 
         authService.login(credentials)
             .then(response => {
+                toast.success(t('loginForm.loginSuccess')); // <-- ADD THIS LINE
                 login(response.token);
                 navigate(APP_ROUTES.BOARD_LIST);
             })

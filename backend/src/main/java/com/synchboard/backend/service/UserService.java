@@ -70,7 +70,7 @@ public class UserService {
 
     public AuthResponse registerUser(RegisterRequest request) {
         if (userRepository.existsById(request.getEmail())) {
-            throw new ResourceConflictException(MessageConstants.ERROR_EMAIL_IN_USE);
+            throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }
 
         User newUser = User.builder()
@@ -94,7 +94,7 @@ public class UserService {
                         request.getPassword()));
 
         User user = userRepository.findById(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.ERROR_USER_NOT_FOUND_AFTER_AUTH));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND));
 
         String jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken);
@@ -129,11 +129,11 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new InvalidRequestException(MessageConstants.ERROR_INCORRECT_CURRENT_PASSWORD);
+            throw new InvalidRequestException(MessageConstants.PASSWORD_INCORRECT);
         }
 
         if (passwordEncoder.matches(newPassword, user.getPassword())) {
-            throw new InvalidRequestException(MessageConstants.ERROR_PASSWORD_SAME_AS_OLD);
+            throw new InvalidRequestException(MessageConstants.PASSWORD_SAME_AS_OLD);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -208,7 +208,7 @@ public class UserService {
 
         String newFontSize = dto.getFontSizeSetting();
         if (newFontSize != null && !ALLOWED_FONT_SIZES.contains(newFontSize)) {
-            throw new InvalidRequestException(MessageConstants.ERROR_INVALID_FONT_SIZE);
+            throw new InvalidRequestException(MessageConstants.FONT_SIZE_INVALID);
         }
 
         user.setChatBackgroundSetting(dto.getChatBackgroundSetting());

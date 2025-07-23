@@ -1,10 +1,10 @@
 // File: frontend/src/components/auth/LoginForm.tsx
+import Button from 'components/common/Button';
+import styles from 'components/common/Form.module.css';
+import Input from 'components/common/Input';
+import { useLoginForm } from 'hooks/useLoginForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from '../common/Button';
-import Input from '../common/Input';
-import { useLoginForm } from '../../hooks/useLoginForm';
-import styles from '../common/Form.module.css';
 
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();

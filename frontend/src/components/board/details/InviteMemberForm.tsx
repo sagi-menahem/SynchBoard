@@ -1,11 +1,11 @@
 // File: frontend/src/components/board/InviteMemberForm.tsx
+import Button from 'components/common/Button';
+import styles from 'components/common/Form.module.css';
+import Input from 'components/common/Input';
+import { useInviteMemberForm } from 'hooks/useInviteMemberForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Member } from '../../types/board.types';
-import { useInviteMemberForm } from '../../hooks/useInviteMemberForm';
-import Input from '../common/Input';
-import Button from '../common/Button';
-import styles from '../common/Form.module.css';
+import type { Member } from 'types/board.types';
 
 interface InviteMemberFormProps {
     boardId: number;

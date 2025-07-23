@@ -1,8 +1,8 @@
 // File: frontend/src/components/routing/ProtectedRoute.tsx
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/useAuth';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { APP_ROUTES } from '../../constants/routes.constants';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;

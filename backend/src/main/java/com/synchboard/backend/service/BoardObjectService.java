@@ -40,7 +40,7 @@ public class BoardObjectService {
     public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
 
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, request.getBoardId())) {
-            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
         User user = userRepository.findById(userEmail)
@@ -86,7 +86,7 @@ public class BoardObjectService {
     @Transactional(readOnly = true)
     public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId, String userEmail) {
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
         List<BoardObject> boardObjects = boardObjectRepository.findAllByBoard_BoardGroupIdAndIsActiveTrue(boardId);

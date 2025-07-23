@@ -1,11 +1,12 @@
 // File: frontend/src/components/settings/ProfilePictureManager.tsx
+import defaultUserImage from 'assets/default-user-image.png';
+import Button from 'components/common/Button';
+import { API_BASE_URL } from 'constants/api.constants';
+import { APP_CONFIG } from 'constants/app.constants';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { UserProfile } from 'types/user.types';
 import styles from './ProfilePictureManager.module.css';
-import { API_BASE_URL } from '../../constants/api.constants';
-import defaultUserImage from '../../assets/default-user-image.png';
-import Button from '../common/Button';
-import type { UserProfile } from '../../types/user.types';
 
 interface ProfilePictureManagerProps {
     user: UserProfile;
@@ -30,13 +31,15 @@ const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onU
 
     return (
         <div className={styles.container}>
-            <img src={imageSource} alt="Profile" className={styles.avatar} />
+            <img src={imageSource}
+                alt={t('settingsPage.profilePictureAlt', { userName: user.firstName })}
+                className={styles.avatar} />
             <input
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
-                accept="image/png, image/jpeg, image/gif"
+                accept={APP_CONFIG.ALLOWED_IMAGE_TYPES}
             />
             <div className={styles.buttonGroup}>
                 <Button onClick={() => fileInputRef.current?.click()} variant="secondary">

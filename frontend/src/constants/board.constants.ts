@@ -11,6 +11,7 @@ export const TOOL_LIST = Object.values(TOOLS);
 export const DEFAULT_DRAWING_CONFIG = {
     STROKE_COLOR: '#FFFFFF',
     STROKE_WIDTH: 3,
+    TOOLBAR_INITIAL_Y_POSITION: 30,
 };
 
 export const STROKE_WIDTH_RANGE = {
@@ -23,6 +24,7 @@ export const CANVAS_CONFIG = {
     CURSOR: 'crosshair',
     BACKGROUND_COLOR: '#222',
     PREVIEW_ERASER_COLOR: '#222',
+    MIN_SHAPE_SIZE_THRESHOLD: 0.001,
     COMPOSITE_OPERATIONS: {
         DRAW: 'source-over',
         ERASE: 'destination-out',

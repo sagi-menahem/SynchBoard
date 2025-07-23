@@ -1,10 +1,10 @@
 // File: frontend/src/components/board/Toolbar.tsx
+import Button from 'components/common/Button';
+import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants/board.constants';
+import { useDraggable } from 'hooks/useDraggable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from '../common/Button';
-import { TOOL_LIST, STROKE_WIDTH_RANGE } from '../../constants/board.constants';
 import styles from './Toolbar.module.css';
-import { useDraggable } from '../../hooks/useDraggable';
 
 type Tool = typeof TOOL_LIST[number];
 
