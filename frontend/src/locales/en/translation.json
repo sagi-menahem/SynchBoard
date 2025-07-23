@@ -215,7 +215,8 @@
     "password.sameAsOld": "New password cannot be the same as the old one.",
     "fontSize.invalid": "An invalid font size was selected.",
     "unexpected": "An unexpected error occurred. Please try again.",
-    "auth.badCredentials": "Incorrect username or password."
+    "auth.badCredentials": "Incorrect username or password.",
+    "sessionExpired": "Your session has expired. Please log in again."
   },
   "success": {
     "profile.update": "Profile updated successfully!",
