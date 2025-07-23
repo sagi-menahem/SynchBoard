@@ -7,7 +7,7 @@ import { ContextMenu } from 'components/common/ContextMenu';
 import { ContextMenuItem } from 'components/common/ContextMenuItem';
 import Modal from 'components/common/Modal';
 import { APP_ROUTES } from 'constants/routes.constants';
-import { useBoardList } from 'hooks/useBoardList';
+import { useBoardList } from 'hooks/board/list/useBoardList';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +51,6 @@ const BoardListPage: React.FC = () => {
 
             {boards.length > 0 ? (
                 <div className={styles.boardList}>
-                    {/* --- CHANGED: The mapping logic is now much simpler --- */}
                     {boards.map(board => (
                         <div
                             key={board.id}
@@ -60,7 +59,6 @@ const BoardListPage: React.FC = () => {
                             <BoardCard board={board} />
                         </div>
                     ))}
-                    {/* ---------------------------------------------------- */}
                 </div>
             ) : (
                 <p>{t('boardListPage.noBoardsMessage')}</p>

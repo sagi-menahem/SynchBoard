@@ -7,7 +7,7 @@ import BoardDetailsPage from 'pages/BoardDetailsPage';
 import BoardListPage from 'pages/BoardListPage';
 import BoardPage from 'pages/BoardPage';
 import SettingsPage from 'pages/SettingsPage';
-import { Toaster } from 'react-hot-toast'; // <-- ADD THIS IMPORT
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {

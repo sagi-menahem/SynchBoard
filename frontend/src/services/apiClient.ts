@@ -2,8 +2,8 @@
 import axios, { type AxiosError } from 'axios';
 import { API_BASE_URL, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
 import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
+import i18n from 'i18n';
 import toast from 'react-hot-toast';
-import i18n from '../i18n';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -26,7 +26,6 @@ apiClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// --- FINAL AND CORRECTED Response Interceptor ---
 apiClient.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
@@ -41,18 +40,14 @@ apiClient.interceptors.response.use(
         if (error.response && isBackendError(error.response.data)) {
             const backendKey = error.response.data.message;
 
-            // Construct the full translation key path
             const fullKey = `errors.${backendKey}`;
 
-            // Check if a translation exists for the full key
             if (i18n.exists(fullKey)) {
                 toast.error(i18n.t(fullKey));
             } else {
-                // If no key exists (e.g., for a validation message), show the raw message
                 toast.error(backendKey);
             }
         } else {
-            // For network errors or other unexpected issues
             toast.error(i18n.t('errors.unexpected'));
         }
 

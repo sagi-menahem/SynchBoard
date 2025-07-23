@@ -35,14 +35,10 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         setIsSubmitting(true);
         onSubmit({ currentPassword, newPassword })
             .then(() => {
-                // Clear fields on success
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
             })
-            // The catch block is no longer needed to show a toast.
-            // The interceptor handles the error message, and the re-thrown error
-            // from the parent hook correctly stops this .then() block from executing.
             .finally(() => {
                 setIsSubmitting(false);
             });

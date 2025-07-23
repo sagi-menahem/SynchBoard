@@ -8,7 +8,7 @@ import ConfirmationDialog from 'components/common/ConfirmationDialog';
 import { ContextMenu } from 'components/common/ContextMenu';
 import { ContextMenuItem } from 'components/common/ContextMenuItem';
 import Modal from 'components/common/Modal';
-import { useBoardDetailsPage } from 'hooks/useBoardDetailsPage';
+import { useBoardDetailsPage } from 'hooks/board/details/useBoardDetailsPage';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
