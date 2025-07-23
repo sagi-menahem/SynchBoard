@@ -1,11 +1,12 @@
 // File: frontend/src/components/board/PictureManagerModal.tsx
+import defaultBoardImage from 'assets/default-board-image.png';
+import Button from 'components/common/Button';
+import Modal from 'components/common/Modal';
+import { API_BASE_URL } from 'constants/api.constants';
+import { APP_CONFIG } from 'constants/app.constants';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import Modal from '../common/Modal';
-import Button from '../common/Button';
 import styles from './PictureManagerModal.module.css';
-import defaultBoardImage from '../../assets/default-board-image.png';
-import { API_BASE_URL } from '../../constants/api.constants';
 
 interface PictureManagerModalProps {
     isOpen: boolean;
@@ -56,7 +57,7 @@ const PictureManagerModal: React.FC<PictureManagerModalProps> = ({
                     ref={fileInputRef}
                     onChange={handleFileChange}
                     style={{ display: 'none' }}
-                    accept="image/png, image/jpeg, image/gif"
+                    accept={APP_CONFIG.ALLOWED_IMAGE_TYPES}
                 />
                 <div className={styles.buttonGroup}>
                     <Button onClick={triggerFileInput} variant="primary">

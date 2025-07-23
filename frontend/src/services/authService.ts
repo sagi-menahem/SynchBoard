@@ -1,7 +1,7 @@
 // File: frontend/src/services/authService.ts
+import { API_ENDPOINTS } from 'constants/api.constants';
+import type { AuthResponse, LoginRequest, RegisterRequest } from 'types/user.types';
 import apiClient from './apiClient';
-import type { RegisterRequest, LoginRequest, AuthResponse } from '../types/user.types';
-import { API_ENDPOINTS } from '../constants/api.constants';
 
 export const register = async (userData: RegisterRequest): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.REGISTER, userData);

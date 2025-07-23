@@ -4,6 +4,7 @@ import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constant
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 import { useNavigate } from 'react-router-dom';
 import * as boardService from 'services/boardService';
 import websocketService from 'services/websocketService';
@@ -16,8 +17,10 @@ import { useSocket } from './useSocket';
 export const useBoardSync = (boardId: number) => {
     const { userEmail } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation(); // Initialize t
     const sessionInstanceId = useRef(Date.now().toString());
 
+    // ... state definitions remain the same
     const [isLoading, setIsLoading] = useState(true);
     const [boardName, setBoardName] = useState<string | null>(null);
     const [accessLost, setAccessLost] = useState(false);
@@ -26,40 +29,33 @@ export const useBoardSync = (boardId: number) => {
     const [undoCount, setUndoCount] = useState(0);
     const [redoCount, setRedoCount] = useState(0);
 
-    const fetchInitialData = useCallback(async () => {
-        try {
-            setIsLoading(true);
 
-            const details = await boardService.getBoardDetails(boardId);
+    const fetchInitialData = useCallback(() => {
+        setIsLoading(true);
+        Promise.all([
+            boardService.getBoardDetails(boardId),
+            boardService.getBoardObjects(boardId),
+            boardService.getBoardMessages(boardId)
+        ]).then(([details, objectActions, messageHistory]) => {
             setBoardName(details.name);
-
-            const [objectActions, messageHistory] = await Promise.all([
-                boardService.getBoardObjects(boardId),
-                boardService.getBoardMessages(boardId)
-            ]);
-
             const initialObjects = objectActions
                 .filter(a => a.payload)
                 .map(a => ({ ...(a.payload as object), instanceId: a.instanceId } as ActionPayload));
             setObjects(initialObjects);
-
             setMessages(messageHistory);
-
             setUndoCount(initialObjects.length);
             setRedoCount(0);
-
-        } catch (error) {
+        }).catch(error => {
             console.error("Failed to fetch initial board data:", error);
             if (error instanceof AxiosError && error.response?.status === 403) {
                 setAccessLost(true);
-            } else {
-                toast.error("Failed to load board data.");
             }
-        } finally {
+        }).finally(() => {
             setIsLoading(false);
-        }
+        });
     }, [boardId]);
 
+    // ... useEffect for fetchInitialData remains the same
     useEffect(() => {
         if (isNaN(boardId) || boardId === 0) {
             setAccessLost(true);
@@ -69,25 +65,21 @@ export const useBoardSync = (boardId: number) => {
     }, [boardId, fetchInitialData]);
 
     const onMessageReceived = useCallback((payload: unknown) => {
+        // This logic is complex and stays as is, but we remove the manual toast
         if (typeof payload !== 'object' || !payload) return;
-
         if ('updateType' in payload && 'sourceUserEmail' in payload) {
             const update = payload as BoardUpdateDTO;
             if (update.sourceUserEmail === userEmail) return;
-
             if (update.updateType === 'MEMBERS_UPDATED') {
                 boardService.getBoardMessages(boardId).then(setMessages);
             }
-
-            boardService.getBoardDetails(boardId).then(details => {
-                setBoardName(details.name);
-            }).catch(err => {
-                if (err instanceof AxiosError && err.response?.status === 403) {
-                    toast.error("You have been removed from this board.");
-                    setAccessLost(true);
-                }
-            });
-
+            boardService.getBoardDetails(boardId)
+                .then(details => setBoardName(details.name))
+                .catch(err => {
+                    if (err instanceof AxiosError && err.response?.status === 403) {
+                        setAccessLost(true); // Interceptor will show the toast
+                    }
+                });
         } else if ('type' in payload && 'instanceId' in payload) {
             const action = payload as BoardActionResponse;
             if (action.sender === sessionInstanceId.current) return;
@@ -105,6 +97,7 @@ export const useBoardSync = (boardId: number) => {
     useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', onMessageReceived);
 
     const handleDrawAction = useCallback((action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
+        // ... this function has no error handling and remains the same
         const newInstanceId = Math.random().toString(36).substring(2);
         const fullPayload = { ...action.payload, instanceId: newInstanceId } as ActionPayload;
         const actionToSend: SendBoardActionRequest = {
@@ -119,35 +112,37 @@ export const useBoardSync = (boardId: number) => {
         websocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionToSend);
     }, [boardId]);
 
-    const handleUndo = useCallback(async () => {
+    const handleUndo = useCallback(() => {
         if (isLoading || undoCount === 0) {
-            toast.error("Nothing to undo.");
+            toast.error(t('boardSync.nothingToUndo')); // Client-side error
             return;
         }
-        try {
-            await boardService.undoLastAction(boardId);
-            setUndoCount(prev => prev - 1);
-            setRedoCount(prev => prev + 1);
-        } catch (error) {
-            console.error("Undo failed on the server:", error);
-            toast.error("Undo operation failed.");
-        }
-    }, [boardId, isLoading, undoCount]);
+        boardService.undoLastAction(boardId)
+            .then(() => {
+                setUndoCount(prev => prev - 1);
+                setRedoCount(prev => prev + 1);
+            })
+            .catch(error => {
+                console.error("Undo failed on the server:", error);
+                // Interceptor shows the server error
+            });
+    }, [boardId, isLoading, undoCount, t]);
 
-    const handleRedo = useCallback(async () => {
+    const handleRedo = useCallback(() => {
         if (isLoading || redoCount === 0) {
-            toast.error("Nothing to redo.");
+            toast.error(t('boardSync.nothingToRedo')); // Client-side error
             return;
         }
-        try {
-            await boardService.redoLastAction(boardId);
-            setUndoCount(prev => prev + 1);
-            setRedoCount(prev => prev - 1);
-        } catch (error) {
-            console.error("Redo failed on the server:", error);
-            toast.error("Redo operation failed.");
-        }
-    }, [boardId, isLoading, redoCount]);
+        boardService.redoLastAction(boardId)
+            .then(() => {
+                setUndoCount(prev => prev + 1);
+                setRedoCount(prev => prev - 1);
+            })
+            .catch(error => {
+                console.error("Redo failed on the server:", error);
+                // Interceptor shows the server error
+            });
+    }, [boardId, isLoading, redoCount, t]);
 
     useEffect(() => {
         if (accessLost) {
@@ -157,16 +152,10 @@ export const useBoardSync = (boardId: number) => {
     }, [accessLost, navigate]);
 
     return {
-        isLoading,
-        boardName,
-        accessLost,
-        objects,
-        messages,
+        isLoading, boardName, accessLost, objects, messages,
         instanceId: sessionInstanceId.current,
         isUndoAvailable: undoCount > 0,
         isRedoAvailable: redoCount > 0,
-        handleDrawAction,
-        handleUndo,
-        handleRedo,
+        handleDrawAction, handleUndo, handleRedo,
     };
 };

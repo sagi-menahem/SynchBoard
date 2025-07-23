@@ -66,7 +66,7 @@ public class ChatService {
     @Transactional(readOnly = true)
     public List<ChatMessageDTO.Response> getMessagesForBoard(Long boardId, String userEmail) {
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
         List<Message> messages = messageRepository.findAllByBoard_BoardGroupIdOrderByTimestampAsc(boardId);

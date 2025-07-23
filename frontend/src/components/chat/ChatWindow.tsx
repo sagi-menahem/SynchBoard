@@ -1,14 +1,14 @@
 // File: frontend/src/components/chat/ChatWindow.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import Button from 'components/common/Button';
+import Input from 'components/common/Input';
+import { WEBSOCKET_DESTINATIONS } from 'constants/api.constants';
+import { useAuth } from 'hooks/useAuth';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ChatMessageResponse, SendChatMessageRequest } from '../../types/message.types';
-import Message from './Message';
-import websocketService from '../../services/websocketService';
-import Input from '../common/Input';
-import Button from '../common/Button';
-import { WEBSOCKET_DESTINATIONS } from '../../constants/api.constants';
+import websocketService from 'services/websocketService';
+import type { ChatMessageResponse, SendChatMessageRequest } from 'types/message.types';
 import styles from './ChatWindow.module.css';
-import { useAuth } from '../../hooks/useAuth';
+import Message from './Message';
 
 interface ChatWindowProps {
     boardId: number;

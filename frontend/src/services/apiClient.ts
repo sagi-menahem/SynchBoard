@@ -1,7 +1,9 @@
 // File: frontend/src/services/apiClient.ts
-import axios from 'axios';
-import { API_BASE_URL, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from '../constants/api.constants';
-import { LOCAL_STORAGE_KEYS } from '../constants/app.constants';
+import axios, { type AxiosError } from 'axios';
+import { API_BASE_URL, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
+import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
+import toast from 'react-hot-toast';
+import i18n from '../i18n';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -13,18 +15,47 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
-
         if (!isPublicEndpoint) {
             const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-
             if (token) {
                 config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] = `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
             }
         }
-
         return config;
     },
-    (error) => {
+    (error) => Promise.reject(error)
+);
+
+// --- FINAL AND CORRECTED Response Interceptor ---
+apiClient.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError) => {
+        interface BackendError {
+            message: string;
+        }
+
+        const isBackendError = (data: unknown): data is BackendError => {
+            return typeof data === 'object' && data !== null && 'message' in data && typeof (data as BackendError).message === 'string';
+        };
+
+        if (error.response && isBackendError(error.response.data)) {
+            const backendKey = error.response.data.message;
+
+            // Construct the full translation key path
+            const fullKey = `errors.${backendKey}`;
+
+            // Check if a translation exists for the full key
+            if (i18n.exists(fullKey)) {
+                toast.error(i18n.t(fullKey));
+            } else {
+                // If no key exists (e.g., for a validation message), show the raw message
+                toast.error(backendKey);
+            }
+        } else {
+            // For network errors or other unexpected issues
+            toast.error(i18n.t('errors.unexpected'));
+        }
+
         return Promise.reject(error);
     }
 );

@@ -1,9 +1,9 @@
 // File: frontend/src/components/chat/Message.tsx
+import defaultUserImage from 'assets/default-user-image.png';
+import { API_BASE_URL } from 'constants/api.constants';
 import React from 'react';
-import type { ChatMessageResponse } from '../../types/message.types';
+import type { ChatMessageResponse } from 'types/message.types';
 import styles from './Message.module.css';
-import defaultUserImage from '../../assets/default-user-image.png';
-import { API_BASE_URL } from '../../constants/api.constants';
 
 interface MessageProps {
     message: ChatMessageResponse;

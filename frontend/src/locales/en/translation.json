@@ -1,4 +1,7 @@
 {
+  "createBoardSuccess": "Board '{{boardName}}' created successfully!",
+  "promoteSuccess": "{{userName}} has been promoted to admin.",
+  "removeSuccess": "{{userName}} has been removed from the board.",
   "common": {
     "_comment": "Shared text used across multiple components",
     "form": {
@@ -33,7 +36,8 @@
     "_comment": "Texts for src/components/auth/LoginForm.tsx",
     "heading": "Login",
     "button": "Login",
-    "failedError": "Login failed, please check your details and try again."
+    "failedError": "Login failed, please check your details and try again.",
+    "loginSuccess": "Login successful! Welcome back."
   },
   "registerForm": {
     "_comment": "Texts for src/components/auth/RegisterForm.tsx",
@@ -69,6 +73,10 @@
       "en": "English",
       "he": "Hebrew"
     }
+  },
+  "sidebar": {
+    "title": "Sidebar",
+    "onlineUsers": "Online Users:"
   },
   "createBoardForm": {
     "heading": "Create a New Board",
@@ -126,14 +134,14 @@
     "adminBadge": "Admin"
   },
   "contextMenu": {
-    "promoteToAdmin": "Promote to Admin",
-    "removeFromBoard": "Remove from Board"
+    "promoteToAdmin": "Promote {{userName}} to Admin",
+    "removeFromBoard": "Remove {{userName}} from Board"
   },
   "leaveBoard": {
     "button": "Leave Board",
     "confirmTitle": "Leave Board?",
     "confirmText": "Are you sure you want to leave '{{boardName}}'? This action cannot be undone.",
-    "success": "You have successfully left the board.",
+    "success": "You have successfully left '{{boardName}}'.",
     "error": "Failed to leave the board."
   },
   "boardPage": {
@@ -171,17 +179,56 @@
     "passwordsDoNotMatch": "New passwords do not match.",
     "passwordTooShort": "New password must be at least 8 characters long.",
     "pictureSectionHeader": "Profile Picture",
+    "profilePictureAlt": "Profile picture for {{userName}}",
     "deletePictureConfirmTitle": "Delete Picture?",
     "deletePictureConfirmText": "Are you sure you want to delete your profile picture?",
     "pictureUpdateSuccess": "Profile picture updated!",
     "pictureDeleteSuccess": "Profile picture removed.",
     "pictureUploadError": "Failed to upload picture.",
     "dangerZoneHeader": "Danger Zone",
+    "dangerZoneText": "This action is permanent and cannot be undone.",
     "deleteAccountButton": "Delete My Account",
     "deleteAccountConfirmTitle": "Delete Account?",
     "deleteAccountConfirmText": "Are you absolutely sure? This action cannot be undone. All your data, including boards you own as the last admin, will be permanently deleted.",
     "accountDeleteSuccess": "Your account has been deleted.",
     "accountDeleteError": "Failed to delete your account.",
-    "backToBoards": "Back to Boards"
+    "backToBoards": "Back to Boards",
+    "chatAppearanceHeader": "Chat Appearance",
+    "chatBackgroundColorLabel": "Background Color",
+    "chatFontSizeLabel": "Font Size",
+    "font": {
+      "small": "Small",
+      "regular": "Regular",
+      "large": "Large"
+    }
+  },
+  "errors": {
+    "user.notFound": "User not found.",
+    "board.notFound": "Board not found.",
+    "email.inUse": "This email address is already in use.",
+    "user.alreadyMember": "This user is already a member of the board.",
+    "auth.notAdmin": "You do not have admin privileges for this action.",
+    "auth.notMember": "You are not a member of this board.",
+    "board.cannotRemoveSelf": "You cannot remove yourself via this action.",
+    "user.alreadyAdmin": "This user is already an admin.",
+    "password.incorrect": "The current password you entered is incorrect.",
+    "password.sameAsOld": "New password cannot be the same as the old one.",
+    "fontSize.invalid": "An invalid font size was selected.",
+    "unexpected": "An unexpected error occurred. Please try again.",
+    "auth.badCredentials": "Incorrect username or password."
+  },
+  "success": {
+    "profile.update": "Profile updated successfully!",
+    "password.update": "Password updated successfully!",
+    "picture.update": "Profile picture updated!",
+    "picture.delete": "Profile picture deleted.",
+    "board.nameUpdate": "Board name updated successfully!",
+    "board.descriptionUpdate": "Board description updated successfully!",
+    "board.pictureUpdate": "Board picture updated successfully!",
+    "board.pictureDelete": "Board picture deleted."
+  },
+  "boardSync": {
+    "nothingToUndo": "Nothing to undo.",
+    "nothingToRedo": "Nothing to redo."
   }
 }

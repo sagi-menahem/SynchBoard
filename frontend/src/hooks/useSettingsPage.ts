@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useSettingsPage.ts
-import { AxiosError } from 'axios';
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -18,19 +17,13 @@ export const useSettingsPage = () => {
     const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
     const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
 
-
-    const fetchUser = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            const userData = await userService.getUserProfile();
-            setUser(userData);
-        } catch (error) {
-            console.error("Failed to fetch user profile:", error);
-            toast.error(t('settingsPage.loadError'));
-        } finally {
-            setIsLoading(false);
-        }
-    }, [t]);
+    const fetchUser = useCallback(() => {
+        setIsLoading(true);
+        userService.getUserProfile()
+            .then(userData => setUser(userData))
+            .catch(error => console.error("Failed to fetch user profile:", error)) // Interceptor shows toast
+            .finally(() => setIsLoading(false));
+    }, []);
 
     useEffect(() => {
         fetchUser();
@@ -40,77 +33,57 @@ export const useSettingsPage = () => {
         try {
             const updatedUser = await userService.updateUserProfile(data);
             setUser(updatedUser);
-            toast.success(t('settingsPage.updateSuccess'));
+            toast.success(t('success.profile.update'));
         } catch (error) {
             console.error("Failed to update profile:", error);
-            toast.error(t('settingsPage.updateError'));
-            throw error;
+            throw error; // Re-throw for form
         }
     };
 
     const handleChangePassword = async (data: ChangePasswordRequest) => {
         try {
             await userService.changePassword(data);
-            toast.success(t('settingsPage.passwordUpdateSuccess'));
+            toast.success(t('success.password.update'));
         } catch (error) {
             console.error("Failed to change password:", error);
-            const errorMessage = error instanceof AxiosError && error.response?.data?.message
-                ? error.response.data.message
-                : t('settingsPage.passwordUpdateError');
-            toast.error(errorMessage);
-            throw error;
+            throw error; // Re-throw for form
         }
     };
 
-    const handlePictureUpload = async (file: File) => {
-        try {
-            const updatedUser = await userService.uploadProfilePicture(file);
-            setUser(updatedUser);
-            toast.success(t('settingsPage.pictureUpdateSuccess'));
-        } catch (error) {
-            console.error('Failed to upload picture:', error);
-            toast.error(t('settingsPage.pictureUploadError'));
-        }
+    const handlePictureUpload = (file: File) => {
+        userService.uploadProfilePicture(file)
+            .then(updatedUser => {
+                setUser(updatedUser);
+                toast.success(t('success.picture.update'));
+            })
+            .catch(error => console.error('Failed to upload picture:', error));
     };
 
-    const handlePictureDelete = async () => {
-        try {
-            const updatedUser = await userService.deleteProfilePicture();
-            setUser(updatedUser);
-            toast.success(t('settingsPage.pictureDeleteSuccess'));
-        } catch (error) {
-            console.error('Failed to delete picture:', error);
-            toast.error('Failed to delete picture.');
-        } finally {
-            setPicDeleteConfirmOpen(false);
-        }
+    const handlePictureDelete = () => {
+        userService.deleteProfilePicture()
+            .then(updatedUser => {
+                setUser(updatedUser);
+                toast.success(t('success.picture.delete'));
+            })
+            .catch(error => console.error('Failed to delete picture:', error))
+            .finally(() => setPicDeleteConfirmOpen(false));
     };
 
-    const handleDeleteAccount = async () => {
-        try {
-            await userService.deleteAccount();
-            toast.success(t('settingsPage.accountDeleteSuccess'));
-            logout();
-            navigate(APP_ROUTES.AUTH);
-        } catch (error) {
-            console.error('Failed to delete account:', error);
-            toast.error(t('settingsPage.accountDeleteError'));
-        } finally {
-            setAccountDeleteConfirmOpen(false);
-        }
+    const handleDeleteAccount = () => {
+        userService.deleteAccount()
+            .then(() => {
+                toast.success(t('settingsPage.accountDeleteSuccess'));
+                logout();
+                navigate(APP_ROUTES.AUTH);
+            })
+            .catch(error => console.error('Failed to delete account:', error))
+            .finally(() => setAccountDeleteConfirmOpen(false));
     };
 
     return {
-        user,
-        isLoading,
-        isPicDeleteConfirmOpen,
-        setPicDeleteConfirmOpen,
-        isAccountDeleteConfirmOpen,
-        setAccountDeleteConfirmOpen,
-        handleUpdateProfile,
-        handleChangePassword,
-        handlePictureUpload,
-        handlePictureDelete,
-        handleDeleteAccount,
+        user, isLoading, isPicDeleteConfirmOpen, setPicDeleteConfirmOpen,
+        isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen,
+        handleUpdateProfile, handleChangePassword, handlePictureUpload,
+        handlePictureDelete, handleDeleteAccount,
     };
 };

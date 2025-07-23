@@ -1,4 +1,5 @@
 // File: frontend/src/hooks/useBoardDetailsPage.ts
+// (This file was already in good shape, just updating the success toasts)
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/useAuth';
 import { useBoardDetails } from 'hooks/useBoardDetails';
@@ -35,9 +36,7 @@ export const useBoardDetailsPage = (boardId: number) => {
 
     const handlePromote = useCallback(() => {
         if (!contextMenu.data || !boardId) return;
-
         const memberToPromote = contextMenu.data;
-
         boardService.promoteMember(boardId, memberToPromote.email)
             .then(() => {
                 toast.success(t('promoteSuccess', { userName: memberToPromote.firstName }));
@@ -45,14 +44,11 @@ export const useBoardDetailsPage = (boardId: number) => {
             })
             .catch(error => console.error("Failed to promote member:", error))
             .finally(() => contextMenu.closeMenu());
-
     }, [boardId, contextMenu, refetch, t]);
 
     const handleRemove = useCallback(() => {
         if (!contextMenu.data || !boardId) return;
-
         const memberToRemove = contextMenu.data;
-
         boardService.removeMember(boardId, memberToRemove.email)
             .then(() => {
                 toast.success(t('removeSuccess', { userName: memberToRemove.firstName }));
@@ -60,14 +56,13 @@ export const useBoardDetailsPage = (boardId: number) => {
             })
             .catch(error => console.error("Failed to remove member:", error))
             .finally(() => contextMenu.closeMenu());
-
     }, [boardId, contextMenu, refetch, t]);
 
     const handleUpdateName = async (newName: string) => {
         if (!boardId) return;
         try {
             await boardService.updateBoardName(boardId, newName);
-            toast.success("Board name updated successfully!");
+            toast.success(t('success.board.nameUpdate'));
             refetch();
         } catch (error) {
             console.error("Update name error:", error);
@@ -79,7 +74,7 @@ export const useBoardDetailsPage = (boardId: number) => {
         if (!boardId) return;
         try {
             await boardService.updateBoardDescription(boardId, newDescription);
-            toast.success("Board description updated successfully!");
+            toast.success(t('success.board.descriptionUpdate'));
             refetch();
         } catch (error) {
             console.error("Update description error:", error);
@@ -89,15 +84,13 @@ export const useBoardDetailsPage = (boardId: number) => {
 
     const handleRightClick = useCallback((event: React.MouseEvent, member: Member) => {
         event.preventDefault();
-        const isAdmin = boardDetails?.members.find(m => m.email === userEmail)?.isAdmin || false;
-        if (isAdmin && member.email !== userEmail) {
+        if (currentUserIsAdmin && member.email !== userEmail) {
             contextMenu.handleContextMenu(event, member);
         }
-    }, [boardDetails, userEmail, contextMenu]);
+    }, [currentUserIsAdmin, userEmail, contextMenu]);
 
     const handleLeaveBoard = useCallback(() => {
         if (!boardDetails) return;
-
         boardService.leaveBoard(boardId)
             .then(() => {
                 toast.success(t('leaveBoard.success', { boardName: boardDetails.name }));
@@ -105,20 +98,19 @@ export const useBoardDetailsPage = (boardId: number) => {
             })
             .catch(error => console.error("Failed to leave board:", error))
             .finally(() => setLeaveConfirmOpen(false));
-
     }, [boardId, boardDetails, navigate, t]);
 
     const handlePictureUpload = useCallback(async (file: File) => {
         try {
             await boardService.uploadBoardPicture(boardId, file);
-            toast.success("Picture updated successfully!");
+            toast.success(t('success.board.pictureUpdate'));
             refetch();
         } catch (error) {
             console.error(error);
         } finally {
             setPictureModalOpen(false);
         }
-    }, [boardId, refetch]);
+    }, [boardId, refetch, t]);
 
     const promptPictureDelete = useCallback(() => {
         setPictureModalOpen(false);
@@ -128,37 +120,18 @@ export const useBoardDetailsPage = (boardId: number) => {
     const handleConfirmDeletePicture = useCallback(() => {
         boardService.deleteBoardPicture(boardId)
             .then(() => {
-                toast.success("Picture deleted successfully.");
+                toast.success(t('success.board.pictureDelete'));
                 refetch();
             })
             .catch(error => console.error(error));
-    }, [boardId, refetch]);
+    }, [boardId, refetch, t]);
 
     return {
-        isLoading,
-        boardDetails,
-        userEmail,
-        currentUserIsAdmin,
-        contextMenu,
-        isInviteModalOpen,
-        setInviteModalOpen,
-        editingField,
-        setEditingField,
-        isLeaveConfirmOpen,
-        setLeaveConfirmOpen,
-        isPictureModalOpen,
-        setPictureModalOpen,
-        isDeleteConfirmOpen,
-        setDeleteConfirmOpen,
-        handleInviteSuccess,
-        handlePromote,
-        handleRemove,
-        handleUpdateName,
-        handleUpdateDescription,
-        handleRightClick,
-        handleLeaveBoard,
-        handlePictureUpload,
-        promptPictureDelete,
-        handleConfirmDeletePicture,
+        isLoading, boardDetails, userEmail, currentUserIsAdmin, contextMenu,
+        isInviteModalOpen, setInviteModalOpen, editingField, setEditingField,
+        isLeaveConfirmOpen, setLeaveConfirmOpen, isPictureModalOpen, setPictureModalOpen,
+        isDeleteConfirmOpen, setDeleteConfirmOpen, handleInviteSuccess, handlePromote,
+        handleRemove, handleUpdateName, handleUpdateDescription, handleRightClick,
+        handleLeaveBoard, handlePictureUpload, promptPictureDelete, handleConfirmDeletePicture,
     };
 };

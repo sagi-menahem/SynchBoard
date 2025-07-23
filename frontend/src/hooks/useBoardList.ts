@@ -1,5 +1,4 @@
 // File: frontend/src/hooks/useBoardList.ts
-import { AxiosError } from 'axios';
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -21,91 +20,65 @@ export const useBoardList = () => {
     const [boardToLeave, setBoardToLeave] = useState<Board | null>(null);
     const { userEmail } = useAuth();
 
-    const fetchBoards = useCallback(async () => {
+    const fetchBoards = useCallback(() => {
         if (!boards.length) {
             setIsLoading(true);
         }
-        try {
-            const userBoards = await getBoards();
-            setBoards(userBoards);
-        } catch (err) {
-            toast.error(t('boardListPage.fetchError'));
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [t, boards.length]);
+        getBoards()
+            .then(userBoards => {
+                setBoards(userBoards);
+            })
+            .catch(err => console.error(err)) // Interceptor shows the toast
+            .finally(() => setIsLoading(false));
+    }, [boards.length]);
 
     useEffect(() => {
         fetchBoards();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchBoards]);
 
     const handleBoardCreated = (newBoard: Board) => {
         setBoards(prevBoards => [...prevBoards, newBoard]);
         setIsModalOpen(false);
     };
 
-    const handleConfirmLeave = useCallback(async () => {
-        console.log(`[handleConfirmLeave] Triggered. boardToLeave:`, boardToLeave);
-
+    const handleConfirmLeave = useCallback(() => {
         if (!boardToLeave) {
-            console.error("[handleConfirmLeave] Error: boardToLeave is null. Aborting.");
+            console.error("Cannot leave board, boardToLeave is null.");
             return;
         }
 
-        try {
-            await leaveBoard(boardToLeave.id);
-            toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
-            fetchBoards();
-        } catch (error) {
-            console.error("Failed to leave board:", error);
-            const errorMessage = error instanceof AxiosError && error.response?.data?.message
-                ? error.response.data.message
-                : t('leaveBoard.error');
-            toast.error(errorMessage);
-        } finally {
-            console.log("[handleConfirmLeave] Cleaning up state.");
-            setLeaveConfirmOpen(false);
-            setBoardToLeave(null);
-        }
+        leaveBoard(boardToLeave.id)
+            .then(() => {
+                toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
+                fetchBoards();
+            })
+            .catch(error => console.error("Failed to leave board:", error)) // Interceptor shows the toast
+            .finally(() => {
+                setLeaveConfirmOpen(false);
+                setBoardToLeave(null);
+            });
     }, [boardToLeave, t, fetchBoards]);
 
     const handleLeaveClick = () => {
-        console.log(`[handleLeaveClick] Triggered. contextMenu.data:`, contextMenu.data);
-
-        if (!contextMenu.data) {
-            console.error("[handleLeaveClick] Error: contextMenu.data is null. Aborting.");
-            return;
-        }
+        if (!contextMenu.data) return;
         setBoardToLeave(contextMenu.data);
         setLeaveConfirmOpen(true);
         contextMenu.closeMenu();
-        console.log(`[handleLeaveClick] State updated. boardToLeave set to: ${contextMenu.data.name}, isLeaveConfirmOpen set to: true`);
     };
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     const handleUserUpdate = useCallback((message: UserUpdateDTO) => {
-        console.log(`[useBoardList] Received user update of type: ${message.updateType}. Refetching board list.`);
+        console.log(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
         fetchBoards();
     }, [fetchBoards]);
 
     useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
 
     return {
-        boards,
-        isLoading,
-        isModalOpen,
-        contextMenu,
-        isLeaveConfirmOpen,
-        setLeaveConfirmOpen,
-        boardToLeave,
-        handleBoardCreated,
-        openModal,
-        closeModal,
-        handleConfirmLeave,
-        handleLeaveClick,
+        boards, isLoading, isModalOpen, contextMenu, isLeaveConfirmOpen,
+        setLeaveConfirmOpen, boardToLeave, handleBoardCreated, openModal,
+        closeModal, handleConfirmLeave, handleLeaveClick,
     };
 };

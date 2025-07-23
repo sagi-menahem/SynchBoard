@@ -1,11 +1,12 @@
 // File: frontend/src/components/settings/ChangePasswordForm.tsx
+import Button from 'components/common/Button';
+import Input from 'components/common/Input';
+import { APP_CONFIG } from 'constants/app.constants';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
-import type { ChangePasswordRequest } from '../../types/user.types';
+import { useTranslation } from 'react-i18next';
+import type { ChangePasswordRequest } from 'types/user.types';
 import styles from './ChangePasswordForm.module.css';
-import Input from '../common/Input';
-import Button from '../common/Button';
 
 interface ChangePasswordFormProps {
     onSubmit: (data: ChangePasswordRequest) => Promise<void>;
@@ -18,10 +19,10 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (newPassword.length < 8) {
+        if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
             toast.error(t('settingsPage.passwordTooShort'));
             return;
         }
@@ -32,16 +33,19 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         }
 
         setIsSubmitting(true);
-        try {
-            await onSubmit({ currentPassword, newPassword });
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-        } catch {
-            // Error toast is handled in the hook, no need to show another one here.
-        } finally {
-            setIsSubmitting(false);
-        }
+        onSubmit({ currentPassword, newPassword })
+            .then(() => {
+                // Clear fields on success
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+            })
+            // The catch block is no longer needed to show a toast.
+            // The interceptor handles the error message, and the re-thrown error
+            // from the parent hook correctly stops this .then() block from executing.
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     return (

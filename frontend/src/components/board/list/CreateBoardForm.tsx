@@ -1,11 +1,11 @@
 // File: frontend/src/components/board/CreateBoardForm.tsx
+import Button from 'components/common/Button';
+import styles from 'components/common/Form.module.css';
+import Input from 'components/common/Input';
+import { useCreateBoardForm } from 'hooks/useCreateBoardForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Input from '../common/Input';
-import Button from '../common/Button';
-import { useCreateBoardForm } from '../../hooks/useCreateBoardForm';
-import type { Board } from '../../types/board.types';
-import styles from '../common/Form.module.css';
+import type { Board } from 'types/board.types';
 
 interface CreateBoardFormProps {
     onBoardCreated: (newBoard: Board) => void;

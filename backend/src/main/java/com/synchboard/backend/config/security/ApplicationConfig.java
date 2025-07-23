@@ -1,8 +1,6 @@
 // File: backend/src/main/java/com/synchboard/backend/config/security/ApplicationConfig.java
 package com.synchboard.backend.config.security;
 
-import static com.synchboard.backend.config.constants.MessageConstants.ERROR_USER_NOT_FOUND_TEMPLATE;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.synchboard.backend.config.constants.MessageConstants;
 import com.synchboard.backend.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException(ERROR_USER_NOT_FOUND_TEMPLATE + username));
+                .orElseThrow(() -> new UsernameNotFoundException(MessageConstants.USER_NOT_FOUND + ": " + username));
     }
 
     @Bean

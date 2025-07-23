@@ -1,4 +1,7 @@
 {
+  "createBoardSuccess": "הלוח '{{boardName}}' נוצר בהצלחה!",
+  "promoteSuccess": "{{userName}} קודם לתפקיד מנהל.",
+  "removeSuccess": "{{userName}} הוסר מהלוח.",
   "common": {
     "_comment": "Shared text used across multiple components",
     "form": {
@@ -33,7 +36,8 @@
     "_comment": "Texts for src/components/auth/LoginForm.tsx",
     "heading": "התחברות",
     "button": "התחבר",
-    "failedError": "ההתחברות נכשלה, אנא בדוק את פרטיך ונסה שנית."
+    "failedError": "ההתחברות נכשלה, אנא בדוק את פרטיך ונסה שנית.",
+    "loginSuccess": "התחברת בהצלחה! ברוך שובך."
   },
   "registerForm": {
     "_comment": "Texts for src/components/auth/RegisterForm.tsx",
@@ -126,14 +130,14 @@
     "adminBadge": "מנהל"
   },
   "contextMenu": {
-    "promoteToAdmin": "קדם למנהל",
-    "removeFromBoard": "הסר מהלוח"
+    "promoteToAdmin": "קדם את {{userName}} למנהל",
+    "removeFromBoard": "הסר את {{userName}} מהלוח"
   },
   "leaveBoard": {
     "button": "עזוב קבוצה",
     "confirmTitle": "לעזוב את הקבוצה?",
     "confirmText": "האם אתה בטוח שברצונך לעזוב את הלוח '{{boardName}}'? לא ניתן לבטל פעולה זו.",
-    "success": "עזבת את הלוח בהצלחה.",
+    "success": "עזבת בהצלחה את הלוח '{{boardName}}'.",
     "error": "עזיבת הלוח נכשלה."
   },
   "boardPage": {
@@ -146,6 +150,10 @@
     "title": "נהל תמונה עבור '{{boardName}}'",
     "changeButton": "שנה תמונה",
     "deleteButton": "מחק תמונה"
+  },
+  "sidebar": {
+    "title": "סרגל צד",
+    "onlineUsers": "משתמשים מחוברים:"
   },
   "settingsPage": {
     "heading": "הגדרות חשבון",
@@ -171,17 +179,56 @@
     "passwordsDoNotMatch": "הסיסמאות החדשות אינן תואמות.",
     "passwordTooShort": "סיסמה חדשה חייבת להכיל לפחות 8 תווים.",
     "pictureSectionHeader": "תמונת פרופיל",
+    "profilePictureAlt": "תמונת פרופיל של {{userName}}",
     "deletePictureConfirmTitle": "למחוק את התמונה?",
     "deletePictureConfirmText": "האם אתה בטוח שברצונך למחוק את תמונת הפרופיל שלך?",
     "pictureUpdateSuccess": "תמונת הפרופיל עודכנה!",
     "pictureDeleteSuccess": "תמונת הפרופיל הוסרה.",
     "pictureUploadError": "העלאת התמונה נכשלה.",
     "dangerZoneHeader": "אזור מסוכן",
+    "dangerZoneText": "פעולה זו היא קבועה ולא ניתנת לביטול.",
     "deleteAccountButton": "מחק את החשבון שלי",
     "deleteAccountConfirmTitle": "למחוק את החשבון?",
     "deleteAccountConfirmText": "האם אתה בטוח לחלוטין? לא ניתן לבטל פעולה זו. כל הנתונים שלך, כולל לוחות שאתה המנהל האחרון בהם, יימחקו לצמיתות.",
     "accountDeleteSuccess": "החשבון שלך נמחק.",
     "accountDeleteError": "מחיקת החשבון נכשלה.",
-    "backToBoards": "חזרה לרשימת הלוחות"
+    "backToBoards": "חזרה לרשימת הלוחות",
+    "chatAppearanceHeader": "עיצוב הצ'אט",
+    "chatBackgroundColorLabel": "צבע רקע",
+    "chatFontSizeLabel": "גודל גופן",
+    "font": {
+      "small": "קטן",
+      "regular": "רגיל",
+      "large": "גדול"
+    }
+  },
+  "errors": {
+    "user.notFound": "המשתמש לא נמצא.",
+    "board.notFound": "הלוח לא נמצא.",
+    "email.inUse": "כתובת האימייל הזו כבר בשימוש.",
+    "user.alreadyMember": "המשתמש הזה כבר חבר בלוח.",
+    "auth.notAdmin": "אין לך הרשאות ניהול לביצוע פעולה זו.",
+    "auth.notMember": "אינך חבר בלוח זה.",
+    "board.cannotRemoveSelf": "אינך יכול להסיר את עצמך דרך פעולה זו.",
+    "user.alreadyAdmin": "המשתמש הזה הוא כבר מנהל.",
+    "password.incorrect": "הסיסמה הנוכחית שהזנת שגויה.",
+    "password.sameAsOld": "הסיסמה החדשה אינה יכולה להיות זהה לישנה.",
+    "fontSize.invalid": "נבחר גודל גופן לא תקין.",
+    "unexpected": "אירעה שגיאה לא צפויה. אנא נסה שנית.",
+    "auth.badCredentials": "שם המשתמש או הסיסמה שהזנת אינם נכונים."
+  },
+  "success": {
+    "profile.update": "הפרופיל עודכן בהצלחה!",
+    "password.update": "הסיסמה עודכנה בהצלחה!",
+    "picture.update": "תמונת הפרופיל עודכנה!",
+    "picture.delete": "תמונת הפרופיל נמחקה.",
+    "board.nameUpdate": "שם הלוח עודכן בהצלחה!",
+    "board.descriptionUpdate": "תיאור הלוח עודכן בהצלחה!",
+    "board.pictureUpdate": "תמונת הלוח עודכנה בהצלחה!",
+    "board.pictureDelete": "תמונת הלוח נמחקה."
+  },
+  "boardSync": {
+    "nothingToUndo": "אין פעולות לביטול.",
+    "nothingToRedo": "אין פעולות לביצוע מחדש."
   }
 }

@@ -1,12 +1,13 @@
 // File: frontend/src/context/AuthProvider.tsx
-import React, { useState, useEffect, type ReactNode, useCallback } from 'react';
+import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
 import { jwtDecode } from 'jwt-decode';
+import React, { useCallback, useEffect, useState, type ReactNode } from 'react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import * as userService from 'services/userService';
+import websocketService from 'services/websocketService';
+import type { UserPreferences } from 'types/user.types';
 import { AuthContext } from './AuthContext';
-import websocketService from '../services/websocketService';
-import * as userService from '../services/userService';
-import { LOCAL_STORAGE_KEYS } from '../constants/app.constants';
-import type { UserPreferences } from '../types/user.types';
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -18,30 +19,30 @@ const defaultPreferences: UserPreferences = {
 };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const { t } = useTranslation();
     const [token, setToken] = useState<string | null>(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN));
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const [preferences, setPreferences] = useState<UserPreferences>(defaultPreferences);
 
-    const fetchAndSetUserPreferences = useCallback(async () => {
-        try {
-            const profile = await userService.getUserProfile();
-            setPreferences({
-                chatBackgroundSetting: profile.chatBackgroundSetting || defaultPreferences.chatBackgroundSetting,
-                fontSizeSetting: profile.fontSizeSetting || defaultPreferences.fontSizeSetting,
+    const fetchAndSetUserPreferences = useCallback(() => {
+        userService.getUserProfile()
+            .then(profile => {
+                setPreferences({
+                    chatBackgroundSetting: profile.chatBackgroundSetting || defaultPreferences.chatBackgroundSetting,
+                    fontSizeSetting: profile.fontSizeSetting || defaultPreferences.fontSizeSetting,
+                });
+            })
+            .catch(error => {
+                console.error("Failed to fetch user preferences:", error);
             });
-        } catch (error) {
-            console.error("Failed to fetch user preferences:", error);
-        }
     }, []);
 
     useEffect(() => {
         if (token) {
             const decodedToken: { sub: string } = jwtDecode(token);
             setUserEmail(decodedToken.sub);
-
             fetchAndSetUserPreferences();
-
             websocketService.connect(token, () => {
                 console.log("WebSocket connection confirmed in AuthProvider.");
                 setIsSocketConnected(true);
@@ -51,7 +52,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setPreferences(defaultPreferences);
             setIsSocketConnected(false);
         }
-
         return () => {
             websocketService.disconnect();
             setIsSocketConnected(false);
@@ -68,16 +68,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     };
 
-    const updatePreferences = async (newPrefs: UserPreferences) => {
+    // --- THIS FUNCTION IS FIXED ---
+    const updatePreferences = (newPrefs: UserPreferences): Promise<void> => {
         const oldPrefs = preferences;
-        setPreferences(newPrefs);
-        try {
-            await userService.updateUserPreferences(newPrefs);
-        } catch (error) {
-            toast.error("Failed to save preferences.");
-            setPreferences(oldPrefs);
-            console.error(error);
-        }
+        setPreferences(newPrefs); // Optimistic UI update
+
+        // Return the promise chain to match the context type
+        return userService.updateUserPreferences(newPrefs)
+            .then(() => {
+                toast.success(t('success.preferences.update'));
+            })
+            .catch(error => {
+                console.error("Failed to save preferences:", error);
+                setPreferences(oldPrefs); // Revert on error
+                // The interceptor shows the toast, but we re-throw the error
+                // so any calling component knows the operation failed.
+                throw error;
+            });
     };
 
     const value = { token, userEmail, isSocketConnected, preferences, login, logout, updatePreferences };

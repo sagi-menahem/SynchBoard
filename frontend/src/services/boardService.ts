@@ -1,9 +1,9 @@
 // File: frontend/src/services/boardService.ts
+import { API_ENDPOINTS } from 'constants/api.constants';
+import type { Board, BoardDetails, CreateBoardRequest, Member } from 'types/board.types';
+import type { BoardActionResponse } from 'types/boardObject.types';
+import type { ChatMessageResponse } from 'types/message.types';
 import apiClient from './apiClient';
-import type { Board, CreateBoardRequest, Member, BoardDetails } from '../types/board.types';
-import type { BoardActionResponse } from '../types/boardObject.types';
-import type { ChatMessageResponse } from '../types/message.types';
-import { API_ENDPOINTS } from '../constants/api.constants';
 
 export const getBoards = async (): Promise<Board[]> => {
     const response = await apiClient.get<Board[]>(API_ENDPOINTS.BOARDS);
