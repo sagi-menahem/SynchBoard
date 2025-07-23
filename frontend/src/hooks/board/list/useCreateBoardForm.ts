@@ -15,7 +15,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (name.trim().length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
-            toast.error(t('createBoardForm.nameLengthError')); // This is client-side validation
+            toast.error(t('createBoardForm.nameLengthError'));
             return;
         }
         setIsSubmitting(true);
@@ -26,7 +26,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
                 toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
                 onBoardCreated(newBoard);
             })
-            .catch(err => console.error(err)) // Interceptor shows the toast
+            .catch(err => console.error(err))
             .finally(() => setIsSubmitting(false));
     };
 

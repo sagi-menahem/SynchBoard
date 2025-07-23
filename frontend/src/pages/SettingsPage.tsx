@@ -7,7 +7,7 @@ import DangerZoneSection from 'components/settings/DangerZoneSection';
 import ProfileDetailsSection from 'components/settings/ProfileDetailsSection';
 import ProfilePictureManager from 'components/settings/ProfilePictureManager';
 import { APP_ROUTES } from 'constants/routes.constants';
-import { useSettingsPage } from 'hooks/useSettingsPage';
+import { useSettingsPage } from 'hooks/settings/useSettingsPage';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';

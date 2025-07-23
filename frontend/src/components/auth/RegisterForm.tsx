@@ -2,7 +2,7 @@
 import Button from 'components/common/Button';
 import styles from 'components/common/Form.module.css';
 import Input from 'components/common/Input';
-import { useRegisterForm } from 'hooks/useRegisterForm';
+import { useRegisterForm } from 'hooks/auth/useRegisterForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

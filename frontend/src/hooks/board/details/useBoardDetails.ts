@@ -2,13 +2,13 @@
 import { AxiosError } from 'axios';
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/useAuth';
+import { useSocket } from 'hooks/useSocket';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getBoardDetails } from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
 import type { BoardUpdateDTO } from 'types/websocket.types';
-import { useAuth } from './useAuth';
-import { useSocket } from './useSocket';
 
 export const useBoardDetails = (boardId: number | undefined) => {
     const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
@@ -32,7 +32,6 @@ export const useBoardDetails = (boardId: number | undefined) => {
             })
             .catch(error => {
                 console.error("Failed to fetch board details:", error);
-                // Business logic for 403 error remains, but the toast is gone.
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     navigate(APP_ROUTES.BOARD_LIST);
                 }

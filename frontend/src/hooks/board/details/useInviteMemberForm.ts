@@ -13,7 +13,7 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!email.trim()) {
-            toast.error(t('inviteMemberForm.emailRequiredError')); // Client-side validation
+            toast.error(t('inviteMemberForm.emailRequiredError'));
             return;
         }
         setIsSubmitting(true);
@@ -24,7 +24,7 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
                 onInviteSuccess(newMember);
                 setEmail('');
             })
-            .catch(error => console.error("Failed to invite member:", error)) // Interceptor shows the toast
+            .catch(error => console.error("Failed to invite member:", error))
             .finally(() => setIsSubmitting(false));
     };
 

@@ -1,12 +1,12 @@
 // File: frontend/src/hooks/useSettingsPage.ts
 import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/useAuth';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import * as userService from 'services/userService';
 import type { ChangePasswordRequest, UpdateUserProfileRequest, UserProfile } from 'types/user.types';
-import { useAuth } from './useAuth';
 
 export const useSettingsPage = () => {
     const { t } = useTranslation();
@@ -21,7 +21,7 @@ export const useSettingsPage = () => {
         setIsLoading(true);
         userService.getUserProfile()
             .then(userData => setUser(userData))
-            .catch(error => console.error("Failed to fetch user profile:", error)) // Interceptor shows toast
+            .catch(error => console.error("Failed to fetch user profile:", error))
             .finally(() => setIsLoading(false));
     }, []);
 
@@ -36,7 +36,7 @@ export const useSettingsPage = () => {
             toast.success(t('success.profile.update'));
         } catch (error) {
             console.error("Failed to update profile:", error);
-            throw error; // Re-throw for form
+            throw error;
         }
     };
 
@@ -46,7 +46,7 @@ export const useSettingsPage = () => {
             toast.success(t('success.password.update'));
         } catch (error) {
             console.error("Failed to change password:", error);
-            throw error; // Re-throw for form
+            throw error;
         }
     };
 

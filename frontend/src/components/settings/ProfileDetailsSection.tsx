@@ -39,7 +39,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
             await onUpdateProfile(formData);
             setIsEditing(false);
         } catch {
-            // Error is handled by the parent hook
+            // TODO
         }
     };
 

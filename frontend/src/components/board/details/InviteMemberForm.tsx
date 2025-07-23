@@ -2,7 +2,7 @@
 import Button from 'components/common/Button';
 import styles from 'components/common/Form.module.css';
 import Input from 'components/common/Input';
-import { useInviteMemberForm } from 'hooks/useInviteMemberForm';
+import { useInviteMemberForm } from 'hooks/board/details/useInviteMemberForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Member } from 'types/board.types';

@@ -1,14 +1,14 @@
 // File: frontend/src/hooks/useBoardList.ts
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
+import { useContextMenu } from 'hooks/common/useContextMenu';
+import { useAuth } from 'hooks/useAuth';
+import { useSocket } from 'hooks/useSocket';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { getBoards, leaveBoard } from 'services/boardService';
 import type { Board } from 'types/board.types';
 import type { UserUpdateDTO } from 'types/websocket.types';
-import { useAuth } from './useAuth';
-import { useContextMenu } from './useContextMenu';
-import { useSocket } from './useSocket';
 
 export const useBoardList = () => {
     const { t } = useTranslation();
@@ -28,7 +28,7 @@ export const useBoardList = () => {
             .then(userBoards => {
                 setBoards(userBoards);
             })
-            .catch(err => console.error(err)) // Interceptor shows the toast
+            .catch(err => console.error(err))
             .finally(() => setIsLoading(false));
     }, [boards.length]);
 
@@ -52,7 +52,7 @@ export const useBoardList = () => {
                 toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
                 fetchBoards();
             })
-            .catch(error => console.error("Failed to leave board:", error)) // Interceptor shows the toast
+            .catch(error => console.error("Failed to leave board:", error))
             .finally(() => {
                 setLeaveConfirmOpen(false);
                 setBoardToLeave(null);

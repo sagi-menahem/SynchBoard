@@ -68,21 +68,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     };
 
-    // --- THIS FUNCTION IS FIXED ---
     const updatePreferences = (newPrefs: UserPreferences): Promise<void> => {
         const oldPrefs = preferences;
-        setPreferences(newPrefs); // Optimistic UI update
+        setPreferences(newPrefs);
 
-        // Return the promise chain to match the context type
         return userService.updateUserPreferences(newPrefs)
             .then(() => {
                 toast.success(t('success.preferences.update'));
             })
             .catch(error => {
                 console.error("Failed to save preferences:", error);
-                setPreferences(oldPrefs); // Revert on error
-                // The interceptor shows the toast, but we re-throw the error
-                // so any calling component knows the operation failed.
+                setPreferences(oldPrefs);
                 throw error;
             });
     };

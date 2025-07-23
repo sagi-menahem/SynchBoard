@@ -1,7 +1,7 @@
 // File: frontend/src/components/board/Toolbar.tsx
 import Button from 'components/common/Button';
 import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants/board.constants';
-import { useDraggable } from 'hooks/useDraggable';
+import { useDraggable } from 'hooks/common/useDraggable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Toolbar.module.css';

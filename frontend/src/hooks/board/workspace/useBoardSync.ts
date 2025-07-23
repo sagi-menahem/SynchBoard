@@ -2,25 +2,24 @@
 import { AxiosError } from 'axios';
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/useAuth';
+import { useSocket } from 'hooks/useSocket';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import * as boardService from 'services/boardService';
 import websocketService from 'services/websocketService';
 import { ActionType, type ActionPayload, type BoardActionResponse, type SendBoardActionRequest } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';
 import type { BoardUpdateDTO } from 'types/websocket.types';
-import { useAuth } from './useAuth';
-import { useSocket } from './useSocket';
 
 export const useBoardSync = (boardId: number) => {
     const { userEmail } = useAuth();
     const navigate = useNavigate();
-    const { t } = useTranslation(); // Initialize t
+    const { t } = useTranslation();
     const sessionInstanceId = useRef(Date.now().toString());
 
-    // ... state definitions remain the same
     const [isLoading, setIsLoading] = useState(true);
     const [boardName, setBoardName] = useState<string | null>(null);
     const [accessLost, setAccessLost] = useState(false);
@@ -55,7 +54,6 @@ export const useBoardSync = (boardId: number) => {
         });
     }, [boardId]);
 
-    // ... useEffect for fetchInitialData remains the same
     useEffect(() => {
         if (isNaN(boardId) || boardId === 0) {
             setAccessLost(true);
@@ -65,7 +63,6 @@ export const useBoardSync = (boardId: number) => {
     }, [boardId, fetchInitialData]);
 
     const onMessageReceived = useCallback((payload: unknown) => {
-        // This logic is complex and stays as is, but we remove the manual toast
         if (typeof payload !== 'object' || !payload) return;
         if ('updateType' in payload && 'sourceUserEmail' in payload) {
             const update = payload as BoardUpdateDTO;
@@ -77,7 +74,7 @@ export const useBoardSync = (boardId: number) => {
                 .then(details => setBoardName(details.name))
                 .catch(err => {
                     if (err instanceof AxiosError && err.response?.status === 403) {
-                        setAccessLost(true); // Interceptor will show the toast
+                        setAccessLost(true);
                     }
                 });
         } else if ('type' in payload && 'instanceId' in payload) {
@@ -97,7 +94,6 @@ export const useBoardSync = (boardId: number) => {
     useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', onMessageReceived);
 
     const handleDrawAction = useCallback((action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
-        // ... this function has no error handling and remains the same
         const newInstanceId = Math.random().toString(36).substring(2);
         const fullPayload = { ...action.payload, instanceId: newInstanceId } as ActionPayload;
         const actionToSend: SendBoardActionRequest = {
@@ -114,7 +110,7 @@ export const useBoardSync = (boardId: number) => {
 
     const handleUndo = useCallback(() => {
         if (isLoading || undoCount === 0) {
-            toast.error(t('boardSync.nothingToUndo')); // Client-side error
+            toast.error(t('boardSync.nothingToUndo'));
             return;
         }
         boardService.undoLastAction(boardId)
@@ -124,13 +120,12 @@ export const useBoardSync = (boardId: number) => {
             })
             .catch(error => {
                 console.error("Undo failed on the server:", error);
-                // Interceptor shows the server error
             });
     }, [boardId, isLoading, undoCount, t]);
 
     const handleRedo = useCallback(() => {
         if (isLoading || redoCount === 0) {
-            toast.error(t('boardSync.nothingToRedo')); // Client-side error
+            toast.error(t('boardSync.nothingToRedo'));
             return;
         }
         boardService.redoLastAction(boardId)
@@ -140,7 +135,6 @@ export const useBoardSync = (boardId: number) => {
             })
             .catch(error => {
                 console.error("Redo failed on the server:", error);
-                // Interceptor shows the server error
             });
     }, [boardId, isLoading, redoCount, t]);
 
