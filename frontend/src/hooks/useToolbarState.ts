@@ -1,6 +1,6 @@
 // File: frontend/src/hooks/useToolbarState.ts
+import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
 import { useState } from 'react';
-import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from '../constants/board.constants';
 
 type Tool = typeof TOOL_LIST[number];
 

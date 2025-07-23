@@ -1,10 +1,10 @@
 // File: frontend/src/hooks/useInviteMemberForm.ts
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
-import * as boardService from '../services/boardService';
-import type { Member } from '../types/board.types';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import * as boardService from 'services/boardService';
+import type { Member } from 'types/board.types';
 
 export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember: Member) => void) => {
     const { t } = useTranslation();

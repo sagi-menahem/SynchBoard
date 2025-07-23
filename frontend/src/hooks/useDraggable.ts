@@ -1,5 +1,6 @@
 // File: frontend/src/hooks/useDraggable.ts
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { DEFAULT_DRAWING_CONFIG } from 'constants/board.constants';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseDraggableProps {
     containerRef: React.RefObject<HTMLElement | null>;
@@ -23,8 +24,8 @@ export const useDraggable = ({ containerRef }: UseDraggableProps) => {
         if (container && element) {
             const containerWidth = container.offsetWidth;
             const elementWidth = element.offsetWidth;
-            const initialX = (containerWidth - elementWidth) / 2;
-            setPosition({ x: initialX, y: 60 });
+            const initialX = (containerWidth - elementWidth) / 1.15;
+            setPosition({ x: initialX, y: DEFAULT_DRAWING_CONFIG.TOOLBAR_INITIAL_Y_POSITION });
         }
     }, [containerRef]);
 

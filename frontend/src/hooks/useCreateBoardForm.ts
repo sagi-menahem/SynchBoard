@@ -1,11 +1,11 @@
 // File: frontend/src/hooks/useCreateBoardForm.ts
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { APP_CONFIG } from 'constants/app.constants';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { createBoard } from '../services/boardService';
-import type { Board, CreateBoardRequest } from '../types/board.types';
-import { APP_CONFIG } from '../constants/app.constants';
+import { useTranslation } from 'react-i18next';
+import { createBoard } from 'services/boardService';
+import type { Board, CreateBoardRequest } from 'types/board.types';
 
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {
     const { t } = useTranslation();
@@ -23,7 +23,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
         const boardData: CreateBoardRequest = { name, description };
         try {
             const newBoard = await createBoard(boardData);
-            toast.success(`Board "${newBoard.name}" created!`);
+            toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
             onBoardCreated(newBoard);
         } catch (err) {
             let errorMessage = t('createBoardForm.failedError');

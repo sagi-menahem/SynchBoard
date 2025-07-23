@@ -1,13 +1,13 @@
 // File: frontend/src/hooks/useSettingsPage.ts
-import { useState, useEffect, useCallback } from 'react';
+import { AxiosError } from 'axios';
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import * as userService from '../services/userService';
-import type { UserProfile, UpdateUserProfileRequest, ChangePasswordRequest } from '../types/user.types';
-import { AxiosError } from 'axios';
+import * as userService from 'services/userService';
+import type { ChangePasswordRequest, UpdateUserProfileRequest, UserProfile } from 'types/user.types';
 import { useAuth } from './useAuth';
-import { APP_ROUTES } from '../constants/routes.constants';
 
 export const useSettingsPage = () => {
     const { t } = useTranslation();

@@ -1,15 +1,15 @@
 // File: frontend/src/hooks/useBoardList.ts
-import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
-import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
-import { getBoards, leaveBoard } from '../services/boardService';
-import type { Board } from '../types/board.types';
+import { WEBSOCKET_TOPICS } from 'constants/api.constants';
+import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { getBoards, leaveBoard } from 'services/boardService';
+import type { Board } from 'types/board.types';
+import type { UserUpdateDTO } from 'types/websocket.types';
+import { useAuth } from './useAuth';
 import { useContextMenu } from './useContextMenu';
 import { useSocket } from './useSocket';
-import { useAuth } from './useAuth';
-import { WEBSOCKET_TOPICS } from '../constants/api.constants';
-import type { UserUpdateDTO } from '../types/websocket.types';
 
 export const useBoardList = () => {
     const { t } = useTranslation();
@@ -56,7 +56,7 @@ export const useBoardList = () => {
 
         try {
             await leaveBoard(boardToLeave.id);
-            toast.success(t('leaveBoard.success'));
+            toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
             fetchBoards();
         } catch (error) {
             console.error("Failed to leave board:", error);

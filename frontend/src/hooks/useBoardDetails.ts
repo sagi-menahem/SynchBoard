@@ -1,15 +1,15 @@
 // File: frontend/src/hooks/useBoardDetails.ts
-import { useState, useEffect, useCallback } from 'react';
-import toast from 'react-hot-toast';
-import { getBoardDetails } from '../services/boardService';
-import type { BoardDetails } from '../types/board.types';
-import { useSocket } from './useSocket';
-import { WEBSOCKET_TOPICS } from '../constants/api.constants';
-import type { BoardUpdateDTO } from '../types/websocket.types';
-import { useAuth } from './useAuth';
-import { useNavigate } from 'react-router-dom';
-import { APP_ROUTES } from '../constants/routes.constants';
 import { AxiosError } from 'axios';
+import { WEBSOCKET_TOPICS } from 'constants/api.constants';
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { getBoardDetails } from 'services/boardService';
+import type { BoardDetails } from 'types/board.types';
+import type { BoardUpdateDTO } from 'types/websocket.types';
+import { useAuth } from './useAuth';
+import { useSocket } from './useSocket';
 
 export const useBoardDetails = (boardId: number | undefined) => {
     const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
