@@ -8,6 +8,7 @@ import Input from '../common/Input';
 import Button from '../common/Button';
 import { WEBSOCKET_DESTINATIONS } from '../../constants/api.constants';
 import styles from './ChatWindow.module.css';
+import { useAuth } from '../../hooks/useAuth';
 
 interface ChatWindowProps {
     boardId: number;
@@ -16,6 +17,7 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     const { t } = useTranslation();
+    const { preferences } = useAuth();
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -34,8 +36,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         }
     };
 
+    const fontSizeClass = styles[`fontSize-${preferences.fontSizeSetting || 'medium'}`];
+
     return (
-        <div className={styles.container}>
+        <div
+            className={`${styles.container} ${fontSizeClass}`}
+            style={{ backgroundColor: preferences.chatBackgroundSetting || undefined }}
+        >
             <div className={styles.messageList}>
                 {messages.map((msg, index) => (
                     <Message key={index} message={msg} />
