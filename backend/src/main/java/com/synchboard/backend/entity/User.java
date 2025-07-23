@@ -1,21 +1,21 @@
 // File: backend/src/main/java/com/synchboard/backend/entity/User.java
 package com.synchboard.backend.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import static com.synchboard.backend.config.constants.SecurityConstants.ROLE_USER;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import static com.synchboard.backend.config.ApplicationConstants.ROLE_USER;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")

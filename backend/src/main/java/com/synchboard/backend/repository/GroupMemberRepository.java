@@ -1,14 +1,15 @@
 // File: backend/src/main/java/com/synchboard/backend/repository/GroupMemberRepository.java
 package com.synchboard.backend.repository;
 
-import com.synchboard.backend.entity.GroupMember;
-import com.synchboard.backend.entity.GroupMemberId;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.synchboard.backend.entity.GroupMember;
+import com.synchboard.backend.entity.GroupMemberId;
 
 @Repository
 public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupMemberId> {

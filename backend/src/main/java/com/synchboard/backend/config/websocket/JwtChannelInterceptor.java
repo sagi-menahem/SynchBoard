@@ -1,9 +1,9 @@
 // File: backend/src/main/java/com/synchboard/backend/config/websocket/JwtChannelInterceptor.java
 package com.synchboard.backend.config.websocket;
 
-import com.synchboard.backend.service.JwtService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import static com.synchboard.backend.config.constants.SecurityConstants.AUTHORIZATION;
+import static com.synchboard.backend.config.constants.SecurityConstants.JWT_PREFIX;
+
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -16,7 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import com.synchboard.backend.service.JwtService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor

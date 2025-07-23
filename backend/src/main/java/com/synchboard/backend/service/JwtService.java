@@ -1,15 +1,7 @@
 // File: backend/src/main/java/com/synchboard/backend/service/JwtService.java
 package com.synchboard.backend.service;
 
-import com.synchboard.backend.config.AppProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import static com.synchboard.backend.config.constants.SecurityConstants.JWT_EXPIRATION_MS;
 
 import java.security.Key;
 import java.util.Date;
@@ -17,7 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import com.synchboard.backend.config.AppProperties;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class JwtService {

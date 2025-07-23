@@ -1,13 +1,13 @@
 // File: backend/src/main/java/com/synchboard/backend/entity/Message.java
 package com.synchboard.backend.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")

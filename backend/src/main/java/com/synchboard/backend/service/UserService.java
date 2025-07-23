@@ -1,32 +1,36 @@
 // File: backend/src/main/java/com/synchboard/backend/service/UserService.java
 package com.synchboard.backend.service;
 
-import com.synchboard.backend.dto.auth.AuthResponse;
-import com.synchboard.backend.dto.auth.LoginRequest;
-import com.synchboard.backend.dto.auth.RegisterRequest;
-import com.synchboard.backend.dto.user.UpdateUserProfileDTO;
-import com.synchboard.backend.dto.user.UserProfileDTO;
-import com.synchboard.backend.dto.user.UserPreferencesDTO;
-import com.synchboard.backend.entity.GroupMember;
-import com.synchboard.backend.entity.User;
-import com.synchboard.backend.exception.InvalidPasswordException;
-import com.synchboard.backend.repository.*;
+import static com.synchboard.backend.config.constants.MessageConstants.ALLOWED_FONT_SIZES;
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.synchboard.backend.config.constants.MessageConstants;
+import com.synchboard.backend.dto.auth.AuthResponse;
+import com.synchboard.backend.dto.auth.LoginRequest;
+import com.synchboard.backend.dto.auth.RegisterRequest;
+import com.synchboard.backend.dto.user.UpdateUserProfileDTO;
+import com.synchboard.backend.dto.user.UserPreferencesDTO;
+import com.synchboard.backend.dto.user.UserProfileDTO;
 import com.synchboard.backend.dto.websocket.BoardUpdateDTO;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import com.synchboard.backend.entity.GroupMember;
+import com.synchboard.backend.entity.User;
+import com.synchboard.backend.exception.InvalidRequestException;
+import com.synchboard.backend.exception.ResourceConflictException;
+import com.synchboard.backend.exception.ResourceNotFoundException;
+import com.synchboard.backend.repository.*;
 
 @Service
 public class UserService {
@@ -66,7 +70,7 @@ public class UserService {
 
     public AuthResponse registerUser(RegisterRequest request) {
         if (userRepository.existsById(request.getEmail())) {
-            throw new RuntimeException(ERROR_EMAIL_IN_USE);
+            throw new ResourceConflictException(MessageConstants.ERROR_EMAIL_IN_USE);
         }
 
         User newUser = User.builder()
@@ -90,7 +94,7 @@ public class UserService {
                         request.getPassword()));
 
         User user = userRepository.findById(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(ERROR_USER_NOT_FOUND_AFTER_AUTH));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.ERROR_USER_NOT_FOUND_AFTER_AUTH));
 
         String jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken);
@@ -99,7 +103,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(String userEmail) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         return mapUserToUserProfileDTO(user);
     }
@@ -107,7 +111,7 @@ public class UserService {
     @Transactional
     public UserProfileDTO updateUserProfile(String userEmail, UpdateUserProfileDTO dto) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
@@ -122,10 +126,14 @@ public class UserService {
     @Transactional
     public void changePassword(String userEmail, String currentPassword, String newPassword) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new InvalidPasswordException(ERROR_INCORRECT_CURRENT_PASSWORD);
+            throw new InvalidRequestException(MessageConstants.ERROR_INCORRECT_CURRENT_PASSWORD);
+        }
+
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new InvalidRequestException(MessageConstants.ERROR_PASSWORD_SAME_AS_OLD);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -135,7 +143,7 @@ public class UserService {
     @Transactional
     public UserProfileDTO updateProfilePicture(String userEmail, MultipartFile file) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
@@ -155,7 +163,7 @@ public class UserService {
     @Transactional
     public UserProfileDTO deleteProfilePicture(String userEmail) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
@@ -171,7 +179,7 @@ public class UserService {
     @Transactional
     public void deleteAccount(String userEmail) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         boardObjectRepository.nullifyCreatedByUser(userEmail);
         boardObjectRepository.nullifyLastEditedByUser(userEmail);
@@ -196,10 +204,15 @@ public class UserService {
     @Transactional
     public UserProfileDTO updateUserPreferences(String userEmail, UserPreferencesDTO dto) {
         User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+
+        String newFontSize = dto.getFontSizeSetting();
+        if (newFontSize != null && !ALLOWED_FONT_SIZES.contains(newFontSize)) {
+            throw new InvalidRequestException(MessageConstants.ERROR_INVALID_FONT_SIZE);
+        }
 
         user.setChatBackgroundSetting(dto.getChatBackgroundSetting());
-        user.setFontSizeSetting(dto.getFontSizeSetting());
+        user.setFontSizeSetting(newFontSize);
 
         User updatedUser = userRepository.save(user);
         return mapUserToUserProfileDTO(updatedUser);

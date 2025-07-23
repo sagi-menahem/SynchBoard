@@ -1,26 +1,29 @@
 // File: backend/src/main/java/com/synchboard/backend/service/ChatService.java
 package com.synchboard.backend.service;
 
-import com.synchboard.backend.dto.websocket.ChatMessageDTO;
-import com.synchboard.backend.entity.GroupBoard;
-import com.synchboard.backend.entity.Message;
-import com.synchboard.backend.entity.User;
-import com.synchboard.backend.repository.GroupBoardRepository;
-import com.synchboard.backend.repository.GroupMemberRepository;
-import com.synchboard.backend.repository.MessageRepository;
-import com.synchboard.backend.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.synchboard.backend.config.constants.MessageConstants;
+import com.synchboard.backend.dto.websocket.ChatMessageDTO;
+import com.synchboard.backend.entity.GroupBoard;
+import com.synchboard.backend.entity.Message;
+import com.synchboard.backend.entity.User;
+import com.synchboard.backend.exception.ResourceNotFoundException;
+import com.synchboard.backend.repository.GroupBoardRepository;
+import com.synchboard.backend.repository.GroupMemberRepository;
+import com.synchboard.backend.repository.MessageRepository;
+import com.synchboard.backend.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +40,11 @@ public class ChatService {
         String userEmail = principal.getName();
 
         User senderUser = userRepository.findById(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         GroupBoard board = groupBoardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new RuntimeException(BOARD_NOT_FOUND + request.getBoardId()));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
 
         String fullNameSnapshot = senderUser.getFirstName() + " " + senderUser.getLastName();
 
@@ -62,7 +66,7 @@ public class ChatService {
     @Transactional(readOnly = true)
     public List<ChatMessageDTO.Response> getMessagesForBoard(Long boardId, String userEmail) {
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-            throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
         }
 
         List<Message> messages = messageRepository.findAllByBoard_BoardGroupIdOrderByTimestampAsc(boardId);

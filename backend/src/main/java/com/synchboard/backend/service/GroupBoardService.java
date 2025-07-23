@@ -1,6 +1,21 @@
 // File: backend/src/main/java/com/synchboard/backend/service/GroupBoardService.java
 package com.synchboard.backend.service;
 
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_USER_TOPIC_PREFIX;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.synchboard.backend.config.constants.MessageConstants;
 import com.synchboard.backend.dto.board.BoardDTO;
 import com.synchboard.backend.dto.board.BoardDetailsDTO;
 import com.synchboard.backend.dto.board.CreateBoardRequest;
@@ -10,22 +25,12 @@ import com.synchboard.backend.dto.websocket.UserUpdateDTO;
 import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.GroupMember;
 import com.synchboard.backend.entity.User;
+import com.synchboard.backend.exception.InvalidRequestException;
+import com.synchboard.backend.exception.ResourceConflictException;
 import com.synchboard.backend.exception.ResourceNotFoundException;
 import com.synchboard.backend.repository.*;
+
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.synchboard.backend.config.ApplicationConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +73,8 @@ public class GroupBoardService {
         @Transactional
         public BoardDTO createBoard(CreateBoardRequest request, String ownerEmail) {
                 User owner = userRepository.findById(ownerEmail)
-                                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + ownerEmail));
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                MessageConstants.USER_NOT_FOUND + ownerEmail));
 
                 GroupBoard newBoard = GroupBoard.builder()
                                 .boardGroupName(request.getName())
@@ -94,20 +100,19 @@ public class GroupBoardService {
         public MemberDTO inviteMember(Long boardId, String invitedUserEmail, String invitingUserEmail) {
                 GroupMember invitingMember = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, invitingUserEmail)
-                                .orElseThrow(() -> new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER));
-
-                log.info("Checking admin status for user: {}. Is admin? {}", invitingMember.getUserEmail(),
-                                invitingMember.getIsAdmin());
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER));
 
                 if (!invitingMember.getIsAdmin()) {
-                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
+                        throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
                 }
 
                 User userToInvite = userRepository.findById(invitedUserEmail)
-                                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + invitedUserEmail));
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                MessageConstants.USER_NOT_FOUND + invitedUserEmail));
 
                 if (groupMemberRepository.existsByUserEmailAndBoardGroupId(invitedUserEmail, boardId)) {
-                        throw new IllegalArgumentException(ERROR_USER_ALREADY_MEMBER);
+                        throw new ResourceConflictException(MessageConstants.ERROR_USER_ALREADY_MEMBER);
                 }
 
                 GroupBoard board = invitingMember.getGroupBoard();
@@ -129,12 +134,12 @@ public class GroupBoardService {
         @Transactional(readOnly = true)
         public BoardDetailsDTO getBoardDetails(Long boardId, String userEmail) {
                 if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
+                        throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
                 }
 
                 GroupBoard board = groupBoardRepository.findById(boardId)
                                 .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Board not found with id: " + boardId));
+                                                MessageConstants.BOARD_NOT_FOUND + boardId));
 
                 List<GroupMember> members = groupMemberRepository.findAllByBoardGroupId(boardId);
 
@@ -156,14 +161,14 @@ public class GroupBoardService {
                 GroupMember requestingAdmin = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, requestingUserEmail)
                                 .orElseThrow(() -> new AccessDeniedException(
-                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
 
                 if (!requestingAdmin.getIsAdmin()) {
-                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
+                        throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
                 }
 
                 if (requestingUserEmail.equals(emailToRemove)) {
-                        throw new IllegalArgumentException(ERROR_CANNOT_REMOVE_SELF);
+                        throw new InvalidRequestException(MessageConstants.ERROR_CANNOT_REMOVE_SELF);
                 }
 
                 GroupMember memberToRemove = groupMemberRepository
@@ -182,10 +187,10 @@ public class GroupBoardService {
                 GroupMember requestingAdmin = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, requestingUserEmail)
                                 .orElseThrow(() -> new AccessDeniedException(
-                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
 
                 if (!requestingAdmin.getIsAdmin()) {
-                        throw new AccessDeniedException(ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
+                        throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_AN_ADMIN);
                 }
 
                 GroupMember memberToPromote = groupMemberRepository
@@ -194,7 +199,7 @@ public class GroupBoardService {
                                                 "Member with email " + emailToPromote + " not found in this board."));
 
                 if (memberToPromote.getIsAdmin()) {
-                        throw new IllegalArgumentException(ERROR_USER_IS_ALREADY_ADMIN);
+                        throw new ResourceConflictException(MessageConstants.ERROR_USER_IS_ALREADY_ADMIN);
                 }
 
                 memberToPromote.setIsAdmin(true);
@@ -203,38 +208,6 @@ public class GroupBoardService {
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, requestingUserEmail);
                 broadcastUserUpdate(emailToPromote);
                 return mapToMemberDTO(memberToPromote);
-        }
-
-        @Transactional
-        public BoardDTO updateBoardName(Long boardId, String newName, String userEmail) {
-                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
-                                .orElseThrow(() -> new AccessDeniedException(
-                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
-
-                GroupBoard boardToUpdate = member.getGroupBoard();
-                boardToUpdate.setBoardGroupName(newName);
-
-                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
-
-                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
-                return mapToBoardResponse(member);
-        }
-
-        @Transactional
-        public BoardDTO updateBoardDescription(Long boardId, String newDescription, String userEmail) {
-                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
-                                .orElseThrow(() -> new AccessDeniedException(
-                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
-
-                GroupBoard boardToUpdate = member.getGroupBoard();
-                boardToUpdate.setGroupDescription(newDescription);
-
-                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
-
-                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
-                return mapToBoardResponse(member);
         }
 
         @Transactional
@@ -280,6 +253,38 @@ public class GroupBoardService {
                 broadcastUserUpdate(userEmail);
         }
 
+        @Transactional
+        public BoardDTO updateBoardName(Long boardId, String newName, String userEmail) {
+                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                GroupBoard boardToUpdate = member.getGroupBoard();
+                boardToUpdate.setBoardGroupName(newName);
+
+                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
+
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+                return mapToBoardResponse(member);
+        }
+
+        @Transactional
+        public BoardDTO updateBoardDescription(Long boardId, String newDescription, String userEmail) {
+                GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
+                                .orElseThrow(() -> new AccessDeniedException(
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+
+                GroupBoard boardToUpdate = member.getGroupBoard();
+                boardToUpdate.setGroupDescription(newDescription);
+
+                List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
+
+                broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+                return mapToBoardResponse(member);
+        }
+
         private void deleteBoardAndAssociatedData(Long boardId, String userEmail, List<GroupMember> membersToNotify) {
                 log.info("Deleting all data associated with boardId {}", boardId);
                 membersToNotify.forEach(member -> broadcastUserUpdate(member.getUserEmail()));
@@ -316,7 +321,7 @@ public class GroupBoardService {
         public BoardDTO updateBoardPicture(Long boardId, MultipartFile file, String userEmail) {
                 GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
                                 .orElseThrow(() -> new AccessDeniedException(
-                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
 
@@ -327,9 +332,7 @@ public class GroupBoardService {
                 }
 
                 String newFilename = fileStorageService.store(file);
-
                 String newPictureUrl = "/images/" + newFilename;
-
                 boardToUpdate.setGroupPictureUrl(newPictureUrl);
 
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
@@ -342,7 +345,7 @@ public class GroupBoardService {
         public BoardDTO deleteBoardPicture(Long boardId, String userEmail) {
                 GroupMember member = groupMemberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
                                 .orElseThrow(() -> new AccessDeniedException(
-                                                ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
+                                                MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD));
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
 
@@ -351,7 +354,6 @@ public class GroupBoardService {
                         String filename = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
 
                         fileStorageService.delete(filename);
-
                         boardToUpdate.setGroupPictureUrl(null);
                 }
 

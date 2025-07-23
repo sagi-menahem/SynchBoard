@@ -1,17 +1,19 @@
 // File: backend/src/main/java/com/synchboard/backend/controller/UserController.java
 package com.synchboard.backend.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.synchboard.backend.dto.user.ChangePasswordDTO;
 import com.synchboard.backend.dto.user.UpdateUserProfileDTO;
 import com.synchboard.backend.dto.user.UserPreferencesDTO;
 import com.synchboard.backend.dto.user.UserProfileDTO;
 import com.synchboard.backend.service.UserService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
