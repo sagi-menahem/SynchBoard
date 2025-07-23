@@ -1,12 +1,12 @@
 // File: backend/src/main/java/com/synchboard/backend/dto/websocket/ChatMessageDTO.java
 package com.synchboard.backend.dto.websocket;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 public final class ChatMessageDTO {
 

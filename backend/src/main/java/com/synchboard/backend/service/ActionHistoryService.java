@@ -1,23 +1,26 @@
 // File: backend/src/main/java/com/synchboard/backend/service/ActionHistoryService.java
 package com.synchboard.backend.service;
 
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.synchboard.backend.config.constants.MessageConstants;
 import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.entity.ActionHistory;
 import com.synchboard.backend.entity.BoardObject;
 import com.synchboard.backend.repository.ActionHistoryRepository;
 import com.synchboard.backend.repository.BoardObjectRepository;
 import com.synchboard.backend.repository.GroupMemberRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import static com.synchboard.backend.config.ApplicationConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +36,7 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response undoLastAction(Long boardId, String userEmail) {
         if (!isUserMember(boardId, userEmail)) {
-            throw new AccessDeniedException("User '" + userEmail + "' is not a member of board '" + boardId + "'");
+            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
         }
 
         ActionHistory lastAction = actionHistoryRepository
@@ -63,7 +66,7 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response redoLastAction(Long boardId, String userEmail) {
         if (!isUserMember(boardId, userEmail)) {
-            throw new AccessDeniedException("User '" + userEmail + "' is not a member of board '" + boardId + "'");
+            throw new AccessDeniedException(MessageConstants.ERROR_ACCESS_DENIED_NOT_A_MEMBER_OF_BOARD);
         }
 
         ActionHistory lastUndoneAction = actionHistoryRepository

@@ -1,19 +1,23 @@
 // File: backend/src/main/java/com/synchboard/backend/controller/BoardActivityController.java
 package com.synchboard.backend.controller;
 
-import com.synchboard.backend.dto.websocket.BoardActionDTO;
-import com.synchboard.backend.dto.websocket.ChatMessageDTO;
-import com.synchboard.backend.service.BoardObjectService;
-import com.synchboard.backend.service.ChatService;
-import lombok.RequiredArgsConstructor;
+import static com.synchboard.backend.config.constants.WebSocketConstants.MAPPING_BOARD_DRAW_ACTION;
+import static com.synchboard.backend.config.constants.WebSocketConstants.MAPPING_CHAT_SEND_MESSAGE;
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+
+import java.security.Principal;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
-import java.security.Principal;
+import com.synchboard.backend.dto.websocket.BoardActionDTO;
+import com.synchboard.backend.dto.websocket.ChatMessageDTO;
+import com.synchboard.backend.service.BoardObjectService;
+import com.synchboard.backend.service.ChatService;
 
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor

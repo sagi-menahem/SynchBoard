@@ -1,9 +1,16 @@
 // File: backend/src/main/java/com/synchboard/backend/config/security/SecurityConfig.java
 package com.synchboard.backend.config.security;
 
+import static com.synchboard.backend.config.constants.ApiConstants.API_AUTH_PATH;
+import static com.synchboard.backend.config.constants.ApiConstants.API_USER_PATH;
+import static com.synchboard.backend.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
+import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_ENDPOINT_WITH_SUBPATHS;
+
 import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,11 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.http.HttpMethod;
 
 import lombok.RequiredArgsConstructor;
-
-import static com.synchboard.backend.config.ApplicationConstants.*;
 
 @Configuration
 @EnableWebSecurity

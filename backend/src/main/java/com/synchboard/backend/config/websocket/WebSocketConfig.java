@@ -1,8 +1,9 @@
 // File: backend/src/main/java/com/synchboard/backend/config/websocket/WebSocketConfig.java
 package com.synchboard.backend.config.websocket;
 
-import com.synchboard.backend.config.AppProperties;
-import lombok.RequiredArgsConstructor;
+import static com.synchboard.backend.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
+import static com.synchboard.backend.config.constants.WebSocketConstants.*;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -13,7 +14,9 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import com.synchboard.backend.config.AppProperties;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocketMessageBroker

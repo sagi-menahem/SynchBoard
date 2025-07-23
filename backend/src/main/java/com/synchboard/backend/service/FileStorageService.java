@@ -1,13 +1,6 @@
 // File: backend/src/main/java/com/synchboard/backend/service/FileStorageService.java
 package com.synchboard.backend.service;
 
-import com.synchboard.backend.config.AppProperties;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,6 +8,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.synchboard.backend.config.AppProperties;
+
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

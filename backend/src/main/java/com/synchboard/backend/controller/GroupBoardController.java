@@ -1,30 +1,27 @@
 // File: backend/src/main/java/com/synchboard/backend/controller/GroupBoardController.java
 package com.synchboard.backend.controller;
 
-import com.synchboard.backend.dto.board.BoardDTO;
-import com.synchboard.backend.dto.board.BoardDetailsDTO;
-import com.synchboard.backend.dto.board.CreateBoardRequest;
-import com.synchboard.backend.dto.board.InviteRequest;
-import com.synchboard.backend.dto.board.MemberDTO;
-import com.synchboard.backend.dto.board.UpdateBoardDescriptionRequest;
-import com.synchboard.backend.dto.board.UpdateBoardNameRequest;
-import com.synchboard.backend.dto.websocket.BoardActionDTO;
-import com.synchboard.backend.service.ActionHistoryService;
-import com.synchboard.backend.service.BoardObjectService;
-import com.synchboard.backend.service.GroupBoardService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import static com.synchboard.backend.config.constants.ApiConstants.API_BOARDS_OBJECT;
+import static com.synchboard.backend.config.constants.ApiConstants.API_BOARDS_PATH;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.synchboard.backend.dto.board.*;
+import com.synchboard.backend.dto.websocket.BoardActionDTO;
 import com.synchboard.backend.dto.websocket.ChatMessageDTO;
+import com.synchboard.backend.service.ActionHistoryService;
+import com.synchboard.backend.service.BoardObjectService;
 import com.synchboard.backend.service.ChatService;
+import com.synchboard.backend.service.GroupBoardService;
 
-import java.util.List;
-
-import static com.synchboard.backend.config.ApplicationConstants.*;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(API_BOARDS_PATH)
