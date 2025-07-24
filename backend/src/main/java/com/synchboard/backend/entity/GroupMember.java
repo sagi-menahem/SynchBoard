@@ -2,6 +2,7 @@
 package com.synchboard.backend.entity;
 
 import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,13 +27,11 @@ public class GroupMember {
     private Long boardGroupId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false, updatable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_group_id", referencedColumnName = "board_group_id",
-            insertable = false, updatable = false)
+    @JoinColumn(name = "board_group_id", referencedColumnName = "board_group_id", insertable = false, updatable = false)
     private GroupBoard groupBoard;
 
     @Column(name = "is_admin", nullable = false)

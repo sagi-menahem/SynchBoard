@@ -1,9 +1,7 @@
 // File: frontend/src/hooks/useRegisterForm.ts
 import { useState } from 'react';
-
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-
 import * as authService from 'services/authService';
 import type { RegisterRequest } from 'types/user.types';
 
@@ -21,13 +19,12 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
         setIsSubmitting(true);
         const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
 
-        authService
-            .register(formData)
+        authService.register(formData)
             .then(() => {
                 toast.success(t('registerForm.registrationSuccess'));
                 onRegistrationSuccess();
             })
-            .catch((err) => {
+            .catch(err => {
                 console.error('Registration failed', err);
             })
             .finally(() => {
@@ -36,17 +33,8 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
     };
 
     return {
-        email,
-        password,
-        firstName,
-        lastName,
-        phoneNumber,
-        isSubmitting,
-        setEmail,
-        setPassword,
-        setFirstName,
-        setLastName,
-        setPhoneNumber,
+        email, password, firstName, lastName, phoneNumber, isSubmitting,
+        setEmail, setPassword, setFirstName, setLastName, setPhoneNumber,
         handleSubmit,
     };
 };

@@ -2,12 +2,15 @@
 package com.synchboard.backend.controller;
 
 import static com.synchboard.backend.config.constants.ApiConstants.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import com.synchboard.backend.dto.auth.AuthResponse;
 import com.synchboard.backend.dto.auth.LoginRequest;
 import com.synchboard.backend.dto.auth.RegisterRequest;
 import com.synchboard.backend.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController

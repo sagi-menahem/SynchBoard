@@ -1,13 +1,11 @@
 // File: frontend/src/hooks/useBoardDetails.ts
-import { useCallback, useEffect, useState } from 'react';
-
 import { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
-
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/useAuth';
 import { useSocket } from 'hooks/useSocket';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getBoardDetails } from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
 import type { BoardUpdateDTO } from 'types/websocket.types';
@@ -29,11 +27,11 @@ export const useBoardDetails = (boardId: number | undefined) => {
         }
 
         getBoardDetails(boardId)
-            .then((data) => {
+            .then(data => {
                 setBoardDetails(data);
             })
-            .catch((error) => {
-                console.error('Failed to fetch board details:', error);
+            .catch(error => {
+                console.error("Failed to fetch board details:", error);
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     navigate(APP_ROUTES.BOARD_LIST);
                 }
@@ -42,22 +40,21 @@ export const useBoardDetails = (boardId: number | undefined) => {
             .finally(() => {
                 setIsLoading(false);
             });
+
     }, [boardId, boardDetails, navigate]);
 
     useEffect(() => {
         fetchDetails();
-    }, [boardId, fetchDetails]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [boardId]);
 
-    const handleBoardUpdate = useCallback(
-        (message: BoardUpdateDTO) => {
-            if (message.sourceUserEmail === userEmail) {
-                return;
-            }
-            console.log(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
-            fetchDetails();
-        },
-        [fetchDetails, userEmail]
-    );
+    const handleBoardUpdate = useCallback((message: BoardUpdateDTO) => {
+        if (message.sourceUserEmail === userEmail) {
+            return;
+        }
+        console.log(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
+        fetchDetails();
+    }, [fetchDetails, userEmail]);
 
     useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate);
 

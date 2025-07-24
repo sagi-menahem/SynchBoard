@@ -3,7 +3,8 @@ package com.synchboard.backend.config.constants;
 
 public final class SecurityConstants {
 
-    private SecurityConstants() {}
+    private SecurityConstants() {
+    }
 
     public static final String CLIENT_ORIGIN_URL = "http://localhost:5173";
     public static final String ROLE_USER = "ROLE_USER";

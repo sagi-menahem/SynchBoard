@@ -3,7 +3,8 @@ package com.synchboard.backend.config.constants;
 
 public final class WebSocketConstants {
 
-    private WebSocketConstants() {}
+    private WebSocketConstants() {
+    }
 
     public static final String WEBSOCKET_ENDPOINT = "/ws";
     public static final String WEBSOCKET_ENDPOINT_WITH_SUBPATHS = "/ws/**";

@@ -1,21 +1,10 @@
 // File: frontend/src/hooks/useCanvas.ts
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-
 import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
-import {
-    ActionType,
-    type ActionPayload,
-    type CirclePayload,
-    type LinePayload,
-    type RectanglePayload,
-    type SendBoardActionRequest,
-} from 'types/boardObject.types';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ActionType, type ActionPayload, type CirclePayload, type LinePayload, type RectanglePayload, type SendBoardActionRequest } from 'types/boardObject.types';
 
-type Tool = (typeof TOOL_LIST)[number];
-interface Point {
-    x: number;
-    y: number;
-}
+type Tool = typeof TOOL_LIST[number];
+type Point = { x: number; y: number };
 
 interface UseCanvasProps {
     instanceId: string;
@@ -26,14 +15,7 @@ interface UseCanvasProps {
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
 }
 
-export const useCanvas = ({
-    instanceId: senderId,
-    tool,
-    strokeColor,
-    strokeWidth,
-    objects,
-    onDraw,
-}: UseCanvasProps) => {
+export const useCanvas = ({ instanceId: senderId, tool, strokeColor, strokeWidth, objects, onDraw }: UseCanvasProps) => {
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -48,7 +30,7 @@ export const useCanvas = ({
     useLayoutEffect(() => {
         const container = containerRef.current;
         if (!container) return;
-        const resizeObserver = new ResizeObserver((entries) => {
+        const resizeObserver = new ResizeObserver(entries => {
             const { width, height } = entries[0].contentRect;
             setDimensions({ width, height });
         });
@@ -70,52 +52,38 @@ export const useCanvas = ({
         previewContextRef.current = setupContext(previewCanvasRef.current);
     }, [dimensions]);
 
-    const replayDrawAction = useCallback(
-        (payload: ActionPayload, targetCtx: CanvasRenderingContext2D, targetCanvas: HTMLCanvasElement) => {
-            targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
+    const replayDrawAction = useCallback((payload: ActionPayload, targetCtx: CanvasRenderingContext2D, targetCanvas: HTMLCanvasElement) => {
+        targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
-            if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
-                const { points, color, lineWidth } = payload as LinePayload;
-                if (points.length < 2) return;
-                targetCtx.strokeStyle = color;
-                targetCtx.lineWidth = lineWidth;
-                if (payload.tool === TOOLS.ERASER) {
-                    targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.ERASE;
-                }
-                targetCtx.beginPath();
-                targetCtx.moveTo(points[0].x * targetCanvas.width, points[0].y * targetCanvas.height);
-                for (let i = 1; i < points.length; i++) {
-                    targetCtx.lineTo(points[i].x * targetCanvas.width, points[i].y * targetCanvas.height);
-                }
-                targetCtx.stroke();
-            } else if (payload.tool === TOOLS.RECTANGLE) {
-                const { x, y, width, height, color, strokeWidth } = payload as RectanglePayload;
-                targetCtx.strokeStyle = color;
-                targetCtx.lineWidth = strokeWidth;
-                targetCtx.strokeRect(
-                    x * targetCanvas.width,
-                    y * targetCanvas.height,
-                    width * targetCanvas.width,
-                    height * targetCanvas.height
-                );
-            } else if (payload.tool === TOOLS.CIRCLE) {
-                const { x, y, radius, color, strokeWidth } = payload as CirclePayload;
-                targetCtx.strokeStyle = color;
-                targetCtx.lineWidth = strokeWidth;
-                targetCtx.beginPath();
-                targetCtx.arc(
-                    x * targetCanvas.width,
-                    y * targetCanvas.height,
-                    radius * targetCanvas.width,
-                    0,
-                    2 * Math.PI
-                );
-                targetCtx.stroke();
+        if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
+            const { points, color, lineWidth } = payload as LinePayload;
+            if (points.length < 2) return;
+            targetCtx.strokeStyle = color;
+            targetCtx.lineWidth = lineWidth;
+            if (payload.tool === TOOLS.ERASER) {
+                targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.ERASE;
             }
-            targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
-        },
-        []
-    );
+            targetCtx.beginPath();
+            targetCtx.moveTo(points[0].x * targetCanvas.width, points[0].y * targetCanvas.height);
+            for (let i = 1; i < points.length; i++) {
+                targetCtx.lineTo(points[i].x * targetCanvas.width, points[i].y * targetCanvas.height);
+            }
+            targetCtx.stroke();
+        } else if (payload.tool === TOOLS.RECTANGLE) {
+            const { x, y, width, height, color, strokeWidth } = payload as RectanglePayload;
+            targetCtx.strokeStyle = color;
+            targetCtx.lineWidth = strokeWidth;
+            targetCtx.strokeRect(x * targetCanvas.width, y * targetCanvas.height, width * targetCanvas.width, height * targetCanvas.height);
+        } else if (payload.tool === TOOLS.CIRCLE) {
+            const { x, y, radius, color, strokeWidth } = payload as CirclePayload;
+            targetCtx.strokeStyle = color;
+            targetCtx.lineWidth = strokeWidth;
+            targetCtx.beginPath();
+            targetCtx.arc(x * targetCanvas.width, y * targetCanvas.height, radius * targetCanvas.width, 0, 2 * Math.PI);
+            targetCtx.stroke();
+        }
+        targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
+    }, []);
 
     useEffect(() => {
         const canvas = mainCanvasRef.current;
@@ -123,7 +91,8 @@ export const useCanvas = ({
         if (!canvas || !ctx) return;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
+        objects.forEach(obj => replayDrawAction(obj, ctx, canvas));
+
     }, [objects, dimensions, replayDrawAction]);
 
     useEffect(() => {
@@ -153,29 +122,16 @@ export const useCanvas = ({
                 currentPath.current.push({ x: coords.x / canvas.width, y: coords.y / canvas.height });
                 previewCtx.beginPath();
                 if (currentPath.current.length > 1) {
-                    previewCtx.moveTo(
-                        currentPath.current[0].x * canvas.width,
-                        currentPath.current[0].y * canvas.height
-                    );
+                    previewCtx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
                     for (let i = 1; i < currentPath.current.length; i++) {
-                        previewCtx.lineTo(
-                            currentPath.current[i].x * canvas.width,
-                            currentPath.current[i].y * canvas.height
-                        );
+                        previewCtx.lineTo(currentPath.current[i].x * canvas.width, currentPath.current[i].y * canvas.height);
                     }
                     previewCtx.stroke();
                 }
             } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
-                previewCtx.strokeRect(
-                    startPoint.current.x,
-                    startPoint.current.y,
-                    coords.x - startPoint.current.x,
-                    coords.y - startPoint.current.y
-                );
+                previewCtx.strokeRect(startPoint.current.x, startPoint.current.y, coords.x - startPoint.current.x, coords.y - startPoint.current.y);
             } else if (tool === TOOLS.CIRCLE && startPoint.current) {
-                const radius = Math.sqrt(
-                    Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)
-                );
+                const radius = Math.sqrt(Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2));
                 previewCtx.beginPath();
                 previewCtx.arc(startPoint.current.x, startPoint.current.y, radius, 0, 2 * Math.PI);
                 previewCtx.stroke();
@@ -193,10 +149,7 @@ export const useCanvas = ({
 
             if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
                 const payload: Omit<LinePayload, 'instanceId'> = {
-                    tool,
-                    points: [...currentPath.current],
-                    color: strokeColor,
-                    lineWidth: strokeWidth,
+                    tool, points: [...currentPath.current], color: strokeColor, lineWidth: strokeWidth
                 };
                 onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
             } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
@@ -204,34 +157,17 @@ export const useCanvas = ({
                 const rectY = Math.min(startPoint.current.y, coords.y) / canvas.height;
                 const rectWidth = Math.abs(coords.x - startPoint.current.x) / canvas.width;
                 const rectHeight = Math.abs(coords.y - startPoint.current.y) / canvas.height;
-                if (
-                    rectWidth > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD ||
-                    rectHeight > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD
-                ) {
+                if (rectWidth > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD || rectHeight > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD) {
                     const payload: Omit<RectanglePayload, 'instanceId'> = {
-                        tool,
-                        x: rectX,
-                        y: rectY,
-                        width: rectWidth,
-                        height: rectHeight,
-                        color: strokeColor,
-                        strokeWidth,
+                        tool, x: rectX, y: rectY, width: rectWidth, height: rectHeight, color: strokeColor, strokeWidth
                     };
                     onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
                 }
             } else if (tool === TOOLS.CIRCLE && startPoint.current) {
-                const radius =
-                    Math.sqrt(
-                        Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)
-                    ) / canvas.width;
+                const radius = Math.sqrt(Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)) / canvas.width;
                 if (radius > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD) {
                     const payload: Omit<CirclePayload, 'instanceId'> = {
-                        tool,
-                        x: startPoint.current.x / canvas.width,
-                        y: startPoint.current.y / canvas.height,
-                        radius,
-                        color: strokeColor,
-                        strokeWidth,
+                        tool, x: startPoint.current.x / canvas.width, y: startPoint.current.y / canvas.height, radius, color: strokeColor, strokeWidth
                     };
                     onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
                 }
@@ -251,22 +187,19 @@ export const useCanvas = ({
         };
     }, [isDrawing, onDraw, senderId, strokeColor, strokeWidth, tool, replayDrawAction]);
 
-    const handleMouseDown = useCallback(
-        (event: React.MouseEvent<HTMLCanvasElement>) => {
-            const canvas = previewCanvasRef.current;
-            if (!canvas) return;
+    const handleMouseDown = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
+        const canvas = previewCanvasRef.current;
+        if (!canvas) return;
 
-            setIsDrawing(true);
-            const { offsetX, offsetY } = event.nativeEvent;
+        setIsDrawing(true);
+        const { offsetX, offsetY } = event.nativeEvent;
 
-            if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-                currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
-            } else if (tool === TOOLS.RECTANGLE || tool === TOOLS.CIRCLE) {
-                startPoint.current = { x: offsetX, y: offsetY };
-            }
-        },
-        [tool]
-    );
+        if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
+            currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
+        } else if (tool === TOOLS.RECTANGLE || tool === TOOLS.CIRCLE) {
+            startPoint.current = { x: offsetX, y: offsetY };
+        }
+    }, [tool]);
 
     return {
         mainCanvasRef,

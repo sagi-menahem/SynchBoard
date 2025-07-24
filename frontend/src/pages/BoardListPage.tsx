@@ -40,7 +40,9 @@ const BoardListPage: React.FC = () => {
             <div className={styles.header}>
                 <h1>{t('boardListPage.heading')}</h1>
                 <div className={styles.headerActions}>
-                    <Button onClick={openModal}>{t('boardListPage.createNewBoardButton')}</Button>
+                    <Button onClick={openModal}>
+                        {t('boardListPage.createNewBoardButton')}
+                    </Button>
                     <Button onClick={() => navigate(APP_ROUTES.SETTINGS)} variant="secondary">
                         {t('boardListPage.setting')}
                     </Button>
@@ -49,8 +51,11 @@ const BoardListPage: React.FC = () => {
 
             {boards.length > 0 ? (
                 <div className={styles.boardList}>
-                    {boards.map((board) => (
-                        <div key={board.id} onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}>
+                    {boards.map(board => (
+                        <div
+                            key={board.id}
+                            onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
+                        >
                             <BoardCard board={board} />
                         </div>
                     ))}
@@ -60,7 +65,10 @@ const BoardListPage: React.FC = () => {
             )}
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
+                <CreateBoardForm
+                    onBoardCreated={handleBoardCreated}
+                    onClose={closeModal}
+                />
             </Modal>
 
             {contextMenu.isOpen && contextMenu.data && (

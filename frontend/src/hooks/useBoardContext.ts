@@ -1,7 +1,6 @@
 // File: frontend/src/hooks/useBoardContext.ts
-import { useContext } from 'react';
-
-import { BoardContext } from 'context/BoardContext.ts';
+import { BoardContext } from "context/BoardContext.ts";
+import { useContext } from "react";
 
 export const useBoardContext = () => {
     const context = useContext(BoardContext);

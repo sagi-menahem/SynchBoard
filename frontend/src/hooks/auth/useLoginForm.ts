@@ -1,12 +1,10 @@
 // File: frontend/src/hooks/useLoginForm.ts
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/useAuth';
 import { useState } from 'react';
-
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-
-import { APP_ROUTES } from 'constants/routes.constants';
-import { useAuth } from 'hooks/useAuth';
 import * as authService from 'services/authService';
 import type { LoginRequest } from 'types/user.types';
 
@@ -23,14 +21,13 @@ export const useLoginForm = () => {
         setIsSubmitting(true);
         const credentials: LoginRequest = { email, password };
 
-        authService
-            .login(credentials)
-            .then((response) => {
+        authService.login(credentials)
+            .then(response => {
                 toast.success(t('loginForm.loginSuccess'));
                 login(response.token);
                 navigate(APP_ROUTES.BOARD_LIST);
             })
-            .catch((err) => {
+            .catch(err => {
                 console.error('Login failed:', err);
             })
             .finally(() => {

@@ -9,6 +9,7 @@
 			"path": "frontend"
 		},
 		{
+			// סעיף זה גורם ל-VS Code להציג קבצים שאינם בתיקיות למעלה
 			"path": ".",
 			"name": "Project Files"
 		}
@@ -41,6 +42,17 @@
 				"password": "test12345"
 			}
 		],
+		"favorites.resources": [
+			{
+				"filePath": "backend/src/main/java/com/synchboard/backend",
+				"group": "Default"
+			},
+			{
+				"filePath": "frontend/src",
+				"group": "Default"
+			}
+		],
+		"favorites.sortOrder": "ASC",
 		"editor.formatOnSave": true,
 		"typescript.updateImportsOnFileMove.enabled": "always",
 		"javascript.updateImportsOnFileMove.enabled": "always",
@@ -81,15 +93,6 @@
 			"editor.codeActionsOnSave": {
 				"source.fixAll.eslint": "explicit"
 			}
-		},
-		"[json]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		},
-		"[css]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		},
-		"[html]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
 		}
 	}
 }

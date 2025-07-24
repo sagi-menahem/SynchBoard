@@ -39,13 +39,19 @@ const PictureManagerModal: React.FC<PictureManagerModalProps> = ({
         fileInputRef.current?.click();
     };
 
-    const imageSource = pictureUrl ? `${API_BASE_URL.replace('/api', '')}${pictureUrl}` : defaultBoardImage;
+    const imageSource = pictureUrl
+        ? `${API_BASE_URL.replace('/api', '')}${pictureUrl}`
+        : defaultBoardImage;
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className={styles.container}>
                 <h3>{t('pictureManager.title', { boardName })}</h3>
-                <img src={imageSource} alt={`${boardName} picture`} className={styles.previewImage} />
+                <img
+                    src={imageSource}
+                    alt={`${boardName} picture`}
+                    className={styles.previewImage}
+                />
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -57,7 +63,11 @@ const PictureManagerModal: React.FC<PictureManagerModalProps> = ({
                     <Button onClick={triggerFileInput} variant="primary">
                         {t('pictureManager.changeButton')}
                     </Button>
-                    <Button onClick={onPictureDelete} disabled={!pictureUrl} className={styles.destructiveButton}>
+                    <Button
+                        onClick={onPictureDelete}
+                        disabled={!pictureUrl}
+                        className={styles.destructiveButton}
+                    >
                         {t('pictureManager.deleteButton')}
                     </Button>
                 </div>
