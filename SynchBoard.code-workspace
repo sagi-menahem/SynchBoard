@@ -9,7 +9,6 @@
 			"path": "frontend"
 		},
 		{
-			// סעיף זה גורם ל-VS Code להציג קבצים שאינם בתיקיות למעלה
 			"path": ".",
 			"name": "Project Files"
 		}
@@ -40,16 +39,6 @@
 				"database": "synchboard_db",
 				"username": "synchboard_user",
 				"password": "test12345"
-			}
-		],
-		"favorites.resources": [
-			{
-				"filePath": "backend/src/main/java/com/synchboard/backend",
-				"group": "Default"
-			},
-			{
-				"filePath": "frontend/src",
-				"group": "Default"
 			}
 		],
 		"favorites.sortOrder": "ASC",
