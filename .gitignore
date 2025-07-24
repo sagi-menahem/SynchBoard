@@ -2,10 +2,10 @@
 .DS_Store
 *.log
 logs/
+*.session.sql
 
 # IDEs
 .idea/
-.vscode/
 *.iml
 
 # --- Backend (Java/Gradle) ---
