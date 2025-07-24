@@ -1,7 +1,7 @@
 // frontend/eslint.config.js
 import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
+import jsxA11y from 'eslint-plugin-jsx-a11y'; // For accessibility rules
 import pluginReactConfig from 'eslint-plugin-react/configs/recommended.js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
