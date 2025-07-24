@@ -8,13 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.synchboard.backend.config.AppProperties;
-
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
@@ -55,7 +52,8 @@ public class FileStorageService {
         String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
 
         try (InputStream inputStream = file.getInputStream()) {
-            Path destinationFile = this.rootLocation.resolve(uniqueFilename).normalize().toAbsolutePath();
+            Path destinationFile =
+                    this.rootLocation.resolve(uniqueFilename).normalize().toAbsolutePath();
 
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 

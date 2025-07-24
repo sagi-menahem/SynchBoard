@@ -5,9 +5,12 @@ export const ActionType = {
     OBJECT_DELETE: 'OBJECT_DELETE',
 } as const;
 
-export type ActionType = typeof ActionType[keyof typeof ActionType];
+export type ActionType = (typeof ActionType)[keyof typeof ActionType];
 
-type Point = { x: number; y: number };
+interface Point {
+    x: number;
+    y: number;
+}
 
 export interface LinePayload {
     instanceId: string;

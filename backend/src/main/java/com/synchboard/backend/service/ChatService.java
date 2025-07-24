@@ -2,16 +2,13 @@
 package com.synchboard.backend.service;
 
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
-
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.synchboard.backend.config.constants.MessageConstants;
 import com.synchboard.backend.dto.websocket.ChatMessageDTO;
 import com.synchboard.backend.entity.GroupBoard;
@@ -22,7 +19,6 @@ import com.synchboard.backend.repository.GroupBoardRepository;
 import com.synchboard.backend.repository.GroupMemberRepository;
 import com.synchboard.backend.repository.MessageRepository;
 import com.synchboard.backend.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,20 +35,17 @@ public class ChatService {
     public void processAndSaveMessage(ChatMessageDTO.Request request, Principal principal) {
         String userEmail = principal.getName();
 
-        User senderUser = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User senderUser = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         GroupBoard board = groupBoardRepository.findById(request.getBoardId())
-                .orElseThrow(
-                        () -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
 
         String fullNameSnapshot = senderUser.getFirstName() + " " + senderUser.getLastName();
 
-        Message messageToSave = Message.builder()
-                .board(board)
-                .sender(senderUser)
-                .messageContent(request.getContent())
-                .senderFullNameSnapshot(fullNameSnapshot)
+        Message messageToSave = Message.builder().board(board).sender(senderUser)
+                .messageContent(request.getContent()).senderFullNameSnapshot(fullNameSnapshot)
                 .build();
 
         messageRepository.save(messageToSave);
@@ -69,11 +62,10 @@ public class ChatService {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
-        List<Message> messages = messageRepository.findAllByBoard_BoardGroupIdOrderByTimestampAsc(boardId);
+        List<Message> messages =
+                messageRepository.findAllByBoard_BoardGroupIdOrderByTimestampAsc(boardId);
 
-        return messages.stream()
-                .map(this::mapMessageToDto)
-                .collect(Collectors.toList());
+        return messages.stream().map(this::mapMessageToDto).collect(Collectors.toList());
     }
 
     private ChatMessageDTO.Response mapMessageToDto(Message message) {
@@ -92,13 +84,9 @@ public class ChatService {
             senderProfilePictureUrl = null;
         }
 
-        return ChatMessageDTO.Response.builder()
-                .type(ChatMessageDTO.Response.MessageType.CHAT)
-                .content(message.getMessageContent())
-                .timestamp(message.getTimestamp())
-                .senderEmail(senderEmail)
-                .senderFullName(senderFullName)
-                .senderProfilePictureUrl(senderProfilePictureUrl)
-                .build();
+        return ChatMessageDTO.Response.builder().type(ChatMessageDTO.Response.MessageType.CHAT)
+                .content(message.getMessageContent()).timestamp(message.getTimestamp())
+                .senderEmail(senderEmail).senderFullName(senderFullName)
+                .senderProfilePictureUrl(senderProfilePictureUrl).build();
     }
 }

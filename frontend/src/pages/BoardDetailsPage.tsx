@@ -71,15 +71,17 @@ const BoardDetailsPage: React.FC = () => {
             </ul>
 
             {contextMenu.isOpen && contextMenu.data && (
-                <ContextMenu x={contextMenu.anchorPoint.x} y={contextMenu.anchorPoint.y} onClose={contextMenu.closeMenu}>
+                <ContextMenu
+                    x={contextMenu.anchorPoint.x}
+                    y={contextMenu.anchorPoint.y}
+                    onClose={contextMenu.closeMenu}
+                >
                     {!contextMenu.data.isAdmin && (
-                        <ContextMenuItem
-                            onClick={handlePromote}>
+                        <ContextMenuItem onClick={handlePromote}>
                             {t('contextMenu.promoteToAdmin', { userName: contextMenu.data.firstName })}
                         </ContextMenuItem>
                     )}
-                    <ContextMenuItem
-                        onClick={handleRemove} destructive>
+                    <ContextMenuItem onClick={handleRemove} destructive>
                         {t('contextMenu.removeFromBoard', { userName: contextMenu.data.firstName })}
                     </ContextMenuItem>
                 </ContextMenu>

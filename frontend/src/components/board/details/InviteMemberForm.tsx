@@ -14,10 +14,7 @@ interface InviteMemberFormProps {
 
 const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSuccess }) => {
     const { t } = useTranslation();
-    const { email, setEmail, isSubmitting, handleSubmit } = useInviteMemberForm(
-        boardId,
-        onInviteSuccess
-    );
+    const { email, setEmail, isSubmitting, handleSubmit } = useInviteMemberForm(boardId, onInviteSuccess);
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -36,7 +33,9 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSu
             </div>
             <div className={styles.buttonGroup}>
                 <Button type="submit" disabled={isSubmitting} variant="primary">
-                    {isSubmitting ? t('inviteMemberForm.button.sendingInvite') : t('inviteMemberForm.button.sendInvite')}
+                    {isSubmitting
+                        ? t('inviteMemberForm.button.sendingInvite')
+                        : t('inviteMemberForm.button.sendInvite')}
                 </Button>
             </div>
         </form>

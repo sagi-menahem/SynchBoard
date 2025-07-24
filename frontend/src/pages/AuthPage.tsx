@@ -15,7 +15,7 @@ const AuthPage: React.FC = () => {
     };
 
     const toggleView = () => {
-        setIsLoginView(prev => !prev);
+        setIsLoginView((prev) => !prev);
     };
 
     return (

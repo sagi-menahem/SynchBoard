@@ -33,9 +33,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         isRedoAvailable,
     } = useBoardContext();
 
-    const {
-        tool, setTool, strokeColor, setStrokeColor, strokeWidth, setStrokeWidth
-    } = useToolbarState();
+    const { tool, setTool, strokeColor, setStrokeColor, strokeWidth, setStrokeWidth } = useToolbarState();
 
     if (isLoading) {
         return <div>{t('boardPage.loading')}</div>;
@@ -46,9 +44,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             <div className={styles.header}>
                 <div className={styles.headerTitle}>
                     <Link to={APP_ROUTES.BOARD_LIST}>
-                        <Button>
-                            &larr; {t('boardPage.backButton')}
-                        </Button>
+                        <Button>&larr; {t('boardPage.backButton')}</Button>
                     </Link>
                     <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
                         <h1>{boardName || t('boardPage.loading')}</h1>
@@ -58,11 +54,16 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
             <Toolbar
                 containerRef={pageRef}
-                strokeColor={strokeColor} setStrokeColor={setStrokeColor}
-                strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth}
-                tool={tool} setTool={setTool}
-                onUndo={handleUndo} isUndoAvailable={isUndoAvailable}
-                onRedo={handleRedo} isRedoAvailable={isRedoAvailable}
+                strokeColor={strokeColor}
+                setStrokeColor={setStrokeColor}
+                strokeWidth={strokeWidth}
+                setStrokeWidth={setStrokeWidth}
+                tool={tool}
+                setTool={setTool}
+                onUndo={handleUndo}
+                isUndoAvailable={isUndoAvailable}
+                onRedo={handleRedo}
+                isRedoAvailable={isRedoAvailable}
             />
 
             <div className={styles.mainContent}>
@@ -77,10 +78,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
                     />
                 </div>
                 <div className={styles.chatContainer}>
-                    <ChatWindow
-                        boardId={boardId}
-                        messages={messages}
-                    />
+                    <ChatWindow boardId={boardId} messages={messages} />
                 </div>
             </div>
         </div>

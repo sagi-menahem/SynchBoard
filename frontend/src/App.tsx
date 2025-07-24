@@ -34,22 +34,10 @@ function App() {
                         </ProtectedRoute>
                     }
                 >
-                    <Route
-                        path={APP_ROUTES.BOARD_LIST}
-                        element={<BoardListPage />}
-                    />
-                    <Route
-                        path={APP_ROUTES.BOARD_DETAIL_PATTERN}
-                        element={<BoardPage />}
-                    />
-                    <Route
-                        path={APP_ROUTES.BOARD_DETAILS_PATTERN}
-                        element={<BoardDetailsPage />}
-                    />
-                    <Route
-                        path={APP_ROUTES.SETTINGS}
-                        element={<SettingsPage />}
-                    />
+                    <Route path={APP_ROUTES.BOARD_LIST} element={<BoardListPage />} />
+                    <Route path={APP_ROUTES.BOARD_DETAIL_PATTERN} element={<BoardPage />} />
+                    <Route path={APP_ROUTES.BOARD_DETAILS_PATTERN} element={<BoardDetailsPage />} />
+                    <Route path={APP_ROUTES.SETTINGS} element={<SettingsPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
