@@ -1,7 +1,7 @@
 // File: frontend/src/hooks/useContextMenu.ts
-import { useCallback, useState } from 'react';
+import { useState, useCallback } from 'react';
 
-export const useContextMenu = <T>() => {
+export const useContextMenu = <T,>() => {
     const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
     const [isOpen, setIsOpen] = useState(false);
 

@@ -21,15 +21,7 @@ interface BoardDetailsHeaderProps {
 
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
     const { t } = useTranslation();
-    const {
-        boardDetails,
-        currentUserIsAdmin,
-        numericBoardId,
-        onSetPictureModalOpen,
-        onSetEditingField,
-        onSetLeaveConfirmOpen,
-        onSetInviteModalOpen,
-    } = props;
+    const { boardDetails, currentUserIsAdmin, numericBoardId, onSetPictureModalOpen, onSetEditingField, onSetLeaveConfirmOpen, onSetInviteModalOpen } = props;
 
     const imageSource = boardDetails.pictureUrl
         ? `${API_BASE_URL.replace('/api', '')}${boardDetails.pictureUrl}`
@@ -49,10 +41,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                         <h1 className={styles.editableText} onClick={() => onSetEditingField('name')}>
                             {boardDetails.name}
                         </h1>
-                        <p
-                            className={`${styles.description} ${styles.editableText}`}
-                            onClick={() => onSetEditingField('description')}
-                        >
+                        <p className={`${styles.description} ${styles.editableText}`} onClick={() => onSetEditingField('description')}>
                             {boardDetails.description || t('boardDetailsPage.noDescription')}
                         </p>
                     </div>

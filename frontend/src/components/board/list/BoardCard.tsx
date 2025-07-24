@@ -15,11 +15,20 @@ interface BoardCardProps {
 const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
     const { t } = useTranslation();
 
-    const imageSource = board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage;
+    const imageSource = board.pictureUrl
+        ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}`
+        : defaultBoardImage;
 
     return (
-        <Link to={APP_ROUTES.getBoardDetailRoute(board.id)} className={styles.boardCard}>
-            <img src={imageSource} alt={board.name} className={styles.boardCardImage} />
+        <Link
+            to={APP_ROUTES.getBoardDetailRoute(board.id)}
+            className={styles.boardCard}
+        >
+            <img
+                src={imageSource}
+                alt={board.name}
+                className={styles.boardCardImage}
+            />
             <div className={styles.boardCardContent}>
                 <h2>{board.name}</h2>
                 <p>{board.description || t('boardListPage.noDescription')}</p>

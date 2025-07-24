@@ -3,9 +3,11 @@ package com.synchboard.backend.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,7 @@ import com.synchboard.backend.entity.GroupBoard;
 import com.synchboard.backend.entity.User;
 import com.synchboard.backend.exception.ResourceNotFoundException;
 import com.synchboard.backend.repository.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,32 +39,40 @@ public class BoardObjectService {
     @Transactional
     public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
 
-        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail,
-                request.getBoardId())) {
+        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, request.getBoardId())) {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         GroupBoard board = groupBoardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
 
         if (request.getType() == ActionType.OBJECT_ADD) {
             try {
                 String payloadAsString = objectMapper.writeValueAsString(request.getPayload());
 
-                BoardObject newBoardObject = BoardObject.builder().board(board).createdByUser(user)
-                        .lastEditedByUser(user).objectType(request.getType().name())
-                        .objectData(payloadAsString).instanceId(request.getInstanceId()).build();
+                BoardObject newBoardObject = BoardObject.builder()
+                        .board(board)
+                        .createdByUser(user)
+                        .lastEditedByUser(user)
+                        .objectType(request.getType().name())
+                        .objectData(payloadAsString)
+                        .instanceId(request.getInstanceId())
+                        .build();
 
-                BoardObject persistedBoardObject =
-                        boardObjectRepository.saveAndFlush(newBoardObject);
+                BoardObject persistedBoardObject = boardObjectRepository.saveAndFlush(newBoardObject);
 
-                ActionHistory historyRecord = ActionHistory.builder().board(board).user(user)
-                        .boardObject(persistedBoardObject).actionType(request.getType().name())
-                        .stateBefore(null).stateAfter(payloadAsString).build();
+                ActionHistory historyRecord = ActionHistory.builder()
+                        .board(board)
+                        .user(user)
+                        .boardObject(persistedBoardObject)
+                        .actionType(request.getType().name())
+                        .stateBefore(null)
+                        .stateAfter(payloadAsString)
+                        .build();
 
                 actionHistoryRepository.save(historyRecord);
 
@@ -78,10 +89,11 @@ public class BoardObjectService {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
-        List<BoardObject> boardObjects =
-                boardObjectRepository.findAllByBoard_BoardGroupIdAndIsActiveTrue(boardId);
+        List<BoardObject> boardObjects = boardObjectRepository.findAllByBoard_BoardGroupIdAndIsActiveTrue(boardId);
 
-        return boardObjects.stream().map(this::mapEntityToResponse).collect(Collectors.toList());
+        return boardObjects.stream()
+                .map(this::mapEntityToResponse)
+                .collect(Collectors.toList());
     }
 
     private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
@@ -94,11 +106,13 @@ public class BoardObjectService {
             }
 
             return BoardActionDTO.Response.builder()
-                    .type(ActionType.valueOf(entity.getObjectType())).payload(payload)
-                    .sender(senderEmail).instanceId(entity.getInstanceId()).build();
+                    .type(ActionType.valueOf(entity.getObjectType()))
+                    .payload(payload)
+                    .sender(senderEmail)
+                    .instanceId(entity.getInstanceId())
+                    .build();
         } catch (JsonProcessingException e) {
-            log.error("Failed to parse BoardObject JSON data for object ID: {}",
-                    entity.getObjectId(), e);
+            log.error("Failed to parse BoardObject JSON data for object ID: {}", entity.getObjectId(), e);
             return null;
         }
     }

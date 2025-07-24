@@ -20,7 +20,9 @@ const Message: React.FC<MessageProps> = React.memo(({ message }) => {
             <div className={styles.messageContent}>
                 <div>
                     <strong>{message.senderFullName}</strong>
-                    <span className={styles.timestamp}>{new Date(message.timestamp).toLocaleTimeString()}</span>
+                    <span className={styles.timestamp}>
+                        {new Date(message.timestamp).toLocaleTimeString()}
+                    </span>
                 </div>
                 <span>{message.content}</span>
             </div>

@@ -2,6 +2,7 @@
 package com.synchboard.backend.dto.websocket;
 
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,8 @@ import lombok.NoArgsConstructor;
 
 public final class ChatMessageDTO {
 
-    private ChatMessageDTO() {}
+    private ChatMessageDTO() {
+    }
 
     @Data
     @NoArgsConstructor
@@ -34,7 +36,9 @@ public final class ChatMessageDTO {
         private String senderProfilePictureUrl;
 
         public enum MessageType {
-            CHAT, JOIN, LEAVE
+            CHAT,
+            JOIN,
+            LEAVE
         }
     }
 }

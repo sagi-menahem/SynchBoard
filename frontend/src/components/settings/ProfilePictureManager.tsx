@@ -31,11 +31,9 @@ const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onU
 
     return (
         <div className={styles.container}>
-            <img
-                src={imageSource}
+            <img src={imageSource}
                 alt={t('settingsPage.profilePictureAlt', { userName: user.firstName })}
-                className={styles.avatar}
-            />
+                className={styles.avatar} />
             <input
                 type="file"
                 ref={fileInputRef}

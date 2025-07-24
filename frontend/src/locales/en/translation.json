@@ -1,235 +1,235 @@
 {
-    "createBoardSuccess": "Board '{{boardName}}' created successfully!",
-    "promoteSuccess": "{{userName}} has been promoted to admin.",
-    "removeSuccess": "{{userName}} has been removed from the board.",
-    "common": {
-        "_comment": "Shared text used across multiple components",
-        "form": {
-            "label": {
-                "email": "Email:",
-                "password": "Password:",
-                "firstName": "First Name:",
-                "lastName": "Last Name:",
-                "phoneNumber": "Phone Number:"
-            }
-        },
-        "button": {
-            "cancel": "Cancel",
-            "creating": "Creating...",
-            "send": "Send",
-            "loggingIn": "Logging in...",
-            "registering": "Registering...",
-            "save": "Save",
-            "saving": "Saving...",
-            "confirm": "Confirm"
-        }
+  "createBoardSuccess": "Board '{{boardName}}' created successfully!",
+  "promoteSuccess": "{{userName}} has been promoted to admin.",
+  "removeSuccess": "{{userName}} has been removed from the board.",
+  "common": {
+    "_comment": "Shared text used across multiple components",
+    "form": {
+      "label": {
+        "email": "Email:",
+        "password": "Password:",
+        "firstName": "First Name:",
+        "lastName": "Last Name:",
+        "phoneNumber": "Phone Number:"
+      }
     },
-    "authPage": {
-        "_comment": "Texts for src/pages/AuthPage.tsx",
-        "pageTitle": "Welcome to SynchBoard",
-        "promptToRegister": "Don't have an account?",
-        "switchToRegisterButton": "Register here",
-        "promptToLogin": "Already have an account?",
-        "switchToLoginButton": "Login here"
-    },
-    "loginForm": {
-        "_comment": "Texts for src/components/auth/LoginForm.tsx",
-        "heading": "Login",
-        "button": "Login",
-        "failedError": "Login failed, please check your details and try again.",
-        "loginSuccess": "Login successful! Welcome back."
-    },
-    "registerForm": {
-        "_comment": "Texts for src/components/auth/RegisterForm.tsx",
-        "heading": "Register",
-        "button": "Register",
-        "registrationSuccess": "Registration Successful! You can now log in.",
-        "failedError": "Registration failed. Please try again later."
-    },
-    "inviteMemberForm": {
-        "heading": "Invite a Member",
-        "label": "User's Email:",
-        "placeholder": "e.g., user@example.com",
-        "emailRequiredError": "Email address is required.",
-        "inviteSuccess": "Invitation sent to {{email}}!",
-        "genericError": "Failed to send invitation. Please try again.",
-        "button": {
-            "sendInvite": "Send Invite",
-            "sendingInvite": "Sending..."
-        }
-    },
-    "editBoardNameForm": {
-        "title": "Edit Board Name",
-        "label": "Board Name"
-    },
-    "editBoardDescriptionForm": {
-        "title": "Edit Board Description",
-        "label": "Description"
-    },
-    "navbar": {
-        "title": "SynchBoard",
-        "logout": "Logout",
-        "language": {
-            "en": "English",
-            "he": "Hebrew"
-        }
-    },
-    "sidebar": {
-        "title": "Sidebar",
-        "onlineUsers": "Online Users:"
-    },
-    "createBoardForm": {
-        "heading": "Create a New Board",
-        "nameLengthError": "Board name must be at least 3 characters long.",
-        "failedError": "Failed to create board. Please try again.",
-        "label": {
-            "boardName": "Board Name",
-            "description": "Description (Optional)"
-        },
-        "placeholder": {
-            "name": "e.g., Q3 Project Planning",
-            "description": "What is this board about?"
-        },
-        "button": {
-            "createBoard": "Create Board"
-        }
-    },
-    "toolbar": {
-        "label": {
-            "color": "Color",
-            "lineWidth": "Line Width: {{width}}"
-        },
-        "tool": {
-            "brush": "Brush",
-            "rectangle": "Rectangle",
-            "circle": "Circle",
-            "eraser": "Eraser",
-            "undo": "Undo",
-            "redo": "Redo"
-        }
-    },
-    "chatWindow": {
-        "placeholder": "Type a message..."
-    },
-    "boardProvider": {
-        "invalidIdError": "Invalid Board ID provided in URL."
-    },
-    "boardListPage": {
-        "heading": "My Boards",
-        "createNewBoardButton": "+ Create New Board",
-        "loading": "Loading your boards...",
-        "fetchError": "Failed to fetch boards. Please try again later.",
-        "noDescription": "No description.",
-        "adminLabel": " (Admin)",
-        "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
-        "setting": "Setting"
-    },
-    "boardDetailsPage": {
-        "backToBoardButton": "Back to Board",
-        "loading": "Loading board details...",
-        "notFound": "Board not found or you do not have access.",
-        "noDescription": "No description.",
-        "inviteButton": "+ Invite Member",
-        "membersHeader": "Members",
-        "adminBadge": "Admin"
-    },
-    "contextMenu": {
-        "promoteToAdmin": "Promote {{userName}} to Admin",
-        "removeFromBoard": "Remove {{userName}} from Board"
-    },
-    "leaveBoard": {
-        "button": "Leave Board",
-        "confirmTitle": "Leave Board?",
-        "confirmText": "Are you sure you want to leave '{{boardName}}'? This action cannot be undone.",
-        "success": "You have successfully left '{{boardName}}'.",
-        "error": "Failed to leave the board."
-    },
-    "boardPage": {
-        "backButton": "Back to Boards",
-        "inviteButton": "Invite Member",
-        "heading": "Board Workspace (ID: {{boardId}})",
-        "loading": "Loading board..."
-    },
-    "pictureManager": {
-        "title": "Manage picture for '{{boardName}}'",
-        "changeButton": "Change Picture",
-        "deleteButton": "Delete Picture"
-    },
-    "settingsPage": {
-        "heading": "Account Settings",
-        "loading": "Loading your settings...",
-        "loadError": "Could not load user data.",
-        "profileSectionHeader": "Profile Information",
-        "firstNameLabel": "First Name",
-        "lastNameLabel": "Last Name",
-        "phoneNumberLabel": "Phone Number",
-        "updateSuccess": "Profile updated successfully!",
-        "updateError": "Failed to update profile.",
-        "buttons": {
-            "edit": "Edit",
-            "cancel": "Cancel",
-            "save": "Save Changes"
-        },
-        "passwordSectionHeader": "Change Password",
-        "currentPasswordLabel": "Current Password",
-        "newPasswordLabel": "New Password",
-        "confirmPasswordLabel": "Confirm New Password",
-        "passwordUpdateSuccess": "Password updated successfully!",
-        "passwordUpdateError": "Failed to update password. Please check your current password.",
-        "passwordsDoNotMatch": "New passwords do not match.",
-        "passwordTooShort": "New password must be at least 8 characters long.",
-        "pictureSectionHeader": "Profile Picture",
-        "profilePictureAlt": "Profile picture for {{userName}}",
-        "deletePictureConfirmTitle": "Delete Picture?",
-        "deletePictureConfirmText": "Are you sure you want to delete your profile picture?",
-        "pictureUpdateSuccess": "Profile picture updated!",
-        "pictureDeleteSuccess": "Profile picture removed.",
-        "pictureUploadError": "Failed to upload picture.",
-        "dangerZoneHeader": "Danger Zone",
-        "dangerZoneText": "This action is permanent and cannot be undone.",
-        "deleteAccountButton": "Delete My Account",
-        "deleteAccountConfirmTitle": "Delete Account?",
-        "deleteAccountConfirmText": "Are you absolutely sure? This action cannot be undone. All your data, including boards you own as the last admin, will be permanently deleted.",
-        "accountDeleteSuccess": "Your account has been deleted.",
-        "accountDeleteError": "Failed to delete your account.",
-        "backToBoards": "Back to Boards",
-        "chatAppearanceHeader": "Chat Appearance",
-        "chatBackgroundColorLabel": "Background Color",
-        "chatFontSizeLabel": "Font Size",
-        "font": {
-            "small": "Small",
-            "regular": "Regular",
-            "large": "Large"
-        }
-    },
-    "errors": {
-        "user.notFound": "User not found.",
-        "board.notFound": "Board not found.",
-        "email.inUse": "This email address is already in use.",
-        "user.alreadyMember": "This user is already a member of the board.",
-        "auth.notAdmin": "You do not have admin privileges for this action.",
-        "auth.notMember": "You are not a member of this board.",
-        "board.cannotRemoveSelf": "You cannot remove yourself via this action.",
-        "user.alreadyAdmin": "This user is already an admin.",
-        "password.incorrect": "The current password you entered is incorrect.",
-        "password.sameAsOld": "New password cannot be the same as the old one.",
-        "fontSize.invalid": "An invalid font size was selected.",
-        "unexpected": "An unexpected error occurred. Please try again.",
-        "auth.badCredentials": "Incorrect username or password.",
-        "sessionExpired": "Your session has expired. Please log in again."
-    },
-    "success": {
-        "profile.update": "Profile updated successfully!",
-        "password.update": "Password updated successfully!",
-        "picture.update": "Profile picture updated!",
-        "picture.delete": "Profile picture deleted.",
-        "board.nameUpdate": "Board name updated successfully!",
-        "board.descriptionUpdate": "Board description updated successfully!",
-        "board.pictureUpdate": "Board picture updated successfully!",
-        "board.pictureDelete": "Board picture deleted."
-    },
-    "boardSync": {
-        "nothingToUndo": "Nothing to undo.",
-        "nothingToRedo": "Nothing to redo."
+    "button": {
+      "cancel": "Cancel",
+      "creating": "Creating...",
+      "send": "Send",
+      "loggingIn": "Logging in...",
+      "registering": "Registering...",
+      "save": "Save",
+      "saving": "Saving...",
+      "confirm": "Confirm"
     }
+  },
+  "authPage": {
+    "_comment": "Texts for src/pages/AuthPage.tsx",
+    "pageTitle": "Welcome to SynchBoard",
+    "promptToRegister": "Don't have an account?",
+    "switchToRegisterButton": "Register here",
+    "promptToLogin": "Already have an account?",
+    "switchToLoginButton": "Login here"
+  },
+  "loginForm": {
+    "_comment": "Texts for src/components/auth/LoginForm.tsx",
+    "heading": "Login",
+    "button": "Login",
+    "failedError": "Login failed, please check your details and try again.",
+    "loginSuccess": "Login successful! Welcome back."
+  },
+  "registerForm": {
+    "_comment": "Texts for src/components/auth/RegisterForm.tsx",
+    "heading": "Register",
+    "button": "Register",
+    "registrationSuccess": "Registration Successful! You can now log in.",
+    "failedError": "Registration failed. Please try again later."
+  },
+  "inviteMemberForm": {
+    "heading": "Invite a Member",
+    "label": "User's Email:",
+    "placeholder": "e.g., user@example.com",
+    "emailRequiredError": "Email address is required.",
+    "inviteSuccess": "Invitation sent to {{email}}!",
+    "genericError": "Failed to send invitation. Please try again.",
+    "button": {
+      "sendInvite": "Send Invite",
+      "sendingInvite": "Sending..."
+    }
+  },
+  "editBoardNameForm": {
+    "title": "Edit Board Name",
+    "label": "Board Name"
+  },
+  "editBoardDescriptionForm": {
+    "title": "Edit Board Description",
+    "label": "Description"
+  },
+  "navbar": {
+    "title": "SynchBoard",
+    "logout": "Logout",
+    "language": {
+      "en": "English",
+      "he": "Hebrew"
+    }
+  },
+  "sidebar": {
+    "title": "Sidebar",
+    "onlineUsers": "Online Users:"
+  },
+  "createBoardForm": {
+    "heading": "Create a New Board",
+    "nameLengthError": "Board name must be at least 3 characters long.",
+    "failedError": "Failed to create board. Please try again.",
+    "label": {
+      "boardName": "Board Name",
+      "description": "Description (Optional)"
+    },
+    "placeholder": {
+      "name": "e.g., Q3 Project Planning",
+      "description": "What is this board about?"
+    },
+    "button": {
+      "createBoard": "Create Board"
+    }
+  },
+  "toolbar": {
+    "label": {
+      "color": "Color",
+      "lineWidth": "Line Width: {{width}}"
+    },
+    "tool": {
+      "brush": "Brush",
+      "rectangle": "Rectangle",
+      "circle": "Circle",
+      "eraser": "Eraser",
+      "undo": "Undo",
+      "redo": "Redo"
+    }
+  },
+  "chatWindow": {
+    "placeholder": "Type a message..."
+  },
+  "boardProvider": {
+    "invalidIdError": "Invalid Board ID provided in URL."
+  },
+  "boardListPage": {
+    "heading": "My Boards",
+    "createNewBoardButton": "+ Create New Board",
+    "loading": "Loading your boards...",
+    "fetchError": "Failed to fetch boards. Please try again later.",
+    "noDescription": "No description.",
+    "adminLabel": " (Admin)",
+    "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
+    "setting": "Setting"
+  },
+  "boardDetailsPage": {
+    "backToBoardButton": "Back to Board",
+    "loading": "Loading board details...",
+    "notFound": "Board not found or you do not have access.",
+    "noDescription": "No description.",
+    "inviteButton": "+ Invite Member",
+    "membersHeader": "Members",
+    "adminBadge": "Admin"
+  },
+  "contextMenu": {
+    "promoteToAdmin": "Promote {{userName}} to Admin",
+    "removeFromBoard": "Remove {{userName}} from Board"
+  },
+  "leaveBoard": {
+    "button": "Leave Board",
+    "confirmTitle": "Leave Board?",
+    "confirmText": "Are you sure you want to leave '{{boardName}}'? This action cannot be undone.",
+    "success": "You have successfully left '{{boardName}}'.",
+    "error": "Failed to leave the board."
+  },
+  "boardPage": {
+    "backButton": "Back to Boards",
+    "inviteButton": "Invite Member",
+    "heading": "Board Workspace (ID: {{boardId}})",
+    "loading": "Loading board..."
+  },
+  "pictureManager": {
+    "title": "Manage picture for '{{boardName}}'",
+    "changeButton": "Change Picture",
+    "deleteButton": "Delete Picture"
+  },
+  "settingsPage": {
+    "heading": "Account Settings",
+    "loading": "Loading your settings...",
+    "loadError": "Could not load user data.",
+    "profileSectionHeader": "Profile Information",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "phoneNumberLabel": "Phone Number",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Failed to update profile.",
+    "buttons": {
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "save": "Save Changes"
+    },
+    "passwordSectionHeader": "Change Password",
+    "currentPasswordLabel": "Current Password",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "passwordUpdateSuccess": "Password updated successfully!",
+    "passwordUpdateError": "Failed to update password. Please check your current password.",
+    "passwordsDoNotMatch": "New passwords do not match.",
+    "passwordTooShort": "New password must be at least 8 characters long.",
+    "pictureSectionHeader": "Profile Picture",
+    "profilePictureAlt": "Profile picture for {{userName}}",
+    "deletePictureConfirmTitle": "Delete Picture?",
+    "deletePictureConfirmText": "Are you sure you want to delete your profile picture?",
+    "pictureUpdateSuccess": "Profile picture updated!",
+    "pictureDeleteSuccess": "Profile picture removed.",
+    "pictureUploadError": "Failed to upload picture.",
+    "dangerZoneHeader": "Danger Zone",
+    "dangerZoneText": "This action is permanent and cannot be undone.",
+    "deleteAccountButton": "Delete My Account",
+    "deleteAccountConfirmTitle": "Delete Account?",
+    "deleteAccountConfirmText": "Are you absolutely sure? This action cannot be undone. All your data, including boards you own as the last admin, will be permanently deleted.",
+    "accountDeleteSuccess": "Your account has been deleted.",
+    "accountDeleteError": "Failed to delete your account.",
+    "backToBoards": "Back to Boards",
+    "chatAppearanceHeader": "Chat Appearance",
+    "chatBackgroundColorLabel": "Background Color",
+    "chatFontSizeLabel": "Font Size",
+    "font": {
+      "small": "Small",
+      "regular": "Regular",
+      "large": "Large"
+    }
+  },
+  "errors": {
+    "user.notFound": "User not found.",
+    "board.notFound": "Board not found.",
+    "email.inUse": "This email address is already in use.",
+    "user.alreadyMember": "This user is already a member of the board.",
+    "auth.notAdmin": "You do not have admin privileges for this action.",
+    "auth.notMember": "You are not a member of this board.",
+    "board.cannotRemoveSelf": "You cannot remove yourself via this action.",
+    "user.alreadyAdmin": "This user is already an admin.",
+    "password.incorrect": "The current password you entered is incorrect.",
+    "password.sameAsOld": "New password cannot be the same as the old one.",
+    "fontSize.invalid": "An invalid font size was selected.",
+    "unexpected": "An unexpected error occurred. Please try again.",
+    "auth.badCredentials": "Incorrect username or password.",
+    "sessionExpired": "Your session has expired. Please log in again."
+  },
+  "success": {
+    "profile.update": "Profile updated successfully!",
+    "password.update": "Password updated successfully!",
+    "picture.update": "Profile picture updated!",
+    "picture.delete": "Profile picture deleted.",
+    "board.nameUpdate": "Board name updated successfully!",
+    "board.descriptionUpdate": "Board description updated successfully!",
+    "board.pictureUpdate": "Board picture updated successfully!",
+    "board.pictureDelete": "Board picture deleted."
+  },
+  "boardSync": {
+    "nothingToUndo": "Nothing to undo.",
+    "nothingToRedo": "Nothing to redo."
+  }
 }

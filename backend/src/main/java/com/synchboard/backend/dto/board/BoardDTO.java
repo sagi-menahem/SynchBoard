@@ -2,6 +2,7 @@
 package com.synchboard.backend.dto.board;
 
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

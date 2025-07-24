@@ -3,10 +3,12 @@ package com.synchboard.backend.config;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -20,12 +22,12 @@ public class MvcConfig implements WebMvcConfigurer {
         exposeDirectory("images", appProperties.getUpload().getDir(), registry);
     }
 
-    private void exposeDirectory(String urlPath, String physicalPath,
-            ResourceHandlerRegistry registry) {
+    private void exposeDirectory(String urlPath, String physicalPath, ResourceHandlerRegistry registry) {
         Path absolutePath = Paths.get(physicalPath).toAbsolutePath();
         String location = "file:///" + absolutePath.toString().replace("\\", "/") + "/";
 
-        registry.addResourceHandler("/" + urlPath + "/**").addResourceLocations(location);
+        registry.addResourceHandler("/" + urlPath + "/**")
+                .addResourceLocations(location);
 
         System.out.println("Exposing directory: " + urlPath + " at " + location);
     }

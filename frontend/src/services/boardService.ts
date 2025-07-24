@@ -3,7 +3,6 @@ import { API_ENDPOINTS } from 'constants/api.constants';
 import type { Board, BoardDetails, CreateBoardRequest, Member } from 'types/board.types';
 import type { BoardActionResponse } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';
-
 import apiClient from './apiClient';
 
 export const getBoards = async (): Promise<Board[]> => {
@@ -48,6 +47,7 @@ export const undoLastAction = async (boardId: number): Promise<BoardActionRespon
 export const redoLastAction = async (boardId: number): Promise<BoardActionResponse> => {
     const response = await apiClient.post<BoardActionResponse>(API_ENDPOINTS.REDO(boardId));
     return response.data;
+
 };
 
 export const updateBoardName = async (boardId: number, name: string): Promise<Board> => {
@@ -68,11 +68,15 @@ export const uploadBoardPicture = async (boardId: number, file: File): Promise<B
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await apiClient.post<Board>(API_ENDPOINTS.UPLOAD_BOARD_PICTURE(boardId), formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+    const response = await apiClient.post<Board>(
+        API_ENDPOINTS.UPLOAD_BOARD_PICTURE(boardId),
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    );
     return response.data;
 };
 

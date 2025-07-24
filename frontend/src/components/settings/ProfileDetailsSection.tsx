@@ -92,20 +92,11 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
                     </div>
                     <div className={styles.field}>
                         <label htmlFor="phoneNumber">{t('settingsPage.phoneNumberLabel')}</label>
-                        <Input
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={onInputChange}
-                        />
+                        <Input id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={onInputChange} />
                     </div>
                     <div className={styles.buttonGroup}>
-                        <Button onClick={onCancel} variant="secondary">
-                            {t('settingsPage.buttons.cancel')}
-                        </Button>
-                        <Button onClick={onSave} variant="primary">
-                            {t('settingsPage.buttons.save')}
-                        </Button>
+                        <Button onClick={onCancel} variant="secondary">{t('settingsPage.buttons.cancel')}</Button>
+                        <Button onClick={onSave} variant="primary">{t('settingsPage.buttons.save')}</Button>
                     </div>
                 </>
             )}

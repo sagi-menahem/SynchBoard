@@ -1,10 +1,9 @@
 // File: frontend/src/services/apiClient.ts
 import axios, { type AxiosError } from 'axios';
-import i18n from 'i18n';
-import toast from 'react-hot-toast';
-
 import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
 import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
+import i18n from 'i18n';
+import toast from 'react-hot-toast';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -30,6 +29,7 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
+
         const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
         if (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) {
@@ -48,12 +48,7 @@ apiClient.interceptors.response.use(
         }
 
         const isBackendError = (data: unknown): data is BackendError => {
-            return (
-                typeof data === 'object' &&
-                data !== null &&
-                'message' in data &&
-                typeof (data as BackendError).message === 'string'
-            );
+            return typeof data === 'object' && data !== null && 'message' in data && typeof (data as BackendError).message === 'string';
         };
 
         if (error.response && isBackendError(error.response.data)) {

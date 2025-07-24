@@ -11,8 +11,12 @@ interface MemberListProps {
 const MemberList: React.FC<MemberListProps> = ({ members, onMemberContextMenu }) => {
     return (
         <>
-            {members.map((member) => (
-                <MemberListItem key={member.email} member={member} onContextMenu={onMemberContextMenu} />
+            {members.map(member => (
+                <MemberListItem
+                    key={member.email}
+                    member={member}
+                    onContextMenu={onMemberContextMenu}
+                />
             ))}
         </>
     );

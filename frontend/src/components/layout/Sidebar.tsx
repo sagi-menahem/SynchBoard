@@ -10,6 +10,7 @@ const Sidebar: React.FC = () => {
         <aside className={styles.aside}>
             <p>{t('sidebar.title')}</p>
             <p>{t('sidebar.onlineUsers')}</p>
+
         </aside>
     );
 };

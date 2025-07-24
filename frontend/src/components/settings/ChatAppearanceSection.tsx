@@ -12,11 +12,13 @@ const ChatAppearanceSection: React.FC = () => {
 
     return (
         <section className={styles.section}>
-            <h2 className={styles.sectionHeader}>{t('settingsPage.chatAppearanceHeader')}</h2>
+            <h2 className={styles.sectionHeader}>
+                {t('settingsPage.chatAppearanceHeader')}
+            </h2>
             <div className={styles.field}>
                 <label>{t('settingsPage.chatBackgroundColorLabel')}</label>
                 <div className={styles.colorSwatchContainer}>
-                    {CHAT_BACKGROUND_OPTIONS.map((option) => (
+                    {CHAT_BACKGROUND_OPTIONS.map(option => (
                         <div
                             key={option.color}
                             className={`${styles.colorSwatch} ${preferences.chatBackgroundSetting === option.color ? styles.active : ''}`}
@@ -30,7 +32,7 @@ const ChatAppearanceSection: React.FC = () => {
             <div className={styles.field}>
                 <label>{t('settingsPage.chatFontSizeLabel')}</label>
                 <div className={styles.fontButtonGroup}>
-                    {CHAT_FONT_SIZE_OPTIONS.map((option) => (
+                    {CHAT_FONT_SIZE_OPTIONS.map(option => (
                         <Button
                             key={option.value}
                             variant={preferences.fontSizeSetting === option.value ? 'primary' : 'secondary'}

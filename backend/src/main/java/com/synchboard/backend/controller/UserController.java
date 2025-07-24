@@ -5,11 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.synchboard.backend.dto.user.ChangePasswordDTO;
 import com.synchboard.backend.dto.user.UpdateUserProfileDTO;
 import com.synchboard.backend.dto.user.UserPreferencesDTO;
 import com.synchboard.backend.dto.user.UserProfileDTO;
 import com.synchboard.backend.service.UserService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +30,8 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<UserProfileDTO> updateUserProfile(Authentication authentication,
+    public ResponseEntity<UserProfileDTO> updateUserProfile(
+            Authentication authentication,
             @Valid @RequestBody UpdateUserProfileDTO updateUserProfileDTO) {
         String userEmail = authentication.getName();
         UserProfileDTO updatedUser = userService.updateUserProfile(userEmail, updateUserProfileDTO);
@@ -36,7 +39,8 @@ public class UserController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<?> changePassword(Authentication authentication,
+    public ResponseEntity<?> changePassword(
+            Authentication authentication,
             @Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         String userEmail = authentication.getName();
         userService.changePassword(userEmail, changePasswordDTO.getCurrentPassword(),
@@ -45,7 +49,8 @@ public class UserController {
     }
 
     @PostMapping("/profile-picture")
-    public ResponseEntity<UserProfileDTO> uploadProfilePicture(Authentication authentication,
+    public ResponseEntity<UserProfileDTO> uploadProfilePicture(
+            Authentication authentication,
             @RequestParam("file") MultipartFile file) {
         String userEmail = authentication.getName();
         UserProfileDTO updatedUser = userService.updateProfilePicture(userEmail, file);
@@ -67,11 +72,11 @@ public class UserController {
     }
 
     @PutMapping("/preferences")
-    public ResponseEntity<UserProfileDTO> updateUserPreferences(Authentication authentication,
+    public ResponseEntity<UserProfileDTO> updateUserPreferences(
+            Authentication authentication,
             @RequestBody UserPreferencesDTO userPreferencesDTO) {
         String userEmail = authentication.getName();
-        UserProfileDTO updatedUser =
-                userService.updateUserPreferences(userEmail, userPreferencesDTO);
+        UserProfileDTO updatedUser = userService.updateUserPreferences(userEmail, userPreferencesDTO);
         return ResponseEntity.ok(updatedUser);
     }
 }

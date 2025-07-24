@@ -13,18 +13,8 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
     const { t } = useTranslation();
     const {
-        email,
-        password,
-        firstName,
-        lastName,
-        phoneNumber,
-        isSubmitting,
-        setEmail,
-        setPassword,
-        setFirstName,
-        setLastName,
-        setPhoneNumber,
-        handleSubmit,
+        email, password, firstName, lastName, phoneNumber, isSubmitting,
+        setEmail, setPassword, setFirstName, setLastName, setPhoneNumber, handleSubmit,
     } = useRegisterForm(onRegistrationSuccess);
 
     const inputs = [
@@ -39,17 +29,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         <form onSubmit={handleSubmit} className={styles.form}>
             <h2>{t('registerForm.heading')}</h2>
 
-            {inputs.map((input) => (
+            {inputs.map(input => (
                 <div key={input.id} className={styles.field}>
                     <label htmlFor={input.id}>{t(`common.form.label.${input.label}`)}</label>
-                    <Input
-                        id={input.id}
-                        type={input.type}
-                        value={input.value}
-                        onChange={(e) => input.setter(e.target.value)}
-                        required
-                        disabled={isSubmitting}
-                    />
+                    <Input id={input.id} type={input.type} value={input.value} onChange={(e) => input.setter(e.target.value)} required disabled={isSubmitting} />
                 </div>
             ))}
 

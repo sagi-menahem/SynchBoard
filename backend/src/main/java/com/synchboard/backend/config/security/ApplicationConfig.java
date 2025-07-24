@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.synchboard.backend.config.constants.MessageConstants;
 import com.synchboard.backend.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -24,8 +26,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        MessageConstants.USER_NOT_FOUND + ": " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(MessageConstants.USER_NOT_FOUND + ": " + username));
     }
 
     @Bean
@@ -37,8 +38,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 

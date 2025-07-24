@@ -3,6 +3,7 @@ package com.synchboard.backend.dto.board;
 
 import static com.synchboard.backend.config.constants.MessageConstants.ERROR_EMAIL_CANT_BE_EMPTY;
 import static com.synchboard.backend.config.constants.MessageConstants.ERROR_EMAIL_SHOULD_BE_VALID;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
