@@ -1,0 +1,98 @@
+{
+	"folders": [
+		{
+			"name": "Backend",
+			"path": "backend"
+		},
+		{
+			"name": "Frontend",
+			"path": "frontend"
+		},
+		{
+			// סעיף זה גורם ל-VS Code להציג קבצים שאינם בתיקיות למעלה
+			"path": ".",
+			"name": "Project Files"
+		}
+	],
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "java",
+				"name": "Launch Spring Boot App",
+				"request": "launch",
+				"cwd": "${workspaceFolder:Backend}",
+				"mainClass": "com.synchboard.backend.BackendApplication",
+				"projectName": "backend",
+				"args": "",
+				"envFile": "${workspaceFolder:Backend}/.env"
+			}
+		]
+	},
+	"settings": {
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "Synchboard Local",
+				"database": "synchboard_db",
+				"username": "synchboard_user",
+				"password": "test12345"
+			}
+		],
+		"favorites.resources": [
+			{
+				"filePath": "backend/src/main/java/com/synchboard/backend",
+				"group": "Default"
+			},
+			{
+				"filePath": "frontend/src",
+				"group": "Default"
+			}
+		],
+		"favorites.sortOrder": "ASC",
+		"editor.formatOnSave": true,
+		"typescript.updateImportsOnFileMove.enabled": "always",
+		"javascript.updateImportsOnFileMove.enabled": "always",
+		"java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+		"java.format.settings.profile": "GoogleStyle",
+		"java.checkstyle.enabled": true,
+		"java.checkstyle.configuration": "${workspaceFolder:Backend}/checkstyle.xml",
+		"java.checkstyle.version": "10.12.5",
+		"java.sources.organizeImports.importOrder": [
+			"java",
+			"javax",
+			"jakarta",
+			"#",
+			"org.springframework",
+			"com.synchboard"
+		],
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"java.compile.nullAnalysis.mode": "automatic",
+		"[java]": {
+			"editor.codeActionsOnSave": {
+				"source.organizeImports": "explicit"
+			}
+		},
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.codeActionsOnSave": {
+				"source.fixAll.eslint": "explicit"
+			}
+		},
+		"[typescriptreact]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.codeActionsOnSave": {
+				"source.fixAll.eslint": "explicit"
+			}
+		},
+		"[javascript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.codeActionsOnSave": {
+				"source.fixAll.eslint": "explicit"
+			}
+		}
+	}
+}
