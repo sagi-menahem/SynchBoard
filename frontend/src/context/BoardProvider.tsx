@@ -18,9 +18,5 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children 
         return <div>{t('boardProvider.invalidIdError')}</div>;
     }
 
-    return (
-        <BoardContext.Provider value={boardData}>
-            {children}
-        </BoardContext.Provider>
-    );
+    return <BoardContext.Provider value={boardData}>{children}</BoardContext.Provider>;
 };

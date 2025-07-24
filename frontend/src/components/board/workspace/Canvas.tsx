@@ -6,7 +6,7 @@ import React from 'react';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import styles from './Canvas.module.css';
 
-type Tool = typeof TOOL_LIST[number];
+type Tool = (typeof TOOL_LIST)[number];
 
 interface CanvasProps {
     instanceId: string;
@@ -18,13 +18,7 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-    const {
-        mainCanvasRef,
-        previewCanvasRef,
-        containerRef,
-        dimensions,
-        handleMouseDown,
-    } = useCanvas(props);
+    const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
 
     return (
         <div ref={containerRef} className={styles.container}>

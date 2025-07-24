@@ -6,7 +6,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Toolbar.module.css';
 
-type Tool = typeof TOOL_LIST[number];
+type Tool = (typeof TOOL_LIST)[number];
 
 interface ToolbarProps {
     containerRef: React.RefObject<HTMLElement | null>;
@@ -39,12 +39,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
     const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
 
     return (
-        <div
-            ref={draggableRef}
-            className={styles.toolbar}
-            onMouseDown={handleMouseDown}
-            style={draggableStyle}
-        >
+        <div ref={draggableRef} className={styles.toolbar} onMouseDown={handleMouseDown} style={draggableStyle}>
             <label className={styles.label}>
                 {t('toolbar.label.color')}
                 <input
@@ -68,7 +63,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             </label>
 
             <div className={styles.toolsContainer}>
-                {TOOL_LIST.map(toolName => (
+                {TOOL_LIST.map((toolName) => (
                     <Button
                         key={toolName}
                         variant={tool === toolName ? 'primary' : 'secondary'}

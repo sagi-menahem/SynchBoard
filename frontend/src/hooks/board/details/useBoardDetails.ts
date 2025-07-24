@@ -27,11 +27,11 @@ export const useBoardDetails = (boardId: number | undefined) => {
         }
 
         getBoardDetails(boardId)
-            .then(data => {
+            .then((data) => {
                 setBoardDetails(data);
             })
-            .catch(error => {
-                console.error("Failed to fetch board details:", error);
+            .catch((error) => {
+                console.error('Failed to fetch board details:', error);
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     navigate(APP_ROUTES.BOARD_LIST);
                 }
@@ -40,7 +40,6 @@ export const useBoardDetails = (boardId: number | undefined) => {
             .finally(() => {
                 setIsLoading(false);
             });
-
     }, [boardId, boardDetails, navigate]);
 
     useEffect(() => {
@@ -48,13 +47,16 @@ export const useBoardDetails = (boardId: number | undefined) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [boardId]);
 
-    const handleBoardUpdate = useCallback((message: BoardUpdateDTO) => {
-        if (message.sourceUserEmail === userEmail) {
-            return;
-        }
-        console.log(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
-        fetchDetails();
-    }, [fetchDetails, userEmail]);
+    const handleBoardUpdate = useCallback(
+        (message: BoardUpdateDTO) => {
+            if (message.sourceUserEmail === userEmail) {
+                return;
+            }
+            console.log(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
+            fetchDetails();
+        },
+        [fetchDetails, userEmail]
+    );
 
     useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate);
 

@@ -10,7 +10,6 @@ export interface AuthContextType {
     login: (newToken: string) => void;
     logout: () => void;
     updatePreferences: (newPrefs: UserPreferences) => Promise<void>;
-
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);

@@ -29,7 +29,6 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
-
         const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
         if (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) {
@@ -48,7 +47,12 @@ apiClient.interceptors.response.use(
         }
 
         const isBackendError = (data: unknown): data is BackendError => {
-            return typeof data === 'object' && data !== null && 'message' in data && typeof (data as BackendError).message === 'string';
+            return (
+                typeof data === 'object' &&
+                data !== null &&
+                'message' in data &&
+                typeof (data as BackendError).message === 'string'
+            );
         };
 
         if (error.response && isBackendError(error.response.data)) {

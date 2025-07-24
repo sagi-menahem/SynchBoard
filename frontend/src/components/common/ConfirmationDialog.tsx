@@ -13,13 +13,7 @@ interface ConfirmationDialogProps {
     message: string;
 }
 
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-    isOpen,
-    onClose,
-    onConfirm,
-    title,
-    message,
-}) => {
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose, onConfirm, title, message }) => {
     const { t } = useTranslation();
 
     const handleConfirm = () => {

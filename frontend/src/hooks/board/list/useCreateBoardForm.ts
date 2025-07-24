@@ -22,16 +22,20 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
         const boardData: CreateBoardRequest = { name, description };
 
         createBoard(boardData)
-            .then(newBoard => {
+            .then((newBoard) => {
                 toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
                 onBoardCreated(newBoard);
             })
-            .catch(err => console.error(err))
+            .catch((err) => console.error(err))
             .finally(() => setIsSubmitting(false));
     };
 
     return {
-        name, description, isSubmitting, setName,
-        setDescription, handleSubmit,
+        name,
+        description,
+        isSubmitting,
+        setName,
+        setDescription,
+        handleSubmit,
     };
 };

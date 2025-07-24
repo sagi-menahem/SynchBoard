@@ -19,9 +19,10 @@ export const useSettingsPage = () => {
 
     const fetchUser = useCallback(() => {
         setIsLoading(true);
-        userService.getUserProfile()
-            .then(userData => setUser(userData))
-            .catch(error => console.error("Failed to fetch user profile:", error))
+        userService
+            .getUserProfile()
+            .then((userData) => setUser(userData))
+            .catch((error) => console.error('Failed to fetch user profile:', error))
             .finally(() => setIsLoading(false));
     }, []);
 
@@ -35,7 +36,7 @@ export const useSettingsPage = () => {
             setUser(updatedUser);
             toast.success(t('success.profile.update'));
         } catch (error) {
-            console.error("Failed to update profile:", error);
+            console.error('Failed to update profile:', error);
             throw error;
         }
     };
@@ -45,45 +46,55 @@ export const useSettingsPage = () => {
             await userService.changePassword(data);
             toast.success(t('success.password.update'));
         } catch (error) {
-            console.error("Failed to change password:", error);
+            console.error('Failed to change password:', error);
             throw error;
         }
     };
 
     const handlePictureUpload = (file: File) => {
-        userService.uploadProfilePicture(file)
-            .then(updatedUser => {
+        userService
+            .uploadProfilePicture(file)
+            .then((updatedUser) => {
                 setUser(updatedUser);
                 toast.success(t('success.picture.update'));
             })
-            .catch(error => console.error('Failed to upload picture:', error));
+            .catch((error) => console.error('Failed to upload picture:', error));
     };
 
     const handlePictureDelete = () => {
-        userService.deleteProfilePicture()
-            .then(updatedUser => {
+        userService
+            .deleteProfilePicture()
+            .then((updatedUser) => {
                 setUser(updatedUser);
                 toast.success(t('success.picture.delete'));
             })
-            .catch(error => console.error('Failed to delete picture:', error))
+            .catch((error) => console.error('Failed to delete picture:', error))
             .finally(() => setPicDeleteConfirmOpen(false));
     };
 
     const handleDeleteAccount = () => {
-        userService.deleteAccount()
+        userService
+            .deleteAccount()
             .then(() => {
                 toast.success(t('settingsPage.accountDeleteSuccess'));
                 logout();
                 navigate(APP_ROUTES.AUTH);
             })
-            .catch(error => console.error('Failed to delete account:', error))
+            .catch((error) => console.error('Failed to delete account:', error))
             .finally(() => setAccountDeleteConfirmOpen(false));
     };
 
     return {
-        user, isLoading, isPicDeleteConfirmOpen, setPicDeleteConfirmOpen,
-        isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen,
-        handleUpdateProfile, handleChangePassword, handlePictureUpload,
-        handlePictureDelete, handleDeleteAccount,
+        user,
+        isLoading,
+        isPicDeleteConfirmOpen,
+        setPicDeleteConfirmOpen,
+        isAccountDeleteConfirmOpen,
+        setAccountDeleteConfirmOpen,
+        handleUpdateProfile,
+        handleChangePassword,
+        handlePictureUpload,
+        handlePictureDelete,
+        handleDeleteAccount,
     };
 };
