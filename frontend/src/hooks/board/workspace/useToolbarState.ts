@@ -2,10 +2,9 @@
 import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
 import { useState } from 'react';
 
-type Tool = typeof TOOL_LIST[number];
+type Tool = (typeof TOOL_LIST)[number];
 
 export const useToolbarState = () => {
-
     const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);
     const [strokeColor, setStrokeColor] = useState<string>(DEFAULT_DRAWING_CONFIG.STROKE_COLOR);
     const [strokeWidth, setStrokeWidth] = useState<number>(DEFAULT_DRAWING_CONFIG.STROKE_WIDTH);

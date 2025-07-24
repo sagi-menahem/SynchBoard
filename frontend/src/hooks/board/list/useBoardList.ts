@@ -25,10 +25,10 @@ export const useBoardList = () => {
             setIsLoading(true);
         }
         getBoards()
-            .then(userBoards => {
+            .then((userBoards) => {
                 setBoards(userBoards);
             })
-            .catch(err => console.error(err))
+            .catch((err) => console.error(err))
             .finally(() => setIsLoading(false));
     }, [boards.length]);
 
@@ -37,13 +37,13 @@ export const useBoardList = () => {
     }, [fetchBoards]);
 
     const handleBoardCreated = (newBoard: Board) => {
-        setBoards(prevBoards => [...prevBoards, newBoard]);
+        setBoards((prevBoards) => [...prevBoards, newBoard]);
         setIsModalOpen(false);
     };
 
     const handleConfirmLeave = useCallback(() => {
         if (!boardToLeave) {
-            console.error("Cannot leave board, boardToLeave is null.");
+            console.error('Cannot leave board, boardToLeave is null.');
             return;
         }
 
@@ -52,7 +52,7 @@ export const useBoardList = () => {
                 toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
                 fetchBoards();
             })
-            .catch(error => console.error("Failed to leave board:", error))
+            .catch((error) => console.error('Failed to leave board:', error))
             .finally(() => {
                 setLeaveConfirmOpen(false);
                 setBoardToLeave(null);
@@ -69,16 +69,28 @@ export const useBoardList = () => {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const handleUserUpdate = useCallback((message: UserUpdateDTO) => {
-        console.log(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
-        fetchBoards();
-    }, [fetchBoards]);
+    const handleUserUpdate = useCallback(
+        (message: UserUpdateDTO) => {
+            console.log(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
+            fetchBoards();
+        },
+        [fetchBoards]
+    );
 
     useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
 
     return {
-        boards, isLoading, isModalOpen, contextMenu, isLeaveConfirmOpen,
-        setLeaveConfirmOpen, boardToLeave, handleBoardCreated, openModal,
-        closeModal, handleConfirmLeave, handleLeaveClick,
+        boards,
+        isLoading,
+        isModalOpen,
+        contextMenu,
+        isLeaveConfirmOpen,
+        setLeaveConfirmOpen,
+        boardToLeave,
+        handleBoardCreated,
+        openModal,
+        closeModal,
+        handleConfirmLeave,
+        handleLeaveClick,
     };
 };

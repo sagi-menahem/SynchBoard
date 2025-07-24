@@ -21,13 +21,14 @@ export const useLoginForm = () => {
         setIsSubmitting(true);
         const credentials: LoginRequest = { email, password };
 
-        authService.login(credentials)
-            .then(response => {
+        authService
+            .login(credentials)
+            .then((response) => {
                 toast.success(t('loginForm.loginSuccess'));
                 login(response.token);
                 navigate(APP_ROUTES.BOARD_LIST);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error('Login failed:', err);
             })
             .finally(() => {
