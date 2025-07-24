@@ -5,9 +5,7 @@ import static com.synchboard.backend.config.constants.ApiConstants.API_AUTH_PATH
 import static com.synchboard.backend.config.constants.ApiConstants.API_USER_PATH;
 import static com.synchboard.backend.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_ENDPOINT_WITH_SUBPATHS;
-
 import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -35,16 +32,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(API_AUTH_PATH).permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers(API_AUTH_PATH).permitAll()
                         .requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
-                        .requestMatchers(API_USER_PATH).authenticated()
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .requestMatchers(API_USER_PATH).authenticated().anyRequest()
+                        .authenticated())
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

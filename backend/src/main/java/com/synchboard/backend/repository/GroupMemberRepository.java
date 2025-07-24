@@ -3,11 +3,9 @@ package com.synchboard.backend.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.synchboard.backend.entity.GroupMember;
 import com.synchboard.backend.entity.GroupMemberId;
 

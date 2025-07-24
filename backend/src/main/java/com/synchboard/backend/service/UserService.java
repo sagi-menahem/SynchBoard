@@ -3,10 +3,8 @@ package com.synchboard.backend.service;
 
 import static com.synchboard.backend.config.constants.MessageConstants.ALLOWED_FONT_SIZES;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.synchboard.backend.config.constants.MessageConstants;
 import com.synchboard.backend.dto.auth.AuthResponse;
 import com.synchboard.backend.dto.auth.LoginRequest;
@@ -51,9 +48,11 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService, AuthenticationManager authenticationManager,
             FileStorageService fileStorageService, GroupMemberRepository groupMemberRepository,
-            @Lazy GroupBoardService groupBoardService, SimpMessageSendingOperations messagingTemplate,
-            ActionHistoryRepository actionHistoryRepository, BoardObjectRepository boardObjectRepository,
-            GroupBoardRepository groupBoardRepository, MessageRepository messageRepository) {
+            @Lazy GroupBoardService groupBoardService,
+            SimpMessageSendingOperations messagingTemplate,
+            ActionHistoryRepository actionHistoryRepository,
+            BoardObjectRepository boardObjectRepository, GroupBoardRepository groupBoardRepository,
+            MessageRepository messageRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -73,13 +72,10 @@ public class UserService {
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }
 
-        User newUser = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
+        User newUser = User.builder().firstName(request.getFirstName())
+                .lastName(request.getLastName()).email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .phoneNumber(request.getPhoneNumber())
-                .build();
+                .phoneNumber(request.getPhoneNumber()).build();
 
         userRepository.save(newUser);
 
@@ -89,9 +85,7 @@ public class UserService {
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         User user = userRepository.findById(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND));
@@ -102,16 +96,16 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(String userEmail) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         return mapUserToUserProfileDTO(user);
     }
 
     @Transactional
     public UserProfileDTO updateUserProfile(String userEmail, UpdateUserProfileDTO dto) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
@@ -125,8 +119,8 @@ public class UserService {
 
     @Transactional
     public void changePassword(String userEmail, String currentPassword, String newPassword) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new InvalidRequestException(MessageConstants.PASSWORD_INCORRECT);
@@ -142,8 +136,8 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO updateProfilePicture(String userEmail, MultipartFile file) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
@@ -162,8 +156,8 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO deleteProfilePicture(String userEmail) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
@@ -178,8 +172,8 @@ public class UserService {
 
     @Transactional
     public void deleteAccount(String userEmail) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         boardObjectRepository.nullifyCreatedByUser(userEmail);
         boardObjectRepository.nullifyLastEditedByUser(userEmail);
@@ -188,9 +182,8 @@ public class UserService {
         messageRepository.nullifySenderByUserEmail(userEmail);
 
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
-        List<Long> boardIds = memberships.stream()
-                .map(GroupMember::getBoardGroupId)
-                .collect(Collectors.toList());
+        List<Long> boardIds =
+                memberships.stream().map(GroupMember::getBoardGroupId).collect(Collectors.toList());
         boardIds.forEach(boardId -> groupBoardService.leaveBoard(boardId, userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
@@ -203,8 +196,8 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO updateUserPreferences(String userEmail, UserPreferencesDTO dto) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         String newFontSize = dto.getFontSizeSetting();
         if (newFontSize != null && !ALLOWED_FONT_SIZES.contains(newFontSize)) {
@@ -219,20 +212,17 @@ public class UserService {
     }
 
     private UserProfileDTO mapUserToUserProfileDTO(User user) {
-        return UserProfileDTO.builder()
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .phoneNumber(user.getPhoneNumber())
+        return UserProfileDTO.builder().email(user.getEmail()).firstName(user.getFirstName())
+                .lastName(user.getLastName()).phoneNumber(user.getPhoneNumber())
                 .profilePictureUrl(user.getProfilePictureUrl())
                 .chatBackgroundSetting(user.getChatBackgroundSetting())
-                .fontSizeSetting(user.getFontSizeSetting())
-                .build();
+                .fontSizeSetting(user.getFontSizeSetting()).build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
-        BoardUpdateDTO payload = new BoardUpdateDTO(BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
+        BoardUpdateDTO payload =
+                new BoardUpdateDTO(BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
 
         for (GroupMember membership : memberships) {
             Long boardId = membership.getBoardGroupId();
