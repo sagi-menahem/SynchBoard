@@ -2,7 +2,6 @@
 package com.synchboard.backend.dto.user;
 
 import static com.synchboard.backend.config.constants.MessageConstants.ERROR_PASSWORD_CANT_BE_EMPTY;
-
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

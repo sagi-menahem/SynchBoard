@@ -2,12 +2,10 @@
 package com.synchboard.backend.service;
 
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
-
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +16,6 @@ import com.synchboard.backend.entity.BoardObject;
 import com.synchboard.backend.repository.ActionHistoryRepository;
 import com.synchboard.backend.repository.BoardObjectRepository;
 import com.synchboard.backend.repository.GroupMemberRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -131,20 +128,15 @@ public class ActionHistoryService {
     }
 
     private BoardActionDTO.Response createDeleteResponse(String instanceId) {
-        return BoardActionDTO.Response.builder()
-                .type(BoardActionDTO.ActionType.OBJECT_DELETE)
-                .instanceId(instanceId)
-                .sender("system-undo-redo")
-                .build();
+        return BoardActionDTO.Response.builder().type(BoardActionDTO.ActionType.OBJECT_DELETE)
+                .instanceId(instanceId).sender("system-undo-redo").build();
     }
 
-    private BoardActionDTO.Response createAddResponse(BoardObject boardObject) throws JsonProcessingException {
+    private BoardActionDTO.Response createAddResponse(BoardObject boardObject)
+            throws JsonProcessingException {
         JsonNode payload = objectMapper.readTree(boardObject.getObjectData());
-        return BoardActionDTO.Response.builder()
-                .type(BoardActionDTO.ActionType.OBJECT_ADD)
-                .instanceId(boardObject.getInstanceId())
-                .payload(payload)
-                .sender("system-undo-redo")
+        return BoardActionDTO.Response.builder().type(BoardActionDTO.ActionType.OBJECT_ADD)
+                .instanceId(boardObject.getInstanceId()).payload(payload).sender("system-undo-redo")
                 .build();
     }
 }

@@ -3,8 +3,7 @@ package com.synchboard.backend.config.constants;
 
 public final class ApiConstants {
 
-    private ApiConstants() {
-    }
+    private ApiConstants() {}
 
     public static final String API_AUTH_PATH = "/api/auth/**";
     public static final String API_AUTH_REGISTER_PATH = "/register";

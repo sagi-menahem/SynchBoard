@@ -3,7 +3,6 @@ package com.synchboard.backend.config.websocket;
 
 import static com.synchboard.backend.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
 import static com.synchboard.backend.config.constants.WebSocketConstants.*;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -13,9 +12,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
-
 import com.synchboard.backend.config.AppProperties;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -36,19 +33,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
         config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
                 .setRelayHost(appProperties.getStomp().getBrokerHost())
-                .setRelayPort(appProperties.getStomp().getBrokerPort())
-                .setClientLogin(brokerUser)
-                .setClientPasscode(brokerPassword)
-                .setSystemLogin(brokerUser)
+                .setRelayPort(appProperties.getStomp().getBrokerPort()).setClientLogin(brokerUser)
+                .setClientPasscode(brokerPassword).setSystemLogin(brokerUser)
                 .setSystemPasscode(brokerPassword);
         config.setApplicationDestinationPrefixes(WEBSOCKET_APP_PREFIX);
     }
 
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-        registry.addEndpoint(WEBSOCKET_ENDPOINT)
-                .setAllowedOrigins(CLIENT_ORIGIN_URL)
-                .withSockJS();
+        registry.addEndpoint(WEBSOCKET_ENDPOINT).setAllowedOrigins(CLIENT_ORIGIN_URL).withSockJS();
     }
 
     @Override

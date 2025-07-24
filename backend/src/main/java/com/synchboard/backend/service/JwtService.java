@@ -2,18 +2,14 @@
 package com.synchboard.backend.service;
 
 import static com.synchboard.backend.config.constants.SecurityConstants.JWT_EXPIRATION_MS;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import com.synchboard.backend.config.AppProperties;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -2,7 +2,6 @@
 package com.synchboard.backend.entity;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
