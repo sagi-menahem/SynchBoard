@@ -33,7 +33,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
             await onSave(value);
             onClose();
         } catch (error) {
-            console.error("Failed to save field:", error);
+            console.error('Failed to save field:', error);
         } finally {
             setIsSubmitting(false);
         }

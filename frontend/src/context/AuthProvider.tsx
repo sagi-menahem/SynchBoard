@@ -26,15 +26,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [preferences, setPreferences] = useState<UserPreferences>(defaultPreferences);
 
     const fetchAndSetUserPreferences = useCallback(() => {
-        userService.getUserProfile()
-            .then(profile => {
+        userService
+            .getUserProfile()
+            .then((profile) => {
                 setPreferences({
                     chatBackgroundSetting: profile.chatBackgroundSetting || defaultPreferences.chatBackgroundSetting,
                     fontSizeSetting: profile.fontSizeSetting || defaultPreferences.fontSizeSetting,
                 });
             })
-            .catch(error => {
-                console.error("Failed to fetch user preferences:", error);
+            .catch((error) => {
+                console.error('Failed to fetch user preferences:', error);
             });
     }, []);
 
@@ -44,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUserEmail(decodedToken.sub);
             fetchAndSetUserPreferences();
             websocketService.connect(token, () => {
-                console.log("WebSocket connection confirmed in AuthProvider.");
+                console.log('WebSocket connection confirmed in AuthProvider.');
                 setIsSocketConnected(true);
             });
         } else {
@@ -72,12 +73,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const oldPrefs = preferences;
         setPreferences(newPrefs);
 
-        return userService.updateUserPreferences(newPrefs)
+        return userService
+            .updateUserPreferences(newPrefs)
             .then(() => {
                 toast.success(t('success.preferences.update'));
             })
-            .catch(error => {
-                console.error("Failed to save preferences:", error);
+            .catch((error) => {
+                console.error('Failed to save preferences:', error);
                 setPreferences(oldPrefs);
                 throw error;
             });
@@ -85,9 +87,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const value = { token, userEmail, isSocketConnected, preferences, login, logout, updatePreferences };
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

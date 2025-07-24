@@ -1,7 +1,7 @@
 // File: frontend/src/components/common/Modal.tsx
 import React from 'react';
-import styles from './Modal.module.css';
 import Button from './Button';
+import styles from './Modal.module.css';
 
 interface ModalProps {
     isOpen: boolean;
@@ -19,11 +19,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.content} onClick={handleContentClick}>
-                <Button
-                    onClick={onClose}
-                    className={styles.closeButton}
-                    variant="secondary"
-                >
+                <Button onClick={onClose} className={styles.closeButton} variant="secondary">
                     &times;
                 </Button>
                 {children}

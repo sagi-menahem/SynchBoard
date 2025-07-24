@@ -31,10 +31,7 @@ export const API_ENDPOINTS = {
     DELETE_ACCOUNT: '/user/account',
 } as const;
 
-export const PUBLIC_API_ENDPOINTS: readonly string[] = [
-    API_ENDPOINTS.LOGIN,
-    API_ENDPOINTS.REGISTER,
-];
+export const PUBLIC_API_ENDPOINTS: readonly string[] = [API_ENDPOINTS.LOGIN, API_ENDPOINTS.REGISTER];
 
 export const WEBSOCKET_DESTINATIONS = {
     DRAW_ACTION: '/app/board.drawAction',
@@ -44,7 +41,6 @@ export const WEBSOCKET_DESTINATIONS = {
 export const WEBSOCKET_TOPICS = {
     BOARD: (boardId: number) => `/topic/board/${boardId}`,
     USER: (userEmail: string) => `/topic/user/${userEmail}`,
-
 } as const;
 
 export const AUTH_HEADER_CONFIG = {

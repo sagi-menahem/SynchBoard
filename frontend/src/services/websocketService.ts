@@ -1,7 +1,8 @@
 // File: frontend/src/services/websocketService.ts
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
-import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'constants/api.constants';
 import SockJS from 'sockjs-client';
+
+import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'constants/api.constants';
 
 class WebSocketService {
     private stompClient: Client | null = null;
@@ -14,7 +15,7 @@ class WebSocketService {
         this.stompClient = new Client({
             webSocketFactory: () => new SockJS(WEBSOCKET_URL),
             connectHeaders: {
-                [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`
+                [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
             },
             onConnect: () => {
                 console.log('Connected to WebSocket server!');

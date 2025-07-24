@@ -3,7 +3,6 @@ package com.synchboard.backend.dto.board;
 
 import static com.synchboard.backend.config.constants.MessageConstants.BOARD_NAME_CANT_BE_EMPTY;
 import static com.synchboard.backend.config.constants.MessageConstants.BOARD_NAME_LENGHT;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

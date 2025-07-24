@@ -42,16 +42,12 @@ const SettingsPage: React.FC = () => {
             <div className={styles.pageHeader}>
                 <h1>{t('settingsPage.heading')}</h1>
                 <Link to={APP_ROUTES.BOARD_LIST}>
-                    <Button variant="secondary">
-                        &larr; {t('settingsPage.backToBoards')}
-                    </Button>
+                    <Button variant="secondary">&larr; {t('settingsPage.backToBoards')}</Button>
                 </Link>
             </div>
 
             <section className={styles.section}>
-                <h2 className={styles.sectionHeader}>
-                    {t('settingsPage.pictureSectionHeader')}
-                </h2>
+                <h2 className={styles.sectionHeader}>{t('settingsPage.pictureSectionHeader')}</h2>
                 <ProfilePictureManager
                     user={user}
                     onUpload={handlePictureUpload}
@@ -62,9 +58,7 @@ const SettingsPage: React.FC = () => {
             <ProfileDetailsSection user={user} onUpdateProfile={handleUpdateProfile} />
 
             <section className={styles.section}>
-                <h2 className={styles.sectionHeader}>
-                    {t('settingsPage.passwordSectionHeader')}
-                </h2>
+                <h2 className={styles.sectionHeader}>{t('settingsPage.passwordSectionHeader')}</h2>
                 <ChangePasswordForm onSubmit={handleChangePassword} />
             </section>
 
