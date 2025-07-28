@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useCanvas.ts
+// File: frontend/src/hooks/board/workspace/useCanvas.ts
 import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {

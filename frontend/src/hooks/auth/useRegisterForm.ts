@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useRegisterForm.ts
+// File: frontend/src/hooks/auth/useRegisterForm.ts
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';

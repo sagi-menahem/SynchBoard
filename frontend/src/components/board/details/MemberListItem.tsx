@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/MemberListItem.tsx
+// File: frontend/src/components/board/details/MemberListItem.tsx
 import defaultUserImage from 'assets/default-user-image.png';
 import { API_BASE_URL } from 'constants/api.constants';
 import React from 'react';

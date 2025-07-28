@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/InviteMemberForm.tsx
+// File: frontend/src/components/board/details/InviteMemberForm.tsx
 import Button from 'components/common/Button';
 import styles from 'components/common/Form.module.css';
 import Input from 'components/common/Input';

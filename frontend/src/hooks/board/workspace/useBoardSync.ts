@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useBoardSync.ts
+// File: frontend/src/hooks/board/workspace/useBoardSync.ts
 import { AxiosError } from 'axios';
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';

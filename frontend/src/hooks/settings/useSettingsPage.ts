@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useSettingsPage.ts
+// File: frontend/src/hooks/settings/useSettingsPage.ts
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/useAuth';
 import { useCallback, useEffect, useState } from 'react';

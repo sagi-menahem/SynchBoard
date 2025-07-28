@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useBoardDetails.ts
+// File: frontend/src/hooks/board/details/useBoardDetails.ts
 import { AxiosError } from 'axios';
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';

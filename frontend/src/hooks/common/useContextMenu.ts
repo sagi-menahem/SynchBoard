@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useContextMenu.ts
+// File: frontend/src/hooks/common/useContextMenu.ts
 import { useCallback, useState } from 'react';
 
 export const useContextMenu = <T>() => {

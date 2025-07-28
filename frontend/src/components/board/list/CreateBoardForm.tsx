@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/CreateBoardForm.tsx
+// File: frontend/src/components/board/list/CreateBoardForm.tsx
 import Button from 'components/common/Button';
 import styles from 'components/common/Form.module.css';
 import Input from 'components/common/Input';

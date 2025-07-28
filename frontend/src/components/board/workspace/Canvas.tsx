@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/Canvas.tsx
+// File: frontend/src/components/board/workspace/Canvas.tsx
 import type { TOOL_LIST } from 'constants/board.constants';
 import { CANVAS_CONFIG } from 'constants/board.constants';
 import { useCanvas } from 'hooks/board/workspace/useCanvas';
