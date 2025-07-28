@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useBoardDetailsPage.ts
+// File: frontend/src/hooks/board/details/useBoardDetailsPage.ts
 // (This file was already in good shape, just updating the success toasts)
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useBoardDetails } from 'hooks/board/details/useBoardDetails';

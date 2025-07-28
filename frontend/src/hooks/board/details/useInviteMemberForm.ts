@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useInviteMemberForm.ts
+// File: frontend/src/hooks/board/details/useInviteMemberForm.ts
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -18,17 +18,21 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
         }
         setIsSubmitting(true);
 
-        boardService.inviteMember(boardId, email)
-            .then(newMember => {
+        boardService
+            .inviteMember(boardId, email)
+            .then((newMember) => {
                 toast.success(t('inviteMemberForm.inviteSuccess', { email }));
                 onInviteSuccess(newMember);
                 setEmail('');
             })
-            .catch(error => console.error("Failed to invite member:", error))
+            .catch((error) => console.error('Failed to invite member:', error))
             .finally(() => setIsSubmitting(false));
     };
 
     return {
-        email, setEmail, isSubmitting, handleSubmit,
+        email,
+        setEmail,
+        isSubmitting,
+        handleSubmit,
     };
 };

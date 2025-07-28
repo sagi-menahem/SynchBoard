@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useCreateBoardForm.ts
+// File: frontend/src/hooks/board/list/useCreateBoardForm.ts
 import { APP_CONFIG } from 'constants/app.constants';
 import { useState } from 'react';
 import toast from 'react-hot-toast';

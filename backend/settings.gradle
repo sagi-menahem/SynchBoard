@@ -1,2 +1,2 @@
-//File: backend\settings.gradle
+// File: backend/settings.gradle
 rootProject.name = 'backend'

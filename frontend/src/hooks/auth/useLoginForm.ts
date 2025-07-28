@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useLoginForm.ts
+// File: frontend/src/hooks/auth/useLoginForm.ts
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/useAuth';
 import { useState } from 'react';

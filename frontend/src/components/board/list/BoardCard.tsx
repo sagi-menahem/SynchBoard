@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/BoardCard.tsx
+// File: frontend/src/components/board/list/BoardCard.tsx
 import defaultBoardImage from 'assets/default-board-image.png';
 import { API_BASE_URL } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';

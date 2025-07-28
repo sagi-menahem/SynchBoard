@@ -7,6 +7,7 @@ logs/
 # IDEs
 .idea/
 *.iml
+.vscode/
 
 # --- Backend (Java/Gradle) ---
 .gradle
@@ -15,6 +16,7 @@ out/
 *.class
 *.jar
 *.war
+backend/uploads/
 
 # --- Frontend (Node/Vite) ---
 node_modules/

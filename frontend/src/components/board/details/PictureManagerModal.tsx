@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/PictureManagerModal.tsx
+// File: frontend/src/components/board/details/PictureManagerModal.tsx
 import defaultBoardImage from 'assets/default-board-image.png';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';

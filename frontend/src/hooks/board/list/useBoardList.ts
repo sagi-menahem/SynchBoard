@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useBoardList.ts
+// File: frontend/src/hooks/board/list/useBoardList.ts
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { useContextMenu } from 'hooks/common/useContextMenu';
 import { useAuth } from 'hooks/useAuth';

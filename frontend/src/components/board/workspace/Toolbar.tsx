@@ -1,4 +1,4 @@
-// File: frontend/src/components/board/Toolbar.tsx
+// File: frontend/src/components/board/workspace/Toolbar.tsx
 import Button from 'components/common/Button';
 import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants/board.constants';
 import { useDraggable } from 'hooks/common/useDraggable';
