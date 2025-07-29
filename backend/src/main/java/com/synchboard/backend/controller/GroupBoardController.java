@@ -36,8 +36,8 @@ public class GroupBoardController {
     }
 
     @GetMapping(API_BOARDS_DETAILS)
-    public ResponseEntity<BoardDetailsDTO> getBoardDetails(@PathVariable("boardId") Long boardId,
-            Authentication authentication) {
+    public ResponseEntity<BoardDetailsDTO> getBoardDetails(
+            @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
 
         String userEmail = authentication.getName();
         BoardDetailsDTO boardDetails = groupBoardService.getBoardDetails(boardId, userEmail);
@@ -54,14 +54,14 @@ public class GroupBoardController {
 
     @GetMapping(API_BOARDS_OBJECT)
     public ResponseEntity<List<BoardActionDTO.Response>> getBoardObjects(
-            @PathVariable("boardId") Long boardId, Authentication authentication) {
+            @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
         List<BoardActionDTO.Response> objects =
                 boardObjectService.getObjectsForBoard(boardId, authentication.getName());
         return ResponseEntity.ok(objects);
     }
 
     @PostMapping(API_BOARDS_MEMBERS)
-    public ResponseEntity<MemberDTO> inviteMember(@PathVariable("boardId") Long boardId,
+    public ResponseEntity<MemberDTO> inviteMember(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
             @Valid @RequestBody InviteRequest request, Authentication authentication) {
 
         String invitingUserEmail = authentication.getName();
@@ -71,8 +71,9 @@ public class GroupBoardController {
     }
 
     @DeleteMapping(API_BOARDS_MEMBERS_REMOVE)
-    public ResponseEntity<?> removeMember(@PathVariable("boardId") Long boardId,
-            @PathVariable("memberEmail") String memberEmail, Authentication authentication) {
+    public ResponseEntity<?> removeMember(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
+            @PathVariable(PATH_VAR_MEMBER_EMAIL) String memberEmail,
+            Authentication authentication) {
 
         String requestingUserEmail = authentication.getName();
         groupBoardService.removeMember(boardId, memberEmail, requestingUserEmail);
@@ -80,7 +81,7 @@ public class GroupBoardController {
     }
 
     @DeleteMapping(API_BOARDS_MEMBERS_LEAVE)
-    public ResponseEntity<?> leaveBoard(@PathVariable("boardId") Long boardId,
+    public ResponseEntity<?> leaveBoard(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
             Authentication authentication) {
 
         String userEmail = authentication.getName();
@@ -89,8 +90,9 @@ public class GroupBoardController {
     }
 
     @PutMapping(API_BOARDS_MEMBERS_PROMOTE)
-    public ResponseEntity<MemberDTO> promoteMember(@PathVariable("boardId") Long boardId,
-            @PathVariable("memberEmail") String memberEmail, Authentication authentication) {
+    public ResponseEntity<MemberDTO> promoteMember(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
+            @PathVariable(PATH_VAR_MEMBER_EMAIL) String memberEmail,
+            Authentication authentication) {
 
         String requestingUserEmail = authentication.getName();
         MemberDTO updatedMember =
@@ -99,7 +101,7 @@ public class GroupBoardController {
     }
 
     @PostMapping(API_BOARDS_UNDO)
-    public ResponseEntity<?> undoLastAction(@PathVariable("boardId") Long boardId,
+    public ResponseEntity<?> undoLastAction(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
             Authentication authentication) {
         String userEmail = authentication.getName();
         BoardActionDTO.Response undoResult =
@@ -107,13 +109,12 @@ public class GroupBoardController {
         if (undoResult != null) {
             return ResponseEntity.ok(undoResult);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No actions available to undo.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 
     @PostMapping(API_BOARDS_REDO)
-    public ResponseEntity<?> redoLastAction(@PathVariable("boardId") Long boardId,
+    public ResponseEntity<?> redoLastAction(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
             Authentication authentication) {
         String userEmail = authentication.getName();
         BoardActionDTO.Response redoResult =
@@ -121,13 +122,12 @@ public class GroupBoardController {
         if (redoResult != null) {
             return ResponseEntity.ok(redoResult);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No actions available to redo.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 
     @PutMapping(API_BOARDS_NAME)
-    public ResponseEntity<BoardDTO> updateBoardName(@PathVariable("boardId") Long boardId,
+    public ResponseEntity<BoardDTO> updateBoardName(@PathVariable(PATH_VAR_BOARD_ID) Long boardId,
             @Valid @RequestBody UpdateBoardNameRequest request, Authentication authentication) {
 
         String userEmail = authentication.getName();
@@ -137,7 +137,8 @@ public class GroupBoardController {
     }
 
     @PutMapping(API_BOARDS_DESCRIPTION)
-    public ResponseEntity<BoardDTO> updateBoardDescription(@PathVariable("boardId") Long boardId,
+    public ResponseEntity<BoardDTO> updateBoardDescription(
+            @PathVariable(PATH_VAR_BOARD_ID) Long boardId,
             @Valid @RequestBody UpdateBoardDescriptionRequest request,
             Authentication authentication) {
 
@@ -148,8 +149,9 @@ public class GroupBoardController {
     }
 
     @PostMapping(API_BOARDS_PICTURE)
-    public ResponseEntity<BoardDTO> uploadBoardPicture(@PathVariable("boardId") Long boardId,
-            @RequestParam("file") MultipartFile file, Authentication authentication) {
+    public ResponseEntity<BoardDTO> uploadBoardPicture(
+            @PathVariable(PATH_VAR_BOARD_ID) Long boardId,
+            @RequestParam(REQUEST_PARAM_FILE) MultipartFile file, Authentication authentication) {
 
         String userEmail = authentication.getName();
         BoardDTO updatedBoard = groupBoardService.updateBoardPicture(boardId, file, userEmail);
@@ -157,8 +159,8 @@ public class GroupBoardController {
     }
 
     @DeleteMapping(API_BOARDS_PICTURE)
-    public ResponseEntity<BoardDTO> deleteBoardPicture(@PathVariable("boardId") Long boardId,
-            Authentication authentication) {
+    public ResponseEntity<BoardDTO> deleteBoardPicture(
+            @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
 
         String userEmail = authentication.getName();
         BoardDTO updatedBoard = groupBoardService.deleteBoardPicture(boardId, userEmail);
@@ -167,7 +169,7 @@ public class GroupBoardController {
 
     @GetMapping(API_BOARDS_MESSAGES)
     public ResponseEntity<List<ChatMessageDTO.Response>> getBoardMessages(
-            @PathVariable("boardId") Long boardId, Authentication authentication) {
+            @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
         List<ChatMessageDTO.Response> messages =
                 chatService.getMessagesForBoard(boardId, authentication.getName());
         return ResponseEntity.ok(messages);

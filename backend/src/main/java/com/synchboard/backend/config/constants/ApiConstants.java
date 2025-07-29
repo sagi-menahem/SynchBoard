@@ -36,6 +36,13 @@ public final class ApiConstants {
     public static final String API_BOARDS_PICTURE = "/{boardId}/picture";
     public static final String API_BOARDS_MESSAGES = "/{boardId}/messages";
 
+    // Path variable names
+    public static final String PATH_VAR_BOARD_ID = "boardId";
+    public static final String PATH_VAR_MEMBER_EMAIL = "memberEmail";
+
+    // Request parameter names
+    public static final String REQUEST_PARAM_FILE = "file";
+
     // User specific endpoints
     public static final String API_USER_PROFILE = "/profile";
     public static final String API_USER_PASSWORD = "/password";

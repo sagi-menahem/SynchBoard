@@ -51,7 +51,7 @@ public class UserController {
 
     @PostMapping(API_USER_PROFILE_PICTURE)
     public ResponseEntity<UserProfileDTO> uploadProfilePicture(Authentication authentication,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam(REQUEST_PARAM_FILE) MultipartFile file) {
         String userEmail = authentication.getName();
         UserProfileDTO updatedUser = userService.updateProfilePicture(userEmail, file);
         return ResponseEntity.ok(updatedUser);
