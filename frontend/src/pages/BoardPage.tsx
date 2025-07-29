@@ -4,7 +4,7 @@ import BoardWorkspace from 'components/board/workspace/BoardWorkspace';
 import Toolbar from 'components/board/workspace/Toolbar';
 import { BoardProvider } from 'context/BoardProvider';
 import { useToolbarState } from 'hooks/board/workspace/useToolbarState';
-import { useBoardContext } from 'hooks/useBoardContext';
+import { useBoardContext } from 'hooks/board/context/useBoardContext';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';

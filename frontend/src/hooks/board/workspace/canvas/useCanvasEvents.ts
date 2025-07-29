@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/board/workspace/useCanvasEvents.ts
+// File: frontend/src/hooks/board/workspace/canvas/useCanvasEvents.ts
 import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {

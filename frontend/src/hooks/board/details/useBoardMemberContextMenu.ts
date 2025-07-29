@@ -1,6 +1,6 @@
 // File: frontend/src/hooks/board/details/useBoardMemberContextMenu.ts
 import { useContextMenu } from 'hooks/common/useContextMenu';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useCallback } from 'react';
 import type { Member } from 'types/board.types';
 

@@ -1,6 +1,6 @@
 // File: frontend/src/hooks/settings/useAccountManager.ts
 import { APP_ROUTES } from 'constants/routes.constants';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';

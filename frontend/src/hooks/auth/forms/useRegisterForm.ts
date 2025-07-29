@@ -1,35 +1,32 @@
-// File: frontend/src/hooks/auth/useLoginForm.ts
-import { APP_ROUTES } from 'constants/routes.constants';
-import { useAuth } from 'hooks/useAuth';
+// File: frontend/src/hooks/auth/forms/useRegisterForm.ts
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import * as authService from 'services/authService';
-import type { LoginRequest } from 'types/user.types';
+import type { RegisterRequest } from 'types/user.types';
 
-export const useLoginForm = () => {
+export const useRegisterForm = (onRegistrationSuccess: () => void) => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { login } = useAuth();
-    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsSubmitting(true);
-        const credentials: LoginRequest = { email, password };
+        const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
 
         authService
-            .login(credentials)
-            .then((response) => {
-                toast.success(t('loginForm.loginSuccess'));
-                login(response.token);
-                navigate(APP_ROUTES.BOARD_LIST);
+            .register(formData)
+            .then(() => {
+                toast.success(t('registerForm.registrationSuccess'));
+                onRegistrationSuccess();
             })
             .catch((err) => {
-                console.error('Login failed:', err);
+                console.error('Registration failed', err);
             })
             .finally(() => {
                 setIsSubmitting(false);
@@ -39,9 +36,15 @@ export const useLoginForm = () => {
     return {
         email,
         password,
+        firstName,
+        lastName,
+        phoneNumber,
         isSubmitting,
         setEmail,
         setPassword,
+        setFirstName,
+        setLastName,
+        setPhoneNumber,
         handleSubmit,
     };
 };

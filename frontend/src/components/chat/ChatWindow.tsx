@@ -2,7 +2,7 @@
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import { WEBSOCKET_DESTINATIONS } from 'constants/api.constants';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import websocketService from 'services/websocketService';

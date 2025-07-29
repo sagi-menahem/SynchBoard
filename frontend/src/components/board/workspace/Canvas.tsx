@@ -1,7 +1,7 @@
 // File: frontend/src/components/board/workspace/Canvas.tsx
 import type { TOOL_LIST } from 'constants/board.constants';
 import { CANVAS_CONFIG } from 'constants/board.constants';
-import { useCanvas } from 'hooks/board/workspace/useCanvas';
+import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
 import React from 'react';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import styles from './Canvas.module.css';
