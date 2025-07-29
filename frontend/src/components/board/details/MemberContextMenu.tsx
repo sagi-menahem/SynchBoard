@@ -1,0 +1,47 @@
+// File: frontend/src/components/board/details/MemberContextMenu.tsx
+import { ContextMenu } from 'components/common/ContextMenu';
+import { ContextMenuItem } from 'components/common/ContextMenuItem';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import type { Member } from 'types/board.types';
+
+interface MemberContextMenuProps {
+    isOpen: boolean;
+    x: number;
+    y: number;
+    member: Member | null;
+    onClose: () => void;
+    onPromote: () => void;
+    onRemove: () => void;
+}
+
+const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
+    isOpen,
+    x,
+    y,
+    member,
+    onClose,
+    onPromote,
+    onRemove,
+}) => {
+    const { t } = useTranslation();
+
+    if (!isOpen || !member) {
+        return null;
+    }
+
+    return (
+        <ContextMenu x={x} y={y} onClose={onClose}>
+            {!member.isAdmin && (
+                <ContextMenuItem onClick={onPromote}>
+                    {t('contextMenu.promoteToAdmin', { userName: member.firstName })}
+                </ContextMenuItem>
+            )}
+            <ContextMenuItem onClick={onRemove} destructive>
+                {t('contextMenu.removeFromBoard', { userName: member.firstName })}
+            </ContextMenuItem>
+        </ContextMenu>
+    );
+};
+
+export default MemberContextMenu;

@@ -1,15 +1,13 @@
 // File: frontend/src/pages/BoardPage.tsx
-import Canvas from 'components/board/workspace/Canvas';
+import BoardHeader from 'components/board/workspace/BoardHeader';
+import BoardWorkspace from 'components/board/workspace/BoardWorkspace';
 import Toolbar from 'components/board/workspace/Toolbar';
-import ChatWindow from 'components/chat/ChatWindow';
-import Button from 'components/common/Button';
-import { APP_ROUTES } from 'constants/routes.constants';
 import { BoardProvider } from 'context/BoardProvider';
 import { useToolbarState } from 'hooks/board/workspace/useToolbarState';
 import { useBoardContext } from 'hooks/useBoardContext';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './BoardPage.module.css';
 
 interface BoardPageContentProps {
@@ -33,9 +31,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         isRedoAvailable,
     } = useBoardContext();
 
-    const {
-        tool, setTool, strokeColor, setStrokeColor, strokeWidth, setStrokeWidth
-    } = useToolbarState();
+    const { tool, setTool, strokeColor, setStrokeColor, strokeWidth, setStrokeWidth } = useToolbarState();
 
     if (isLoading) {
         return <div>{t('boardPage.loading')}</div>;
@@ -43,46 +39,32 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
     return (
         <div className={styles.page} ref={pageRef}>
-            <div className={styles.header}>
-                <div className={styles.headerTitle}>
-                    <Link to={APP_ROUTES.BOARD_LIST}>
-                        <Button>
-                            &larr; {t('boardPage.backButton')}
-                        </Button>
-                    </Link>
-                    <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
-                        <h1>{boardName || t('boardPage.loading')}</h1>
-                    </Link>
-                </div>
-            </div>
+            <BoardHeader boardId={boardId} boardName={boardName} />
 
             <Toolbar
                 containerRef={pageRef}
-                strokeColor={strokeColor} setStrokeColor={setStrokeColor}
-                strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth}
-                tool={tool} setTool={setTool}
-                onUndo={handleUndo} isUndoAvailable={isUndoAvailable}
-                onRedo={handleRedo} isRedoAvailable={isRedoAvailable}
+                strokeColor={strokeColor}
+                setStrokeColor={setStrokeColor}
+                strokeWidth={strokeWidth}
+                setStrokeWidth={setStrokeWidth}
+                tool={tool}
+                setTool={setTool}
+                onUndo={handleUndo}
+                isUndoAvailable={isUndoAvailable}
+                onRedo={handleRedo}
+                isRedoAvailable={isRedoAvailable}
             />
 
-            <div className={styles.mainContent}>
-                <div className={styles.canvasContainer}>
-                    <Canvas
-                        instanceId={instanceId}
-                        onDraw={handleDrawAction}
-                        objects={objects}
-                        tool={tool}
-                        strokeColor={strokeColor}
-                        strokeWidth={strokeWidth}
-                    />
-                </div>
-                <div className={styles.chatContainer}>
-                    <ChatWindow
-                        boardId={boardId}
-                        messages={messages}
-                    />
-                </div>
-            </div>
+            <BoardWorkspace
+                boardId={boardId}
+                instanceId={instanceId}
+                objects={objects}
+                messages={messages}
+                tool={tool}
+                strokeColor={strokeColor}
+                strokeWidth={strokeWidth}
+                onDraw={handleDrawAction}
+            />
         </div>
     );
 };

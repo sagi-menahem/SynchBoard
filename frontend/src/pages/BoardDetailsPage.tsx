@@ -1,13 +1,10 @@
 // File: frontend/src/pages/BoardDetailsPage.tsx
+import BoardConfirmDialogs from 'components/board/details/BoardConfirmDialogs';
 import BoardDetailsHeader from 'components/board/details/BoardDetailsHeader';
-import EditFieldForm from 'components/board/details/EditFieldForm';
-import InviteMemberForm from 'components/board/details/InviteMemberForm';
+import BoardEditModals from 'components/board/details/BoardEditModals';
+import MemberContextMenu from 'components/board/details/MemberContextMenu';
 import MemberList from 'components/board/details/MemberList';
 import PictureManagerModal from 'components/board/details/PictureManagerModal';
-import ConfirmationDialog from 'components/common/ConfirmationDialog';
-import { ContextMenu } from 'components/common/ContextMenu';
-import { ContextMenuItem } from 'components/common/ContextMenuItem';
-import Modal from 'components/common/Modal';
 import { useBoardDetailsPage } from 'hooks/board/details/useBoardDetailsPage';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,53 +67,37 @@ const BoardDetailsPage: React.FC = () => {
                 <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
             </ul>
 
-            {contextMenu.isOpen && contextMenu.data && (
-                <ContextMenu x={contextMenu.anchorPoint.x} y={contextMenu.anchorPoint.y} onClose={contextMenu.closeMenu}>
-                    {!contextMenu.data.isAdmin && (
-                        <ContextMenuItem
-                            onClick={handlePromote}>
-                            {t('contextMenu.promoteToAdmin', { userName: contextMenu.data.firstName })}
-                        </ContextMenuItem>
-                    )}
-                    <ContextMenuItem
-                        onClick={handleRemove} destructive>
-                        {t('contextMenu.removeFromBoard', { userName: contextMenu.data.firstName })}
-                    </ContextMenuItem>
-                </ContextMenu>
-            )}
+            <MemberContextMenu
+                isOpen={contextMenu.isOpen}
+                x={contextMenu.anchorPoint.x}
+                y={contextMenu.anchorPoint.y}
+                member={contextMenu.data}
+                onClose={contextMenu.closeMenu}
+                onPromote={handlePromote}
+                onRemove={handleRemove}
+            />
 
-            <Modal isOpen={isInviteModalOpen} onClose={() => setInviteModalOpen(false)}>
-                <InviteMemberForm boardId={numericBoardId} onInviteSuccess={handleInviteSuccess} />
-            </Modal>
+            <BoardEditModals
+                isInviteModalOpen={isInviteModalOpen}
+                editingField={editingField}
+                boardId={numericBoardId}
+                boardName={boardDetails.name}
+                boardDescription={boardDetails.description || ''}
+                onCloseInvite={() => setInviteModalOpen(false)}
+                onCloseEdit={() => setEditingField(null)}
+                onInviteSuccess={handleInviteSuccess}
+                onUpdateName={handleUpdateName}
+                onUpdateDescription={handleUpdateDescription}
+            />
 
-            <Modal isOpen={editingField !== null} onClose={() => setEditingField(null)}>
-                {editingField === 'name' && (
-                    <EditFieldForm
-                        title={t('editBoardNameForm.title')}
-                        label={t('editBoardNameForm.label')}
-                        initialValue={boardDetails.name}
-                        onSave={handleUpdateName}
-                        onClose={() => setEditingField(null)}
-                    />
-                )}
-                {editingField === 'description' && (
-                    <EditFieldForm
-                        title={t('editBoardDescriptionForm.title')}
-                        label={t('editBoardDescriptionForm.label')}
-                        initialValue={boardDetails.description || ''}
-                        inputType="textarea"
-                        onSave={handleUpdateDescription}
-                        onClose={() => setEditingField(null)}
-                    />
-                )}
-            </Modal>
-
-            <ConfirmationDialog
-                isOpen={isLeaveConfirmOpen}
-                onClose={() => setLeaveConfirmOpen(false)}
-                onConfirm={handleLeaveBoard}
-                title={t('leaveBoard.confirmTitle')}
-                message={t('leaveBoard.confirmText', { boardName: boardDetails.name })}
+            <BoardConfirmDialogs
+                isLeaveConfirmOpen={isLeaveConfirmOpen}
+                isDeleteConfirmOpen={isDeleteConfirmOpen}
+                boardName={boardDetails.name}
+                onCloseLeave={() => setLeaveConfirmOpen(false)}
+                onCloseDelete={() => setDeleteConfirmOpen(false)}
+                onConfirmLeave={handleLeaveBoard}
+                onConfirmDelete={handleConfirmDeletePicture}
             />
 
             <PictureManagerModal
@@ -126,14 +107,6 @@ const BoardDetailsPage: React.FC = () => {
                 pictureUrl={boardDetails.pictureUrl}
                 onPictureUpload={handlePictureUpload}
                 onPictureDelete={promptPictureDelete}
-            />
-
-            <ConfirmationDialog
-                isOpen={isDeleteConfirmOpen}
-                onClose={() => setDeleteConfirmOpen(false)}
-                onConfirm={handleConfirmDeletePicture}
-                title={t('pictureManager.deleteButton')}
-                message={t('leaveBoard.confirmText', { boardName: boardDetails.name })}
             />
         </div>
     );
