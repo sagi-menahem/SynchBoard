@@ -1,28 +1,71 @@
-# General & OS files
+# ===================================================================
+# General & OS
+# ===================================================================
 .DS_Store
 *.log
 logs/
 *.session.sql
 
+# ===================================================================
 # IDEs
+# ===================================================================
+# IntelliJ IDEA
 .idea/
 *.iml
-.vscode/
+*.iws
+*.ipr
 
-# --- Backend (Java/Gradle) ---
+# VSCode
+.vscode/
+!.vscode/extensions.json
+
+# STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ===================================================================
+# Backend (Java/Gradle)
+# ===================================================================
+HELP.md
 .gradle
 build/
 out/
+bin/
 *.class
 *.jar
 *.war
 backend/uploads/
 
-# --- Frontend (Node/Vite) ---
+# Keep the gradle wrapper
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# ===================================================================
+# Frontend (Node/Vite)
+# ===================================================================
 node_modules/
 dist/
 dist-ssr/
 *.local
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
