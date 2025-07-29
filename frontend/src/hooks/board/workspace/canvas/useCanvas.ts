@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/board/workspace/useCanvas.ts
+// File: frontend/src/hooks/board/workspace/canvas/useCanvas.ts
 import type { TOOL_LIST } from 'constants/board.constants';
 import { useEffect } from 'react';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';

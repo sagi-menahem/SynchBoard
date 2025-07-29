@@ -2,7 +2,7 @@
 import Button from 'components/common/Button';
 import styles from 'components/common/Form.module.css';
 import Input from 'components/common/Input';
-import { useLoginForm } from 'hooks/auth/useLoginForm';
+import { useLoginForm } from 'hooks/auth/forms/useLoginForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

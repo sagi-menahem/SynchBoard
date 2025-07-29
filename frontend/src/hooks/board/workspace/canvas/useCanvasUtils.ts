@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/board/workspace/useCanvasUtils.ts
+// File: frontend/src/hooks/board/workspace/canvas/useCanvasUtils.ts
 import { CANVAS_CONFIG, TOOLS } from 'constants/board.constants';
 import { useCallback } from 'react';
 import type { ActionPayload, CirclePayload, LinePayload, RectanglePayload } from 'types/boardObject.types';

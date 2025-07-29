@@ -1,8 +1,8 @@
-// File: frontend/src/hooks/board/list/useBoardList.ts
+// File: frontend/src/hooks/board/management/useBoardList.ts
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useContextMenu } from 'hooks/common/useContextMenu';
-import { useAuth } from 'hooks/useAuth';
-import { useSocket } from 'hooks/useSocket';
+import { useSocket } from 'hooks/global/useSocket';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';

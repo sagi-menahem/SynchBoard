@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/board/workspace/useCanvasRendering.ts
+// File: frontend/src/hooks/board/workspace/canvas/useCanvasRendering.ts
 import { useEffect } from 'react';
 import type { ActionPayload } from 'types/boardObject.types';
 import { useCanvasUtils } from './useCanvasUtils';

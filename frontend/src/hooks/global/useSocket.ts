@@ -1,7 +1,7 @@
-// File: frontend/src/hooks/useSocket.ts
+// File: frontend/src/hooks/global/useSocket.ts
 import { useEffect } from 'react';
 import websocketService from 'services/websocketService';
-import { useAuth } from './useAuth';
+import { useAuth } from '../auth/useAuth';
 
 export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => void) => {
     const { isSocketConnected } = useAuth();

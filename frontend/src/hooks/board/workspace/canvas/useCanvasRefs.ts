@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/board/workspace/useCanvasRefs.ts
+// File: frontend/src/hooks/board/workspace/canvas/useCanvasRefs.ts
 import { useRef } from 'react';
 
 interface CanvasRefs {

@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/useBoardContext.ts
+// File: frontend/src/hooks/board/context/useBoardContext.ts
 import { BoardContext } from 'context/BoardContext.ts';
 import { useContext } from 'react';
 

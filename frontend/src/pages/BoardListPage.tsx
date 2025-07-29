@@ -7,7 +7,7 @@ import { ContextMenu } from 'components/common/ContextMenu';
 import { ContextMenuItem } from 'components/common/ContextMenuItem';
 import Modal from 'components/common/Modal';
 import { APP_ROUTES } from 'constants/routes.constants';
-import { useBoardList } from 'hooks/board/list/useBoardList';
+import { useBoardList } from 'hooks/board/management/useBoardList';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
