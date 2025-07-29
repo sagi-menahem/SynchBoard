@@ -1,6 +1,7 @@
 // File: backend/src/main/java/com/synchboard/backend/service/BoardObjectService.java
 package com.synchboard.backend.service;
 
+import static com.synchboard.backend.config.constants.FileConstants.DEFAULT_SENDER_EMAIL;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.access.AccessDeniedException;
@@ -88,7 +89,7 @@ public class BoardObjectService {
         try {
             JsonNode payload = objectMapper.readTree(entity.getObjectData());
 
-            String senderEmail = "unknown";
+            String senderEmail = DEFAULT_SENDER_EMAIL;
             if (entity.getCreatedByUser() != null) {
                 senderEmail = entity.getCreatedByUser().getEmail();
             }

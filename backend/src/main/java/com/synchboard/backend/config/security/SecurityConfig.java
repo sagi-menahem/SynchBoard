@@ -1,8 +1,9 @@
 // File: backend/src/main/java/com/synchboard/backend/config/security/SecurityConfig.java
 package com.synchboard.backend.config.security;
 
-import static com.synchboard.backend.config.constants.ApiConstants.API_AUTH_PATH;
-import static com.synchboard.backend.config.constants.ApiConstants.API_USER_PATH;
+import static com.synchboard.backend.config.constants.ApiConstants.API_AUTH_PATH_PATTERN;
+import static com.synchboard.backend.config.constants.ApiConstants.API_USER_PATH_PATTERN;
+import static com.synchboard.backend.config.constants.ApiConstants.IMAGES_PATH_PATTERN;
 import static com.synchboard.backend.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_ENDPOINT_WITH_SUBPATHS;
 import java.util.Arrays;
@@ -34,10 +35,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(API_AUTH_PATH).permitAll()
-                        .requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
-                        .requestMatchers(API_USER_PATH).authenticated().anyRequest()
+                .authorizeHttpRequests(auth -> auth.requestMatchers(API_AUTH_PATH_PATTERN)
+                        .permitAll().requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
+                        .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN).permitAll()
+                        .requestMatchers(API_USER_PATH_PATTERN).authenticated().anyRequest()
                         .authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

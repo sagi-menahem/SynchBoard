@@ -1,6 +1,7 @@
 // File: backend/src/main/java/com/synchboard/backend/service/GroupBoardService.java
 package com.synchboard.backend.service;
 
+import static com.synchboard.backend.config.constants.FileConstants.IMAGES_BASE_PATH;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_USER_TOPIC_PREFIX;
 import java.util.List;
@@ -335,7 +336,7 @@ public class GroupBoardService {
                 }
 
                 String newFilename = fileStorageService.store(file);
-                String newPictureUrl = "/images/" + newFilename;
+                String newPictureUrl = IMAGES_BASE_PATH + newFilename;
                 boardToUpdate.setGroupPictureUrl(newPictureUrl);
 
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);

@@ -1,6 +1,7 @@
 // File: backend/src/main/java/com/synchboard/backend/service/UserService.java
 package com.synchboard.backend.service;
 
+import static com.synchboard.backend.config.constants.FileConstants.IMAGES_BASE_PATH;
 import static com.synchboard.backend.config.constants.MessageConstants.ALLOWED_FONT_SIZES;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import java.util.List;
@@ -140,12 +141,13 @@ public class UserService {
                 () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
-            String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
+            String existingFilename =
+                    user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
             fileStorageService.delete(existingFilename);
         }
 
         String newFilename = fileStorageService.store(file);
-        String newPictureUrl = "/images/" + newFilename;
+        String newPictureUrl = IMAGES_BASE_PATH + newFilename;
         user.setProfilePictureUrl(newPictureUrl);
 
         User updatedUser = userRepository.save(user);
@@ -160,7 +162,8 @@ public class UserService {
                 () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
-            String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
+            String existingFilename =
+                    user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
             fileStorageService.delete(existingFilename);
             user.setProfilePictureUrl(null);
             userRepository.save(user);
@@ -187,7 +190,8 @@ public class UserService {
         boardIds.forEach(boardId -> groupBoardService.leaveBoard(boardId, userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
-            String existingFilename = user.getProfilePictureUrl().substring("/images/".length());
+            String existingFilename =
+                    user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
             fileStorageService.delete(existingFilename);
         }
 
