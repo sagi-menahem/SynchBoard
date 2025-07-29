@@ -279,7 +279,6 @@ public class GroupBoardService {
         @Transactional
         public BoardDTO updateBoardDescription(Long boardId, String newDescription,
                         String userEmail) {
-                // Allow empty description but trim whitespace
                 String trimmedDescription = newDescription != null ? newDescription.trim() : null;
 
                 GroupMember member = groupMemberRepository

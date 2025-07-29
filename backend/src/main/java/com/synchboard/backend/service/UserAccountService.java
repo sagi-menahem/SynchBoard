@@ -34,27 +34,23 @@ public class UserAccountService {
         User user = userRepository.findById(userEmail).orElseThrow(
                 () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
-        // נקה התייחסויות למשתמש בטבלאות אחרות
         boardObjectRepository.nullifyCreatedByUser(userEmail);
         boardObjectRepository.nullifyLastEditedByUser(userEmail);
         groupBoardRepository.nullifyCreatedByUser(userEmail);
         actionHistoryRepository.deleteAllByUser_Email(userEmail);
         messageRepository.nullifySenderByUserEmail(userEmail);
 
-        // עזוב את כל הבורדים
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
         List<Long> boardIds =
                 memberships.stream().map(GroupMember::getBoardGroupId).collect(Collectors.toList());
         boardIds.forEach(boardId -> groupBoardService.leaveBoard(boardId, userEmail));
 
-        // מחק תמונת פרופיל אם קיימת
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename =
                     user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
             fileStorageService.delete(existingFilename);
         }
 
-        // מחק את המשתמש
         userRepository.delete(user);
     }
 }
