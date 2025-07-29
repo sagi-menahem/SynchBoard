@@ -257,13 +257,17 @@ public class GroupBoardService {
 
         @Transactional
         public BoardDTO updateBoardName(Long boardId, String newName, String userEmail) {
+                if (newName == null || newName.trim().isEmpty()) {
+                        throw new InvalidRequestException("Board name cannot be empty");
+                }
+
                 GroupMember member = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, userEmail)
                                 .orElseThrow(() -> new AccessDeniedException(
                                                 MessageConstants.AUTH_NOT_MEMBER));
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
-                boardToUpdate.setBoardGroupName(newName);
+                boardToUpdate.setBoardGroupName(newName.trim());
 
                 List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
                 allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
@@ -275,13 +279,16 @@ public class GroupBoardService {
         @Transactional
         public BoardDTO updateBoardDescription(Long boardId, String newDescription,
                         String userEmail) {
+                // Allow empty description but trim whitespace
+                String trimmedDescription = newDescription != null ? newDescription.trim() : null;
+
                 GroupMember member = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, userEmail)
                                 .orElseThrow(() -> new AccessDeniedException(
                                                 MessageConstants.AUTH_NOT_MEMBER));
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
-                boardToUpdate.setGroupDescription(newDescription);
+                boardToUpdate.setGroupDescription(trimmedDescription);
 
                 List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
                 allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
@@ -292,14 +299,30 @@ public class GroupBoardService {
 
         private void deleteBoardAndAssociatedData(Long boardId, String userEmail,
                         List<GroupMember> membersToNotify) {
-                log.info("Deleting all data associated with boardId {}", boardId);
+                log.info("Deleting all data associated with boardId {} initiated by user {}",
+                                boardId, userEmail);
                 membersToNotify.forEach(member -> broadcastUserUpdate(member.getUserEmail()));
-                deleteBoardPicture(boardId, userEmail);
-                actionHistoryRepository.deleteAllByBoard_BoardGroupId(boardId);
-                boardObjectRepository.deleteAllByBoard_BoardGroupId(boardId);
-                groupMemberRepository.deleteAllByBoardGroupId(boardId);
-                groupBoardRepository.deleteById(boardId);
-                log.info("Successfully deleted board {}", boardId);
+
+                try {
+                        deleteBoardPicture(boardId, userEmail);
+                        log.debug("Deleted board picture for board {}", boardId);
+
+                        actionHistoryRepository.deleteAllByBoard_BoardGroupId(boardId);
+                        log.debug("Deleted action history for board {}", boardId);
+
+                        boardObjectRepository.deleteAllByBoard_BoardGroupId(boardId);
+                        log.debug("Deleted board objects for board {}", boardId);
+
+                        groupMemberRepository.deleteAllByBoardGroupId(boardId);
+                        log.debug("Deleted group members for board {}", boardId);
+
+                        groupBoardRepository.deleteById(boardId);
+                        log.info("Successfully deleted board {} and all associated data", boardId);
+                } catch (Exception e) {
+                        log.error("Error occurred while deleting board {} and associated data",
+                                        boardId, e);
+                        throw e;
+                }
         }
 
         private BoardDTO mapToBoardResponse(GroupMember membership) {
@@ -319,6 +342,17 @@ public class GroupBoardService {
                                 .isAdmin(membership.getIsAdmin()).build();
         }
 
+        private void deleteExistingPicture(GroupBoard board) {
+                String pictureUrl = board.getGroupPictureUrl();
+                if (pictureUrl != null && !pictureUrl.isBlank()) {
+                        int lastSlashIndex = pictureUrl.lastIndexOf("/");
+                        if (lastSlashIndex != -1 && lastSlashIndex < pictureUrl.length() - 1) {
+                                String filename = pictureUrl.substring(lastSlashIndex + 1);
+                                fileStorageService.delete(filename);
+                        }
+                }
+        }
+
         @Transactional
         public BoardDTO updateBoardPicture(Long boardId, MultipartFile file, String userEmail) {
                 GroupMember member = groupMemberRepository
@@ -328,12 +362,7 @@ public class GroupBoardService {
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
 
-                if (boardToUpdate.getGroupPictureUrl() != null
-                                && !boardToUpdate.getGroupPictureUrl().isBlank()) {
-                        String fullUrl = boardToUpdate.getGroupPictureUrl();
-                        String filename = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
-                        fileStorageService.delete(filename);
-                }
+                deleteExistingPicture(boardToUpdate);
 
                 String newFilename = fileStorageService.store(file);
                 String newPictureUrl = IMAGES_BASE_PATH + newFilename;
@@ -354,14 +383,8 @@ public class GroupBoardService {
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
 
-                if (boardToUpdate.getGroupPictureUrl() != null
-                                && !boardToUpdate.getGroupPictureUrl().isBlank()) {
-                        String fullUrl = boardToUpdate.getGroupPictureUrl();
-                        String filename = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
-
-                        fileStorageService.delete(filename);
-                        boardToUpdate.setGroupPictureUrl(null);
-                }
+                deleteExistingPicture(boardToUpdate);
+                boardToUpdate.setGroupPictureUrl(null);
 
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
                 List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
