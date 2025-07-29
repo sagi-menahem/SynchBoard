@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import com.synchboard.backend.config.constants.ApiConstants;
 import com.synchboard.backend.entity.Message;
 
 @Repository
@@ -16,5 +17,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Modifying
     @Query("UPDATE Message m SET m.sender = NULL WHERE m.sender.email = :userEmail")
-    void nullifySenderByUserEmail(@Param("userEmail") String userEmail);
+    void nullifySenderByUserEmail(@Param(ApiConstants.PARAM_USER_EMAIL) String userEmail);
 }

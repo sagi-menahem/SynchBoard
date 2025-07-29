@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import com.synchboard.backend.config.constants.ApiConstants;
 import com.synchboard.backend.entity.BoardObject;
 
 @Repository
@@ -20,9 +21,9 @@ public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> 
 
     @Modifying
     @Query("UPDATE BoardObject bo SET bo.createdByUser = NULL WHERE bo.createdByUser.email = :userEmail")
-    void nullifyCreatedByUser(@Param("userEmail") String userEmail);
+    void nullifyCreatedByUser(@Param(ApiConstants.PARAM_USER_EMAIL) String userEmail);
 
     @Modifying
     @Query("UPDATE BoardObject bo SET bo.lastEditedByUser = NULL WHERE bo.lastEditedByUser.email = :userEmail")
-    void nullifyLastEditedByUser(@Param("userEmail") String userEmail);
+    void nullifyLastEditedByUser(@Param(ApiConstants.PARAM_USER_EMAIL) String userEmail);
 }

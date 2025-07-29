@@ -43,6 +43,9 @@ public final class ApiConstants {
     // Request parameter names
     public static final String REQUEST_PARAM_FILE = "file";
 
+    // Query parameter names
+    public static final String PARAM_USER_EMAIL = "userEmail";
+
     // User specific endpoints
     public static final String API_USER_PROFILE = "/profile";
     public static final String API_USER_PASSWORD = "/password";
