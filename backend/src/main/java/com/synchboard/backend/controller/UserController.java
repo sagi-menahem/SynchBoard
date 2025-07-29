@@ -10,6 +10,8 @@ import com.synchboard.backend.dto.user.ChangePasswordDTO;
 import com.synchboard.backend.dto.user.UpdateUserProfileDTO;
 import com.synchboard.backend.dto.user.UserPreferencesDTO;
 import com.synchboard.backend.dto.user.UserProfileDTO;
+import com.synchboard.backend.service.AuthService;
+import com.synchboard.backend.service.UserAccountService;
 import com.synchboard.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
     private final UserService userService;
+    private final AuthService authService;
+    private final UserAccountService userAccountService;
 
     @GetMapping(API_USER_PROFILE)
     public ResponseEntity<UserProfileDTO> getCurrentUserProfile(Authentication authentication) {
@@ -40,7 +44,7 @@ public class UserController {
     public ResponseEntity<?> changePassword(Authentication authentication,
             @Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         String userEmail = authentication.getName();
-        userService.changePassword(userEmail, changePasswordDTO.getCurrentPassword(),
+        authService.changePassword(userEmail, changePasswordDTO.getCurrentPassword(),
                 changePasswordDTO.getNewPassword());
         return ResponseEntity.ok().build();
     }
@@ -63,7 +67,7 @@ public class UserController {
     @DeleteMapping(API_USER_ACCOUNT)
     public ResponseEntity<?> deleteAccount(Authentication authentication) {
         String userEmail = authentication.getName();
-        userService.deleteAccount(userEmail);
+        userAccountService.deleteAccount(userEmail);
         return ResponseEntity.ok().build();
     }
 
