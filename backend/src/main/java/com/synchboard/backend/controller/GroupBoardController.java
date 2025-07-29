@@ -1,8 +1,7 @@
 // File: backend/src/main/java/com/synchboard/backend/controller/GroupBoardController.java
 package com.synchboard.backend.controller;
 
-import static com.synchboard.backend.config.constants.ApiConstants.API_BOARDS_OBJECT;
-import static com.synchboard.backend.config.constants.ApiConstants.API_BOARDS_PATH;
+import static com.synchboard.backend.config.constants.ApiConstants.*;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(API_BOARDS_PATH)
+@RequestMapping(API_BOARDS_BASE_PATH)
 @RequiredArgsConstructor
 public class GroupBoardController {
 
@@ -36,7 +35,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(boards);
     }
 
-    @GetMapping("/{boardId}/details")
+    @GetMapping(API_BOARDS_DETAILS)
     public ResponseEntity<BoardDetailsDTO> getBoardDetails(@PathVariable("boardId") Long boardId,
             Authentication authentication) {
 
@@ -61,7 +60,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(objects);
     }
 
-    @PostMapping("/{boardId}/members")
+    @PostMapping(API_BOARDS_MEMBERS)
     public ResponseEntity<MemberDTO> inviteMember(@PathVariable("boardId") Long boardId,
             @Valid @RequestBody InviteRequest request, Authentication authentication) {
 
@@ -71,7 +70,7 @@ public class GroupBoardController {
         return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{boardId}/members/{memberEmail}")
+    @DeleteMapping(API_BOARDS_MEMBERS_REMOVE)
     public ResponseEntity<?> removeMember(@PathVariable("boardId") Long boardId,
             @PathVariable("memberEmail") String memberEmail, Authentication authentication) {
 
@@ -80,7 +79,7 @@ public class GroupBoardController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{boardId}/members/leave")
+    @DeleteMapping(API_BOARDS_MEMBERS_LEAVE)
     public ResponseEntity<?> leaveBoard(@PathVariable("boardId") Long boardId,
             Authentication authentication) {
 
@@ -89,7 +88,7 @@ public class GroupBoardController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{boardId}/members/{memberEmail}/promote")
+    @PutMapping(API_BOARDS_MEMBERS_PROMOTE)
     public ResponseEntity<MemberDTO> promoteMember(@PathVariable("boardId") Long boardId,
             @PathVariable("memberEmail") String memberEmail, Authentication authentication) {
 
@@ -99,7 +98,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(updatedMember);
     }
 
-    @PostMapping("/{boardId}/undo")
+    @PostMapping(API_BOARDS_UNDO)
     public ResponseEntity<?> undoLastAction(@PathVariable("boardId") Long boardId,
             Authentication authentication) {
         String userEmail = authentication.getName();
@@ -113,7 +112,7 @@ public class GroupBoardController {
         }
     }
 
-    @PostMapping("/{boardId}/redo")
+    @PostMapping(API_BOARDS_REDO)
     public ResponseEntity<?> redoLastAction(@PathVariable("boardId") Long boardId,
             Authentication authentication) {
         String userEmail = authentication.getName();
@@ -127,7 +126,7 @@ public class GroupBoardController {
         }
     }
 
-    @PutMapping("/{boardId}/name")
+    @PutMapping(API_BOARDS_NAME)
     public ResponseEntity<BoardDTO> updateBoardName(@PathVariable("boardId") Long boardId,
             @Valid @RequestBody UpdateBoardNameRequest request, Authentication authentication) {
 
@@ -137,7 +136,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(updatedBoard);
     }
 
-    @PutMapping("/{boardId}/description")
+    @PutMapping(API_BOARDS_DESCRIPTION)
     public ResponseEntity<BoardDTO> updateBoardDescription(@PathVariable("boardId") Long boardId,
             @Valid @RequestBody UpdateBoardDescriptionRequest request,
             Authentication authentication) {
@@ -148,7 +147,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(updatedBoard);
     }
 
-    @PostMapping("/{boardId}/picture")
+    @PostMapping(API_BOARDS_PICTURE)
     public ResponseEntity<BoardDTO> uploadBoardPicture(@PathVariable("boardId") Long boardId,
             @RequestParam("file") MultipartFile file, Authentication authentication) {
 
@@ -157,7 +156,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(updatedBoard);
     }
 
-    @DeleteMapping("/{boardId}/picture")
+    @DeleteMapping(API_BOARDS_PICTURE)
     public ResponseEntity<BoardDTO> deleteBoardPicture(@PathVariable("boardId") Long boardId,
             Authentication authentication) {
 
@@ -166,7 +165,7 @@ public class GroupBoardController {
         return ResponseEntity.ok(updatedBoard);
     }
 
-    @GetMapping("/{boardId}/messages")
+    @GetMapping(API_BOARDS_MESSAGES)
     public ResponseEntity<List<ChatMessageDTO.Response>> getBoardMessages(
             @PathVariable("boardId") Long boardId, Authentication authentication) {
         List<ChatMessageDTO.Response> messages =

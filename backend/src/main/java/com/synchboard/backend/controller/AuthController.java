@@ -11,7 +11,7 @@ import com.synchboard.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(API_AUTH_PATH)
+@RequestMapping(API_AUTH_BASE_PATH)
 @RequiredArgsConstructor
 public class AuthController {
 

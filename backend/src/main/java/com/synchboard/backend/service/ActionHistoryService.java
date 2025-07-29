@@ -1,6 +1,7 @@
 // File: backend/src/main/java/com/synchboard/backend/service/ActionHistoryService.java
 package com.synchboard.backend.service;
 
+import static com.synchboard.backend.config.constants.ActionConstants.OBJECT_ADD_ACTION;
 import static com.synchboard.backend.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
@@ -49,7 +50,7 @@ public class ActionHistoryService {
         actionHistoryRepository.save(lastAction);
 
         BoardActionDTO.Response undoResponse = null;
-        if ("OBJECT_ADD".equals(lastAction.getActionType())) {
+        if (OBJECT_ADD_ACTION.equals(lastAction.getActionType())) {
             undoResponse = handleUndoAdd(lastAction);
         }
 
@@ -78,7 +79,7 @@ public class ActionHistoryService {
         lastUndoneAction.setUndone(false);
 
         BoardActionDTO.Response redoResponse = null;
-        if ("OBJECT_ADD".equals(lastUndoneAction.getActionType())) {
+        if (OBJECT_ADD_ACTION.equals(lastUndoneAction.getActionType())) {
             redoResponse = handleRedoAdd(lastUndoneAction);
         }
 
