@@ -21,7 +21,7 @@
 				"name": "Launch Spring Boot App",
 				"request": "launch",
 				"cwd": "${workspaceFolder:Backend}",
-				"mainClass": "com.synchboard.backend.BackendApplication",
+				"mainClass": "io.github.sagimenahem.synchboard.BackendApplication",
 				"projectName": "backend",
 				"args": "",
 				"envFile": "${workspaceFolder:Backend}/.env"
@@ -43,7 +43,7 @@
 		],
 		"favorites.resources": [
 			{
-				"filePath": "backend/src/main/java/com/synchboard/backend",
+				"filePath": "backend/src/main/java/io/github/sagimenahem/synchboard",
 				"group": "Default"
 			},
 			{
