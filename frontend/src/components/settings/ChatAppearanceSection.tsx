@@ -1,14 +1,14 @@
 // File: frontend/src/components/settings/ChatAppearanceSection.tsx
 import Button from 'components/common/Button';
 import { CHAT_BACKGROUND_OPTIONS, CHAT_FONT_SIZE_OPTIONS } from 'constants/style.constants';
-import { useAuth } from 'hooks/auth/useAuth';
+import { usePreferences } from 'hooks/preferences/usePreferences';
 import styles from 'pages/SettingsPage.module.css';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const ChatAppearanceSection: React.FC = () => {
     const { t } = useTranslation();
-    const { preferences, updatePreferences } = useAuth();
+    const { preferences, updatePreferences } = usePreferences();
 
     return (
         <section className={styles.section}>

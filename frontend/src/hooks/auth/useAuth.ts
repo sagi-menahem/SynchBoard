@@ -1,4 +1,4 @@
-// File: frontend/src/hooks/auth/useAuth.ts
+// File: frontend/src/hooks/auth/useAuth.new.ts
 import { AuthContext } from 'context/AuthContext';
 import { useContext } from 'react';
 

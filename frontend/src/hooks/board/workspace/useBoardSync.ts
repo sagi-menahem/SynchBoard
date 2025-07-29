@@ -1,17 +1,21 @@
 // File: frontend/src/hooks/board/workspace/useBoardSync.ts
-import { WEBSOCKET_DESTINATIONS } from 'constants/api.constants';
+import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
+import { useSocket } from 'hooks/global/useSocket';
 import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import websocketService from 'services/websocketService';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
+import type { UserUpdateDTO } from 'types/websocket.types';
 
 export const useBoardSync = (boardId: number) => {
     const navigate = useNavigate();
     const sessionInstanceId = useRef(Date.now().toString());
+    const { userEmail } = useAuth();
 
     // Use our new modular hooks
     const {
@@ -69,6 +73,17 @@ export const useBoardSync = (boardId: number) => {
             navigate(APP_ROUTES.BOARD_LIST);
         }
     }, [accessLost, navigate]);
+
+    // Handle user updates - when user is removed from board
+    const handleUserUpdate = useCallback(
+        (message: UserUpdateDTO) => {
+            console.log(`[useBoardSync] Received user update: ${message.updateType}. Navigating to board list...`);
+            navigate(APP_ROUTES.BOARD_LIST);
+        },
+        [navigate]
+    );
+
+    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
 
     return {
         isLoading,

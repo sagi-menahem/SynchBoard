@@ -31,15 +31,22 @@ apiClient.interceptors.response.use(
     (error: AxiosError) => {
         const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
+        // Check if this is a board-specific request
+        const isBoardRequest = error.config?.url?.includes('/boards/');
+
         if (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) {
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+            // For 401 (unauthorized) always invalidate session
+            // For 403 (forbidden) only invalidate session if it's not a board-specific request
+            if (error.response.status === 401 || !isBoardRequest) {
+                localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
-            toast.error(i18n.t('errors.sessionExpired'), { id: 'session-expired' });
+                toast.error(i18n.t('errors.sessionExpired'), { id: 'session-expired' });
 
-            if (window.location.pathname !== '/') {
-                window.location.href = '/';
+                if (window.location.pathname !== '/') {
+                    window.location.href = '/';
+                }
+                return Promise.reject(error);
             }
-            return Promise.reject(error);
         }
 
         interface BackendError {

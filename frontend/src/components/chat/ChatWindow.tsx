@@ -2,7 +2,7 @@
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import { WEBSOCKET_DESTINATIONS } from 'constants/api.constants';
-import { useAuth } from 'hooks/auth/useAuth';
+import { usePreferences } from 'hooks/preferences/usePreferences';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import websocketService from 'services/websocketService';
@@ -17,7 +17,7 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     const { t } = useTranslation();
-    const { preferences } = useAuth();
+    const { preferences } = usePreferences();
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
