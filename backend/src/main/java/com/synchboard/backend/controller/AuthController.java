@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.synchboard.backend.dto.auth.AuthResponse;
 import com.synchboard.backend.dto.auth.LoginRequest;
 import com.synchboard.backend.dto.auth.RegisterRequest;
-import com.synchboard.backend.service.UserService;
+import com.synchboard.backend.service.AuthService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -15,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping(API_AUTH_REGISTER_PATH)
     public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(userService.registerUser(request));
+        return ResponseEntity.ok(authService.registerUser(request));
     }
 
     @PostMapping(API_AUTH_LOGIN_PATH)
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(userService.login(request));
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @GetMapping(API_AUTH_TEST_PATH)
