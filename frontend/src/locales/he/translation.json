@@ -46,30 +46,6 @@
         "registrationSuccess": "ההרשמה הושלמה, אתה יכול להתחבר עכשיו.",
         "failedError": "ההרשמה נכשלה. אנא נסה שנית במועד מאוחר יותר."
     },
-    "navbar": {
-        "title": "SynchBoard",
-        "logout": "התנתק",
-        "language": {
-            "en": "English",
-            "he": "עברית"
-        }
-    },
-    "createBoardForm": {
-        "heading": "צור לוח חדש",
-        "nameLengthError": "שם הלוח חייב להכיל לפחות 3 תווים.",
-        "failedError": "יצירת הלוח נכשלה. אנא נסה שנית.",
-        "label": {
-            "boardName": "שם הלוח",
-            "description": "תיאור (אופציונלי)"
-        },
-        "placeholder": {
-            "name": "לדוגמה, תכנון פרויקט לרבעון 3",
-            "description": "על מה הלוח הזה?"
-        },
-        "button": {
-            "createBoard": "צור לוח"
-        }
-    },
     "inviteMemberForm": {
         "heading": "הזמן חבר חדש",
         "label": "אימייל משתמש:",
@@ -89,6 +65,34 @@
     "editBoardDescriptionForm": {
         "title": "ערוך תיאור לוח",
         "label": "תיאור"
+    },
+    "navbar": {
+        "title": "SynchBoard",
+        "logout": "התנתק",
+        "language": {
+            "en": "English",
+            "he": "עברית"
+        }
+    },
+    "sidebar": {
+        "title": "סרגל צד",
+        "onlineUsers": "משתמשים מחוברים:"
+    },
+    "createBoardForm": {
+        "heading": "צור לוח חדש",
+        "nameLengthError": "שם הלוח חייב להכיל לפחות 3 תווים.",
+        "failedError": "יצירת הלוח נכשלה. אנא נסה שנית.",
+        "label": {
+            "boardName": "שם הלוח",
+            "description": "תיאור (אופציונלי)"
+        },
+        "placeholder": {
+            "name": "לדוגמה, תכנון פרויקט לרבעון 3",
+            "description": "על מה הלוח הזה?"
+        },
+        "button": {
+            "createBoard": "צור לוח"
+        }
     },
     "toolbar": {
         "label": {
@@ -150,10 +154,6 @@
         "title": "נהל תמונה עבור '{{boardName}}'",
         "changeButton": "שנה תמונה",
         "deleteButton": "מחק תמונה"
-    },
-    "sidebar": {
-        "title": "סרגל צד",
-        "onlineUsers": "משתמשים מחוברים:"
     },
     "settingsPage": {
         "heading": "הגדרות חשבון",
