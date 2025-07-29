@@ -1,0 +1,52 @@
+// File: frontend/src/components/board/workspace/BoardWorkspace.tsx
+import Canvas from 'components/board/workspace/Canvas';
+import ChatWindow from 'components/chat/ChatWindow';
+import type { TOOL_LIST } from 'constants/board.constants';
+import React from 'react';
+import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
+import type { ChatMessageResponse } from 'types/message.types';
+import styles from './BoardWorkspace.module.css';
+
+type Tool = (typeof TOOL_LIST)[number];
+
+interface BoardWorkspaceProps {
+    boardId: number;
+    instanceId: string;
+    objects: ActionPayload[];
+    messages: ChatMessageResponse[];
+    tool: Tool;
+    strokeColor: string;
+    strokeWidth: number;
+    onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+}
+
+const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
+    boardId,
+    instanceId,
+    objects,
+    messages,
+    tool,
+    strokeColor,
+    strokeWidth,
+    onDraw,
+}) => {
+    return (
+        <div className={styles.mainContent}>
+            <div className={styles.canvasContainer}>
+                <Canvas
+                    instanceId={instanceId}
+                    onDraw={onDraw}
+                    objects={objects}
+                    tool={tool}
+                    strokeColor={strokeColor}
+                    strokeWidth={strokeWidth}
+                />
+            </div>
+            <div className={styles.chatContainer}>
+                <ChatWindow boardId={boardId} messages={messages} />
+            </div>
+        </div>
+    );
+};
+
+export default BoardWorkspace;

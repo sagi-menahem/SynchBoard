@@ -40,6 +40,7 @@ public class GroupBoardService {
         private final UserRepository userRepository;
         private final ActionHistoryRepository actionHistoryRepository;
         private final BoardObjectRepository boardObjectRepository;
+        private final MessageRepository messageRepository;
         private final FileStorageService fileStorageService;
         private final SimpMessageSendingOperations messagingTemplate;
 
@@ -305,6 +306,9 @@ public class GroupBoardService {
                 try {
                         deleteBoardPicture(boardId, userEmail);
                         log.debug("Deleted board picture for board {}", boardId);
+
+                        messageRepository.deleteAllByBoard_BoardGroupId(boardId);
+                        log.debug("Deleted messages for board {}", boardId);
 
                         actionHistoryRepository.deleteAllByBoard_BoardGroupId(boardId);
                         log.debug("Deleted action history for board {}", boardId);
