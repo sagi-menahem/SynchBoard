@@ -1,6 +1,6 @@
 // File: frontend/src/components/board/details/EditFieldForm.tsx
 import Button from 'components/common/Button';
-import styles from 'components/common/Form.module.css';
+import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
     const [value, setValue] = useState(initialValue);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleFieldEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsSubmitting(true);
         try {
@@ -40,7 +40,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleFieldEditSubmit} className={styles.form}>
             <h3>{title}</h3>
 
             <div className={styles.field}>

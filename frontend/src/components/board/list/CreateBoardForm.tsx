@@ -1,6 +1,6 @@
 // File: frontend/src/components/board/list/CreateBoardForm.tsx
 import Button from 'components/common/Button';
-import styles from 'components/common/Form.module.css';
+import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import { useCreateBoardForm } from 'hooks/board/management/useCreateBoardForm';
 import React from 'react';

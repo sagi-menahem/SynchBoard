@@ -1,6 +1,6 @@
 // File: frontend/src/components/board/details/InviteMemberForm.tsx
 import Button from 'components/common/Button';
-import styles from 'components/common/Form.module.css';
+import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import { useInviteMemberForm } from 'hooks/board/details/useInviteMemberForm';
 import React from 'react';

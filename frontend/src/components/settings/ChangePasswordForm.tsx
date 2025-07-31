@@ -19,7 +19,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handlePasswordFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
@@ -45,7 +45,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handlePasswordFormSubmit}>
             <div className={styles.field}>
                 <label htmlFor="currentPassword">{t('settingsPage.currentPasswordLabel')}</label>
                 <Input
