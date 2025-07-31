@@ -1,6 +1,6 @@
 // File: frontend/src/pages/AuthPage.tsx
 import LoginForm from 'components/auth/LoginForm';
-import RegisterForm from 'components/auth/RegisterForm';
+import RegistrationForm from 'components/auth/RegistrationForm';
 import Button from 'components/common/Button';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ const AuthPage: React.FC = () => {
         setIsLoginView(true);
     };
 
-    const toggleView = () => {
+    const toggleAuthMode = () => {
         setIsLoginView((prev) => !prev);
     };
 
@@ -26,17 +26,17 @@ const AuthPage: React.FC = () => {
                     <LoginForm />
                     <p className={styles.toggleText}>
                         {t('authPage.promptToRegister')}{' '}
-                        <Button variant="secondary" onClick={toggleView} className={styles.toggleButton}>
+                        <Button variant="secondary" onClick={toggleAuthMode} className={styles.toggleButton}>
                             {t('authPage.switchToRegisterButton')}
                         </Button>
                     </p>
                 </section>
             ) : (
                 <section>
-                    <RegisterForm onRegistrationSuccess={handleRegistrationSuccess} />
+                    <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
                     <p className={styles.toggleText}>
                         {t('authPage.promptToLogin')}{' '}
-                        <Button variant="secondary" onClick={toggleView} className={styles.toggleButton}>
+                        <Button variant="secondary" onClick={toggleAuthMode} className={styles.toggleButton}>
                             {t('authPage.switchToLoginButton')}
                         </Button>
                     </p>

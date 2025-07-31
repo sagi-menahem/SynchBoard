@@ -1,15 +1,15 @@
-// File: frontend/src/components/chat/Message.tsx
+// File: frontend/src/components/chat/ChatMessage.tsx
 import defaultUserImage from 'assets/default-user-image.png';
 import { API_BASE_URL } from 'constants/api.constants';
 import React from 'react';
 import type { ChatMessageResponse } from 'types/message.types';
-import styles from './Message.module.css';
+import styles from './ChatMessage.module.css';
 
-interface MessageProps {
+interface ChatMessageProps {
     message: ChatMessageResponse;
 }
 
-const Message: React.FC<MessageProps> = React.memo(({ message }) => {
+const ChatMessage: React.FC<ChatMessageProps> = React.memo(({ message }) => {
     const imageSource = message.senderProfilePictureUrl
         ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
         : defaultUserImage;
@@ -28,4 +28,4 @@ const Message: React.FC<MessageProps> = React.memo(({ message }) => {
     );
 });
 
-export default Message;
+export default ChatMessage;

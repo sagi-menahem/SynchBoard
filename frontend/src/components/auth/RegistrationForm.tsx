@@ -1,16 +1,16 @@
-// File: frontend/src/components/auth/RegisterForm.tsx
+// File: frontend/src/components/auth/RegistrationForm.tsx
 import Button from 'components/common/Button';
-import styles from 'components/common/Form.module.css';
+import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import { useRegisterForm } from 'hooks/auth/forms/useRegisterForm';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface RegisterFormProps {
+interface RegistrationFormProps {
     onRegistrationSuccess: () => void;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
+const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
     const { t } = useTranslation();
     const {
         email,
@@ -60,4 +60,4 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
     );
 };
 
-export default RegisterForm;
+export default RegistrationForm;

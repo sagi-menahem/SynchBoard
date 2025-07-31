@@ -7,8 +7,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import websocketService from 'services/websocketService';
 import type { ChatMessageResponse, SendChatMessageRequest } from 'types/message.types';
+import ChatMessage from './ChatMessage';
 import styles from './ChatWindow.module.css';
-import Message from './Message';
 
 interface ChatWindowProps {
     boardId: number;
@@ -45,7 +45,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         >
             <div className={styles.messageList}>
                 {messages.map((msg, index) => (
-                    <Message key={index} message={msg} />
+                    <ChatMessage key={index} message={msg} />
                 ))}
                 <div ref={messagesEndRef} />
             </div>
