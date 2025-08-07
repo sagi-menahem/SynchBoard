@@ -1,4 +1,3 @@
-import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
@@ -33,6 +32,7 @@ export default [
             globals: { ...globals.browser, ...globals.node },
         },
         plugins: {
+            '@typescript-eslint': tseslint.plugin,
             import: importPlugin,
             react: reactPlugin,
             'react-hooks': reactHooksPlugin,
@@ -55,6 +55,11 @@ export default [
                     alphabetize: { order: 'asc', caseInsensitive: true },
                 },
             ],
+            // Formatting rules (replacing Prettier)
+            // Note: Some formatting is already handled by tseslint.configs.stylistic
+            'max-len': ['error', { code: 120, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
+            'arrow-parens': ['error', 'always'],
+            'array-bracket-spacing': ['error', 'never'],
         },
         settings: {
             react: { version: 'detect' },
@@ -94,6 +99,20 @@ export default [
                     alphabetize: { order: 'asc', caseInsensitive: true },
                 },
             ],
+            // Formatting rules for JS files
+            'semi': ['error', 'always'],
+            'quotes': ['error', 'single', { avoidEscape: true }],
+            'comma-dangle': ['error', 'always-multiline'],
+            'indent': ['error', 4, { SwitchCase: 1 }],
+            'object-curly-spacing': ['error', 'always'],
+            'space-before-function-paren': ['error', {
+                anonymous: 'never',
+                named: 'never',
+                asyncArrow: 'always',
+            }],
+            'max-len': ['error', { code: 120, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
+            'arrow-parens': ['error', 'always'],
+            'array-bracket-spacing': ['error', 'never'],
         },
         settings: {
             react: { version: 'detect' },
@@ -109,6 +128,4 @@ export default [
             ...jsxA11y.configs.recommended.rules,
         },
     },
-
-    eslintConfigPrettier,
 ];
