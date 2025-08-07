@@ -18,7 +18,6 @@ export const useBoardSync = (boardId: number) => {
     const sessionInstanceId = useRef(Date.now().toString());
     const { userEmail } = useAuth();
 
-    // Use our new modular hooks
     const {
         isLoading,
         boardName,
@@ -34,14 +33,12 @@ export const useBoardSync = (boardId: number) => {
     const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
         useBoardActions(boardId);
 
-    // Set initial counts when data loads
     useEffect(() => {
         if (!isLoading && objects.length > 0) {
             resetCounts(objects.length);
         }
     }, [isLoading, objects.length, resetCounts]);
 
-    // WebSocket handler
     useBoardWebSocketHandler({
         boardId,
         sessionInstanceId: sessionInstanceId.current,
@@ -75,7 +72,6 @@ export const useBoardSync = (boardId: number) => {
         }
     }, [accessLost, navigate]);
 
-    // Handle user updates - when user is removed from board
     const handleUserUpdate = useCallback(
         (message: UserUpdateDTO) => {
             console.log(`[useBoardSync] Received user update: ${message.updateType}. Navigating to board list...`);
@@ -84,7 +80,7 @@ export const useBoardSync = (boardId: number) => {
         [navigate]
     );
 
-    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
+    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
     return {
         isLoading,

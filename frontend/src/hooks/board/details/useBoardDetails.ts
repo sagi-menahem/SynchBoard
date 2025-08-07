@@ -23,9 +23,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
             return;
         }
 
-        if (!boardDetails) {
-            setIsLoading(true);
-        }
+        setIsLoading(true);
 
         getBoardDetails(boardId)
             .then((data) => {
@@ -41,12 +39,11 @@ export const useBoardDetails = (boardId: number | undefined) => {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [boardId, boardDetails, navigate]);
+    }, [boardId, navigate]);
 
     useEffect(() => {
         fetchDetails();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [boardId]);
+    }, [fetchDetails]);
 
     const handleBoardUpdate = useCallback(
         (message: BoardUpdateDTO) => {
@@ -59,7 +56,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
         [fetchDetails, userEmail]
     );
 
-    useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate);
+    useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
 
     return { boardDetails, isLoading, refetch: fetchDetails };
 };

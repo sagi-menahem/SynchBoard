@@ -1,0 +1,119 @@
+# ===================================================================
+# Line Ending Configuration for Cross-Platform Development
+# ===================================================================
+
+# Auto-detect text files and normalize line endings to LF on commit
+* text=auto
+
+# ===================================================================
+# Backend - Java/Gradle Files
+# ===================================================================
+
+# Gradle wrapper scripts
+gradlew text eol=lf
+*.sh text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+gradlew.bat text eol=crlf
+
+# Java source files
+*.java text diff=java
+*.gradle text diff=java
+*.properties text
+
+# Binary files
+*.jar binary
+*.war binary
+*.ear binary
+*.class binary
+*.jks binary
+*.p12 binary
+
+# ===================================================================
+# Frontend - Web Development Files
+# ===================================================================
+
+# Source code
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.css text
+*.scss text
+*.sass text
+*.less text
+*.html text
+*.vue text
+*.json text
+
+# Config files
+*.yml text
+*.yaml text
+*.toml text
+*.xml text
+*.config text
+.eslintrc text
+.prettierrc text
+.babelrc text
+
+# ===================================================================
+# Documentation
+# ===================================================================
+*.md text
+*.txt text
+README text
+LICENSE text
+AUTHORS text
+CHANGELOG text
+
+# ===================================================================
+# Images & Media (Binary)
+# ===================================================================
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+*.webp binary
+*.mp4 binary
+*.mp3 binary
+*.wav binary
+
+# ===================================================================
+# Fonts (Binary)
+# ===================================================================
+*.ttf binary
+*.otf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+
+# ===================================================================
+# Archives & Compressed Files (Binary)
+# ===================================================================
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.rar binary
+
+# ===================================================================
+# Database Files (Binary)
+# ===================================================================
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+
+# ===================================================================
+# Office Documents (Binary)
+# ===================================================================
+*.pdf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary

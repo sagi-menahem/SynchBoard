@@ -63,7 +63,7 @@ export const useBoardWebSocketHandler = ({
         [boardId, userEmail, sessionInstanceId, setBoardName, setAccessLost, setObjects, setMessages]
     );
 
-    useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', onMessageReceived);
+    useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', onMessageReceived, 'board');
 
     return {
         onMessageReceived,
