@@ -79,7 +79,7 @@ public class BoardObjectService {
         }
 
         List<BoardObject> boardObjects =
-                boardObjectRepository.findAllByBoard_BoardGroupIdAndIsActiveTrue(boardId);
+                boardObjectRepository.findActiveByBoardWithUsers(boardId);
 
         return boardObjects.stream().map(this::mapEntityToResponse).collect(Collectors.toList());
     }

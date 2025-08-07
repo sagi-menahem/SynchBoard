@@ -174,6 +174,27 @@ class WebSocketService {
             return true;
         }
 
+        if ('type' in dataObj && 'content' in dataObj && 'timestamp' in dataObj && 'senderEmail' in dataObj) {
+            const requiredFields = ['type', 'content', 'timestamp', 'senderEmail'];
+            for (const field of requiredFields) {
+                if (!(field in dataObj)) {
+                    console.warn(`ChatMessageDTO missing required field: ${field}`);
+                    return false;
+                }
+            }
+            
+            const messageType = dataObj['type'] as unknown;
+            if (typeof messageType === 'string') {
+                const validMessageTypes = ['CHAT', 'JOIN', 'LEAVE'];
+                if (!validMessageTypes.includes(messageType)) {
+                    console.warn(`Invalid chat message type: ${messageType}`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
         console.warn('Board message does not match any known format');
         return false;
     }
