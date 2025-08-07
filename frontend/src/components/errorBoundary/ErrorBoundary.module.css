@@ -1,0 +1,210 @@
+.errorFallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 200px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.errorFallback--page {
+    min-height: 60vh;
+    margin: 0;
+    border-radius: 0;
+    background-color: #fef2f2;
+}
+
+.errorFallback--section {
+    min-height: 150px;
+    background-color: #fefefe;
+    border: 1px solid #e5e7eb;
+}
+
+.errorFallback--component {
+    min-height: 100px;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+}
+
+.errorFallbackContent {
+    text-align: center;
+    max-width: 500px;
+}
+
+.errorFallbackTitle {
+    color: #dc2626;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.errorFallback--section .errorFallbackTitle,
+.errorFallback--component .errorFallbackTitle {
+    font-size: 1.25rem;
+    color: #374151;
+}
+
+.errorFallbackDescription {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.5;
+}
+
+.errorFallbackDetails {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.errorFallbackDetails summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.errorFallbackErrorInfo {
+    margin-top: 0.5rem;
+}
+
+.errorFallbackErrorInfo p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.errorFallbackStack {
+    background-color: #f3f4f6;
+    padding: 0.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    max-height: 200px;
+    font-size: 0.75rem;
+    margin: 0.5rem 0 0 0;
+}
+
+.errorFallbackStack code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    white-space: pre;
+}
+
+.errorFallbackActions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.errorFallbackButton {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    min-width: 80px;
+}
+
+.errorFallbackButton:hover {
+    transform: translateY(-1px);
+}
+
+.errorFallbackButton--primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.errorFallbackButton--primary:hover {
+    background-color: #2563eb;
+}
+
+.errorFallbackButton--secondary {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.errorFallbackButton--secondary:hover {
+    background-color: #e5e7eb;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .errorFallback {
+        padding: 1rem;
+    }
+    
+    .errorFallbackTitle {
+        font-size: 1.25rem;
+    }
+    
+    .errorFallbackActions {
+        flex-direction: column;
+    }
+    
+    .errorFallbackButton {
+        width: 100%;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .errorFallback {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .errorFallback--section {
+        background-color: #111827;
+        border-color: #374151;
+    }
+    
+    .errorFallback--component {
+        background-color: #1f2937;
+        border-color: #4b5563;
+    }
+    
+    .errorFallbackTitle {
+        color: #f87171;
+    }
+    
+    .errorFallback--section .errorFallbackTitle,
+    .errorFallback--component .errorFallbackTitle {
+        color: #f3f4f6;
+    }
+    
+    .errorFallbackDescription {
+        color: #d1d5db;
+    }
+    
+    .errorFallbackDetails {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .errorFallbackDetails summary {
+        color: #f3f4f6;
+    }
+    
+    .errorFallbackStack {
+        background-color: #111827;
+        color: #f3f4f6;
+    }
+    
+    .errorFallbackButton--secondary {
+        background-color: #374151;
+        color: #f3f4f6;
+        border-color: #4b5563;
+    }
+    
+    .errorFallbackButton--secondary:hover {
+        background-color: #4b5563;
+    }
+}
