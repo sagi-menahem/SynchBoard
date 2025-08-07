@@ -37,7 +37,7 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public List<BoardDTO> getBoardsForUser(String userEmail) {
-        List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
+        List<GroupMember> memberships = groupMemberRepository.findByUserWithBoard(userEmail);
         return memberships.stream().map(this::mapToBoardResponse).collect(Collectors.toList());
     }
 
@@ -65,13 +65,15 @@ public class BoardService {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
-        GroupBoard board = groupBoardRepository.findById(boardId).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND + boardId));
+        List<GroupMember> membersWithBoardAndUser = groupBoardRepository.findMembersWithDetails(boardId);
+        
+        if (membersWithBoardAndUser.isEmpty()) {
+            throw new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND + boardId);
+        }
 
-        List<GroupMember> members = groupMemberRepository.findAllByBoardGroupId(boardId);
-
+        GroupBoard board = membersWithBoardAndUser.get(0).getGroupBoard();
         List<MemberDTO> memberDTOs =
-                members.stream().map(this::mapToMemberDTO).collect(Collectors.toList());
+                membersWithBoardAndUser.stream().map(this::mapToMemberDTO).collect(Collectors.toList());
 
         return BoardDetailsDTO.builder().id(board.getBoardGroupId()).name(board.getBoardGroupName())
                 .description(board.getGroupDescription()).pictureUrl(board.getGroupPictureUrl())

@@ -14,6 +14,9 @@ import io.github.sagimenahem.synchboard.entity.BoardObject;
 public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> {
 
     List<BoardObject> findAllByBoard_BoardGroupIdAndIsActiveTrue(Long boardGroupId);
+    
+    @Query("SELECT bo FROM BoardObject bo LEFT JOIN FETCH bo.createdByUser LEFT JOIN FETCH bo.lastEditedByUser WHERE bo.board.boardGroupId = :boardGroupId AND bo.isActive = true")
+    List<BoardObject> findActiveByBoardWithUsers(@Param("boardGroupId") Long boardGroupId);
 
     @Transactional
     void deleteAllByBoard_BoardGroupId(Long boardGroupId);

@@ -62,7 +62,7 @@ public class ChatService {
         }
 
         List<Message> messages =
-                messageRepository.findAllByBoard_BoardGroupIdOrderByTimestampAsc(boardId);
+                messageRepository.findByBoardWithSender(boardId);
 
         return messages.stream().map(this::mapMessageToDto).collect(Collectors.toList());
     }
