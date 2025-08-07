@@ -13,6 +13,7 @@ import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.entity.ActionHistory;
 import io.github.sagimenahem.synchboard.entity.BoardObject;
+import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import io.github.sagimenahem.synchboard.repository.ActionHistoryRepository;
 import io.github.sagimenahem.synchboard.repository.BoardObjectRepository;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
@@ -111,8 +112,10 @@ public class ActionHistoryService {
             try {
                 return createAddResponse(persistedObject);
             } catch (JsonProcessingException e) {
-                log.error("Failed to create redo response", e);
-                throw new RuntimeException("Redo failed during response creation.");
+                log.error("Failed to create redo response for board object {}: {}",
+                        persistedObject.getObjectId(), e.getMessage(), e);
+                throw new InvalidRequestException(
+                        "Redo operation failed due to corrupted board data");
             }
         }
         return null;

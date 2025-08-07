@@ -164,6 +164,7 @@ public class FileStorageService {
             }
         } catch (IOException e) {
             log.error("Failed to delete file: {}", filename, e);
+            throw new RuntimeException("File deletion failed: " + filename, e);
         }
     }
 
@@ -245,7 +246,8 @@ public class FileStorageService {
             return isValid;
 
         } catch (IOException e) {
-            log.error("Error reading file signature for MIME type: {}", declaredMimeType, e);
+            log.error("Error reading file signature for MIME type: {}, rejecting file for security",
+                    declaredMimeType, e);
             return false;
         }
     }
@@ -264,7 +266,7 @@ public class FileStorageService {
             return true;
 
         } catch (IOException e) {
-            log.error("Error validating SVG content", e);
+            log.error("Error validating SVG content, rejecting file for security", e);
             return false;
         }
     }

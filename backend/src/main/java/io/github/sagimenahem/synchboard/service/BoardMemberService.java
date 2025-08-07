@@ -164,9 +164,8 @@ public class BoardMemberService {
             List<GroupMember> membersToNotify) {
         log.info("Deleting all data associated with boardId {} initiated by user {}", boardId,
                 userEmail);
-        List<String> memberEmails = membersToNotify.stream()
-                .map(GroupMember::getUserEmail)
-                .toList();
+        List<String> memberEmails =
+                membersToNotify.stream().map(GroupMember::getUserEmail).toList();
         notificationService.broadcastUserUpdatesToUsers(memberEmails);
 
         try {
@@ -191,8 +190,10 @@ public class BoardMemberService {
             groupBoardRepository.deleteById(boardId);
             log.info("Successfully deleted board {} and all associated data", boardId);
         } catch (Exception e) {
-            log.error("Error occurred while deleting board {} and associated data", boardId, e);
-            throw e;
+            log.error("Error occurred while deleting board {} and associated data. "
+                    + "Board may be in inconsistent state.", boardId, e);
+            throw new RuntimeException("Failed to completely delete board " + boardId
+                    + ". Please contact administrator to verify data consistency.", e);
         }
     }
 
