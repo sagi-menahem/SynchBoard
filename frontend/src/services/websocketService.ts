@@ -26,8 +26,6 @@ class WebSocketService {
 
     private initializeMessageSchemas(): void {
         this.messageSchemas.set('board', {
-            requiredFields: ['updateType', 'sourceUserEmail'],
-            allowedTypes: ['DETAILS_UPDATED', 'MEMBERS_UPDATED'],
         });
 
         this.messageSchemas.set('user', {
@@ -99,6 +97,10 @@ class WebSocketService {
                 return true;
             }
 
+            if (schemaKey === 'board') {
+                return this.validateBoardMessage(dataObj);
+            }
+
             if (schema.requiredFields) {
                 for (const field of schema.requiredFields) {
                     if (!(field in dataObj)) {
@@ -126,6 +128,54 @@ class WebSocketService {
         }
 
         return true;
+    }
+
+    private validateBoardMessage(dataObj: Record<string, unknown>): boolean {
+
+        if ('type' in dataObj && 'sender' in dataObj) {
+            const requiredFields = ['type', 'sender'];
+            for (const field of requiredFields) {
+                if (!(field in dataObj)) {
+                    console.warn(`BoardActionDTO missing required field: ${field}`);
+                    return false;
+                }
+            }
+            
+            const actionType = dataObj['type'] as unknown;
+            if (typeof actionType === 'string') {
+                const validActionTypes = ['OBJECT_ADD', 'OBJECT_UPDATE', 'OBJECT_DELETE'];
+                if (!validActionTypes.includes(actionType)) {
+                    console.warn(`Invalid board action type: ${actionType}`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        if ('updateType' in dataObj && 'sourceUserEmail' in dataObj) {
+            const requiredFields = ['updateType', 'sourceUserEmail'];
+            for (const field of requiredFields) {
+                if (!(field in dataObj)) {
+                    console.warn(`BoardUpdateDTO missing required field: ${field}`);
+                    return false;
+                }
+            }
+            
+            const updateType = dataObj['updateType'] as unknown;
+            if (typeof updateType === 'string') {
+                const validUpdateTypes = ['DETAILS_UPDATED', 'MEMBERS_UPDATED'];
+                if (!validUpdateTypes.includes(updateType)) {
+                    console.warn(`Invalid board update type: ${updateType}`);
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        console.warn('Board message does not match any known format');
+        return false;
     }
 
     private isPrototypePollutionAttempt(obj: Record<string, unknown>): boolean {

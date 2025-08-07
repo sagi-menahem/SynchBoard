@@ -12,8 +12,9 @@ import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
 import io.github.sagimenahem.synchboard.service.ActionHistoryService;
 import io.github.sagimenahem.synchboard.service.BoardObjectService;
+import io.github.sagimenahem.synchboard.service.BoardService;
+import io.github.sagimenahem.synchboard.service.BoardMemberService;
 import io.github.sagimenahem.synchboard.service.ChatService;
-import io.github.sagimenahem.synchboard.service.GroupBoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class GroupBoardController {
 
-    private final GroupBoardService groupBoardService;
+    private final BoardService boardService;
+    private final BoardMemberService boardMemberService;
     private final BoardObjectService boardObjectService;
     private final ActionHistoryService actionHistoryService;
     private final ChatService chatService;
@@ -32,7 +34,7 @@ public class GroupBoardController {
     @GetMapping
     public ResponseEntity<List<BoardDTO>> getBoardsForCurrentUser(Authentication authentication) {
         String userEmail = authentication.getName();
-        List<BoardDTO> boards = groupBoardService.getBoardsForUser(userEmail);
+        List<BoardDTO> boards = boardService.getBoardsForUser(userEmail);
         return ResponseEntity.ok(boards);
     }
 
@@ -41,7 +43,7 @@ public class GroupBoardController {
             @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
 
         String userEmail = authentication.getName();
-        BoardDetailsDTO boardDetails = groupBoardService.getBoardDetails(boardId, userEmail);
+        BoardDetailsDTO boardDetails = boardService.getBoardDetails(boardId, userEmail);
         return ResponseEntity.ok(boardDetails);
     }
 
@@ -49,7 +51,7 @@ public class GroupBoardController {
     public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody CreateBoardRequest request,
             Authentication authentication) {
         String userEmail = authentication.getName();
-        BoardDTO newBoard = groupBoardService.createBoard(request, userEmail);
+        BoardDTO newBoard = boardService.createBoard(request, userEmail);
         return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
     }
 
@@ -67,7 +69,7 @@ public class GroupBoardController {
 
         String invitingUserEmail = authentication.getName();
         MemberDTO newMember =
-                groupBoardService.inviteMember(boardId, request.getEmail(), invitingUserEmail);
+                boardMemberService.inviteMember(boardId, request.getEmail(), invitingUserEmail);
         return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 
@@ -77,7 +79,7 @@ public class GroupBoardController {
             Authentication authentication) {
 
         String requestingUserEmail = authentication.getName();
-        groupBoardService.removeMember(boardId, memberEmail, requestingUserEmail);
+        boardMemberService.removeMember(boardId, memberEmail, requestingUserEmail);
         return ResponseEntity.ok().build();
     }
 
@@ -86,7 +88,7 @@ public class GroupBoardController {
             Authentication authentication) {
 
         String userEmail = authentication.getName();
-        groupBoardService.leaveBoard(boardId, userEmail);
+        boardMemberService.leaveBoard(boardId, userEmail);
         return ResponseEntity.ok().build();
     }
 
@@ -97,7 +99,7 @@ public class GroupBoardController {
 
         String requestingUserEmail = authentication.getName();
         MemberDTO updatedMember =
-                groupBoardService.promoteMember(boardId, memberEmail, requestingUserEmail);
+                boardMemberService.promoteMember(boardId, memberEmail, requestingUserEmail);
         return ResponseEntity.ok(updatedMember);
     }
 
@@ -133,7 +135,7 @@ public class GroupBoardController {
 
         String userEmail = authentication.getName();
         BoardDTO updatedBoard =
-                groupBoardService.updateBoardName(boardId, request.getName(), userEmail);
+                boardService.updateBoardName(boardId, request.getName(), userEmail);
         return ResponseEntity.ok(updatedBoard);
     }
 
@@ -144,7 +146,7 @@ public class GroupBoardController {
             Authentication authentication) {
 
         String userEmail = authentication.getName();
-        BoardDTO updatedBoard = groupBoardService.updateBoardDescription(boardId,
+        BoardDTO updatedBoard = boardService.updateBoardDescription(boardId,
                 request.getDescription(), userEmail);
         return ResponseEntity.ok(updatedBoard);
     }
@@ -155,7 +157,7 @@ public class GroupBoardController {
             @RequestParam(REQUEST_PARAM_FILE) MultipartFile file, Authentication authentication) {
 
         String userEmail = authentication.getName();
-        BoardDTO updatedBoard = groupBoardService.updateBoardPicture(boardId, file, userEmail);
+        BoardDTO updatedBoard = boardService.updateBoardPicture(boardId, file, userEmail);
         return ResponseEntity.ok(updatedBoard);
     }
 
@@ -164,7 +166,7 @@ public class GroupBoardController {
             @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
 
         String userEmail = authentication.getName();
-        BoardDTO updatedBoard = groupBoardService.deleteBoardPicture(boardId, userEmail);
+        BoardDTO updatedBoard = boardService.deleteBoardPicture(boardId, userEmail);
         return ResponseEntity.ok(updatedBoard);
     }
 
