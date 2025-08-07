@@ -164,8 +164,10 @@ public class BoardMemberService {
             List<GroupMember> membersToNotify) {
         log.info("Deleting all data associated with boardId {} initiated by user {}", boardId,
                 userEmail);
-        membersToNotify
-                .forEach(member -> notificationService.broadcastUserUpdate(member.getUserEmail()));
+        List<String> memberEmails = membersToNotify.stream()
+                .map(GroupMember::getUserEmail)
+                .toList();
+        notificationService.broadcastUserUpdatesToUsers(memberEmails);
 
         try {
             GroupBoard board = groupBoardRepository.findById(boardId).orElse(null);

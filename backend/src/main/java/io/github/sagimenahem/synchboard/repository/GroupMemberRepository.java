@@ -27,4 +27,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
     @Transactional
     void deleteAllByBoardGroupId(Long boardGroupId);
 
+    @Query("SELECT gm.userEmail FROM GroupMember gm WHERE gm.boardGroupId = :boardId")
+    List<String> findEmailsByBoardId(@Param("boardId") Long boardId);
+
 }

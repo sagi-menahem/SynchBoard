@@ -93,8 +93,7 @@ public class BoardService {
         GroupBoard boardToUpdate = member.getGroupBoard();
         boardToUpdate.setBoardGroupName(newName.trim());
 
-        List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-        allMembers.forEach(m -> notificationService.broadcastUserUpdate(m.getUserEmail()));
+        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
@@ -112,8 +111,7 @@ public class BoardService {
         GroupBoard boardToUpdate = member.getGroupBoard();
         boardToUpdate.setGroupDescription(trimmedDescription);
 
-        List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-        allMembers.forEach(m -> notificationService.broadcastUserUpdate(m.getUserEmail()));
+        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
@@ -135,8 +133,7 @@ public class BoardService {
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
-        List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-        allMembers.forEach(m -> notificationService.broadcastUserUpdate(m.getUserEmail()));
+        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
 
         log.info("Board picture updated successfully for board: {}", boardId);
         return mapToBoardResponse(member);
@@ -155,8 +152,7 @@ public class BoardService {
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
-        List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
-        allMembers.forEach(m -> notificationService.broadcastUserUpdate(m.getUserEmail()));
+        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
 
