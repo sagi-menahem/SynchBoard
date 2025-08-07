@@ -27,7 +27,7 @@ public class UserAccountService {
     private final FileStorageService fileStorageService;
 
     @Lazy
-    private final GroupBoardService groupBoardService;
+    private final BoardMemberService boardMemberService;
 
     @Transactional
     public void deleteAccount(String userEmail) {
@@ -43,7 +43,7 @@ public class UserAccountService {
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
         List<Long> boardIds =
                 memberships.stream().map(GroupMember::getBoardGroupId).collect(Collectors.toList());
-        boardIds.forEach(boardId -> groupBoardService.leaveBoard(boardId, userEmail));
+        boardIds.forEach(boardId -> boardMemberService.leaveBoard(boardId, userEmail));
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename =
