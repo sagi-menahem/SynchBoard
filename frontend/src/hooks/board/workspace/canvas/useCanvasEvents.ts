@@ -1,6 +1,6 @@
-// File: frontend/src/hooks/board/workspace/canvas/useCanvasEvents.ts
-import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
 import {
     ActionType,
     type CirclePayload,
@@ -8,10 +8,14 @@ import {
     type RectanglePayload,
     type SendBoardActionRequest,
 } from 'types/boardObject.types';
+
 import { useCanvasUtils } from './useCanvasUtils';
 
 type Tool = (typeof TOOL_LIST)[number];
-type Point = { x: number; y: number };
+interface Point {
+    x: number;
+    y: number;
+}
 
 interface UseCanvasEventsProps {
     previewCanvasRef: React.RefObject<HTMLCanvasElement | null>;

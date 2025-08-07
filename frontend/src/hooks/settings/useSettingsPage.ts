@@ -1,9 +1,9 @@
-// File: frontend/src/hooks/settings/useSettingsPage.ts
+import { useState } from 'react';
+
 import { useAccountManager } from 'hooks/settings/useAccountManager';
 import { usePasswordManager } from 'hooks/settings/usePasswordManager';
 import { useProfilePictureManager } from 'hooks/settings/useProfilePictureManager';
 import { useUserProfileManager } from 'hooks/settings/useUserProfileManager';
-import { useState } from 'react';
 
 export const useSettingsPage = () => {
     const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);

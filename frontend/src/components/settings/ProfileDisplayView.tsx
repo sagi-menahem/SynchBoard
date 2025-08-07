@@ -1,7 +1,8 @@
-// File: frontend/src/components/settings/ProfileDisplayView.tsx
-import styles from 'pages/SettingsPage.module.css';
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
+
+import styles from 'pages/SettingsPage.module.css';
 import type { UserProfile } from 'types/user.types';
 
 interface ProfileDisplayViewProps {

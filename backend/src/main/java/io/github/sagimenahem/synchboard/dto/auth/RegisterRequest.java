@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/auth/RegisterRequest.java
 package io.github.sagimenahem.synchboard.dto.auth;
 
 import lombok.Data;

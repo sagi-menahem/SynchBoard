@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/user/UserProfileDTO.java
 package io.github.sagimenahem.synchboard.dto.user;
 
 import lombok.AllArgsConstructor;

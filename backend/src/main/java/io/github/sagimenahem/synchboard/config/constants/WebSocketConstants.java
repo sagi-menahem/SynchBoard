@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/constants/WebSocketConstants.java
 package io.github.sagimenahem.synchboard.config.constants;
 
 public final class WebSocketConstants {

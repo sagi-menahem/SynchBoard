@@ -1,4 +1,3 @@
-// File: frontend/src/hooks/board/details/useBoardDetailsPage.ts
 import { useBoardDetails } from 'hooks/board/details/useBoardDetails';
 import { useBoardEditing } from 'hooks/board/details/useBoardEditing';
 import { useBoardHandlers } from 'hooks/board/details/useBoardHandlers';
@@ -9,7 +8,6 @@ export const useBoardDetailsPage = (boardId: number) => {
     const { boardDetails, isLoading, refetch } = useBoardDetails(boardId);
     const { handleUpdateName, handleUpdateDescription } = useBoardEditing(boardId, refetch);
 
-    // Use the new extracted hooks
     const { currentUserIsAdmin, userEmail } = useBoardPermissions(boardDetails);
 
     const {

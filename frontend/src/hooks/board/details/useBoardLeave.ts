@@ -1,9 +1,10 @@
-// File: frontend/src/hooks/board/details/useBoardLeave.ts
-import { APP_ROUTES } from 'constants/routes.constants';
 import { useCallback } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+
+import { APP_ROUTES } from 'constants/routes.constants';
 import * as boardService from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
 

@@ -1,7 +1,8 @@
-// File: frontend/src/hooks/board/details/useBoardPictureManager.ts
 import { useCallback } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import * as boardService from 'services/boardService';
 
 export const useBoardPictureManager = (boardId: number, onSuccess?: () => void) => {

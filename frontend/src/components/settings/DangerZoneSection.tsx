@@ -1,8 +1,9 @@
-// File: frontend/src/components/settings/DangerZoneSection.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import styles from 'pages/SettingsPage.module.css';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface DangerZoneSectionProps {
     onDeleteAccount: () => void;

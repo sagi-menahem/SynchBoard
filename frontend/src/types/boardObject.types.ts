@@ -1,4 +1,3 @@
-// File: frontend/src/types/boardObject.types.ts
 export const ActionType = {
     OBJECT_ADD: 'OBJECT_ADD',
     OBJECT_UPDATE: 'OBJECT_UPDATE',
@@ -7,7 +6,10 @@ export const ActionType = {
 
 export type ActionType = (typeof ActionType)[keyof typeof ActionType];
 
-type Point = { x: number; y: number };
+interface Point {
+    x: number;
+    y: number;
+}
 
 export interface LinePayload {
     instanceId: string;

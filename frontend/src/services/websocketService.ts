@@ -1,4 +1,3 @@
-// File: frontend/src/services/websocketService.ts
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 

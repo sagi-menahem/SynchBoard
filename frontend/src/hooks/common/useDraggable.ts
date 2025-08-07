@@ -1,6 +1,6 @@
-// File: frontend/src/hooks/common/useDraggable.ts
-import { DEFAULT_DRAWING_CONFIG } from 'constants/board.constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { DEFAULT_DRAWING_CONFIG } from 'constants/board.constants';
 
 interface UseDraggableProps {
     containerRef: React.RefObject<HTMLElement | null>;

@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/board/BoardDetailsDTO.java
 package io.github.sagimenahem.synchboard.dto.board;
 
 import java.util.List;

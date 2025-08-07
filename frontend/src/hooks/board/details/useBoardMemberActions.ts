@@ -1,7 +1,8 @@
-// File: frontend/src/hooks/board/details/useBoardMemberActions.ts
 import { useCallback } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import * as boardService from 'services/boardService';
 import type { Member } from 'types/board.types';
 

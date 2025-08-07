@@ -1,10 +1,11 @@
-// File: frontend/src/components/board/workspace/BoardWorkspace.tsx
+import React from 'react';
+
 import Canvas from 'components/board/workspace/Canvas';
 import ChatWindow from 'components/chat/ChatWindow';
 import type { TOOL_LIST } from 'constants/board.constants';
-import React from 'react';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';
+
 import styles from './BoardWorkspace.module.css';
 
 type Tool = (typeof TOOL_LIST)[number];

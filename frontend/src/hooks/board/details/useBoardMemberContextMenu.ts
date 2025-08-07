@@ -1,7 +1,7 @@
-// File: frontend/src/hooks/board/details/useBoardMemberContextMenu.ts
-import { useContextMenu } from 'hooks/common/useContextMenu';
-import { useAuth } from 'hooks/auth/useAuth';
 import { useCallback } from 'react';
+
+import { useAuth } from 'hooks/auth/useAuth';
+import { useContextMenu } from 'hooks/common/useContextMenu';
 import type { Member } from 'types/board.types';
 
 export const useBoardMemberContextMenu = (currentUserIsAdmin: boolean) => {

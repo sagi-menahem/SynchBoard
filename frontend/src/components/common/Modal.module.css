@@ -1,15 +1,24 @@
-/* File: frontend/src/components/common/Modal.module.css */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+}
+
+.backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    cursor: pointer;
 }
 
 .content {
@@ -20,6 +29,7 @@
     max-width: 500px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     position: relative;
+    z-index: 1;
 }
 
 .closeButton {

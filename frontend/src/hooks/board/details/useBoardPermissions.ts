@@ -1,4 +1,3 @@
-// File: frontend/src/hooks/board/details/useBoardPermissions.ts
 import { useAuth } from 'hooks/auth/useAuth';
 import type { BoardDetails } from 'types/board.types';
 

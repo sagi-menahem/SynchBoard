@@ -1,6 +1,7 @@
-// File: frontend/src/components/common/ConfirmationDialog.tsx
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import Button from './Button';
 import styles from './ConfirmationDialog.module.css';
 import Modal from './Modal';

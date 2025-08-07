@@ -1,7 +1,8 @@
-// File: frontend/src/hooks/settings/usePasswordManager.ts
 import { useCallback } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import * as userService from 'services/userService';
 import type { ChangePasswordRequest } from 'types/user.types';
 

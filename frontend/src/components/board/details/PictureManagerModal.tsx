@@ -1,11 +1,13 @@
-// File: frontend/src/components/board/details/PictureManagerModal.tsx
+import React, { useRef } from 'react';
+
 import defaultBoardImage from 'assets/default-board-image.png';
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { API_BASE_URL } from 'constants/api.constants';
 import { APP_CONFIG } from 'constants/app.constants';
-import React, { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import styles from './PictureManagerModal.module.css';
 
 interface PictureManagerModalProps {
@@ -45,7 +47,7 @@ const PictureManagerModal: React.FC<PictureManagerModalProps> = ({
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className={styles.container}>
                 <h3>{t('pictureManager.title', { boardName })}</h3>
-                <img src={imageSource} alt={`${boardName} picture`} className={styles.previewImage} />
+                <img src={imageSource} alt={boardName} className={styles.previewImage} />
                 <input
                     type="file"
                     ref={fileInputRef}

@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/websocket/ChatMessageDTO.java
 package io.github.sagimenahem.synchboard.dto.websocket;
 
 import java.time.LocalDateTime;
@@ -9,8 +8,7 @@ import lombok.NoArgsConstructor;
 
 public final class ChatMessageDTO {
 
-    private ChatMessageDTO() {
-    }
+    private ChatMessageDTO() {}
 
     @Data
     @NoArgsConstructor
@@ -35,9 +33,7 @@ public final class ChatMessageDTO {
         private String senderProfilePictureUrl;
 
         public enum MessageType {
-            CHAT,
-            JOIN,
-            LEAVE
+            CHAT, JOIN, LEAVE
         }
     }
 }

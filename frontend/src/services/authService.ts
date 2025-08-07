@@ -1,6 +1,6 @@
-// File: frontend/src/services/authService.ts
 import { API_ENDPOINTS } from 'constants/api.constants';
 import type { AuthResponse, LoginRequest, RegisterRequest } from 'types/user.types';
+
 import apiClient from './apiClient';
 
 export const register = async (userData: RegisterRequest): Promise<AuthResponse> => {

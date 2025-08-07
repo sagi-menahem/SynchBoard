@@ -1,5 +1,5 @@
-// File: frontend/src/components/common/Input.tsx
 import React from 'react';
+
 import styles from './Input.module.css';
 
 const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({ className, style, ...props }) => {

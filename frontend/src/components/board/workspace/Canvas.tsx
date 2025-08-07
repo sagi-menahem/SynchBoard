@@ -1,9 +1,10 @@
-// File: frontend/src/components/board/workspace/Canvas.tsx
+import React from 'react';
+
 import type { TOOL_LIST } from 'constants/board.constants';
 import { CANVAS_CONFIG } from 'constants/board.constants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
-import React from 'react';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
+
 import styles from './Canvas.module.css';
 
 type Tool = (typeof TOOL_LIST)[number];

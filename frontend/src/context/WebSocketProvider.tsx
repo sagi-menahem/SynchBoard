@@ -1,7 +1,8 @@
-// File: frontend/src/context/WebSocketProvider.tsx
-import { useAuth } from 'hooks/auth/useAuth';
 import React, { useEffect, useState, type ReactNode } from 'react';
+
+import { useAuth } from 'hooks/auth/useAuth';
 import websocketService from 'services/websocketService';
+
 import { WebSocketContext } from './WebSocketContext';
 
 interface WebSocketProviderProps {

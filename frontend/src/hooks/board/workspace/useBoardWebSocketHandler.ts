@@ -1,9 +1,10 @@
-// File: frontend/src/hooks/board/workspace/useBoardWebSocketHandler.ts
+import { useCallback } from 'react';
+
 import { AxiosError } from 'axios';
+
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocket } from 'hooks/global/useSocket';
-import { useCallback } from 'react';
 import * as boardService from 'services/boardService';
 import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';

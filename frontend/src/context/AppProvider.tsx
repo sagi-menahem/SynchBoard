@@ -1,5 +1,5 @@
-// File: frontend/src/context/AppProvider.tsx
 import React, { type ReactNode } from 'react';
+
 import { AuthProvider } from './AuthProvider';
 import { PreferencesProvider } from './PreferencesProvider';
 import { WebSocketProvider } from './WebSocketProvider';

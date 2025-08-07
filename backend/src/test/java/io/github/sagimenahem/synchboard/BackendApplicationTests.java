@@ -1,4 +1,3 @@
-// File: backend/src/test/java/io/github/sagimenahem/synchboard/BackendApplicationTests.java
 package io.github.sagimenahem.synchboard;
 
 import org.junit.jupiter.api.Test;

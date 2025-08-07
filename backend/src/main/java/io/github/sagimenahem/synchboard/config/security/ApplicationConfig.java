@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/security/ApplicationConfig.java
 package io.github.sagimenahem.synchboard.config.security;
 
 import org.springframework.context.annotation.Bean;

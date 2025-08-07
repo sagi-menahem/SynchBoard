@@ -1,13 +1,15 @@
-// File: frontend/src/pages/BoardPage.tsx
+import React, { useRef } from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+
 import BoardHeader from 'components/board/workspace/BoardHeader';
 import BoardWorkspace from 'components/board/workspace/BoardWorkspace';
 import Toolbar from 'components/board/workspace/Toolbar';
 import { BoardProvider } from 'context/BoardProvider';
-import { useToolbarState } from 'hooks/board/workspace/useToolbarState';
 import { useBoardContext } from 'hooks/board/context/useBoardContext';
-import React, { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useToolbarState } from 'hooks/board/workspace/useToolbarState';
+
 import styles from './BoardPage.module.css';
 
 interface BoardPageContentProps {

@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/repository/ActionHistoryRepository.java
 package io.github.sagimenahem.synchboard.repository;
 
 import java.util.Optional;
@@ -10,15 +9,15 @@ import io.github.sagimenahem.synchboard.entity.ActionHistory;
 @Repository
 public interface ActionHistoryRepository extends JpaRepository<ActionHistory, Long> {
 
-    Optional<ActionHistory> findTopByBoard_BoardGroupIdAndIsUndoneFalseOrderByTimestampDesc(
-            Long boardGroupId);
+        Optional<ActionHistory> findTopByBoard_BoardGroupIdAndIsUndoneFalseOrderByTimestampDesc(
+                        Long boardGroupId);
 
-    Optional<ActionHistory> findTopByBoard_BoardGroupIdAndIsUndoneTrueOrderByTimestampDesc(
-            Long boardGroupId);
+        Optional<ActionHistory> findTopByBoard_BoardGroupIdAndIsUndoneTrueOrderByTimestampDesc(
+                        Long boardGroupId);
 
-    @Transactional
-    void deleteAllByBoard_BoardGroupId(Long boardGroupId);
+        @Transactional
+        void deleteAllByBoard_BoardGroupId(Long boardGroupId);
 
-    @Transactional
-    void deleteAllByUser_Email(String userEmail);
+        @Transactional
+        void deleteAllByUser_Email(String userEmail);
 }

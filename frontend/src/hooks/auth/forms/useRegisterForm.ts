@@ -1,7 +1,8 @@
-// File: frontend/src/hooks/auth/forms/useRegisterForm.ts
 import { useState } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import * as authService from 'services/authService';
 import type { RegisterRequest } from 'types/user.types';
 

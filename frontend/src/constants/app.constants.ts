@@ -1,4 +1,3 @@
-// File: frontend/src/constants/app.constants.ts
 export const LOCAL_STORAGE_KEYS = {
     AUTH_TOKEN: 'authToken',
 } as const;

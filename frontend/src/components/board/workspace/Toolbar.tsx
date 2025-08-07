@@ -1,9 +1,11 @@
-// File: frontend/src/components/board/workspace/Toolbar.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants/board.constants';
 import { useDraggable } from 'hooks/common/useDraggable';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+
 import styles from './Toolbar.module.css';
 
 type Tool = (typeof TOOL_LIST)[number];
@@ -39,7 +41,14 @@ const Toolbar: React.FC<ToolbarProps> = ({
     const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
 
     return (
-        <div ref={draggableRef} className={styles.toolbar} onMouseDown={handleMouseDown} style={draggableStyle}>
+        <div
+            ref={draggableRef}
+            className={styles.toolbar}
+            onMouseDown={handleMouseDown}
+            style={draggableStyle}
+            role="toolbar"
+            aria-label={t('toolbar.ariaLabel')}
+        >
             <label className={styles.label}>
                 {t('toolbar.label.color')}
                 <input

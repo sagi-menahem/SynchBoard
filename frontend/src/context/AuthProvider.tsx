@@ -1,7 +1,9 @@
-// File: frontend/src/context/AuthProvider.new.tsx
-import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
-import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useState, type ReactNode } from 'react';
+
+import { jwtDecode } from 'jwt-decode';
+
+import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
+
 import { AuthContext } from './AuthContext';
 
 interface AuthProviderProps {

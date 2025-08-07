@@ -1,6 +1,6 @@
-// File: frontend/src/context/BoardContext.ts
-import { useBoardSync } from 'hooks/board/workspace/useBoardSync';
 import { createContext } from 'react';
+
+import { useBoardSync } from 'hooks/board/workspace/useBoardSync';
 
 export type BoardContextType = ReturnType<typeof useBoardSync>;
 

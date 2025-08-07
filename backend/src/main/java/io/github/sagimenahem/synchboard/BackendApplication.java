@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/BackendApplication.java
 package io.github.sagimenahem.synchboard;
 
 import org.springframework.boot.SpringApplication;

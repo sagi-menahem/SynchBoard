@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/MvcConfig.java
 package io.github.sagimenahem.synchboard.config;
 
 import java.nio.file.Path;

@@ -1,11 +1,12 @@
-// File: frontend/src/hooks/board/details/useBoardDetails.ts
+import { useCallback, useEffect, useState } from 'react';
+
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocket } from 'hooks/global/useSocket';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getBoardDetails } from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
 import type { BoardUpdateDTO } from 'types/websocket.types';

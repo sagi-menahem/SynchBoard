@@ -1,11 +1,13 @@
-// File: frontend/src/components/settings/ChangePasswordForm.tsx
+import React, { useState } from 'react';
+
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import { APP_CONFIG } from 'constants/app.constants';
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
 import type { ChangePasswordRequest } from 'types/user.types';
+
 import styles from './ChangePasswordForm.module.css';
 
 interface ChangePasswordFormProps {

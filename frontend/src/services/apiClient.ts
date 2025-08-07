@@ -1,9 +1,9 @@
-// File: frontend/src/services/apiClient.ts
 import axios, { type AxiosError } from 'axios';
-import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
-import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
 import i18n from 'i18n';
 import toast from 'react-hot-toast';
+
+import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
+import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,

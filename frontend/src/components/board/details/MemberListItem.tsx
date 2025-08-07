@@ -1,9 +1,11 @@
-// File: frontend/src/components/board/details/MemberListItem.tsx
-import defaultUserImage from 'assets/default-user-image.png';
-import { API_BASE_URL } from 'constants/api.constants';
 import React from 'react';
+
+import defaultUserImage from 'assets/default-user-image.png';
 import { useTranslation } from 'react-i18next';
+
+import { API_BASE_URL } from 'constants/api.constants';
 import type { Member } from 'types/board.types';
+
 import styles from './MemberListItem.module.css';
 
 interface MemberListItemProps {

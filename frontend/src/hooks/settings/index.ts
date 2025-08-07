@@ -1,5 +1,3 @@
-// File: frontend/src/hooks/settings/index.ts
-// Settings hooks exports
 export { useAccountManager } from './useAccountManager';
 export { usePasswordManager } from './usePasswordManager';
 export { useProfileEditing } from './useProfileEditing';

@@ -1,5 +1,5 @@
-// File: frontend/src/components/common/ContextMenu.tsx
 import React, { useEffect, useRef } from 'react';
+
 import styles from './ContextMenu.module.css';
 
 interface ContextMenuProps {

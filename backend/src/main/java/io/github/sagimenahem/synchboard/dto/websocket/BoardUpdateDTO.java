@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/websocket/BoardUpdateDTO.java
 package io.github.sagimenahem.synchboard.dto.websocket;
 
 import lombok.AllArgsConstructor;

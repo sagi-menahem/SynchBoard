@@ -1,10 +1,11 @@
-// File: frontend/src/hooks/settings/useAccountManager.ts
-import { APP_ROUTES } from 'constants/routes.constants';
-import { useAuth } from 'hooks/auth/useAuth';
 import { useCallback } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+
+import { APP_ROUTES } from 'constants/routes.constants';
+import { useAuth } from 'hooks/auth/useAuth';
 import * as userService from 'services/userService';
 
 export const useAccountManager = () => {

@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/service/FileStorageService.java
 package io.github.sagimenahem.synchboard.service;
 
 import java.io.IOException;

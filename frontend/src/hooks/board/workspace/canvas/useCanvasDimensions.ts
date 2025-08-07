@@ -1,4 +1,3 @@
-// File: frontend/src/hooks/board/workspace/canvas/useCanvasDimensions.ts
 import { useLayoutEffect, useState } from 'react';
 
 interface UseCanvasDimensionsProps {

@@ -1,8 +1,9 @@
-// File: frontend/src/hooks/board/details/useInviteMemberForm.ts
-import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import { useState } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
+import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import type { Member } from 'types/board.types';
 
 export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember: Member) => void) => {

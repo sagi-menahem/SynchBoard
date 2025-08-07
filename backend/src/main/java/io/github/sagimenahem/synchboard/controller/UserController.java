@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/controller/UserController.java
 package io.github.sagimenahem.synchboard.controller;
 
 import static io.github.sagimenahem.synchboard.config.constants.ApiConstants.*;

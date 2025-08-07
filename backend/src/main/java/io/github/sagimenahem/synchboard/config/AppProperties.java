@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/AppProperties.java
 package io.github.sagimenahem.synchboard.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

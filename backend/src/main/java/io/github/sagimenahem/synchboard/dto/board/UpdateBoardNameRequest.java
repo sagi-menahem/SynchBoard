@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/board/UpdateBoardNameRequest.java
 package io.github.sagimenahem.synchboard.dto.board;
 
 import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.BOARD_NAME_CANT_BE_EMPTY;

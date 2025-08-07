@@ -1,4 +1,3 @@
-// File: frontend/src/types/board.types.ts
 export interface Board {
     id: number;
     name: string;

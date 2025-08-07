@@ -1,5 +1,5 @@
-// File: frontend/src/components/common/Modal.tsx
 import React from 'react';
+
 import Button from './Button';
 import styles from './Modal.module.css';
 
@@ -14,11 +14,29 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         return null;
     }
 
-    const handleContentClick = (e: React.MouseEvent) => e.stopPropagation();
+    const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            onClose();
+        }
+    };
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.content} onClick={handleContentClick}>
+        <div
+            className={styles.overlay}
+            onKeyDown={handleOverlayKeyDown}
+            role="presentation"
+        >
+            <button
+                className={styles.backdrop}
+                onClick={onClose}
+                aria-label="Close modal"
+                tabIndex={-1}
+            />
+            <div
+                className={styles.content}
+                role="dialog"
+                aria-modal="true"
+            >
                 <Button onClick={onClose} className={styles.closeButton} variant="secondary">
                     &times;
                 </Button>

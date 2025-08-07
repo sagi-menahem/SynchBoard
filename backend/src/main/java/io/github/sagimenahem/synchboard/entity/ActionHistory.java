@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/entity/ActionHistory.java
 package io.github.sagimenahem.synchboard.entity;
 
 import java.time.LocalDateTime;
