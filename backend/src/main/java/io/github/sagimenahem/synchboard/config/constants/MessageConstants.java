@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/constants/MessageConstants.java
 package io.github.sagimenahem.synchboard.config.constants;
 
 import java.util.Arrays;

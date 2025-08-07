@@ -1,4 +1,7 @@
-// File: frontend/src/hooks/board/workspace/useBoardSync.ts
+import { useCallback, useEffect, useRef } from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/auth/useAuth';
@@ -6,8 +9,6 @@ import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
 import { useSocket } from 'hooks/global/useSocket';
-import { useCallback, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import websocketService from 'services/websocketService';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import type { UserUpdateDTO } from 'types/websocket.types';

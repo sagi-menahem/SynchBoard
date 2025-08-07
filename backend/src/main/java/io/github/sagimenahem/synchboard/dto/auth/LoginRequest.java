@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/auth/LoginRequest.java
 package io.github.sagimenahem.synchboard.dto.auth;
 
 import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ERROR_EMAIL_CANT_BE_EMPTY;

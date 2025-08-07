@@ -1,6 +1,7 @@
-// File: frontend/src/components/layout/Sidebar.tsx
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import styles from './Sidebar.module.css';
 
 const Sidebar: React.FC = () => {

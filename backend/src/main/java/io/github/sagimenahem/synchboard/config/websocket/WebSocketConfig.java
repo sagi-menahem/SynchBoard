@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/websocket/WebSocketConfig.java
 package io.github.sagimenahem.synchboard.config.websocket;
 
 import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;

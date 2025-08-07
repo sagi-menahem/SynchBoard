@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/user/ChangePasswordDTO.java
 package io.github.sagimenahem.synchboard.dto.user;
 
 import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ERROR_PASSWORD_CANT_BE_EMPTY;

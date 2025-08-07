@@ -1,11 +1,13 @@
-// File: frontend/src/components/board/list/BoardCard.tsx
-import defaultBoardImage from 'assets/default-board-image.png';
-import { API_BASE_URL } from 'constants/api.constants';
-import { APP_ROUTES } from 'constants/routes.constants';
 import React from 'react';
+
+import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
+import { API_BASE_URL } from 'constants/api.constants';
+import { APP_ROUTES } from 'constants/routes.constants';
 import type { Board } from 'types/board.types';
+
 import styles from './BoardCard.module.css';
 
 interface BoardCardProps {

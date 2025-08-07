@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/entity/MessageRead.java
 package io.github.sagimenahem.synchboard.entity;
 
 import java.time.LocalDateTime;

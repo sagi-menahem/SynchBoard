@@ -1,7 +1,8 @@
-// File: frontend/src/components/board/details/BoardConfirmDialogs.tsx
-import ConfirmationDialog from 'components/common/ConfirmationDialog';
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
+
+import ConfirmationDialog from 'components/common/ConfirmationDialog';
 
 interface BoardConfirmDialogsProps {
     isLeaveConfirmOpen: boolean;

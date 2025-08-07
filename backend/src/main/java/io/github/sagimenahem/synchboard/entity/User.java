@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/entity/User.java
 package io.github.sagimenahem.synchboard.entity;
 
 import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.ROLE_USER;

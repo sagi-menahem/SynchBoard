@@ -1,4 +1,6 @@
-// File: frontend/src/App.tsx
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import Layout from 'components/layout/Layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
 import { APP_ROUTES } from 'constants/routes.constants';
@@ -7,8 +9,6 @@ import BoardDetailsPage from 'pages/BoardDetailsPage';
 import BoardListPage from 'pages/BoardListPage';
 import BoardPage from 'pages/BoardPage';
 import SettingsPage from 'pages/SettingsPage';
-import { Toaster } from 'react-hot-toast';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
     return (

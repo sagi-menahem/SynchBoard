@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/constants/ApiConstants.java
 package io.github.sagimenahem.synchboard.config.constants;
 
 public final class ApiConstants {

@@ -1,10 +1,11 @@
-// File: frontend/src/components/auth/RegistrationForm.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import { useRegisterForm } from 'hooks/auth/forms/useRegisterForm';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface RegistrationFormProps {
     onRegistrationSuccess: () => void;

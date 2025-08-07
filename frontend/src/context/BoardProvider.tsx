@@ -1,7 +1,9 @@
-// File: frontend/src/context/BoardProvider.tsx
-import { useBoardSync } from 'hooks/board/workspace/useBoardSync';
 import React, { type ReactNode } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
+import { useBoardSync } from 'hooks/board/workspace/useBoardSync';
+
 import { BoardContext } from './BoardContext';
 
 interface BoardProviderProps {

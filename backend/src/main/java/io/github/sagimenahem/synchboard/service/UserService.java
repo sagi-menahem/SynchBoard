@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/service/UserService.java
 package io.github.sagimenahem.synchboard.service;
 
 import static io.github.sagimenahem.synchboard.config.constants.FileConstants.IMAGES_BASE_PATH;

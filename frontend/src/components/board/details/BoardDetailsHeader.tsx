@@ -1,12 +1,14 @@
-// File: frontend/src/components/board/details/BoardDetailsHeader.tsx
+import React from 'react';
+
 import defaultBoardImage from 'assets/default-board-image.png';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
 import Button from 'components/common/Button';
 import { API_BASE_URL } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import type { BoardDetails } from 'types/board.types';
+
 import styles from './BoardDetailsHeader.module.css';
 
 interface BoardDetailsHeaderProps {
@@ -39,22 +41,39 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
         <>
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <img
-                        src={imageSource}
-                        alt={`${boardDetails.name} picture`}
-                        className={styles.boardImage}
+                    <button
+                        type="button"
+                        className={styles.imageButton}
                         onClick={() => onSetPictureModalOpen(true)}
-                    />
+                        aria-label={t('boardDetailsPage.changeBoardImage')}
+                    >
+                        <img
+                            src={imageSource}
+                            alt={boardDetails.name}
+                            className={styles.boardImage}
+                        />
+                    </button>
                     <div>
-                        <h1 className={styles.editableText} onClick={() => onSetEditingField('name')}>
-                            {boardDetails.name}
-                        </h1>
-                        <p
-                            className={`${styles.description} ${styles.editableText}`}
-                            onClick={() => onSetEditingField('description')}
+                        <button
+                            type="button"
+                            className={styles.editableTextButton}
+                            onClick={() => onSetEditingField('name')}
+                            aria-label={t('boardDetailsPage.editBoardName')}
                         >
-                            {boardDetails.description || t('boardDetailsPage.noDescription')}
-                        </p>
+                            <h1 className={styles.editableText}>
+                                {boardDetails.name}
+                            </h1>
+                        </button>
+                        <button
+                            type="button"
+                            className={styles.editableTextButton}
+                            onClick={() => onSetEditingField('description')}
+                            aria-label={t('boardDetailsPage.editBoardDescription')}
+                        >
+                            <p className={`${styles.description} ${styles.editableText}`}>
+                                {boardDetails.description || t('boardDetailsPage.noDescription')}
+                            </p>
+                        </button>
                     </div>
                 </div>
                 <Link to={APP_ROUTES.getBoardDetailRoute(numericBoardId)}>

@@ -1,6 +1,7 @@
-// File: frontend/src/components/board/details/MemberList.tsx
 import React from 'react';
+
 import type { Member } from 'types/board.types';
+
 import MemberListItem from './MemberListItem';
 
 interface MemberListProps {

@@ -1,10 +1,12 @@
-// File: frontend/src/context/PreferencesProvider.tsx
-import { useAuth } from 'hooks/auth/useAuth';
 import React, { useCallback, useEffect, useState, type ReactNode } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
+import { useAuth } from 'hooks/auth/useAuth';
 import * as userService from 'services/userService';
 import type { UserPreferences } from 'types/user.types';
+
 import { PreferencesContext } from './PreferencesContext';
 
 interface PreferencesProviderProps {

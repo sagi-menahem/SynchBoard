@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/config/constants/SecurityConstants.java
 package io.github.sagimenahem.synchboard.config.constants;
 
 public final class SecurityConstants {

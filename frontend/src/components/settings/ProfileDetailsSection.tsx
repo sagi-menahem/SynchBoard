@@ -1,11 +1,12 @@
-// File: frontend/src/components/settings/ProfileDetailsSection.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import ProfileDisplayView from 'components/settings/ProfileDisplayView';
 import ProfileEditForm from 'components/settings/ProfileEditForm';
 import { useProfileEditing } from 'hooks/settings/useProfileEditing';
 import styles from 'pages/SettingsPage.module.css';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
 
 interface ProfileDetailsSectionProps {

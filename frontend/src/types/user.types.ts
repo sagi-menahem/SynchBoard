@@ -1,4 +1,3 @@
-// File: frontend/src/types/user.types.ts
 export interface RegisterRequest {
     email: string;
     password: string;

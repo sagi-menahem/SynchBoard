@@ -1,4 +1,3 @@
-// File: frontend/src/hooks/board/details/useModalStates.ts
 import { useState } from 'react';
 
 type EditingField = 'name' | 'description';

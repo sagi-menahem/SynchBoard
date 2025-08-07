@@ -1,4 +1,3 @@
-// File: frontend/src/constants/style.constants.ts
 export const COLORS = {
     PRIMARY_LINK: '#8186ff',
 

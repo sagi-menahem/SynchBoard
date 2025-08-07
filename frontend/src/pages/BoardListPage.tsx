@@ -1,4 +1,8 @@
-// File: frontend/src/pages/BoardListPage.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 import BoardCard from 'components/board/list/BoardCard';
 import CreateBoardForm from 'components/board/list/CreateBoardForm';
 import Button from 'components/common/Button';
@@ -8,9 +12,7 @@ import { ContextMenuItem } from 'components/common/ContextMenuItem';
 import Modal from 'components/common/Modal';
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useBoardList } from 'hooks/board/management/useBoardList';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+
 import styles from './BoardListPage.module.css';
 
 const BoardListPage: React.FC = () => {

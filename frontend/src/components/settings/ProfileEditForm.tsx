@@ -1,9 +1,10 @@
-// File: frontend/src/components/settings/ProfileEditForm.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import styles from 'pages/SettingsPage.module.css';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import type { UpdateUserProfileRequest } from 'types/user.types';
 
 interface ProfileEditFormProps {

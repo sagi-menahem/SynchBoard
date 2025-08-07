@@ -1,9 +1,9 @@
-// File: frontend/src/hooks/board/details/useBoardHandlers.ts
+import { useCallback } from 'react';
+
 import { useBoardLeave } from 'hooks/board/details/useBoardLeave';
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import { useBoardMemberContextMenu } from 'hooks/board/details/useBoardMemberContextMenu';
 import { useBoardPictureManager } from 'hooks/board/details/useBoardPictureManager';
-import { useCallback } from 'react';
 import type { BoardDetails, Member } from 'types/board.types';
 
 interface BoardHandlersProps {

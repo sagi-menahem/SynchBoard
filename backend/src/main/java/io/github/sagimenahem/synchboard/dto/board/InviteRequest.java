@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/board/InviteRequest.java
 package io.github.sagimenahem.synchboard.dto.board;
 
 import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ERROR_EMAIL_CANT_BE_EMPTY;

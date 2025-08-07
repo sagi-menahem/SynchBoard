@@ -1,4 +1,3 @@
-// File: frontend/src/constants/board.constants.ts
 export const TOOLS = {
     BRUSH: 'brush',
     ERASER: 'eraser',

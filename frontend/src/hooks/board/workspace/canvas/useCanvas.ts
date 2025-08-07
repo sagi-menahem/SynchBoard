@@ -1,7 +1,8 @@
-// File: frontend/src/hooks/board/workspace/canvas/useCanvas.ts
-import type { TOOL_LIST } from 'constants/board.constants';
 import { useEffect } from 'react';
+
+import type { TOOL_LIST } from 'constants/board.constants';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
+
 import { useCanvasDimensions } from './useCanvasDimensions';
 import { useCanvasEvents } from './useCanvasEvents';
 import { useCanvasRefs } from './useCanvasRefs';

@@ -1,12 +1,14 @@
-// File: frontend/src/components/chat/ChatWindow.tsx
+import React, { useEffect, useRef, useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import { WEBSOCKET_DESTINATIONS } from 'constants/api.constants';
 import { usePreferences } from 'hooks/preferences/usePreferences';
-import React, { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import websocketService from 'services/websocketService';
 import type { ChatMessageResponse, SendChatMessageRequest } from 'types/message.types';
+
 import ChatMessage from './ChatMessage';
 import styles from './ChatWindow.module.css';
 

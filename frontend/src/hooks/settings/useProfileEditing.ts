@@ -1,5 +1,5 @@
-// File: frontend/src/hooks/settings/useProfileEditing.ts
 import { useEffect, useState } from 'react';
+
 import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
 
 export const useProfileEditing = (user: UserProfile | null) => {

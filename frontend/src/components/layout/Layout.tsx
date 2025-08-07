@@ -1,6 +1,7 @@
-// File: frontend/src/components/layout/Layout.tsx
 import React from 'react';
+
 import { Outlet } from 'react-router-dom';
+
 import styles from './Layout.module.css';
 import Navbar from './Navbar';
 

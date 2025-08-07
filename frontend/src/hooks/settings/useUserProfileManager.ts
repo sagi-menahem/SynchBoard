@@ -1,7 +1,8 @@
-// File: frontend/src/hooks/settings/useUserProfileManager.ts
 import { useCallback, useEffect, useState } from 'react';
+
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+
 import * as userService from 'services/userService';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
 

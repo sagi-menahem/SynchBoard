@@ -1,9 +1,10 @@
-// File: frontend/src/components/board/details/BoardEditModals.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import EditFieldForm from 'components/board/details/EditFieldForm';
 import InviteMemberForm from 'components/board/details/InviteMemberForm';
 import Modal from 'components/common/Modal';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import type { Member } from 'types/board.types';
 
 interface BoardEditModalsProps {

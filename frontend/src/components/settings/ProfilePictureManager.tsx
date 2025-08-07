@@ -1,11 +1,13 @@
-// File: frontend/src/components/settings/ProfilePictureManager.tsx
+import React, { useRef } from 'react';
+
 import defaultUserImage from 'assets/default-user-image.png';
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import { API_BASE_URL } from 'constants/api.constants';
 import { APP_CONFIG } from 'constants/app.constants';
-import React, { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import type { UserProfile } from 'types/user.types';
+
 import styles from './ProfilePictureManager.module.css';
 
 interface ProfilePictureManagerProps {

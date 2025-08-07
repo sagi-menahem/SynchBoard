@@ -1,6 +1,6 @@
-// File: frontend/src/hooks/preferences/usePreferences.ts
-import { PreferencesContext } from 'context/PreferencesContext';
 import { useContext } from 'react';
+
+import { PreferencesContext } from 'context/PreferencesContext';
 
 export const usePreferences = () => {
     const context = useContext(PreferencesContext);

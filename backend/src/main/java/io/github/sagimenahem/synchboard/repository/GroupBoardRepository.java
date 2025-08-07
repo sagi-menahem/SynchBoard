@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/repository/GroupBoardRepository.java
 package io.github.sagimenahem.synchboard.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;

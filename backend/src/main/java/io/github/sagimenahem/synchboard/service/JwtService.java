@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/service/JwtService.java
 package io.github.sagimenahem.synchboard.service;
 
 import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.JWT_EXPIRATION_MS;
@@ -47,13 +46,10 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -70,10 +66,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
+        return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token)
                 .getBody();
     }
 

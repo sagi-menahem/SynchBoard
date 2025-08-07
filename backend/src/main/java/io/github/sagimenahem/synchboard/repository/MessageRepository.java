@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/repository/MessageRepository.java
 package io.github.sagimenahem.synchboard.repository;
 
 import java.util.List;

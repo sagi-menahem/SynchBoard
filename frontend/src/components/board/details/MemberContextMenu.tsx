@@ -1,8 +1,9 @@
-// File: frontend/src/components/board/details/MemberContextMenu.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import { ContextMenu } from 'components/common/ContextMenu';
 import { ContextMenuItem } from 'components/common/ContextMenuItem';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import type { Member } from 'types/board.types';
 
 interface MemberContextMenuProps {

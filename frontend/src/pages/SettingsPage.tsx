@@ -1,4 +1,8 @@
-// File: frontend/src/pages/SettingsPage.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
 import Button from 'components/common/Button';
 import ConfirmationDialog from 'components/common/ConfirmationDialog';
 import ChangePasswordForm from 'components/settings/ChangePasswordForm';
@@ -8,9 +12,7 @@ import ProfileDetailsSection from 'components/settings/ProfileDetailsSection';
 import ProfilePictureManager from 'components/settings/ProfilePictureManager';
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useSettingsPage } from 'hooks/settings/useSettingsPage';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+
 import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {

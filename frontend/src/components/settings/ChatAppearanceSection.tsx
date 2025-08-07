@@ -1,10 +1,11 @@
-// File: frontend/src/components/settings/ChatAppearanceSection.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import { CHAT_BACKGROUND_OPTIONS, CHAT_FONT_SIZE_OPTIONS } from 'constants/style.constants';
 import { usePreferences } from 'hooks/preferences/usePreferences';
 import styles from 'pages/SettingsPage.module.css';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 const ChatAppearanceSection: React.FC = () => {
     const { t } = useTranslation();
@@ -17,12 +18,14 @@ const ChatAppearanceSection: React.FC = () => {
                 <label>{t('settingsPage.chatBackgroundColorLabel')}</label>
                 <div className={styles.colorSwatchContainer}>
                     {CHAT_BACKGROUND_OPTIONS.map((option) => (
-                        <div
+                        <button
                             key={option.color}
+                            type="button"
                             className={`${styles.colorSwatch} ${preferences.chatBackgroundSetting === option.color ? styles.active : ''}`}
                             style={{ backgroundColor: option.color }}
                             onClick={() => updatePreferences({ ...preferences, chatBackgroundSetting: option.color })}
                             title={option.name}
+                            aria-label={option.name}
                         />
                     ))}
                 </div>

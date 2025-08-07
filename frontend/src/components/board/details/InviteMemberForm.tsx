@@ -1,10 +1,11 @@
-// File: frontend/src/components/board/details/InviteMemberForm.tsx
+import React from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import Button from 'components/common/Button';
 import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import { useInviteMemberForm } from 'hooks/board/details/useInviteMemberForm';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import type { Member } from 'types/board.types';
 
 interface InviteMemberFormProps {

@@ -1,5 +1,5 @@
-// File: frontend/src/context/PreferencesContext.ts
 import { createContext } from 'react';
+
 import type { UserPreferences } from 'types/user.types';
 
 export interface PreferencesContextType {

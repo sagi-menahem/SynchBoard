@@ -1,6 +1,7 @@
-// File: frontend/src/hooks/global/useSocket.new.ts
 import { useEffect } from 'react';
+
 import websocketService from 'services/websocketService';
+
 import { useWebSocket } from '../websocket/useWebSocket';
 
 export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => void) => {

@@ -1,9 +1,11 @@
-// File: frontend/src/pages/AuthPage.tsx
+import React, { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
+
 import LoginForm from 'components/auth/LoginForm';
 import RegistrationForm from 'components/auth/RegistrationForm';
 import Button from 'components/common/Button';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import styles from './AuthPage.module.css';
 
 const AuthPage: React.FC = () => {

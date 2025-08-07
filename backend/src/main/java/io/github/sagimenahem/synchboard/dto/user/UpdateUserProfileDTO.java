@@ -1,4 +1,3 @@
-// File: backend/src/main/java/io/github/sagimenahem/synchboard/dto/user/UpdateUserProfileDTO.java
 package io.github.sagimenahem.synchboard.dto.user;
 
 import jakarta.validation.constraints.NotBlank;

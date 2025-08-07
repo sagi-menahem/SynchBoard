@@ -1,4 +1,3 @@
-// File: frontend/src/types/message.types.ts
 export const MessageType = {
     CHAT: 'CHAT',
     JOIN: 'JOIN',
