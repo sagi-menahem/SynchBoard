@@ -2,9 +2,7 @@ package io.github.sagimenahem.synchboard.service;
 
 import static io.github.sagimenahem.synchboard.config.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ALLOWED_FONT_SIZES;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import java.util.List;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -29,7 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
     private final GroupMemberRepository groupMemberRepository;
-    private final SimpMessageSendingOperations messagingTemplate;
+    private final BoardNotificationService notificationService;
 
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(String userEmail) {
@@ -119,13 +117,11 @@ public class UserService {
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
-        BoardUpdateDTO payload =
-                new BoardUpdateDTO(BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
-
-        for (GroupMember membership : memberships) {
-            Long boardId = membership.getBoardGroupId();
-            String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + boardId;
-            messagingTemplate.convertAndSend(destination, payload);
-        }
+        List<Long> boardIds = memberships.stream()
+                .map(GroupMember::getBoardGroupId)
+                .toList();
+        
+        notificationService.broadcastBoardUpdatesToMultipleBoards(boardIds, 
+                BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
     }
 }
