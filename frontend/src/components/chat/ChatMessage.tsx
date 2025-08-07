@@ -1,6 +1,7 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
+import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
 
 import { API_BASE_URL } from 'constants/api.constants';
 import type { ChatMessageResponse } from 'types/message.types';
@@ -12,19 +13,24 @@ interface ChatMessageProps {
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
-    const imageSource = message.senderProfilePictureUrl
+    const profileUrl = message.senderProfilePictureUrl
         ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
         : defaultUserImage;
 
+    const imageSource = isSafeUrl(profileUrl) ? profileUrl : defaultUserImage;
+
+    const senderName = sanitizeUserContent(message.senderFullName);
+    const messageContent = sanitizeUserContent(message.content);
+
     return (
         <div className={styles.messageContainer}>
-            <img src={imageSource} alt={message.senderFullName} className={styles.avatar} />
+            <img src={imageSource} alt={senderName} className={styles.avatar} />
             <div className={styles.messageContent}>
                 <div>
-                    <strong>{message.senderFullName}</strong>
+                    <strong>{senderName}</strong>
                     <span className={styles.timestamp}>{new Date(message.timestamp).toLocaleTimeString()}</span>
                 </div>
-                <span>{message.content}</span>
+                <span>{messageContent}</span>
             </div>
         </div>
     );

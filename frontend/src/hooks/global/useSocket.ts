@@ -4,7 +4,7 @@ import websocketService from 'services/websocketService';
 
 import { useWebSocket } from '../websocket/useWebSocket';
 
-export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => void) => {
+export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => void, schemaKey?: string) => {
     const { isSocketConnected } = useWebSocket();
 
     useEffect(() => {
@@ -13,7 +13,7 @@ export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => v
         }
 
         console.log(`useSocket: Subscribing to ${topic}`);
-        const subscription = websocketService.subscribe<T>(topic, onMessageReceived);
+        const subscription = websocketService.subscribe<T>(topic, onMessageReceived, schemaKey);
 
         return () => {
             if (subscription) {
@@ -21,5 +21,5 @@ export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => v
                 subscription.unsubscribe();
             }
         };
-    }, [isSocketConnected, topic, onMessageReceived]);
+    }, [isSocketConnected, topic, onMessageReceived, schemaKey]);
 };

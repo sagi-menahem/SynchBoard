@@ -78,7 +78,7 @@ export const useBoardList = () => {
         [fetchBoards]
     );
 
-    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate);
+    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
     return {
         boards,
