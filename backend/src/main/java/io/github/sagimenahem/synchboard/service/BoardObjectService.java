@@ -16,6 +16,7 @@ import io.github.sagimenahem.synchboard.entity.ActionHistory;
 import io.github.sagimenahem.synchboard.entity.BoardObject;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
 import io.github.sagimenahem.synchboard.entity.User;
+import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -66,8 +67,10 @@ public class BoardObjectService {
                 actionHistoryRepository.save(historyRecord);
 
             } catch (JsonProcessingException e) {
-                log.error("Failed to process JSON payload for board action", e);
-                throw new RuntimeException("Failed to process JSON for board action.", e);
+                log.error("Failed to process JSON payload for board action on board {}: {}",
+                        request.getBoardId(), e.getMessage(), e);
+                throw new InvalidRequestException(
+                        "Invalid board action data format: " + e.getMessage());
             }
         }
     }
@@ -78,8 +81,7 @@ public class BoardObjectService {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
-        List<BoardObject> boardObjects =
-                boardObjectRepository.findActiveByBoardWithUsers(boardId);
+        List<BoardObject> boardObjects = boardObjectRepository.findActiveByBoardWithUsers(boardId);
 
         return boardObjects.stream().map(this::mapEntityToResponse).collect(Collectors.toList());
     }
@@ -97,9 +99,29 @@ public class BoardObjectService {
                     .type(ActionType.valueOf(entity.getObjectType())).payload(payload)
                     .sender(senderEmail).instanceId(entity.getInstanceId()).build();
         } catch (JsonProcessingException e) {
-            log.error("Failed to parse BoardObject JSON data for object ID: {}",
+            log.error("Failed to parse BoardObject JSON data for object ID: {}, data: {}",
+                    entity.getObjectId(), entity.getObjectData(), e);
+
+            // Return error response instead of null to maintain data integrity
+            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE) // Mark as
+                                                                                    // delete to
+                                                                                    // remove
+                                                                                    // corrupted
+                                                                                    // object
+                    .payload(null).sender("system-error").instanceId(entity.getInstanceId())
+                    .build();
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid object type '{}' for BoardObject ID: {}", entity.getObjectType(),
                     entity.getObjectId(), e);
-            return null;
+
+            // Return error response for invalid object types
+            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE) // Mark as
+                                                                                    // delete to
+                                                                                    // remove
+                                                                                    // invalid
+                                                                                    // object
+                    .payload(null).sender("system-error").instanceId(entity.getInstanceId())
+                    .build();
         }
     }
 }
