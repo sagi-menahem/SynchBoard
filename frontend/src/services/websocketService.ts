@@ -13,6 +13,12 @@ class WebSocketService {
     private stompClient: Client | null = null;
     private readonly MAX_MESSAGE_SIZE = 1024 * 100; // 100KB limit
     private readonly messageSchemas = new Map<string, MessageValidationSchema>();
+    private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
+    private pendingSubscriptions: {
+        topic: string;
+        callback: (message: unknown) => void;
+        schemaKey?: string;
+    }[] = [];
 
     constructor() {
         this.initializeMessageSchemas();
@@ -82,7 +88,7 @@ class WebSocketService {
 
         const dataObj = data as Record<string, unknown>;
 
-        if ('__proto__' in dataObj || 'constructor' in dataObj || 'prototype' in dataObj) {
+        if (this.isPrototypePollutionAttempt(dataObj)) {
             console.error('Potential prototype pollution attempt detected');
             return false;
         }
@@ -122,6 +128,39 @@ class WebSocketService {
         return true;
     }
 
+    private isPrototypePollutionAttempt(obj: Record<string, unknown>): boolean {
+        
+        if ('__proto__' in obj) {
+            const proto = obj['__proto__'];
+            if (proto && typeof proto === 'object' && proto !== Object.prototype) {
+                const suspiciousProps = ['constructor', 'valueOf', 'toString', 'hasOwnProperty'];
+                for (const prop of suspiciousProps) {
+                    if (proto.hasOwnProperty(prop)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if ('constructor' in obj) {
+            const constructor = obj['constructor'];
+            if (constructor && typeof constructor === 'object') {
+                if ('prototype' in constructor) {
+                    return true;
+                }
+            }
+        }
+
+        if ('prototype' in obj) {
+            const prototype = obj['prototype'];
+            if (prototype && typeof prototype === 'object') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private parseAndValidateMessage<T>(messageBody: string, schemaKey?: string): T | null {
         try {
             if (messageBody.length > this.MAX_MESSAGE_SIZE) {
@@ -145,11 +184,18 @@ class WebSocketService {
     }
 
     public connect(token: string, onConnectedCallback: () => void) {
-        if (this.stompClient?.active) {
+        if (this.stompClient?.active && this.connectionState === 'connected') {
             console.log('WebSocket already connected.');
             onConnectedCallback();
             return;
         }
+
+        if (this.connectionState === 'connecting') {
+            console.log('WebSocket connection already in progress.');
+            return;
+        }
+
+        this.connectionState = 'connecting';
 
         this.stompClient = new Client({
             webSocketFactory: () => new SockJS(WEBSOCKET_URL),
@@ -158,13 +204,17 @@ class WebSocketService {
             },
             onConnect: () => {
                 console.log('Connected to WebSocket server!');
+                this.connectionState = 'connected';
+                this.processPendingSubscriptions();
                 onConnectedCallback();
             },
             onDisconnect: () => {
                 console.log('Disconnected from WebSocket.');
+                this.connectionState = 'disconnected';
             },
             onStompError: (frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
+                this.connectionState = 'disconnected';
             },
         });
         console.log('Activating STOMP client...');
@@ -177,6 +227,25 @@ class WebSocketService {
             console.log('Disconnected from WebSocket.');
             this.stompClient = null;
         }
+        this.connectionState = 'disconnected';
+        this.pendingSubscriptions = [];
+    }
+
+    private processPendingSubscriptions() {
+        if (this.connectionState !== 'connected' || !this.stompClient?.active) {
+            return;
+        }
+
+        const subscriptionsToProcess = [...this.pendingSubscriptions];
+        this.pendingSubscriptions = [];
+
+        subscriptionsToProcess.forEach(({ topic, callback, schemaKey }) => {
+            try {
+                this.subscribe(topic, callback, schemaKey);
+            } catch (error) {
+                console.error(`Failed to process pending subscription for topic ${topic}:`, error);
+            }
+        });
     }
 
     public subscribe<T>(
@@ -184,26 +253,36 @@ class WebSocketService {
         onMessageReceived: (message: T) => void,
         schemaKey?: string
     ): StompSubscription | null {
-        if (!this.stompClient?.active) {
-            console.error('Cannot subscribe, STOMP client is not connected.');
+        if (this.connectionState !== 'connected' || !this.stompClient?.active) {
+            console.log(`WebSocket not ready, queuing subscription for ${topic}`);
+            this.pendingSubscriptions.push({
+                topic,
+                callback: onMessageReceived as (message: unknown) => void,
+                schemaKey,
+            });
             return null;
         }
 
-        const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
-            const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
-            if (validatedMessage !== null) {
-                onMessageReceived(validatedMessage);
-            } else {
-                console.warn(`Invalid message received on topic ${topic}`);
-            }
-        });
+        try {
+            const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
+                const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
+                if (validatedMessage !== null) {
+                    onMessageReceived(validatedMessage);
+                } else {
+                    console.warn(`Invalid message received on topic ${topic}`);
+                }
+            });
 
-        console.log(`Subscribed to ${topic}`);
-        return subscription;
+            console.log(`Subscribed to ${topic}`);
+            return subscription;
+        } catch (error) {
+            console.error(`Failed to subscribe to ${topic}:`, error);
+            return null;
+        }
     }
 
     public sendMessage(destination: string, body: object) {
-        if (!this.stompClient?.active) {
+        if (this.connectionState !== 'connected' || !this.stompClient?.active) {
             console.error('Cannot send message, STOMP client is not connected.');
             return;
         }
@@ -214,6 +293,14 @@ class WebSocketService {
             destination: destination,
             body: JSON.stringify(sanitizedBody),
         });
+    }
+
+    public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
+        return this.connectionState;
+    }
+
+    public isConnected(): boolean {
+        return this.connectionState === 'connected' && this.stompClient?.active === true;
     }
 }
 

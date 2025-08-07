@@ -363,7 +363,6 @@ public class GroupBoardService {
                                                 MessageConstants.AUTH_NOT_MEMBER));
 
                 GroupBoard boardToUpdate = member.getGroupBoard();
-
                 deleteExistingPicture(boardToUpdate);
 
                 String newFilename = fileStorageService.store(file);
@@ -373,6 +372,8 @@ public class GroupBoardService {
                 broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
                 List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
                 allMembers.forEach(m -> broadcastUserUpdate(m.getUserEmail()));
+                
+                log.info("Board picture updated successfully for board: {}", boardId);
                 return mapToBoardResponse(member);
         }
 
