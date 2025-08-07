@@ -16,7 +16,9 @@ import io.github.sagimenahem.synchboard.service.ChatService;
 import io.github.sagimenahem.synchboard.service.GroupBoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(API_BOARDS_BASE_PATH)
 @RequiredArgsConstructor
