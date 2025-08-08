@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
+			"path": ".",
+			"name": "Project Files"
+		},
+		{
 			"name": "Backend",
 			"path": "backend"
 		},
 		{
 			"name": "Frontend",
 			"path": "frontend"
-		},
-		{
-			"path": ".",
-			"name": "Project Files"
 		}
 	],
 	"launch": {
