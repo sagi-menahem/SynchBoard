@@ -157,3 +157,15 @@ temp/
 *.p12
 secrets/
 credentials/
+
+# ===================================================================
+# Claude Code Related Files
+# ===================================================================
+CLAUDE.md
+.claude/
+claude.md
+.claude.md
+*.claude
+.clauderc
+claude-*.md
+.claude-*
