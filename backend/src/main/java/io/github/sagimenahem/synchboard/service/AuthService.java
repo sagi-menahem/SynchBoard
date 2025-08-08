@@ -25,6 +25,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public AuthResponse registerUser(RegisterRequest request) {
         if (userRepository.existsById(request.getEmail())) {
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
