@@ -41,33 +41,11 @@
 				"password": "test12345"
 			}
 		],
-		"favorites.resources": [
-			{
-				"filePath": "backend/src/main/java/io/github/sagimenahem/synchboard",
-				"group": "Default"
-			},
-			{
-				"filePath": "frontend/src",
-				"group": "Default"
-			}
-		],
-		"favorites.sortOrder": "ASC",
 		"editor.formatOnSave": true,
 		"typescript.updateImportsOnFileMove.enabled": "always",
 		"javascript.updateImportsOnFileMove.enabled": "always",
 		"java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
 		"java.format.settings.profile": "GoogleStyle",
-		"java.checkstyle.enabled": true,
-		"java.checkstyle.configuration": "${workspaceFolder:Backend}/checkstyle.xml",
-		"java.checkstyle.version": "10.12.5",
-		"java.sources.organizeImports.importOrder": [
-			"java",
-			"javax",
-			"jakarta",
-			"#",
-			"org.springframework",
-			"com.synchboard"
-		],
 		"java.configuration.updateBuildConfiguration": "automatic",
 		"java.compile.nullAnalysis.mode": "automatic",
 		"[java]": {
@@ -76,31 +54,19 @@
 			}
 		},
 		"[typescript]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.codeActionsOnSave": {
 				"source.fixAll.eslint": "explicit"
 			}
 		},
 		"[typescriptreact]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.codeActionsOnSave": {
 				"source.fixAll.eslint": "explicit"
 			}
 		},
 		"[javascript]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.codeActionsOnSave": {
 				"source.fixAll.eslint": "explicit"
 			}
-		},
-		"[json]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		},
-		"[css]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
-		},
-		"[html]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode"
 		}
 	}
 }
