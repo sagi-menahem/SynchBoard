@@ -1,7 +1,7 @@
 package io.github.sagimenahem.synchboard.config.websocket;
 
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.*;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.CLIENT_ORIGIN_URL;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;

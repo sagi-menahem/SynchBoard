@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, type ReactNode } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth/useAuth';
 import * as userService from 'services/userService';
@@ -33,7 +34,7 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
                 });
             })
             .catch((error) => {
-                console.error('Failed to fetch user preferences:', error);
+                logger.error('Failed to fetch user preferences', error);
             });
     }, []);
 
@@ -55,7 +56,7 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
                 toast.success(t('success.preferences.update'));
             })
             .catch((error) => {
-                console.error('Failed to save preferences:', error);
+                logger.error('Failed to save preferences', error);
                 setPreferences(oldPrefs);
                 throw error;
             });

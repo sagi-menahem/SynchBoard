@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import io.github.sagimenahem.synchboard.config.constants.ApiConstants;
+import io.github.sagimenahem.synchboard.constants.ApiConstants;
 import io.github.sagimenahem.synchboard.entity.Message;
 
 @Repository

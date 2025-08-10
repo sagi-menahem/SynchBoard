@@ -1,8 +1,8 @@
 package io.github.sagimenahem.synchboard.controller;
 
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.MAPPING_BOARD_DRAW_ACTION;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.MAPPING_CHAT_SEND_MESSAGE;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.MAPPING_BOARD_DRAW_ACTION;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.MAPPING_CHAT_SEND_MESSAGE;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import java.security.Principal;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

@@ -1,6 +1,9 @@
 import React, { type ErrorInfo, type ReactNode } from 'react';
 
+import logger from 'utils/logger';
+
 import { ErrorBoundary } from './ErrorBoundary';
+
 
 interface Props {
     children: ReactNode;
@@ -47,7 +50,7 @@ export const ComponentErrorBoundary: React.FC<Props> = ({
     minimal = false 
 }) => {
     const handleError = (error: Error, errorInfo: ErrorInfo) => {
-        console.error(`Component Error in ${componentName || 'Unknown Component'}:`, {
+        logger.error(`Component Error in ${componentName || 'Unknown Component'}:`, {
             error: error.message,
             stack: error.stack,
             componentStack: errorInfo.componentStack,

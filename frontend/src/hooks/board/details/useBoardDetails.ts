@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logger from 'utils/logger';
 
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
@@ -10,6 +11,7 @@ import { useSocket } from 'hooks/global/useSocket';
 import { getBoardDetails } from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
 import type { BoardUpdateDTO } from 'types/websocket.types';
+
 
 export const useBoardDetails = (boardId: number | undefined) => {
     const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
@@ -30,7 +32,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
                 setBoardDetails(data);
             })
             .catch((error) => {
-                console.error('Failed to fetch board details:', error);
+                logger.error('Failed to fetch board details:', error);
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     navigate(APP_ROUTES.BOARD_LIST);
                 }
@@ -50,7 +52,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
             if (message.sourceUserEmail === userEmail) {
                 return;
             }
-            console.log(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
+            logger.debug(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
             fetchDetails();
         },
         [fetchDetails, userEmail]

@@ -2,8 +2,10 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
+
 
 export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
     const { t } = useTranslation();
@@ -16,7 +18,7 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
                 toast.success(t('success.board.nameUpdate'));
                 onSuccess?.();
             } catch (error) {
-                console.error('Update name error:', error);
+                logger.error('Update name error:', error);
                 throw error;
             }
         },
@@ -31,7 +33,7 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
                 toast.success(t('success.board.descriptionUpdate'));
                 onSuccess?.();
             } catch (error) {
-                console.error('Update description error:', error);
+                logger.error('Update description error:', error);
                 throw error;
             }
         },

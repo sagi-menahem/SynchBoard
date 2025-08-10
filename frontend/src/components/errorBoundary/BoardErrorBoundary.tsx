@@ -1,6 +1,9 @@
 import React, { type ErrorInfo, type ReactNode } from 'react';
 
+import logger from 'utils/logger';
+
 import { ErrorBoundary } from './ErrorBoundary';
+
 
 interface Props {
     children: ReactNode;
@@ -65,7 +68,7 @@ const BoardErrorFallback: React.FC<{ boardId?: string | number; onRetry: () => v
 
 export const BoardErrorBoundary: React.FC<Props> = ({ children, boardId }) => {
     const handleError = (error: Error, errorInfo: ErrorInfo) => {
-        console.error(`Board Error (Board ID: ${boardId}):`, {
+        logger.error(`Board Error (Board ID: ${boardId}):`, {
             error: error.message,
             stack: error.stack,
             componentStack: errorInfo.componentStack,

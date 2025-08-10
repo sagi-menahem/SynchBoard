@@ -1,8 +1,8 @@
 package io.github.sagimenahem.synchboard.config.security;
 
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.AUTHORIZATION;
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.JWT_PREFIX;
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.JWT_PREFIX_LENGTH;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.AUTHORIZATION;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.JWT_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.JWT_PREFIX_LENGTH;
 import java.io.IOException;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

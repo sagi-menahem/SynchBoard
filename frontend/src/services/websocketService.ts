@@ -1,5 +1,6 @@
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import logger from 'utils/logger';
 
 import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'constants/api.constants';
 
@@ -80,14 +81,14 @@ class WebSocketService {
 
     private validateMessage(data: unknown, schemaKey?: string): boolean {
         if (!data || typeof data !== 'object' || data === null) {
-            console.warn('Invalid message: not an object');
+            logger.warn('Invalid message: not an object');
             return false;
         }
 
         const dataObj = data as Record<string, unknown>;
 
         if (this.isPrototypePollutionAttempt(dataObj)) {
-            console.error('Potential prototype pollution attempt detected');
+            logger.error('Potential prototype pollution attempt detected');
             return false;
         }
 
@@ -104,7 +105,7 @@ class WebSocketService {
             if (schema.requiredFields) {
                 for (const field of schema.requiredFields) {
                     if (!(field in dataObj)) {
-                        console.warn(`Missing required field: ${field}`);
+                        logger.warn(`Missing required field: ${field}`);
                         return false;
                     }
                 }
@@ -113,7 +114,7 @@ class WebSocketService {
             if (schema.allowedTypes && 'updateType' in dataObj) {
                 const updateType = dataObj['updateType'] as unknown;
                 if (typeof updateType === 'string' && !schema.allowedTypes.includes(updateType)) {
-                    console.warn(`Invalid updateType: ${updateType}`);
+                    logger.warn(`Invalid updateType: ${updateType}`);
                     return false;
                 }
             }
@@ -121,7 +122,7 @@ class WebSocketService {
             if (schema.maxLength && 'content' in dataObj) {
                 const content = dataObj['content'] as unknown;
                 if (typeof content === 'string' && content.length > schema.maxLength) {
-                    console.warn(`Content exceeds maximum length of ${schema.maxLength}`);
+                    logger.warn(`Content exceeds maximum length of ${schema.maxLength}`);
                     return false;
                 }
             }
@@ -136,7 +137,7 @@ class WebSocketService {
             const requiredFields = ['type', 'sender'];
             for (const field of requiredFields) {
                 if (!(field in dataObj)) {
-                    console.warn(`BoardActionDTO missing required field: ${field}`);
+                    logger.warn(`BoardActionDTO missing required field: ${field}`);
                     return false;
                 }
             }
@@ -145,7 +146,7 @@ class WebSocketService {
             if (typeof actionType === 'string') {
                 const validActionTypes = ['OBJECT_ADD', 'OBJECT_UPDATE', 'OBJECT_DELETE'];
                 if (!validActionTypes.includes(actionType)) {
-                    console.warn(`Invalid board action type: ${actionType}`);
+                    logger.warn(`Invalid board action type: ${actionType}`);
                     return false;
                 }
             }
@@ -157,7 +158,7 @@ class WebSocketService {
             const requiredFields = ['updateType', 'sourceUserEmail'];
             for (const field of requiredFields) {
                 if (!(field in dataObj)) {
-                    console.warn(`BoardUpdateDTO missing required field: ${field}`);
+                    logger.warn(`BoardUpdateDTO missing required field: ${field}`);
                     return false;
                 }
             }
@@ -166,7 +167,7 @@ class WebSocketService {
             if (typeof updateType === 'string') {
                 const validUpdateTypes = ['DETAILS_UPDATED', 'MEMBERS_UPDATED'];
                 if (!validUpdateTypes.includes(updateType)) {
-                    console.warn(`Invalid board update type: ${updateType}`);
+                    logger.warn(`Invalid board update type: ${updateType}`);
                     return false;
                 }
             }
@@ -178,7 +179,7 @@ class WebSocketService {
             const requiredFields = ['type', 'content', 'timestamp', 'senderEmail'];
             for (const field of requiredFields) {
                 if (!(field in dataObj)) {
-                    console.warn(`ChatMessageDTO missing required field: ${field}`);
+                    logger.warn(`ChatMessageDTO missing required field: ${field}`);
                     return false;
                 }
             }
@@ -187,7 +188,7 @@ class WebSocketService {
             if (typeof messageType === 'string') {
                 const validMessageTypes = ['CHAT', 'JOIN', 'LEAVE'];
                 if (!validMessageTypes.includes(messageType)) {
-                    console.warn(`Invalid chat message type: ${messageType}`);
+                    logger.warn(`Invalid chat message type: ${messageType}`);
                     return false;
                 }
             }
@@ -195,7 +196,7 @@ class WebSocketService {
             return true;
         }
 
-        console.warn('Board message does not match any known format');
+        logger.warn('Board message does not match any known format');
         return false;
     }
 
@@ -235,7 +236,7 @@ class WebSocketService {
     private parseAndValidateMessage<T>(messageBody: string, schemaKey?: string): T | null {
         try {
             if (messageBody.length > this.MAX_MESSAGE_SIZE) {
-                console.error('Message exceeds maximum allowed size');
+                logger.error('Message exceeds maximum allowed size');
                 return null;
             }
 
@@ -249,20 +250,20 @@ class WebSocketService {
 
             return sanitizedData as T;
         } catch (error) {
-            console.error('Failed to parse WebSocket message:', error);
+            logger.error('Failed to parse WebSocket message:', error);
             return null;
         }
     }
 
     public connect(token: string, onConnectedCallback: () => void) {
         if (this.stompClient?.active && this.connectionState === 'connected') {
-            console.log('WebSocket already connected.');
+            logger.debug('WebSocket already connected.');
             onConnectedCallback();
             return;
         }
 
         if (this.connectionState === 'connecting') {
-            console.log('WebSocket connection already in progress.');
+            logger.debug('WebSocket connection already in progress.');
             return;
         }
 
@@ -274,28 +275,28 @@ class WebSocketService {
                 [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
             },
             onConnect: () => {
-                console.log('Connected to WebSocket server!');
+                logger.debug('Connected to WebSocket server!');
                 this.connectionState = 'connected';
                 this.processPendingSubscriptions();
                 onConnectedCallback();
             },
             onDisconnect: () => {
-                console.log('Disconnected from WebSocket.');
+                logger.debug('Disconnected from WebSocket.');
                 this.connectionState = 'disconnected';
             },
             onStompError: (frame) => {
-                console.error('Broker reported error: ' + frame.headers['message']);
+                logger.error('Broker reported error: ' + frame.headers['message']);
                 this.connectionState = 'disconnected';
             },
         });
-        console.log('Activating STOMP client...');
+        logger.debug('Activating STOMP client...');
         this.stompClient.activate();
     }
 
     public disconnect() {
         if (this.stompClient?.active) {
             this.stompClient.deactivate();
-            console.log('Disconnected from WebSocket.');
+            logger.debug('Disconnected from WebSocket.');
             this.stompClient = null;
         }
         this.connectionState = 'disconnected';
@@ -314,7 +315,7 @@ class WebSocketService {
             try {
                 this.subscribe(topic, callback, schemaKey);
             } catch (error) {
-                console.error(`Failed to process pending subscription for topic ${topic}:`, error);
+                logger.error(`Failed to process pending subscription for topic ${topic}:`, error);
             }
         });
     }
@@ -325,7 +326,7 @@ class WebSocketService {
         schemaKey?: string
     ): StompSubscription | null {
         if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-            console.log(`WebSocket not ready, queuing subscription for ${topic}`);
+            logger.debug(`WebSocket not ready, queuing subscription for ${topic}`);
             this.pendingSubscriptions.push({
                 topic,
                 callback: onMessageReceived as (message: unknown) => void,
@@ -340,21 +341,21 @@ class WebSocketService {
                 if (validatedMessage !== null) {
                     onMessageReceived(validatedMessage);
                 } else {
-                    console.warn(`Invalid message received on topic ${topic}`);
+                    logger.warn(`Invalid message received on topic ${topic}`);
                 }
             });
 
-            console.log(`Subscribed to ${topic}`);
+            logger.debug(`Subscribed to ${topic}`);
             return subscription;
         } catch (error) {
-            console.error(`Failed to subscribe to ${topic}:`, error);
+            logger.error(`Failed to subscribe to ${topic}:`, error);
             return null;
         }
     }
 
     public sendMessage(destination: string, body: object) {
         if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-            console.error('Cannot send message, STOMP client is not connected.');
+            logger.error('Cannot send message, STOMP client is not connected.');
             return;
         }
 

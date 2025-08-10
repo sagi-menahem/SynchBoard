@@ -1,7 +1,7 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.WEBSOCKET_USER_TOPIC_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_USER_TOPIC_PREFIX;
 import java.util.List;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;

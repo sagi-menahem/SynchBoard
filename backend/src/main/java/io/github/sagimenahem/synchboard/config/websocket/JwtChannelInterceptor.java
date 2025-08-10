@@ -1,7 +1,7 @@
 package io.github.sagimenahem.synchboard.config.websocket;
 
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.AUTHORIZATION;
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.JWT_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.AUTHORIZATION;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.JWT_PREFIX;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -31,11 +31,13 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
         if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
+            log.debug("Processing WebSocket CONNECT command");
             String authHeader = accessor.getFirstNativeHeader(AUTHORIZATION);
 
             if (authHeader != null && authHeader.startsWith(JWT_PREFIX)) {
                 String jwt = authHeader.substring(7);
                 String userEmail = jwtService.extractUsername(jwt);
+                log.debug("WebSocket authentication attempt for user: {}", userEmail);
 
                 if (userEmail != null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
@@ -45,8 +47,18 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                                 new UsernamePasswordAuthenticationToken(userDetails, null,
                                         userDetails.getAuthorities());
                         accessor.setUser(authToken);
+                        log.info("WebSocket connection authenticated for user: {}", userEmail);
+                    } else {
+                        log.warn("WebSocket authentication failed - invalid JWT for user: {}",
+                                userEmail);
                     }
+                } else {
+                    log.warn(
+                            "WebSocket authentication failed - unable to extract user email from JWT");
                 }
+            } else {
+                log.warn(
+                        "WebSocket authentication failed - missing or invalid authorization header");
             }
         }
         return message;

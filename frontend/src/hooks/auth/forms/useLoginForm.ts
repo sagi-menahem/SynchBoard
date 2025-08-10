@@ -3,11 +3,13 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import logger from 'utils/logger';
 
 import { APP_ROUTES } from 'constants/routes.constants';
 import { useAuth } from 'hooks/auth/useAuth';
 import * as authService from 'services/authService';
 import type { LoginRequest } from 'types/user.types';
+
 
 export const useLoginForm = () => {
     const { t } = useTranslation();
@@ -22,15 +24,18 @@ export const useLoginForm = () => {
         setIsSubmitting(true);
         const credentials: LoginRequest = { email, password };
 
+        logger.debug('Login form submission for user:', email);
+
         authService
             .login(credentials)
             .then((response) => {
+                logger.info('Login successful for user:', email);
                 toast.success(t('loginForm.loginSuccess'));
                 login(response.token);
                 navigate(APP_ROUTES.BOARD_LIST);
             })
             .catch((err) => {
-                console.error('Login failed:', err);
+                logger.error('Login failed for user:', err, { email });
             })
             .finally(() => {
                 setIsSubmitting(false);

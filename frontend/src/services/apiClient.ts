@@ -1,6 +1,7 @@
 import axios, { type AxiosError } from 'axios';
 import i18n from 'i18n';
 import toast from 'react-hot-toast';
+import logger from 'utils/logger';
 
 import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
 import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
@@ -15,34 +16,50 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
+        
+        logger.debug(`API Request: ${config.method?.toUpperCase()} ${config.url}`, {
+            headers: isPublicEndpoint ? 'public' : 'authenticated',
+            params: config.params
+        });
+        
         if (!isPublicEndpoint) {
             const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
             if (token) {
                 config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] = `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
+                logger.debug('Auth token attached to request');
+            } else {
+                logger.warn('No auth token available for protected endpoint');
             }
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => {
+        logger.error('API Request interceptor error', error);
+        return Promise.reject(error);
+    }
 );
 
 apiClient.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        logger.debug(`API Response: ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`);
+        return response;
+    },
     (error: AxiosError) => {
+        logger.error(`API Error: ${error.response?.status || 'Network Error'} ${error.config?.method?.toUpperCase()} ${error.config?.url}`, error);
+        
         const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
-        // Check if this is a board-specific request
         const isBoardRequest = error.config?.url?.includes('/boards/');
 
         if (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) {
-            // For 401 (unauthorized) always invalidate session
-            // For 403 (forbidden) only invalidate session if it's not a board-specific request
             if (error.response.status === 401 || !isBoardRequest) {
+                logger.warn(`Session invalidated due to ${error.response.status} response`);
                 localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
                 toast.error(i18n.t('errors.sessionExpired'), { id: 'session-expired' });
 
                 if (window.location.pathname !== '/') {
+                    logger.info('Redirecting to login page due to authentication failure');
                     window.location.href = '/';
                 }
                 return Promise.reject(error);
@@ -73,6 +90,7 @@ apiClient.interceptors.response.use(
             }
         } else {
             if (!isLoginAttempt) {
+                logger.error('Unexpected error without backend message', error);
                 toast.error(i18n.t('errors.unexpected'), { id: 'unexpected-error' });
             }
         }

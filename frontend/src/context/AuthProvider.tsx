@@ -1,6 +1,7 @@
 import React, { useEffect, useState, type ReactNode } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
+import logger from 'utils/logger';
 
 import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
 
@@ -16,19 +17,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            const decodedToken: { sub: string } = jwtDecode(token);
-            setUserEmail(decodedToken.sub);
+            try {
+                const decodedToken: { sub: string } = jwtDecode(token);
+                setUserEmail(decodedToken.sub);
+                logger.debug('JWT token decoded successfully', { userEmail: decodedToken.sub });
+            } catch (error) {
+                logger.error('Failed to decode JWT token', error);
+                setToken(null);
+                localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+            }
         } else {
             setUserEmail(null);
+            logger.debug('No JWT token available');
         }
     }, [token]);
 
     const login = (newToken: string) => {
+        logger.info('User login - setting new token');
         setToken(newToken);
         localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
     };
 
     const logout = () => {
+        logger.info('User logout - clearing token');
         setToken(null);
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     };

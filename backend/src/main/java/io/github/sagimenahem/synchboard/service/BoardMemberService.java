@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.board.MemberDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
@@ -33,11 +33,17 @@ public class BoardMemberService {
 
     @Transactional
     public MemberDTO inviteMember(Long boardId, String invitedUserEmail, String invitingUserEmail) {
+        log.debug("Attempting to invite user {} to board {} by user {}", invitedUserEmail, boardId, invitingUserEmail);
+        
         GroupMember invitingMember = groupMemberRepository
                 .findByBoardGroupIdAndUserEmail(boardId, invitingUserEmail)
-                .orElseThrow(() -> new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER));
+                .orElseThrow(() -> {
+                    log.warn("SECURITY: Non-member {} attempted to invite user to board {}", invitingUserEmail, boardId);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         if (!invitingMember.getIsAdmin()) {
+            log.warn("SECURITY: Non-admin {} attempted to invite user {} to board {}", invitingUserEmail, invitedUserEmail, boardId);
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_ADMIN);
         }
 
@@ -46,6 +52,7 @@ public class BoardMemberService {
                         MessageConstants.USER_NOT_FOUND + invitedUserEmail));
 
         if (groupMemberRepository.existsByUserEmailAndBoardGroupId(invitedUserEmail, boardId)) {
+            log.warn("Invitation failed: user {} is already a member of board {}", invitedUserEmail, boardId);
             throw new ResourceConflictException(MessageConstants.USER_ALREADY_MEMBER);
         }
 
@@ -55,6 +62,7 @@ public class BoardMemberService {
                 .isAdmin(false).build();
 
         groupMemberRepository.save(newMembership);
+        log.info("SECURITY: User {} successfully invited to board {} by admin {}", invitedUserEmail, boardId, invitingUserEmail);
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED,
                 invitingUserEmail);
@@ -64,15 +72,22 @@ public class BoardMemberService {
 
     @Transactional
     public void removeMember(Long boardId, String emailToRemove, String requestingUserEmail) {
+        log.debug("Attempting to remove user {} from board {} by user {}", emailToRemove, boardId, requestingUserEmail);
+        
         GroupMember requestingAdmin = groupMemberRepository
                 .findByBoardGroupIdAndUserEmail(boardId, requestingUserEmail)
-                .orElseThrow(() -> new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER));
+                .orElseThrow(() -> {
+                    log.warn("SECURITY: Non-member {} attempted to remove user from board {}", requestingUserEmail, boardId);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         if (!requestingAdmin.getIsAdmin()) {
+            log.warn("SECURITY: Non-admin {} attempted to remove user {} from board {}", requestingUserEmail, emailToRemove, boardId);
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_ADMIN);
         }
 
         if (requestingUserEmail.equals(emailToRemove)) {
+            log.warn("Invalid request: admin {} attempted to remove themselves from board {}", requestingUserEmail, boardId);
             throw new InvalidRequestException(MessageConstants.BOARD_CANNOT_REMOVE_SELF);
         }
 
@@ -82,6 +97,7 @@ public class BoardMemberService {
                         "Member with email " + emailToRemove + " not found in this board."));
 
         groupMemberRepository.delete(memberToRemove);
+        log.info("SECURITY: User {} successfully removed from board {} by admin {}", emailToRemove, boardId, requestingUserEmail);
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED,
                 requestingUserEmail);
@@ -91,11 +107,17 @@ public class BoardMemberService {
     @Transactional
     public MemberDTO promoteMember(Long boardId, String emailToPromote,
             String requestingUserEmail) {
+        log.debug("Attempting to promote user {} to admin in board {} by user {}", emailToPromote, boardId, requestingUserEmail);
+        
         GroupMember requestingAdmin = groupMemberRepository
                 .findByBoardGroupIdAndUserEmail(boardId, requestingUserEmail)
-                .orElseThrow(() -> new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER));
+                .orElseThrow(() -> {
+                    log.warn("SECURITY: Non-member {} attempted to promote user in board {}", requestingUserEmail, boardId);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         if (!requestingAdmin.getIsAdmin()) {
+            log.warn("SECURITY: Non-admin {} attempted to promote user {} in board {}", requestingUserEmail, emailToPromote, boardId);
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_ADMIN);
         }
 
@@ -105,11 +127,13 @@ public class BoardMemberService {
                         "Member with email " + emailToPromote + " not found in this board."));
 
         if (memberToPromote.getIsAdmin()) {
+            log.warn("Promotion failed: user {} is already admin of board {}", emailToPromote, boardId);
             throw new ResourceConflictException(MessageConstants.USER_IS_ALREADY_ADMIN);
         }
 
         memberToPromote.setIsAdmin(true);
         groupMemberRepository.save(memberToPromote);
+        log.info("SECURITY: User {} successfully promoted to admin in board {} by admin {}", emailToPromote, boardId, requestingUserEmail);
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.MEMBERS_UPDATED,
                 requestingUserEmail);

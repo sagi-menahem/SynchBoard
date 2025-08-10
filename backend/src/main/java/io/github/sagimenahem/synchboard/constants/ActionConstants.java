@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.config.constants;
+package io.github.sagimenahem.synchboard.constants;
 
 public final class ActionConstants {
 

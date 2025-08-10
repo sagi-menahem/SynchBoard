@@ -1,13 +1,13 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.FileConstants.IMAGES_BASE_PATH;
+import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.board.BoardDTO;
 import io.github.sagimenahem.synchboard.dto.board.BoardDetailsDTO;
 import io.github.sagimenahem.synchboard.dto.board.CreateBoardRequest;
@@ -61,7 +61,10 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BoardDetailsDTO getBoardDetails(Long boardId, String userEmail) {
+        log.debug("Fetching board details for boardId {} by user {}", boardId, userEmail);
+        
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
+            log.warn("SECURITY: Non-member {} attempted to access board details for board {}", userEmail, boardId);
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 

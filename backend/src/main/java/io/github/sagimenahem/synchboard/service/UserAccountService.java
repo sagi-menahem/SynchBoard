@@ -1,19 +1,21 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.FileConstants.IMAGES_BASE_PATH;
+import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserAccountService {
@@ -31,26 +33,46 @@ public class UserAccountService {
 
     @Transactional
     public void deleteAccount(String userEmail) {
+        log.warn("CRITICAL: Account deletion initiated for user: {}", userEmail);
+        
         User user = userRepository.findById(userEmail).orElseThrow(
                 () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
+        log.info("Starting data cleanup for user: {}", userEmail);
+        
         boardObjectRepository.nullifyCreatedByUser(userEmail);
+        log.debug("Nullified board object creator references for user: {}", userEmail);
+        
         boardObjectRepository.nullifyLastEditedByUser(userEmail);
+        log.debug("Nullified board object editor references for user: {}", userEmail);
+        
         groupBoardRepository.nullifyCreatedByUser(userEmail);
+        log.debug("Nullified board creator references for user: {}", userEmail);
+        
         actionHistoryRepository.deleteAllByUser_Email(userEmail);
+        log.debug("Deleted action history for user: {}", userEmail);
+        
         messageRepository.nullifySenderByUserEmail(userEmail);
+        log.debug("Nullified message sender references for user: {}", userEmail);
 
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
         List<Long> boardIds =
                 memberships.stream().map(GroupMember::getBoardGroupId).collect(Collectors.toList());
-        boardIds.forEach(boardId -> boardMemberService.leaveBoard(boardId, userEmail));
+        
+        log.info("User {} is member of {} boards, initiating board leave process", userEmail, boardIds.size());
+        boardIds.forEach(boardId -> {
+            log.debug("Processing board leave for user {} from board {}", userEmail, boardId);
+            boardMemberService.leaveBoard(boardId, userEmail);
+        });
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename =
                     user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
+            log.debug("Deleting profile picture file: {} for user: {}", existingFilename, userEmail);
             fileStorageService.delete(existingFilename);
         }
 
         userRepository.delete(user);
+        log.warn("CRITICAL: Account deletion completed for user: {}", userEmail);
     }
 }

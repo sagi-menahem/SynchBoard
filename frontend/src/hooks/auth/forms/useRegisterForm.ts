@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import * as authService from 'services/authService';
 import type { RegisterRequest } from 'types/user.types';
+
 
 export const useRegisterForm = (onRegistrationSuccess: () => void) => {
     const { t } = useTranslation();
@@ -20,14 +22,17 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
         setIsSubmitting(true);
         const formData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
 
+        logger.debug('Registration form submission for user:', email);
+
         authService
             .register(formData)
             .then(() => {
+                logger.info('Registration successful for user:', email);
                 toast.success(t('registerForm.registrationSuccess'));
                 onRegistrationSuccess();
             })
             .catch((err) => {
-                console.error('Registration failed', err);
+                logger.error('Registration failed for user:', err, { email });
             })
             .finally(() => {
                 setIsSubmitting(false);

@@ -1,6 +1,6 @@
 package io.github.sagimenahem.synchboard.dto.user;
 
-import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ERROR_PASSWORD_CANT_BE_EMPTY;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.ERROR_PASSWORD_CANT_BE_EMPTY;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

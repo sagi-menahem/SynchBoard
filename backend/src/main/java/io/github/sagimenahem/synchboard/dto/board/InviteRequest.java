@@ -1,7 +1,7 @@
 package io.github.sagimenahem.synchboard.dto.board;
 
-import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ERROR_EMAIL_CANT_BE_EMPTY;
-import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ERROR_EMAIL_SHOULD_BE_VALID;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.ERROR_EMAIL_CANT_BE_EMPTY;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.ERROR_EMAIL_SHOULD_BE_VALID;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
