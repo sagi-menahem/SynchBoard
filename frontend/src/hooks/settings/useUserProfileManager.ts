@@ -2,9 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import * as userService from 'services/userService';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
+
 
 export const useUserProfileManager = () => {
     const { t } = useTranslation();
@@ -16,7 +18,7 @@ export const useUserProfileManager = () => {
         userService
             .getUserProfile()
             .then((userData) => setUser(userData))
-            .catch((error) => console.error('Failed to fetch user profile:', error))
+            .catch((error) => logger.error('Failed to fetch user profile:', error))
             .finally(() => setIsLoading(false));
     }, []);
 
@@ -31,7 +33,7 @@ export const useUserProfileManager = () => {
                 setUser(updatedUser);
                 toast.success(t('success.profile.update'));
             } catch (error) {
-                console.error('Failed to update profile:', error);
+                logger.error('Failed to update profile:', error);
                 throw error;
             }
         },

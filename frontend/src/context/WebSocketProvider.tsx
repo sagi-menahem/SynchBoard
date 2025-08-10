@@ -1,5 +1,7 @@
 import React, { useEffect, useState, type ReactNode } from 'react';
 
+import logger from 'utils/logger';
+
 import { useAuth } from 'hooks/auth/useAuth';
 import websocketService from 'services/websocketService';
 
@@ -16,7 +18,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     useEffect(() => {
         if (token) {
             websocketService.connect(token, () => {
-                console.log('WebSocket connection confirmed in WebSocketProvider.');
+                logger.debug('WebSocket connection confirmed in WebSocketProvider.');
                 setIsSocketConnected(true);
             });
         } else {

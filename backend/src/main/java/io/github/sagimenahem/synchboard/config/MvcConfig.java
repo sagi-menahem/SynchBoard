@@ -7,7 +7,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
@@ -26,6 +28,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/" + urlPath + "/**").addResourceLocations(location);
 
-        System.out.println("Exposing directory: " + urlPath + " at " + location);
+        log.info("Exposing directory: {} at {}", urlPath, location);
     }
 }

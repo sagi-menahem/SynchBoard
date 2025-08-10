@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import { WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { useAuth } from 'hooks/auth/useAuth';
@@ -10,6 +11,7 @@ import { useSocket } from 'hooks/global/useSocket';
 import { getBoards, leaveBoard } from 'services/boardService';
 import type { Board } from 'types/board.types';
 import type { UserUpdateDTO } from 'types/websocket.types';
+
 
 export const useBoardList = () => {
     const { t } = useTranslation();
@@ -29,7 +31,7 @@ export const useBoardList = () => {
             .then((userBoards) => {
                 setBoards(userBoards);
             })
-            .catch((err) => console.error(err))
+            .catch((err) => logger.error(err))
             .finally(() => setIsLoading(false));
     }, [boards.length]);
 
@@ -44,7 +46,7 @@ export const useBoardList = () => {
 
     const handleConfirmLeave = useCallback(() => {
         if (!boardToLeave) {
-            console.error('Cannot leave board, boardToLeave is null.');
+            logger.error('Cannot leave board, boardToLeave is null.');
             return;
         }
 
@@ -53,7 +55,7 @@ export const useBoardList = () => {
                 toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
                 fetchBoards();
             })
-            .catch((error) => console.error('Failed to leave board:', error))
+            .catch((error) => logger.error('Failed to leave board:', error))
             .finally(() => {
                 setLeaveConfirmOpen(false);
                 setBoardToLeave(null);
@@ -72,7 +74,7 @@ export const useBoardList = () => {
 
     const handleUserUpdate = useCallback(
         (message: UserUpdateDTO) => {
-            console.log(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
+            logger.debug(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
             fetchBoards();
         },
         [fetchBoards]

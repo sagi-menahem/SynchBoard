@@ -2,9 +2,11 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
 import type { Member } from 'types/board.types';
+
 
 export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) => {
     const { t } = useTranslation();
@@ -16,7 +18,7 @@ export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) =
                 toast.success(t('promoteSuccess', { userName: member.firstName }));
                 onSuccess?.();
             } catch (error) {
-                console.error('Failed to promote member:', error);
+                logger.error('Failed to promote member:', error);
                 throw error;
             }
         },
@@ -30,7 +32,7 @@ export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) =
                 toast.success(t('removeSuccess', { userName: member.firstName }));
                 onSuccess?.();
             } catch (error) {
-                console.error('Failed to remove member:', error);
+                logger.error('Failed to remove member:', error);
                 throw error;
             }
         },
@@ -45,7 +47,7 @@ export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) =
                 onSuccess?.();
                 return newMember;
             } catch (error) {
-                console.error('Failed to invite member:', error);
+                logger.error('Failed to invite member:', error);
                 throw error;
             }
         },

@@ -1,10 +1,10 @@
 package io.github.sagimenahem.synchboard.config.security;
 
-import static io.github.sagimenahem.synchboard.config.constants.ApiConstants.API_AUTH_PATH_PATTERN;
-import static io.github.sagimenahem.synchboard.config.constants.ApiConstants.API_USER_PATH_PATTERN;
-import static io.github.sagimenahem.synchboard.config.constants.ApiConstants.IMAGES_PATH_PATTERN;
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.CLIENT_ORIGIN_URL;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.WEBSOCKET_ENDPOINT_WITH_SUBPATHS;
+import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_AUTH_PATH_PATTERN;
+import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_USER_PATH_PATTERN;
+import static io.github.sagimenahem.synchboard.constants.ApiConstants.IMAGES_PATH_PATTERN;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.CLIENT_ORIGIN_URL;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_ENDPOINT_WITH_SUBPATHS;
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

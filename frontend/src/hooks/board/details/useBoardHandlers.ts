@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 
+import logger from 'utils/logger';
+
 import { useBoardLeave } from 'hooks/board/details/useBoardLeave';
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import { useBoardMemberContextMenu } from 'hooks/board/details/useBoardMemberContextMenu';
 import { useBoardPictureManager } from 'hooks/board/details/useBoardPictureManager';
 import type { BoardDetails, Member } from 'types/board.types';
+
 
 interface BoardHandlersProps {
     boardId: number;
@@ -36,7 +39,7 @@ export const useBoardHandlers = ({
 
     const handleInviteSuccess = useCallback(
         (newMember: Member) => {
-            console.log('New member invited:', newMember);
+            logger.debug('New member invited:', newMember);
             refetch();
             onInviteSuccess();
         },

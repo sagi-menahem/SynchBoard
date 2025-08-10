@@ -1,5 +1,7 @@
 import React, { Component, type ErrorInfo, type ReactNode } from 'react';
 
+import logger from 'utils/logger';
+
 import styles from './ErrorBoundary.module.css';
 
 interface Props {
@@ -28,9 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         this.setState({ errorInfo });
         
-        console.error(`${this.props.level || 'Component'} error boundary caught an error:`, {
-            error: error.message,
-            stack: error.stack,
+        logger.error(`${this.props.level || 'Component'} error boundary caught an error`, error, {
             componentStack: errorInfo.componentStack,
             errorBoundary: this.constructor.name
         });
@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     private reportError = (error: Error, errorInfo: ErrorInfo) => {
-        console.warn('Error caught by boundary:', { error, errorInfo });
+        logger.warn('Error reported to monitoring service', { error: error.message, errorInfo: errorInfo.componentStack });
     };
 
     private handleRetry = () => {

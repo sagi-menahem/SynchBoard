@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import type { Member } from 'types/board.types';
+
 
 export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember: Member) => void) => {
     const { t } = useTranslation();
@@ -26,7 +28,7 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
             onInviteSuccess(newMember);
             setEmail('');
         } catch (error) {
-            console.error('Invite member failed:', error);
+            logger.error('Invite member failed:', error);
         } finally {
             setIsSubmitting(false);
         }

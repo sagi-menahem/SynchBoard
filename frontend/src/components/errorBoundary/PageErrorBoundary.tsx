@@ -1,6 +1,9 @@
 import React, { type ErrorInfo, type ReactNode } from 'react';
 
+import logger from 'utils/logger';
+
 import { ErrorBoundary } from './ErrorBoundary';
+
 
 interface Props {
     children: ReactNode;
@@ -9,7 +12,7 @@ interface Props {
 
 export const PageErrorBoundary: React.FC<Props> = ({ children, pageName }) => {
     const handleError = (error: Error, errorInfo: ErrorInfo) => {
-        console.error(`Page Error in ${pageName || 'Unknown Page'}:`, {
+        logger.error(`Page Error in ${pageName || 'Unknown Page'}:`, {
             error: error.message,
             stack: error.stack,
             componentStack: errorInfo.componentStack,

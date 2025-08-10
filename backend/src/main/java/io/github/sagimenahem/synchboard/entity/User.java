@@ -1,6 +1,6 @@
 package io.github.sagimenahem.synchboard.entity;
 
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.ROLE_USER;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;

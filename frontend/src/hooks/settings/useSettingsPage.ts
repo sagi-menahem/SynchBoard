@@ -1,21 +1,22 @@
 import { useState } from 'react';
 
+import logger from 'utils/logger';
+
 import { useAccountManager } from 'hooks/settings/useAccountManager';
 import { usePasswordManager } from 'hooks/settings/usePasswordManager';
 import { useProfilePictureManager } from 'hooks/settings/useProfilePictureManager';
 import { useUserProfileManager } from 'hooks/settings/useUserProfileManager';
 
+
 export const useSettingsPage = () => {
     const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
     const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
 
-    // Use modular hooks
     const { user, isLoading, handleUpdateProfile, refetchUser } = useUserProfileManager();
     const { handleChangePassword } = usePasswordManager();
     const { handleDeleteAccount } = useAccountManager();
 
     const { handlePictureUpload, handlePictureDelete } = useProfilePictureManager(() => {
-        // Update the user state when picture changes
         refetchUser();
     });
 
@@ -23,7 +24,7 @@ export const useSettingsPage = () => {
         try {
             await handlePictureUpload(file);
         } catch (error) {
-            console.error('Picture upload failed:', error);
+            logger.error('Picture upload failed:', error);
             throw error;
         }
     };

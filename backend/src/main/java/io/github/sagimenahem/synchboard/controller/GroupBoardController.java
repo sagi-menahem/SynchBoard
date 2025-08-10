@@ -1,6 +1,6 @@
 package io.github.sagimenahem.synchboard.controller;
 
-import static io.github.sagimenahem.synchboard.config.constants.ApiConstants.*;
+import static io.github.sagimenahem.synchboard.constants.ApiConstants.*;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,9 @@ public class GroupBoardController {
     @GetMapping
     public ResponseEntity<List<BoardDTO>> getBoardsForCurrentUser(Authentication authentication) {
         String userEmail = authentication.getName();
+        log.debug("Fetching boards for user: {}", userEmail);
         List<BoardDTO> boards = boardService.getBoardsForUser(userEmail);
+        log.info("Retrieved {} boards for user: {}", boards.size(), userEmail);
         return ResponseEntity.ok(boards);
     }
 
@@ -43,7 +45,9 @@ public class GroupBoardController {
             @PathVariable(PATH_VAR_BOARD_ID) Long boardId, Authentication authentication) {
 
         String userEmail = authentication.getName();
+        log.debug("Fetching board details for boardId: {} by user: {}", boardId, userEmail);
         BoardDetailsDTO boardDetails = boardService.getBoardDetails(boardId, userEmail);
+        log.info("Retrieved board details for boardId: {} by user: {}", boardId, userEmail);
         return ResponseEntity.ok(boardDetails);
     }
 
@@ -51,7 +55,9 @@ public class GroupBoardController {
     public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody CreateBoardRequest request,
             Authentication authentication) {
         String userEmail = authentication.getName();
+        log.info("Creating new board '{}' by user: {}", request.getName(), userEmail);
         BoardDTO newBoard = boardService.createBoard(request, userEmail);
+        log.info("Board created successfully with ID: {} by user: {}", newBoard.getId(), userEmail);
         return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
     }
 
@@ -68,8 +74,10 @@ public class GroupBoardController {
             @Valid @RequestBody InviteRequest request, Authentication authentication) {
 
         String invitingUserEmail = authentication.getName();
+        log.info("Inviting member {} to board {} by user: {}", request.getEmail(), boardId, invitingUserEmail);
         MemberDTO newMember =
                 boardMemberService.inviteMember(boardId, request.getEmail(), invitingUserEmail);
+        log.info("Member {} successfully invited to board {} by user: {}", request.getEmail(), boardId, invitingUserEmail);
         return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 
@@ -79,7 +87,9 @@ public class GroupBoardController {
             Authentication authentication) {
 
         String requestingUserEmail = authentication.getName();
+        log.warn("Removing member {} from board {} by user: {}", memberEmail, boardId, requestingUserEmail);
         boardMemberService.removeMember(boardId, memberEmail, requestingUserEmail);
+        log.info("Member {} successfully removed from board {} by user: {}", memberEmail, boardId, requestingUserEmail);
         return ResponseEntity.ok().build();
     }
 
@@ -88,7 +98,9 @@ public class GroupBoardController {
             Authentication authentication) {
 
         String userEmail = authentication.getName();
+        log.info("User {} leaving board {}", userEmail, boardId);
         boardMemberService.leaveBoard(boardId, userEmail);
+        log.info("User {} successfully left board {}", userEmail, boardId);
         return ResponseEntity.ok().build();
     }
 

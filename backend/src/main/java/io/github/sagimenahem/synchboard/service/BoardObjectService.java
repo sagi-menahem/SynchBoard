@@ -1,6 +1,6 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.FileConstants.DEFAULT_SENDER_EMAIL;
+import static io.github.sagimenahem.synchboard.constants.FileConstants.DEFAULT_SENDER_EMAIL;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.access.AccessDeniedException;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO.ActionType;
 import io.github.sagimenahem.synchboard.entity.ActionHistory;
@@ -102,26 +102,14 @@ public class BoardObjectService {
             log.error("Failed to parse BoardObject JSON data for object ID: {}, data: {}",
                     entity.getObjectId(), entity.getObjectData(), e);
 
-            // Return error response instead of null to maintain data integrity
-            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE) // Mark as
-                                                                                    // delete to
-                                                                                    // remove
-                                                                                    // corrupted
-                                                                                    // object
-                    .payload(null).sender("system-error").instanceId(entity.getInstanceId())
-                    .build();
+            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE).payload(null)
+                    .sender("system-error").instanceId(entity.getInstanceId()).build();
         } catch (IllegalArgumentException e) {
             log.error("Invalid object type '{}' for BoardObject ID: {}", entity.getObjectType(),
                     entity.getObjectId(), e);
 
-            // Return error response for invalid object types
-            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE) // Mark as
-                                                                                    // delete to
-                                                                                    // remove
-                                                                                    // invalid
-                                                                                    // object
-                    .payload(null).sender("system-error").instanceId(entity.getInstanceId())
-                    .build();
+            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE).payload(null)
+                    .sender("system-error").instanceId(entity.getInstanceId()).build();
         }
     }
 }

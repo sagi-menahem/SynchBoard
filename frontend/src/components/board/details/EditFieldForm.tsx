@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import Button from 'components/common/Button';
 import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
+
 
 interface EditFieldFormProps {
     title: string;
@@ -34,7 +36,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
             await onSave(value);
             onClose();
         } catch (error) {
-            console.error('Failed to save field:', error);
+            logger.error('Failed to save field:', error);
         } finally {
             setIsSubmitting(false);
         }

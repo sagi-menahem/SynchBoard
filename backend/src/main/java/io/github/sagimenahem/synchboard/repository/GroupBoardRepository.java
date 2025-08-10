@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import io.github.sagimenahem.synchboard.config.constants.ApiConstants;
+import io.github.sagimenahem.synchboard.constants.ApiConstants;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
 

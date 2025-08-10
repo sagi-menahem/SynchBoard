@@ -1,7 +1,7 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.ActionConstants.OBJECT_ADD_ACTION;
-import static io.github.sagimenahem.synchboard.config.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_ADD_ACTION;
+import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.entity.ActionHistory;
 import io.github.sagimenahem.synchboard.entity.BoardObject;

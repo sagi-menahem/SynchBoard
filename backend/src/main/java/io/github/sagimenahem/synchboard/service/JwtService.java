@@ -1,6 +1,6 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.SecurityConstants.JWT_EXPIRATION_MS;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.JWT_EXPIRATION_MS;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;

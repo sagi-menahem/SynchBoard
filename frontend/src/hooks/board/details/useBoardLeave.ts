@@ -3,10 +3,12 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import logger from 'utils/logger';
 
 import { APP_ROUTES } from 'constants/routes.constants';
 import * as boardService from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
+
 
 export const useBoardLeave = (boardId: number) => {
     const { t } = useTranslation();
@@ -20,7 +22,7 @@ export const useBoardLeave = (boardId: number) => {
                 toast.success(t('leaveBoard.success', { boardName: boardDetails.name }));
                 navigate(APP_ROUTES.BOARD_LIST);
             } catch (error) {
-                console.error('Failed to leave board:', error);
+                logger.error('Failed to leave board:', error);
                 throw error;
             }
         },

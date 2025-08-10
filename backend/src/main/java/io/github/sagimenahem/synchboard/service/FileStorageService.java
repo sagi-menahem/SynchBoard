@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.config.AppProperties;
-import io.github.sagimenahem.synchboard.config.constants.FileConstants;
+import io.github.sagimenahem.synchboard.constants.FileConstants;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,10 @@ import { useCallback, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
+
 
 export const useBoardActions = (boardId: number) => {
     const { t } = useTranslation();
@@ -22,7 +24,7 @@ export const useBoardActions = (boardId: number) => {
                 setRedoCount((prev) => prev + 1);
             })
             .catch((error) => {
-                console.error('Undo failed on the server:', error);
+                logger.error('Undo failed on the server:', error);
             });
     }, [boardId, undoCount, t]);
 
@@ -38,7 +40,7 @@ export const useBoardActions = (boardId: number) => {
                 setRedoCount((prev) => prev - 1);
             })
             .catch((error) => {
-                console.error('Redo failed on the server:', error);
+                logger.error('Redo failed on the server:', error);
             });
     }, [boardId, redoCount, t]);
 

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import logger from 'utils/logger';
 
 interface ErrorHandlerOptions {
     showToast?: boolean;
@@ -15,7 +16,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
 
     const handleError = useCallback((error: Error, context?: string) => {
         const logMessage = `${context ? `[${context}] ` : ''}${error.message}`;
-        console[logLevel](logMessage, error);
+        logger[logLevel](logMessage, error);
 
         if (showToast) {
             toast.error(
@@ -50,9 +51,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
 };
 
 export const createErrorHandler = (context: string) => (error: Error) => {
-    console.error(`[${context}] Component Error:`, {
-        message: error.message,
-        stack: error.stack,
+    logger.error(`[${context}] Component Error`, error, {
         timestamp: new Date().toISOString(),
         context
     });

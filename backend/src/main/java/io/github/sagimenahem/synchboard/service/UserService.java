@@ -1,13 +1,13 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.config.constants.FileConstants.IMAGES_BASE_PATH;
-import static io.github.sagimenahem.synchboard.config.constants.MessageConstants.ALLOWED_FONT_SIZES;
+import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.ALLOWED_FONT_SIZES;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import io.github.sagimenahem.synchboard.config.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;

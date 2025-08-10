@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
+import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
 import type { ActionPayload } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';
+
 
 export const useBoardDataManager = (boardId: number) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +31,7 @@ export const useBoardDataManager = (boardId: number) => {
                 setMessages(messageHistory);
             })
             .catch((error) => {
-                console.error('Failed to fetch initial board data:', error);
+                logger.error('Failed to fetch initial board data:', error);
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     setAccessLost(true);
                 }

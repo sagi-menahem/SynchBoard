@@ -2,8 +2,10 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
+
 
 export const useBoardPictureManager = (boardId: number, onSuccess?: () => void) => {
     const { t } = useTranslation();
@@ -15,7 +17,7 @@ export const useBoardPictureManager = (boardId: number, onSuccess?: () => void) 
                 toast.success(t('success.board.pictureUpdate'));
                 onSuccess?.();
             } catch (error) {
-                console.error('Picture upload error:', error);
+                logger.error('Picture upload error:', error);
                 throw error;
             }
         },
@@ -28,7 +30,7 @@ export const useBoardPictureManager = (boardId: number, onSuccess?: () => void) 
             toast.success(t('success.board.pictureDelete'));
             onSuccess?.();
         } catch (error) {
-            console.error('Picture delete error:', error);
+            logger.error('Picture delete error:', error);
             throw error;
         }
     }, [boardId, onSuccess, t]);

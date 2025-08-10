@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import logger from 'utils/logger';
 
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/api.constants';
 import { APP_ROUTES } from 'constants/routes.constants';
@@ -12,6 +13,7 @@ import { useSocket } from 'hooks/global/useSocket';
 import websocketService from 'services/websocketService';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import type { UserUpdateDTO } from 'types/websocket.types';
+
 
 export const useBoardSync = (boardId: number) => {
     const navigate = useNavigate();
@@ -67,14 +69,14 @@ export const useBoardSync = (boardId: number) => {
 
     useEffect(() => {
         if (accessLost) {
-            console.warn(`[useBoardSync] accessLost is true. Navigating to board list...`);
+            logger.warn(`[useBoardSync] accessLost is true. Navigating to board list...`);
             navigate(APP_ROUTES.BOARD_LIST);
         }
     }, [accessLost, navigate]);
 
     const handleUserUpdate = useCallback(
         (message: UserUpdateDTO) => {
-            console.log(`[useBoardSync] Received user update: ${message.updateType}. Navigating to board list...`);
+            logger.debug(`[useBoardSync] Received user update: ${message.updateType}. Navigating to board list...`);
             navigate(APP_ROUTES.BOARD_LIST);
         },
         [navigate]
