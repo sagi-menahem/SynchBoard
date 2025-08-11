@@ -7,7 +7,7 @@ import logger from 'utils/logger';
 
 import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useAuth } from 'hooks/auth/useAuth';
-import * as userService from 'services/userService';
+import * as userService from 'services/UserService';
 
 
 export const useAccountManager = () => {

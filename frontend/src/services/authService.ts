@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from 'constants/ApiConstants';
 import type { AuthResponse, LoginRequest, RegisterRequest } from 'types/UserTypes';
 
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 
 export const register = async (userData: RegisterRequest): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.REGISTER, userData);
