@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { CANVAS_CONFIG, TOOLS } from 'constants/board.constants';
+import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import type { ActionPayload, CirclePayload, LinePayload, RectanglePayload } from 'types/boardObject.types';
 
 /**

@@ -4,8 +4,8 @@ import defaultUserImage from 'assets/default-user-image.png';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';
-import { API_BASE_URL } from 'constants/api.constants';
-import { APP_CONFIG } from 'constants/app.constants';
+import { API_BASE_URL } from 'constants/ApiConstants';
+import { APP_CONFIG } from 'constants/AppConstants';
 import type { UserProfile } from 'types/user.types';
 
 import styles from './ProfilePictureManager.module.css';

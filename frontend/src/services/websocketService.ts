@@ -2,7 +2,7 @@ import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import logger from 'utils/logger';
 
-import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'constants/api.constants';
+import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'constants/ApiConstants';
 
 interface MessageValidationSchema {
     requiredFields?: string[];

@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from 'constants/api.constants';
+import { API_ENDPOINTS } from 'constants/ApiConstants';
 import type { ChangePasswordRequest, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'types/user.types';
 
 import apiClient from './apiClient';

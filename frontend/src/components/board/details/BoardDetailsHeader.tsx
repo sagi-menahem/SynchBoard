@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/common/Button';
-import { API_BASE_URL } from 'constants/api.constants';
-import { APP_ROUTES } from 'constants/routes.constants';
+import { API_BASE_URL } from 'constants/ApiConstants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import type { BoardDetails } from 'types/board.types';
 
 import styles from './BoardDetailsHeader.module.css';

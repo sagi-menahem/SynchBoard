@@ -10,7 +10,7 @@ import ChatAppearanceSection from 'components/settings/ChatAppearanceSection';
 import DangerZoneSection from 'components/settings/DangerZoneSection';
 import ProfileDetailsSection from 'components/settings/ProfileDetailsSection';
 import ProfilePictureManager from 'components/settings/ProfilePictureManager';
-import { APP_ROUTES } from 'constants/routes.constants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useSettingsPage } from 'hooks/settings/useSettingsPage';
 
 import styles from './SettingsPage.module.css';
