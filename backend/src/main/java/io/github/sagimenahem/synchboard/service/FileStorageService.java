@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import io.github.sagimenahem.synchboard.constants.FileConstants;
+import io.github.sagimenahem.synchboard.constants.LoggingConstants;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -77,15 +78,18 @@ public class FileStorageService {
         }
 
         if (fileSize > FileConstants.MAX_FILE_SIZE_BYTES) {
-            log.warn("File size {} exceeds maximum allowed size of {} bytes", fileSize,
-                    FileConstants.MAX_FILE_SIZE_BYTES);
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename,
+                    String.format("File size %d exceeds maximum allowed size of %d bytes", fileSize,
+                            FileConstants.MAX_FILE_SIZE_BYTES));
             throw new InvalidRequestException(String.format(FileConstants.ERROR_FILE_TOO_LARGE,
                     FileConstants.MAX_FILE_SIZE_MB));
         }
 
         if (!isAllowedMimeType(contentType)) {
-            log.warn("MIME type validation failed. Content-Type: {}, Allowed types: {}",
-                    contentType, String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES));
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename,
+                    String.format("MIME type not allowed. Content-Type: %s, Allowed types: %s",
+                            contentType,
+                            String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES)));
             throw new InvalidRequestException(
                     String.format(FileConstants.ERROR_MIME_TYPE_NOT_ALLOWED,
                             String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES)));
@@ -94,8 +98,9 @@ public class FileStorageService {
         String fileExtension = getFileExtension(cleanedFilename);
 
         if (!isAllowedExtension(fileExtension)) {
-            log.warn("File extension validation failed. Extension: '{}', Allowed extensions: {}",
-                    fileExtension, String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS));
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename, String.format(
+                    "File extension not allowed. Extension: '%s', Allowed extensions: %s",
+                    fileExtension, String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS)));
             throw new InvalidRequestException(
                     String.format(FileConstants.ERROR_EXTENSION_NOT_ALLOWED,
                             String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS)));
@@ -104,9 +109,10 @@ public class FileStorageService {
         String normalizedContentType =
                 contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
         if (!validateFileSignature(file, normalizedContentType)) {
-            log.warn(
-                    "File signature validation failed for file: {} with Content-Type: {} (normalized: {})",
-                    originalFilename, contentType, normalizedContentType);
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename,
+                    String.format(
+                            "File signature validation failed. Content-Type: %s (normalized: %s)",
+                            contentType, normalizedContentType));
             throw new InvalidRequestException(FileConstants.ERROR_FILE_SIGNATURE_MISMATCH);
         }
 
@@ -129,11 +135,12 @@ public class FileStorageService {
 
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
-            log.info("File uploaded successfully: {} -> {}", originalFilename, uniqueFilename);
+            log.info(LoggingConstants.FILE_UPLOAD_SUCCESS, uniqueFilename, "system");
             return uniqueFilename;
 
         } catch (IOException e) {
-            log.error("Failed to store file: {}", originalFilename, e);
+            log.error(LoggingConstants.FILE_UPLOAD_FAILED, originalFilename, "system",
+                    e.getMessage());
             throw new RuntimeException(FileConstants.ERROR_FILE_STORAGE_FAILED, e);
         }
     }
@@ -158,12 +165,12 @@ public class FileStorageService {
             }
 
             if (Files.deleteIfExists(file)) {
-                log.info("Successfully deleted file: {}", filename);
+                log.info(LoggingConstants.FILE_DELETE_SUCCESS, filename, "system");
             } else {
                 log.debug("File not found for deletion: {}", filename);
             }
         } catch (IOException e) {
-            log.error("Failed to delete file: {}", filename, e);
+            log.error(LoggingConstants.FILE_DELETE_FAILED, filename, e.getMessage());
             throw new RuntimeException("File deletion failed: " + filename, e);
         }
     }
@@ -258,7 +265,8 @@ public class FileStorageService {
 
             for (String pattern : FileConstants.SVG_DANGEROUS_PATTERNS) {
                 if (content.contains(pattern.toLowerCase())) {
-                    log.warn("SVG file contains potentially dangerous content: {}", pattern);
+                    log.warn(LoggingConstants.FILE_VALIDATION_FAILED, "SVG file",
+                            "Contains potentially dangerous content: " + pattern);
                     return false;
                 }
             }

@@ -69,6 +69,7 @@ npm run preview  # Preview production build
 - `io.github.sagimenahem.synchboard.dto` - Data transfer objects
 - `io.github.sagimenahem.synchboard.config` - Configuration classes (Security, WebSocket, MVC)
 - `io.github.sagimenahem.synchboard.exception` - Custom exceptions and global handler
+- `io.github.sagimenahem.synchboard.constants` - Application constants
 
 ### Frontend Architecture
 
@@ -87,6 +88,7 @@ npm run preview  # Preview production build
 - `src/services/` - API service abstraction layer
 - `src/hooks/` - Custom React hooks organized by feature domain
 - `src/utils/` - Utility functions
+- `src/types/` - TypeScript type definitions
 
 ## Key Features & Technical Details
 

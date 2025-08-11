@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import io.github.sagimenahem.synchboard.constants.LoggingConstants;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
@@ -52,8 +53,8 @@ public class ChatService {
                 .build();
 
         messageRepository.save(messageToSave);
-        log.info("Chat message saved for board {} by user: {} (message ID: {})",
-                request.getBoardId(), userEmail, messageToSave.getMessageId());
+        log.info(LoggingConstants.CHAT_MESSAGE_SENT, request.getBoardId(), userEmail,
+                messageToSave.getMessageId());
 
         ChatMessageDTO.Response response = mapMessageToDto(messageToSave);
 
@@ -67,9 +68,7 @@ public class ChatService {
         log.debug("Fetching messages for board {} by user: {}", boardId, userEmail);
 
         if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-            log.warn(
-                    "Access denied: user {} attempted to access messages for board {} without membership",
-                    userEmail, boardId);
+            log.warn(LoggingConstants.AUTH_ACCESS_DENIED, userEmail, "board " + boardId);
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
