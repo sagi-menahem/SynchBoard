@@ -1,5 +1,8 @@
 package io.github.sagimenahem.synchboard.service;
 
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.ERROR_VALIDATION;
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.USER_NOT_FOUND;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,10 +32,11 @@ public class AuthService {
 
     @Transactional
     public AuthResponse registerUser(RegisterRequest request) {
-        log.info("Registration attempt for email: {}", request.getEmail());
-        
+        log.info(SECURITY_PREFIX + " Registration attempt for email: {}", request.getEmail());
+
         if (userRepository.existsById(request.getEmail())) {
-            log.warn("Registration failed - email already exists: {}", request.getEmail());
+            log.warn(SECURITY_PREFIX + " Registration failed for email: {}. Reason: {}",
+                    request.getEmail(), "Email already exists");
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }
 
@@ -42,50 +46,61 @@ public class AuthService {
                 .phoneNumber(request.getPhoneNumber()).build();
 
         userRepository.save(newUser);
-        log.info("User registered successfully: {}", request.getEmail());
+        log.info(SECURITY_PREFIX + " Registration successful for user: {}", request.getEmail());
 
         String jwtToken = jwtService.generateToken(newUser);
-        log.debug("JWT token generated for new user: {}", request.getEmail());
+        log.debug(SECURITY_PREFIX + " JWT token generated for user: {}", request.getEmail());
         return new AuthResponse(jwtToken);
     }
 
     public AuthResponse login(LoginRequest request) {
-        log.info("Login attempt for email: {}", request.getEmail());
-        
+        log.info(SECURITY_PREFIX + " Login attempt for user: {}", request.getEmail());
+
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-            log.info("Login successful for email: {}", request.getEmail());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getEmail(), request.getPassword()));
+            log.info(SECURITY_PREFIX + " Login successful for user: {}", request.getEmail());
         } catch (Exception e) {
-            log.warn("Login failed for email: {} - {}", request.getEmail(), e.getMessage());
+            log.warn(SECURITY_PREFIX + " Login failed for user: {}. Reason: {}", request.getEmail(),
+                    e.getMessage());
             throw e;
         }
 
-        User user = userRepository.findById(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND));
+        User user = userRepository.findById(request.getEmail()).orElseThrow(() -> {
+            log.error(USER_NOT_FOUND, request.getEmail());
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND);
+        });
 
         String jwtToken = jwtService.generateToken(user);
+        log.debug(SECURITY_PREFIX + " JWT token generated for user: {}", request.getEmail());
         return new AuthResponse(jwtToken);
     }
 
     @Transactional
     public void changePassword(String userEmail, String currentPassword, String newPassword) {
-        log.info("Password change attempt for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        log.info(SECURITY_PREFIX + " Password change attempt for user: {}", userEmail);
+
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.error(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            log.warn("Password change failed - incorrect current password for user: {}", userEmail);
+            log.warn(
+                    SECURITY_PREFIX
+                            + " Password change failed - incorrect current password for user: {}",
+                    userEmail);
             throw new InvalidRequestException(MessageConstants.PASSWORD_INCORRECT);
         }
 
         if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            log.warn(ERROR_VALIDATION, "newPassword", "[HIDDEN]",
+                    "must be different from current password");
             throw new InvalidRequestException(MessageConstants.PASSWORD_SAME_AS_OLD);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
-        log.info("Password changed successfully for user: {}", userEmail);
+        log.info(SECURITY_PREFIX + " Password changed for user: {}", userEmail);
     }
 }

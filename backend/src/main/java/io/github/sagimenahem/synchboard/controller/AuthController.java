@@ -1,6 +1,9 @@
 package io.github.sagimenahem.synchboard.controller;
 
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.*;
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.API_REQUEST_COMPLETED;
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.API_REQUEST_FAILED;
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.API_REQUEST_RECEIVED;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.github.sagimenahem.synchboard.dto.auth.AuthResponse;
@@ -20,22 +23,47 @@ public class AuthController {
 
     @PostMapping(API_AUTH_REGISTER_PATH)
     public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest request) {
-        log.debug("Registration endpoint called for email: {}", request.getEmail());
-        AuthResponse response = authService.registerUser(request);
-        log.debug("Registration endpoint completed for email: {}", request.getEmail());
-        return ResponseEntity.ok(response);
+        log.info(API_REQUEST_RECEIVED, "POST", API_AUTH_BASE_PATH + API_AUTH_REGISTER_PATH,
+                request.getEmail());
+        long startTime = System.currentTimeMillis();
+
+        try {
+            AuthResponse response = authService.registerUser(request);
+            long duration = System.currentTimeMillis() - startTime;
+            log.info(API_REQUEST_COMPLETED, "POST", API_AUTH_BASE_PATH + API_AUTH_REGISTER_PATH,
+                    request.getEmail(), duration);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            log.error(API_REQUEST_FAILED, "POST", API_AUTH_BASE_PATH + API_AUTH_REGISTER_PATH,
+                    request.getEmail(), e.getMessage() + " (Duration: " + duration + "ms)");
+            throw e;
+        }
     }
 
     @PostMapping(API_AUTH_LOGIN_PATH)
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        log.debug("Login endpoint called for email: {}", request.getEmail());
-        AuthResponse response = authService.login(request);
-        log.debug("Login endpoint completed for email: {}", request.getEmail());
-        return ResponseEntity.ok(response);
+        log.info(API_REQUEST_RECEIVED, "POST", API_AUTH_BASE_PATH + API_AUTH_LOGIN_PATH,
+                request.getEmail());
+        long startTime = System.currentTimeMillis();
+
+        try {
+            AuthResponse response = authService.login(request);
+            long duration = System.currentTimeMillis() - startTime;
+            log.info(API_REQUEST_COMPLETED, "POST", API_AUTH_BASE_PATH + API_AUTH_LOGIN_PATH,
+                    request.getEmail(), duration);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            log.error(API_REQUEST_FAILED, "POST", API_AUTH_BASE_PATH + API_AUTH_LOGIN_PATH,
+                    request.getEmail(), e.getMessage() + " (Duration: " + duration + "ms)");
+            throw e;
+        }
     }
 
     @GetMapping(API_AUTH_TEST_PATH)
     public ResponseEntity<String> testEndpoint() {
+        log.debug("Test endpoint accessed");
         return ResponseEntity.ok(AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE);
     }
 }

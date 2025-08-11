@@ -1,6 +1,7 @@
 package io.github.sagimenahem.synchboard.service;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.ALLOWED_FONT_SIZES;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,9 @@ import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -31,22 +34,32 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(String userEmail) {
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        log.debug(DATA_PREFIX + " Fetching user profile for: {}", userEmail);
 
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+
+        log.debug(USER_PROFILE_FETCHED, userEmail);
         return mapUserToUserProfileDTO(user);
     }
 
     @Transactional
     public UserProfileDTO updateUserProfile(String userEmail, UpdateUserProfileDTO dto) {
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        log.info(DATA_PREFIX + " Updating user profile for: {}", userEmail);
+
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
 
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setPhoneNumber(dto.getPhoneNumber());
 
         User updatedUser = userRepository.save(user);
+        log.info(USER_PROFILE_UPDATED, userEmail, "firstName, lastName, phoneNumber");
 
         broadcastUserUpdateToSharedBoards(userEmail);
         return mapUserToUserProfileDTO(updatedUser);
@@ -54,12 +67,17 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO updateProfilePicture(String userEmail, MultipartFile file) {
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        log.info(FILE_UPLOAD_STARTED, file.getOriginalFilename(), userEmail, file.getSize());
+
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename =
                     user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
+            log.debug(FILE_PREFIX + " Deleting existing profile picture: {}", existingFilename);
             fileStorageService.delete(existingFilename);
         }
 
@@ -68,6 +86,7 @@ public class UserService {
         user.setProfilePictureUrl(newPictureUrl);
 
         User updatedUser = userRepository.save(user);
+        log.info(FILE_UPLOAD_SUCCESS, newPictureUrl, userEmail);
 
         broadcastUserUpdateToSharedBoards(userEmail);
         return mapUserToUserProfileDTO(updatedUser);
@@ -75,8 +94,12 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO deleteProfilePicture(String userEmail) {
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        log.info(FILE_PREFIX + " Deleting profile picture for user: {}", userEmail);
+
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
             String existingFilename =
@@ -84,6 +107,9 @@ public class UserService {
             fileStorageService.delete(existingFilename);
             user.setProfilePictureUrl(null);
             userRepository.save(user);
+            log.info(FILE_DELETE_SUCCESS, existingFilename, userEmail);
+        } else {
+            log.debug(FILE_PREFIX + " No profile picture to delete for user: {}", userEmail);
         }
 
         broadcastUserUpdateToSharedBoards(userEmail);
@@ -92,11 +118,17 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO updateUserPreferences(String userEmail, UserPreferencesDTO dto) {
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        log.info(DATA_PREFIX + " Updating preferences for user: {}", userEmail);
+
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
 
         String newFontSize = dto.getFontSizeSetting();
         if (newFontSize != null && !ALLOWED_FONT_SIZES.contains(newFontSize)) {
+            log.warn(ERROR_VALIDATION, "fontSizeSetting", newFontSize,
+                    "must be one of: " + ALLOWED_FONT_SIZES);
             throw new InvalidRequestException(MessageConstants.FONT_SIZE_INVALID);
         }
 
@@ -104,6 +136,7 @@ public class UserService {
         user.setFontSizeSetting(newFontSize);
 
         User updatedUser = userRepository.save(user);
+        log.info(USER_PREFERENCES_UPDATED, userEmail);
         return mapUserToUserProfileDTO(updatedUser);
     }
 
@@ -116,12 +149,16 @@ public class UserService {
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
+        log.debug(WEBSOCKET_PREFIX + " Broadcasting user update for: {}", userEmail);
+
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
-        List<Long> boardIds = memberships.stream()
-                .map(GroupMember::getBoardGroupId)
-                .toList();
-        
-        notificationService.broadcastBoardUpdatesToMultipleBoards(boardIds, 
-                BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
+        List<Long> boardIds = memberships.stream().map(GroupMember::getBoardGroupId).toList();
+
+        if (!boardIds.isEmpty()) {
+            log.debug(WEBSOCKET_PREFIX + " Broadcasting to {} boards for user: {}", boardIds.size(),
+                    userEmail);
+            notificationService.broadcastBoardUpdatesToMultipleBoards(boardIds,
+                    BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
+        }
     }
 }
