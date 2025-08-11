@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import logger from 'utils/logger';
 
 import { APP_ROUTES } from 'constants/RoutesConstants';
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 import type { BoardDetails } from 'types/BoardTypes';
 
 

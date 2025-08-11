@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import logger from 'utils/logger';
 
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 import type { ActionPayload } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 

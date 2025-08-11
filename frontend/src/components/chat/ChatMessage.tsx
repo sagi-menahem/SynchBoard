@@ -1,7 +1,7 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
-import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
+import { isSafeUrl, sanitizeUserContent } from 'utils/Sanitize';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { ChatMessageResponse } from 'types/MessageTypes';
