@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import websocketService from 'services/WebSocketService';
 

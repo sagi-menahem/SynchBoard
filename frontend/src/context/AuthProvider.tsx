@@ -1,7 +1,7 @@
 import React, { useEffect, useState, type ReactNode } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { LOCAL_STORAGE_KEYS } from 'constants/AppConstants';
 

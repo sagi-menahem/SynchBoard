@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { useBoardLeave } from 'hooks/board/details/useBoardLeave';
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';

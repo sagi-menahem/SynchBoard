@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navigate } from 'react-router-dom';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useAuth } from 'hooks/auth/useAuth';

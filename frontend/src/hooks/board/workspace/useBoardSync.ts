@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { APP_ROUTES } from 'constants/RoutesConstants';

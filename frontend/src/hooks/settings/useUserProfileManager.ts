@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import * as userService from 'services/UserService';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';

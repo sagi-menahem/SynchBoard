@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 interface ErrorHandlerOptions {
     showToast?: boolean;
