@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import * as userService from 'services/UserService';
-import type { UserProfile } from 'types/user.types';
+import type { UserProfile } from 'types/UserTypes';
 
 
 export const useProfilePictureManager = (onSuccess?: (updatedUser: UserProfile) => void) => {

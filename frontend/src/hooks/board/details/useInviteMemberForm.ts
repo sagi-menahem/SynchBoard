@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 
 export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember: Member) => void) => {

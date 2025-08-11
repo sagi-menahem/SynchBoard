@@ -7,7 +7,7 @@ import ProfileDisplayView from 'components/settings/ProfileDisplayView';
 import ProfileEditForm from 'components/settings/ProfileEditForm';
 import { useProfileEditing } from 'hooks/settings/useProfileEditing';
 import styles from 'pages/SettingsPage.module.css';
-import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
+import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';
 
 interface ProfileDetailsSectionProps {
     user: UserProfile;

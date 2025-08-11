@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from 'pages/SettingsPage.module.css';
-import type { UserProfile } from 'types/user.types';
+import type { UserProfile } from 'types/UserTypes';
 
 interface ProfileDisplayViewProps {
     user: UserProfile;

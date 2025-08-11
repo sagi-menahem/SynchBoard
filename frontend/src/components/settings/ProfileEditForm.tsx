@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import styles from 'pages/SettingsPage.module.css';
-import type { UpdateUserProfileRequest } from 'types/user.types';
+import type { UpdateUserProfileRequest } from 'types/UserTypes';
 
 interface ProfileEditFormProps {
     formData: UpdateUserProfileRequest;

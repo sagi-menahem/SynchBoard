@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Button from 'components/common/Button';
 import { API_BASE_URL } from 'constants/ApiConstants';
 import { APP_CONFIG } from 'constants/AppConstants';
-import type { UserProfile } from 'types/user.types';
+import type { UserProfile } from 'types/UserTypes';
 
 import styles from './ProfilePictureManager.module.css';
 

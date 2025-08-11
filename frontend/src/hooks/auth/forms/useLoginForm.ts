@@ -8,7 +8,7 @@ import logger from 'utils/logger';
 import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import * as authService from 'services/AuthService';
-import type { LoginRequest } from 'types/user.types';
+import type { LoginRequest } from 'types/UserTypes';
 
 
 export const useLoginForm = () => {

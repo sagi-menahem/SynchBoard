@@ -6,7 +6,7 @@ import logger from 'utils/logger';
 
 import { APP_CONFIG } from 'constants/AppConstants';
 import { createBoard } from 'services/BoardService';
-import type { Board, CreateBoardRequest } from 'types/board.types';
+import type { Board, CreateBoardRequest } from 'types/BoardTypes';
 
 
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {

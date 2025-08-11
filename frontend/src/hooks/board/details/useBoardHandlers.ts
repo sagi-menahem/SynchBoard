@@ -6,7 +6,7 @@ import { useBoardLeave } from 'hooks/board/details/useBoardLeave';
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import { useBoardMemberContextMenu } from 'hooks/board/details/useBoardMemberContextMenu';
 import { useBoardPictureManager } from 'hooks/board/details/useBoardPictureManager';
-import type { BoardDetails, Member } from 'types/board.types';
+import type { BoardDetails, Member } from 'types/BoardTypes';
 
 
 interface BoardHandlersProps {

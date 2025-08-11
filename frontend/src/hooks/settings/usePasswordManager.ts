@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import * as userService from 'services/UserService';
-import type { ChangePasswordRequest } from 'types/user.types';
+import type { ChangePasswordRequest } from 'types/UserTypes';
 
 
 export const usePasswordManager = () => {

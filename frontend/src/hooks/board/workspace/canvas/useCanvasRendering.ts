@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import type { ActionPayload } from 'types/boardObject.types';
+import type { ActionPayload } from 'types/BoardObjectTypes';
 
 import { useCanvasUtils } from './useCanvasUtils';
 

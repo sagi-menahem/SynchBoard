@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import { APP_ROUTES } from 'constants/RoutesConstants';
-import type { Board } from 'types/board.types';
+import type { Board } from 'types/BoardTypes';
 
 import styles from './BoardCard.module.css';
 

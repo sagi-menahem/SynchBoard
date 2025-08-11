@@ -6,7 +6,7 @@ import Button from 'components/common/Button';
 import styles from 'components/common/CommonForm.module.css';
 import Input from 'components/common/Input';
 import { useInviteMemberForm } from 'hooks/board/details/useInviteMemberForm';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 interface InviteMemberFormProps {
     boardId: number;

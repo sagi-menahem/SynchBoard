@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import * as boardService from 'services/BoardService';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 
 export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) => {

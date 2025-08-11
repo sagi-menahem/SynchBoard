@@ -3,7 +3,7 @@ import React from 'react';
 import type { TOOL_LIST } from 'constants/BoardConstants';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
-import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
+import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 
 import styles from './Canvas.module.css';
 

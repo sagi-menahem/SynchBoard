@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ContextMenu } from 'components/common/ContextMenu';
 import { ContextMenuItem } from 'components/common/ContextMenuItem';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 interface MemberContextMenuProps {
     isOpen: boolean;

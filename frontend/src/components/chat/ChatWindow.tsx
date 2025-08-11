@@ -7,7 +7,7 @@ import Input from 'components/common/Input';
 import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
 import { usePreferences } from 'hooks/preferences/usePreferences';
 import websocketService from 'services/WebSocketService';
-import type { ChatMessageResponse, SendChatMessageRequest } from 'types/message.types';
+import type { ChatMessageResponse, SendChatMessageRequest } from 'types/MessageTypes';
 
 import ChatMessage from './ChatMessage';
 import styles from './ChatWindow.module.css';

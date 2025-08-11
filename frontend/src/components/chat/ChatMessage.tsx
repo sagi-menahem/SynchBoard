@@ -4,7 +4,7 @@ import defaultUserImage from 'assets/default-user-image.png';
 import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
-import type { ChatMessageResponse } from 'types/message.types';
+import type { ChatMessageResponse } from 'types/MessageTypes';
 
 import styles from './ChatMessage.module.css';
 

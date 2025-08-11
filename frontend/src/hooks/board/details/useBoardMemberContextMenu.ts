@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useAuth } from 'hooks/auth/useAuth';
 import { useContextMenu } from 'hooks/common/useContextMenu';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 export const useBoardMemberContextMenu = (currentUserIsAdmin: boolean) => {
     const { userEmail } = useAuth();

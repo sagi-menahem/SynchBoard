@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 import MemberListItem from './MemberListItem';
 

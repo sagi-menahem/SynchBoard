@@ -4,7 +4,7 @@ import defaultUserImage from 'assets/default-user-image.png';
 import { useTranslation } from 'react-i18next';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 import styles from './MemberListItem.module.css';
 

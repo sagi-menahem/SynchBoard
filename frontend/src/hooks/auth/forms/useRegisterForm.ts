@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import * as authService from 'services/AuthService';
-import type { RegisterRequest } from 'types/user.types';
+import type { RegisterRequest } from 'types/UserTypes';
 
 
 export const useRegisterForm = (onRegistrationSuccess: () => void) => {

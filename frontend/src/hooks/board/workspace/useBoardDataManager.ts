@@ -4,8 +4,8 @@ import { AxiosError } from 'axios';
 import logger from 'utils/logger';
 
 import * as boardService from 'services/BoardService';
-import type { ActionPayload } from 'types/boardObject.types';
-import type { ChatMessageResponse } from 'types/message.types';
+import type { ActionPayload } from 'types/BoardObjectTypes';
+import type { ChatMessageResponse } from 'types/MessageTypes';
 
 
 export const useBoardDataManager = (boardId: number) => {
