@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { APP_ROUTES } from 'constants/RoutesConstants';

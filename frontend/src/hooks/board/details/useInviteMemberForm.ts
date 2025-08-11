@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
 import type { Member } from 'types/BoardTypes';

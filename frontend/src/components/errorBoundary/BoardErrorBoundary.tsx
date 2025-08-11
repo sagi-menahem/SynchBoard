@@ -1,6 +1,6 @@
 import React, { type ErrorInfo, type ReactNode } from 'react';
 
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { ErrorBoundary } from './ErrorBoundary';
 

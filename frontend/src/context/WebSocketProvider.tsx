@@ -1,6 +1,6 @@
 import React, { useEffect, useState, type ReactNode } from 'react';
 
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { useAuth } from 'hooks/auth/useAuth';
 import websocketService from 'services/WebSocketService';

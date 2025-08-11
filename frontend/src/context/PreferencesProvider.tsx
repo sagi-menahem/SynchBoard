@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, type ReactNode } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { useAuth } from 'hooks/auth/useAuth';
 import * as userService from 'services/UserService';
