@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import { APP_CONFIG } from 'constants/AppConstants';
-import { createBoard } from 'services/boardService';
+import { createBoard } from 'services/BoardService';
 import type { Board, CreateBoardRequest } from 'types/board.types';
 
 

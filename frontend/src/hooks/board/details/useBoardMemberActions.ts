@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
-import * as boardService from 'services/boardService';
+import * as boardService from 'services/BoardService';
 import type { Member } from 'types/board.types';
 
 
