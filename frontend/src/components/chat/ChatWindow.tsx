@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
-import { WEBSOCKET_DESTINATIONS } from 'constants/api.constants';
+import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
 import { usePreferences } from 'hooks/preferences/usePreferences';
 import websocketService from 'services/websocketService';
 import type { ChatMessageResponse, SendChatMessageRequest } from 'types/message.types';

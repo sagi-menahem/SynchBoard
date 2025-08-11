@@ -3,7 +3,7 @@ import React, { useEffect, useState, type ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import logger from 'utils/logger';
 
-import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
+import { LOCAL_STORAGE_KEYS } from 'constants/AppConstants';
 
 import { AuthContext } from './AuthContext';
 

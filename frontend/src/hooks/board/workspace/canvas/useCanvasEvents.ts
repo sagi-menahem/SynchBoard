@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/board.constants';
+import { CANVAS_CONFIG, TOOLS, type TOOL_LIST } from 'constants/BoardConstants';
 import {
     ActionType,
     type CirclePayload,

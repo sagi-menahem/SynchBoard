@@ -4,8 +4,8 @@ import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { API_BASE_URL } from 'constants/api.constants';
-import { APP_ROUTES } from 'constants/routes.constants';
+import { API_BASE_URL } from 'constants/ApiConstants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import type { Board } from 'types/board.types';
 
 import styles from './BoardCard.module.css';

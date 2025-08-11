@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';
-import { CHAT_BACKGROUND_OPTIONS, CHAT_FONT_SIZE_OPTIONS } from 'constants/style.constants';
+import { CHAT_BACKGROUND_OPTIONS, CHAT_FONT_SIZE_OPTIONS } from 'constants/StyleConstants';
 import { usePreferences } from 'hooks/preferences/usePreferences';
 import styles from 'pages/SettingsPage.module.css';
 

@@ -142,3 +142,11 @@ npm run preview  # Preview production build
 ### VS Code Integration
 - Spring Boot Dashboard can be used to run backend with environment variables
 - Backend can also be run via command line with proper environment variables set
+- Multi-folder workspace configuration with Project Files, Backend, and Frontend folders
+- Launch configuration available for Spring Boot app with environment file support
+
+### Important Instructions
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

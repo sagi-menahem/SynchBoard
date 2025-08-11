@@ -10,7 +10,7 @@ import ConfirmationDialog from 'components/common/ConfirmationDialog';
 import { ContextMenu } from 'components/common/ContextMenu';
 import { ContextMenuItem } from 'components/common/ContextMenuItem';
 import Modal from 'components/common/Modal';
-import { APP_ROUTES } from 'constants/routes.constants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useBoardList } from 'hooks/board/management/useBoardList';
 
 import styles from './BoardListPage.module.css';

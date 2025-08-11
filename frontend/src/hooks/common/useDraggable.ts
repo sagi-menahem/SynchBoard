@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { DEFAULT_DRAWING_CONFIG } from 'constants/board.constants';
+import { DEFAULT_DRAWING_CONFIG } from 'constants/BoardConstants';
 
 interface UseDraggableProps {
     containerRef: React.RefObject<HTMLElement | null>;

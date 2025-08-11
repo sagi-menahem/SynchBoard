@@ -2,7 +2,7 @@ import React from 'react';
 
 import Canvas from 'components/board/workspace/Canvas';
 import ChatWindow from 'components/chat/ChatWindow';
-import type { TOOL_LIST } from 'constants/board.constants';
+import type { TOOL_LIST } from 'constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';
 

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { AxiosError } from 'axios';
 
-import { WEBSOCKET_TOPICS } from 'constants/api.constants';
+import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocket } from 'hooks/global/useSocket';
 import * as boardService from 'services/boardService';

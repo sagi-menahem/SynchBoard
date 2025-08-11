@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import type { TOOL_LIST } from 'constants/board.constants';
+import type { TOOL_LIST } from 'constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 
 import { useCanvasDimensions } from './useCanvasDimensions';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { TOOL_LIST } from 'constants/board.constants';
-import { CANVAS_CONFIG } from 'constants/board.constants';
+import type { TOOL_LIST } from 'constants/BoardConstants';
+import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
 import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
 

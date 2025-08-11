@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import logger from 'utils/logger';
 
-import { APP_ROUTES } from 'constants/routes.constants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import * as boardService from 'services/boardService';
 import type { BoardDetails } from 'types/board.types';
 

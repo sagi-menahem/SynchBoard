@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
 import Layout from 'components/layout/Layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
-import { APP_ROUTES } from 'constants/routes.constants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import AuthPage from 'pages/AuthPage';
 import BoardDetailsPage from 'pages/BoardDetailsPage';
 import BoardListPage from 'pages/BoardListPage';

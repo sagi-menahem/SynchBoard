@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from 'constants/api.constants';
+import { API_ENDPOINTS } from 'constants/ApiConstants';
 import type { Board, BoardDetails, CreateBoardRequest, Member } from 'types/board.types';
 import type { BoardActionResponse } from 'types/boardObject.types';
 import type { ChatMessageResponse } from 'types/message.types';

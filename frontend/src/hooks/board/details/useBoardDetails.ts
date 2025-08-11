@@ -4,8 +4,8 @@ import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import logger from 'utils/logger';
 
-import { WEBSOCKET_TOPICS } from 'constants/api.constants';
-import { APP_ROUTES } from 'constants/routes.constants';
+import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
+import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocket } from 'hooks/global/useSocket';
 import { getBoardDetails } from 'services/boardService';

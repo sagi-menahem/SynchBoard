@@ -3,8 +3,8 @@ import i18n from 'i18n';
 import toast from 'react-hot-toast';
 import logger from 'utils/logger';
 
-import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/api.constants';
-import { LOCAL_STORAGE_KEYS } from 'constants/app.constants';
+import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/ApiConstants';
+import { LOCAL_STORAGE_KEYS } from 'constants/AppConstants';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
