@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
-import * as userService from 'services/userService';
+import * as userService from 'services/UserService';
 import type { UserProfile } from 'types/UserTypes';
 
 

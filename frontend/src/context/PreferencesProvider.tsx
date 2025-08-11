@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth/useAuth';
-import * as userService from 'services/userService';
+import * as userService from 'services/UserService';
 import type { UserPreferences } from 'types/UserTypes';
 
 import { PreferencesContext } from './PreferencesContext';
