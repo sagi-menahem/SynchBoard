@@ -6,7 +6,7 @@ import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth/useAuth';
 import * as userService from 'services/UserService';
-import type { UserPreferences } from 'types/user.types';
+import type { UserPreferences } from 'types/UserTypes';
 
 import { PreferencesContext } from './PreferencesContext';
 

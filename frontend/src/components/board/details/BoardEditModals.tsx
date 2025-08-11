@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import EditFieldForm from 'components/board/details/EditFieldForm';
 import InviteMemberForm from 'components/board/details/InviteMemberForm';
 import Modal from 'components/common/Modal';
-import type { Member } from 'types/board.types';
+import type { Member } from 'types/BoardTypes';
 
 interface BoardEditModalsProps {
     isInviteModalOpen: boolean;

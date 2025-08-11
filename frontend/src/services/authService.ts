@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from 'constants/ApiConstants';
-import type { AuthResponse, LoginRequest, RegisterRequest } from 'types/user.types';
+import type { AuthResponse, LoginRequest, RegisterRequest } from 'types/UserTypes';
 
 import apiClient from './apiClient';
 

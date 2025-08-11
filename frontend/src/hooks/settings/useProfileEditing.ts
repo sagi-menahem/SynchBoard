@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
+import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';
 
 export const useProfileEditing = (user: UserProfile | null) => {
     const [isEditing, setIsEditing] = useState(false);

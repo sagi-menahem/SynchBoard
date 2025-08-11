@@ -1,5 +1,5 @@
 import { useAuth } from 'hooks/auth/useAuth';
-import type { BoardDetails } from 'types/board.types';
+import type { BoardDetails } from 'types/BoardTypes';
 
 interface BoardPermissions {
     currentUserIsAdmin: boolean;

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import * as userService from 'services/UserService';
-import type { UpdateUserProfileRequest, UserProfile } from 'types/user.types';
+import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';
 
 
 export const useUserProfileManager = () => {

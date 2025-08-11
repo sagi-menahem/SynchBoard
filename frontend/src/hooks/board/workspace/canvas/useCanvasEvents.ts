@@ -7,7 +7,7 @@ import {
     type LinePayload,
     type RectanglePayload,
     type SendBoardActionRequest,
-} from 'types/boardObject.types';
+} from 'types/BoardObjectTypes';
 
 import { useCanvasUtils } from './useCanvasUtils';
 

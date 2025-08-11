@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { UserPreferences } from 'types/user.types';
+import type { UserPreferences } from 'types/UserTypes';
 
 export interface PreferencesContextType {
     preferences: UserPreferences;

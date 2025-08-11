@@ -7,7 +7,7 @@ import logger from 'utils/logger';
 
 import { APP_ROUTES } from 'constants/RoutesConstants';
 import * as boardService from 'services/BoardService';
-import type { BoardDetails } from 'types/board.types';
+import type { BoardDetails } from 'types/BoardTypes';
 
 
 export const useBoardLeave = (boardId: number) => {

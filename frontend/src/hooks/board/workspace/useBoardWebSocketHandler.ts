@@ -6,9 +6,9 @@ import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocket } from 'hooks/global/useSocket';
 import * as boardService from 'services/BoardService';
-import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/boardObject.types';
-import type { ChatMessageResponse } from 'types/message.types';
-import type { BoardUpdateDTO } from 'types/websocket.types';
+import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/BoardObjectTypes';
+import type { ChatMessageResponse } from 'types/MessageTypes';
+import type { BoardUpdateDTO } from 'types/WebSocketTypes';
 
 interface WebSocketHandlerProps {
     boardId: number;

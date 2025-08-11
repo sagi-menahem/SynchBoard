@@ -11,8 +11,8 @@ import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
 import { useSocket } from 'hooks/global/useSocket';
 import websocketService from 'services/WebSocketService';
-import type { ActionPayload, SendBoardActionRequest } from 'types/boardObject.types';
-import type { UserUpdateDTO } from 'types/websocket.types';
+import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
+import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 
 export const useBoardSync = (boardId: number) => {
