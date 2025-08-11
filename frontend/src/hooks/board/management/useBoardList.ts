@@ -8,7 +8,7 @@ import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useContextMenu } from 'hooks/common/useContextMenu';
 import { useSocket } from 'hooks/global/useSocket';
-import { getBoards, leaveBoard } from 'services/BoardService';
+import { getBoards, leaveBoard } from 'services/boardService';
 import type { Board } from 'types/BoardTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 

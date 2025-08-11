@@ -60,6 +60,8 @@ npm run preview  # Preview production build
 - **Real-time Communication**: WebSocket with STOMP protocol + ActiveMQ message broker
 - **Database**: PostgreSQL with Spring Data JPA
 - **Java Version**: Java 24 (configured in build.gradle)
+- **Build Tool**: Gradle with wrapper (Spring Boot 3.5.4)
+- **Security**: JWT-based authentication with custom filters (`JwtAuthFilter`, `JwtChannelInterceptor`)
 
 **Key Backend Packages:**
 - `io.github.sagimenahem.synchboard.controller` - REST endpoints and WebSocket controllers
@@ -80,15 +82,18 @@ npm run preview  # Preview production build
 - **Styling**: CSS Modules for component-scoped styles
 - **Internationalization**: i18next for multi-language support (English/Hebrew)
 - **Error Handling**: Error boundaries at page and component levels
+- **WebSocket Client**: @stomp/stompjs for real-time communication
+- **UI Notifications**: React Hot Toast for user feedback
 
 **Key Frontend Structure:**
-- `src/components/` - Reusable UI components organized by feature
-- `src/pages/` - Route-level page components
+- `src/components/` - Reusable UI components organized by feature (auth, board, chat, common, layout, etc.)
+- `src/pages/` - Route-level page components with error boundaries
 - `src/contexts/` - React context providers for global state
 - `src/services/` - API service abstraction layer
 - `src/hooks/` - Custom React hooks organized by feature domain
 - `src/utils/` - Utility functions
 - `src/types/` - TypeScript type definitions
+- `src/constants/` - Frontend constants (API endpoints, routes, styles)
 
 ## Key Features & Technical Details
 
@@ -131,8 +136,9 @@ npm run preview  # Preview production build
 - CORS enabled for local development between ports 5173 and 8080
 
 ### Testing
-- Backend: Spring Boot Test framework with JUnit
+- Backend: Spring Boot Test framework with JUnit 5
 - Frontend: No test runner configured (consider adding Vitest)
+- Current backend tests: Basic context loading test only
 
 ### File Upload Configuration
 - Max file size: 10MB
@@ -146,6 +152,11 @@ npm run preview  # Preview production build
 - Launch configuration available for Spring Boot app with environment file support
 
 ### Important Instructions
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+# important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
