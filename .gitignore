@@ -1,38 +1,22 @@
-# ===================================================================
 # Environment & Sensitive Configuration
-# ===================================================================
 .env
 .env.local
 .env.*.local
 *.env
 application-local.properties
 application-prod.properties
-application-*.properties
-!application.properties
 
-# ===================================================================
 # Operating System Files
-# ===================================================================
 .DS_Store
 Thumbs.db
 *.swp
 *.swo
 
-# ===================================================================
 # IDE & Editor Files
-# ===================================================================
-# IntelliJ IDEA
 .idea/
 *.iml
-*.iws
-*.ipr
-
-# Visual Studio Code
 .vscode/
 !.vscode/extensions.json
-*.code-workspace
-
-# Spring Tool Suite / Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -41,131 +25,46 @@ Thumbs.db
 .springBeans
 .sts4-cache
 
-# NetBeans
-/nbproject/private/
-/nbbuild/
-/nbdist/
-/.nb-gradle/
-
-# ===================================================================
 # Backend - Java/Spring Boot/Gradle
-# ===================================================================
-# Build output
 backend/build/
 backend/bin/
-backend/out/
-backend/target/
+backend/.gradle/
 *.class
 *.jar
 *.war
-
-# Gradle
-backend/.gradle/
-.gradle/
-gradle-app.setting
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-# Application specific
+# Application uploads and logs
 backend/uploads/
-backend/temp/
+backend/logs/
 uploads/
-temp/
-
-# ===================================================================
-# Frontend - React/TypeScript/Vite
-# ===================================================================
-# Dependencies
-frontend/node_modules/
-node_modules/
-
-# Build output
-frontend/dist/
-frontend/dist-ssr/
-dist/
-dist-ssr/
-
-# Local env files
-*.local
-
-# ===================================================================
-# Logs & Debug Files
-# ===================================================================
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-# ===================================================================
+# Frontend - React/TypeScript/Vite
+frontend/node_modules/
+frontend/dist/
+node_modules/
+dist/
+
 # Testing & Coverage
-# ===================================================================
 coverage/
-*.lcov
 .nyc_output/
 
-# ===================================================================
-# Documentation & Misc
-# ===================================================================
-HELP.md
-*.session.sql
-
-# ===================================================================
-# Package Manager Files
-# ===================================================================
-# npm
-package-lock.json
-!frontend/package-lock.json
-
-# yarn
-yarn.lock
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
-# ===================================================================
-# Database
-# ===================================================================
+# Database files (local development)
 *.db
 *.sqlite
 *.sqlite3
+*.session.sql
 
-# ===================================================================
-# Temporary Files
-# ===================================================================
+# Temporary files
 tmp/
-temp/
-*.tmp
-*.temp
 .cache/
+*.tmp
 
-# ===================================================================
-# Security - Never commit these
-# ===================================================================
+# Security files
 *.pem
 *.key
 *.crt
 *.p12
-secrets/
-credentials/
-
-# ===================================================================
-# Claude Code Related Files
-# ===================================================================
 CLAUDE.md
-.claude/
-claude.md
-.claude.md
-*.claude
-.clauderc
-claude-*.md
-.claude-*
