@@ -1,4 +1,4 @@
-import { WEBSOCKET_TOPICS, APP_ROUTES } from 'constants';
+import { APP_ROUTES, WEBSOCKET_TOPICS } from 'constants';
 
 import { useCallback, useEffect, useState } from 'react';
 
@@ -30,10 +30,10 @@ export const useBoardDetails = (boardId: number | undefined) => {
         setIsLoading(true);
 
         BoardService.getBoardDetails(boardId)
-            .then((data: any) => {
-                setBoardDetails(data);
+            .then((data: unknown) => {
+                setBoardDetails(data as BoardDetails);
             })
-            .catch((error: any) => {
+            .catch((error: unknown) => {
                 logger.error('Failed to fetch board details:', error);
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     navigate(APP_ROUTES.BOARD_LIST);
@@ -61,10 +61,10 @@ export const useBoardDetails = (boardId: number | undefined) => {
             }
 
             BoardService.getBoardDetails(boardId)
-                .then((data: any) => {
-                    setBoardDetails(data);
+                .then((data: unknown) => {
+                    setBoardDetails(data as BoardDetails);
                 })
-                .catch((error: any) => {
+                .catch((error: unknown) => {
                     logger.warn('Failed to refetch board details after WebSocket update:', error);
                     if (message.updateType === 'MEMBERS_UPDATED' && 
                         error instanceof AxiosError && error.response?.status === 403) {

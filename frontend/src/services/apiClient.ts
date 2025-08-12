@@ -10,6 +10,7 @@ import axios, { type AxiosError } from 'axios';
 import i18n from 'i18n';
 import toast from 'react-hot-toast';
 import { Logger } from 'utils';
+import { isBackendError } from 'utils';
 
 const logger = Logger;
 
@@ -73,24 +74,6 @@ apiClient.interceptors.response.use(
             }
         }
 
-        interface BackendError {
-            message: string;
-        }
-
-        const isBackendError = (data: unknown): data is BackendError => {
-            if (typeof data !== 'object' || data === null) {
-                return false;
-            }
-
-            const obj = data as Record<string, unknown>;
-
-            return (
-                'message' in obj &&
-                typeof obj.message === 'string' &&
-                obj.message.trim().length > 0 &&
-                obj.message.length <= 500
-            );
-        };
 
         if (error.response && isBackendError(error.response.data)) {
             const backendKey = error.response.data.message;
