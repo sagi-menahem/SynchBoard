@@ -1,10 +1,11 @@
+import { APP_ROUTES } from 'constants';
+
 import React from 'react';
 
 import { Navigate } from 'react-router-dom';
 import logger from 'utils/Logger';
 
-import { APP_ROUTES } from 'constants/RoutesConstants';
-import { useAuth } from 'hooks/auth/useAuth';
+import { useAuth } from 'hooks/auth';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;

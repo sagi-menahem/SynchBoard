@@ -1,16 +1,18 @@
+import { WEBSOCKET_TOPICS, APP_ROUTES } from 'constants';
+
 import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/Logger';
+import { BoardService } from 'services';
+import type { BoardDetails, BoardUpdateDTO } from 'types';
+import { Logger } from 'utils';
 
-import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
-import { APP_ROUTES } from 'constants/RoutesConstants';
-import { useAuth } from 'hooks/auth/useAuth';
-import { useSocket } from 'hooks/common/useSocket';
-import { getBoardDetails } from 'services/BoardService';
-import type { BoardDetails } from 'types/BoardTypes';
-import type { BoardUpdateDTO } from 'types/WebSocketTypes';
+import { useAuth } from 'hooks/auth';
+import { useSocket } from 'hooks/common';
+
+
+const logger = Logger;
 
 
 export const useBoardDetails = (boardId: number | undefined) => {
@@ -27,11 +29,11 @@ export const useBoardDetails = (boardId: number | undefined) => {
 
         setIsLoading(true);
 
-        getBoardDetails(boardId)
-            .then((data) => {
+        BoardService.getBoardDetails(boardId)
+            .then((data: any) => {
                 setBoardDetails(data);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 logger.error('Failed to fetch board details:', error);
                 if (error instanceof AxiosError && error.response?.status === 403) {
                     navigate(APP_ROUTES.BOARD_LIST);
@@ -58,11 +60,11 @@ export const useBoardDetails = (boardId: number | undefined) => {
                 return;
             }
 
-            getBoardDetails(boardId)
-                .then((data) => {
+            BoardService.getBoardDetails(boardId)
+                .then((data: any) => {
                     setBoardDetails(data);
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     logger.warn('Failed to refetch board details after WebSocket update:', error);
                     if (message.updateType === 'MEMBERS_UPDATED' && 
                         error instanceof AxiosError && error.response?.status === 403) {

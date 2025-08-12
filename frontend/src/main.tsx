@@ -1,10 +1,11 @@
 import React from 'react';
 
 import App from 'App.tsx';
+import { AppProvider } from 'context';
 import ReactDOM from 'react-dom/client';
-import logger from 'utils/Logger';
+import { Logger } from 'utils';
 
-import { AppProvider } from 'context/AppProvider';
+const logger = Logger;
 
 import 'i18n';
 import 'index.css';

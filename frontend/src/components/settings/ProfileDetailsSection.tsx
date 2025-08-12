@@ -3,10 +3,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/Logger';
 
-import Button from 'components/common/Button';
-import ProfileDisplayView from 'components/settings/ProfileDisplayView';
-import ProfileEditForm from 'components/settings/ProfileEditForm';
-import { useProfileEditing } from 'hooks/settings/profile/useProfileEditing';
+import { Button } from 'components/common';
+import { ProfileDisplayView, ProfileEditForm } from 'components/settings';
+import { useProfileEditing } from 'hooks/settings/profile';
 import styles from 'pages/SettingsPage.module.css';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';
 

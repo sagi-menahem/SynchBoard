@@ -1,9 +1,11 @@
+import { LOCAL_STORAGE_KEYS } from 'constants';
+
 import React, { useEffect, useState, type ReactNode } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
-import logger from 'utils/Logger';
+import { Logger } from 'utils';
 
-import { LOCAL_STORAGE_KEYS } from 'constants/AppConstants';
+const logger = Logger;
 
 import { AuthContext } from './AuthContext';
 

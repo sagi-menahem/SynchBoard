@@ -1,14 +1,18 @@
+import { APP_ROUTES } from 'constants';
+
 import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/Logger';
+import { AuthService } from 'services';
+import type { LoginRequest } from 'types';
+import { Logger } from 'utils';
 
-import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useAuth } from 'hooks/auth/useAuth';
-import * as authService from 'services/AuthService';
-import type { LoginRequest } from 'types/UserTypes';
+
+
+const logger = Logger;
 
 
 export const useLoginForm = () => {
@@ -26,15 +30,15 @@ export const useLoginForm = () => {
 
         logger.debug('Login form submission for user:', email);
 
-        authService
+        AuthService
             .login(credentials)
-            .then((response) => {
+            .then((response: any) => {
                 logger.info('Login successful for user:', email);
                 toast.success(t('loginForm.loginSuccess'));
                 login(response.token);
                 navigate(APP_ROUTES.BOARD_LIST);
             })
-            .catch((err) => {
+            .catch((err: any) => {
                 logger.error('Login failed for user:', err, { email });
             })
             .finally(() => {

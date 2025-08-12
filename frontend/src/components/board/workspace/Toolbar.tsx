@@ -1,10 +1,11 @@
+import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants';
+
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/Button';
-import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants/BoardConstants';
-import { useDraggable } from 'hooks/common/useDraggable';
+import { Button } from 'components/common';
+import { useDraggable } from 'hooks/common';
 import type { Tool } from 'types/CommonTypes';
 
 import styles from './Toolbar.module.css';

@@ -3,13 +3,15 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import BoardConfirmDialogs from 'components/board/details/BoardConfirmDialogs';
-import BoardDetailsHeader from 'components/board/details/BoardDetailsHeader';
-import BoardEditModals from 'components/board/details/BoardEditModals';
-import MemberContextMenu from 'components/board/details/MemberContextMenu';
-import MemberList from 'components/board/details/MemberList';
-import PictureManagerModal from 'components/board/details/PictureManagerModal';
-import { useBoardDetailsPage } from 'hooks/board/details/useBoardDetailsPage';
+import {
+    BoardConfirmDialogs,
+    BoardDetailsHeader,
+    BoardEditModals,
+    MemberContextMenu,
+    MemberList,
+    PictureManagerModal
+} from 'components/board/details';
+import { useBoardDetailsPage } from 'hooks/board/details';
 
 import styles from './BoardDetailsPage.module.css';
 

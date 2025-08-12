@@ -1,14 +1,11 @@
 import React, { useRef } from 'react';
 
+import { BoardProvider } from 'context';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import BoardHeader from 'components/board/workspace/BoardHeader';
-import BoardWorkspace from 'components/board/workspace/BoardWorkspace';
-import Toolbar from 'components/board/workspace/Toolbar';
-import { BoardProvider } from 'context/BoardProvider';
-import { useBoardContext } from 'hooks/board/context/useBoardContext';
-import { useToolbarState } from 'hooks/board/workspace/useToolbarState';
+import { BoardHeader, BoardWorkspace, Toolbar } from 'components/board/workspace';
+import { useBoardContext, useToolbarState } from 'hooks/board';
 
 import styles from './BoardPage.module.css';
 

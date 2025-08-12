@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import LoginForm from 'components/auth/LoginForm';
-import RegistrationForm from 'components/auth/RegistrationForm';
-import Button from 'components/common/Button';
+import { LoginForm, RegistrationForm } from 'components/auth';
+import { Button } from 'components/common';
 
 import styles from './AuthPage.module.css';
 

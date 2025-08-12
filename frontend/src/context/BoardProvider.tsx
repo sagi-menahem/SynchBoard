@@ -2,7 +2,7 @@ import React, { type ReactNode } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { useBoardWorkspace } from 'hooks/board/workspace/useBoardWorkspace';
+import { useBoardWorkspace } from 'hooks/board/workspace';
 
 import { BoardContext } from './BoardContext';
 

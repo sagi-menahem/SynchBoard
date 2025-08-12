@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/Button';
-import { useAuth } from 'hooks/auth/useAuth';
+import { Button } from 'components/common';
+import { useAuth } from 'hooks/auth';
 
 import styles from './Navbar.module.css';
 

@@ -1,14 +1,14 @@
+import { WEBSOCKET_TOPICS } from 'constants';
+
 import { useCallback, useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { BoardService } from 'services';
 import logger from 'utils/Logger';
 
-import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
-import { useAuth } from 'hooks/auth/useAuth';
-import { useContextMenu } from 'hooks/common/useContextMenu';
-import { useSocket } from 'hooks/common/useSocket';
-import { getBoards, leaveBoard } from 'services/BoardService';
+import { useAuth } from 'hooks/auth';
+import { useContextMenu, useSocket } from 'hooks/common';
 import type { Board } from 'types/BoardTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
@@ -27,7 +27,7 @@ export const useBoardList = () => {
         if (!boards.length) {
             setIsLoading(true);
         }
-        getBoards()
+        BoardService.getBoards()
             .then((userBoards) => {
                 setBoards(userBoards);
             })
@@ -50,7 +50,7 @@ export const useBoardList = () => {
             return;
         }
 
-        leaveBoard(boardToLeave.id)
+        BoardService.leaveBoard(boardToLeave.id)
             .then(() => {
                 toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
                 fetchBoards();
