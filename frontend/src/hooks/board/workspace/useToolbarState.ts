@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { DEFAULT_DRAWING_CONFIG, TOOLS, type TOOL_LIST } from 'constants/BoardConstants';
-
-type Tool = (typeof TOOL_LIST)[number];
+import { DEFAULT_DRAWING_CONFIG, TOOLS } from 'constants/BoardConstants';
+import type { Tool } from 'types/CommonTypes';
 
 export const useToolbarState = () => {
     const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);

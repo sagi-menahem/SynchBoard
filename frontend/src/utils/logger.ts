@@ -1,4 +1,4 @@
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+import type { LogLevel } from 'types/CommonTypes';
 
 interface LogEntry {
     level: LogLevel;

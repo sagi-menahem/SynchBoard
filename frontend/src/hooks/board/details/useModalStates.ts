@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-type EditingField = 'name' | 'description';
+import type { EditingField } from 'types/CommonTypes';
 
 interface ModalStates {
     isInviteModalOpen: boolean;
@@ -35,14 +35,12 @@ export const useModalStates = (): ModalStates & ModalActions => {
     };
 
     return {
-        // States
         isInviteModalOpen,
         editingField,
         isLeaveConfirmOpen,
         isPictureModalOpen,
         isDeleteConfirmOpen,
 
-        // Actions
         setInviteModalOpen,
         setEditingField,
         setLeaveConfirmOpen,

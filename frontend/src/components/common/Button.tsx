@@ -1,8 +1,8 @@
 import React from 'react';
 
-import styles from './Button.module.css';
+import type { ButtonVariant } from 'types/CommonTypes';
 
-type ButtonVariant = 'primary' | 'secondary';
+import styles from './Button.module.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
