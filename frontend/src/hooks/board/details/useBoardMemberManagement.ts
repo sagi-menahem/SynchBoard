@@ -4,12 +4,15 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/Logger';
 
+import { useAuth } from 'hooks/auth/useAuth';
+import { useContextMenu } from 'hooks/common/useContextMenu';
 import * as boardService from 'services/BoardService';
 import type { Member } from 'types/BoardTypes';
 
-
-export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) => {
+export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: boolean, onSuccess?: () => void) => {
     const { t } = useTranslation();
+    const { userEmail } = useAuth();
+    const contextMenu = useContextMenu<Member>();
 
     const handlePromote = useCallback(
         async (member: Member) => {
@@ -54,9 +57,21 @@ export const useBoardMemberActions = (boardId: number, onSuccess?: () => void) =
         [boardId, onSuccess, t]
     );
 
+    const handleRightClick = useCallback(
+        (event: React.MouseEvent, member: Member) => {
+            event.preventDefault();
+            if (currentUserIsAdmin && member.email !== userEmail) {
+                contextMenu.handleContextMenu(event, member);
+            }
+        },
+        [currentUserIsAdmin, userEmail, contextMenu]
+    );
+
     return {
+        contextMenu,
         handlePromote,
         handleRemove,
         handleInvite,
+        handleRightClick,
     };
 };

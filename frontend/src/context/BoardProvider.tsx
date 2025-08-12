@@ -2,7 +2,7 @@ import React, { type ReactNode } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { useBoardSync } from 'hooks/board/workspace/useBoardSync';
+import { useBoardWorkspace } from 'hooks/board/workspace/useBoardWorkspace';
 
 import { BoardContext } from './BoardContext';
 
@@ -14,7 +14,7 @@ interface BoardProviderProps {
 export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children }) => {
     const { t } = useTranslation();
 
-    const boardData = useBoardSync(boardId);
+    const boardData = useBoardWorkspace(boardId);
 
     if (isNaN(boardId) || boardId === 0) {
         return <div>{t('boardProvider.invalidIdError')}</div>;

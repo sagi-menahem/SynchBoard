@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import {
@@ -10,10 +10,9 @@ import {
 } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
-import type { DrawingState } from './useCanvasDrawingState';
-import { useCanvasUtils } from './useCanvasUtils';
+import type { DrawingState } from './useCanvasCore';
 
-interface UseCanvasMouseEventsProps {
+interface UseCanvasInteractionsProps {
     previewCanvasRef: React.RefObject<HTMLCanvasElement | null>;
     previewContextRef: React.RefObject<CanvasRenderingContext2D | null>;
     tool: Tool;
@@ -22,9 +21,12 @@ interface UseCanvasMouseEventsProps {
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     senderId: string;
     drawingState: DrawingState;
+    getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => { x: number; y: number } | null;
+    isShapeSizeValid: (width: number, height: number) => boolean;
+    isRadiusValid: (radius: number) => boolean;
 }
 
-export const useCanvasMouseEvents = ({
+export const useCanvasInteractions = ({
     previewCanvasRef,
     previewContextRef,
     tool,
@@ -33,9 +35,28 @@ export const useCanvasMouseEvents = ({
     onDraw,
     senderId,
     drawingState,
-}: UseCanvasMouseEventsProps) => {
-    const { getMouseCoordinates, isShapeSizeValid, isRadiusValid } = useCanvasUtils();
+    getMouseCoordinates,
+    isShapeSizeValid,
+    isRadiusValid,
+}: UseCanvasInteractionsProps) => {
     const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
+
+    const handleMouseDown = useCallback(
+        (event: React.MouseEvent<HTMLCanvasElement>) => {
+            const canvas = previewCanvasRef.current;
+            if (!canvas) return;
+
+            setIsDrawing(true);
+            const { offsetX, offsetY } = event.nativeEvent;
+
+            if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
+                currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
+            } else if (tool === TOOLS.RECTANGLE || tool === TOOLS.CIRCLE) {
+                startPoint.current = { x: offsetX, y: offsetY };
+            }
+        },
+        [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath]
+    );
 
     useEffect(() => {
         const canvas = previewCanvasRef.current;
@@ -165,4 +186,9 @@ export const useCanvasMouseEvents = ({
         startPoint,
         currentPath,
     ]);
+
+    return {
+        handleMouseDown,
+        isDrawing,
+    };
 };

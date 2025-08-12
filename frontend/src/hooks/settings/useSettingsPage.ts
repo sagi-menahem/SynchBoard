@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import logger from 'utils/Logger';
 
+import { useProfilePictureManager } from 'hooks/settings/profile/useProfilePictureManager';
+import { useUserProfileManager } from 'hooks/settings/profile/useUserProfileManager';
 import { useAccountManager } from 'hooks/settings/useAccountManager';
 import { usePasswordManager } from 'hooks/settings/usePasswordManager';
-import { useProfilePictureManager } from 'hooks/settings/useProfilePictureManager';
-import { useUserProfileManager } from 'hooks/settings/useUserProfileManager';
 
 
 export const useSettingsPage = () => {

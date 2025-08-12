@@ -7,7 +7,7 @@ import logger from 'utils/Logger';
 import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { APP_ROUTES } from 'constants/RoutesConstants';
 import { useAuth } from 'hooks/auth/useAuth';
-import { useSocket } from 'hooks/global/useSocket';
+import { useSocket } from 'hooks/common/useSocket';
 import { getBoardDetails } from 'services/BoardService';
 import type { BoardDetails } from 'types/BoardTypes';
 import type { BoardUpdateDTO } from 'types/WebSocketTypes';

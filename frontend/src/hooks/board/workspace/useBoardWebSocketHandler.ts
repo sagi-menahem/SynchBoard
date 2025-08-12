@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 
 import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth/useAuth';
-import { useSocket } from 'hooks/global/useSocket';
+import { useSocket } from 'hooks/common/useSocket';
 import * as boardService from 'services/BoardService';
 import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';

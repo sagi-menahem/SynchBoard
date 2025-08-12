@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/Logger';
 
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
@@ -25,11 +26,13 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         e.preventDefault();
 
         if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
+            logger.warn('[ChangePasswordForm] Password validation failed - too short');
             toast.error(t('settingsPage.passwordTooShort'));
             return;
         }
 
         if (newPassword !== confirmPassword) {
+            logger.warn('[ChangePasswordForm] Password validation failed - passwords do not match');
             toast.error(t('settingsPage.passwordsDoNotMatch'));
             return;
         }

@@ -14,6 +14,7 @@ export const useBoardActions = (boardId: number) => {
 
     const handleUndo = useCallback(() => {
         if (undoCount === 0) {
+            logger.info('[useBoardActions] Undo attempted but nothing to undo');
             toast.error(t('boardSync.nothingToUndo'));
             return;
         }
@@ -24,12 +25,13 @@ export const useBoardActions = (boardId: number) => {
                 setRedoCount((prev) => prev + 1);
             })
             .catch((error) => {
-                logger.error('Undo failed on the server:', error);
+                logger.error('[useBoardActions] Failed to undo action:', error);
             });
     }, [boardId, undoCount, t]);
 
     const handleRedo = useCallback(() => {
         if (redoCount === 0) {
+            logger.info('[useBoardActions] Redo attempted but nothing to redo');
             toast.error(t('boardSync.nothingToRedo'));
             return;
         }
@@ -40,7 +42,7 @@ export const useBoardActions = (boardId: number) => {
                 setRedoCount((prev) => prev - 1);
             })
             .catch((error) => {
-                logger.error('Redo failed on the server:', error);
+                logger.error('[useBoardActions] Failed to redo action:', error);
             });
     }, [boardId, redoCount, t]);
 

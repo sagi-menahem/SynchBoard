@@ -1,11 +1,21 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 
 import logger from 'utils/Logger';
 
+import { WebSocketContext } from 'context/WebSocketContext';
 import websocketService from 'services/WebSocketService';
 
-import { useWebSocket } from '../websocket/useWebSocket';
+export const useWebSocket = () => {
+    const context = useContext(WebSocketContext);
 
+    if (context === undefined) {
+        const error = new Error('useWebSocket must be used within a WebSocketProvider');
+        logger.error('[useWebSocket] Context not found - missing WebSocketProvider wrapper');
+        throw error;
+    }
+
+    return context;
+};
 
 export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => void, schemaKey?: string) => {
     const { isSocketConnected } = useWebSocket();

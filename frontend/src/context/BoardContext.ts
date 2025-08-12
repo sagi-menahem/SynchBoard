@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
-import { useBoardSync } from 'hooks/board/workspace/useBoardSync';
+import { useBoardWorkspace } from 'hooks/board/workspace/useBoardWorkspace';
 
-export type BoardContextType = ReturnType<typeof useBoardSync>;
+export type BoardContextType = ReturnType<typeof useBoardWorkspace>;
 
 export const BoardContext = createContext<BoardContextType | undefined>(undefined);
