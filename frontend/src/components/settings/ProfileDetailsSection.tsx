@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/Logger';
 
 import Button from 'components/common/Button';
 import ProfileDisplayView from 'components/settings/ProfileDisplayView';
 import ProfileEditForm from 'components/settings/ProfileEditForm';
-import { useProfileEditing } from 'hooks/settings/useProfileEditing';
+import { useProfileEditing } from 'hooks/settings/profile/useProfileEditing';
 import styles from 'pages/SettingsPage.module.css';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';
 
@@ -22,7 +23,9 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
         try {
             await onUpdateProfile(formData);
             stopEditing();
-        } catch { }
+        } catch (error) {
+            logger.error('[ProfileDetailsSection] Failed to update profile:', error);
+        }
     };
 
     return (

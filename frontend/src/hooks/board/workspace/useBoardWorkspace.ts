@@ -9,13 +9,13 @@ import { useAuth } from 'hooks/auth/useAuth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
-import { useSocket } from 'hooks/global/useSocket';
+import { useSocket } from 'hooks/common/useSocket';
 import websocketService from 'services/WebSocketService';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 
-export const useBoardSync = (boardId: number) => {
+export const useBoardWorkspace = (boardId: number) => {
     const navigate = useNavigate();
     const sessionInstanceId = useRef(Date.now().toString());
     const { userEmail } = useAuth();
@@ -35,7 +35,6 @@ export const useBoardSync = (boardId: number) => {
     const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
         useBoardActions(boardId);
 
-    // Only reset counts on initial load, not on every object change
     const [hasInitialized, setHasInitialized] = useState(false);
     
     useEffect(() => {
@@ -73,20 +72,20 @@ export const useBoardSync = (boardId: number) => {
 
     useEffect(() => {
         if (accessLost) {
-            logger.warn(`[useBoardSync] accessLost is true. Navigating to board list...`);
+            logger.warn(`[useBoardWorkspace] accessLost is true. Navigating to board list...`);
             navigate(APP_ROUTES.BOARD_LIST);
         }
     }, [accessLost, navigate]);
 
     const handleUserUpdate = useCallback(
         (message: UserUpdateDTO) => {
-            logger.debug(`[useBoardSync] Received user update: ${message.updateType}.`);
+            logger.debug(`[useBoardWorkspace] Received user update: ${message.updateType}.`);
             
             if (message.updateType === 'BOARD_LIST_CHANGED') {
-                logger.debug(`[useBoardSync] Board list changed. Navigating to board list...`);
+                logger.debug(`[useBoardWorkspace] Board list changed. Navigating to board list...`);
                 navigate(APP_ROUTES.BOARD_LIST);
             } else if (message.updateType === 'BOARD_DETAILS_CHANGED') {
-                logger.debug(`[useBoardSync] Board details changed. Staying on current page.`);
+                logger.debug(`[useBoardWorkspace] Board details changed. Staying on current page.`);
             }
         },
         [navigate]

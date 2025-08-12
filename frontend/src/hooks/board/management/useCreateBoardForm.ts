@@ -18,6 +18,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (name.trim().length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
+            logger.warn('[useCreateBoardForm] Board name validation failed - too short');
             toast.error(t('createBoardForm.nameLengthError'));
             return;
         }
@@ -29,7 +30,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
                 toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
                 onBoardCreated(newBoard);
             })
-            .catch((err) => logger.error(err))
+            .catch((err) => logger.error('[useCreateBoardForm] Failed to create board:', err))
             .finally(() => setIsSubmitting(false));
     };
 

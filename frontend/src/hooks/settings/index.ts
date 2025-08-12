@@ -1,6 +1,5 @@
 export { useAccountManager } from './useAccountManager';
 export { usePasswordManager } from './usePasswordManager';
-export { useProfileEditing } from './useProfileEditing';
-export { useProfilePictureManager } from './useProfilePictureManager';
 export { useSettingsPage } from './useSettingsPage';
-export { useUserProfileManager } from './useUserProfileManager';
+
+export { useProfileEditing, useProfilePictureManager, useUserProfileManager } from './profile';

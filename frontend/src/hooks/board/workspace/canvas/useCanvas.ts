@@ -3,11 +3,9 @@ import { useEffect } from 'react';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
-import { useCanvasDimensions } from './useCanvasDimensions';
-import { useCanvasEvents } from './useCanvasEvents';
-import { useCanvasRefs } from './useCanvasRefs';
+import { useCanvasCore } from './useCanvasCore';
+import { useCanvasInteractions } from './useCanvasInteractions';
 import { useCanvasRendering } from './useCanvasRendering';
-import { useCanvasUtils } from './useCanvasUtils';
 
 interface UseCanvasProps {
     instanceId: string;
@@ -26,27 +24,25 @@ export const useCanvas = ({
     objects,
     onDraw,
 }: UseCanvasProps) => {
-    const { mainCanvasRef, previewCanvasRef, containerRef, contextRef, previewContextRef } = useCanvasRefs();
-
-    const { dimensions } = useCanvasDimensions({ containerRef });
-
-    const { setupCanvasContext } = useCanvasUtils();
+    const { dimensions, refs, drawingState, utils } = useCanvasCore();
+    const { mainCanvasRef, previewCanvasRef, containerRef, contextRef, previewContextRef } = refs;
 
     useEffect(() => {
         if (dimensions.width > 0 && dimensions.height > 0) {
-            contextRef.current = setupCanvasContext(mainCanvasRef.current);
-            previewContextRef.current = setupCanvasContext(previewCanvasRef.current);
+            contextRef.current = utils.setupCanvasContext(mainCanvasRef.current);
+            previewContextRef.current = utils.setupCanvasContext(previewCanvasRef.current);
         }
-    }, [dimensions, mainCanvasRef, previewCanvasRef, contextRef, previewContextRef, setupCanvasContext]);
+    }, [dimensions, mainCanvasRef, previewCanvasRef, contextRef, previewContextRef, utils]);
 
     useCanvasRendering({
         mainCanvasRef,
         contextRef,
         objects,
         dimensions,
+        replayDrawAction: utils.replayDrawAction,
     });
 
-    const { handleMouseDown } = useCanvasEvents({
+    const { handleMouseDown } = useCanvasInteractions({
         previewCanvasRef,
         previewContextRef,
         tool,
@@ -54,6 +50,10 @@ export const useCanvas = ({
         strokeColor,
         onDraw,
         senderId,
+        drawingState,
+        getMouseCoordinates: utils.getMouseCoordinates,
+        isShapeSizeValid: utils.isShapeSizeValid,
+        isRadiusValid: utils.isRadiusValid,
     });
 
     return {

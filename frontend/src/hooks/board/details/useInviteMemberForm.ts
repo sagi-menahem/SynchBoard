@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/Logger';
 
-import { useBoardMemberActions } from 'hooks/board/details/useBoardMemberActions';
+import { useBoardMemberManagement } from 'hooks/board/details/useBoardMemberManagement';
 import type { Member } from 'types/BoardTypes';
 
 
@@ -13,11 +13,12 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
     const [email, setEmail] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { handleInvite } = useBoardMemberActions(boardId);
+    const { handleInvite } = useBoardMemberManagement(boardId, false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!email.trim()) {
+            logger.warn('[useInviteMemberForm] Email validation failed - empty email');
             toast.error(t('inviteMemberForm.emailRequiredError'));
             return;
         }
@@ -28,7 +29,7 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
             onInviteSuccess(newMember);
             setEmail('');
         } catch (error) {
-            logger.error('Invite member failed:', error);
+            logger.error('[useInviteMemberForm] Failed to invite member:', error);
         } finally {
             setIsSubmitting(false);
         }
