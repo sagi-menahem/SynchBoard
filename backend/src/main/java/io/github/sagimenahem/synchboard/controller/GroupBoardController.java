@@ -40,6 +40,17 @@ public class GroupBoardController {
                 return ResponseEntity.ok(boards);
         }
 
+        @PostMapping
+        public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody CreateBoardRequest request,
+                        Authentication authentication) {
+                String userEmail = authentication.getName();
+                log.info(API_REQUEST_RECEIVED, "POST", API_BOARDS_BASE_PATH, userEmail);
+
+                BoardDTO newBoard = boardService.createBoard(request, userEmail);
+                log.info(BOARD_CREATED, newBoard.getId(), request.getName(), userEmail);
+                return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
+        }
+
         @GetMapping(API_BOARDS_DETAILS)
         public ResponseEntity<BoardDetailsDTO> getBoardDetails(
                         @PathVariable(PATH_VAR_BOARD_ID) Long boardId,
@@ -51,17 +62,6 @@ public class GroupBoardController {
                 BoardDetailsDTO boardDetails = boardService.getBoardDetails(boardId, userEmail);
                 log.info(BOARD_ACCESS_GRANTED, boardId, userEmail);
                 return ResponseEntity.ok(boardDetails);
-        }
-
-        @PostMapping
-        public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody CreateBoardRequest request,
-                        Authentication authentication) {
-                String userEmail = authentication.getName();
-                log.info(API_REQUEST_RECEIVED, "POST", API_BOARDS_BASE_PATH, userEmail);
-
-                BoardDTO newBoard = boardService.createBoard(request, userEmail);
-                log.info(BOARD_CREATED, newBoard.getId(), request.getName(), userEmail);
-                return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
         @GetMapping(API_BOARDS_OBJECT)
