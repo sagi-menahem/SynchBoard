@@ -4,5 +4,5 @@ export interface BoardUpdateDTO {
 }
 
 export interface UserUpdateDTO {
-    updateType: 'BOARD_LIST_CHANGED';
+    updateType: 'BOARD_LIST_CHANGED' | 'BOARD_DETAILS_CHANGED';
 }

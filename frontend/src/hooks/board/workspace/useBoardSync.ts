@@ -76,8 +76,14 @@ export const useBoardSync = (boardId: number) => {
 
     const handleUserUpdate = useCallback(
         (message: UserUpdateDTO) => {
-            logger.debug(`[useBoardSync] Received user update: ${message.updateType}. Navigating to board list...`);
-            navigate(APP_ROUTES.BOARD_LIST);
+            logger.debug(`[useBoardSync] Received user update: ${message.updateType}.`);
+            
+            if (message.updateType === 'BOARD_LIST_CHANGED') {
+                logger.debug(`[useBoardSync] Board list changed. Navigating to board list...`);
+                navigate(APP_ROUTES.BOARD_LIST);
+            } else if (message.updateType === 'BOARD_DETAILS_CHANGED') {
+                logger.debug(`[useBoardSync] Board details changed. Staying on current page.`);
+            }
         },
         [navigate]
     );

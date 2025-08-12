@@ -53,9 +53,24 @@ export const useBoardDetails = (boardId: number | undefined) => {
                 return;
             }
             logger.debug(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
-            fetchDetails();
+            
+            if (!boardId || isNaN(boardId)) {
+                return;
+            }
+
+            getBoardDetails(boardId)
+                .then((data) => {
+                    setBoardDetails(data);
+                })
+                .catch((error) => {
+                    logger.warn('Failed to refetch board details after WebSocket update:', error);
+                    if (message.updateType === 'MEMBERS_UPDATED' && 
+                        error instanceof AxiosError && error.response?.status === 403) {
+                        navigate(APP_ROUTES.BOARD_LIST);
+                    }
+                });
         },
-        [fetchDetails, userEmail]
+        [boardId, userEmail, navigate]
     );
 
     useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');

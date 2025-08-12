@@ -37,6 +37,14 @@ public class BoardNotificationService {
         messagingTemplate.convertAndSend(destination, payload);
     }
 
+    public void broadcastUserDetailsChanged(String userEmail) {
+        UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_DETAILS_CHANGED);
+        String destination = WEBSOCKET_USER_TOPIC_PREFIX + userEmail;
+
+        log.info("Sending board details change notification to {}", destination);
+        messagingTemplate.convertAndSend(destination, payload);
+    }
+
     public void broadcastUserUpdatesToAllBoardMembers(Long boardId) {
         List<String> memberEmails = groupMemberRepository.findEmailsByBoardId(boardId);
         if (memberEmails.isEmpty()) {
@@ -64,6 +72,23 @@ public class BoardNotificationService {
         log.info("Broadcasting user updates to {} users", userEmails.size());
 
         userEmails.parallelStream().forEach(email -> {
+            String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
+            messagingTemplate.convertAndSend(destination, payload);
+        });
+    }
+
+    public void broadcastBoardDetailsChangedToAllBoardMembers(Long boardId) {
+        List<String> memberEmails = groupMemberRepository.findEmailsByBoardId(boardId);
+        if (memberEmails.isEmpty()) {
+            log.debug("No members found for board {}", boardId);
+            return;
+        }
+
+        UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_DETAILS_CHANGED);
+        log.info("Broadcasting board details changes to {} members of board {}",
+                memberEmails.size(), boardId);
+
+        memberEmails.parallelStream().forEach(email -> {
             String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
             messagingTemplate.convertAndSend(destination, payload);
         });

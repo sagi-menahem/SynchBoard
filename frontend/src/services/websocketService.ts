@@ -31,7 +31,7 @@ class WebSocketService {
 
         this.messageSchemas.set('user', {
             requiredFields: ['updateType'],
-            allowedTypes: ['BOARD_LIST_CHANGED'],
+            allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED'],
         });
 
         this.messageSchemas.set('chat', {

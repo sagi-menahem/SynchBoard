@@ -159,7 +159,8 @@ public class BoardMemberService {
 
                 notificationService.broadcastBoardUpdate(boardId,
                                 BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, requestingUserEmail);
-                notificationService.broadcastUserUpdate(emailToPromote);
+
+                notificationService.broadcastUserDetailsChanged(emailToPromote);
                 return mapToMemberDTO(memberToPromote);
         }
 
