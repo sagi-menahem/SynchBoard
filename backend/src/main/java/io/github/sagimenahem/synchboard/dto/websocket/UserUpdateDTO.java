@@ -13,6 +13,8 @@ public class UserUpdateDTO {
 
     public enum UpdateType {
 
-        BOARD_LIST_CHANGED
+        BOARD_LIST_CHANGED,
+
+        BOARD_DETAILS_CHANGED
     }
 }

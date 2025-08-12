@@ -122,10 +122,10 @@ public class BoardService {
 
         log.info(BOARD_UPDATED, boardId, "name (" + oldName + " -> " + newName.trim() + ")",
                 userEmail);
-        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
+        notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
 
@@ -149,10 +149,9 @@ public class BoardService {
         log.debug("Board description changed from '{}' to '{}'", oldDescription,
                 trimmedDescription);
 
-        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
-
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
+        notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
 
@@ -179,7 +178,7 @@ public class BoardService {
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
-        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
+        notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
 
         return mapToBoardResponse(member);
     }
@@ -207,7 +206,7 @@ public class BoardService {
 
         notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
                 userEmail);
-        notificationService.broadcastUserUpdatesToAllBoardMembers(boardId);
+        notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
 

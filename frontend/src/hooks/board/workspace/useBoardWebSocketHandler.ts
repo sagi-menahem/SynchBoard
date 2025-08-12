@@ -36,17 +36,25 @@ export const useBoardWebSocketHandler = ({
             if ('updateType' in payload && 'sourceUserEmail' in payload) {
                 const update = payload as BoardUpdateDTO;
                 if (update.sourceUserEmail === userEmail) return;
+                
                 if (update.updateType === 'MEMBERS_UPDATED') {
                     boardService.getBoardMessages(boardId).then(setMessages);
+                    boardService
+                        .getBoardDetails(boardId)
+                        .then((details) => setBoardName(details.name))
+                        .catch((err) => {
+                            if (err instanceof AxiosError && err.response?.status === 403) {
+                                setAccessLost(true);
+                            }
+                        });
+                } else if (update.updateType === 'DETAILS_UPDATED') {
+                    boardService
+                        .getBoardDetails(boardId)
+                        .then((details) => setBoardName(details.name))
+                        .catch((err) => {
+                            console.warn('Failed to refresh board name after details update:', err);
+                        });
                 }
-                boardService
-                    .getBoardDetails(boardId)
-                    .then((details) => setBoardName(details.name))
-                    .catch((err) => {
-                        if (err instanceof AxiosError && err.response?.status === 403) {
-                            setAccessLost(true);
-                        }
-                    });
             } else if ('type' in payload && 'instanceId' in payload) {
                 const action = payload as BoardActionResponse;
                 if (action.sender === sessionInstanceId) return;
