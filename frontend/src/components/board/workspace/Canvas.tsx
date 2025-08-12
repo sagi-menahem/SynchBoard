@@ -1,13 +1,11 @@
 import React from 'react';
 
-import type { TOOL_LIST } from 'constants/BoardConstants';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
+import type { Tool } from 'types/CommonTypes';
 
 import styles from './Canvas.module.css';
-
-type Tool = (typeof TOOL_LIST)[number];
 
 interface CanvasProps {
     instanceId: string;

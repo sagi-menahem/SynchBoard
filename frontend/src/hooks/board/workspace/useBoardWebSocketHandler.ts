@@ -57,7 +57,9 @@ export const useBoardWebSocketHandler = ({
                 }
             } else if ('type' in payload && 'instanceId' in payload) {
                 const action = payload as BoardActionResponse;
-                if (action.sender === sessionInstanceId) return;
+                const isOwnDrawingAction = action.sender === sessionInstanceId && action.type === ActionType.OBJECT_ADD;
+                if (isOwnDrawingAction) return;
+                
                 const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
                 if (action.type === ActionType.OBJECT_ADD) {
                     setObjects((prev) => [...prev, actionPayload]);

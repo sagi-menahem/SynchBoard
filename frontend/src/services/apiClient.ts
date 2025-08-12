@@ -71,11 +71,17 @@ apiClient.interceptors.response.use(
         }
 
         const isBackendError = (data: unknown): data is BackendError => {
+            if (typeof data !== 'object' || data === null) {
+                return false;
+            }
+
+            const obj = data as Record<string, unknown>;
+
             return (
-                typeof data === 'object' &&
-                data !== null &&
-                'message' in data &&
-                typeof (data as BackendError).message === 'string'
+                'message' in obj &&
+                typeof obj.message === 'string' &&
+                obj.message.trim().length > 0 &&
+                obj.message.length <= 500
             );
         };
 

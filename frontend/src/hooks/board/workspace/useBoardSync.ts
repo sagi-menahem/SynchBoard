@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import logger from 'utils/Logger';
@@ -35,11 +35,15 @@ export const useBoardSync = (boardId: number) => {
     const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
         useBoardActions(boardId);
 
+    // Only reset counts on initial load, not on every object change
+    const [hasInitialized, setHasInitialized] = useState(false);
+    
     useEffect(() => {
-        if (!isLoading && objects.length > 0) {
+        if (!isLoading && objects.length > 0 && !hasInitialized) {
             resetCounts(objects.length);
+            setHasInitialized(true);
         }
-    }, [isLoading, objects.length, resetCounts]);
+    }, [isLoading, objects.length, resetCounts, hasInitialized]);
 
     useBoardWebSocketHandler({
         boardId,
@@ -89,6 +93,7 @@ export const useBoardSync = (boardId: number) => {
     );
 
     useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
+
 
     return {
         isLoading,

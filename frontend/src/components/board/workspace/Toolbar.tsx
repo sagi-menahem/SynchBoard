@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 import Button from 'components/common/Button';
 import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants/BoardConstants';
 import { useDraggable } from 'hooks/common/useDraggable';
+import type { Tool } from 'types/CommonTypes';
 
 import styles from './Toolbar.module.css';
-
-type Tool = (typeof TOOL_LIST)[number];
 
 interface ToolbarProps {
     containerRef: React.RefObject<HTMLElement | null>;
