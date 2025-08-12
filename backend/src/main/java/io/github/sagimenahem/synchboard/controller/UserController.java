@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import io.github.sagimenahem.synchboard.dto.user.ChangePasswordDTO;
-import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileDTO;
+import io.github.sagimenahem.synchboard.dto.user.ChangePasswordRequest;
+import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
 import io.github.sagimenahem.synchboard.service.AuthService;
@@ -39,23 +39,23 @@ public class UserController {
 
     @PutMapping(API_USER_PROFILE)
     public ResponseEntity<UserProfileDTO> updateUserProfile(Authentication authentication,
-            @Valid @RequestBody UpdateUserProfileDTO updateUserProfileDTO) {
+            @Valid @RequestBody UpdateUserProfileRequest updateUserProfileRequest) {
         String userEmail = authentication.getName();
         log.info(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_PROFILE, userEmail);
 
-        UserProfileDTO updatedUser = userService.updateUserProfile(userEmail, updateUserProfileDTO);
+        UserProfileDTO updatedUser = userService.updateUserProfile(userEmail, updateUserProfileRequest);
         log.info(USER_PROFILE_UPDATED, userEmail, "firstName, lastName, bio");
         return ResponseEntity.ok(updatedUser);
     }
 
     @PutMapping(API_USER_PASSWORD)
     public ResponseEntity<?> changePassword(Authentication authentication,
-            @Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
+            @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         String userEmail = authentication.getName();
         log.info(SECURITY_PREFIX + " Password change attempt for user: {}", userEmail);
 
-        authService.changePassword(userEmail, changePasswordDTO.getCurrentPassword(),
-                changePasswordDTO.getNewPassword());
+        authService.changePassword(userEmail, changePasswordRequest.getCurrentPassword(),
+                changePasswordRequest.getNewPassword());
         log.info(AUTH_PASSWORD_CHANGED, userEmail);
         return ResponseEntity.ok().build();
     }
