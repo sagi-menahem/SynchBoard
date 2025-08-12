@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
-import io.github.sagimenahem.synchboard.dto.auth.AuthResponse;
+import io.github.sagimenahem.synchboard.dto.auth.AuthResponseDTO;
 import io.github.sagimenahem.synchboard.dto.auth.LoginRequest;
 import io.github.sagimenahem.synchboard.dto.auth.RegisterRequest;
 import io.github.sagimenahem.synchboard.entity.User;
@@ -31,7 +31,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public AuthResponse registerUser(RegisterRequest request) {
+    public AuthResponseDTO registerUser(RegisterRequest request) {
         log.info(SECURITY_PREFIX + " Registration attempt for email: {}", request.getEmail());
 
         if (userRepository.existsById(request.getEmail())) {
@@ -50,10 +50,10 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(newUser);
         log.debug(SECURITY_PREFIX + " JWT token generated for user: {}", request.getEmail());
-        return new AuthResponse(jwtToken);
+        return new AuthResponseDTO(jwtToken);
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponseDTO login(LoginRequest request) {
         log.info(SECURITY_PREFIX + " Login attempt for user: {}", request.getEmail());
 
         try {
@@ -73,7 +73,7 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(user);
         log.debug(SECURITY_PREFIX + " JWT token generated for user: {}", request.getEmail());
-        return new AuthResponse(jwtToken);
+        return new AuthResponseDTO(jwtToken);
     }
 
     @Transactional

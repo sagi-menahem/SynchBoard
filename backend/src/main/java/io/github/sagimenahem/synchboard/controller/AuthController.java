@@ -6,7 +6,7 @@ import static io.github.sagimenahem.synchboard.constants.LoggingConstants.API_RE
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.API_REQUEST_RECEIVED;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.github.sagimenahem.synchboard.dto.auth.AuthResponse;
+import io.github.sagimenahem.synchboard.dto.auth.AuthResponseDTO;
 import io.github.sagimenahem.synchboard.dto.auth.LoginRequest;
 import io.github.sagimenahem.synchboard.dto.auth.RegisterRequest;
 import io.github.sagimenahem.synchboard.service.AuthService;
@@ -22,13 +22,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(API_AUTH_REGISTER_PATH)
-    public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponseDTO> registerUser(@RequestBody RegisterRequest request) {
         log.info(API_REQUEST_RECEIVED, "POST", API_AUTH_BASE_PATH + API_AUTH_REGISTER_PATH,
                 request.getEmail());
         long startTime = System.currentTimeMillis();
 
         try {
-            AuthResponse response = authService.registerUser(request);
+            AuthResponseDTO response = authService.registerUser(request);
             long duration = System.currentTimeMillis() - startTime;
             log.info(API_REQUEST_COMPLETED, "POST", API_AUTH_BASE_PATH + API_AUTH_REGISTER_PATH,
                     request.getEmail(), duration);
@@ -42,13 +42,13 @@ public class AuthController {
     }
 
     @PostMapping(API_AUTH_LOGIN_PATH)
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequest request) {
         log.info(API_REQUEST_RECEIVED, "POST", API_AUTH_BASE_PATH + API_AUTH_LOGIN_PATH,
                 request.getEmail());
         long startTime = System.currentTimeMillis();
 
         try {
-            AuthResponse response = authService.login(request);
+            AuthResponseDTO response = authService.login(request);
             long duration = System.currentTimeMillis() - startTime;
             log.info(API_REQUEST_COMPLETED, "POST", API_AUTH_BASE_PATH + API_AUTH_LOGIN_PATH,
                     request.getEmail(), duration);

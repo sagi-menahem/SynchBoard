@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
-import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileDTO;
+import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
@@ -46,7 +46,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileDTO updateUserProfile(String userEmail, UpdateUserProfileDTO dto) {
+    public UserProfileDTO updateUserProfile(String userEmail, UpdateUserProfileRequest dto) {
         log.info(DATA_PREFIX + " Updating user profile for: {}", userEmail);
 
         User user = userRepository.findById(userEmail).orElseThrow(() -> {

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangePasswordDTO {
+public class ChangePasswordRequest {
 
     @NotEmpty(message = ERROR_PASSWORD_CANT_BE_EMPTY)
     private String currentPassword;
