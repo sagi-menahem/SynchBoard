@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { createErrorHandler } from 'utils';
 import logger from 'utils/Logger';
 
 interface ErrorHandlerOptions {
@@ -50,11 +51,4 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
     };
 };
 
-export const createErrorHandler = (context: string) => (error: Error) => {
-    logger.error(`[${context}] Component Error`, error, {
-        timestamp: new Date().toISOString(),
-        context
-    });
-    
-    toast.error(`${context} encountered an error`);
-};
+export { createErrorHandler };

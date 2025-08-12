@@ -32,13 +32,13 @@ export const useLoginForm = () => {
 
         AuthService
             .login(credentials)
-            .then((response: any) => {
+            .then((response: unknown) => {
                 logger.info('Login successful for user:', email);
                 toast.success(t('loginForm.loginSuccess'));
-                login(response.token);
+                login((response as { token: string }).token);
                 navigate(APP_ROUTES.BOARD_LIST);
             })
-            .catch((err: any) => {
+            .catch((err: unknown) => {
                 logger.error('Login failed for user:', err, { email });
             })
             .finally(() => {
