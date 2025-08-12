@@ -43,7 +43,8 @@ public class UserController {
         String userEmail = authentication.getName();
         log.info(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_PROFILE, userEmail);
 
-        UserProfileDTO updatedUser = userService.updateUserProfile(userEmail, updateUserProfileRequest);
+        UserProfileDTO updatedUser =
+                userService.updateUserProfile(userEmail, updateUserProfileRequest);
         log.info(USER_PROFILE_UPDATED, userEmail, "firstName, lastName, bio");
         return ResponseEntity.ok(updatedUser);
     }
