@@ -45,8 +45,9 @@ public class BoardNotificationService {
         }
 
         UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED);
-        log.info("Broadcasting user updates to {} members of board {}", memberEmails.size(), boardId);
-        
+        log.info("Broadcasting user updates to {} members of board {}", memberEmails.size(),
+                boardId);
+
         memberEmails.parallelStream().forEach(email -> {
             String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
             messagingTemplate.convertAndSend(destination, payload);
@@ -61,14 +62,14 @@ public class BoardNotificationService {
 
         UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED);
         log.info("Broadcasting user updates to {} users", userEmails.size());
-        
+
         userEmails.parallelStream().forEach(email -> {
             String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
             messagingTemplate.convertAndSend(destination, payload);
         });
     }
 
-    public void broadcastBoardUpdatesToMultipleBoards(List<Long> boardIds, 
+    public void broadcastBoardUpdatesToMultipleBoards(List<Long> boardIds,
             BoardUpdateDTO.UpdateType updateType, String sourceUserEmail) {
         if (boardIds == null || boardIds.isEmpty()) {
             log.debug("No board IDs provided for broadcasting");
@@ -76,9 +77,9 @@ public class BoardNotificationService {
         }
 
         BoardUpdateDTO payload = new BoardUpdateDTO(updateType, sourceUserEmail);
-        log.info("Broadcasting {} updates to {} boards from user {}", 
-                updateType, boardIds.size(), sourceUserEmail);
-        
+        log.info("Broadcasting {} updates to {} boards from user {}", updateType, boardIds.size(),
+                sourceUserEmail);
+
         boardIds.parallelStream().forEach(boardId -> {
             String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + boardId;
             messagingTemplate.convertAndSend(destination, payload);
