@@ -1,10 +1,17 @@
+import {
+    API_BASE_URL,
+    API_ENDPOINTS,
+    AUTH_HEADER_CONFIG,
+    LOCAL_STORAGE_KEYS,
+    PUBLIC_API_ENDPOINTS
+} from 'constants';
+
 import axios, { type AxiosError } from 'axios';
 import i18n from 'i18n';
 import toast from 'react-hot-toast';
-import logger from 'utils/Logger';
+import { Logger } from 'utils';
 
-import { API_BASE_URL, API_ENDPOINTS, AUTH_HEADER_CONFIG, PUBLIC_API_ENDPOINTS } from 'constants/ApiConstants';
-import { LOCAL_STORAGE_KEYS } from 'constants/AppConstants';
+const logger = Logger;
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,

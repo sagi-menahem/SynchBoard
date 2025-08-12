@@ -1,3 +1,5 @@
+import { APP_ROUTES } from 'constants';
+
 import { useCallback, useState } from 'react';
 
 import toast from 'react-hot-toast';
@@ -5,11 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import logger from 'utils/Logger';
 
-import { APP_ROUTES } from 'constants/RoutesConstants';
-import { useBoardDetails } from 'hooks/board/details/useBoardDetails';
-import { useBoardEditing } from 'hooks/board/details/useBoardEditing';
-import { useBoardMemberManagement } from 'hooks/board/details/useBoardMemberManagement';
-import { useBoardPermissions } from 'hooks/board/details/useBoardPermissions';
+import {
+    useBoardDetails,
+    useBoardEditing,
+    useBoardMemberManagement,
+    useBoardPermissions
+} from 'hooks/board/details';
 import * as boardService from 'services/BoardService';
 import type { Member } from 'types/BoardTypes';
 import type { EditingField } from 'types/CommonTypes';

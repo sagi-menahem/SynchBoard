@@ -2,10 +2,9 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/Button';
+import { Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
-import Input from 'components/common/Input';
-import { useLoginForm } from 'hooks/auth/forms/useLoginForm';
+import { useLoginForm } from 'hooks/auth/forms';
 
 const LoginForm: React.FC = () => {
     const { t } = useTranslation();

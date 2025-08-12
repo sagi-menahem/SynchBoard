@@ -1,9 +1,9 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 
-import logger from 'utils/Logger';
 
-import { WebSocketContext } from 'context/WebSocketContext';
-import websocketService from 'services/WebSocketService';
+import { WebSocketContext } from 'context';
+import { WebSocketService } from 'services';
+import logger from 'utils/Logger';
 
 export const useWebSocket = () => {
     const context = useContext(WebSocketContext);
@@ -34,12 +34,12 @@ export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => v
             return;
         }
 
-        let subscription: ReturnType<typeof websocketService.subscribe> = null;
+        let subscription: ReturnType<typeof WebSocketService.subscribe> = null;
 
         const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
-            if (websocketService.isConnected()) {
+            if (WebSocketService.isConnected()) {
                 logger.debug(`useSocket: Subscribing to ${topic}`);
-                subscription = websocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
+                subscription = WebSocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
             } else {
                 logger.debug(`useSocket: WebSocket not ready for ${topic}, will retry when connected`);
             }

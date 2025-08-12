@@ -1,3 +1,2 @@
-export { useLoginForm } from './forms/useLoginForm';
-export { useRegisterForm } from './forms/useRegisterForm';
+export * from './forms';
 export { useAuth } from './useAuth';

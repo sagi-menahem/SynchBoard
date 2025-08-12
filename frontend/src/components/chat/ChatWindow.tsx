@@ -1,11 +1,11 @@
+import { WEBSOCKET_DESTINATIONS } from 'constants';
+
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/Button';
-import Input from 'components/common/Input';
-import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
-import { usePreferences } from 'hooks/common/usePreferences';
+import { Button, Input } from 'components/common';
+import { usePreferences } from 'hooks/common';
 import websocketService from 'services/WebSocketService';
 import type { ChatMessageResponse, SendChatMessageRequest } from 'types/MessageTypes';
 

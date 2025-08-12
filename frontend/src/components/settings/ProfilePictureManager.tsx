@@ -1,11 +1,11 @@
+import { API_BASE_URL, APP_CONFIG } from 'constants';
+
 import React, { useRef } from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/Button';
-import { API_BASE_URL } from 'constants/ApiConstants';
-import { APP_CONFIG } from 'constants/AppConstants';
+import { Button } from 'components/common';
 import type { UserProfile } from 'types/UserTypes';
 
 import styles from './ProfilePictureManager.module.css';

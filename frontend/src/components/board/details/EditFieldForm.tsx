@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/Logger';
 
-import Button from 'components/common/Button';
+import { Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
-import Input from 'components/common/Input';
 
 
 interface EditFieldFormProps {

@@ -2,10 +2,9 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/Button';
+import { Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
-import Input from 'components/common/Input';
-import { useRegisterForm } from 'hooks/auth/forms/useRegisterForm';
+import { useRegisterForm } from 'hooks/auth/forms';
 
 interface RegistrationFormProps {
     onRegistrationSuccess: () => void;

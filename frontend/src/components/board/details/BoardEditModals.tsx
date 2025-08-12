@@ -2,9 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import EditFieldForm from 'components/board/details/EditFieldForm';
-import InviteMemberForm from 'components/board/details/InviteMemberForm';
-import Modal from 'components/common/Modal';
+import { EditFieldForm, InviteMemberForm } from 'components/board/details';
+import { Modal } from 'components/common';
 import type { Member } from 'types/BoardTypes';
 
 interface BoardEditModalsProps {

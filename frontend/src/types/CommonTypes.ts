@@ -1,4 +1,4 @@
-import type { TOOL_LIST } from 'constants/BoardConstants';
+import type { TOOL_LIST } from 'constants';
 
 export type Tool = (typeof TOOL_LIST)[number];
 

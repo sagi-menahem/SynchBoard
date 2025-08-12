@@ -2,7 +2,7 @@ import React, { useEffect, useState, type ReactNode } from 'react';
 
 import logger from 'utils/Logger';
 
-import { useAuth } from 'hooks/auth/useAuth';
+import { useAuth } from 'hooks/auth';
 import websocketService from 'services/WebSocketService';
 
 import { WebSocketContext } from './WebSocketContext';

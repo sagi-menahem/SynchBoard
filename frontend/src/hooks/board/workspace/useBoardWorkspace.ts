@@ -1,11 +1,11 @@
+import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS, APP_ROUTES } from 'constants';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import logger from 'utils/Logger';
 
-import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/ApiConstants';
-import { APP_ROUTES } from 'constants/RoutesConstants';
-import { useAuth } from 'hooks/auth/useAuth';
+import { useAuth } from 'hooks/auth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';

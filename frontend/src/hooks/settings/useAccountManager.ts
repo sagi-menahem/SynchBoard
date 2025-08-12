@@ -1,3 +1,5 @@
+import { APP_ROUTES } from 'constants';
+
 import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
@@ -5,8 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import logger from 'utils/Logger';
 
-import { APP_ROUTES } from 'constants/RoutesConstants';
-import { useAuth } from 'hooks/auth/useAuth';
+import { useAuth } from 'hooks/auth';
 import * as userService from 'services/UserService';
 
 

@@ -1,15 +1,12 @@
+import { APP_ROUTES } from 'constants';
+
+import { AuthPage, BoardDetailsPage, BoardListPage, BoardPage, SettingsPage } from 'pages';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
-import Layout from 'components/layout/Layout';
+import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
-import { APP_ROUTES } from 'constants/RoutesConstants';
-import AuthPage from 'pages/AuthPage';
-import BoardDetailsPage from 'pages/BoardDetailsPage';
-import BoardListPage from 'pages/BoardListPage';
-import BoardPage from 'pages/BoardPage';
-import SettingsPage from 'pages/SettingsPage';
 
 function App() {
     return (
