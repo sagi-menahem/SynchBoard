@@ -1,7 +1,6 @@
 package io.github.sagimenahem.synchboard.service;
 
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
-import static io.github.sagimenahem.synchboard.constants.SecurityConstants.JWT_EXPIRATION_MS;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,11 +58,15 @@ public class JwtService {
 
         String token = Jwts.builder().setClaims(extraClaims).setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
+                .setExpiration(new Date(System.currentTimeMillis() + getExpirationTimeInMillis()))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
 
         log.info(SECURITY_PREFIX + " JWT token generated for user: {}", username);
         return token;
+    }
+
+    private long getExpirationTimeInMillis() {
+        return appProperties.getJwt().getExpirationHours() * 60L * 60L * 1000L;
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

@@ -1,0 +1,35 @@
+{
+  "properties": [
+    {
+      "name": "app.jwt.secret-key",
+      "type": "java.lang.String",
+      "description": "Secret key for JWT token generation and validation"
+    },
+    {
+      "name": "app.stomp.broker-host",
+      "type": "java.lang.String", 
+      "description": "Host address for the STOMP message broker"
+    },
+    {
+      "name": "app.stomp.broker-port",
+      "type": "java.lang.Integer",
+      "description": "Port number for the STOMP message broker"
+    },
+    {
+      "name": "app.upload.dir",
+      "type": "java.lang.String",
+      "description": "Directory path for file uploads"
+    },
+    {
+      "name": "app.jwt.expiration-hours",
+      "type": "java.lang.Integer",
+      "description": "JWT token expiration time in hours",
+      "defaultValue": 24
+    },
+    {
+      "name": "app.security.allowed-origins",
+      "type": "java.lang.String",
+      "description": "Allowed origins for CORS configuration"
+    }
+  ]
+}
