@@ -8,7 +8,7 @@ import { BoardService } from 'services';
 import logger from 'utils/Logger';
 
 import { useAuth } from 'hooks/auth';
-import { useContextMenu, useSocket } from 'hooks/common';
+import { useContextMenu, useSocketSubscription } from 'hooks/common';
 import type { Board } from 'types/BoardTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
@@ -80,7 +80,7 @@ export const useBoardList = () => {
         [fetchBoards]
     );
 
-    useSocket(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
+    useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
     return {
         boards,
