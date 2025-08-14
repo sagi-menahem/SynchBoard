@@ -57,9 +57,15 @@ export default [
             ],
             // Formatting rules (replacing Prettier)
             // Note: Some formatting is already handled by tseslint.configs.stylistic
+            'indent': ['error', 2, { SwitchCase: 1 }],
+            'brace-style': ['error', '1tbs', { allowSingleLine: true }],
             'max-len': ['error', { code: 120, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
             'arrow-parens': ['error', 'always'],
             'array-bracket-spacing': ['error', 'never'],
+            'comma-dangle': ['error', 'always-multiline'],
+            'semi': ['error', 'always'],
+            'quotes': ['error', 'single', { avoidEscape: true }],
+            'object-curly-spacing': ['error', 'always'],
         },
         settings: {
             react: { version: 'detect' },
@@ -103,7 +109,7 @@ export default [
             'semi': ['error', 'always'],
             'quotes': ['error', 'single', { avoidEscape: true }],
             'comma-dangle': ['error', 'always-multiline'],
-            'indent': ['error', 4, { SwitchCase: 1 }],
+            'indent': ['error', 2, { SwitchCase: 1 }],
             'object-curly-spacing': ['error', 'always'],
             'space-before-function-paren': ['error', {
                 anonymous: 'never',
