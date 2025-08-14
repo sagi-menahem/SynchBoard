@@ -9,7 +9,7 @@ import type { BoardDetails, BoardUpdateDTO } from 'types';
 import { Logger } from 'utils';
 
 import { useAuth } from 'hooks/auth';
-import { useSocket } from 'hooks/common';
+import { useSocketSubscription } from 'hooks/common';
 
 
 const logger = Logger;
@@ -75,7 +75,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
         [boardId, userEmail, navigate]
     );
 
-    useSocket(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
+    useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
 
     return { boardDetails, isLoading, refetch: fetchDetails };
 };

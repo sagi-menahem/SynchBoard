@@ -23,3 +23,7 @@
     padding: 0.4em 0.8em;
     font-size: 0.9em;
 }
+
+.connectionStatus {
+    margin-left: 1rem;
+}

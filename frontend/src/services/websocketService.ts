@@ -1,211 +1,336 @@
-import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'constants';
+import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG, WEBSOCKET_URL } from 'constants';
 
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import {
-    type MessageValidationSchema,
-    sanitizeObject,
-    validateBoardMessage,
-    validateMessage,
+  type MessageValidationSchema,
+  sanitizeObject,
+  validateBoardMessage,
+  validateMessage,
 } from 'utils';
 import logger from 'utils/Logger';
 
 
 
 class WebSocketService {
-    private stompClient: Client | null = null;
-    private readonly MAX_MESSAGE_SIZE = 1024 * 100; // 100KB limit
-    private readonly messageSchemas = new Map<string, MessageValidationSchema>();
-    private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
-    private pendingSubscriptions: {
+  private stompClient: Client | null = null;
+  private readonly messageSchemas = new Map<string, MessageValidationSchema>();
+  private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
+  private pendingSubscriptions: {
         topic: string;
         callback: (message: unknown) => void;
         schemaKey?: string;
     }[] = [];
+    
+  // Reconnection logic properties
+  private reconnectionAttempts = 0;
+  private reconnectionTimer: ReturnType<typeof setTimeout> | null = null;
+  private currentToken: string | null = null;
+  private onConnectedCallback: (() => void) | null = null;
+  // Support multiple rollback callbacks for different board workspaces
+  private rollbackCallbacks = new Set<() => void>();
 
-    constructor() {
-        this.initializeMessageSchemas();
-    }
+  constructor() {
+    this.initializeMessageSchemas();
+  }
 
-    private initializeMessageSchemas(): void {
-        this.messageSchemas.set('board', {
-        });
+  private initializeMessageSchemas(): void {
+    this.messageSchemas.set('board', {
+    });
 
-        this.messageSchemas.set('user', {
-            requiredFields: ['updateType'],
-            allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED'],
-        });
+    this.messageSchemas.set('user', {
+      requiredFields: ['updateType'],
+      allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED'],
+    });
 
-        this.messageSchemas.set('chat', {
-            requiredFields: ['type', 'content', 'timestamp', 'senderEmail'],
-            maxLength: 5000,
-        });
-    }
+    this.messageSchemas.set('chat', {
+      requiredFields: ['type', 'content', 'timestamp', 'senderEmail'],
+      maxLength: 5000,
+    });
+  }
 
 
 
-    private validateMessageWithSchema(data: unknown, schemaKey?: string): boolean {
-        const dataObj = data as Record<string, unknown>;
+  private validateMessageWithSchema(data: unknown, schemaKey?: string): boolean {
+    const dataObj = data as Record<string, unknown>;
         
-        if (schemaKey && this.messageSchemas.has(schemaKey)) {
-            const schema = this.messageSchemas.get(schemaKey);
-            if (!schema) {
-                return true;
-            }
+    if (schemaKey && this.messageSchemas.has(schemaKey)) {
+      const schema = this.messageSchemas.get(schemaKey);
+      if (!schema) {
+        return true;
+      }
 
-            if (schemaKey === 'board') {
-                return validateBoardMessage(dataObj);
-            }
+      if (schemaKey === 'board') {
+        return validateBoardMessage(dataObj);
+      }
 
-            return validateMessage(data, schema);
-        }
-
-        return validateMessage(data);
+      return validateMessage(data, schema);
     }
 
+    return validateMessage(data);
+  }
 
 
-    private parseAndValidateMessage<T>(messageBody: string, schemaKey?: string): T | null {
-        try {
-            if (messageBody.length > this.MAX_MESSAGE_SIZE) {
-                logger.error('Message exceeds maximum allowed size');
-                return null;
-            }
 
-            const parsedData = JSON.parse(messageBody);
+  private parseAndValidateMessage<T>(messageBody: string, schemaKey?: string): T | null {
+    try {
+      if (messageBody.length > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
+        logger.error(`Message exceeds maximum allowed size: ${messageBody.length} > ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`);
+        return null;
+      }
 
-            if (!this.validateMessageWithSchema(parsedData, schemaKey)) {
-                return null;
-            }
+      const parsedData = JSON.parse(messageBody);
 
-            const sanitizedData = sanitizeObject(parsedData);
+      if (!this.validateMessageWithSchema(parsedData, schemaKey)) {
+        return null;
+      }
 
-            return sanitizedData as T;
-        } catch (error) {
-            logger.error('Failed to parse WebSocket message:', error);
-            return null;
-        }
+      const sanitizedData = sanitizeObject(parsedData);
+
+      return sanitizedData as T;
+    } catch (error) {
+      logger.error('Failed to parse WebSocket message:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Handles disconnection from any source and initiates reconnection if appropriate.
+   * This is called by various event handlers to ensure consistent disconnect handling.
+   */
+  private handleDisconnection(): void {
+    logger.debug('Handling disconnection - updating state and attempting reconnection');
+    this.connectionState = 'disconnected';
+    
+    // Attempt reconnection if we have stored connection parameters
+    if (this.currentToken && this.onConnectedCallback) {
+      this.attemptReconnection();
+    }
+  }
+
+  /**
+     * Attempts to reconnect with exponential backoff strategy.
+     * Delay increases exponentially: baseDelay * 2^attempts
+     */
+  private attemptReconnection(): void {
+    if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
+      logger.error(`Maximum reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection attempts.`);
+      this.connectionState = 'disconnected';
+      return;
     }
 
-    public connect(token: string, onConnectedCallback: () => void) {
-        if (this.stompClient?.active && this.connectionState === 'connected') {
-            logger.debug('WebSocket already connected.');
-            onConnectedCallback();
-            return;
-        }
+    const delay = WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY * Math.pow(2, this.reconnectionAttempts);
+    this.reconnectionAttempts++;
+        
+    logger.info(`Attempting to reconnect... (attempt ${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) in ${delay}ms`);
 
-        if (this.connectionState === 'connecting') {
-            logger.debug('WebSocket connection already in progress.');
-            return;
-        }
+    this.reconnectionTimer = setTimeout(() => {
+      if (this.currentToken && this.onConnectedCallback) {
+        this.connectInternal(this.currentToken, this.onConnectedCallback);
+      }
+    }, delay);
+  }
 
-        this.connectionState = 'connecting';
+  /**
+     * Resets reconnection state when connection is successful
+     */
+  private resetReconnectionState(): void {
+    this.reconnectionAttempts = 0;
+    if (this.reconnectionTimer) {
+      clearTimeout(this.reconnectionTimer);
+      this.reconnectionTimer = null;
+    }
+  }
 
-        this.stompClient = new Client({
-            webSocketFactory: () => new SockJS(WEBSOCKET_URL),
-            connectHeaders: {
-                [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
-            },
-            onConnect: () => {
-                logger.debug('Connected to WebSocket server!');
-                this.connectionState = 'connected';
-                this.processPendingSubscriptions();
-                onConnectedCallback();
-            },
-            onDisconnect: () => {
-                logger.debug('Disconnected from WebSocket.');
-                this.connectionState = 'disconnected';
-            },
-            onStompError: (frame) => {
-                logger.error('Broker reported error: ' + frame.headers['message']);
-                this.connectionState = 'disconnected';
-            },
-        });
-        logger.debug('Activating STOMP client...');
-        this.stompClient.activate();
+  public connect(token: string, onConnectedCallback: () => void) {
+    // Store connection parameters for potential reconnection
+    this.currentToken = token;
+    this.onConnectedCallback = onConnectedCallback;
+        
+    if (this.stompClient?.active && this.connectionState === 'connected') {
+      logger.debug('WebSocket already connected.');
+      onConnectedCallback();
+      return;
     }
 
-    public disconnect() {
-        if (this.stompClient?.active) {
-            this.stompClient.deactivate();
-            logger.debug('Disconnected from WebSocket.');
-            this.stompClient = null;
-        }
-        this.connectionState = 'disconnected';
-        this.pendingSubscriptions = [];
+    if (this.connectionState === 'connecting') {
+      logger.debug('WebSocket connection already in progress.');
+      return;
     }
 
-    private processPendingSubscriptions() {
-        if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-            return;
-        }
+    this.connectInternal(token, onConnectedCallback);
+  }
 
-        const subscriptionsToProcess = [...this.pendingSubscriptions];
-        this.pendingSubscriptions = [];
+  private connectInternal(token: string, onConnectedCallback: () => void): void {
+    this.connectionState = 'connecting';
 
-        subscriptionsToProcess.forEach(({ topic, callback, schemaKey }) => {
+    this.stompClient = new Client({
+      webSocketFactory: () => new SockJS(WEBSOCKET_URL),
+      connectHeaders: {
+        [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
+      },
+      onConnect: () => {
+        logger.debug('Connected to WebSocket server!');
+        this.connectionState = 'connected';
+        this.resetReconnectionState(); // Reset reconnection attempts on successful connection
+        this.processPendingSubscriptions();
+        onConnectedCallback();
+      },
+      onDisconnect: () => {
+        logger.debug('STOMP disconnected from WebSocket.');
+        this.handleDisconnection();
+      },
+      onStompError: (frame) => {
+        logger.error('Broker reported error: ' + frame.headers['message']);
+        this.handleDisconnection();
+      },
+      /**
+       * Critical handler for detecting server-initiated closures (like code 1009 for message too big).
+       * This is the most reliable way to catch WebSocket closures with specific close codes
+       * that may not trigger STOMP-level callbacks immediately.
+       */
+      onWebSocketClose: (event) => {
+        logger.error(`WebSocket closed unexpectedly. Code: ${event.code}, Reason: ${event.reason || 'No reason provided'}`);
+        
+        // Transactional Rollback: Trigger all registered rollback callbacks
+        // This must happen before handleDisconnection to access current state
+        if (this.rollbackCallbacks.size > 0) {
+          logger.debug(`Triggering rollback of pending actions for ${this.rollbackCallbacks.size} active workspaces`);
+          this.rollbackCallbacks.forEach((callback) => {
             try {
-                this.subscribe(topic, callback, schemaKey);
+              callback();
             } catch (error) {
-                logger.error(`Failed to process pending subscription for topic ${topic}:`, error);
+              logger.error('Error during rollback callback execution:', error);
             }
-        });
-    }
-
-    public subscribe<T>(
-        topic: string,
-        onMessageReceived: (message: T) => void,
-        schemaKey?: string
-    ): StompSubscription | null {
-        if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-            logger.debug(`WebSocket not ready, queuing subscription for ${topic}`);
-            this.pendingSubscriptions.push({
-                topic,
-                callback: onMessageReceived as (message: unknown) => void,
-                schemaKey,
-            });
-            return null;
+          });
         }
+        
+        // Immediately handle disconnection regardless of close code
+        // This ensures we catch silent failures like 1009 (message too big)
+        this.handleDisconnection();
+      },
+    });
+    logger.debug('Activating STOMP client...');
+    this.stompClient.activate();
+  }
 
-        try {
-            const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
-                const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
-                if (validatedMessage !== null) {
-                    onMessageReceived(validatedMessage);
-                } else {
-                    logger.warn(`Invalid message received on topic ${topic}`);
-                }
-            });
+  public disconnect() {
+    // Clear reconnection state
+    this.currentToken = null;
+    this.onConnectedCallback = null;
+    this.rollbackCallbacks.clear();
+    this.resetReconnectionState();
+        
+    if (this.stompClient?.active) {
+      this.stompClient.deactivate();
+      logger.debug('Disconnected from WebSocket.');
+      this.stompClient = null;
+    }
+    this.connectionState = 'disconnected';
+    this.pendingSubscriptions = [];
+  }
 
-            logger.debug(`Subscribed to ${topic}`);
-            return subscription;
-        } catch (error) {
-            logger.error(`Failed to subscribe to ${topic}:`, error);
-            return null;
+  private processPendingSubscriptions() {
+    if (this.connectionState !== 'connected' || !this.stompClient?.active) {
+      return;
+    }
+
+    const subscriptionsToProcess = [...this.pendingSubscriptions];
+    this.pendingSubscriptions = [];
+
+    subscriptionsToProcess.forEach(({ topic, callback, schemaKey }) => {
+      try {
+        this.subscribe(topic, callback, schemaKey);
+      } catch (error) {
+        logger.error(`Failed to process pending subscription for topic ${topic}:`, error);
+      }
+    });
+  }
+
+  public subscribe<T>(
+    topic: string,
+    onMessageReceived: (message: T) => void,
+    schemaKey?: string,
+  ): StompSubscription | null {
+    if (this.connectionState !== 'connected' || !this.stompClient?.active) {
+      logger.debug(`WebSocket not ready, queuing subscription for ${topic}`);
+      this.pendingSubscriptions.push({
+        topic,
+        callback: onMessageReceived as (message: unknown) => void,
+        schemaKey,
+      });
+      return null;
+    }
+
+    try {
+      const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
+        const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
+        if (validatedMessage !== null) {
+          onMessageReceived(validatedMessage);
+        } else {
+          logger.warn(`Invalid message received on topic ${topic}`);
         }
+      });
+
+      logger.debug(`Subscribed to ${topic}`);
+      return subscription;
+    } catch (error) {
+      logger.error(`Failed to subscribe to ${topic}:`, error);
+      return null;
+    }
+  }
+
+  public sendMessage(destination: string, body: object) {
+    if (this.connectionState !== 'connected' || !this.stompClient?.active) {
+      const error = new Error('Cannot send message, STOMP client is not connected.');
+      logger.error(error.message);
+      throw error;
     }
 
-    public sendMessage(destination: string, body: object) {
-        if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-            logger.error('Cannot send message, STOMP client is not connected.');
-            return;
-        }
-
-        const sanitizedBody = sanitizeObject(body);
-
-        this.stompClient.publish({
-            destination: destination,
-            body: JSON.stringify(sanitizedBody),
-        });
+    const sanitizedBody = sanitizeObject(body);
+    const messageBody = JSON.stringify(sanitizedBody);
+    
+    // Pre-send validation to prevent messages that would exceed server limits
+    if (messageBody.length > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
+      const error = new Error(`Cannot send message: size ${messageBody.length} exceeds limit ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`);
+      logger.error(error.message);
+      throw error;
     }
 
-    public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
-        return this.connectionState;
+    try {
+      this.stompClient.publish({
+        destination: destination,
+        body: messageBody,
+      });
+    } catch (error) {
+      logger.error('Failed to publish message via STOMP client:', error);
+      throw error;
     }
+  }
 
-    public isConnected(): boolean {
-        return this.connectionState === 'connected' && this.stompClient?.active === true;
-    }
+  public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
+    return this.connectionState;
+  }
+
+  public isConnected(): boolean {
+    return this.connectionState === 'connected' && this.stompClient?.active === true;
+  }
+
+  /**
+   * Register a rollback callback that will be called on unexpected disconnections
+   * @param callback Function to call when rollback is needed
+   * @returns Function to unregister the callback
+   */
+  public registerRollbackCallback(callback: () => void): () => void {
+    this.rollbackCallbacks.add(callback);
+    logger.debug(`Registered rollback callback. Total callbacks: ${this.rollbackCallbacks.size}`);
+    
+    // Return unregister function
+    return () => {
+      this.rollbackCallbacks.delete(callback);
+      logger.debug(`Unregistered rollback callback. Total callbacks: ${this.rollbackCallbacks.size}`);
+    };
+  }
 }
 
 const websocketService = new WebSocketService();
