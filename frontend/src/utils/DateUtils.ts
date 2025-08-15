@@ -95,3 +95,56 @@ export const formatDetailedTimestamp = (timestamp: number | Date | string): stri
   
   return date.toLocaleString();
 };
+
+/**
+ * Format a date for use in chat date separators
+ * @param timestamp - The timestamp to format (Date object, number, or ISO string)
+ * @returns Formatted date string for separators
+ */
+export const formatDateSeparator = (timestamp: number | Date | string): string => {
+  // Convert string/number to Date if needed
+  let date: Date;
+  if (typeof timestamp === 'string') {
+    date = new Date(timestamp);
+  } else if (typeof timestamp === 'number') {
+    date = new Date(timestamp);
+  } else {
+    date = timestamp;
+  }
+  
+  // Validate the date
+  if (!date || isNaN(date.getTime())) {
+    return 'Invalid date';
+  }
+  
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  // Check if it's today
+  if (messageDate.getTime() === today.getTime()) {
+    return 'Today';
+  }
+  
+  // Check if it's yesterday
+  if (messageDate.getTime() === yesterday.getTime()) {
+    return 'Yesterday';
+  }
+  
+  // Check if it's within this year
+  if (date.getFullYear() === now.getFullYear()) {
+    return date.toLocaleDateString([], { 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  }
+  
+  // Different year - include year
+  return date.toLocaleDateString([], { 
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric' 
+  });
+};

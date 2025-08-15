@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from 'hooks/auth';
 import { useChatTransaction } from 'hooks/chat';
 import { usePreferences } from 'hooks/common';
+import { formatDateSeparator } from 'utils/DateUtils';
 import type { ChatMessageResponse } from 'types/MessageTypes';
+import type { EnhancedChatMessage } from 'types/ChatTypes';
 
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
@@ -34,12 +36,50 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Search functionality state
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchVisible, setSearchVisible] = useState(false);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Enhanced auto-scroll with both container and end element
+    const container = messagesContainerRef.current;
+    const endElement = messagesEndRef.current;
+    
+    if (container) {
+      // Direct scroll to bottom for immediate effect
+      container.scrollTop = container.scrollHeight;
+    }
+    
+    if (endElement) {
+      // Smooth scroll for visual appeal
+      endElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }, []);
 
-  useEffect(scrollToBottom, [messages, scrollToBottom]);
+  // Auto-scroll when new messages arrive
+  useEffect(() => {
+    const timeoutId = setTimeout(scrollToBottom, 100); // Small delay for DOM updates
+    return () => clearTimeout(timeoutId);
+  }, [messages, scrollToBottom]);
+
+  // Keyboard shortcut for search (Ctrl+F or Cmd+F)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        setSearchVisible(true);
+      }
+      if (e.key === 'Escape') {
+        setSearchVisible(false);
+        setSearchTerm('');
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Memoize user info to prevent unnecessary re-renders
   const stableUserInfo = useMemo(() => ({
@@ -56,6 +96,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     ...stableUserInfo,
   });
 
+  // Filter messages based on search term
+  const filteredMessages = useMemo(() => {
+    if (!searchTerm.trim()) {
+      return allMessages;
+    }
+    
+    const lowercaseSearch = searchTerm.toLowerCase();
+    return allMessages.filter(msg => 
+      msg.content.toLowerCase().includes(lowercaseSearch) ||
+      msg.senderFullName.toLowerCase().includes(lowercaseSearch)
+    );
+  }, [allMessages, searchTerm]);
+
   // Optimized callback for ChatInput component - memoized to prevent re-renders
   const handleSendMessage = useCallback(async (content: string) => {
     if (!boardId) {
@@ -70,6 +123,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     }
   }, [sendChatMessage, boardId]);
 
+  // Helper function to check if should show date separator
+  const shouldShowDateSeparator = useCallback((currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
+    if (!prevMsg) return true;
+    const currentDate = new Date(currentMsg.timestamp).toDateString();
+    const prevDate = new Date(prevMsg.timestamp).toDateString();
+    return currentDate !== prevDate;
+  }, []);
+
   const fontSizeClass = styles[`fontSize-${preferences.fontSizeSetting || 'medium'}`];
 
   return (
@@ -77,13 +138,47 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
       className={`${styles.container} ${fontSizeClass}`}
       style={{ backgroundColor: preferences.chatBackgroundSetting || undefined }}
     >
-      <div className={styles.messageList}>
-        {allMessages.map((msg, index) => (
-          <ChatMessage 
-            key={msg.transactionId || `${msg.senderEmail}-${msg.timestamp}-${index}`}
-            message={msg} 
-            isOwnMessage={msg.senderEmail === userEmail}
+      {/* Search Interface */}
+      {searchVisible && (
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Search messages..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.searchInput}
+            autoFocus
           />
+          <button
+            onClick={() => {
+              setSearchVisible(false);
+              setSearchTerm('');
+            }}
+            className={styles.searchCloseButton}
+          >
+            ✕
+          </button>
+          {searchTerm && (
+            <div className={styles.searchResults}>
+              {filteredMessages.length} results
+            </div>
+          )}
+        </div>
+      )}
+      
+      <div className={styles.messageList} ref={messagesContainerRef}>
+        {filteredMessages.map((message, index) => (
+          <React.Fragment key={message.transactionId || `${message.senderEmail}-${message.timestamp}-${index}`}>
+            {shouldShowDateSeparator(message, filteredMessages[index - 1] || null) && (
+              <div className={styles.dateSeparator}>
+                {formatDateSeparator(message.timestamp)}
+              </div>
+            )}
+            <ChatMessage 
+              message={message} 
+              isOwnMessage={message.senderEmail === userEmail}
+            />
+          </React.Fragment>
         ))}
         <div ref={messagesEndRef} />
       </div>
