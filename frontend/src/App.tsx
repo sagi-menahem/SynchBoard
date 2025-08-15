@@ -7,11 +7,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
 import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
+import { OfflineQueueProvider } from 'context/OfflineQueueContext';
 
 function App() {
     return (
         <PageErrorBoundary pageName="App">
-            <BrowserRouter>
+            <OfflineQueueProvider>
+                <BrowserRouter>
                 <Toaster
                     position="top-center"
                     toastOptions={{
@@ -78,7 +80,8 @@ function App() {
                         />
                     </Route>
                 </Routes>
-            </BrowserRouter>
+                </BrowserRouter>
+            </OfflineQueueProvider>
         </PageErrorBoundary>
     );
 }

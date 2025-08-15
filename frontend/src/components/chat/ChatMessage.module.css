@@ -1,63 +1,242 @@
+/* Base message container with smooth transitions - DARK THEME OPTIMIZED */
 .messageContainer {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 2px 0;
+  border-radius: 8px;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  animation: messageSlideIn 0.3s ease-out;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-    margin-top: 2px;
+/* Hover effects for better interactivity - DARK THEME */
+.messageContainer:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.messageContent {
-    display: flex;
-    flex-direction: column;
-}
-
-.timestamp {
-    font-size: 0.7rem;
-    color: #888;
-    margin-left: 10px;
-}
-
-/* Own message styling - right-aligned */
+/* Own message styling - DARK THEME */
 .ownMessage {
-    justify-content: flex-end;
-    flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  background-color: rgba(66, 165, 245, 0.15) !important;
+  border-radius: 8px;
 }
 
-.ownMessage .messageContent {
-    align-items: flex-end;
-    text-align: right;
-    max-width: 70%;
+.ownMessage:hover {
+  background-color: rgba(66, 165, 245, 0.25) !important;
+}
+
+/* Avatar styling - Enhanced for dark theme */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Message content container */
+.messageContent {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Message header (for other users' messages) */
+.messageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  gap: 8px;
+}
+
+/* CRITICAL FIX - Force readable text colors for DARK THEME */
+.senderName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff !important; /* Force white for dark theme */
+  opacity: 0.95;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Message body container */
+.messageBody {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* CRITICAL FIX - Message text with high contrast for dark theme */
+.messageText {
+  flex: 1;
+  line-height: 1.4;
+  word-wrap: break-word;
+  color: #e0e0e0 !important; /* Force light gray for excellent contrast on dark */
+  font-size: 0.95rem;
+  font-weight: 400;
+  opacity: 0.95;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Timestamp styling - DARK THEME optimized */
+.timestamp {
+  font-size: 0.75rem;
+  color: #a0a0a0 !important; /* Lighter gray for timestamp visibility */
+  opacity: 0.8;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+  cursor: help;
+  white-space: nowrap;
+}
+
+.timestamp:hover {
+  color: #c0c0c0 !important;
+  opacity: 1;
 }
 
 .ownTimestamp {
+  font-size: 0.75rem;
+  color: #a0a0a0 !important; /* Same as timestamp for consistency */
+  opacity: 0.8;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+  cursor: help;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.ownTimestamp:hover {
+  color: #c0c0c0 !important;
+  opacity: 1;
+}
+
+/* Status-based opacity states - Enhanced for dark theme */
+.sending,
+.queued,
+.processing {
+  opacity: 0.6;
+  animation: none; /* Disable slide animation for status changes */
+}
+
+.sending .messageText,
+.queued .messageText,
+.processing .messageText {
+  color: #b0b0b0 !important;
+}
+
+.failed {
+  opacity: 0.7;
+  background-color: rgba(255, 82, 82, 0.1) !important;
+}
+
+.failed .messageText {
+  color: #ff9999 !important;
+}
+
+.confirmed {
+  opacity: 1;
+}
+
+/* Subtle pulse animation for processing state */
+.processing {
+  animation: subtlePulse 2s infinite ease-in-out;
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.4; }
+}
+
+/* Failure icon styling - Enhanced visibility */
+.failureIcon {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #ff6b6b !important;
+  z-index: 1;
+  cursor: help;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Adjust failure icon for own messages */
+.ownMessage .failureIcon {
+  left: 4px;
+  right: auto;
+}
+
+/* Smooth message entry animation */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark theme specific overrides */
+.messageContainer * {
+  color: inherit;
+}
+
+/* Ensure text is always visible - Last resort rules */
+.messageText,
+.senderName,
+.timestamp,
+.ownTimestamp {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Responsive design improvements - Dark theme */
+@media (max-width: 768px) {
+  .messageContainer {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .senderName {
+    font-size: 0.9rem;
+  }
+  
+  .messageText {
+    font-size: 0.9rem;
+  }
+  
+  .timestamp,
+  .ownTimestamp {
     font-size: 0.7rem;
-    color: #888; /* Match the original timestamp color */
-    margin-left: 10px; /* Keep consistent with other messages */
+  }
 }
 
-/* Failed message styling */
-.failedMessage {
-    opacity: 0.7;
-}
-
-.failedIndicator {
-    position: absolute;
-    top: 0.25rem;
-    right: 0.5rem;
-    color: #dc3545;
-    font-size: 1rem;
-    z-index: 2;
-}
-
-.failedIcon {
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .messageText {
+    color: #ffffff !important;
+  }
+  
+  .senderName {
+    color: #ffffff !important;
+  }
+  
+  .timestamp,
+  .ownTimestamp {
+    color: #cccccc !important;
+  }
 }

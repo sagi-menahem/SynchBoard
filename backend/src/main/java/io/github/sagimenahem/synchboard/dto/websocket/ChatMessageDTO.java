@@ -25,6 +25,7 @@ public final class ChatMessageDTO {
     @AllArgsConstructor
     public static class Response {
 
+        private Long id; // Added: Message ID from database
         private MessageType type;
         private String content;
         private LocalDateTime timestamp;

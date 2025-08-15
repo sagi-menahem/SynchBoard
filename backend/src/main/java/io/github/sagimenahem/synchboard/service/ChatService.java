@@ -105,9 +105,13 @@ public class ChatService {
             senderProfilePictureUrl = null;
         }
 
-        return ChatMessageDTO.Response.builder().type(ChatMessageDTO.Response.MessageType.CHAT)
-                .content(message.getMessageContent()).timestamp(message.getTimestamp())
-                .senderEmail(senderEmail).senderFullName(senderFullName)
+        return ChatMessageDTO.Response.builder()
+                .id(message.getMessageId()) // Include message ID
+                .type(ChatMessageDTO.Response.MessageType.CHAT)
+                .content(message.getMessageContent())
+                .timestamp(message.getTimestamp())
+                .senderEmail(senderEmail)
+                .senderFullName(senderFullName)
                 .senderProfilePictureUrl(senderProfilePictureUrl)
                 .instanceId(instanceId) // Echo back the client's transaction ID
                 .build();

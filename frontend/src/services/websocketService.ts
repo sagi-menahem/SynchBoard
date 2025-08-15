@@ -1,4 +1,5 @@
-import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG, WEBSOCKET_URL } from 'constants';
+import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
+import { WEBSOCKET_URL } from '../constants/ApiConstants';
 
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -29,6 +30,8 @@ class WebSocketService {
   private onConnectedCallback: (() => void) | null = null;
   // Support multiple rollback callbacks for different board workspaces
   private rollbackCallbacks = new Set<() => void>();
+  // Queue processor callback for offline queue
+  private queueProcessorCallback: (() => Promise<void>) | null = null;
   // Flag to track intentional disconnections
   private isIntentionalDisconnect = false;
 
@@ -171,11 +174,21 @@ class WebSocketService {
       connectHeaders: {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
-      onConnect: () => {
+      onConnect: async () => {
         logger.debug('Connected to WebSocket server!');
         this.connectionState = 'connected';
         this.resetReconnectionState(); // Reset reconnection attempts on successful connection
         this.processPendingSubscriptions();
+        
+        // Process offline queue after successful reconnection
+        if (this.queueProcessorCallback) {
+          try {
+            await this.queueProcessorCallback();
+          } catch (error) {
+            logger.error('Error processing offline queue after reconnection:', error);
+          }
+        }
+        
         onConnectedCallback();
       },
       onDisconnect: () => {
@@ -228,6 +241,7 @@ class WebSocketService {
     this.currentToken = null;
     this.onConnectedCallback = null;
     this.rollbackCallbacks.clear();
+    this.queueProcessorCallback = null;
     this.resetReconnectionState();
     
     // Mark this as an intentional disconnection
@@ -347,6 +361,22 @@ class WebSocketService {
     return () => {
       this.rollbackCallbacks.delete(callback);
       logger.debug(`Unregistered rollback callback. Total callbacks: ${this.rollbackCallbacks.size}`);
+    };
+  }
+
+  /**
+   * Register queue processor callback that will be called after successful reconnection
+   * @param callback Function to process offline queue
+   * @returns Function to unregister the callback
+   */
+  public registerQueueProcessor(callback: () => Promise<void>): () => void {
+    this.queueProcessorCallback = callback;
+    logger.debug('Registered offline queue processor callback');
+    
+    // Return unregister function
+    return () => {
+      this.queueProcessorCallback = null;
+      logger.debug('Unregistered offline queue processor callback');
     };
   }
 }
