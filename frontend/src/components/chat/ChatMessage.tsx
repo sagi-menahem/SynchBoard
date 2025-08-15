@@ -36,46 +36,41 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
   // Smart timestamp formatting
   const smartTimestamp = formatSmartTimestamp(message.timestamp);
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
+  
+  // Smart timestamp positioning: determine if message is short or long
+  const isShortMessage = messageContent.length <= 50; // Threshold for inline vs separate line
 
   return (
-    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.ownMessage : ''} ${statusClass}`}>
+    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass}`}>
+      {/* Avatar OUTSIDE bubble for others' messages only */}
       {!isOwnMessage && (
         <img src={imageSource} alt={senderName} className={styles.avatar} />
       )}
-      <div className={styles.messageContent}>
-        {!isOwnMessage && (
-          <div className={styles.messageHeader}>
-            <strong 
-              className={styles.senderName}
-              style={{ color: '#ffffff' }} // Backup inline style
-            >
-              {senderName}
-            </strong>
+      
+      <div className={styles.messageBubble}>
+        {/* Header with sender name only */}
+        <div className={styles.messageHeader}>
+          <strong className={styles.senderName}>
+            {senderName}
+          </strong>
+        </div>
+        
+        <div className={styles.messageBody}>
+          {/* Message text */}
+          <div className={styles.messageText}>
+            {messageContent}
+          </div>
+          
+          {/* Timestamp in separate container for proper opposite alignment */}
+          <div className={styles.timestampContainer}>
             <span 
-              className={styles.timestamp} 
+              className={styles.timestamp}
               title={detailedTimestamp}
-              style={{ color: '#a0a0a0' }} // Backup inline style
             >
               {smartTimestamp}
             </span>
           </div>
-        )}
-        <div className={styles.messageBody}>
-          <span 
-            className={styles.messageText}
-            style={{ color: '#e0e0e0' }} // Backup inline style for message text
-          >
-            {messageContent}
-          </span>
-          {isOwnMessage && (
-            <span 
-              className={styles.ownTimestamp} 
-              title={detailedTimestamp}
-              style={{ color: '#a0a0a0' }} // Backup inline style
-            >
-              {smartTimestamp}
-            </span>
-          )}
+          
           {messageStatus === 'failed' && (
             <span 
               className={styles.failureIcon} 
