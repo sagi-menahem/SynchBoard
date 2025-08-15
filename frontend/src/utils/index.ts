@@ -1,6 +1,7 @@
 export { default as Logger } from './Logger';
 export * from './Sanitize';
 export * from './CanvasUtils';
+export * from './DateUtils';
 export * from './ValidationUtils';
 export * from './TypeGuards';
 export * from './MathUtils';

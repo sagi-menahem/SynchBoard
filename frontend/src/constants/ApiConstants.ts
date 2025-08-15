@@ -38,9 +38,13 @@ export const WEBSOCKET_DESTINATIONS = {
 } as const;
 
 export const WEBSOCKET_TOPICS = {
-  BOARD: (boardId: number) => `/topic/board/${boardId}`,
-  USER: (userEmail: string) => `/topic/user/${userEmail}`,
+  BOARD: (boardId: number) => `/topic/board/${boardId}` as const,
+  USER: (userEmail: string) => `/topic/user/${userEmail}` as const,
 } as const;
+
+// Type definitions for better type safety
+export type WebSocketDestination = typeof WEBSOCKET_DESTINATIONS[keyof typeof WEBSOCKET_DESTINATIONS];
+export type WebSocketTopicFactory = typeof WEBSOCKET_TOPICS[keyof typeof WEBSOCKET_TOPICS];
 
 export const AUTH_HEADER_CONFIG = {
   HEADER_NAME: 'Authorization',
