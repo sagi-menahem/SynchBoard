@@ -75,18 +75,11 @@
   text-align: right;
 }
 
-/* Sender name styling */
+/* Make sender name MORE distinct */
 .senderName {
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.myMessage .senderName {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.otherMessage .senderName {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.75);  /* 75% opacity - more noticeable */
+  font-size: 1rem;  /* Keep larger size */
+  font-weight: 600;  /* Keep semi-bold */
 }
 
 /* Message body - Clean structure */
@@ -111,43 +104,34 @@
   justify-content: flex-start; /* Push timestamp to LEFT */
 }
 
-/* Message text styling */
+/* Message text - full brightness for primary focus */
 .messageText {
   line-height: 1.4;
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
-  font-size: 0.95rem;
+  font-size: 0.95rem;  /* Current size or slightly smaller than name */
   font-weight: 400;
   margin-bottom: 2px;
 }
 
-/* Text alignment based on message type */
+/* Text alignment and brightness based on message type */
 .myMessage .messageText {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 1);  /* 100% opacity - brightest */
   text-align: right;
 }
 
 .otherMessage .messageText {
-  color: #e0e0e0;
+  color: rgba(255, 255, 255, 1);  /* 100% opacity - brightest */
   text-align: left;
 }
 
-/* Timestamp styling - OPPOSITE CORNER SOLUTION */
+/* Timestamp - even more subtle for clear hierarchy */
 .timestamp {
-  font-size: 0.7rem;
-  opacity: 0.7;
+  color: rgba(255, 255, 255, 0.5);  /* 50% opacity - even more subtle */
+  font-size: 0.75rem;  /* Keep small */
   white-space: nowrap;
   display: inline-block;
-}
-
-/* Timestamp colors */
-.myMessage .timestamp {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.otherMessage .timestamp {
-  color: rgba(200, 200, 200, 0.8);
 }
 
 /* Status-based styling */

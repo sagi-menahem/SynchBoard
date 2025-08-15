@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -24,6 +24,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     const { t } = useTranslation();
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -45,6 +46,10 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
             setMessage('');
         } finally {
             setIsSending(false);
+            // Refocus input for continuous messaging
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 0);
         }
     }, [message, onSendMessage, disabled, isSending]);
 
@@ -52,10 +57,16 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         setMessage(e.target.value);
     }, []);
 
+    // Auto-focus input on component mount for better UX
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.inputContainer}>
                 <Input
+                    ref={inputRef}
                     type="text"
                     value={message}
                     onChange={handleInputChange}

@@ -21,7 +21,6 @@ export interface UserProfile {
     phoneNumber: string;
     profilePictureUrl: string | null;
     chatBackgroundSetting: string | null;
-    fontSizeSetting: string | null;
 }
 
 export interface UpdateUserProfileRequest {
@@ -37,5 +36,4 @@ export interface ChangePasswordRequest {
 
 export interface UserPreferences {
     chatBackgroundSetting: string | null;
-    fontSizeSetting: string | null;
 }

@@ -16,7 +16,6 @@ interface PreferencesProviderProps {
 
 const defaultPreferences: UserPreferences = {
     chatBackgroundSetting: '#282828',
-    fontSizeSetting: 'medium',
 };
 
 export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ children }) => {
@@ -30,7 +29,6 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
             .then((profile) => {
                 setPreferences({
                     chatBackgroundSetting: profile.chatBackgroundSetting || defaultPreferences.chatBackgroundSetting,
-                    fontSizeSetting: profile.fontSizeSetting || defaultPreferences.fontSizeSetting,
                 });
             })
             .catch((error) => {
