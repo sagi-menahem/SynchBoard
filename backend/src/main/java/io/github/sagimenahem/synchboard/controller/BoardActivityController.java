@@ -29,6 +29,10 @@ public class BoardActivityController {
     @MessageMapping(MAPPING_CHAT_SEND_MESSAGE)
     public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
         String userEmail = principal.getName();
+        
+        // DIAGNOSTIC LOG: Raw incoming DTO as received from client
+        log.debug("[DIAGNOSTIC] Received WebSocket message at /app/chat.sendMessage. Payload: {}", request.toString());
+        
         log.debug(WEBSOCKET_MESSAGE_RECEIVED, "CHAT_MESSAGE", request.getBoardId(), userEmail);
 
         try {

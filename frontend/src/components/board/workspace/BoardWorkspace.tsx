@@ -13,6 +13,7 @@ interface BoardWorkspaceProps {
     instanceId: string;
     objects: ActionPayload[];
     messages: ChatMessageResponse[];
+    setMessages: React.Dispatch<React.SetStateAction<ChatMessageResponse[]>>;
     tool: Tool;
     strokeColor: string;
     strokeWidth: number;
@@ -24,6 +25,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     instanceId,
     objects,
     messages,
+    setMessages,
     tool,
     strokeColor,
     strokeWidth,
@@ -42,7 +44,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
                 />
             </div>
             <div className={styles.chatContainer}>
-                <ChatWindow boardId={boardId} messages={messages} />
+                <ChatWindow boardId={boardId} messages={messages} setMessages={setMessages} />
             </div>
         </div>
     );
