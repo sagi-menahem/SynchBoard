@@ -32,6 +32,8 @@ class WebSocketService {
   private rollbackCallbacks = new Set<() => void>();
   // Queue processor callback for offline queue
   private queueProcessorCallback: (() => Promise<void>) | null = null;
+  // Transaction success callback for queue→transaction bridge
+  private transactionSuccessCallback: ((transactionId: string) => void) | null = null;
   // Flag to track intentional disconnections
   private isIntentionalDisconnect = false;
 
@@ -242,6 +244,7 @@ class WebSocketService {
     this.onConnectedCallback = null;
     this.rollbackCallbacks.clear();
     this.queueProcessorCallback = null;
+    this.transactionSuccessCallback = null;
     this.resetReconnectionState();
     
     // Mark this as an intentional disconnection
@@ -378,6 +381,37 @@ class WebSocketService {
       this.queueProcessorCallback = null;
       logger.debug('Unregistered offline queue processor callback');
     };
+  }
+
+  /**
+   * Register transaction success callback that will be called when queue successfully processes a message
+   * This bridges the gap between offline queue and transaction state management
+   * @param callback Function to update transaction status
+   * @returns Function to unregister the callback
+   */
+  public registerTransactionSuccessCallback(callback: (transactionId: string) => void): () => void {
+    this.transactionSuccessCallback = callback;
+    logger.debug('Registered transaction success callback for queue→transaction bridge');
+    
+    // Return unregister function
+    return () => {
+      this.transactionSuccessCallback = null;
+      logger.debug('Unregistered transaction success callback');
+    };
+  }
+
+  /**
+   * Notify transaction system that a queued action was successfully sent
+   * This is called by the queue processor when an action succeeds
+   * @param transactionId The transaction ID to mark as confirmed
+   */
+  public notifyTransactionSuccess(transactionId: string): void {
+    if (this.transactionSuccessCallback) {
+      logger.debug(`Notifying transaction system of successful send: ${transactionId}`);
+      this.transactionSuccessCallback(transactionId);
+    } else {
+      logger.warn(`No transaction success callback registered for transaction: ${transactionId}`);
+    }
   }
 }
 

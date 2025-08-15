@@ -167,12 +167,16 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
           )
         ]);
 
-        // Success - remove from queue
+        // Success - remove from queue and notify transaction system
         dispatch({ type: 'REMOVE_ACTION', payload: action.id });
         dispatch({
           type: 'UPDATE_STATS',
           payload: { processed: state.processingStats.processed + 1 }
         });
+
+        // CRITICAL FIX: Bridge queue success to transaction system
+        // This updates the transaction status from "queued" to "confirmed"
+        websocketService.notifyTransactionSuccess(action.id);
 
         logger.debug(`Successfully processed queued action: ${action.id}`);
 

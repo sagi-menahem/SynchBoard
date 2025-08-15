@@ -135,11 +135,46 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         const transaction = updated.get(transactionId);
         if (transaction) {
           updated.set(transactionId, { ...transaction, status });
+          logger.debug(`Updated transaction ${transactionId} status to: ${status}`);
         }
         return updated;
       });
     },
     []
+  );
+
+  /**
+   * Handle transaction success callback from queue processor
+   * This bridges the gap between offline queue and transaction state
+   */
+  const handleQueueSuccess = useCallback(
+    (transactionId: string) => {
+      logger.debug(`Queue success callback for transaction: ${transactionId}`);
+      
+      setPendingTransactions(prev => {
+        const updated = new Map(prev);
+        const transaction = updated.get(transactionId);
+        
+        if (transaction && transaction.status === 'queued') {
+          // CRITICAL FIX: Update status from "queued" to "confirmed"
+          // This removes the visual "queued" state from the UI
+          updated.delete(transactionId);
+          logger.debug(`Transaction ${transactionId} successfully confirmed via queue processor`);
+          
+          // Call success callback if provided
+          config.onSuccess?.(transaction.payload, transactionId);
+          
+          return updated;
+        } else if (transaction) {
+          logger.debug(`Transaction ${transactionId} status is ${transaction.status}, not updating`);
+        } else {
+          logger.debug(`Transaction ${transactionId} not found in pending transactions`);
+        }
+        
+        return updated;
+      });
+    },
+    [config]
   );
 
   /**
@@ -196,6 +231,18 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
       unregisterRollback();
     };
   }, [rollbackPendingTransactions]);
+
+  /**
+   * Register transaction success callback with WebSocket service
+   * This bridges queue success notifications to transaction state updates
+   */
+  useEffect(() => {
+    const unregisterTransactionCallback = websocketService.registerTransactionSuccessCallback(handleQueueSuccess);
+    
+    return () => {
+      unregisterTransactionCallback();
+    };
+  }, [handleQueueSuccess]);
 
   /**
    * Send a transactional WebSocket message with optimistic update and offline queueing
