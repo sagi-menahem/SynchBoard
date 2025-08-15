@@ -37,8 +37,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
   const smartTimestamp = formatSmartTimestamp(message.timestamp);
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
   
-  // Smart timestamp positioning: determine if message is short or long
-  const isShortMessage = messageContent.length <= 50; // Threshold for inline vs separate line
 
   return (
     <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass}`}>

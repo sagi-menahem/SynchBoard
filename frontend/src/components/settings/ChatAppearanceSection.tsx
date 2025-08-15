@@ -1,10 +1,9 @@
-import { CHAT_BACKGROUND_OPTIONS, CHAT_FONT_SIZE_OPTIONS } from 'constants';
+import { CHAT_BACKGROUND_OPTIONS } from 'constants';
 
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button } from 'components/common';
 import { usePreferences } from 'hooks/common';
 import styles from 'pages/SettingsPage.module.css';
 
@@ -28,20 +27,6 @@ const ChatAppearanceSection: React.FC = () => {
                             title={option.name}
                             aria-label={option.name}
                         />
-                    ))}
-                </div>
-            </div>
-            <div className={styles.field}>
-                <label>{t('settingsPage.chatFontSizeLabel')}</label>
-                <div className={styles.fontButtonGroup}>
-                    {CHAT_FONT_SIZE_OPTIONS.map((option) => (
-                        <Button
-                            key={option.value}
-                            variant={preferences.fontSizeSetting === option.value ? 'primary' : 'secondary'}
-                            onClick={() => updatePreferences({ ...preferences, fontSizeSetting: option.value })}
-                        >
-                            {t(option.tKey)}
-                        </Button>
                     ))}
                 </div>
             </div>

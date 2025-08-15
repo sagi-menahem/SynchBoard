@@ -131,11 +131,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     return currentDate !== prevDate;
   }, []);
 
-  const fontSizeClass = styles[`fontSize-${preferences.fontSizeSetting || 'medium'}`];
-
   return (
     <div
-      className={`${styles.container} ${fontSizeClass}`}
+      className={styles.container}
       style={{ backgroundColor: preferences.chatBackgroundSetting || undefined }}
     >
       {/* Search Interface */}

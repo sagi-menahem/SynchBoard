@@ -16,8 +16,3 @@ export const CHAT_BACKGROUND_OPTIONS = [
     { name: 'Deep Purple', color: '#302a35' },
 ];
 
-export const CHAT_FONT_SIZE_OPTIONS = [
-    { name: 'Small', value: 'small', tKey: 'settingsPage.font.small' },
-    { name: 'Regular', value: 'medium', tKey: 'settingsPage.font.regular' },
-    { name: 'Large', value: 'large', tKey: 'settingsPage.font.large' },
-];

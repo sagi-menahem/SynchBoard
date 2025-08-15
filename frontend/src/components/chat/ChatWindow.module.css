@@ -33,18 +33,6 @@
   box-sizing: border-box;
 }
 
-/* Font size variations */
-.fontSize-small {
-  font-size: 0.875rem;
-}
-
-.fontSize-medium {
-  font-size: 1rem;
-}
-
-.fontSize-large {
-  font-size: 1.125rem;
-}
 
 /* Scrollbar styling - DARK THEME */
 .messageList::-webkit-scrollbar {
