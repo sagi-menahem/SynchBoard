@@ -11,8 +11,8 @@ import { useAuth } from 'hooks/auth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
+import { useWebSocketTransaction } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import websocketService from 'services/WebSocketService';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
@@ -22,10 +22,6 @@ export const useBoardWorkspace = (boardId: number) => {
   const sessionInstanceId = useRef(Date.now().toString());
   const { userEmail } = useAuth();
   const { t } = useTranslation();
-
-  // Transactional State: Track actions that have been sent but not yet confirmed by the server
-  // Each pending action is keyed by its instanceId for efficient lookup and removal
-  const [pendingActions, setPendingActions] = useState<Map<string, ActionPayload>>(new Map());
 
   const {
     isLoading,
@@ -51,37 +47,56 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, objects.length, resetCounts, hasInitialized]);
 
-  // Transactional Rollback: Create rollback function for connection failures
-  const rollbackPendingActions = useCallback(() => {
-    if (pendingActions.size === 0) {
-      return; // No pending actions to rollback
+  // Use the new transactional hook for drawing actions
+  const { sendTransactionalAction, commitTransaction, pendingCount } = useWebSocketTransaction<
+    SendBoardActionRequest,
+    ActionPayload[]
+  >({
+    destination: WEBSOCKET_DESTINATIONS.DRAW_ACTION,
+    optimisticUpdate: (currentObjects, actionRequest, transactionId) => {
+      // Extract payload and add the transaction ID as instanceId
+      const newObject: ActionPayload = {
+        ...actionRequest.payload,
+        instanceId: transactionId
+      } as ActionPayload;
+      return [...currentObjects, newObject];
+    },
+    rollbackUpdate: (currentObjects, transactionId) => {
+      return currentObjects.filter(obj => obj.instanceId !== transactionId);
+    },
+    validatePayload: (actionRequest) => {
+      // Validate message size
+      const messageSize = JSON.stringify(actionRequest).length;
+      if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
+        logger.error(
+          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`
+        );
+        return false;
+      }
+      return true;
+    },
+    onSuccess: (actionRequest, transactionId) => {
+      logger.debug(`Drawing action confirmed: ${transactionId}`);
+    },
+    onFailure: (error, actionRequest, transactionId) => {
+      if (error.message === 'Payload validation failed') {
+        toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
+      } else {
+        toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
+      }
+      logger.error(`Drawing action failed: ${transactionId}`, error);
+    },
+    onRollback: (transactionId, actionRequest) => {
+      // Show user notification about the rollback
+      toast.error(t('errors.drawingsRolledBack', 'Some drawings were not saved due to connection issues.'));
+      logger.warn(`Drawing action rolled back: ${transactionId}`);
     }
+  }, objects, setObjects);
 
-    logger.warn(`Rolling back ${pendingActions.size} unconfirmed drawing actions due to connection failure`);
-
-    // Remove all pending actions from the objects state
-    setObjects((prev) => {
-      const pendingInstanceIds = new Set(pendingActions.keys());
-      return prev.filter((obj) => !pendingInstanceIds.has(obj.instanceId));
-    });
-
-    // Clear the pending actions map
-    setPendingActions(new Map());
-
-    // Show user notification about the rollback
-    toast.error(t('errors.drawingsRolledBack', 'Some drawings were not saved due to connection issues.'));
-  }, [pendingActions, setObjects, setPendingActions, t]);
-
-  // Register rollback function with WebSocket service for this board session
-  useEffect(() => {
-    // Register the rollback callback with the WebSocket service
-    const unregisterRollback = websocketService.registerRollbackCallback(rollbackPendingActions);
-        
-    return () => {
-      // Cleanup: unregister the rollback callback when component unmounts
-      unregisterRollback();
-    };
-  }, [rollbackPendingActions]);
+  // WebSocket handler for processing incoming messages and committing transactions
+  const handleCommitTransaction = useCallback((instanceId: string) => {
+    commitTransaction(instanceId);
+  }, [commitTransaction]);
 
   useBoardWebSocketHandler({
     boardId,
@@ -90,43 +105,36 @@ export const useBoardWorkspace = (boardId: number) => {
     setAccessLost,
     setObjects,
     setMessages,
-    setPendingActions,
+    commitTransaction: handleCommitTransaction,
   });
 
   const handleDrawAction = useCallback(
-    (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
-      // Generate unique ID for this drawing action (serves as transaction ID)
-      const newInstanceId = crypto.randomUUID();
-      const fullPayload = { ...action.payload, instanceId: newInstanceId } as ActionPayload;
-      const actionToSend: SendBoardActionRequest = {
+    async (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
+      // Create the full action request with board ID and session info
+      const actionRequest: SendBoardActionRequest = {
         ...action,
         boardId,
-        instanceId: newInstanceId,
+        instanceId: '', // Will be set by the transactional hook
         sender: sessionInstanceId.current,
       };
 
-      // Proactive Client-Side Validation (Prevention Layer)
-      // Calculate the actual message size that will be sent over the network
-      const messageSize = JSON.stringify(actionToSend).length;
-      if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
-        logger.error(`Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`);
-        toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
-        return; // Do not update state or send message
+      try {
+        // Send the action using the transactional hook
+        const transactionId = await sendTransactionalAction(actionRequest);
+        
+        // Update the action request with the actual transaction ID for consistency
+        actionRequest.instanceId = transactionId;
+        
+        // Increment undo count for successful actions
+        incrementUndo();
+        
+        logger.debug(`Drawing action sent: ${transactionId}`);
+      } catch (error) {
+        // Error handling is already done by the transactional hook
+        logger.error('Failed to send drawing action:', error);
       }
-
-      // Transactional State Management: Register action as pending before sending
-      // This tracks the action as "in-flight" until server confirmation or rollback
-      setPendingActions((prev) => new Map(prev).set(newInstanceId, fullPayload));
-      logger.debug(`Registered pending action: ${newInstanceId}`);
-
-      // Optimistic Update: Add to UI immediately for responsiveness
-      setObjects((prev) => [...prev, fullPayload]);
-      incrementUndo();
-
-      // Send message to server (no try-catch needed - failure is handled asynchronously)
-      websocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionToSend);
     },
-    [boardId, setObjects, incrementUndo, setPendingActions, t],
+    [boardId, sendTransactionalAction, incrementUndo],
   );
 
   useEffect(() => {
@@ -152,16 +160,17 @@ export const useBoardWorkspace = (boardId: number) => {
 
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
-
   return {
     isLoading,
     boardName,
     accessLost,
     objects,
     messages,
+    setMessages,
     instanceId: sessionInstanceId.current,
     isUndoAvailable,
     isRedoAvailable,
+    pendingDrawingActions: pendingCount,
     handleDrawAction,
     handleUndo,
     handleRedo,

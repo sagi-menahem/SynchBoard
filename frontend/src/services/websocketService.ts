@@ -29,6 +29,8 @@ class WebSocketService {
   private onConnectedCallback: (() => void) | null = null;
   // Support multiple rollback callbacks for different board workspaces
   private rollbackCallbacks = new Set<() => void>();
+  // Flag to track intentional disconnections
+  private isIntentionalDisconnect = false;
 
   constructor() {
     this.initializeMessageSchemas();
@@ -190,6 +192,13 @@ class WebSocketService {
        * that may not trigger STOMP-level callbacks immediately.
        */
       onWebSocketClose: (event) => {
+        // Check if this was an intentional disconnection
+        if (this.isIntentionalDisconnect) {
+          logger.debug('WebSocket connection closed intentionally.');
+          this.isIntentionalDisconnect = false; // Reset the flag
+          return; // Don't treat as unexpected disconnection
+        }
+        
         logger.error(`WebSocket closed unexpectedly. Code: ${event.code}, Reason: ${event.reason || 'No reason provided'}`);
         
         // Transactional Rollback: Trigger all registered rollback callbacks
@@ -220,6 +229,9 @@ class WebSocketService {
     this.onConnectedCallback = null;
     this.rollbackCallbacks.clear();
     this.resetReconnectionState();
+    
+    // Mark this as an intentional disconnection
+    this.isIntentionalDisconnect = true;
         
     if (this.stompClient?.active) {
       this.stompClient.deactivate();
@@ -264,8 +276,14 @@ class WebSocketService {
 
     try {
       const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
+        // DIAGNOSTIC LOG: Raw message received before any parsing
+        logger.debug(`[DIAGNOSTIC] Raw message received on topic ${topic}. Body: ${message.body}`);
+        
         const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
+        
+        // DIAGNOSTIC LOG: Parsed message object after validation
         if (validatedMessage !== null) {
+          logger.debug(`[DIAGNOSTIC] Parsed message payload:`, JSON.stringify(validatedMessage, null, 2));
           onMessageReceived(validatedMessage);
         } else {
           logger.warn(`Invalid message received on topic ${topic}`);

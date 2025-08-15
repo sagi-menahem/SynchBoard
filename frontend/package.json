@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "kill-port 5173 && vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
@@ -34,6 +34,7 @@
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^5.2.0",
         "globals": "^16.2.0",
+        "kill-port": "^2.0.1",
         "prettier": "^3.6.2",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.34.1",

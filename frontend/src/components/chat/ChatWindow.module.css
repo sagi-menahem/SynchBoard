@@ -22,6 +22,72 @@
     gap: 10px;
 }
 
+.inputContainer {
+    flex: 1;
+    position: relative;
+}
+
+.pendingCount {
+    position: absolute;
+    top: -1.5rem;
+    right: 0;
+    font-size: 0.75rem;
+    color: #ffa500;
+    background-color: rgba(255, 165, 0, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.inputDisabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.buttonSending {
+    opacity: 0.8;
+    cursor: wait;
+}
+
+.pendingMessage {
+    position: relative;
+}
+
+.pendingIndicator {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #ffa500;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.pendingIcon {
+    font-size: 0.8rem;
+    animation: pulse 1.5s infinite;
+}
+
+.pendingText {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
 .fontSize-small {
     font-size: 0.875rem;
 }
@@ -32,4 +98,16 @@
 
 .fontSize-large {
     font-size: 1.125rem;
+}
+
+/* Own message container styling */
+.ownMessageContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Pending indicator for own messages - positioned on the left */
+.pendingIndicatorOwn {
+    right: auto;
+    left: 0.5rem;
 }
