@@ -69,15 +69,19 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       return trimmedContent.length > 0 && trimmedContent.length <= 5000;
     },
 
-    // Success callback
+    // Success callback - handles both direct sends and queued message confirmations
     onSuccess: (payload: any, transactionId: string) => {
       logger.debug(`Chat message sent successfully: ${transactionId}`);
-      // Update message status to confirmed when server confirms
-      setMessages(prev => prev.map((msg: any) => 
-        msg.transactionId === transactionId 
-          ? { ...msg, transactionStatus: 'confirmed' }
-          : msg
-      ));
+      
+      // CRITICAL FIX: Update message status to confirmed when transaction succeeds
+      // This handles both direct sends and queued messages processed later
+      setMessages(prev => prev.map((msg: any) => {
+        if (msg.transactionId === transactionId) {
+          logger.debug(`Updating message ${transactionId} status from ${msg.transactionStatus} to confirmed`);
+          return { ...msg, transactionStatus: 'confirmed' };
+        }
+        return msg;
+      }));
     },
 
     // Failure callback

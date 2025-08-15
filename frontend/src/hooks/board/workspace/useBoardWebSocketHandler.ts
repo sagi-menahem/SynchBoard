@@ -97,25 +97,48 @@ export const useBoardWebSocketHandler = ({
           logger.debug(`[UNIFIED] Processing CHAT message with instanceId: ${chatMessage.instanceId}`);
           
           setMessages(prevMessages => {
-            // Robust findIndex logic with comprehensive matching
+            // Enhanced findIndex logic with improved matching for queued messages
             const messageIndex = prevMessages.findIndex(msg => {
-              const pendingMsg = msg as any;
+              const enhancedMsg = msg as any;
+              
               // Primary match: server instanceId matches our transactionId (most common case)
-              if (pendingMsg.transactionId === chatMessage.instanceId) {
+              if (enhancedMsg.transactionId === chatMessage.instanceId) {
+                logger.debug(`[UNIFIED] Found message by transactionId match: ${chatMessage.instanceId}`);
                 return true;
               }
-              // Fallback match: instanceId matches instanceId (edge cases)
-              if (pendingMsg.instanceId === chatMessage.instanceId) {
+              
+              // Secondary match: instanceId matches instanceId (edge cases)
+              if (enhancedMsg.instanceId === chatMessage.instanceId) {
+                logger.debug(`[UNIFIED] Found message by instanceId match: ${chatMessage.instanceId}`);
                 return true;
               }
+              
+              // CRITICAL FIX: Match by content and timestamp for queued messages
+              // This handles cases where transactionId might not match due to queue processing
+              if (enhancedMsg.transactionStatus === 'queued' && 
+                  enhancedMsg.content === chatMessage.content &&
+                  enhancedMsg.senderEmail === chatMessage.senderEmail &&
+                  Math.abs(enhancedMsg.timestamp - chatMessage.timestamp) < 5000) { // 5 second tolerance
+                logger.debug(`[UNIFIED] Found queued message by content/timestamp match for instanceId: ${chatMessage.instanceId}`);
+                return true;
+              }
+              
               return false;
             });
 
             if (messageIndex !== -1) {
-              logger.debug(`[UNIFIED] Match found for chat instanceId: ${chatMessage.instanceId}. Replacing pending message at index ${messageIndex}.`);
+              logger.debug(`[UNIFIED] Match found for chat instanceId: ${chatMessage.instanceId}. Replacing message at index ${messageIndex}.`);
               const newMessages = [...prevMessages];
-              // Replace the pending message with the confirmed one from the server
-              newMessages[messageIndex] = chatMessage;
+              
+              // Replace the pending/queued message with the confirmed one from the server
+              // Preserve the transactionId from the original message for proper state tracking
+              const originalMessage = prevMessages[messageIndex] as any;
+              newMessages[messageIndex] = {
+                ...chatMessage,
+                transactionId: originalMessage.transactionId, // Preserve for transaction tracking
+                transactionStatus: 'confirmed' // Explicitly mark as confirmed
+              };
+              
               return newMessages;
             } else {
               logger.debug(`[UNIFIED] No pending chat message found for instanceId: ${chatMessage.instanceId}. Appending new message.`);
