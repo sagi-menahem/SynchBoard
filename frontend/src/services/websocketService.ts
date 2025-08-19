@@ -14,15 +14,20 @@ import { WEBSOCKET_URL } from '../constants/ApiConstants';
 
 
 
+export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected';
+
 class WebSocketService {
   private stompClient: Client | null = null;
   private readonly messageSchemas = new Map<string, MessageValidationSchema>();
-  private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
+  private connectionState: ConnectionStatus = 'connecting';
   private pendingSubscriptions: {
         topic: string;
         callback: (message: unknown) => void;
         schemaKey?: string;
     }[] = [];
+    
+  // Event-based connection listeners
+  private connectionListeners = new Set<(status: ConnectionStatus) => void>();
     
   // Reconnection logic properties
   private reconnectionAttempts = 0;
@@ -126,6 +131,9 @@ class WebSocketService {
       this.connectionState = 'disconnected';
       // this.connectionStateTimestamp = Date.now(); // unused
       
+      // Notify listeners immediately
+      this.notifyConnectionChange();
+      
       // Release lock after brief delay to prevent immediate re-triggering
       setTimeout(() => {
         this.connectionStateChangeLock = false;
@@ -151,9 +159,22 @@ class WebSocketService {
      * Delay increases exponentially: baseDelay * 2^attempts
      */
   private attemptReconnection(): void {
+    // Prevent reconnection if already connected or connecting
+    if (this.connectionState === 'connected' || this.connectionState === 'connecting') {
+      logger.debug(`Skipping reconnection attempt - already ${this.connectionState}`);
+      return;
+    }
+    
+    // Prevent multiple concurrent reconnection attempts
+    if (this.reconnectionTimer) {
+      logger.debug('Reconnection already scheduled, skipping duplicate attempt');
+      return;
+    }
+    
     if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
       logger.error(`Maximum reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection attempts.`);
       this.connectionState = 'disconnected';
+      this.notifyConnectionChange();
       return;
     }
 
@@ -163,8 +184,19 @@ class WebSocketService {
     logger.info(`Attempting to reconnect... (attempt ${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) in ${delay}ms`);
 
     this.reconnectionTimer = setTimeout(() => {
+      this.reconnectionTimer = null; // Clear the timer reference
+      
+      // Double-check we still need to reconnect
+      if (this.connectionState === 'connected') {
+        logger.debug('Connection restored while waiting for reconnection, cancelling attempt');
+        return;
+      }
+      
       if (this.currentToken && this.onConnectedCallback) {
+        logger.debug('Executing scheduled reconnection attempt');
         this.connectInternal(this.currentToken, this.onConnectedCallback);
+      } else {
+        logger.warn('No token or callback available for reconnection');
       }
     }, delay);
   }
@@ -218,6 +250,7 @@ class WebSocketService {
 
   private connectInternal(token: string, _onConnectedCallback: () => void): void {
     this.connectionState = 'connecting';
+    this.notifyConnectionChange();
 
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS(WEBSOCKET_URL),
@@ -247,7 +280,22 @@ class WebSocketService {
       },
       onStompError: (frame) => {
         logger.error('Broker reported error: ' + frame.headers['message']);
-        this.handleDisconnection();
+        
+        // Don't disconnect immediately on broker errors - many are recoverable
+        // Only disconnect on critical authentication or connection errors
+        const errorMessage = frame.headers['message'] || '';
+        const isCriticalError = errorMessage.includes('Authentication') || 
+                               errorMessage.includes('Authorization') ||
+                               errorMessage.includes('Connection refused') ||
+                               errorMessage.includes('Access denied');
+        
+        if (isCriticalError) {
+          logger.error('Critical broker error detected, disconnecting:', errorMessage);
+          this.handleDisconnection();
+        } else {
+          logger.warn('Non-critical broker error, maintaining connection:', errorMessage);
+          // Just log the error but keep connection alive
+        }
       },
       /**
        * Critical handler for detecting server-initiated closures (like code 1009 for message too big).
@@ -310,38 +358,46 @@ class WebSocketService {
    * Process successful connection with optimized state management
    */
   private processConnection(): void {
-    this.connectionState = 'connected';
-    // this.connectionStateTimestamp = Date.now(); // unused
-    this.resetReconnectionState(); // Reset reconnection attempts on successful connection
-        
-    // CRITICAL FIX: Clear rollback timer on successful reconnection
-    if (this.rollbackTimer) {
-      clearTimeout(this.rollbackTimer);
-      this.rollbackTimer = null;
-      logger.debug('Cleared rollback timer on successful reconnection');
-    }
-    
-    this.processPendingSubscriptions();
-    
-    // CRITICAL FIX: Prevent concurrent callback processing
+    // CRITICAL FIX: Prevent concurrent callback processing - check at the very beginning
     if (this.isProcessingCallbacks) {
-      logger.debug('Callback processing already in progress, skipping duplicate processing');
-      this.onConnectedCallback?.();
+      logger.debug('Connection processing already in progress, skipping duplicate processing');
       return;
     }
     
     this.isProcessingCallbacks = true;
     
     try {
-      // Simply call connected callback - no queue or board refresh processing
-      this.onConnectedCallback?.();
+      this.connectionState = 'connected';
+      // this.connectionStateTimestamp = Date.now(); // unused
+      this.notifyConnectionChange();
+      this.resetReconnectionState(); // Reset reconnection attempts on successful connection
+          
+      // CRITICAL FIX: Clear rollback timer on successful reconnection
+      if (this.rollbackTimer) {
+        clearTimeout(this.rollbackTimer);
+        this.rollbackTimer = null;
+        logger.debug('Cleared rollback timer on successful reconnection');
+      }
+      
+      // Wait a brief moment to ensure STOMP connection is fully established
+      setTimeout(() => {
+        if (this.stompClient?.connected && this.connectionState === 'connected') {
+          logger.debug('STOMP connection confirmed, processing pending subscriptions');
+          this.processPendingSubscriptions();
+          
+          // Call connected callback after subscriptions are processed
+          this.onConnectedCallback?.();
+        } else {
+          logger.warn('STOMP connection not fully established, skipping subscription processing');
+        }
+      }, 100); // Brief delay to ensure STOMP is ready
       
     } finally {
-      // Reset processing flag after all callbacks complete
+      // Reset processing flag after a reasonable delay
       setTimeout(() => {
         this.isProcessingCallbacks = false;
-        logger.debug('Callback processing completed, flag reset');
-      }, 500); // Allow all async operations to complete
+        logger.debug('Connection processing completed, flag reset');
+      }, 1000); // Longer delay to prevent rapid re-processing
     }
   }
 
@@ -368,6 +424,7 @@ class WebSocketService {
       this.stompClient = null;
     }
     this.connectionState = 'disconnected';
+    this.notifyConnectionChange();
     this.pendingSubscriptions = [];
   }
 
@@ -393,8 +450,9 @@ class WebSocketService {
     onMessageReceived: (message: T) => void,
     schemaKey?: string,
   ): StompSubscription | null {
-    if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-      logger.debug(`WebSocket not ready, queuing subscription for ${topic}`);
+    // Enhanced connection checks - ensure STOMP client is fully connected
+    if (this.connectionState !== 'connected' || !this.stompClient?.active || !this.stompClient?.connected) {
+      logger.debug(`WebSocket not ready, queuing subscription for ${topic}. State: ${this.connectionState}, Active: ${this.stompClient?.active}, Connected: ${this.stompClient?.connected}`);
       this.pendingSubscriptions.push({
         topic,
         callback: onMessageReceived as (message: unknown) => void,
@@ -404,6 +462,11 @@ class WebSocketService {
     }
 
     try {
+      // Additional safety check before subscribing
+      if (!this.stompClient.connected) {
+        throw new Error('STOMP client not in connected state');
+      }
+      
       const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
         // DIAGNOSTIC LOG: Raw message received before any parsing
         logger.debug(`[DIAGNOSTIC] Raw message received on topic ${topic}. Body: ${message.body}`);
@@ -419,10 +482,21 @@ class WebSocketService {
         }
       });
 
-      logger.debug(`Subscribed to ${topic}`);
+      logger.debug(`Successfully subscribed to ${topic}`);
       return subscription;
     } catch (error) {
       logger.error(`Failed to subscribe to ${topic}:`, error);
+      
+      // If subscription fails due to connection issues, queue it for retry
+      if (error instanceof Error && error.message.includes('STOMP')) {
+        logger.debug(`Queuing failed subscription for retry: ${topic}`);
+        this.pendingSubscriptions.push({
+          topic,
+          callback: onMessageReceived as (message: unknown) => void,
+          schemaKey,
+        });
+      }
+      
       return null;
     }
   }
@@ -455,7 +529,7 @@ class WebSocketService {
     }
   }
 
-  public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
+  public getConnectionState(): ConnectionStatus {
     return this.connectionState;
   }
 
@@ -477,6 +551,41 @@ class WebSocketService {
       this.rollbackCallbacks.delete(callback);
       logger.debug(`Unregistered rollback callback. Total callbacks: ${this.rollbackCallbacks.size}`);
     };
+  }
+
+  /**
+   * Subscribe to connection status changes for instant UI updates
+   * @param callback Function to call when connection status changes
+   * @returns Function to unsubscribe from connection changes
+   */
+  public subscribeToConnectionChanges(callback: (status: ConnectionStatus) => void): () => void {
+    this.connectionListeners.add(callback);
+    
+    // Immediately call with current status
+    callback(this.connectionState);
+    
+    logger.debug(`Registered connection listener. Total listeners: ${this.connectionListeners.size}`);
+    
+    // Return unsubscribe function
+    return () => {
+      this.connectionListeners.delete(callback);
+      logger.debug(`Unregistered connection listener. Total listeners: ${this.connectionListeners.size}`);
+    };
+  }
+
+  /**
+   * Notify all connection listeners of status change
+   */
+  private notifyConnectionChange(): void {
+    logger.debug(`Notifying ${this.connectionListeners.size} listeners of connection state: ${this.connectionState}`);
+    
+    this.connectionListeners.forEach(listener => {
+      try {
+        listener(this.connectionState);
+      } catch (error) {
+        logger.error('Error in connection listener callback:', error);
+      }
+    });
   }
 
 

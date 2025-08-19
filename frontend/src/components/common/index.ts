@@ -1,7 +1,6 @@
 export { default as Button } from './Button';
 export { default as ConfirmationDialog } from './ConfirmationDialog';
 export { ConnectionStatusBanner } from './ConnectionStatusBanner';
-export { ConnectionStatusIndicator } from './ConnectionStatusIndicator';
 export { ContextMenu } from './ContextMenu';
 export { ContextMenuItem } from './ContextMenuItem';
 export { ContextMenuSeparator } from './ContextMenuSeparator';

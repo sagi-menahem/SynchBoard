@@ -3,7 +3,7 @@ import React, { useEffect, useState, type ReactNode } from 'react';
 import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
-import websocketService from 'services/websocketService';
+import websocketService, { type ConnectionStatus } from 'services/websocketService';
 
 import { WebSocketContext } from './WebSocketContext';
 
@@ -14,45 +14,48 @@ interface WebSocketProviderProps {
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const { token, userEmail } = useAuth();
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
+  const [connectionState, setConnectionState] = useState<ConnectionStatus>('connecting');
 
   useEffect(() => {
-    // Poll connection state periodically to keep UI in sync
-    const pollConnectionState = () => {
-      const currentState = websocketService.getConnectionState();
-      setConnectionState(currentState);
-      setIsSocketConnected(currentState === 'connected');
-    };
-
-    const pollInterval = setInterval(pollConnectionState, 500); // Poll every 500ms
+    // Subscribe to instant connection status updates instead of polling
+    const unsubscribeFromConnectionChanges = websocketService.subscribeToConnectionChanges((status: ConnectionStatus) => {
+      setConnectionState(status);
+      setIsSocketConnected(status === 'connected');
+      logger.debug(`WebSocket connection status updated to: ${status}`);
+    });
 
     if (token) {
-      setConnectionState('connecting');
       websocketService.connect(token, () => {
         logger.debug('WebSocket connection confirmed in WebSocketProvider.');
-        setIsSocketConnected(true);
-        setConnectionState('connected');
                 
-        // Subscribe to user-specific error channel
+        // Subscribe to user-specific error channel with delay to ensure STOMP is ready
         if (userEmail) {
-          websocketService.subscribe(
-            '/user/queue/errors',
-            (errorMessage: unknown) => {
-              logger.error('WebSocket error received:', errorMessage);
-            },
-          );
+          // Small delay to ensure STOMP connection is fully established
+          setTimeout(() => {
+            logger.debug('Attempting to subscribe to user error queue...');
+            const subscription = websocketService.subscribe(
+              '/user/queue/errors',
+              (errorMessage: unknown) => {
+                logger.error('WebSocket error received:', errorMessage);
+              },
+            );
+            
+            if (subscription) {
+              logger.debug('Successfully subscribed to user error queue');
+            } else {
+              logger.warn('Failed to subscribe to user error queue - will be retried automatically');
+            }
+          }, 200); // 200ms delay to ensure STOMP is ready
         }
       });
     } else {
-      setIsSocketConnected(false);
-      setConnectionState('disconnected');
+      // When no token, ensure disconnected state  
+      websocketService.disconnect();
     }
 
     return () => {
-      clearInterval(pollInterval);
+      unsubscribeFromConnectionChanges();
       websocketService.disconnect();
-      setIsSocketConnected(false);
-      setConnectionState('disconnected');
     };
   }, [token, userEmail]);
 

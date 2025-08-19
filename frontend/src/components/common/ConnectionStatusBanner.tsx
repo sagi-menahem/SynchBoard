@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSocket } from 'hooks/common';
 
@@ -6,45 +6,31 @@ import styles from './ConnectionStatusBanner.module.css';
 
 export const ConnectionStatusBanner: React.FC = () => {
   const { connectionState } = useSocket();
+  const [hasConnectedOnce, setHasConnectedOnce] = useState(false);
 
-  // Don't show banner when connected
-  if (connectionState === 'connected') {
+  useEffect(() => {
+    // Track if we've ever been connected to avoid showing banner on initial load
+    if (connectionState === 'connected') {
+      setHasConnectedOnce(true);
+    }
+  }, [connectionState]);
+
+  // Only show banner if we were connected before AND are now disconnected
+  // This prevents showing "Connection lost" on initial page load
+  const showBanner = hasConnectedOnce && connectionState === 'disconnected';
+
+  if (!showBanner) {
     return null;
   }
 
-  const getBannerConfig = () => {
-    switch (connectionState) {
-      case 'connecting':
-        return {
-          message: 'Reconnecting...',
-          className: styles.connecting,
-          icon: '🔄',
-        };
-      case 'disconnected':
-        return {
-          message: 'Connection lost - limited functionality',
-          className: styles.disconnected,
-          icon: '⚠️',
-        };
-      default:
-        return {
-          message: 'Connection lost - limited functionality',
-          className: styles.disconnected,
-          icon: '⚠️',
-        };
-    }
-  };
-
-  const bannerConfig = getBannerConfig();
-
   return (
-    <div className={`${styles.banner} ${bannerConfig.className}`}>
+    <div className={`${styles.banner} ${styles.disconnected}`}>
       <div className={styles.content}>
         <span className={styles.icon} aria-hidden="true">
-          {bannerConfig.icon}
+          ⚠️
         </span>
         <span className={styles.message}>
-          {bannerConfig.message}
+          Connection lost - limited functionality
         </span>
       </div>
     </div>
