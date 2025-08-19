@@ -34,12 +34,14 @@ type QueueAction =
 const queueReducer = (state: OfflineQueueState, action: QueueAction): OfflineQueueState => {
   switch (action.type) {
     case 'ADD_ACTION':
+      console.log(`[QUEUE ANALYSIS] ADD_ACTION: ${action.payload.id}, type: ${action.payload.type}, queue size before: ${state.queuedActions.length}, queue size after: ${state.queuedActions.length + 1}`);
       return {
         ...state,
         queuedActions: [...state.queuedActions, { ...action.payload, retryCount: 0 }],
       };
     
     case 'REMOVE_ACTION':
+      console.log(`[QUEUE ANALYSIS] REMOVE_ACTION: ${action.payload}, queue size before: ${state.queuedActions.length}, queue size after: ${state.queuedActions.length - 1}`);
       return {
         ...state,
         queuedActions: state.queuedActions.filter(queuedAction => queuedAction.id !== action.payload),
@@ -68,6 +70,7 @@ const queueReducer = (state: OfflineQueueState, action: QueueAction): OfflineQue
       };
     
     case 'CLEAR_QUEUE':
+      console.log(`[QUEUE ANALYSIS] CLEAR_QUEUE: Clearing ${state.queuedActions.length} queued actions`);
       return {
         ...state,
         queuedActions: [],
@@ -169,10 +172,14 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
 
   // Main queue processor
   const processQueue = useCallback(async (): Promise<void> => {
+    console.log(`[QUEUE ANALYSIS] processQueue called: isProcessing=${state.isProcessingQueue}, queueSize=${state.queuedActions.length}, connected=${websocketService.isConnected()}`);
+    
     if (state.isProcessingQueue || state.queuedActions.length === 0) {
+      console.log(`[QUEUE ANALYSIS] processQueue early return: isProcessing=${state.isProcessingQueue}, queueSize=${state.queuedActions.length}`);
       return;
     }
 
+    console.log(`[QUEUE ANALYSIS] Starting queue processing with ${state.queuedActions.length} actions`);
     logger.info(`Processing queue with ${state.queuedActions.length} actions`);
     dispatch({ type: 'SET_PROCESSING', payload: true });
 
@@ -250,6 +257,7 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
     dispatch({ type: 'SET_PROCESSING', payload: false });
     dispatch({ type: 'SET_LAST_PROCESSED', payload: Date.now() });
     
+    console.log(`[QUEUE ANALYSIS] Queue processing completed. Remaining queue size: ${state.queuedActions.length}`);
     logger.info('Queue processing completed');
   }, [state.queuedActions, state.isProcessingQueue, state.processingStats]);
 
@@ -261,17 +269,25 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
 
   // Register queue processor with WebSocket service using ref wrapper
   useEffect(() => {
+    console.log(`[QUEUE REGISTRATION FIX] Registering queue processor with WebSocketService`);
+    
     // Wrapper function that calls the current processQueue from ref
-    const wrapper = () => {
+    const wrapper = async () => {
+      console.log(`[QUEUE REGISTRATION FIX] Queue processor wrapper triggered - current queue size: ${state.queuedActions.length}`);
       if (processQueueRef.current) {
         logger.debug('Queue processor triggered via ref wrapper');
-        return processQueueRef.current();
+        return await processQueueRef.current();
       }
       return Promise.resolve();
     };
     
     const unregister = websocketService.registerQueueProcessor(wrapper);
-    return unregister;
+    console.log(`[QUEUE REGISTRATION FIX] Queue processor registered successfully`);
+    
+    return () => {
+      console.log(`[QUEUE REGISTRATION FIX] Queue processor being unregistered`);
+      unregister();
+    };
   }, []); // Empty dependencies - register once with wrapper that always calls current
 
   // Context value

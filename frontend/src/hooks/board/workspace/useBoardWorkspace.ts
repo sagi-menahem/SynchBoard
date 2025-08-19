@@ -194,8 +194,10 @@ export const useBoardWorkspace = (boardId: number) => {
   // Register board state refresh callback with WebSocket service
   useEffect(() => {
     const boardStateRefreshWrapper = async () => {
+      console.log(`[BOARD STATE ANALYSIS] Board state refresh triggered - boardId: ${boardId}, will call fetchInitialData`);
       logger.debug('Board state refresh triggered after reconnection');
       await fetchInitialData();
+      console.log(`[BOARD STATE ANALYSIS] Board state refresh completed`);
     };
     
     const unregisterBoardStateRefresh = websocketService.registerBoardStateRefreshCallback(boardStateRefreshWrapper);
