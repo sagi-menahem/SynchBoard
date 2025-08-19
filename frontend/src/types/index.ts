@@ -4,6 +4,5 @@ export * from './BoardTypes';
 export * from './ChatTypes';
 export * from './CommonTypes';
 export * from './MessageTypes';
-export * from './OfflineQueueTypes';
 export * from './UserTypes';
 export * from './WebSocketTypes';

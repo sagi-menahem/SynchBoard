@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth/useAuth';
 import { useContextMenu } from 'hooks/common/useContextMenu';
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 import type { Member } from 'types/BoardTypes';
 
 export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: boolean, onSuccess?: () => void) => {

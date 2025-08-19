@@ -5,7 +5,7 @@ import { formatDateSeparator } from 'utils/DateUtils';
 
 import { useAuth } from 'hooks/auth';
 import { useChatTransaction } from 'hooks/chat';
-import { usePreferences } from 'hooks/common';
+import { usePreferences, useWebSocket } from 'hooks/common';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
@@ -21,11 +21,10 @@ interface ChatWindowProps {
 }
 
 /**
- * Enhanced ChatWindow component with transactional messaging support and offline queueing
+ * Enhanced ChatWindow component with transactional messaging support
  * 
  * Features:
  * - Optimistic message updates (messages appear immediately)
- * - Offline message queueing (messages preserved during outages)
  * - Smart status indicators with opacity-based feedback
  * - Automatic rollback on connection failures
  * - Robust error handling with user feedback
@@ -35,6 +34,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const { t } = useTranslation();
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
+  const { connectionState } = useWebSocket();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   
@@ -123,6 +123,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     }
   }, [sendChatMessage, boardId]);
 
+  // Handler for retrying failed messages
+  const handleRetryMessage = useCallback(async (messageId: string) => {
+    // Find the failed message by transaction ID or message ID
+    const failedMessage = allMessages.find((msg) => 
+      msg.transactionId === messageId || msg.id?.toString() === messageId
+    );
+    
+    if (failedMessage && failedMessage.content) {
+      try {
+        await sendChatMessage(failedMessage.content);
+      } catch (error) {
+        console.error('Failed to retry chat message:', error);
+      }
+    }
+  }, [allMessages, sendChatMessage]);
+
   // Helper function to check if should show date separator
   const shouldShowDateSeparator = useCallback((
     currentMsg: EnhancedChatMessage, 
@@ -186,6 +202,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
               <ChatMessage 
                 message={message} 
                 isOwnMessage={message.senderEmail === userEmail}
+                connectionStatus={connectionState}
+                onRetryMessage={handleRetryMessage}
               />
             </React.Fragment>
           );
@@ -196,6 +214,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
       <ChatInput 
         onSendMessage={handleSendMessage}
         placeholder={t('chatWindow.placeholder')}
+        connectionStatus={connectionState}
       />
     </div>
   );

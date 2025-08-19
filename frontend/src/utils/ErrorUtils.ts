@@ -1,5 +1,5 @@
 import { toast } from 'react-hot-toast';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 export const createErrorHandler = (context: string) => (error: Error) => {
     logger.error(`[${context}] Component Error`, error, {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
-import { isSafeUrl, sanitizeUserContent } from 'utils/Sanitize';
+import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
 import { formatSmartTimestamp, formatDetailedTimestamp } from 'utils/DateUtils';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
@@ -12,9 +12,16 @@ import styles from './ChatMessage.module.css';
 interface ChatMessageProps {
   message: EnhancedChatMessage;
   isOwnMessage?: boolean;
+  connectionStatus?: 'connected' | 'connecting' | 'disconnected';
+  onRetryMessage?: (messageId: string) => void;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ 
+  message, 
+  isOwnMessage = false, 
+  connectionStatus = 'connected',
+  onRetryMessage 
+}) => {
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;
@@ -73,12 +80,36 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
           </div>
           
           {effectiveStatus === 'failed' && (
-            <span 
-              className={styles.failureIcon} 
-              title="Failed to send - message will be retried when connection is restored"
-            >
-              ❗
-            </span>
+            <div className={styles.failureActions}>
+              <span 
+                className={styles.failureIcon} 
+                title={
+                  connectionStatus === 'connected' 
+                    ? "Failed to send - click retry to try again"
+                    : "Failed to send - message will be retried when connection is restored"
+                }
+              >
+                ⚠️
+              </span>
+              {connectionStatus === 'connected' && onRetryMessage && (
+                <button
+                  className={styles.retryButton}
+                  onClick={() => onRetryMessage(message.transactionId || message.id?.toString() || '')}
+                  title="Retry sending message"
+                  aria-label="Retry sending this failed message"
+                >
+                  🔄
+                </button>
+              )}
+              {connectionStatus === 'disconnected' && (
+                <span 
+                  className={styles.offlineIndicator}
+                  title="Will retry automatically when connection is restored"
+                >
+                  📴
+                </span>
+              )}
+            </div>
           )}
         </div>
       </div>

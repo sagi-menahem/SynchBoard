@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 
 import { AxiosError } from 'axios';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 import type { BoardUpdateDTO } from 'types/WebSocketTypes';
@@ -56,7 +56,7 @@ export const useBoardWebSocketHandler = ({
             .getBoardDetails(boardId)
             .then((details) => setBoardName(details.name))
             .catch((err) => {
-              console.warn('Failed to refresh board name after details update:', err);
+              logger.warn('Failed to refresh board name after details update:', err);
             });
         }
       } else if ('type' in payload && 'instanceId' in payload) {
@@ -110,15 +110,7 @@ export const useBoardWebSocketHandler = ({
                 return true;
               }
               
-              // CRITICAL FIX: Match by content and timestamp for queued messages
-              // This handles cases where transactionId might not match due to queue processing
-              if (enhancedMsg.transactionStatus === 'queued' && 
-                  enhancedMsg.content === chatMessage.content &&
-                  enhancedMsg.senderEmail === chatMessage.senderEmail &&
-                  Math.abs(enhancedMsg.timestamp - chatMessage.timestamp) < 5000) { // 5 second tolerance
-                logger.debug(`[UNIFIED] Found queued message by content/timestamp match for instanceId: ${chatMessage.instanceId}`);
-                return true;
-              }
+              // REMOVED: Queue-related message matching logic (no longer needed in simple system)
               
               return false;
             });
@@ -131,11 +123,17 @@ export const useBoardWebSocketHandler = ({
               const originalMessage = prevMessages[messageIndex] as any;
               
               // Update the message with server data while preserving transaction tracking
-              newMessages[messageIndex] = {
+              const updatedMessage = {
                 ...chatMessage,
-                transactionId: originalMessage.transactionId, // Preserve for transaction tracking
                 transactionStatus: 'confirmed', // Explicitly mark as confirmed
-              };
+              } as any; // Type assertion to handle transactionStatus property which exists at runtime but not in ChatMessageResponse interface
+              
+              // Preserve transaction tracking data
+              if (originalMessage.transactionId) {
+                updatedMessage.transactionId = originalMessage.transactionId;
+              }
+              
+              newMessages[messageIndex] = updatedMessage;
               
               // Schedule transaction commitment AFTER state update
               if (originalMessage.transactionId) {

@@ -14,6 +14,7 @@ interface UseCanvasProps {
     strokeWidth: number;
     objects: ActionPayload[];
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+    connectionStatus?: 'connected' | 'connecting' | 'disconnected';
 }
 
 export const useCanvas = ({
@@ -23,6 +24,7 @@ export const useCanvas = ({
     strokeWidth,
     objects,
     onDraw,
+    connectionStatus = 'connected',
 }: UseCanvasProps) => {
     const { dimensions, refs, drawingState, utils } = useCanvasCore();
     const { mainCanvasRef, previewCanvasRef, containerRef, contextRef, previewContextRef } = refs;
@@ -54,6 +56,7 @@ export const useCanvas = ({
         getMouseCoordinates: utils.getMouseCoordinates,
         isShapeSizeValid: utils.isShapeSizeValid,
         isRadiusValid: utils.isRadiusValid,
+        isConnected: connectionStatus === 'connected',
     });
 
     return {

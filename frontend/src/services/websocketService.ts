@@ -7,7 +7,7 @@ import {
   validateBoardMessage,
   validateMessage,
 } from 'utils';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
 import { WEBSOCKET_URL } from '../constants/ApiConstants';
@@ -31,14 +31,6 @@ class WebSocketService {
   private onConnectedCallback: (() => void) | null = null;
   // Support multiple rollback callbacks for different board workspaces
   private rollbackCallbacks = new Set<() => void>();
-  // Queue processor callback for offline queue
-  private queueProcessorCallback: (() => Promise<void>) | null = null;
-  // Transaction success callback for queue→transaction bridge
-  private transactionSuccessCallback: ((transactionId: string) => void) | null = null;
-  // Board state refresh callback for synchronizing after reconnection
-  private boardStateRefreshCallback: (() => Promise<void>) | null = null;
-  private lastBoardRefreshTime = 0;
-  private boardRefreshThrottlePeriod = 10000; // 10 seconds minimum between refreshes
   // Flag to track intentional disconnections
   private isIntentionalDisconnect = false;
   // Timer for delayed rollback to allow pending confirmations
@@ -48,7 +40,7 @@ class WebSocketService {
   private connectionCooldownPeriod = 2000; // 2 seconds minimum between connection attempts
   private isProcessingCallbacks = false; // Prevent concurrent callback processing
   // Connection state optimization
-  private connectionStateTimestamp = 0; // Track when connection state last changed
+  // private connectionStateTimestamp = 0; // Track when connection state last changed (unused)
   private connectionStateChangeLock = false; // Prevent rapid state changes
 
   constructor() {
@@ -119,8 +111,7 @@ class WebSocketService {
    * Handles disconnection from any source and initiates reconnection if appropriate.
    * This is called by various event handlers to ensure consistent disconnect handling.
    */
-  private handleDisconnection(event?: any): void {
-    console.log(`[RECONNECTION ANALYSIS] handleDisconnection called - current state: ${this.connectionState}, event code: ${event?.code || 'N/A'}`);
+  private handleDisconnection(_event?: any): void {
     logger.debug('Handling disconnection - updating state and attempting reconnection');
     
     // CRITICAL FIX: Prevent rapid state changes with lock mechanism
@@ -133,7 +124,7 @@ class WebSocketService {
     if (this.connectionState !== 'disconnected') {
       this.connectionStateChangeLock = true;
       this.connectionState = 'disconnected';
-      this.connectionStateTimestamp = Date.now();
+      // this.connectionStateTimestamp = Date.now(); // unused
       
       // Release lock after brief delay to prevent immediate re-triggering
       setTimeout(() => {
@@ -151,10 +142,7 @@ class WebSocketService {
     
     // Attempt reconnection if we have stored connection parameters
     if (this.currentToken && this.onConnectedCallback) {
-      console.log(`[RECONNECTION ANALYSIS] Attempting reconnection - token exists: ${!!this.currentToken}, callback exists: ${!!this.onConnectedCallback}`);
       this.attemptReconnection();
-    } else {
-      console.log(`[RECONNECTION ANALYSIS] Not attempting reconnection - token exists: ${!!this.currentToken}, callback exists: ${!!this.onConnectedCallback}`);
     }
   }
 
@@ -228,7 +216,7 @@ class WebSocketService {
     this.connectInternal(token, onConnectedCallback);
   }
 
-  private connectInternal(token: string, onConnectedCallback: () => void): void {
+  private connectInternal(token: string, _onConnectedCallback: () => void): void {
     this.connectionState = 'connecting';
 
     this.stompClient = new Client({
@@ -237,24 +225,20 @@ class WebSocketService {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
       onConnect: async () => {
-        console.log(`[RECONNECTION ANALYSIS] onConnect triggered - connectionState: ${this.connectionState}, locked: ${this.connectionStateChangeLock}`);
         logger.debug('Connected to WebSocket server!');
         
         // CRITICAL FIX: Prevent connection state changes during processing
         if (this.connectionStateChangeLock) {
           logger.debug('Connection state change locked, deferring connection processing');
-          console.log(`[RECONNECTION ANALYSIS] Connection processing deferred due to lock`);
           // Brief delay before processing connection
           setTimeout(() => {
             if (this.stompClient?.active) {
-              console.log(`[RECONNECTION ANALYSIS] Processing deferred connection`);
               this.processConnection();
             }
           }, 600);
           return;
         }
         
-        console.log(`[RECONNECTION ANALYSIS] Processing connection immediately`);
         this.processConnection();
       },
       onDisconnect: () => {
@@ -326,9 +310,8 @@ class WebSocketService {
    * Process successful connection with optimized state management
    */
   private processConnection(): void {
-    console.log(`[RECONNECTION ANALYSIS] processConnection called - current state: ${this.connectionState}, queue processor exists: ${!!this.queueProcessorCallback}, board refresh exists: ${!!this.boardStateRefreshCallback}`);
     this.connectionState = 'connected';
-    this.connectionStateTimestamp = Date.now();
+    // this.connectionStateTimestamp = Date.now(); // unused
     this.resetReconnectionState(); // Reset reconnection attempts on successful connection
         
     // CRITICAL FIX: Clear rollback timer on successful reconnection
@@ -350,9 +333,8 @@ class WebSocketService {
     this.isProcessingCallbacks = true;
     
     try {
-      // CRITICAL FIX: Process queue FIRST, then refresh board state
-      // This prevents board refresh from overwriting queued items
-      this.processQueueThenRefreshBoard();
+      // Simply call connected callback - no queue or board refresh processing
+      this.onConnectedCallback?.();
       
     } finally {
       // Reset processing flag after all callbacks complete
@@ -361,117 +343,14 @@ class WebSocketService {
         logger.debug('Callback processing completed, flag reset');
       }, 500); // Allow all async operations to complete
     }
-    
-    this.onConnectedCallback?.();
   }
 
-  /**
-   * Process queue first, then refresh board state to prevent data loss
-   */
-  private async processQueueThenRefreshBoard(): Promise<void> {
-    let queueProcessingCompleted = false;
-    
-    if (this.queueProcessorCallback) {
-      console.log(`[QUEUE TIMING FIX] Queue processor callback exists - processing queue FIRST`);
-      try {
-        // Add small delay to ensure WebSocket state is fully settled
-        setTimeout(async () => {
-          if (this.queueProcessorCallback && this.connectionState === 'connected') {
-            console.log(`[QUEUE TIMING FIX] Processing queue before board refresh`);
-            logger.debug('Forcing queue processing before board refresh');
-            
-            // Try queue processing with retry logic
-            for (let attempt = 1; attempt <= 3; attempt++) {
-              try {
-                await this.queueProcessorCallback();
-                logger.debug(`Queue processing succeeded on attempt ${attempt}`);
-                queueProcessingCompleted = true;
-                break;
-              } catch (error) {
-                logger.error(`Queue processing attempt ${attempt} failed:`, error);
-                if (attempt < 3) {
-                  // Wait before retrying (exponential backoff)
-                  await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
-                } else {
-                  logger.error('All queue processing attempts failed after reconnection');
-                  queueProcessingCompleted = true; // Continue even if failed
-                }
-              }
-            }
-            
-            // CRITICAL FIX: Only refresh board state AFTER queue processing completes
-            if (this.boardStateRefreshCallback && queueProcessingCompleted) {
-              console.log(`[QUEUE TIMING FIX] Queue processing completed - now refreshing board state`);
-              try {
-                const now = Date.now();
-                const timeSinceLastRefresh = now - this.lastBoardRefreshTime;
-                
-                if (timeSinceLastRefresh >= this.boardRefreshThrottlePeriod) {
-                  console.log(`[QUEUE TIMING FIX] Triggering board state refresh AFTER queue processing`);
-                  logger.debug('Refreshing board state after queue processing completed');
-                  this.lastBoardRefreshTime = now;
-                  
-                  try {
-                    await this.boardStateRefreshCallback();
-                    logger.debug('Board state refresh successful after queue processing');
-                  } catch (error) {
-                    logger.error('Board state refresh failed after queue processing:', error);
-                  }
-                } else {
-                  const remainingTime = this.boardRefreshThrottlePeriod - timeSinceLastRefresh;
-                  logger.debug(`Board state refresh throttled. Remaining cooldown: ${remainingTime}ms`);
-                }
-              } catch (error) {
-                logger.error('Error refreshing board state after queue processing:', error);
-              }
-            }
-          }
-        }, 150); // Delay for connection to fully stabilize
-      } catch (error) {
-        logger.error('Error setting up queue and board refresh sequence:', error);
-      }
-    } else {
-      // No queue processor - safe to refresh board state immediately
-      console.log(`[QUEUE TIMING FIX] No queue processor - refreshing board state directly`);
-      if (this.boardStateRefreshCallback) {
-        try {
-          setTimeout(async () => {
-            if (this.boardStateRefreshCallback && this.connectionState === 'connected') {
-              const now = Date.now();
-              const timeSinceLastRefresh = now - this.lastBoardRefreshTime;
-              
-              if (timeSinceLastRefresh >= this.boardRefreshThrottlePeriod) {
-                console.log(`[QUEUE TIMING FIX] Triggering board state refresh (no queue)`);
-                logger.debug('Refreshing board state after successful reconnection (no queue)');
-                this.lastBoardRefreshTime = now;
-                
-                try {
-                  await this.boardStateRefreshCallback();
-                  logger.debug('Board state refresh successful after reconnection (no queue)');
-                } catch (error) {
-                  logger.error('Board state refresh failed after reconnection (no queue):', error);
-                }
-              } else {
-                const remainingTime = this.boardRefreshThrottlePeriod - timeSinceLastRefresh;
-                logger.debug(`Board state refresh throttled. Remaining cooldown: ${remainingTime}ms`);
-              }
-            }
-          }, 300);
-        } catch (error) {
-          logger.error('Error setting up board state refresh after reconnection (no queue):', error);
-        }
-      }
-    }
-  }
 
   public disconnect() {
     // Clear reconnection state
     this.currentToken = null;
     this.onConnectedCallback = null;
     this.rollbackCallbacks.clear();
-    this.queueProcessorCallback = null;
-    this.transactionSuccessCallback = null;
-    this.boardStateRefreshCallback = null;
     this.resetReconnectionState();
     
     // Clear rollback timer on intentional disconnect
@@ -600,75 +479,9 @@ class WebSocketService {
     };
   }
 
-  /**
-   * Register queue processor callback that will be called after successful reconnection
-   * @param callback Function to process offline queue
-   * @returns Function to unregister the callback
-   */
-  public registerQueueProcessor(callback: () => Promise<void>): () => void {
-    console.log(`[QUEUE REGISTRATION FIX] registerQueueProcessor called - callback exists: ${!!callback}`);
-    this.queueProcessorCallback = callback;
-    console.log(`[QUEUE REGISTRATION FIX] Queue processor callback stored - now exists: ${!!this.queueProcessorCallback}`);
-    logger.debug('Registered offline queue processor callback');
-    
-    // Return unregister function
-    return () => {
-      console.log(`[QUEUE REGISTRATION FIX] Queue processor being unregistered - was: ${!!this.queueProcessorCallback}`);
-      this.queueProcessorCallback = null;
-      console.log(`[QUEUE REGISTRATION FIX] Queue processor unregistered - now: ${!!this.queueProcessorCallback}`);
-      logger.debug('Unregistered offline queue processor callback');
-    };
-  }
 
-  /**
-   * Register transaction success callback that will be called when queue successfully processes a message
-   * This bridges the gap between offline queue and transaction state management
-   * @param callback Function to update transaction status
-   * @returns Function to unregister the callback
-   */
-  public registerTransactionSuccessCallback(callback: (transactionId: string) => void): () => void {
-    this.transactionSuccessCallback = callback;
-    logger.debug('Registered transaction success callback for queue→transaction bridge');
-    
-    // Return unregister function
-    return () => {
-      this.transactionSuccessCallback = null;
-      logger.debug('Unregistered transaction success callback');
-    };
-  }
 
-  /**
-   * Register board state refresh callback that will be called after successful reconnection
-   * This ensures local board state is synchronized with server state
-   * @param callback Function to refresh board state from server
-   * @returns Function to unregister the callback
-   */
-  public registerBoardStateRefreshCallback(callback: () => Promise<void>): () => void {
-    this.boardStateRefreshCallback = callback;
-    logger.debug('Registered board state refresh callback');
-    
-    // Return unregister function
-    return () => {
-      this.boardStateRefreshCallback = null;
-      logger.debug('Unregistered board state refresh callback');
-    };
-  }
 
-  /**
-   * Notify transaction system that a queued action was successfully sent
-   * This is called by the queue processor when an action succeeds
-   * @param transactionId The transaction ID to mark as confirmed
-   */
-  public notifyTransactionSuccess(transactionId: string): void {
-    console.log(`[QUEUE PROCESSING ANALYSIS] notifyTransactionSuccess called - transactionId: ${transactionId}, callback exists: ${!!this.transactionSuccessCallback}`);
-    if (this.transactionSuccessCallback) {
-      logger.debug(`Notifying transaction system of successful send: ${transactionId}`);
-      this.transactionSuccessCallback(transactionId);
-    } else {
-      console.log(`[QUEUE PROCESSING ANALYSIS] No transaction success callback registered!`);
-      logger.warn(`No transaction success callback registered for transaction: ${transactionId}`);
-    }
-  }
 }
 
 const websocketService = new WebSocketService();

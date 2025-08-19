@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { WebSocketContext } from 'context';
 import { WebSocketService } from 'services';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 export const useWebSocket = () => {
   const context = useContext(WebSocketContext);

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { PreferencesContext } from 'context/PreferencesContext';
 
