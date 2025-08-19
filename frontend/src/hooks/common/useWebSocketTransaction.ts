@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 
 import logger from 'utils/Logger';
-import websocketService from 'services/WebSocketService';
+
 import { useOfflineQueue } from 'context/OfflineQueueContext';
+import websocketService from 'services/WebSocketService';
 
 /**
  * Configuration interface for setting up a WebSocket transaction
@@ -28,8 +29,8 @@ interface TransactionConfig<TPayload extends object, TState> {
   /** Optional callback when transaction fails */
   onFailure?: (error: Error, payload: TPayload, transactionId: string) => void;
   
-  /** Optional callback when rollback occurs */
-  onRollback?: (transactionId: string, payload: TPayload) => void;
+  /** Optional callback when rollback occurs - receives all rolled back transactions */
+  onRollback?: (rolledBackTransactions: { id: string; payload: TPayload }[]) => void;
   
   /** Function to generate unique transaction IDs (defaults to crypto.randomUUID) */
   generateTransactionId?: () => string;
@@ -98,7 +99,7 @@ interface TransactionHookResult<TPayload> {
 export const useWebSocketTransaction = <TPayload extends object, TState>(
   config: TransactionConfig<TPayload, TState>,
   currentState: TState,
-  setState: React.Dispatch<React.SetStateAction<TState>>
+  setState: React.Dispatch<React.SetStateAction<TState>>,
 ): TransactionHookResult<TPayload> => {
   // Track pending transactions with their payloads and status
   const [pendingTransactions, setPendingTransactions] = useState<
@@ -130,7 +131,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    */
   const updateTransactionStatus = useCallback(
     (transactionId: string, status: PendingTransaction<TPayload>['status']) => {
-      setPendingTransactions(prev => {
+      setPendingTransactions((prev) => {
         const updated = new Map(prev);
         const transaction = updated.get(transactionId);
         if (transaction) {
@@ -140,7 +141,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         return updated;
       });
     },
-    []
+    [],
   );
 
   /**
@@ -151,15 +152,15 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     (transactionId: string) => {
       logger.debug(`Queue success callback for transaction: ${transactionId}`);
       
-      setPendingTransactions(prev => {
+      setPendingTransactions((prev) => {
         const updated = new Map(prev);
         const transaction = updated.get(transactionId);
         
         if (transaction && transaction.status === 'queued') {
-          // CRITICAL FIX: Update status from "queued" to "confirmed"
-          // This removes the visual "queued" state from the UI
-          updated.delete(transactionId);
-          logger.debug(`Transaction ${transactionId} successfully confirmed via queue processor`);
+          // CRITICAL FIX: Update status to "confirmed" but DON'T delete yet
+          // Let commitTransaction handle the deletion when server confirms
+          updated.set(transactionId, { ...transaction, status: 'confirmed' });
+          logger.debug(`Transaction ${transactionId} marked as confirmed via queue processor`);
           
           // Call success callback if provided
           config.onSuccess?.(transaction.payload, transactionId);
@@ -174,7 +175,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         return updated;
       });
     },
-    [config]
+    [config],
   );
 
   /**
@@ -187,32 +188,37 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     }
 
     logger.warn(
-      `Rolling back ${pendingTransactions.size} unconfirmed transactions due to connection failure`
+      `Rolling back ${pendingTransactions.size} unconfirmed transactions due to connection failure`,
     );
 
     // Apply rollback for each pending transaction in reverse order (LIFO)
     const transactionIds = Array.from(pendingTransactions.keys()).reverse();
     let newState = currentState;
+    const rolledBackTransactions: { id: string; payload: any }[] = [];
 
     for (const transactionId of transactionIds) {
       const transaction = pendingTransactions.get(transactionId);
       if (transaction && transaction.status === 'pending') {
-        // Only rollback pending transactions, not queued ones
+        // Only rollback truly pending transactions that haven't been sent
+        // Don't rollback 'processing' (sent successfully) or 'queued' transactions
         newState = config.rollbackUpdate(newState, transactionId);
-        
-        // Call rollback callback if provided
-        config.onRollback?.(transactionId, transaction.payload);
+        rolledBackTransactions.push({ id: transactionId, payload: transaction.payload });
       }
+    }
+
+    // CRITICAL FIX: Call rollback callback once with all rolled back transactions
+    if (rolledBackTransactions.length > 0) {
+      config.onRollback?.(rolledBackTransactions);
     }
 
     // Update state once with all rollbacks applied
     setState(newState);
 
-    // Clear pending transactions but preserve queued ones
-    setPendingTransactions(prev => {
+    // Clear only pending transactions, preserve queued and processing ones
+    setPendingTransactions((prev) => {
       const updated = new Map();
       for (const [id, transaction] of prev.entries()) {
-        if (transaction.status === 'queued') {
+        if (transaction.status === 'queued' || transaction.status === 'processing') {
           updated.set(id, transaction);
         }
       }
@@ -220,29 +226,49 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     });
   }, [pendingTransactions, currentState, setState, config]);
 
+  // CRITICAL FIX: Use refs to prevent stale closures in callbacks
+  // These callbacks are registered once but need access to changing state
+  const rollbackCallbackRef = useRef(rollbackPendingTransactions);
+  rollbackCallbackRef.current = rollbackPendingTransactions;
+
+  const handleQueueSuccessRef = useRef(handleQueueSuccess);
+  handleQueueSuccessRef.current = handleQueueSuccess;
+
   /**
    * Register rollback callback with WebSocket service
    * This ensures rollback is triggered on connection failures
    */
   useEffect(() => {
-    const unregisterRollback = websocketService.registerRollbackCallback(rollbackPendingTransactions);
+    // Wrapper that always calls current rollback function from ref
+    const rollbackWrapper = () => {
+      logger.debug('Rollback triggered via ref wrapper');
+      rollbackCallbackRef.current();
+    };
+    
+    const unregisterRollback = websocketService.registerRollbackCallback(rollbackWrapper);
     
     return () => {
       unregisterRollback();
     };
-  }, [rollbackPendingTransactions]);
+  }, []); // Empty dependencies - register once with wrapper
 
   /**
    * Register transaction success callback with WebSocket service
    * This bridges queue success notifications to transaction state updates
    */
   useEffect(() => {
-    const unregisterTransactionCallback = websocketService.registerTransactionSuccessCallback(handleQueueSuccess);
+    // Wrapper that always calls current queue success handler from ref
+    const successWrapper = (transactionId: string) => {
+      logger.debug(`Transaction success triggered via ref wrapper for: ${transactionId}`);
+      handleQueueSuccessRef.current(transactionId);
+    };
+    
+    const unregisterTransactionCallback = websocketService.registerTransactionSuccessCallback(successWrapper);
     
     return () => {
       unregisterTransactionCallback();
     };
-  }, [handleQueueSuccess]);
+  }, []); // Empty dependencies - register once with wrapper
 
   /**
    * Send a transactional WebSocket message with optimistic update and offline queueing
@@ -275,10 +301,10 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         // Connected - attempt direct send
         try {
           // Track as pending transaction
-          setPendingTransactions(prev => new Map(prev).set(transactionId, {
+          setPendingTransactions((prev) => new Map(prev).set(transactionId, {
             payload,
             timestamp: Date.now(),
-            status: 'pending'
+            status: 'pending',
           }));
 
           logger.debug(`[DIAGNOSTIC] Sending message to server. Destination: ${config.destination}, Payload:`, JSON.stringify(payloadWithInstanceId, null, 2));
@@ -288,8 +314,12 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
           
           logger.debug(`WebSocket message sent successfully: ${transactionId}`);
           
-          // Call success callback if provided
-          config.onSuccess?.(payload, transactionId);
+          // CRITICAL FIX: Mark as 'sent' to prevent rollback of successfully sent messages
+          // Only messages that failed to send should be rolled back
+          updateTransactionStatus(transactionId, 'processing');
+          
+          // DON'T call onSuccess here - wait for server confirmation
+          // config.onSuccess?.(payload, transactionId);
           
           return transactionId;
         } catch (error) {
@@ -307,7 +337,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
             payload: payloadWithInstanceId,
             timestamp: Date.now(),
             maxRetries: 3,
-            priority: 'normal'
+            priority: 'normal',
           });
           
           return transactionId;
@@ -317,10 +347,10 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         logger.debug(`WebSocket disconnected, queuing transaction: ${transactionId}`);
         
         // Track as queued transaction
-        setPendingTransactions(prev => new Map(prev).set(transactionId, {
+        setPendingTransactions((prev) => new Map(prev).set(transactionId, {
           payload,
           timestamp: Date.now(),
-          status: 'queued'
+          status: 'queued',
         }));
 
         // Add to offline queue
@@ -331,13 +361,13 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
           payload: payloadWithInstanceId,
           timestamp: Date.now(),
           maxRetries: 3,
-          priority: 'normal'
+          priority: 'normal',
         });
         
         return transactionId;
       }
     },
-    [config, currentState, setState, generateId, inferActionType, queueActions, updateTransactionStatus]
+    [config, currentState, setState, generateId, inferActionType, queueActions, updateTransactionStatus],
   );
 
   /**
@@ -345,15 +375,17 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    * @param transactionId - ID of transaction to commit
    */
   const commitTransaction = useCallback((transactionId: string) => {
-    setPendingTransactions(prev => {
+    setPendingTransactions((prev) => {
       const updated = new Map(prev);
       if (updated.has(transactionId)) {
         const transaction = updated.get(transactionId);
-        updated.delete(transactionId);
-        logger.debug(`Committed transaction: ${transactionId}`);
         
-        // Call success callback if provided and transaction exists
-        if (transaction) {
+        // THIS IS THE ONLY PLACE THAT SHOULD DELETE TRANSACTIONS
+        updated.delete(transactionId);
+        logger.debug(`Committed and deleted transaction: ${transactionId}`);
+        
+        // Only call onSuccess if we haven't called it before (avoid double calls)
+        if (transaction && transaction.status !== 'confirmed') {
           config.onSuccess?.(transaction.payload, transactionId);
         }
       }
@@ -370,7 +402,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     (transactionId: string): boolean => {
       return pendingTransactions.has(transactionId);
     },
-    [pendingTransactions]
+    [pendingTransactions],
   );
 
   /**
@@ -383,7 +415,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
       const transaction = pendingTransactions.get(transactionId);
       return transaction ? transaction.status : null;
     },
-    [pendingTransactions]
+    [pendingTransactions],
   );
 
   /**

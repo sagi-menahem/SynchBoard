@@ -95,6 +95,17 @@ export const replayDrawAction = (
 ): void => {
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
+    // Apply visual feedback based on transaction status
+    const originalGlobalAlpha = targetCtx.globalAlpha;
+    if (payload.transactionStatus === 'sending' || payload.transactionStatus === 'queued') {
+        targetCtx.globalAlpha = 0.5; // Reduced opacity for pending/queued drawings
+    } else if (payload.transactionStatus === 'processing') {
+        targetCtx.globalAlpha = 0.7; // Slightly reduced opacity for processing
+    } else if (payload.transactionStatus === 'failed') {
+        targetCtx.globalAlpha = 0.3; // More faded for failed drawings
+    }
+    // 'confirmed' or undefined status uses normal opacity (1.0)
+
     if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
         drawLinePayload(payload as LinePayload, targetCtx, targetCanvas);
     } else if (payload.tool === TOOLS.RECTANGLE) {
@@ -103,5 +114,7 @@ export const replayDrawAction = (
         drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
     }
 
+    // Restore original alpha and composite operation
+    targetCtx.globalAlpha = originalGlobalAlpha;
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 };

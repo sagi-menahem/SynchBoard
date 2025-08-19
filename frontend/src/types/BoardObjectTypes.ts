@@ -17,6 +17,8 @@ export interface LinePayload {
     color: string;
     lineWidth: number;
     tool: 'brush' | 'eraser';
+    transactionId?: string;
+    transactionStatus?: 'sending' | 'queued' | 'processing' | 'confirmed' | 'failed' | 'pending';
 }
 
 export interface RectanglePayload {
@@ -28,6 +30,8 @@ export interface RectanglePayload {
     color: string;
     strokeWidth: number;
     tool: 'rectangle';
+    transactionId?: string;
+    transactionStatus?: 'sending' | 'queued' | 'processing' | 'confirmed' | 'failed' | 'pending';
 }
 
 export interface CirclePayload {
@@ -38,6 +42,8 @@ export interface CirclePayload {
     color: string;
     strokeWidth: number;
     tool: 'circle';
+    transactionId?: string;
+    transactionStatus?: 'sending' | 'queued' | 'processing' | 'confirmed' | 'failed' | 'pending';
 }
 
 export type ActionPayload = LinePayload | RectanglePayload | CirclePayload;

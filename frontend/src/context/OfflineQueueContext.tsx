@@ -1,8 +1,12 @@
-import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect, useRef } from 'react';
 
+import toast from 'react-hot-toast';
 import logger from 'utils/Logger';
 import websocketService from 'services/WebSocketService';
 import type { OfflineQueueState, OfflineQueueContextValue, QueuedAction } from 'types/OfflineQueueTypes';
+
+// Configuration constants
+const MAX_QUEUE_SIZE = 100; // Maximum number of queued actions to prevent memory issues
 
 // Initial state
 const initialState: OfflineQueueState = {
@@ -38,16 +42,16 @@ const queueReducer = (state: OfflineQueueState, action: QueueAction): OfflineQue
     case 'REMOVE_ACTION':
       return {
         ...state,
-        queuedActions: state.queuedActions.filter(action => action.id !== action.payload),
+        queuedActions: state.queuedActions.filter(queuedAction => queuedAction.id !== action.payload),
       };
     
     case 'UPDATE_ACTION':
       return {
         ...state,
-        queuedActions: state.queuedActions.map(action =>
-          action.id === action.payload.id
-            ? { ...action, ...action.payload.updates }
-            : action
+        queuedActions: state.queuedActions.map(queuedAction =>
+          queuedAction.id === action.payload.id
+            ? { ...queuedAction, ...action.payload.updates }
+            : queuedAction
         ),
       };
     
@@ -91,15 +95,37 @@ interface OfflineQueueProviderProps {
 
 export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(queueReducer, initialState);
+  const lastWarningTimeRef = useRef<number>(0);
 
   // Sleep utility for rate limiting
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // Queue action handler
+  // Queue action handler with overflow protection
   const queueAction = useCallback((action: Omit<QueuedAction, 'retryCount'>) => {
-    logger.debug(`Queuing action: ${action.type} - ${action.id}`);
+    // Check if queue has reached maximum size
+    if (state.queuedActions.length >= MAX_QUEUE_SIZE) {
+      // Remove oldest action to make room for new one (FIFO overflow handling)
+      const oldestAction = state.queuedActions.reduce((oldest, current) => 
+        current.timestamp < oldest.timestamp ? current : oldest
+      );
+      
+      logger.warn(`Queue size limit (${MAX_QUEUE_SIZE}) reached. Removing oldest action: ${oldestAction.id}`);
+      dispatch({ type: 'REMOVE_ACTION', payload: oldestAction.id });
+      
+      // Notify user about queue overflow (throttled to avoid spam)
+      const now = Date.now();
+      if (now - lastWarningTimeRef.current > 10000) { // 10 second throttle
+        toast(`⚠️ Queue is full (${MAX_QUEUE_SIZE} actions). Older actions are being discarded.`, {
+          icon: '⚠️',
+          style: { background: '#fef3c7', color: '#92400e' }
+        });
+        lastWarningTimeRef.current = now;
+      }
+    }
+    
+    logger.debug(`Queuing action: ${action.type} - ${action.id} (Queue size: ${state.queuedActions.length}/${MAX_QUEUE_SIZE})`);
     dispatch({ type: 'ADD_ACTION', payload: action as QueuedAction });
-  }, []);
+  }, [state.queuedActions]);
 
   // Remove action from queue
   const removeAction = useCallback((actionId: string) => {
@@ -130,6 +156,16 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
       }
     });
   }, [state.queuedActions]);
+
+  // Get queue capacity information
+  const getQueueCapacity = useCallback(() => {
+    return {
+      current: state.queuedActions.length,
+      maximum: MAX_QUEUE_SIZE,
+      available: MAX_QUEUE_SIZE - state.queuedActions.length,
+      utilizationPercent: Math.round((state.queuedActions.length / MAX_QUEUE_SIZE) * 100)
+    };
+  }, [state.queuedActions.length]);
 
   // Main queue processor
   const processQueue = useCallback(async (): Promise<void> => {
@@ -217,11 +253,26 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
     logger.info('Queue processing completed');
   }, [state.queuedActions, state.isProcessingQueue, state.processingStats]);
 
-  // Register queue processor with WebSocket service
+  // CRITICAL FIX: Use ref to maintain current processQueue reference
+  // This prevents stale closure issues when the callback is registered once
+  // but needs to access changing state
+  const processQueueRef = useRef<() => Promise<void>>(processQueue);
+  processQueueRef.current = processQueue; // Always update to current version
+
+  // Register queue processor with WebSocket service using ref wrapper
   useEffect(() => {
-    const unregister = websocketService.registerQueueProcessor(processQueue);
+    // Wrapper function that calls the current processQueue from ref
+    const wrapper = () => {
+      if (processQueueRef.current) {
+        logger.debug('Queue processor triggered via ref wrapper');
+        return processQueueRef.current();
+      }
+      return Promise.resolve();
+    };
+    
+    const unregister = websocketService.registerQueueProcessor(wrapper);
     return unregister;
-  }, [processQueue]);
+  }, []); // Empty dependencies - register once with wrapper that always calls current
 
   // Context value
   const contextValue: OfflineQueueContextValue = {
@@ -232,6 +283,7 @@ export const OfflineQueueProvider: React.FC<OfflineQueueProviderProps> = ({ chil
       clearQueue,
       retryFailedActions,
       getQueuePosition,
+      getQueueCapacity,
       processQueue,
     },
   };

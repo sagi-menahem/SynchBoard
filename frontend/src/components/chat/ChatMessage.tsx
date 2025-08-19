@@ -24,14 +24,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
   const senderName = sanitizeUserContent(message.senderFullName);
   const messageContent = sanitizeUserContent(message.content);
 
-  // Determine message status for styling
-  const getMessageStatus = (): string => {
-    if (!message.transactionId) return 'confirmed'; // Server-originated message
-    return message.transactionStatus || 'confirmed';
-  };
+  // SIMPLE VISUAL STATUS: Use server ID as source of truth
+  // Server messages have ID > 0, local optimistic messages have ID = 0 or undefined
+  const isConfirmed: boolean = !!(message.id && message.id > 0);
 
-  const messageStatus = getMessageStatus();
-  const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
+  // Determine status for CSS class - with proper typing
+  const effectiveStatus: string = isConfirmed 
+    ? 'confirmed' 
+    : ((message as any).transactionStatus || 'processing');
+
+  // Apply the appropriate CSS class
+  const statusClass: string = styles[effectiveStatus] || '';
 
   // Smart timestamp formatting
   const smartTimestamp = formatSmartTimestamp(message.timestamp);
@@ -69,7 +72,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
             </span>
           </div>
           
-          {messageStatus === 'failed' && (
+          {effectiveStatus === 'failed' && (
             <span 
               className={styles.failureIcon} 
               title="Failed to send - message will be retried when connection is restored"
