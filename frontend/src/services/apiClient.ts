@@ -67,6 +67,7 @@ apiClient.interceptors.response.use(
                 toast.error(i18n.t('errors.sessionExpired'), { id: 'session-expired' });
 
                 if (window.location.pathname !== '/') {
+                    console.log(`[PAGE REFRESH ANALYSIS] AUTH FAILURE - Redirecting to login page from: ${window.location.pathname}`);
                     logger.info('Redirecting to login page due to authentication failure');
                     window.location.href = '/';
                 }
