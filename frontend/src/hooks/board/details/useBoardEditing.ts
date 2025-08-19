@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 
 
 export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {

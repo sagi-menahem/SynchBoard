@@ -34,7 +34,7 @@
 }
 
 .connecting .icon {
-    animation: pulse 1.5s ease-in-out infinite;
+    animation: spin 1.5s linear infinite;
 }
 
 .disconnected {
@@ -52,5 +52,14 @@
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

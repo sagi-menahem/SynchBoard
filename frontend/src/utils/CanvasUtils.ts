@@ -97,8 +97,8 @@ export const replayDrawAction = (
 
     // Apply visual feedback based on transaction status
     const originalGlobalAlpha = targetCtx.globalAlpha;
-    if (payload.transactionStatus === 'sending' || payload.transactionStatus === 'queued') {
-        targetCtx.globalAlpha = 0.5; // Reduced opacity for pending/queued drawings
+    if (payload.transactionStatus === 'sending') {
+        targetCtx.globalAlpha = 0.5; // Reduced opacity for sending drawings
     } else if (payload.transactionStatus === 'processing') {
         targetCtx.globalAlpha = 0.7; // Slightly reduced opacity for processing
     } else if (payload.transactionStatus === 'failed') {

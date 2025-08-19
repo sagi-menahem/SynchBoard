@@ -24,6 +24,7 @@ interface UseCanvasInteractionsProps {
     getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => { x: number; y: number } | null;
     isShapeSizeValid: (width: number, height: number) => boolean;
     isRadiusValid: (radius: number) => boolean;
+    isConnected?: boolean;
 }
 
 export const useCanvasInteractions = ({
@@ -38,13 +39,14 @@ export const useCanvasInteractions = ({
     getMouseCoordinates,
     isShapeSizeValid,
     isRadiusValid,
+    isConnected = true,
 }: UseCanvasInteractionsProps) => {
     const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
 
     const handleMouseDown = useCallback(
         (event: React.MouseEvent<HTMLCanvasElement>) => {
             const canvas = previewCanvasRef.current;
-            if (!canvas) return;
+            if (!canvas || !isConnected) return;
 
             setIsDrawing(true);
             const { offsetX, offsetY } = event.nativeEvent;
@@ -55,7 +57,7 @@ export const useCanvasInteractions = ({
                 startPoint.current = { x: offsetX, y: offsetY };
             }
         },
-        [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath]
+        [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath, isConnected]
     );
 
     useEffect(() => {
@@ -63,7 +65,7 @@ export const useCanvasInteractions = ({
         if (!canvas) return;
 
         const handleMouseMove = (event: MouseEvent) => {
-            if (!isDrawing) return;
+            if (!isDrawing || !isConnected) return;
             const previewCtx = previewContextRef.current;
             const coords = getMouseCoordinates(event, canvas);
             if (!previewCtx || !coords) return;
@@ -107,7 +109,7 @@ export const useCanvasInteractions = ({
         };
 
         const handleMouseUp = (event: MouseEvent) => {
-            if (!isDrawing) return;
+            if (!isDrawing || !isConnected) return;
             setIsDrawing(false);
             const previewCtx = previewContextRef.current;
             const coords = getMouseCoordinates(event, canvas);
@@ -185,6 +187,7 @@ export const useCanvasInteractions = ({
         setIsDrawing,
         startPoint,
         currentPath,
+        isConnected,
     ]);
 
     return {

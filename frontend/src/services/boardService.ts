@@ -4,7 +4,7 @@ import type { BoardActionResponse } from 'types/BoardObjectTypes';
 import type { Board, BoardDetails, CreateBoardRequest, Member } from 'types/BoardTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
-import apiClient from './ApiClient';
+import apiClient from './apiClient';
 
 export const getBoards = async (): Promise<Board[]> => {
     const response = await apiClient.get<Board[]>(API_ENDPOINTS.BOARDS);

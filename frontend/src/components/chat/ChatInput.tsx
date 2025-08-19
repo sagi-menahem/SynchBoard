@@ -10,6 +10,7 @@ interface ChatInputProps {
     onSendMessage: (content: string) => Promise<void>;
     disabled?: boolean;
     placeholder?: string;
+    connectionStatus?: 'connected' | 'connecting' | 'disconnected';
 }
 
 /**
@@ -19,7 +20,8 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = React.memo(({ 
     onSendMessage, 
     disabled = false, 
-    placeholder 
+    placeholder,
+    connectionStatus = 'connected'
 }) => {
     const { t } = useTranslation();
     const [message, setMessage] = useState('');
@@ -30,7 +32,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         event.preventDefault();
         
         const messageContent = message.trim();
-        if (!messageContent || disabled || isSending) {
+        if (!messageContent || disabled || isSending || connectionStatus !== 'connected') {
             return;
         }
 
@@ -77,10 +79,13 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
             </div>
             <Button 
                 type="submit" 
-                disabled={!message.trim() || disabled || isSending}
-                className={isSending ? styles.buttonSending : ''}
+                disabled={!message.trim() || disabled || isSending || connectionStatus !== 'connected'}
+                className={`${isSending ? styles.buttonSending : ''} ${connectionStatus !== 'connected' ? styles.buttonDisconnected : ''}`}
             >
-                {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}
+                {isSending ? t('chat.sending', 'Sending...') : 
+                 connectionStatus === 'connecting' ? t('chat.connecting', 'Connecting...') :
+                 connectionStatus === 'disconnected' ? t('chat.disconnected', 'Disconnected') :
+                 t('common.button.send', 'Send')}
             </Button>
         </form>
     );

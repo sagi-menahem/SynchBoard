@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
@@ -13,7 +13,7 @@ import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
 import { useWebSocketTransaction } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import websocketService from 'services/WebSocketService';
+// import websocketService from 'services/websocketService'; // REMOVED: No longer needed in simple system
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
@@ -34,7 +34,7 @@ export const useBoardWorkspace = (boardId: number) => {
     setAccessLost,
     setObjects,
     setMessages,
-    fetchInitialData,
+    // fetchInitialData, // REMOVED: No longer used in simple system
   } = useBoardDataManager(boardId);
 
   const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
@@ -85,7 +85,7 @@ export const useBoardWorkspace = (boardId: number) => {
       }
       return true;
     },
-    onSuccess: (actionRequest, transactionId) => {
+    onSuccess: (_, transactionId) => {
       logger.debug(`Drawing action confirmed: ${transactionId}`);
       
       // Update drawing status to confirmed
@@ -96,7 +96,7 @@ export const useBoardWorkspace = (boardId: number) => {
         return obj;
       }));
     },
-    onFailure: (error, actionRequest, transactionId) => {
+    onFailure: (error, _, transactionId) => {
       if (error.message === 'Payload validation failed') {
         toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
       } else {
@@ -191,21 +191,8 @@ export const useBoardWorkspace = (boardId: number) => {
 
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
-  // Register board state refresh callback with WebSocket service
-  useEffect(() => {
-    const boardStateRefreshWrapper = async () => {
-      console.log(`[BOARD STATE ANALYSIS] Board state refresh triggered - boardId: ${boardId}, will call fetchInitialData`);
-      logger.debug('Board state refresh triggered after reconnection');
-      await fetchInitialData();
-      console.log(`[BOARD STATE ANALYSIS] Board state refresh completed`);
-    };
-    
-    const unregisterBoardStateRefresh = websocketService.registerBoardStateRefreshCallback(boardStateRefreshWrapper);
-    
-    return () => {
-      unregisterBoardStateRefresh();
-    };
-  }, [fetchInitialData]);
+  // REMOVED: Board state refresh callback registration (no longer exists in simplified system)
+  // The new simple connection-based system doesn't refresh board state on reconnection
 
   // Enhanced objects with current transaction status for visual feedback
   const enhancedObjects = useMemo(() => {

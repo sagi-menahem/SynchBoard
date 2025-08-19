@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import {
     useBoardDetails,
@@ -13,7 +13,7 @@ import {
     useBoardMemberManagement,
     useBoardPermissions
 } from 'hooks/board/details';
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 import type { Member } from 'types/BoardTypes';
 import type { EditingField } from 'types/CommonTypes';
 

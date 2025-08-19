@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { createErrorHandler } from 'utils';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 interface ErrorHandlerOptions {
     showToast?: boolean;

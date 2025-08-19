@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Canvas } from 'components/board/workspace';
 import { ChatWindow } from 'components/chat';
+import { useWebSocket } from 'hooks/common';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
@@ -31,6 +32,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     strokeWidth,
     onDraw,
 }) => {
+    const { connectionState } = useWebSocket();
     return (
         <div className={styles.mainContent}>
             <div className={styles.canvasContainer}>
@@ -41,6 +43,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
                     tool={tool}
                     strokeColor={strokeColor}
                     strokeWidth={strokeWidth}
+                    connectionStatus={connectionState}
                 />
             </div>
             <div className={styles.chatContainer}>

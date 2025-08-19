@@ -16,26 +16,30 @@ export const ConnectionStatusIndicator: React.FC<ConnectionStatusIndicatorProps>
       case 'connected':
         return {
           icon: '🟢',
-          text: 'Connected',
+          text: 'Online',
           className: styles.connected,
+          ariaLabel: 'Connected to server',
         };
       case 'connecting':
         return {
-          icon: '🟡',
-          text: 'Connecting',
+          icon: '🔄',
+          text: 'Reconnecting',
           className: styles.connecting,
+          ariaLabel: 'Reconnecting to server',
         };
       case 'disconnected':
         return {
-          icon: '🔴',
-          text: 'Disconnected',
+          icon: '⚠️',
+          text: 'Offline',
           className: styles.disconnected,
+          ariaLabel: 'Disconnected from server - limited functionality',
         };
       default:
         return {
-          icon: '🔴',
-          text: 'Disconnected',
+          icon: '⚠️',
+          text: 'Offline',
           className: styles.disconnected,
+          ariaLabel: 'Disconnected from server - limited functionality',
         };
     }
   };
@@ -43,7 +47,13 @@ export const ConnectionStatusIndicator: React.FC<ConnectionStatusIndicatorProps>
   const statusConfig = getStatusConfig();
 
   return (
-    <div className={`${styles.container} ${statusConfig.className} ${className || ''}`}>
+    <div 
+      className={`${styles.container} ${statusConfig.className} ${className || ''}`}
+      title={statusConfig.ariaLabel}
+      role="status"
+      aria-live="polite"
+      aria-label={statusConfig.ariaLabel}
+    >
       <span className={styles.icon} aria-hidden="true">
         {statusConfig.icon}
       </span>
