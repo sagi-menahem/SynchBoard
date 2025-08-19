@@ -20,6 +20,13 @@ export interface OfflineQueueState {
   lastProcessedAt: number | null;
 }
 
+export interface QueueCapacityInfo {
+  current: number;
+  maximum: number;
+  available: number;
+  utilizationPercent: number;
+}
+
 export interface OfflineQueueContextValue {
   state: OfflineQueueState;
   actions: {
@@ -28,6 +35,7 @@ export interface OfflineQueueContextValue {
     clearQueue: () => void;
     retryFailedActions: () => void;
     getQueuePosition: (actionId: string) => number;
+    getQueueCapacity: () => QueueCapacityInfo;
     processQueue: () => Promise<void>;
   };
 }

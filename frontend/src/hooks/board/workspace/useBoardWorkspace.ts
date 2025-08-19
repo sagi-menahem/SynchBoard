@@ -1,6 +1,6 @@
 import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS, APP_ROUTES, WEBSOCKET_CONFIG } from 'constants';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
 import { useWebSocketTransaction } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
+import websocketService from 'services/WebSocketService';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
@@ -33,6 +34,7 @@ export const useBoardWorkspace = (boardId: number) => {
     setAccessLost,
     setObjects,
     setMessages,
+    fetchInitialData,
   } = useBoardDataManager(boardId);
 
   const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
@@ -48,28 +50,36 @@ export const useBoardWorkspace = (boardId: number) => {
   }, [isLoading, objects.length, resetCounts, hasInitialized]);
 
   // Use the new transactional hook for drawing actions
-  const { sendTransactionalAction, commitTransaction, pendingCount } = useWebSocketTransaction<
+  const { 
+    sendTransactionalAction, 
+    commitTransaction, 
+    pendingCount,
+    getTransactionStatus,
+    isPending, 
+  } = useWebSocketTransaction<
     SendBoardActionRequest,
     ActionPayload[]
   >({
     destination: WEBSOCKET_DESTINATIONS.DRAW_ACTION,
     optimisticUpdate: (currentObjects, actionRequest, transactionId) => {
-      // Extract payload and add the transaction ID as instanceId
+      // Extract payload and add the transaction ID as instanceId with transaction status
       const newObject: ActionPayload = {
         ...actionRequest.payload,
-        instanceId: transactionId
+        instanceId: transactionId,
+        transactionId,
+        transactionStatus: 'sending',
       } as ActionPayload;
       return [...currentObjects, newObject];
     },
     rollbackUpdate: (currentObjects, transactionId) => {
-      return currentObjects.filter(obj => obj.instanceId !== transactionId);
+      return currentObjects.filter((obj) => obj.instanceId !== transactionId);
     },
     validatePayload: (actionRequest) => {
       // Validate message size
       const messageSize = JSON.stringify(actionRequest).length;
       if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
         logger.error(
-          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`
+          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`,
         );
         return false;
       }
@@ -77,6 +87,14 @@ export const useBoardWorkspace = (boardId: number) => {
     },
     onSuccess: (actionRequest, transactionId) => {
       logger.debug(`Drawing action confirmed: ${transactionId}`);
+      
+      // Update drawing status to confirmed
+      setObjects((prev) => prev.map((obj) => {
+        if (obj.transactionId === transactionId) {
+          return { ...obj, transactionStatus: 'confirmed' };
+        }
+        return obj;
+      }));
     },
     onFailure: (error, actionRequest, transactionId) => {
       if (error.message === 'Payload validation failed') {
@@ -85,12 +103,25 @@ export const useBoardWorkspace = (boardId: number) => {
         toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
       }
       logger.error(`Drawing action failed: ${transactionId}`, error);
+      
+      // Update drawing status to failed
+      setObjects((prev) => prev.map((obj) => {
+        if (obj.transactionId === transactionId) {
+          return { ...obj, transactionStatus: 'failed' };
+        }
+        return obj;
+      }));
     },
-    onRollback: (transactionId, actionRequest) => {
-      // Show user notification about the rollback
-      toast.error(t('errors.drawingsRolledBack', 'Some drawings were not saved due to connection issues.'));
-      logger.warn(`Drawing action rolled back: ${transactionId}`);
-    }
+    onRollback: (rolledBackTransactions: { id: string; payload: any }[]) => {
+      const count = rolledBackTransactions.length;
+      logger.warn(`${count} drawing actions rolled back due to connection failure`);
+      
+      if (count === 1) {
+        toast.error(t('errors.drawingRolledBack', 'Drawing will be saved when reconnected.'));
+      } else {
+        toast.error(t('errors.drawingsRolledBack', `${count} drawings will be saved when reconnected.`));
+      }
+    },
   }, objects, setObjects);
 
   // WebSocket handler for processing incoming messages and committing transactions
@@ -160,11 +191,46 @@ export const useBoardWorkspace = (boardId: number) => {
 
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
+  // Register board state refresh callback with WebSocket service
+  useEffect(() => {
+    const boardStateRefreshWrapper = async () => {
+      logger.debug('Board state refresh triggered after reconnection');
+      await fetchInitialData();
+    };
+    
+    const unregisterBoardStateRefresh = websocketService.registerBoardStateRefreshCallback(boardStateRefreshWrapper);
+    
+    return () => {
+      unregisterBoardStateRefresh();
+    };
+  }, [fetchInitialData]);
+
+  // Enhanced objects with current transaction status for visual feedback
+  const enhancedObjects = useMemo(() => {
+    return objects.map((obj) => {
+      // Update transaction status for pending objects
+      if (obj.transactionId && isPending(obj.transactionId)) {
+        const currentStatus = getTransactionStatus(obj.transactionId);
+        return {
+          ...obj,
+          transactionStatus: currentStatus || 'confirmed',
+        };
+      }
+      
+      // Ensure confirmed status for server-originated objects
+      if (!obj.transactionId) {
+        return { ...obj, transactionStatus: 'confirmed' as const };
+      }
+      
+      return obj;
+    });
+  }, [objects, isPending, getTransactionStatus]);
+
   return {
     isLoading,
     boardName,
     accessLost,
-    objects,
+    objects: enhancedObjects, // Return enhanced objects with transaction status
     messages,
     setMessages,
     instanceId: sessionInstanceId.current,

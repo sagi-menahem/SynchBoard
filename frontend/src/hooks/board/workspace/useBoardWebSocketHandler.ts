@@ -9,14 +9,6 @@ import { useSocketSubscription } from 'hooks/common/useSocket';
 import * as boardService from 'services/BoardService';
 import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
-
-/**
- * Extended chat message type that includes pending transaction properties
- */
-interface PendingChatMessageResponse extends ChatMessageResponse {
-  transactionId?: string;
-  isPending?: boolean;
-}
 import type { BoardUpdateDTO } from 'types/WebSocketTypes';
 
 interface WebSocketHandlerProps {
@@ -74,10 +66,12 @@ export const useBoardWebSocketHandler = ({
         logger.debug(`[UNIFIED] Received transactional message. Type: ${transactionalMessage.type}, InstanceId: ${transactionalMessage.instanceId}`);
         
         // Branch based on message type for specific processing
-        if (transactionalMessage.type === ActionType.OBJECT_ADD || transactionalMessage.type === ActionType.OBJECT_DELETE) {
+        if (transactionalMessage.type === ActionType.OBJECT_ADD || 
+            transactionalMessage.type === ActionType.OBJECT_DELETE) {
           // DRAWING ACTION PROCESSING
           const action = transactionalMessage as BoardActionResponse;
-          const isOwnDrawingAction = action.sender === sessionInstanceId && action.type === ActionType.OBJECT_ADD;
+          const isOwnDrawingAction = action.sender === sessionInstanceId && 
+            action.type === ActionType.OBJECT_ADD;
           
           // Process the action for non-own actions
           if (!isOwnDrawingAction) {
@@ -96,9 +90,12 @@ export const useBoardWebSocketHandler = ({
           const chatMessage = transactionalMessage as ChatMessageResponse;
           logger.debug(`[UNIFIED] Processing CHAT message with instanceId: ${chatMessage.instanceId}`);
           
-          setMessages(prevMessages => {
+          let shouldCommitTransaction = false;
+          let transactionIdToCommit: string | null = null;
+          
+          setMessages((prevMessages) => {
             // Enhanced findIndex logic with improved matching for queued messages
-            const messageIndex = prevMessages.findIndex(msg => {
+            const messageIndex = prevMessages.findIndex((msg) => {
               const enhancedMsg = msg as any;
               
               // Primary match: server instanceId matches our transactionId (most common case)
@@ -127,17 +124,25 @@ export const useBoardWebSocketHandler = ({
             });
 
             if (messageIndex !== -1) {
-              logger.debug(`[UNIFIED] Match found for chat instanceId: ${chatMessage.instanceId}. Replacing message at index ${messageIndex}.`);
+              logger.debug(`[UNIFIED] Match found for chat instanceId: ${chatMessage.instanceId}. Updating message at index ${messageIndex}.`);
               const newMessages = [...prevMessages];
               
-              // Replace the pending/queued message with the confirmed one from the server
-              // Preserve the transactionId from the original message for proper state tracking
+              // CRITICAL FIX: Preserve original message for transaction commitment
               const originalMessage = prevMessages[messageIndex] as any;
+              
+              // Update the message with server data while preserving transaction tracking
               newMessages[messageIndex] = {
                 ...chatMessage,
                 transactionId: originalMessage.transactionId, // Preserve for transaction tracking
-                transactionStatus: 'confirmed' // Explicitly mark as confirmed
+                transactionStatus: 'confirmed', // Explicitly mark as confirmed
               };
+              
+              // Schedule transaction commitment AFTER state update
+              if (originalMessage.transactionId) {
+                shouldCommitTransaction = true;
+                transactionIdToCommit = originalMessage.transactionId;
+                logger.debug(`[UNIFIED] Scheduling transaction commit for: ${originalMessage.transactionId}`);
+              }
               
               return newMessages;
             } else {
@@ -146,14 +151,28 @@ export const useBoardWebSocketHandler = ({
               return [...prevMessages, chatMessage];
             }
           });
+          
+          // CRITICAL FIX: Commit transaction AFTER message state has been updated
+          // This ensures the onSuccess callback sees the updated message
+          if (shouldCommitTransaction && transactionIdToCommit) {
+            // Use setTimeout to ensure state update completes first
+            const transactionId = transactionIdToCommit;
+            setTimeout(() => {
+              logger.debug(`[UNIFIED] Committing transaction for chat message: ${transactionId}`);
+              commitTransaction(transactionId);
+            }, 0);
+          }
         } else {
           logger.warn(`[UNIFIED] Unknown transactional message type: ${transactionalMessage.type}`);
         }
 
-        // UNIFIED COMMIT: Single commit point for ALL transactional messages
-        // This is the critical fix - both drawings and chat messages go through the same commit logic
-        logger.debug(`[UNIFIED] Committing transaction for type: ${transactionalMessage.type}, instanceId: ${transactionalMessage.instanceId}`);
-        commitTransaction(transactionalMessage.instanceId);
+        // DRAWING COMMIT: Only commit drawing transactions here
+        // Chat messages handle their own commitment timing above
+        if (transactionalMessage.type === ActionType.OBJECT_ADD || 
+            transactionalMessage.type === ActionType.OBJECT_DELETE) {
+          logger.debug(`[UNIFIED] Committing drawing transaction for instanceId: ${transactionalMessage.instanceId}`);
+          commitTransaction(transactionalMessage.instanceId);
+        }
         
       }
     },
