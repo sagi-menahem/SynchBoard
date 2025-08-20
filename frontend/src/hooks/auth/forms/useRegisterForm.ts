@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
-import * as authService from 'services/authService';
+import * as authService from 'services/AuthService';
 import type { RegisterRequest } from 'types/UserTypes';
 
 

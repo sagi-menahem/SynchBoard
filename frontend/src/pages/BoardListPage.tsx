@@ -11,7 +11,7 @@ import {
     ConfirmationDialog,
     ContextMenu,
     ContextMenuItem,
-    Modal,
+    Modal
 } from 'components/common';
 import { useBoardList } from 'hooks/board/management';
 

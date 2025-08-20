@@ -5,15 +5,15 @@ import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import {
     useBoardDetails,
     useBoardEditing,
     useBoardMemberManagement,
-    useBoardPermissions,
+    useBoardPermissions
 } from 'hooks/board/details';
-import * as boardService from 'services/boardService';
+import * as boardService from 'services/BoardService';
 import type { Member } from 'types/BoardTypes';
 import type { EditingField } from 'types/CommonTypes';
 
@@ -40,7 +40,7 @@ export const useBoardDetailsPage = (boardId: number) => {
             refetch();
             setInviteModalOpen(false);
         },
-        [refetch],
+        [refetch]
     );
 
     const handlePromote = useCallback(async () => {
@@ -88,7 +88,7 @@ export const useBoardDetailsPage = (boardId: number) => {
                 setPictureModalOpen(false);
             }
         },
-        [boardId, refetch, t],
+        [boardId, refetch, t]
     );
 
     const promptPictureDelete = useCallback(() => {

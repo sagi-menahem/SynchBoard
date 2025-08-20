@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
 import { useTranslation } from 'react-i18next';
@@ -15,21 +15,12 @@ interface MemberListItemProps {
 
 const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }) => {
     const { t } = useTranslation();
-    
-    // Memoize image source calculation
-    const imageSource = useMemo(() => {
-        return member.profilePictureUrl
-            ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
-            : defaultUserImage;
-    }, [member.profilePictureUrl]);
-
-    // Memoize context menu handler
-    const handleContextMenu = useCallback((e: React.MouseEvent) => {
-        onContextMenu(e, member);
-    }, [onContextMenu, member]);
+    const imageSource = member.profilePictureUrl
+        ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
+        : defaultUserImage;
 
     return (
-        <div onContextMenu={handleContextMenu}>
+        <div onContextMenu={(e) => onContextMenu(e, member)}>
             <li className={styles.memberItem}>
                 <img src={imageSource} alt={`${member.firstName} ${member.lastName}`} className={styles.memberAvatar} />
                 <div>
@@ -44,4 +35,4 @@ const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }
     );
 };
 
-export default React.memo(MemberListItem);
+export default MemberListItem;

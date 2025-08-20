@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState, useMemo, type ReactNode } from 'react';
+import React, { useCallback, useEffect, useState, type ReactNode } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { useAuth } from 'hooks/auth';
-import * as userService from 'services/userService';
+import * as userService from 'services/UserService';
 import type { UserPreferences } from 'types/UserTypes';
 
 import { PreferencesContext } from './PreferencesContext';
@@ -44,7 +44,7 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
         }
     }, [token, fetchAndSetUserPreferences]);
 
-    const updatePreferences = useCallback((newPrefs: UserPreferences): Promise<void> => {
+    const updatePreferences = (newPrefs: UserPreferences): Promise<void> => {
         const oldPrefs = preferences;
         setPreferences(newPrefs);
 
@@ -58,12 +58,12 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
                 setPreferences(oldPrefs);
                 throw error;
             });
-    }, [preferences, t]);
+    };
 
-    const value = useMemo(() => ({
+    const value = {
         preferences,
         updatePreferences,
-    }), [preferences, updatePreferences]);
+    };
 
     return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>;
 };

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { BoardService } from 'services';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { useAuth } from 'hooks/auth';
 import { useContextMenu, useSocketSubscription } from 'hooks/common';
@@ -77,7 +77,7 @@ export const useBoardList = () => {
             logger.debug(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
             fetchBoards();
         },
-        [fetchBoards],
+        [fetchBoards]
     );
 
     useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');

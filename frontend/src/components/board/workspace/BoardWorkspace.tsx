@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Canvas } from 'components/board/workspace';
 import { ChatWindow } from 'components/chat';
@@ -31,20 +31,17 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     strokeWidth,
     onDraw,
 }) => {
-    // Memoize canvas props to prevent unnecessary re-renders
-    const canvasProps = useMemo(() => ({
-        instanceId,
-        onDraw,
-        objects,
-        tool,
-        strokeColor,
-        strokeWidth,
-    }), [instanceId, onDraw, objects, tool, strokeColor, strokeWidth]);
-
     return (
         <div className={styles.mainContent}>
             <div className={styles.canvasContainer}>
-                <Canvas {...canvasProps} />
+                <Canvas
+                    instanceId={instanceId}
+                    onDraw={onDraw}
+                    objects={objects}
+                    tool={tool}
+                    strokeColor={strokeColor}
+                    strokeWidth={strokeWidth}
+                />
             </div>
             <div className={styles.chatContainer}>
                 <ChatWindow boardId={boardId} messages={messages} setMessages={setMessages} />
@@ -53,4 +50,4 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     );
 };
 
-export default React.memo(BoardWorkspace);
+export default BoardWorkspace;

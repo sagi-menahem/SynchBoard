@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
-import * as boardService from 'services/boardService';
+import * as boardService from 'services/BoardService';
 
 
 export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
@@ -22,7 +22,7 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
                 throw error;
             }
         },
-        [boardId, onSuccess, t],
+        [boardId, onSuccess, t]
     );
 
     const handleUpdateDescription = useCallback(
@@ -37,7 +37,7 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
                 throw error;
             }
         },
-        [boardId, onSuccess, t],
+        [boardId, onSuccess, t]
     );
 
     return {

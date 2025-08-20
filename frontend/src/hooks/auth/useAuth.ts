@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { AuthContext } from 'context/AuthContext';
 

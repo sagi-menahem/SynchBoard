@@ -1,7 +1,6 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import React, { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import logger from 'utils/logger';
-
+import logger from 'utils/Logger';
 import { ErrorDisplay } from 'components/common';
 
 interface Props {
@@ -39,7 +38,7 @@ export class BoardErrorBoundary extends Component<Props, State> {
       boardId,
       timestamp: new Date().toISOString(),
       url: window.location.href,
-      context: 'BoardErrorBoundary',
+      context: 'BoardErrorBoundary'
     });
   }
 

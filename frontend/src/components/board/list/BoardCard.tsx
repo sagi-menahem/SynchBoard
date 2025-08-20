@@ -1,6 +1,6 @@
 import { API_BASE_URL, APP_ROUTES } from 'constants';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
@@ -16,10 +16,7 @@ interface BoardCardProps {
 const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
     const { t } = useTranslation();
 
-    // Memoize image source calculation to prevent unnecessary recalculation
-    const imageSource = useMemo(() => {
-        return board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage;
-    }, [board.pictureUrl]);
+    const imageSource = board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage;
 
     return (
         <Link to={APP_ROUTES.getBoardDetailRoute(board.id)} className={styles.boardCard}>
@@ -33,4 +30,4 @@ const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
     );
 };
 
-export default React.memo(BoardCard);
+export default BoardCard;

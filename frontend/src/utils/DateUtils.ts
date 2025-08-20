@@ -28,7 +28,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   const diffMs = now.getTime() - date.getTime();
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  // const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // unused
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
   // Less than 1 minute ago
   if (diffMinutes < 1) {
@@ -58,7 +58,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
       month: 'short', 
       day: 'numeric',
       hour: '2-digit', 
-      minute: '2-digit', 
+      minute: '2-digit' 
     });
   }
 
@@ -68,7 +68,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
     month: 'short', 
     day: 'numeric',
     hour: '2-digit', 
-    minute: '2-digit', 
+    minute: '2-digit' 
   });
 };
 
@@ -137,7 +137,7 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   if (date.getFullYear() === now.getFullYear()) {
     return date.toLocaleDateString([], { 
       month: 'long', 
-      day: 'numeric', 
+      day: 'numeric' 
     });
   }
   
@@ -145,6 +145,6 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   return date.toLocaleDateString([], { 
     year: 'numeric',
     month: 'long', 
-    day: 'numeric', 
+    day: 'numeric' 
   });
 };

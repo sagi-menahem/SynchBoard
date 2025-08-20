@@ -72,7 +72,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
                     }
                 });
         },
-        [boardId, userEmail, navigate],
+        [boardId, userEmail, navigate]
     );
 
     useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');

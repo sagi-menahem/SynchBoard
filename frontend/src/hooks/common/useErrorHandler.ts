@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { createErrorHandler } from 'utils';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 interface ErrorHandlerOptions {
     showToast?: boolean;
@@ -23,7 +23,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
             toast.error(
                 context 
                     ? `${context}: ${error.message}`
-                    : error.message || 'An unexpected error occurred',
+                    : error.message || 'An unexpected error occurred'
             );
         }
 
@@ -35,7 +35,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
     const handleAsyncError = useCallback(async <T>(
         asyncFn: () => Promise<T>,
         context?: string,
-        fallbackValue?: T,
+        fallbackValue?: T
     ): Promise<T | undefined> => {
         try {
             return await asyncFn();
@@ -47,7 +47,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
 
     return {
         handleError,
-        handleAsyncError,
+        handleAsyncError
     };
 };
 

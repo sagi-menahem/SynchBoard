@@ -52,7 +52,7 @@ export const useDraggable = ({ containerRef }: UseDraggableProps) => {
 
             setPosition({ x: clampedX, y: clampedY });
         },
-        [containerRef],
+        [containerRef]
     );
 
     const handleMouseUp = useCallback(() => {
@@ -79,7 +79,7 @@ export const useDraggable = ({ containerRef }: UseDraggableProps) => {
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
         },
-        [handleMouseMove, handleMouseUp, position.x, position.y],
+        [handleMouseMove, handleMouseUp, position.x, position.y]
     );
 
     return {

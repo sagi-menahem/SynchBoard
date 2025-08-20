@@ -3,7 +3,7 @@ import {
     API_ENDPOINTS,
     AUTH_HEADER_CONFIG,
     LOCAL_STORAGE_KEYS,
-    PUBLIC_API_ENDPOINTS,
+    PUBLIC_API_ENDPOINTS
 } from 'constants';
 
 import axios, { type AxiosError } from 'axios';
@@ -27,7 +27,7 @@ apiClient.interceptors.request.use(
         
         logger.debug(`API Request: ${config.method?.toUpperCase()} ${config.url}`, {
             headers: isPublicEndpoint ? 'public' : 'authenticated',
-            params: config.params,
+            params: config.params
         });
         
         if (!isPublicEndpoint) {
@@ -44,7 +44,7 @@ apiClient.interceptors.request.use(
     (error) => {
         logger.error('API Request interceptor error', error);
         return Promise.reject(error);
-    },
+    }
 );
 
 apiClient.interceptors.response.use(
@@ -92,7 +92,7 @@ apiClient.interceptors.response.use(
         }
 
         return Promise.reject(error);
-    },
+    }
 );
 
 export default apiClient;

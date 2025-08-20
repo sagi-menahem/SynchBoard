@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
-import * as boardService from 'services/boardService';
+import * as boardService from 'services/BoardService';
 import type { ActionPayload } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
