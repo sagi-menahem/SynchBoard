@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { APP_CONFIG } from 'constants/AppConstants';
-import { createBoard } from 'services/boardService';
+import { createBoard } from 'services/BoardService';
 import type { Board, CreateBoardRequest } from 'types/BoardTypes';
 
 

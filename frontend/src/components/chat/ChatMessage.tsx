@@ -1,8 +1,8 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
+import { isSafeUrl, sanitizeUserContent } from 'utils/Sanitize';
 import { formatSmartTimestamp, formatDetailedTimestamp } from 'utils/DateUtils';
-import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
@@ -12,16 +12,9 @@ import styles from './ChatMessage.module.css';
 interface ChatMessageProps {
   message: EnhancedChatMessage;
   isOwnMessage?: boolean;
-  connectionStatus?: 'connected' | 'connecting' | 'disconnected';
-  onRetryMessage?: (messageId: string) => void;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ 
-  message, 
-  isOwnMessage = false, 
-  connectionStatus = 'connected',
-  onRetryMessage, 
-}) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false }) => {
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;
@@ -31,17 +24,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const senderName = sanitizeUserContent(message.senderFullName);
   const messageContent = sanitizeUserContent(message.content);
 
-  // SIMPLE VISUAL STATUS: Use server ID as source of truth
-  // Server messages have ID > 0, local optimistic messages have ID = 0 or undefined
-  const isConfirmed = !!(message.id && message.id > 0);
+  // Determine message status for styling
+  const getMessageStatus = (): string => {
+    if (!message.transactionId) return 'confirmed'; // Server-originated message
+    return message.transactionStatus || 'confirmed';
+  };
 
-  // Determine status for CSS class - with proper typing
-  const effectiveStatus: string = isConfirmed 
-    ? 'confirmed' 
-    : (message.transactionStatus || 'processing');
-
-  // Apply the appropriate CSS class
-  const statusClass: string = styles[effectiveStatus] || '';
+  const messageStatus = getMessageStatus();
+  const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
 
   // Smart timestamp formatting
   const smartTimestamp = formatSmartTimestamp(message.timestamp);
@@ -79,37 +69,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
             </span>
           </div>
           
-          {effectiveStatus === 'failed' && (
-            <div className={styles.failureActions}>
-              <span 
-                className={styles.failureIcon} 
-                title={
-                  connectionStatus === 'connected' 
-                    ? 'Failed to send - click retry to try again'
-                    : 'Failed to send - message will be retried when connection is restored'
-                }
-              >
-                ⚠️
-              </span>
-              {connectionStatus === 'connected' && onRetryMessage && (
-                <button
-                  className={styles.retryButton}
-                  onClick={() => onRetryMessage(message.transactionId || message.id?.toString() || '')}
-                  title="Retry sending message"
-                  aria-label="Retry sending this failed message"
-                >
-                  🔄
-                </button>
-              )}
-              {connectionStatus === 'disconnected' && (
-                <span 
-                  className={styles.offlineIndicator}
-                  title="Will retry automatically when connection is restored"
-                >
-                  📴
-                </span>
-              )}
-            </div>
+          {messageStatus === 'failed' && (
+            <span 
+              className={styles.failureIcon} 
+              title="Failed to send - message will be retried when connection is restored"
+            >
+              ❗
+            </span>
           )}
         </div>
       </div>

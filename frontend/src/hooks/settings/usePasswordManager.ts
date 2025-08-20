@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { UserService } from 'services';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import type { ChangePasswordRequest } from 'types/UserTypes';
 
@@ -21,7 +21,7 @@ export const usePasswordManager = () => {
                 throw error;
             }
         },
-        [t],
+        [t]
     );
 
     return {

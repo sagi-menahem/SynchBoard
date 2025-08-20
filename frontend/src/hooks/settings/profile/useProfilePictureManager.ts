@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
-import * as userService from 'services/userService';
+import * as userService from 'services/UserService';
 import type { UserProfile } from 'types/UserTypes';
 
 
@@ -23,7 +23,7 @@ export const useProfilePictureManager = (onSuccess?: (updatedUser: UserProfile) 
                 throw error;
             }
         },
-        [t, onSuccess],
+        [t, onSuccess]
     );
 
     const handlePictureDelete = useCallback(async () => {

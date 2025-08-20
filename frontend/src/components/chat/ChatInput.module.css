@@ -20,10 +20,3 @@
     opacity: 0.8;
     cursor: wait;
 }
-
-.buttonDisconnected {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background-color: #666 !important;
-    color: #ccc !important;
-}

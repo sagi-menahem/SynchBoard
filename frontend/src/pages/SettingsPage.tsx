@@ -11,7 +11,7 @@ import {
     ChatAppearanceSection,
     DangerZoneSection,
     ProfileDetailsSection,
-    ProfilePictureManager,
+    ProfilePictureManager
 } from 'components/settings';
 import { useSettingsPage } from 'hooks/settings';
 

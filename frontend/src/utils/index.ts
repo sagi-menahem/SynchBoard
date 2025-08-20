@@ -1,5 +1,5 @@
-export { default as Logger } from './logger';
-export * from './sanitize';
+export { default as Logger } from './Logger';
+export * from './Sanitize';
 export * from './CanvasUtils';
 export * from './DateUtils';
 export * from './ValidationUtils';

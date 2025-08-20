@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import type { ButtonVariant } from 'types/CommonTypes';
 
@@ -9,10 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({ variant = 'primary', children, className, ...props }) => {
-    // Memoize className calculation to prevent unnecessary re-renders
-    const buttonClasses = useMemo(() => {
-        return `${styles.base} ${styles[variant]} ${className || ''}`.trim();
-    }, [variant, className]);
+    const buttonClasses = `${styles.base} ${styles[variant]} ${className || ''}`.trim();
 
     return (
         <button className={buttonClasses} {...props}>
@@ -21,4 +18,4 @@ const Button: React.FC<ButtonProps> = ({ variant = 'primary', children, classNam
     );
 };
 
-export default React.memo(Button);
+export default Button;

@@ -1,6 +1,6 @@
 import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants';
 
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -40,19 +40,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
     const { t } = useTranslation();
     const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
 
-    // Memoize event handlers to prevent child re-renders
-    const handleColorChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setStrokeColor(e.target.value);
-    }, [setStrokeColor]);
-
-    const handleWidthChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setStrokeWidth(parseInt(e.target.value, 10));
-    }, [setStrokeWidth]);
-
-    const createToolClickHandler = useCallback((toolName: Tool) => {
-        return () => setTool(toolName);
-    }, [setTool]);
-
     return (
         <div
             ref={draggableRef}
@@ -67,7 +54,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                 <input
                     type="color"
                     value={strokeColor}
-                    onChange={handleColorChange}
+                    onChange={(e) => setStrokeColor(e.target.value)}
                     className={styles.colorInput}
                 />
             </label>
@@ -79,7 +66,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                     min={STROKE_WIDTH_RANGE.MIN}
                     max={STROKE_WIDTH_RANGE.MAX}
                     value={strokeWidth}
-                    onChange={handleWidthChange}
+                    onChange={(e) => setStrokeWidth(parseInt(e.target.value, 10))}
                     className={styles.rangeInput}
                 />
             </label>
@@ -89,7 +76,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                     <Button
                         key={toolName}
                         variant={tool === toolName ? 'primary' : 'secondary'}
-                        onClick={createToolClickHandler(toolName)}
+                        onClick={() => setTool(toolName)}
                     >
                         {t(`toolbar.tool.${toolName}`)}
                     </Button>
@@ -108,4 +95,4 @@ const Toolbar: React.FC<ToolbarProps> = ({
     );
 };
 
-export default React.memo(Toolbar);
+export default Toolbar;

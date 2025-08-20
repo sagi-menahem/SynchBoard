@@ -10,7 +10,6 @@ interface ChatInputProps {
     onSendMessage: (content: string) => Promise<void>;
     disabled?: boolean;
     placeholder?: string;
-    connectionStatus?: 'connected' | 'connecting' | 'disconnected';
 }
 
 /**
@@ -20,8 +19,7 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = React.memo(({ 
     onSendMessage, 
     disabled = false, 
-    placeholder,
-    connectionStatus = 'connected',
+    placeholder 
 }) => {
     const { t } = useTranslation();
     const [message, setMessage] = useState('');
@@ -32,7 +30,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         event.preventDefault();
         
         const messageContent = message.trim();
-        if (!messageContent || disabled || isSending || connectionStatus !== 'connected') {
+        if (!messageContent || disabled || isSending) {
             return;
         }
 
@@ -53,7 +51,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
                 inputRef.current?.focus();
             }, 0);
         }
-    }, [message, onSendMessage, disabled, isSending, connectionStatus]);
+    }, [message, onSendMessage, disabled, isSending]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(e.target.value);
@@ -79,13 +77,10 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
             </div>
             <Button 
                 type="submit" 
-                disabled={!message.trim() || disabled || isSending || connectionStatus !== 'connected'}
-                className={`${isSending ? styles.buttonSending : ''} ${connectionStatus !== 'connected' ? styles.buttonDisconnected : ''}`}
+                disabled={!message.trim() || disabled || isSending}
+                className={isSending ? styles.buttonSending : ''}
             >
-                {isSending ? t('chat.sending', 'Sending...') : 
-                 connectionStatus === 'connecting' ? t('chat.connecting', 'Connecting...') :
-                 connectionStatus === 'disconnected' ? t('chat.disconnected', 'Disconnected') :
-                 t('common.button.send', 'Send')}
+                {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}
             </Button>
         </form>
     );

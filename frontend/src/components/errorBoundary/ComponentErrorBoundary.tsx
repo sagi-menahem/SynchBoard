@@ -1,7 +1,6 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import React, { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import logger from 'utils/logger';
-
+import logger from 'utils/Logger';
 import { ErrorDisplay } from 'components/common';
 
 interface Props {
@@ -41,7 +40,7 @@ export class ComponentErrorBoundary extends Component<Props, State> {
       componentStack: errorInfo.componentStack,
       componentName,
       timestamp: new Date().toISOString(),
-      context: 'ComponentErrorBoundary',
+      context: 'ComponentErrorBoundary'
     });
   }
 
@@ -62,13 +61,13 @@ export class ComponentErrorBoundary extends Component<Props, State> {
             border: '1px solid #fecaca',
             borderRadius: '6px',
             textAlign: 'center',
-            margin: '0.5rem 0',
+            margin: '0.5rem 0'
           }}>
             <p style={{ 
               color: '#dc2626', 
               fontSize: '0.875rem', 
               margin: '0 0 0.75rem 0',
-              fontWeight: 500,
+              fontWeight: 500
             }}>
               {fallbackMessage || `${componentName || 'Component'} failed to load`}
             </p>
@@ -83,7 +82,7 @@ export class ComponentErrorBoundary extends Component<Props, State> {
                 borderRadius: '4px',
                 cursor: 'pointer',
                 fontWeight: 500,
-                transition: 'background-color 0.2s ease',
+                transition: 'background-color 0.2s ease'
               }}
             >
               Try Again

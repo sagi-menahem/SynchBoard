@@ -3,7 +3,7 @@ import type { ActionPayload, CirclePayload, LinePayload, RectanglePayload } from
 
 export const getMouseCoordinates = (
     event: MouseEvent, 
-    canvas: HTMLCanvasElement,
+    canvas: HTMLCanvasElement
 ): { x: number; y: number } | null => {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -23,7 +23,7 @@ export const isRadiusValid = (radius: number): boolean => {
 export const drawLinePayload = (
     payload: LinePayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement,
+    targetCanvas: HTMLCanvasElement
 ): void => {
     const { points, color, lineWidth } = payload;
     if (points.length < 2) return;
@@ -48,7 +48,7 @@ export const drawLinePayload = (
 export const drawRectanglePayload = (
     payload: RectanglePayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement,
+    targetCanvas: HTMLCanvasElement
 ): void => {
     const { x, y, width, height, color, strokeWidth } = payload;
 
@@ -58,14 +58,14 @@ export const drawRectanglePayload = (
         x * targetCanvas.width,
         y * targetCanvas.height,
         width * targetCanvas.width,
-        height * targetCanvas.height,
+        height * targetCanvas.height
     );
 };
 
 export const drawCirclePayload = (
     payload: CirclePayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement,
+    targetCanvas: HTMLCanvasElement
 ): void => {
     const { x, y, radius, color, strokeWidth } = payload;
 
@@ -91,20 +91,9 @@ export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRend
 export const replayDrawAction = (
     payload: ActionPayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement,
+    targetCanvas: HTMLCanvasElement
 ): void => {
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
-
-    // Apply visual feedback based on transaction status
-    const originalGlobalAlpha = targetCtx.globalAlpha;
-    if (payload.transactionStatus === 'sending') {
-        targetCtx.globalAlpha = 0.5; // Reduced opacity for sending drawings
-    } else if (payload.transactionStatus === 'processing') {
-        targetCtx.globalAlpha = 0.7; // Slightly reduced opacity for processing
-    } else if (payload.transactionStatus === 'failed') {
-        targetCtx.globalAlpha = 0.3; // More faded for failed drawings
-    }
-    // 'confirmed' or undefined status uses normal opacity (1.0)
 
     if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
         drawLinePayload(payload as LinePayload, targetCtx, targetCanvas);
@@ -114,7 +103,5 @@ export const replayDrawAction = (
         drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
     }
 
-    // Restore original alpha and composite operation
-    targetCtx.globalAlpha = originalGlobalAlpha;
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 };

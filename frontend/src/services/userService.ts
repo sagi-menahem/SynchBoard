@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from 'constants';
 
 import type { ChangePasswordRequest, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'types/UserTypes';
 
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 
 export const getUserProfile = async (): Promise<UserProfile> => {
     const response = await apiClient.get<UserProfile>(API_ENDPOINTS.GET_USER_PROFILE);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import { Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';

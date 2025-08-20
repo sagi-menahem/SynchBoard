@@ -3,7 +3,7 @@ import type { ChatMessageResponse } from './MessageTypes';
 export interface EnhancedChatMessage extends ChatMessageResponse {
   // Transaction tracking
   transactionId?: string;
-  transactionStatus?: 'sending' | 'processing' | 'confirmed' | 'failed';
+  transactionStatus?: 'sending' | 'queued' | 'processing' | 'confirmed' | 'failed';
   
   // Queue-specific metadata
   queuePosition?: number;

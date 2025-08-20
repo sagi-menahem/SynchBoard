@@ -1,6 +1,6 @@
 import React, { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import logger from 'utils/logger';
+import logger from 'utils/Logger';
 
 import styles from './ErrorBoundary.module.css';
 
@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
         
         logger.error(`${this.props.level || 'Component'} error boundary caught an error`, error, {
             componentStack: errorInfo.componentStack,
-            errorBoundary: this.constructor.name,
+            errorBoundary: this.constructor.name
         });
 
         if (this.props.onError) {
@@ -78,7 +78,7 @@ interface ErrorFallbackProps {
 const ErrorFallback: React.FC<ErrorFallbackProps> = ({ 
     error, 
     onRetry, 
-    level = 'component', 
+    level = 'component' 
 }) => {
     const getLevelConfig = () => {
         switch (level) {
@@ -88,7 +88,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
                     description: 'This page encountered an error and could not be displayed.',
                     showDetails: true,
                     actionText: 'Reload Page',
-                    onAction: () => window.location.reload(),
+                    onAction: () => window.location.reload()
                 };
             case 'section':
                 return {
@@ -96,7 +96,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
                     description: 'This section encountered an error.',
                     showDetails: false,
                     actionText: 'Try Again',
-                    onAction: onRetry,
+                    onAction: onRetry
                 };
             default:
                 return {
@@ -104,7 +104,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
                     description: 'A component error occurred.',
                     showDetails: false,
                     actionText: 'Retry',
-                    onAction: onRetry,
+                    onAction: onRetry
                 };
         }
     };
