@@ -2,12 +2,10 @@ import React, { useMemo } from 'react';
 
 import { Canvas } from 'components/board/workspace';
 import { ChatWindow } from 'components/chat';
-import { useWebSocket } from 'hooks/common';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
-import ConnectionOverlay from './ConnectionOverlay';
 import styles from './BoardWorkspace.module.css';
 
 interface BoardWorkspaceProps {
@@ -33,10 +31,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     strokeWidth,
     onDraw,
 }) => {
-    const { connectionState } = useWebSocket();
-    
     // Memoize canvas props to prevent unnecessary re-renders
-    // CONNECTION STATUS REMOVED - Canvas should not re-render on connection changes
     const canvasProps = useMemo(() => ({
         instanceId,
         onDraw,
@@ -50,7 +45,6 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         <div className={styles.mainContent}>
             <div className={styles.canvasContainer}>
                 <Canvas {...canvasProps} />
-                <ConnectionOverlay connectionStatus={connectionState} />
             </div>
             <div className={styles.chatContainer}>
                 <ChatWindow boardId={boardId} messages={messages} setMessages={setMessages} />

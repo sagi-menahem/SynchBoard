@@ -127,7 +127,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const handleRetryMessage = useCallback(async (messageId: string) => {
     // Find the failed message by transaction ID or message ID
     const failedMessage = allMessages.find((msg) => 
-      msg.transactionId === messageId || msg.id?.toString() === messageId
+      msg.transactionId === messageId || msg.id?.toString() === messageId,
     );
     
     if (failedMessage && failedMessage.content) {

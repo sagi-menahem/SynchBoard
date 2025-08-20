@@ -9,7 +9,7 @@ import {
     BoardEditModals,
     MemberContextMenu,
     MemberList,
-    PictureManagerModal
+    PictureManagerModal,
 } from 'components/board/details';
 import { useBoardDetailsPage } from 'hooks/board/details';
 

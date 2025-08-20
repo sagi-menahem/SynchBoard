@@ -116,7 +116,7 @@ class WebSocketService {
    * Handles disconnection from any source and initiates reconnection if appropriate.
    * This is called by various event handlers to ensure consistent disconnect handling.
    */
-  private handleDisconnection(_event?: any): void {
+  private handleDisconnection(): void {
     logger.debug('Handling disconnection - updating state and attempting reconnection');
     
     // CRITICAL FIX: Prevent rapid state changes with lock mechanism
@@ -194,7 +194,7 @@ class WebSocketService {
       
       if (this.currentToken && this.onConnectedCallback) {
         logger.debug('Executing scheduled reconnection attempt');
-        this.connectInternal(this.currentToken, this.onConnectedCallback);
+        this.connectInternal(this.currentToken);
       } else {
         logger.warn('No token or callback available for reconnection');
       }
@@ -245,10 +245,10 @@ class WebSocketService {
       return;
     }
 
-    this.connectInternal(token, onConnectedCallback);
+    this.connectInternal(token);
   }
 
-  private connectInternal(token: string, _onConnectedCallback: () => void): void {
+  private connectInternal(token: string): void {
     this.connectionState = 'connecting';
     this.notifyConnectionChange();
 
@@ -316,7 +316,7 @@ class WebSocketService {
         // Don't rollback immediately for normal closure codes
         if (event?.code === 1000 || event?.code === 1001) {
           logger.debug('Normal WebSocket closure, skipping rollback');
-          this.handleDisconnection(event);
+          this.handleDisconnection();
           return;
         }
         
@@ -579,7 +579,7 @@ class WebSocketService {
   private notifyConnectionChange(): void {
     logger.debug(`Notifying ${this.connectionListeners.size} listeners of connection state: ${this.connectionState}`);
     
-    this.connectionListeners.forEach(listener => {
+    this.connectionListeners.forEach((listener) => {
       try {
         listener(this.connectionState);
       } catch (error) {

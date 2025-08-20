@@ -77,7 +77,7 @@ export const useBoardList = () => {
             logger.debug(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
             fetchBoards();
         },
-        [fetchBoards]
+        [fetchBoards],
     );
 
     useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');

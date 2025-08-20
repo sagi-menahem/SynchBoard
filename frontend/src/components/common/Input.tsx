@@ -6,7 +6,7 @@ const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLI
     ({ className, style, ...props }, ref) => {
         const inputClasses = `${styles.input} ${className || ''}`.trim();
         return <input ref={ref} className={inputClasses} style={style} {...props} />;
-    }
+    },
 );
 
 Input.displayName = 'Input';

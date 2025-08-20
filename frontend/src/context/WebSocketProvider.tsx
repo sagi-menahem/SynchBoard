@@ -3,9 +3,10 @@ import React, { useEffect, useState, useMemo, useRef, type ReactNode } from 'rea
 import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
+import transactionService from 'services/transactionService';
 import websocketService, { type ConnectionStatus } from 'services/websocketService';
 
-import { WebSocketContext } from './WebSocketContext';
+import { WebSocketContext, type TransactionMethods } from './WebSocketContext';
 
 interface WebSocketProviderProps {
     children: ReactNode;
@@ -36,11 +37,13 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     prevUserEmailRef.current = userEmail;
     
     // Subscribe to instant connection status updates instead of polling
-    const unsubscribeFromConnectionChanges = websocketService.subscribeToConnectionChanges((status: ConnectionStatus) => {
-      setConnectionState(status);
-      setIsSocketConnected(status === 'connected');
-      logger.debug(`WebSocket connection status updated to: ${status}`);
-    });
+    const unsubscribeFromConnectionChanges = websocketService.subscribeToConnectionChanges(
+      (status: ConnectionStatus) => {
+        setConnectionState(status);
+        setIsSocketConnected(status === 'connected');
+        logger.debug(`WebSocket connection status updated to: ${status}`);
+      },
+    );
 
     if (token) {
       websocketService.connect(token, () => {
@@ -74,12 +77,33 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     return () => {
       unsubscribeFromConnectionChanges();
       websocketService.disconnect();
+      // Clear all pending transactions on disconnect
+      transactionService.clearAllTransactions();
     };
   }, [token, userEmail]);
+
+  // Centralized transaction methods
+  const transactionMethods: TransactionMethods = useMemo(() => ({
+    createTransaction: <T = unknown>(
+      id: string, 
+      payload: T, 
+      onSuccess?: (payload: T, id: string) => void, 
+      onFailure?: (error: Error, payload: T, id: string) => void,
+    ) => {
+      transactionService.createTransaction(id, payload, 10000, onSuccess, onFailure);
+      transactionService.updateTransactionStatus(id, 'processing');
+    },
+    commitTransaction: (id: string) => transactionService.commitTransaction(id),
+    isPending: (id: string) => transactionService.isPending(id),
+    getTransactionStatus: (id: string) => transactionService.getTransactionStatus(id),
+    get pendingCount() { return transactionService.getPendingCount(); },
+    get pendingTransactionIds() { return transactionService.getPendingTransactionIds(); },
+  }), []);
 
   const contextValue = useMemo(() => ({
     isSocketConnected,
     connectionState,
+    transactions: transactionMethods,
   }), [isSocketConnected, connectionState]);
 
   return <WebSocketContext.Provider value={contextValue}>{children}</WebSocketContext.Provider>;

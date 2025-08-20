@@ -37,7 +37,7 @@ export const useUserProfileManager = () => {
                 throw error;
             }
         },
-        [t]
+        [t],
     );
 
     return {

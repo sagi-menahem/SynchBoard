@@ -2,8 +2,10 @@
 // Currently exports the standard ChatWindow for compatibility
 
 import React from 'react';
-import ChatWindow from './ChatWindow';
+
 import type { ChatMessageResponse } from 'types/MessageTypes';
+
+import ChatWindow from './ChatWindow';
 
 interface VirtualizedChatWindowProps {
   boardId: number;

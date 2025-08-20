@@ -1,8 +1,8 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
-import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
 import { formatSmartTimestamp, formatDetailedTimestamp } from 'utils/DateUtils';
+import { isSafeUrl, sanitizeUserContent } from 'utils/sanitize';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
@@ -20,7 +20,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   message, 
   isOwnMessage = false, 
   connectionStatus = 'connected',
-  onRetryMessage 
+  onRetryMessage, 
 }) => {
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
@@ -33,12 +33,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   // SIMPLE VISUAL STATUS: Use server ID as source of truth
   // Server messages have ID > 0, local optimistic messages have ID = 0 or undefined
-  const isConfirmed: boolean = !!(message.id && message.id > 0);
+  const isConfirmed = !!(message.id && message.id > 0);
 
   // Determine status for CSS class - with proper typing
   const effectiveStatus: string = isConfirmed 
     ? 'confirmed' 
-    : ((message as any).transactionStatus || 'processing');
+    : (message.transactionStatus || 'processing');
 
   // Apply the appropriate CSS class
   const statusClass: string = styles[effectiveStatus] || '';
@@ -85,8 +85,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
                 className={styles.failureIcon} 
                 title={
                   connectionStatus === 'connected' 
-                    ? "Failed to send - click retry to try again"
-                    : "Failed to send - message will be retried when connection is restored"
+                    ? 'Failed to send - click retry to try again'
+                    : 'Failed to send - message will be retried when connection is restored'
                 }
               >
                 ⚠️

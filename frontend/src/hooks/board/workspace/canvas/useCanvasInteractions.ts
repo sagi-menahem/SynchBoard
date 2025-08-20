@@ -71,7 +71,7 @@ export const useCanvasInteractions = ({
                 startPoint.current = { x: offsetX, y: offsetY };
             }
         },
-        [previewCanvasRef, setIsDrawing, startPoint, currentPath]
+        [previewCanvasRef, setIsDrawing, startPoint, currentPath],
     );
 
     useEffect(() => {
@@ -87,7 +87,9 @@ export const useCanvasInteractions = ({
             previewCtx.clearRect(0, 0, canvas.width, canvas.height);
             previewCtx.lineWidth = strokeWidthRef.current;
             previewCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
-            previewCtx.strokeStyle = toolRef.current === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColorRef.current;
+            previewCtx.strokeStyle = toolRef.current === TOOLS.ERASER 
+              ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR 
+              : strokeColorRef.current;
 
             if (toolRef.current === TOOLS.BRUSH || toolRef.current === TOOLS.ERASER) {
                 currentPath.current.push({ x: coords.x / canvas.width, y: coords.y / canvas.height });
@@ -95,12 +97,12 @@ export const useCanvasInteractions = ({
                 if (currentPath.current.length > 1) {
                     previewCtx.moveTo(
                         currentPath.current[0].x * canvas.width,
-                        currentPath.current[0].y * canvas.height
+                        currentPath.current[0].y * canvas.height,
                     );
                     for (let i = 1; i < currentPath.current.length; i++) {
                         previewCtx.lineTo(
                             currentPath.current[i].x * canvas.width,
-                            currentPath.current[i].y * canvas.height
+                            currentPath.current[i].y * canvas.height,
                         );
                     }
                     previewCtx.stroke();
@@ -110,11 +112,11 @@ export const useCanvasInteractions = ({
                     startPoint.current.x,
                     startPoint.current.y,
                     coords.x - startPoint.current.x,
-                    coords.y - startPoint.current.y
+                    coords.y - startPoint.current.y,
                 );
             } else if (toolRef.current === TOOLS.CIRCLE && startPoint.current) {
                 const radius = Math.sqrt(
-                    Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)
+                    Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
                 );
                 previewCtx.beginPath();
                 previewCtx.arc(startPoint.current.x, startPoint.current.y, radius, 0, 2 * Math.PI);
@@ -131,9 +133,10 @@ export const useCanvasInteractions = ({
 
             previewCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if ((toolRef.current === TOOLS.BRUSH || toolRef.current === TOOLS.ERASER) && currentPath.current.length > 1) {
+            const isBrushOrEraser = toolRef.current === TOOLS.BRUSH || toolRef.current === TOOLS.ERASER;
+            if (isBrushOrEraser && currentPath.current.length > 1) {
                 const payload: Omit<LinePayload, 'instanceId'> = {
-                    tool: toolRef.current,
+                    tool: toolRef.current as 'brush' | 'eraser',
                     points: [...currentPath.current],
                     color: strokeColorRef.current,
                     lineWidth: strokeWidthRef.current,
@@ -159,7 +162,7 @@ export const useCanvasInteractions = ({
             } else if (toolRef.current === TOOLS.CIRCLE && startPoint.current) {
                 const radius =
                     Math.sqrt(
-                        Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)
+                        Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
                     ) / canvas.width;
                 if (isRadiusValid(radius)) {
                     const payload: Omit<CirclePayload, 'instanceId'> = {

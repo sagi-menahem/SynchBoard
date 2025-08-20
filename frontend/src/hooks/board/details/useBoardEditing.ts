@@ -22,7 +22,7 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
                 throw error;
             }
         },
-        [boardId, onSuccess, t]
+        [boardId, onSuccess, t],
     );
 
     const handleUpdateDescription = useCallback(
@@ -37,7 +37,7 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
                 throw error;
             }
         },
-        [boardId, onSuccess, t]
+        [boardId, onSuccess, t],
     );
 
     return {
