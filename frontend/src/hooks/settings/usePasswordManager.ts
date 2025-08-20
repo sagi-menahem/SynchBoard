@@ -21,7 +21,7 @@ export const usePasswordManager = () => {
                 throw error;
             }
         },
-        [t]
+        [t],
     );
 
     return {

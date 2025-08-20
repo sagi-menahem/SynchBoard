@@ -21,7 +21,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     onSendMessage, 
     disabled = false, 
     placeholder,
-    connectionStatus = 'connected'
+    connectionStatus = 'connected',
 }) => {
     const { t } = useTranslation();
     const [message, setMessage] = useState('');
@@ -53,7 +53,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
                 inputRef.current?.focus();
             }, 0);
         }
-    }, [message, onSendMessage, disabled, isSending]);
+    }, [message, onSendMessage, disabled, isSending, connectionStatus]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(e.target.value);

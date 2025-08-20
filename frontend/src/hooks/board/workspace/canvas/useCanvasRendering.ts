@@ -15,7 +15,7 @@ export const useCanvasRendering = ({
     contextRef, 
     objects, 
     dimensions, 
-    replayDrawAction 
+    replayDrawAction, 
 }: UseCanvasRenderingProps) => {
     const previousObjectsRef = useRef<ActionPayload[]>([]);
     const renderingFrameRef = useRef<number | null>(null);
@@ -68,7 +68,7 @@ export const useCanvasRendering = ({
         objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
         lastRenderedCountRef.current = objects.length;
         previousObjectsRef.current = [...objects];
-    }, [dimensions, replayDrawAction, mainCanvasRef, contextRef]);
+    }, [dimensions, replayDrawAction, mainCanvasRef, contextRef, objects]);
 
     // Handle object changes with incremental rendering
     useEffect(() => {

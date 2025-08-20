@@ -20,4 +20,6 @@
 .previewCanvasDisabled {
     cursor: not-allowed;
     pointer-events: none;
+    /* Red tint overlay when disconnected */
+    background-color: rgba(255, 0, 0, 0.05);
 }

@@ -23,7 +23,7 @@ export const useProfilePictureManager = (onSuccess?: (updatedUser: UserProfile) 
                 throw error;
             }
         },
-        [t, onSuccess]
+        [t, onSuccess],
     );
 
     const handlePictureDelete = useCallback(async () => {

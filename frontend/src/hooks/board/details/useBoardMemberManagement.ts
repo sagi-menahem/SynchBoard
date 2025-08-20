@@ -25,7 +25,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
                 throw error;
             }
         },
-        [boardId, onSuccess, t]
+        [boardId, onSuccess, t],
     );
 
     const handleRemove = useCallback(
@@ -39,7 +39,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
                 throw error;
             }
         },
-        [boardId, onSuccess, t]
+        [boardId, onSuccess, t],
     );
 
     const handleInvite = useCallback(
@@ -54,7 +54,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
                 throw error;
             }
         },
-        [boardId, onSuccess, t]
+        [boardId, onSuccess, t],
     );
 
     const handleRightClick = useCallback(
@@ -64,7 +64,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
                 contextMenu.handleContextMenu(event, member);
             }
         },
-        [currentUserIsAdmin, userEmail, contextMenu]
+        [currentUserIsAdmin, userEmail, contextMenu],
     );
 
     return {

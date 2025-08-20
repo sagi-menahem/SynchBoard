@@ -16,14 +16,14 @@ export const ConnectionStatusBanner: React.FC = () => {
     return () => {
       console.log(`[BANNER ${new Date().toISOString()}] Component unmounting`);
     };
-  }, []);
+  }, [connectionState]);
 
   useEffect(() => {
     const timestamp = new Date().toISOString();
     console.log(`[BANNER ${timestamp}] Connection state changed to:`, connectionState);
     
     // Track connection history for debugging
-    setConnectionHistory(prev => [...prev, `${timestamp}: ${connectionState}`].slice(-5));
+    setConnectionHistory((prev) => [...prev, `${timestamp}: ${connectionState}`].slice(-5));
     
     if (connectionState === 'connected' && !hasConnectedOnce) {
       console.log(`[BANNER ${timestamp}] First successful connection detected`);

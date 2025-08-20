@@ -11,7 +11,7 @@ import {
     useBoardDetails,
     useBoardEditing,
     useBoardMemberManagement,
-    useBoardPermissions
+    useBoardPermissions,
 } from 'hooks/board/details';
 import * as boardService from 'services/boardService';
 import type { Member } from 'types/BoardTypes';
@@ -40,7 +40,7 @@ export const useBoardDetailsPage = (boardId: number) => {
             refetch();
             setInviteModalOpen(false);
         },
-        [refetch]
+        [refetch],
     );
 
     const handlePromote = useCallback(async () => {
@@ -88,7 +88,7 @@ export const useBoardDetailsPage = (boardId: number) => {
                 setPictureModalOpen(false);
             }
         },
-        [boardId, refetch, t]
+        [boardId, refetch, t],
     );
 
     const promptPictureDelete = useCallback(() => {

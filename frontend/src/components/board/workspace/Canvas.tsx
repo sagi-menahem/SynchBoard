@@ -2,6 +2,7 @@ import React from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
+import { useWebSocket } from 'hooks/common/useSocket';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
@@ -17,7 +18,11 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-    const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
+    const { isSocketConnected } = useWebSocket();
+    const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas({
+        ...props,
+        isConnected: isSocketConnected,
+    });
 
     return (
         <div ref={containerRef} className={styles.container}>
@@ -33,7 +38,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
                 width={dimensions.width}
                 height={dimensions.height}
                 onMouseDown={handleMouseDown}
-                className={styles.previewCanvas}
+                className={isSocketConnected ? styles.previewCanvas : styles.previewCanvasDisabled}
             />
         </div>
     );

@@ -3,7 +3,7 @@ import type { ActionPayload, CirclePayload, LinePayload, RectanglePayload } from
 
 export const getMouseCoordinates = (
     event: MouseEvent, 
-    canvas: HTMLCanvasElement
+    canvas: HTMLCanvasElement,
 ): { x: number; y: number } | null => {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -23,7 +23,7 @@ export const isRadiusValid = (radius: number): boolean => {
 export const drawLinePayload = (
     payload: LinePayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement
+    targetCanvas: HTMLCanvasElement,
 ): void => {
     const { points, color, lineWidth } = payload;
     if (points.length < 2) return;
@@ -48,7 +48,7 @@ export const drawLinePayload = (
 export const drawRectanglePayload = (
     payload: RectanglePayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement
+    targetCanvas: HTMLCanvasElement,
 ): void => {
     const { x, y, width, height, color, strokeWidth } = payload;
 
@@ -58,14 +58,14 @@ export const drawRectanglePayload = (
         x * targetCanvas.width,
         y * targetCanvas.height,
         width * targetCanvas.width,
-        height * targetCanvas.height
+        height * targetCanvas.height,
     );
 };
 
 export const drawCirclePayload = (
     payload: CirclePayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement
+    targetCanvas: HTMLCanvasElement,
 ): void => {
     const { x, y, radius, color, strokeWidth } = payload;
 
@@ -91,7 +91,7 @@ export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRend
 export const replayDrawAction = (
     payload: ActionPayload, 
     targetCtx: CanvasRenderingContext2D, 
-    targetCanvas: HTMLCanvasElement
+    targetCanvas: HTMLCanvasElement,
 ): void => {
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
