@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect, useRef } from 'react';
 
 import toast from 'react-hot-toast';
 import logger from 'utils/Logger';
@@ -43,7 +43,7 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
         senderProfilePictureUrl: userProfilePictureUrl || null,
         instanceId: payload.instanceId,
         transactionId,
-        transactionStatus: 'sending',
+        transactionStatus: 'pending',
       };
 
       logger.debug(`Adding optimistic chat message with transactionId: ${transactionId}`);
@@ -69,10 +69,10 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       return trimmedContent.length > 0 && trimmedContent.length <= 5000;
     },
 
-    // Success callback
+    // Success callback - called when server confirms message was received
     onSuccess: (payload: any, transactionId: string) => {
-      logger.debug(`Chat message sent successfully: ${transactionId}`);
-      // Update message status to confirmed when server confirms
+      logger.debug(`Message confirmed: ${transactionId}`);
+      // Update UI to show message as successfully sent
       setMessages(prev => prev.map((msg: any) => 
         msg.transactionId === transactionId 
           ? { ...msg, transactionStatus: 'confirmed' }
@@ -95,10 +95,16 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       toast.error('Message failed to send - it will be retried when connection is restored');
     },
 
-    // Rollback callback
+    // Rollback callback - only called for messages that genuinely failed to send
     onRollback: (transactionId: string, payload: any) => {
-      logger.warn(`Chat message rolled back due to connection failure: ${transactionId}`);
-      toast.error('Connection lost - message will be sent when reconnected');
+      const messagePreview = payload.content?.substring(0, 25) + (payload.content?.length > 25 ? '...' : '');
+      logger.warn(`Message failed to send: "${messagePreview}"`);
+      
+      // Show toast only for genuine failures (recent transactions that never reached server)
+      toast.error(`Failed to send: "${messagePreview}"`, {
+        duration: 4000,
+        id: `chat-rollback-${transactionId}` // Prevent duplicate toasts
+      });
     },
   }), [boardId, userEmail, userFullName, userProfilePictureUrl, setMessages]);
 
@@ -146,29 +152,62 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
     [sendTransactionalAction, userEmail, userFullName, userProfilePictureUrl]
   );
 
-  // Enhanced messages with transaction status
+  // Track transactions that need to be committed
+  const pendingCommits = useRef<Set<string>>(new Set());
+  
+  // Effect to handle transaction commits safely outside of render
+  useEffect(() => {
+    const toCommit: string[] = [];
+    
+    currentMessages.forEach(msg => {
+      const enhancedMsg = msg as EnhancedChatMessage;
+      
+      // Check if this message has a transactionId, is pending, and has server confirmation
+      if (enhancedMsg.transactionId && 
+          isPending(enhancedMsg.transactionId) && 
+          enhancedMsg.id && enhancedMsg.id > 0 &&
+          !pendingCommits.current.has(enhancedMsg.transactionId)) {
+        
+        logger.debug(`Queueing transaction commit for ${enhancedMsg.transactionId} - server confirmation received (ID: ${enhancedMsg.id})`);
+        toCommit.push(enhancedMsg.transactionId);
+        pendingCommits.current.add(enhancedMsg.transactionId);
+      }
+    });
+    
+    // Commit all detected confirmations
+    toCommit.forEach(transactionId => {
+      commitTransaction(transactionId);
+      // Remove from pending after committing
+      pendingCommits.current.delete(transactionId);
+    });
+  }, [currentMessages, isPending, commitTransaction]);
+
+  // Simple message list with transaction status
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return currentMessages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
       
-      // Update transaction status for pending messages
+      // Check if this message has a transactionId and is pending
       if (enhancedMsg.transactionId && isPending(enhancedMsg.transactionId)) {
-        const status = getTransactionStatus(enhancedMsg.transactionId);
+        // Message is pending - check if we have server confirmation
+        const hasServerConfirmation = enhancedMsg.id && enhancedMsg.id > 0;
+        
         return {
           ...enhancedMsg,
-          transactionStatus: status || 'confirmed'
+          transactionStatus: hasServerConfirmation ? 'confirmed' : 'pending'
         };
       }
       
-      return enhancedMsg;
+      return {
+        ...enhancedMsg,
+        transactionStatus: 'confirmed'
+      };
     });
-  }, [currentMessages, isPending, getTransactionStatus]);
+  }, [currentMessages, isPending]);
 
   return {
     sendChatMessage,
     allMessages,
-    commitTransaction,
     pendingMessageCount: pendingCount,
-    getTransactionStatus,
   };
 };

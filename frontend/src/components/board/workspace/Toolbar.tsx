@@ -91,6 +91,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                     {t('toolbar.tool.redo')}
                 </Button>
             </div>
+
         </div>
     );
 };

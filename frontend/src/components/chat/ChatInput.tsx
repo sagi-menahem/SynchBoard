@@ -3,6 +3,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input } from 'components/common';
+import { useSocket } from 'hooks/common';
 
 import styles from './ChatInput.module.css';
 
@@ -22,6 +23,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     placeholder 
 }) => {
     const { t } = useTranslation();
+    const { isSocketConnected } = useSocket();
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -30,7 +32,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         event.preventDefault();
         
         const messageContent = message.trim();
-        if (!messageContent || disabled || isSending) {
+        if (!messageContent || !isSocketConnected || isSending) {
             return;
         }
 
@@ -51,7 +53,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
                 inputRef.current?.focus();
             }, 0);
         }
-    }, [message, onSendMessage, disabled, isSending]);
+    }, [message, onSendMessage, isSocketConnected, isSending]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(e.target.value);
@@ -71,13 +73,13 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
                     value={message}
                     onChange={handleInputChange}
                     placeholder={placeholder || t('chatWindow.placeholder', 'Type a message...')}
-                    disabled={disabled || isSending}
+                    disabled={isSending}
                     className={isSending ? styles.inputDisabled : ''}
                 />
             </div>
             <Button 
                 type="submit" 
-                disabled={!message.trim() || disabled || isSending}
+                disabled={!message.trim() || !isSocketConnected || isSending}
                 className={isSending ? styles.buttonSending : ''}
             >
                 {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}

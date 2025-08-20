@@ -14,22 +14,49 @@ interface WebSocketProviderProps {
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const { token, userEmail } = useAuth();
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
+  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected' | 'permanently_disconnected'>('disconnected');
 
   useEffect(() => {
-    // Poll connection state periodically to keep UI in sync
-    const pollConnectionState = () => {
+    // Simplified connection state management with clear status indicators
+    const updateConnectionState = () => {
       const currentState = websocketService.getConnectionState();
       setConnectionState(currentState);
+      
+      // Only consider truly connected state as socket connected
       setIsSocketConnected(currentState === 'connected');
+      
+      // Log state changes for school project transparency
+      if (currentState === 'permanently_disconnected') {
+        logger.info('Connection permanently stopped. Page refresh required to reconnect.');
+      }
     };
 
-    const pollInterval = setInterval(pollConnectionState, 500); // Poll every 500ms
+    // Start with immediate state update
+    updateConnectionState();
+
+    // Simple polling for connection state changes
+    let pollInterval: NodeJS.Timeout;
+    
+    const startPolling = () => {
+      // Poll every 3 seconds - reduced frequency for school project
+      pollInterval = setInterval(() => {
+        const state = websocketService.getConnectionState();
+        if (state !== connectionState) {
+          updateConnectionState();
+        }
+        
+        // Stop polling if permanently disconnected (no point checking further)
+        if (state === 'permanently_disconnected') {
+          clearInterval(pollInterval);
+        }
+      }, 3000);
+    };
+    
+    startPolling();
 
     if (token) {
       setConnectionState('connecting');
       websocketService.connect(token, () => {
-        logger.debug('WebSocket connection confirmed in WebSocketProvider.');
         setIsSocketConnected(true);
         setConnectionState('connected');
                 
@@ -38,7 +65,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
           websocketService.subscribe(
             '/user/queue/errors',
             (errorMessage: unknown) => {
-              logger.error('WebSocket error received:', errorMessage);
+              logger.error('Server error received:', errorMessage);
             },
           );
         }

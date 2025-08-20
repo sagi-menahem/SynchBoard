@@ -1,14 +1,9 @@
 import type { ChatMessageResponse } from './MessageTypes';
 
 export interface EnhancedChatMessage extends ChatMessageResponse {
-  // Transaction tracking
+  // Simple transaction tracking
   transactionId?: string;
-  transactionStatus?: 'sending' | 'queued' | 'processing' | 'confirmed' | 'failed';
-  
-  // Queue-specific metadata
-  queuePosition?: number;
-  retryCount?: number;
-  failureReason?: string;
+  transactionStatus?: 'pending' | 'confirmed' | 'failed';
 }
 
 export interface ChatTransactionConfig {

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from 'hooks/auth';
 import { useChatTransaction } from 'hooks/chat';
-import { usePreferences } from 'hooks/common';
+import { usePreferences, useSocket } from 'hooks/common';
 import { formatDateSeparator } from 'utils/DateUtils';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
@@ -35,6 +35,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const { t } = useTranslation();
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
+  const { isSocketConnected } = useSocket();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   
