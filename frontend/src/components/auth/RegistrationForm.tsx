@@ -11,53 +11,53 @@ interface RegistrationFormProps {
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
-    const { t } = useTranslation();
-    const {
-        email,
-        password,
-        firstName,
-        lastName,
-        phoneNumber,
-        isSubmitting,
-        setEmail,
-        setPassword,
-        setFirstName,
-        setLastName,
-        setPhoneNumber,
-        handleSubmit,
-    } = useRegisterForm(onRegistrationSuccess);
+  const { t } = useTranslation();
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    phoneNumber,
+    isSubmitting,
+    setEmail,
+    setPassword,
+    setFirstName,
+    setLastName,
+    setPhoneNumber,
+    handleSubmit,
+  } = useRegisterForm(onRegistrationSuccess);
 
-    const inputs = [
-        { id: 'register-email', label: 'email', type: 'email', value: email, setter: setEmail },
-        { id: 'register-password', label: 'password', type: 'password', value: password, setter: setPassword },
-        { id: 'register-firstName', label: 'firstName', type: 'text', value: firstName, setter: setFirstName },
-        { id: 'register-lastName', label: 'lastName', type: 'text', value: lastName, setter: setLastName },
-        { id: 'register-phoneNumber', label: 'phoneNumber', type: 'tel', value: phoneNumber, setter: setPhoneNumber },
-    ];
+  const inputs = [
+    { id: 'register-email', label: 'email', type: 'email', value: email, setter: setEmail },
+    { id: 'register-password', label: 'password', type: 'password', value: password, setter: setPassword },
+    { id: 'register-firstName', label: 'firstName', type: 'text', value: firstName, setter: setFirstName },
+    { id: 'register-lastName', label: 'lastName', type: 'text', value: lastName, setter: setLastName },
+    { id: 'register-phoneNumber', label: 'phoneNumber', type: 'tel', value: phoneNumber, setter: setPhoneNumber },
+  ];
 
-    return (
-        <form onSubmit={handleSubmit} className={styles.form}>
-            <h2>{t('registerForm.heading')}</h2>
+  return (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2>{t('registerForm.heading')}</h2>
 
-            {inputs.map((input) => (
-                <div key={input.id} className={styles.field}>
-                    <label htmlFor={input.id}>{t(`common.form.label.${input.label}`)}</label>
-                    <Input
-                        id={input.id}
-                        type={input.type}
-                        value={input.value}
-                        onChange={(e) => input.setter(e.target.value)}
-                        required
-                        disabled={isSubmitting}
-                    />
-                </div>
-            ))}
+      {inputs.map((input) => (
+        <div key={input.id} className={styles.field}>
+          <label htmlFor={input.id}>{t(`common.form.label.${input.label}`)}</label>
+          <Input
+            id={input.id}
+            type={input.type}
+            value={input.value}
+            onChange={(e) => input.setter(e.target.value)}
+            required
+            disabled={isSubmitting}
+          />
+        </div>
+      ))}
 
-            <Button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-                {isSubmitting ? t('common.button.registering') : t('registerForm.button')}
-            </Button>
-        </form>
-    );
+      <Button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+        {isSubmitting ? t('common.button.registering') : t('registerForm.button')}
+      </Button>
+    </form>
+  );
 };
 
 export default RegistrationForm;

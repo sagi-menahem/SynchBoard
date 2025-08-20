@@ -12,23 +12,23 @@ import * as userService from 'services/UserService';
 
 
 export const useAccountManager = () => {
-    const { t } = useTranslation();
-    const { logout } = useAuth();
-    const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
-    const handleDeleteAccount = useCallback(async () => {
-        try {
-            await userService.deleteAccount();
-            toast.success(t('success.account.delete'));
-            logout();
-            navigate(APP_ROUTES.AUTH);
-        } catch (error) {
-            logger.error('Failed to delete account:', error);
-            throw error;
-        }
-    }, [t, logout, navigate]);
+  const handleDeleteAccount = useCallback(async () => {
+    try {
+      await userService.deleteAccount();
+      toast.success(t('success.account.delete'));
+      logout();
+      navigate(APP_ROUTES.AUTH);
+    } catch (error) {
+      logger.error('Failed to delete account:', error);
+      throw error;
+    }
+  }, [t, logout, navigate]);
 
-    return {
-        handleDeleteAccount,
-    };
+  return {
+    handleDeleteAccount,
+  };
 };

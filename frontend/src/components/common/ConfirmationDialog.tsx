@@ -15,29 +15,29 @@ interface ConfirmationDialogProps {
 }
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose, onConfirm, title, message }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const handleConfirm = () => {
-        onConfirm();
-        onClose();
-    };
+  const handleConfirm = () => {
+    onConfirm();
+    onClose();
+  };
 
-    return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <div className={styles.container}>
-                <h3>{title}</h3>
-                <p className={styles.message}>{message}</p>
-                <div className={styles.buttonGroup}>
-                    <Button variant="secondary" onClick={onClose}>
-                        {t('common.button.cancel')}
-                    </Button>
-                    <Button onClick={handleConfirm} className={styles.confirmButton}>
-                        {t('common.button.confirm')}
-                    </Button>
-                </div>
-            </div>
-        </Modal>
-    );
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className={styles.container}>
+        <h3>{title}</h3>
+        <p className={styles.message}>{message}</p>
+        <div className={styles.buttonGroup}>
+          <Button variant="secondary" onClick={onClose}>
+            {t('common.button.cancel')}
+          </Button>
+          <Button onClick={handleConfirm} className={styles.confirmButton}>
+            {t('common.button.confirm')}
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
 };
 
 export default ConfirmationDialog;

@@ -35,7 +35,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     updateConnectionState();
 
     // Simple polling for connection state changes
-    let pollInterval: NodeJS.Timeout;
+    let pollInterval: ReturnType<typeof setInterval>;
     
     const startPolling = () => {
       // Poll every 3 seconds - reduced frequency for school project

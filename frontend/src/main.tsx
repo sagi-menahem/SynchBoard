@@ -12,15 +12,15 @@ import 'index.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
-    const error = new Error('Failed to find the root element');
-    logger.error('[main] Root element not found - cannot initialize React application');
-    throw error;
+  const error = new Error('Failed to find the root element');
+  logger.error('[main] Root element not found - cannot initialize React application');
+  throw error;
 }
 
 ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
-        <AppProvider>
-            <App />
-        </AppProvider>
-    </React.StrictMode>
+  <React.StrictMode>
+    <AppProvider>
+      <App />
+    </AppProvider>
+  </React.StrictMode>,
 );

@@ -1,5 +1,3 @@
-import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
-import { WEBSOCKET_URL } from '../constants/ApiConstants';
 
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -10,6 +8,9 @@ import {
   validateMessage,
 } from 'utils';
 import logger from 'utils/Logger';
+
+import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
+import { WEBSOCKET_URL } from '../constants/ApiConstants';
 
 
 
@@ -130,7 +131,7 @@ class WebSocketService {
   private attemptReconnection(): void {
     // HARD STOP - Strict check to prevent infinite loops
     if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
-      logger.info(`Maximum reconnection attempts reached. Connection stopped.`);
+      logger.info('Maximum reconnection attempts reached. Connection stopped.');
       this.connectionState = 'permanently_disconnected';
       this.resetReconnectionState();
       
@@ -151,7 +152,7 @@ class WebSocketService {
 
     const delay = Math.min(
       WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY * Math.pow(2, this.reconnectionAttempts),
-      10000 // Cap at 10 seconds max delay for school project
+      10000, // Cap at 10 seconds max delay for school project
     );
     this.reconnectionAttempts++;
         

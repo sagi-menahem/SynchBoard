@@ -16,76 +16,76 @@ interface ChangePasswordFormProps {
 }
 
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => {
-    const { t } = useTranslation();
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handlePasswordFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+  const handlePasswordFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-        if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
-            logger.warn('[ChangePasswordForm] Password validation failed - too short');
-            toast.error(t('settingsPage.passwordTooShort'));
-            return;
-        }
+    if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
+      logger.warn('[ChangePasswordForm] Password validation failed - too short');
+      toast.error(t('settingsPage.passwordTooShort'));
+      return;
+    }
 
-        if (newPassword !== confirmPassword) {
-            logger.warn('[ChangePasswordForm] Password validation failed - passwords do not match');
-            toast.error(t('settingsPage.passwordsDoNotMatch'));
-            return;
-        }
+    if (newPassword !== confirmPassword) {
+      logger.warn('[ChangePasswordForm] Password validation failed - passwords do not match');
+      toast.error(t('settingsPage.passwordsDoNotMatch'));
+      return;
+    }
 
-        setIsSubmitting(true);
-        onSubmit({ currentPassword, newPassword })
-            .then(() => {
-                setCurrentPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-            });
-    };
+    setIsSubmitting(true);
+    onSubmit({ currentPassword, newPassword })
+      .then(() => {
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
-    return (
-        <form onSubmit={handlePasswordFormSubmit}>
-            <div className={styles.field}>
-                <label htmlFor="currentPassword">{t('settingsPage.currentPasswordLabel')}</label>
-                <Input
-                    id="currentPassword"
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    required
-                />
-            </div>
-            <div className={styles.field}>
-                <label htmlFor="newPassword">{t('settingsPage.newPasswordLabel')}</label>
-                <Input
-                    id="newPassword"
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                />
-            </div>
-            <div className={styles.field}>
-                <label htmlFor="confirmPassword">{t('settingsPage.confirmPasswordLabel')}</label>
-                <Input
-                    id="confirmPassword"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                />
-            </div>
-            <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? t('common.button.saving') : t('settingsPage.buttons.save')}
-            </Button>
-        </form>
-    );
+  return (
+    <form onSubmit={handlePasswordFormSubmit}>
+      <div className={styles.field}>
+        <label htmlFor="currentPassword">{t('settingsPage.currentPasswordLabel')}</label>
+        <Input
+          id="currentPassword"
+          type="password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles.field}>
+        <label htmlFor="newPassword">{t('settingsPage.newPasswordLabel')}</label>
+        <Input
+          id="newPassword"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles.field}>
+        <label htmlFor="confirmPassword">{t('settingsPage.confirmPasswordLabel')}</label>
+        <Input
+          id="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+      </div>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? t('common.button.saving') : t('settingsPage.buttons.save')}
+      </Button>
+    </form>
+  );
 };
 
 export default ChangePasswordForm;

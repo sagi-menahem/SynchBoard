@@ -18,30 +18,30 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-    const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
-    const { isSocketConnected } = useSocket();
+  const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
+  const { isSocketConnected } = useSocket();
 
-    const containerClassName = `${styles.container} ${!isSocketConnected ? styles.disconnected : ''}`;
-    const previewCanvasClassName = `${styles.previewCanvas} ${!isSocketConnected ? styles.disabled : ''}`;
+  const containerClassName = `${styles.container} ${!isSocketConnected ? styles.disconnected : ''}`;
+  const previewCanvasClassName = `${styles.previewCanvas} ${!isSocketConnected ? styles.disabled : ''}`;
 
-    return (
-        <div ref={containerRef} className={containerClassName}>
-            <canvas
-                ref={mainCanvasRef}
-                width={dimensions.width}
-                height={dimensions.height}
-                className={styles.mainCanvas}
-                style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
-            />
-            <canvas
-                ref={previewCanvasRef}
-                width={dimensions.width}
-                height={dimensions.height}
-                onMouseDown={handleMouseDown}
-                className={previewCanvasClassName}
-            />
-        </div>
-    );
+  return (
+    <div ref={containerRef} className={containerClassName}>
+      <canvas
+        ref={mainCanvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        className={styles.mainCanvas}
+        style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
+      />
+      <canvas
+        ref={previewCanvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        onMouseDown={handleMouseDown}
+        className={previewCanvasClassName}
+      />
+    </div>
+  );
 };
 
 export default Canvas;

@@ -14,44 +14,44 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [token, setToken] = useState<string | null>(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN));
-    const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN));
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (token) {
-            try {
-                const decodedToken: { sub: string } = jwtDecode(token);
-                setUserEmail(decodedToken.sub);
-                logger.debug('JWT token decoded successfully', { userEmail: decodedToken.sub });
-            } catch (error) {
-                logger.error('Failed to decode JWT token', error);
-                setToken(null);
-                localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-            }
-        } else {
-            setUserEmail(null);
-            logger.debug('No JWT token available');
-        }
-    }, [token]);
-
-    const login = (newToken: string) => {
-        logger.info('User login - setting new token');
-        setToken(newToken);
-        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
-    };
-
-    const logout = () => {
-        logger.info('User logout - clearing token');
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken: { sub: string } = jwtDecode(token);
+        setUserEmail(decodedToken.sub);
+        logger.debug('JWT token decoded successfully', { userEmail: decodedToken.sub });
+      } catch (error) {
+        logger.error('Failed to decode JWT token', error);
         setToken(null);
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    };
+      }
+    } else {
+      setUserEmail(null);
+      logger.debug('No JWT token available');
+    }
+  }, [token]);
 
-    const value = {
-        token,
-        userEmail,
-        login,
-        logout,
-    };
+  const login = (newToken: string) => {
+    logger.info('User login - setting new token');
+    setToken(newToken);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
+  };
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const logout = () => {
+    logger.info('User logout - clearing token');
+    setToken(null);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+  };
+
+  const value = {
+    token,
+    userEmail,
+    login,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

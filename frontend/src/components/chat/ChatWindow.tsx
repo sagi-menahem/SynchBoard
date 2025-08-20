@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { formatDateSeparator } from 'utils/DateUtils';
 
 import { useAuth } from 'hooks/auth';
 import { useChatTransaction } from 'hooks/chat';
 import { usePreferences, useSocket } from 'hooks/common';
-import { formatDateSeparator } from 'utils/DateUtils';
-import type { ChatMessageResponse } from 'types/MessageTypes';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
+import type { ChatMessageResponse } from 'types/MessageTypes';
 
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
@@ -35,7 +35,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const { t } = useTranslation();
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
-  const { isSocketConnected } = useSocket();
+  const {} = useSocket();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   
@@ -104,9 +104,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     }
     
     const lowercaseSearch = searchTerm.toLowerCase();
-    return allMessages.filter(msg => 
+    return allMessages.filter((msg) => 
       msg.content.toLowerCase().includes(lowercaseSearch) ||
-      msg.senderFullName.toLowerCase().includes(lowercaseSearch)
+      msg.senderFullName.toLowerCase().includes(lowercaseSearch),
     );
   }, [allMessages, searchTerm]);
 
@@ -125,12 +125,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   }, [sendChatMessage, boardId]);
 
   // Helper function to check if should show date separator
-  const shouldShowDateSeparator = useCallback((currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
-    if (!prevMsg) return true;
-    const currentDate = new Date(currentMsg.timestamp).toDateString();
-    const prevDate = new Date(prevMsg.timestamp).toDateString();
-    return currentDate !== prevDate;
-  }, []);
+  const shouldShowDateSeparator = useCallback(
+    (currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
+      if (!prevMsg) return true;
+      const currentDate = new Date(currentMsg.timestamp).toDateString();
+      const prevDate = new Date(prevMsg.timestamp).toDateString();
+      return currentDate !== prevDate;
+    },
+    [],
+  );
 
   return (
     <div
@@ -146,6 +149,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
           />
           <button

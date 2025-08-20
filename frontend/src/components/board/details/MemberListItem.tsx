@@ -14,25 +14,25 @@ interface MemberListItemProps {
 }
 
 const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }) => {
-    const { t } = useTranslation();
-    const imageSource = member.profilePictureUrl
-        ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
-        : defaultUserImage;
+  const { t } = useTranslation();
+  const imageSource = member.profilePictureUrl
+    ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
+    : defaultUserImage;
 
-    return (
-        <div onContextMenu={(e) => onContextMenu(e, member)}>
-            <li className={styles.memberItem}>
-                <img src={imageSource} alt={`${member.firstName} ${member.lastName}`} className={styles.memberAvatar} />
-                <div>
-                    <div className={styles.memberName}>
-                        {member.firstName} {member.lastName}
-                    </div>
-                    <div className={styles.memberEmail}>{member.email}</div>
-                </div>
-                {member.isAdmin && <span className={styles.adminBadge}>{t('boardDetailsPage.adminBadge')}</span>}
-            </li>
+  return (
+    <div onContextMenu={(e) => onContextMenu(e, member)}>
+      <li className={styles.memberItem}>
+        <img src={imageSource} alt={`${member.firstName} ${member.lastName}`} className={styles.memberAvatar} />
+        <div>
+          <div className={styles.memberName}>
+            {member.firstName} {member.lastName}
+          </div>
+          <div className={styles.memberEmail}>{member.email}</div>
         </div>
-    );
+        {member.isAdmin && <span className={styles.adminBadge}>{t('boardDetailsPage.adminBadge')}</span>}
+      </li>
+    </div>
+  );
 };
 
 export default MemberListItem;

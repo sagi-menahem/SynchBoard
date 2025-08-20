@@ -3,8 +3,8 @@ export * from './AuthContext';
 export * from './AuthProvider';
 export * from './BoardContext';
 export * from './BoardProvider';
-export * from './OfflineQueueContext';
 export * from './PreferencesContext';
 export * from './PreferencesProvider';
 export * from './WebSocketContext';
 export * from './WebSocketProvider';
+
