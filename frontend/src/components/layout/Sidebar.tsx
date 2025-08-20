@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import styles from './Sidebar.module.css';
 
 const Sidebar: React.FC = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    return (
-        <aside className={styles.aside}>
-            <p>{t('sidebar.title')}</p>
-            <p>{t('sidebar.onlineUsers')}</p>
-        </aside>
-    );
+  return (
+    <aside className={styles.aside}>
+      <p>{t('sidebar.title')}</p>
+      <p>{t('sidebar.onlineUsers')}</p>
+    </aside>
+  );
 };
 export default Sidebar;

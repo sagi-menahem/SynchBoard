@@ -1,6 +1,7 @@
-import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 import logger from 'utils/Logger';
+
 import { ErrorDisplay } from 'components/common';
 
 interface Props {
@@ -38,7 +39,7 @@ export class PageErrorBoundary extends Component<Props, State> {
       page: pageName,
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
-      url: window.location.href
+      url: window.location.href,
     });
   }
 

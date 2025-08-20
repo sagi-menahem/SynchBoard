@@ -9,78 +9,78 @@ import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
 
 function App() {
-    return (
-        <PageErrorBoundary pageName="App">
-            <BrowserRouter>
-                <Toaster
-                    position="top-center"
-                    toastOptions={{
-                        duration: 5000,
-                        style: {
-                            background: '#363636',
-                            color: '#fff',
-                        },
-                    }}
-                />
+  return (
+    <PageErrorBoundary pageName="App">
+      <BrowserRouter>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: '#363636',
+              color: '#fff',
+            },
+          }}
+        />
 
-                <Routes>
-                    <Route 
-                        path={APP_ROUTES.AUTH} 
-                        element={
-                            <PageErrorBoundary pageName="Auth">
-                                <AuthPage />
-                            </PageErrorBoundary>
-                        } 
-                    />
+        <Routes>
+          <Route 
+            path={APP_ROUTES.AUTH} 
+            element={
+              <PageErrorBoundary pageName="Auth">
+                <AuthPage />
+              </PageErrorBoundary>
+            } 
+          />
 
-                    <Route
-                        element={
-                            <ProtectedRoute>
-                                <Layout />
-                            </ProtectedRoute>
-                        }
-                    >
-                        <Route 
-                            path={APP_ROUTES.BOARD_LIST} 
-                            element={
-                                <PageErrorBoundary pageName="BoardList">
-                                    <BoardListPage />
-                                </PageErrorBoundary>
-                            } 
-                        />
-                        <Route 
-                            path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
-                            element={
-                                <PageErrorBoundary pageName="Board">
-                                    <BoardErrorBoundary>
-                                        <BoardPage />
-                                    </BoardErrorBoundary>
-                                </PageErrorBoundary>
-                            } 
-                        />
-                        <Route 
-                            path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
-                            element={
-                                <PageErrorBoundary pageName="BoardDetails">
-                                    <BoardErrorBoundary>
-                                        <BoardDetailsPage />
-                                    </BoardErrorBoundary>
-                                </PageErrorBoundary>
-                            } 
-                        />
-                        <Route 
-                            path={APP_ROUTES.SETTINGS} 
-                            element={
-                                <PageErrorBoundary pageName="Settings">
-                                    <SettingsPage />
-                                </PageErrorBoundary>
-                            } 
-                        />
-                    </Route>
-                </Routes>
-                </BrowserRouter>
-        </PageErrorBoundary>
-    );
+          <Route
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            <Route 
+              path={APP_ROUTES.BOARD_LIST} 
+              element={
+                <PageErrorBoundary pageName="BoardList">
+                  <BoardListPage />
+                </PageErrorBoundary>
+              } 
+            />
+            <Route 
+              path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
+              element={
+                <PageErrorBoundary pageName="Board">
+                  <BoardErrorBoundary>
+                    <BoardPage />
+                  </BoardErrorBoundary>
+                </PageErrorBoundary>
+              } 
+            />
+            <Route 
+              path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
+              element={
+                <PageErrorBoundary pageName="BoardDetails">
+                  <BoardErrorBoundary>
+                    <BoardDetailsPage />
+                  </BoardErrorBoundary>
+                </PageErrorBoundary>
+              } 
+            />
+            <Route 
+              path={APP_ROUTES.SETTINGS} 
+              element={
+                <PageErrorBoundary pageName="Settings">
+                  <SettingsPage />
+                </PageErrorBoundary>
+              } 
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </PageErrorBoundary>
+  );
 }
 
 export default App;

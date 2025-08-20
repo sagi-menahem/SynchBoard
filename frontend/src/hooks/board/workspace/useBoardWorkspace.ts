@@ -1,4 +1,4 @@
-import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS, APP_ROUTES, WEBSOCKET_CONFIG } from 'constants';
+import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -13,7 +13,7 @@ import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
 import { useWebSocketTransaction } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import type { ActionPayload, SendBoardActionRequest, EnhancedActionPayload } from 'types/BoardObjectTypes';
+import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 
@@ -56,38 +56,38 @@ export const useBoardWorkspace = (boardId: number) => {
     optimisticUpdate: (currentObjects, actionRequest, transactionId) => {
       // Extract payload and add the transaction ID and status for visual feedback
       const newObject: EnhancedActionPayload = {
-        ...actionRequest.payload,
+        ...(actionRequest.payload as ActionPayload),
         instanceId: transactionId,
         transactionId,
-        transactionStatus: 'pending'
-      } as EnhancedActionPayload;
+        transactionStatus: 'pending' as const,
+      };
       return [...currentObjects, newObject];
     },
     rollbackUpdate: (currentObjects, transactionId) => {
-      return currentObjects.filter(obj => obj.instanceId !== transactionId);
+      return currentObjects.filter((obj) => obj.instanceId !== transactionId);
     },
     validatePayload: (actionRequest) => {
       // Validate message size
       const messageSize = JSON.stringify(actionRequest).length;
       if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
         logger.error(
-          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`
+          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`,
         );
         return false;
       }
       return true;
     },
-    onSuccess: (actionRequest, transactionId) => {
+    onSuccess: (_, transactionId) => {
       logger.debug(`Drawing confirmed: ${transactionId}`);
       // Update UI to show drawing as successfully saved
-      setObjects(prev => prev.map(obj => {
+      setObjects((prev) => prev.map((obj) => {
         const enhancedObj = obj as EnhancedActionPayload;
         return enhancedObj.transactionId === transactionId 
-          ? { ...enhancedObj, transactionStatus: 'confirmed' }
+          ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
           : obj;
       }));
     },
-    onFailure: (error, actionRequest, transactionId) => {
+    onFailure: (error, _, transactionId) => {
       if (error.message === 'Payload validation failed') {
         toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
       } else {
@@ -95,10 +95,10 @@ export const useBoardWorkspace = (boardId: number) => {
       }
       logger.error(`Drawing action failed: ${transactionId}`, error);
       // Update transaction status to failed for visual feedback
-      setObjects(prev => prev.map(obj => {
+      setObjects((prev) => prev.map((obj) => {
         const enhancedObj = obj as EnhancedActionPayload;
         return enhancedObj.transactionId === transactionId 
-          ? { ...enhancedObj, transactionStatus: 'failed' }
+          ? { ...enhancedObj, transactionStatus: 'failed' as const }
           : obj;
       }));
     },
@@ -109,9 +109,9 @@ export const useBoardWorkspace = (boardId: number) => {
       // Show toast only for genuine failures (recent transactions that never reached server)
       toast.error(`Failed to save ${toolName}`, {
         duration: 4000,
-        id: `drawing-rollback-${transactionId}` // Prevent duplicate toasts
+        id: `drawing-rollback-${transactionId}`, // Prevent duplicate toasts
       });
-    }
+    },
   }, objects, setObjects);
 
   // WebSocket handler for processing incoming messages and committing transactions

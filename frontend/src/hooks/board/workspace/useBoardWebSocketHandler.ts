@@ -9,14 +9,6 @@ import { useSocketSubscription } from 'hooks/common/useSocket';
 import * as boardService from 'services/BoardService';
 import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
-
-/**
- * Extended chat message type that includes pending transaction properties
- */
-interface PendingChatMessageResponse extends ChatMessageResponse {
-  transactionId?: string;
-  isPending?: boolean;
-}
 import type { BoardUpdateDTO } from 'types/WebSocketTypes';
 
 interface WebSocketHandlerProps {
@@ -73,11 +65,21 @@ export const useBoardWebSocketHandler = ({
       } else if ('type' in payload && 'instanceId' in payload) {
         // UNIFIED TRANSACTIONAL HANDLER: Process all messages with type and instanceId
         // This includes both drawing actions (OBJECT_ADD, OBJECT_DELETE) and chat messages (CHAT)
-        const transactionalMessage = payload as any;
-        logger.debug(`[UNIFIED] Received transactional message. Type: ${transactionalMessage.type}, InstanceId: ${transactionalMessage.instanceId}`);
+        const transactionalMessage = payload as {
+          type: string;
+          instanceId: string;
+          sender?: string;
+          payload?: object;
+        };
+        logger.debug(
+          `[UNIFIED] Received transactional message. Type: ${transactionalMessage.type}, InstanceId: ${transactionalMessage.instanceId}`,
+        );
         
         // Branch based on message type for specific processing
-        if (transactionalMessage.type === ActionType.OBJECT_ADD || transactionalMessage.type === ActionType.OBJECT_DELETE) {
+        if (
+          transactionalMessage.type === ActionType.OBJECT_ADD ||
+          transactionalMessage.type === ActionType.OBJECT_DELETE
+        ) {
           // DRAWING ACTION PROCESSING
           const action = transactionalMessage as BoardActionResponse;
           const isOwnDrawingAction = action.sender === sessionInstanceId && action.type === ActionType.OBJECT_ADD;
@@ -99,10 +101,13 @@ export const useBoardWebSocketHandler = ({
           const chatMessage = transactionalMessage as ChatMessageResponse;
           logger.debug(`[UNIFIED] Processing CHAT message with instanceId: ${chatMessage.instanceId}`);
           
-          setMessages(prevMessages => {
+          setMessages((prevMessages) => {
             // Robust findIndex logic with comprehensive matching
-            const messageIndex = prevMessages.findIndex(msg => {
-              const pendingMsg = msg as any;
+            const messageIndex = prevMessages.findIndex((msg) => {
+              const pendingMsg = msg as ChatMessageResponse & {
+              transactionId?: string;
+              instanceId?: string;
+            };
               // Primary match: server instanceId matches our transactionId (most common case)
               if (pendingMsg.transactionId === chatMessage.instanceId) {
                 return true;
@@ -131,7 +136,10 @@ export const useBoardWebSocketHandler = ({
         }
 
         // SMART COMMIT: Route confirmations to the correct transaction system
-        if (transactionalMessage.type === ActionType.OBJECT_ADD || transactionalMessage.type === ActionType.OBJECT_DELETE) {
+        if (
+          transactionalMessage.type === ActionType.OBJECT_ADD ||
+          transactionalMessage.type === ActionType.OBJECT_DELETE
+        ) {
           // Drawing actions use the main transaction system
           logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
           commitTransaction(transactionalMessage.instanceId);
@@ -148,7 +156,17 @@ export const useBoardWebSocketHandler = ({
         
       }
     },
-    [boardId, userEmail, sessionInstanceId, setBoardName, setAccessLost, setObjects, setMessages, commitTransaction, commitChatTransaction],
+    [
+      boardId,
+      userEmail,
+      sessionInstanceId,
+      setBoardName,
+      setAccessLost,
+      setObjects,
+      setMessages,
+      commitTransaction,
+      commitChatTransaction,
+    ],
   );
 
   useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', onMessageReceived, 'board');

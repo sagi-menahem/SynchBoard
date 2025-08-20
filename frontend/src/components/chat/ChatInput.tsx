@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Input } from 'components/common';
+import { Button } from 'components/common';
 import { useSocket } from 'hooks/common';
 
 import styles from './ChatInput.module.css';
@@ -18,74 +18,73 @@ interface ChatInputProps {
  * to prevent parent re-renders on every keypress
  */
 const ChatInput: React.FC<ChatInputProps> = React.memo(({ 
-    onSendMessage, 
-    disabled = false, 
-    placeholder 
+  onSendMessage, 
+  placeholder, 
 }) => {
-    const { t } = useTranslation();
-    const { isSocketConnected } = useSocket();
-    const [message, setMessage] = useState('');
-    const [isSending, setIsSending] = useState(false);
-    const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
+  const { isSocketConnected } = useSocket();
+  const [message, setMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
         
-        const messageContent = message.trim();
-        if (!messageContent || !isSocketConnected || isSending) {
-            return;
-        }
+    const messageContent = message.trim();
+    if (!messageContent || !isSocketConnected || isSending) {
+      return;
+    }
 
-        setIsSending(true);
+    setIsSending(true);
         
-        try {
-            await onSendMessage(messageContent);
-            // Clear input after successful send initiation
-            setMessage('');
-        } catch (error) {
-            console.error('Failed to send chat message:', error);
-            // Input stays cleared even on error as per UX requirements
-            setMessage('');
-        } finally {
-            setIsSending(false);
-            // Refocus input for continuous messaging
-            setTimeout(() => {
-                inputRef.current?.focus();
-            }, 0);
-        }
-    }, [message, onSendMessage, isSocketConnected, isSending]);
-
-    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setMessage(e.target.value);
-    }, []);
-
-    // Auto-focus input on component mount for better UX
-    useEffect(() => {
+    try {
+      await onSendMessage(messageContent);
+      // Clear input after successful send initiation
+      setMessage('');
+    } catch (error) {
+      console.error('Failed to send chat message:', error);
+      // Input stays cleared even on error as per UX requirements
+      setMessage('');
+    } finally {
+      setIsSending(false);
+      // Refocus input for continuous messaging
+      setTimeout(() => {
         inputRef.current?.focus();
-    }, []);
+      }, 0);
+    }
+  }, [message, onSendMessage, isSocketConnected, isSending]);
 
-    return (
-        <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.inputContainer}>
-                <Input
-                    ref={inputRef}
-                    type="text"
-                    value={message}
-                    onChange={handleInputChange}
-                    placeholder={placeholder || t('chatWindow.placeholder', 'Type a message...')}
-                    disabled={isSending}
-                    className={isSending ? styles.inputDisabled : ''}
-                />
-            </div>
-            <Button 
-                type="submit" 
-                disabled={!message.trim() || !isSocketConnected || isSending}
-                className={isSending ? styles.buttonSending : ''}
-            >
-                {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}
-            </Button>
-        </form>
-    );
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  }, []);
+
+  // Auto-focus input on component mount for better UX
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  return (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.inputContainer}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={message}
+          onChange={handleInputChange}
+          placeholder={placeholder || t('chatWindow.placeholder', 'Type a message...')}
+          disabled={isSending}
+          className={isSending ? styles.inputDisabled : ''}
+        />
+      </div>
+      <Button 
+        type="submit" 
+        disabled={!message.trim() || !isSocketConnected || isSending}
+        className={isSending ? styles.buttonSending : ''}
+      >
+        {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}
+      </Button>
+    </form>
+  );
 });
 
 ChatInput.displayName = 'ChatInput';

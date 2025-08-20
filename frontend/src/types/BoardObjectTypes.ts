@@ -1,7 +1,7 @@
 export const ActionType = {
-    OBJECT_ADD: 'OBJECT_ADD',
-    OBJECT_UPDATE: 'OBJECT_UPDATE',
-    OBJECT_DELETE: 'OBJECT_DELETE',
+  OBJECT_ADD: 'OBJECT_ADD',
+  OBJECT_UPDATE: 'OBJECT_UPDATE',
+  OBJECT_DELETE: 'OBJECT_DELETE',
 } as const;
 
 export type ActionType = (typeof ActionType)[keyof typeof ActionType];
@@ -42,9 +42,9 @@ export interface CirclePayload {
 
 export type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
 
-export interface EnhancedActionPayload extends ActionPayload {
+export type EnhancedActionPayload = ActionPayload & {
     transactionId?: string;
-    transactionStatus?: 'sending' | 'failed' | 'confirmed';
+    transactionStatus?: 'sending' | 'failed' | 'confirmed' | 'pending';
 }
 
 export interface SendBoardActionRequest {

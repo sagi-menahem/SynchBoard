@@ -10,68 +10,68 @@ import * as boardService from 'services/BoardService';
 import type { Member } from 'types/BoardTypes';
 
 export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: boolean, onSuccess?: () => void) => {
-    const { t } = useTranslation();
-    const { userEmail } = useAuth();
-    const contextMenu = useContextMenu<Member>();
+  const { t } = useTranslation();
+  const { userEmail } = useAuth();
+  const contextMenu = useContextMenu<Member>();
 
-    const handlePromote = useCallback(
-        async (member: Member) => {
-            try {
-                await boardService.promoteMember(boardId, member.email);
-                toast.success(t('promoteSuccess', { userName: member.firstName }));
-                onSuccess?.();
-            } catch (error) {
-                logger.error('Failed to promote member:', error);
-                throw error;
-            }
-        },
-        [boardId, onSuccess, t]
-    );
+  const handlePromote = useCallback(
+    async (member: Member) => {
+      try {
+        await boardService.promoteMember(boardId, member.email);
+        toast.success(t('promoteSuccess', { userName: member.firstName }));
+        onSuccess?.();
+      } catch (error) {
+        logger.error('Failed to promote member:', error);
+        throw error;
+      }
+    },
+    [boardId, onSuccess, t],
+  );
 
-    const handleRemove = useCallback(
-        async (member: Member) => {
-            try {
-                await boardService.removeMember(boardId, member.email);
-                toast.success(t('removeSuccess', { userName: member.firstName }));
-                onSuccess?.();
-            } catch (error) {
-                logger.error('Failed to remove member:', error);
-                throw error;
-            }
-        },
-        [boardId, onSuccess, t]
-    );
+  const handleRemove = useCallback(
+    async (member: Member) => {
+      try {
+        await boardService.removeMember(boardId, member.email);
+        toast.success(t('removeSuccess', { userName: member.firstName }));
+        onSuccess?.();
+      } catch (error) {
+        logger.error('Failed to remove member:', error);
+        throw error;
+      }
+    },
+    [boardId, onSuccess, t],
+  );
 
-    const handleInvite = useCallback(
-        async (email: string) => {
-            try {
-                const newMember = await boardService.inviteMember(boardId, email);
-                toast.success(t('inviteMemberForm.inviteSuccess', { email }));
-                onSuccess?.();
-                return newMember;
-            } catch (error) {
-                logger.error('Failed to invite member:', error);
-                throw error;
-            }
-        },
-        [boardId, onSuccess, t]
-    );
+  const handleInvite = useCallback(
+    async (email: string) => {
+      try {
+        const newMember = await boardService.inviteMember(boardId, email);
+        toast.success(t('inviteMemberForm.inviteSuccess', { email }));
+        onSuccess?.();
+        return newMember;
+      } catch (error) {
+        logger.error('Failed to invite member:', error);
+        throw error;
+      }
+    },
+    [boardId, onSuccess, t],
+  );
 
-    const handleRightClick = useCallback(
-        (event: React.MouseEvent, member: Member) => {
-            event.preventDefault();
-            if (currentUserIsAdmin && member.email !== userEmail) {
-                contextMenu.handleContextMenu(event, member);
-            }
-        },
-        [currentUserIsAdmin, userEmail, contextMenu]
-    );
+  const handleRightClick = useCallback(
+    (event: React.MouseEvent, member: Member) => {
+      event.preventDefault();
+      if (currentUserIsAdmin && member.email !== userEmail) {
+        contextMenu.handleContextMenu(event, member);
+      }
+    },
+    [currentUserIsAdmin, userEmail, contextMenu],
+  );
 
-    return {
-        contextMenu,
-        handlePromote,
-        handleRemove,
-        handleInvite,
-        handleRightClick,
-    };
+  return {
+    contextMenu,
+    handlePromote,
+    handleRemove,
+    handleInvite,
+    handleRightClick,
+  };
 };

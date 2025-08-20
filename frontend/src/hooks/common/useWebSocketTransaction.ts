@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import logger from 'utils/Logger';
 
 import { WEBSOCKET_CONFIG } from 'constants/AppConstants';
-import logger from 'utils/Logger';
 import websocketService from 'services/WebSocketService';
 
 /**
@@ -46,7 +47,7 @@ interface PendingTransaction<TPayload> {
   payload: TPayload;
   timestamp: number;
   status: 'pending' | 'confirmed' | 'failed';
-  timeoutId?: NodeJS.Timeout; // Timer for timeout handling
+  timeoutId?: ReturnType<typeof setTimeout>; // Timer for timeout handling
 }
 
 /**
@@ -99,7 +100,7 @@ interface TransactionHookResult<TPayload> {
 export const useWebSocketTransaction = <TPayload extends object, TState>(
   config: TransactionConfig<TPayload, TState>,
   currentState: TState,
-  setState: React.Dispatch<React.SetStateAction<TState>>
+  setState: React.Dispatch<React.SetStateAction<TState>>,
 ): TransactionHookResult<TPayload> => {
   // Track pending transactions with their payloads and status
   const [pendingTransactions, setPendingTransactions] = useState<
@@ -109,7 +110,10 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
   // Removed offline queue context for simplicity
 
   // Generate transaction ID using provided function or default
-  const generateId = config.generateTransactionId || (() => crypto.randomUUID());
+  const generateId = useMemo(
+    () => config.generateTransactionId || (() => crypto.randomUUID()),
+    [config.generateTransactionId],
+  );
 
   // Simplified - no longer need action type inference
 
@@ -118,7 +122,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    */
   const updateTransactionStatus = useCallback(
     (transactionId: string, status: PendingTransaction<TPayload>['status']) => {
-      setPendingTransactions(prev => {
+      setPendingTransactions((prev) => {
         const updated = new Map(prev);
         const transaction = updated.get(transactionId);
         if (transaction) {
@@ -127,7 +131,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         return updated;
       });
     },
-    []
+    [],
   );
 
   /**
@@ -135,7 +139,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    */
   const handleTransactionTimeout = useCallback(
     (transactionId: string) => {
-      setPendingTransactions(prev => {
+      setPendingTransactions((prev) => {
         const updated = new Map(prev);
         const transaction = updated.get(transactionId);
         
@@ -146,7 +150,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
           updated.set(transactionId, { 
             ...transaction, 
             status: 'failed',
-            timeoutId: undefined 
+            timeoutId: undefined, 
           });
           
           // Call failure callback
@@ -157,7 +161,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         return updated;
       });
     },
-    [config]
+    [config],
   );
 
   /**
@@ -177,34 +181,34 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     const now = Date.now();
     
     const genuinelyPending = allTransactions.filter(
-      ([_, transaction]) => {
+      ([, transaction]) => {
         // Only rollback transactions that are:
         // 1. Still pending (never confirmed)
         // 2. Recent enough that they likely never reached the server
         const transactionAge = now - transaction.timestamp;
         return transaction.status === 'pending' && transactionAge < 5000; // Less than 5 seconds old
-      }
+      },
     );
     
     const staleTransactions = allTransactions.filter(
-      ([_, transaction]) => {
+      ([, transaction]) => {
         const transactionAge = now - transaction.timestamp;
         return transaction.status === 'pending' && transactionAge >= 5000; // 5+ seconds old
-      }
+      },
     );
     
     const confirmedTransactions = allTransactions.filter(
-      ([_, transaction]) => transaction.status === 'confirmed'
+      ([, transaction]) => transaction.status === 'confirmed',
     );
     
     logger.info(
-      `Connection lost - ${totalTransactions} total transactions: ${genuinelyPending.length} genuine rollbacks, ${staleTransactions.length} likely succeeded, ${confirmedTransactions.length} confirmed`
+      `Connection lost - ${totalTransactions} total transactions: ${genuinelyPending.length} genuine rollbacks, ${staleTransactions.length} likely succeeded, ${confirmedTransactions.length} confirmed`,
     );
     
     // Clean up stale transactions silently (they likely succeeded but confirmation was lost)
     if (staleTransactions.length > 0) {
       logger.info(`${staleTransactions.length} old transactions likely succeeded - cleaning up silently`);
-      staleTransactions.forEach(([transactionId, transaction]) => {
+      staleTransactions.forEach(([, transaction]) => {
         if (transaction.timeoutId) {
           clearTimeout(transaction.timeoutId);
         }
@@ -297,7 +301,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         // Connected - attempt direct send
         try {
           // Track transaction as pending server confirmation with timeout
-          setPendingTransactions(prev => {
+          setPendingTransactions((prev) => {
             const updated = new Map(prev);
             
             // Create timeout timer
@@ -309,7 +313,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
               payload,
               timestamp: Date.now(),
               status: 'pending',
-              timeoutId
+              timeoutId,
             });
             return updated;
           });
@@ -340,13 +344,13 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         logger.warn(`WebSocket disconnected, cannot send transaction: ${transactionId}`);
         
         // Mark transaction as failed due to disconnection
-        setPendingTransactions(prev => {
+        setPendingTransactions((prev) => {
           const updated = new Map(prev);
           updated.set(transactionId, {
             payload,
             timestamp: Date.now(),
             status: 'failed',
-            timeoutId: undefined // No timeout needed for immediate failures
+            timeoutId: undefined, // No timeout needed for immediate failures
           });
           logger.warn(`Transaction ${transactionId} failed - no connection`);
           return updated;
@@ -358,7 +362,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
         return transactionId;
       }
     },
-    [config, currentState, setState, generateId, updateTransactionStatus, handleTransactionTimeout]
+    [config, currentState, setState, generateId, updateTransactionStatus, handleTransactionTimeout],
   );
 
   /**
@@ -366,7 +370,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    * @param transactionId - ID of transaction to commit
    */
   const commitTransaction = useCallback((transactionId: string) => {
-    setPendingTransactions(prev => {
+    setPendingTransactions((prev) => {
       const updated = new Map(prev);
       const transaction = updated.get(transactionId);
       
@@ -402,7 +406,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     (transactionId: string): boolean => {
       return pendingTransactions.has(transactionId);
     },
-    [pendingTransactions]
+    [pendingTransactions],
   );
 
   /**
@@ -411,25 +415,27 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    * @returns Transaction status or null if not found
    */
   const getTransactionStatus = useCallback(
-    (transactionId: string): 'pending' | 'confirmed' | 'failed' | null => {
+    (transactionId: string): 'sending' | 'confirmed' | 'failed' | null => {
       const transaction = pendingTransactions.get(transactionId);
-      return transaction ? transaction.status : null;
+      if (!transaction) return null;
+      // Map internal 'pending' status to external 'sending' status
+      return transaction.status === 'pending' ? 'sending' : transaction.status;
     },
-    [pendingTransactions]
+    [pendingTransactions],
   );
 
   /**
    * Get detailed transaction statistics for debugging
    */
-  const getTransactionStats = useCallback(() => {
-    const all = Array.from(pendingTransactions.values());
-    return {
-      total: all.length,
-      pending: all.filter(t => t.status === 'pending').length,
-      failed: all.filter(t => t.status === 'failed').length,
-      confirmed: all.filter(t => t.status === 'confirmed').length,
-    };
-  }, [pendingTransactions]);
+  // const getTransactionStats = useCallback(() => {
+  //   const all = Array.from(pendingTransactions.values());
+  //   return {
+  //     total: all.length,
+  //     pending: all.filter((t) => t.status === 'pending').length,
+  //     failed: all.filter((t) => t.status === 'failed').length,
+  //     confirmed: all.filter((t) => t.status === 'confirmed').length,
+  //   };
+  // }, [pendingTransactions]);
 
   /**
    * Manually rollback all pending transactions
@@ -442,7 +448,10 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
   return {
     sendTransactionalAction,
     isPending,
+    getTransactionStatus,
     pendingCount: pendingTransactions.size,
+    pendingTransactionIds: Array.from(pendingTransactions.keys()),
+    rollbackAll,
     commitTransaction,
   };
 };

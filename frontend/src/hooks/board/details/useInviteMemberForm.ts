@@ -9,36 +9,36 @@ import type { Member } from 'types/BoardTypes';
 
 
 export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember: Member) => void) => {
-    const { t } = useTranslation();
-    const [email, setEmail] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { handleInvite } = useBoardMemberManagement(boardId, false);
+  const { handleInvite } = useBoardMemberManagement(boardId, false);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!email.trim()) {
-            logger.warn('[useInviteMemberForm] Email validation failed - empty email');
-            toast.error(t('inviteMemberForm.emailRequiredError'));
-            return;
-        }
-        setIsSubmitting(true);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!email.trim()) {
+      logger.warn('[useInviteMemberForm] Email validation failed - empty email');
+      toast.error(t('inviteMemberForm.emailRequiredError'));
+      return;
+    }
+    setIsSubmitting(true);
 
-        try {
-            const newMember = await handleInvite(email);
-            onInviteSuccess(newMember);
-            setEmail('');
-        } catch (error) {
-            logger.error('[useInviteMemberForm] Failed to invite member:', error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+    try {
+      const newMember = await handleInvite(email);
+      onInviteSuccess(newMember);
+      setEmail('');
+    } catch (error) {
+      logger.error('[useInviteMemberForm] Failed to invite member:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    return {
-        email,
-        setEmail,
-        isSubmitting,
-        handleSubmit,
-    };
+  return {
+    email,
+    setEmail,
+    isSubmitting,
+    handleSubmit,
+  };
 };

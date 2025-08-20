@@ -7,86 +7,86 @@ import { Link } from 'react-router-dom';
 
 import { Button, ConfirmationDialog } from 'components/common';
 import {
-    ChangePasswordForm,
-    ChatAppearanceSection,
-    DangerZoneSection,
-    ProfileDetailsSection,
-    ProfilePictureManager
+  ChangePasswordForm,
+  ChatAppearanceSection,
+  DangerZoneSection,
+  ProfileDetailsSection,
+  ProfilePictureManager,
 } from 'components/settings';
 import { useSettingsPage } from 'hooks/settings';
 
 import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
-    const { t } = useTranslation();
-    const {
-        user,
-        isLoading,
-        isPicDeleteConfirmOpen,
-        setPicDeleteConfirmOpen,
-        isAccountDeleteConfirmOpen,
-        setAccountDeleteConfirmOpen,
-        handleUpdateProfile,
-        handleChangePassword,
-        handlePictureUpload,
-        handlePictureDelete,
-        handleDeleteAccount,
-    } = useSettingsPage();
+  const { t } = useTranslation();
+  const {
+    user,
+    isLoading,
+    isPicDeleteConfirmOpen,
+    setPicDeleteConfirmOpen,
+    isAccountDeleteConfirmOpen,
+    setAccountDeleteConfirmOpen,
+    handleUpdateProfile,
+    handleChangePassword,
+    handlePictureUpload,
+    handlePictureDelete,
+    handleDeleteAccount,
+  } = useSettingsPage();
 
-    if (isLoading) {
-        return <div>{t('settingsPage.loading')}</div>;
-    }
+  if (isLoading) {
+    return <div>{t('settingsPage.loading')}</div>;
+  }
 
-    if (!user) {
-        return <div>{t('settingsPage.loadError')}</div>;
-    }
+  if (!user) {
+    return <div>{t('settingsPage.loadError')}</div>;
+  }
 
-    return (
-        <div className={styles.pageContainer}>
-            <div className={styles.pageHeader}>
-                <h1>{t('settingsPage.heading')}</h1>
-                <Link to={APP_ROUTES.BOARD_LIST}>
-                    <Button variant="secondary">&larr; {t('settingsPage.backToBoards')}</Button>
-                </Link>
-            </div>
+  return (
+    <div className={styles.pageContainer}>
+      <div className={styles.pageHeader}>
+        <h1>{t('settingsPage.heading')}</h1>
+        <Link to={APP_ROUTES.BOARD_LIST}>
+          <Button variant="secondary">&larr; {t('settingsPage.backToBoards')}</Button>
+        </Link>
+      </div>
 
-            <section className={styles.section}>
-                <h2 className={styles.sectionHeader}>{t('settingsPage.pictureSectionHeader')}</h2>
-                <ProfilePictureManager
-                    user={user}
-                    onUpload={handlePictureUpload}
-                    onDelete={() => setPicDeleteConfirmOpen(true)}
-                />
-            </section>
+      <section className={styles.section}>
+        <h2 className={styles.sectionHeader}>{t('settingsPage.pictureSectionHeader')}</h2>
+        <ProfilePictureManager
+          user={user}
+          onUpload={handlePictureUpload}
+          onDelete={() => setPicDeleteConfirmOpen(true)}
+        />
+      </section>
 
-            <ProfileDetailsSection user={user} onUpdateProfile={handleUpdateProfile} />
+      <ProfileDetailsSection user={user} onUpdateProfile={handleUpdateProfile} />
 
-            <section className={styles.section}>
-                <h2 className={styles.sectionHeader}>{t('settingsPage.passwordSectionHeader')}</h2>
-                <ChangePasswordForm onSubmit={handleChangePassword} />
-            </section>
+      <section className={styles.section}>
+        <h2 className={styles.sectionHeader}>{t('settingsPage.passwordSectionHeader')}</h2>
+        <ChangePasswordForm onSubmit={handleChangePassword} />
+      </section>
 
-            <ChatAppearanceSection />
+      <ChatAppearanceSection />
 
-            <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
+      <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
 
-            <ConfirmationDialog
-                isOpen={isPicDeleteConfirmOpen}
-                onClose={() => setPicDeleteConfirmOpen(false)}
-                onConfirm={handlePictureDelete}
-                title={t('settingsPage.deletePictureConfirmTitle')}
-                message={t('settingsPage.deletePictureConfirmText')}
-            />
+      <ConfirmationDialog
+        isOpen={isPicDeleteConfirmOpen}
+        onClose={() => setPicDeleteConfirmOpen(false)}
+        onConfirm={handlePictureDelete}
+        title={t('settingsPage.deletePictureConfirmTitle')}
+        message={t('settingsPage.deletePictureConfirmText')}
+      />
 
-            <ConfirmationDialog
-                isOpen={isAccountDeleteConfirmOpen}
-                onClose={() => setAccountDeleteConfirmOpen(false)}
-                onConfirm={handleDeleteAccount}
-                title={t('settingsPage.deleteAccountConfirmTitle')}
-                message={t('settingsPage.deleteAccountConfirmText')}
-            />
-        </div>
-    );
+      <ConfirmationDialog
+        isOpen={isAccountDeleteConfirmOpen}
+        onClose={() => setAccountDeleteConfirmOpen(false)}
+        onConfirm={handleDeleteAccount}
+        title={t('settingsPage.deleteAccountConfirmTitle')}
+        message={t('settingsPage.deleteAccountConfirmText')}
+      />
+    </div>
+  );
 };
 
 export default SettingsPage;

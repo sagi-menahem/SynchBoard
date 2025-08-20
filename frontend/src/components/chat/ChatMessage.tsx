@@ -1,8 +1,8 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
-import { isSafeUrl, sanitizeUserContent } from 'utils/Sanitize';
 import { formatSmartTimestamp, formatDetailedTimestamp } from 'utils/DateUtils';
+import { isSafeUrl, sanitizeUserContent } from 'utils/Sanitize';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { EnhancedChatMessage } from 'types/ChatTypes';

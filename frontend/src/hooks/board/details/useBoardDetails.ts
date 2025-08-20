@@ -16,66 +16,66 @@ const logger = Logger;
 
 
 export const useBoardDetails = (boardId: number | undefined) => {
-    const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const { userEmail } = useAuth();
-    const navigate = useNavigate();
+  const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { userEmail } = useAuth();
+  const navigate = useNavigate();
 
-    const fetchDetails = useCallback(() => {
-        if (!boardId || isNaN(boardId)) {
-            setIsLoading(false);
-            return;
+  const fetchDetails = useCallback(() => {
+    if (!boardId || isNaN(boardId)) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
+    BoardService.getBoardDetails(boardId)
+      .then((data: unknown) => {
+        setBoardDetails(data as BoardDetails);
+      })
+      .catch((error: unknown) => {
+        logger.error('Failed to fetch board details:', error);
+        if (error instanceof AxiosError && error.response?.status === 403) {
+          navigate(APP_ROUTES.BOARD_LIST);
         }
+        setBoardDetails(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [boardId, navigate]);
 
-        setIsLoading(true);
+  useEffect(() => {
+    fetchDetails();
+  }, [fetchDetails]);
 
-        BoardService.getBoardDetails(boardId)
-            .then((data: unknown) => {
-                setBoardDetails(data as BoardDetails);
-            })
-            .catch((error: unknown) => {
-                logger.error('Failed to fetch board details:', error);
-                if (error instanceof AxiosError && error.response?.status === 403) {
-                    navigate(APP_ROUTES.BOARD_LIST);
-                }
-                setBoardDetails(null);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    }, [boardId, navigate]);
-
-    useEffect(() => {
-        fetchDetails();
-    }, [fetchDetails]);
-
-    const handleBoardUpdate = useCallback(
-        (message: BoardUpdateDTO) => {
-            if (message.sourceUserEmail === userEmail) {
-                return;
-            }
-            logger.debug(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
+  const handleBoardUpdate = useCallback(
+    (message: BoardUpdateDTO) => {
+      if (message.sourceUserEmail === userEmail) {
+        return;
+      }
+      logger.debug(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
             
-            if (!boardId || isNaN(boardId)) {
-                return;
-            }
+      if (!boardId || isNaN(boardId)) {
+        return;
+      }
 
-            BoardService.getBoardDetails(boardId)
-                .then((data: unknown) => {
-                    setBoardDetails(data as BoardDetails);
-                })
-                .catch((error: unknown) => {
-                    logger.warn('Failed to refetch board details after WebSocket update:', error);
-                    if (message.updateType === 'MEMBERS_UPDATED' && 
+      BoardService.getBoardDetails(boardId)
+        .then((data: unknown) => {
+          setBoardDetails(data as BoardDetails);
+        })
+        .catch((error: unknown) => {
+          logger.warn('Failed to refetch board details after WebSocket update:', error);
+          if (message.updateType === 'MEMBERS_UPDATED' && 
                         error instanceof AxiosError && error.response?.status === 403) {
-                        navigate(APP_ROUTES.BOARD_LIST);
-                    }
-                });
-        },
-        [boardId, userEmail, navigate]
-    );
+            navigate(APP_ROUTES.BOARD_LIST);
+          }
+        });
+    },
+    [boardId, userEmail, navigate],
+  );
 
-    useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
+  useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
 
-    return { boardDetails, isLoading, refetch: fetchDetails };
+  return { boardDetails, isLoading, refetch: fetchDetails };
 };
