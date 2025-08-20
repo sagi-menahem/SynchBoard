@@ -1,5 +1,5 @@
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
-import type { ActionPayload, CirclePayload, LinePayload, RectanglePayload } from 'types/BoardObjectTypes';
+import type { ActionPayload, CirclePayload, LinePayload, RectanglePayload, EnhancedActionPayload } from 'types/BoardObjectTypes';
 
 export const getMouseCoordinates = (
     event: MouseEvent, 
@@ -88,11 +88,36 @@ export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRend
     return ctx;
 };
 
+/**
+ * Get the appropriate opacity based on transaction status
+ */
+const getTransactionOpacity = (payload: EnhancedActionPayload): number => {
+    if (!payload.transactionId) return 1.0; // Server-originated object, fully opaque
+    
+    switch (payload.transactionStatus) {
+        case 'pending':
+            return 0.7; // Semi-transparent for pending confirmation
+        case 'failed':
+            return 0.5; // More transparent for failed state
+        case 'confirmed':
+        default:
+            return 1.0; // Fully opaque for confirmed or unknown states
+    }
+};
+
 export const replayDrawAction = (
     payload: ActionPayload, 
     targetCtx: CanvasRenderingContext2D, 
     targetCanvas: HTMLCanvasElement
 ): void => {
+    const enhancedPayload = payload as EnhancedActionPayload;
+    const opacity = getTransactionOpacity(enhancedPayload);
+    
+    // Save current context state
+    const originalGlobalAlpha = targetCtx.globalAlpha;
+    
+    // Apply transaction-based opacity
+    targetCtx.globalAlpha = opacity;
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
     if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
@@ -103,5 +128,7 @@ export const replayDrawAction = (
         drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
     }
 
+    // Restore original context state
+    targetCtx.globalAlpha = originalGlobalAlpha;
     targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 };

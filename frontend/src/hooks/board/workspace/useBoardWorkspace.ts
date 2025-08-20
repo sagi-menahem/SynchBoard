@@ -13,7 +13,7 @@ import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
 import { useWebSocketTransaction } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
+import type { ActionPayload, SendBoardActionRequest, EnhancedActionPayload } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 
@@ -54,11 +54,13 @@ export const useBoardWorkspace = (boardId: number) => {
   >({
     destination: WEBSOCKET_DESTINATIONS.DRAW_ACTION,
     optimisticUpdate: (currentObjects, actionRequest, transactionId) => {
-      // Extract payload and add the transaction ID as instanceId
-      const newObject: ActionPayload = {
+      // Extract payload and add the transaction ID and status for visual feedback
+      const newObject: EnhancedActionPayload = {
         ...actionRequest.payload,
-        instanceId: transactionId
-      } as ActionPayload;
+        instanceId: transactionId,
+        transactionId,
+        transactionStatus: 'pending'
+      } as EnhancedActionPayload;
       return [...currentObjects, newObject];
     },
     rollbackUpdate: (currentObjects, transactionId) => {
@@ -76,7 +78,14 @@ export const useBoardWorkspace = (boardId: number) => {
       return true;
     },
     onSuccess: (actionRequest, transactionId) => {
-      logger.debug(`Drawing action confirmed: ${transactionId}`);
+      logger.debug(`Drawing confirmed: ${transactionId}`);
+      // Update UI to show drawing as successfully saved
+      setObjects(prev => prev.map(obj => {
+        const enhancedObj = obj as EnhancedActionPayload;
+        return enhancedObj.transactionId === transactionId 
+          ? { ...enhancedObj, transactionStatus: 'confirmed' }
+          : obj;
+      }));
     },
     onFailure: (error, actionRequest, transactionId) => {
       if (error.message === 'Payload validation failed') {
@@ -85,11 +94,23 @@ export const useBoardWorkspace = (boardId: number) => {
         toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
       }
       logger.error(`Drawing action failed: ${transactionId}`, error);
+      // Update transaction status to failed for visual feedback
+      setObjects(prev => prev.map(obj => {
+        const enhancedObj = obj as EnhancedActionPayload;
+        return enhancedObj.transactionId === transactionId 
+          ? { ...enhancedObj, transactionStatus: 'failed' }
+          : obj;
+      }));
     },
     onRollback: (transactionId, actionRequest) => {
-      // Show user notification about the rollback
-      toast.error(t('errors.drawingsRolledBack', 'Some drawings were not saved due to connection issues.'));
-      logger.warn(`Drawing action rolled back: ${transactionId}`);
+      const toolName = actionRequest.payload?.tool || 'drawing';
+      logger.warn(`Drawing failed to save: ${toolName}`);
+      
+      // Show toast only for genuine failures (recent transactions that never reached server)
+      toast.error(`Failed to save ${toolName}`, {
+        duration: 4000,
+        id: `drawing-rollback-${transactionId}` // Prevent duplicate toasts
+      });
     }
   }, objects, setObjects);
 

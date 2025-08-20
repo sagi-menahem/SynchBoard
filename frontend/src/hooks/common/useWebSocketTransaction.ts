@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { WEBSOCKET_CONFIG } from 'constants/AppConstants';
 import logger from 'utils/Logger';
 import websocketService from 'services/WebSocketService';
-import { useOfflineQueue } from 'context/OfflineQueueContext';
 
 /**
  * Configuration interface for setting up a WebSocket transaction
@@ -45,7 +45,8 @@ interface TransactionConfig<TPayload extends object, TState> {
 interface PendingTransaction<TPayload> {
   payload: TPayload;
   timestamp: number;
-  status: 'pending' | 'queued' | 'processing' | 'failed' | 'confirmed';
+  status: 'pending' | 'confirmed' | 'failed';
+  timeoutId?: NodeJS.Timeout; // Timer for timeout handling
 }
 
 /**
@@ -60,7 +61,7 @@ interface TransactionHookResult<TPayload> {
   isPending: (transactionId: string) => boolean;
   
   /** Get transaction status */
-  getTransactionStatus: (transactionId: string) => 'pending' | 'queued' | 'processing' | 'failed' | 'confirmed' | null;
+  getTransactionStatus: (transactionId: string) => 'sending' | 'failed' | 'confirmed' | null;
   
   /** Get the number of pending transactions */
   pendingCount: number;
@@ -105,25 +106,12 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     Map<string, PendingTransaction<TPayload>>
   >(new Map());
 
-  // Access offline queue context
-  const { actions: queueActions } = useOfflineQueue();
+  // Removed offline queue context for simplicity
 
   // Generate transaction ID using provided function or default
   const generateId = config.generateTransactionId || (() => crypto.randomUUID());
 
-  // Infer action type from payload or use provided type
-  const inferActionType = useCallback((payload: TPayload): 'CHAT' | 'DRAWING' => {
-    if (config.actionType) {
-      return config.actionType;
-    }
-    
-    // Infer from payload properties
-    if ('content' in payload && typeof payload.content === 'string') {
-      return 'CHAT';
-    }
-    
-    return 'DRAWING';
-  }, [config.actionType]);
+  // Simplified - no longer need action type inference
 
   /**
    * Update transaction status
@@ -143,46 +131,127 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
   );
 
   /**
+   * Handle transaction timeout - called when transaction takes too long
+   */
+  const handleTransactionTimeout = useCallback(
+    (transactionId: string) => {
+      setPendingTransactions(prev => {
+        const updated = new Map(prev);
+        const transaction = updated.get(transactionId);
+        
+        if (transaction && transaction.status === 'pending') {
+          logger.warn(`Transaction timed out after ${WEBSOCKET_CONFIG.TRANSACTION_TIMEOUT}ms: ${transactionId}`);
+          
+          // Mark as failed due to timeout
+          updated.set(transactionId, { 
+            ...transaction, 
+            status: 'failed',
+            timeoutId: undefined 
+          });
+          
+          // Call failure callback
+          const timeoutError = new Error('Transaction confirmation timeout - server may be unavailable');
+          config.onFailure?.(timeoutError, transaction.payload, transactionId);
+        }
+        
+        return updated;
+      });
+    },
+    [config]
+  );
+
+  /**
    * Rollback function that removes all pending transactions from state
    * This is called automatically on WebSocket disconnection
    */
   const rollbackPendingTransactions = useCallback(() => {
-    if (pendingTransactions.size === 0) {
-      return; // No pending transactions to rollback
+    const totalTransactions = pendingTransactions.size;
+    
+    if (totalTransactions === 0) {
+      logger.debug('No transactions to check - rollback complete');
+      return;
     }
 
-    logger.warn(
-      `Rolling back ${pendingTransactions.size} unconfirmed transactions due to connection failure`
+    // Categorize transactions by status and age
+    const allTransactions = Array.from(pendingTransactions.entries());
+    const now = Date.now();
+    
+    const genuinelyPending = allTransactions.filter(
+      ([_, transaction]) => {
+        // Only rollback transactions that are:
+        // 1. Still pending (never confirmed)
+        // 2. Recent enough that they likely never reached the server
+        const transactionAge = now - transaction.timestamp;
+        return transaction.status === 'pending' && transactionAge < 5000; // Less than 5 seconds old
+      }
     );
+    
+    const staleTransactions = allTransactions.filter(
+      ([_, transaction]) => {
+        const transactionAge = now - transaction.timestamp;
+        return transaction.status === 'pending' && transactionAge >= 5000; // 5+ seconds old
+      }
+    );
+    
+    const confirmedTransactions = allTransactions.filter(
+      ([_, transaction]) => transaction.status === 'confirmed'
+    );
+    
+    logger.info(
+      `Connection lost - ${totalTransactions} total transactions: ${genuinelyPending.length} genuine rollbacks, ${staleTransactions.length} likely succeeded, ${confirmedTransactions.length} confirmed`
+    );
+    
+    // Clean up stale transactions silently (they likely succeeded but confirmation was lost)
+    if (staleTransactions.length > 0) {
+      logger.info(`${staleTransactions.length} old transactions likely succeeded - cleaning up silently`);
+      staleTransactions.forEach(([transactionId, transaction]) => {
+        if (transaction.timeoutId) {
+          clearTimeout(transaction.timeoutId);
+        }
+      });
+    }
+    
+    if (genuinelyPending.length === 0) {
+      logger.info('No genuine failures detected - cleaning up without user notification');
+      // Clean up all transactions without showing toasts
+      setPendingTransactions(new Map());
+      return;
+    }
 
-    // Apply rollback for each pending transaction in reverse order (LIFO)
-    const transactionIds = Array.from(pendingTransactions.keys()).reverse();
+    logger.warn(`Rolling back ${genuinelyPending.length} genuinely failed transactions`);
+
+    // Only rollback the transactions that genuinely failed
     let newState = currentState;
+    let rollbackCount = 0;
 
-    for (const transactionId of transactionIds) {
-      const transaction = pendingTransactions.get(transactionId);
-      if (transaction && transaction.status === 'pending') {
-        // Only rollback pending transactions, not queued ones
-        newState = config.rollbackUpdate(newState, transactionId);
+    for (const [transactionId, transaction] of genuinelyPending) {
+      try {
+        // Clear any pending timeout timer
+        if (transaction.timeoutId) {
+          clearTimeout(transaction.timeoutId);
+        }
         
-        // Call rollback callback if provided
+        // Apply rollback to remove the optimistic update
+        newState = config.rollbackUpdate(newState, transactionId);
+        rollbackCount++;
+        
+        // Call rollback callback to show user feedback - only for genuine failures
         config.onRollback?.(transactionId, transaction.payload);
+        
+        logger.debug(`Rolled back genuinely failed transaction: ${transactionId}`);
+      } catch (error) {
+        logger.error(`Error rolling back transaction ${transactionId}:`, error);
       }
     }
 
-    // Update state once with all rollbacks applied
-    setState(newState);
+    // Apply all rollbacks to state
+    if (rollbackCount > 0) {
+      setState(newState);
+      logger.info(`Successfully rolled back ${rollbackCount} transactions`);
+    }
 
-    // Clear pending transactions but preserve queued ones
-    setPendingTransactions(prev => {
-      const updated = new Map();
-      for (const [id, transaction] of prev.entries()) {
-        if (transaction.status === 'queued') {
-          updated.set(id, transaction);
-        }
-      }
-      return updated;
-    });
+    // Clear all transactions after rollback
+    setPendingTransactions(new Map());
   }, [pendingTransactions, currentState, setState, config]);
 
   /**
@@ -214,9 +283,9 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
       // Generate unique transaction ID
       const transactionId = generateId();
       
-      logger.debug(`Starting WebSocket transaction: ${transactionId}`);
+      logger.debug(`Sending ${config.actionType || 'message'}: ${transactionId}`);
 
-      // Apply optimistic update immediately
+      // Show action immediately (optimistic update)
       const newState = config.optimisticUpdate(currentState, payload, transactionId);
       setState(newState);
 
@@ -227,70 +296,69 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
       if (websocketService.isConnected()) {
         // Connected - attempt direct send
         try {
-          // Track as pending transaction
-          setPendingTransactions(prev => new Map(prev).set(transactionId, {
-            payload,
-            timestamp: Date.now(),
-            status: 'pending'
-          }));
+          // Track transaction as pending server confirmation with timeout
+          setPendingTransactions(prev => {
+            const updated = new Map(prev);
+            
+            // Create timeout timer
+            const timeoutId = setTimeout(() => {
+              handleTransactionTimeout(transactionId);
+            }, WEBSOCKET_CONFIG.TRANSACTION_TIMEOUT);
+            
+            updated.set(transactionId, {
+              payload,
+              timestamp: Date.now(),
+              status: 'pending',
+              timeoutId
+            });
+            return updated;
+          });
 
-          logger.debug(`[DIAGNOSTIC] Sending message to server. Destination: ${config.destination}, Payload:`, JSON.stringify(payloadWithInstanceId, null, 2));
-          
-          // Send WebSocket message
+          // Send to server via WebSocket
           await websocketService.sendMessage(config.destination, payloadWithInstanceId);
           
-          logger.debug(`WebSocket message sent successfully: ${transactionId}`);
+          logger.debug(`${config.actionType || 'Message'} sent, awaiting confirmation: ${transactionId}`);
           
-          // Call success callback if provided
-          config.onSuccess?.(payload, transactionId);
+          // Success callback will be called when server confirms via commitTransaction
           
           return transactionId;
         } catch (error) {
-          // Network error during send - queue instead of rollback
-          logger.warn(`WebSocket send failed for transaction ${transactionId}, queuing for retry:`, error);
+          // Network error during send - mark as failed
+          logger.error(`WebSocket send failed for transaction ${transactionId}:`, error);
           
-          // Update status to queued
-          updateTransactionStatus(transactionId, 'queued');
+          // Update status to failed
+          updateTransactionStatus(transactionId, 'failed');
           
-          // Add to offline queue
-          queueActions.queueAction({
-            id: transactionId,
-            type: inferActionType(payload),
-            destination: config.destination,
-            payload: payloadWithInstanceId,
-            timestamp: Date.now(),
-            maxRetries: 3,
-            priority: 'normal'
-          });
+          // Call failure callback if provided
+          config.onFailure?.(error as Error, payload, transactionId);
           
           return transactionId;
         }
       } else {
-        // Disconnected - queue immediately
-        logger.debug(`WebSocket disconnected, queuing transaction: ${transactionId}`);
+        // Disconnected - fail immediately with clear error
+        const disconnectedError = new Error('Cannot send - WebSocket disconnected');
+        logger.warn(`WebSocket disconnected, cannot send transaction: ${transactionId}`);
         
-        // Track as queued transaction
-        setPendingTransactions(prev => new Map(prev).set(transactionId, {
-          payload,
-          timestamp: Date.now(),
-          status: 'queued'
-        }));
-
-        // Add to offline queue
-        queueActions.queueAction({
-          id: transactionId,
-          type: inferActionType(payload),
-          destination: config.destination,
-          payload: payloadWithInstanceId,
-          timestamp: Date.now(),
-          maxRetries: 3,
-          priority: 'normal'
+        // Mark transaction as failed due to disconnection
+        setPendingTransactions(prev => {
+          const updated = new Map(prev);
+          updated.set(transactionId, {
+            payload,
+            timestamp: Date.now(),
+            status: 'failed',
+            timeoutId: undefined // No timeout needed for immediate failures
+          });
+          logger.warn(`Transaction ${transactionId} failed - no connection`);
+          return updated;
         });
+
+        // Call failure callback if provided
+        config.onFailure?.(disconnectedError, payload, transactionId);
         
         return transactionId;
       }
     },
-    [config, currentState, setState, generateId, inferActionType, queueActions, updateTransactionStatus]
+    [config, currentState, setState, generateId, updateTransactionStatus, handleTransactionTimeout]
   );
 
   /**
@@ -300,15 +368,26 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
   const commitTransaction = useCallback((transactionId: string) => {
     setPendingTransactions(prev => {
       const updated = new Map(prev);
-      if (updated.has(transactionId)) {
-        const transaction = updated.get(transactionId);
-        updated.delete(transactionId);
-        logger.debug(`Committed transaction: ${transactionId}`);
+      const transaction = updated.get(transactionId);
+      
+      if (transaction) {
+        logger.debug(`Server confirmed transaction: ${transactionId}`);
         
-        // Call success callback if provided and transaction exists
-        if (transaction) {
-          config.onSuccess?.(transaction.payload, transactionId);
+        // Clear timeout timer if it exists
+        if (transaction.timeoutId) {
+          clearTimeout(transaction.timeoutId);
         }
+        
+        // Call success callback immediately when server confirms
+        config.onSuccess?.(transaction.payload, transactionId);
+        
+        // Remove transaction immediately - no race conditions
+        updated.delete(transactionId);
+        
+        logger.debug(`Transaction completed and cleaned up: ${transactionId} (${updated.size} remaining)`);
+      } else {
+        // This can happen if transaction timed out already - that's normal
+        logger.debug(`Transaction ${transactionId} already cleaned up (likely timed out)`);
       }
       return updated;
     });
@@ -332,12 +411,25 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
    * @returns Transaction status or null if not found
    */
   const getTransactionStatus = useCallback(
-    (transactionId: string): 'pending' | 'queued' | 'processing' | 'failed' | 'confirmed' | null => {
+    (transactionId: string): 'pending' | 'confirmed' | 'failed' | null => {
       const transaction = pendingTransactions.get(transactionId);
       return transaction ? transaction.status : null;
     },
     [pendingTransactions]
   );
+
+  /**
+   * Get detailed transaction statistics for debugging
+   */
+  const getTransactionStats = useCallback(() => {
+    const all = Array.from(pendingTransactions.values());
+    return {
+      total: all.length,
+      pending: all.filter(t => t.status === 'pending').length,
+      failed: all.filter(t => t.status === 'failed').length,
+      confirmed: all.filter(t => t.status === 'confirmed').length,
+    };
+  }, [pendingTransactions]);
 
   /**
    * Manually rollback all pending transactions
@@ -350,10 +442,7 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
   return {
     sendTransactionalAction,
     isPending,
-    getTransactionStatus,
     pendingCount: pendingTransactions.size,
-    pendingTransactionIds: Array.from(pendingTransactions.keys()),
-    rollbackAll,
     commitTransaction,
   };
 };

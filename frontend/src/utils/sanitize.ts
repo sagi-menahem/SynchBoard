@@ -1,26 +1,3 @@
-export const escapeHtml = (text: string): string => {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-};
-
-export const sanitizeString = (input: string): string => {
-    if (!input || typeof input !== 'string') {
-        return '';
-    }
-
-    let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-
-    sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
-
-    sanitized = sanitized.replace(/javascript:/gi, '');
-
-    sanitized = sanitized.replace(/on\w+\s*=/gi, '');
-
-    sanitized = sanitized.replace(/data:text\/html[^,]*,/gi, '');
-
-    return sanitized;
-};
 
 export const isSafeUrl = (url: string): boolean => {
     if (!url || typeof url !== 'string') {
@@ -54,5 +31,17 @@ export const sanitizeUserContent = (content: unknown): string => {
     }
 
     const stringContent = String(content);
-    return sanitizeString(stringContent);
+    
+    // Basic sanitization - remove script tags and potentially dangerous content
+    if (!stringContent || typeof stringContent !== 'string') {
+        return '';
+    }
+
+    let sanitized = stringContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+    sanitized = sanitized.replace(/javascript:/gi, '');
+    sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+    sanitized = sanitized.replace(/data:text\/html[^,]*,/gi, '');
+
+    return sanitized;
 };

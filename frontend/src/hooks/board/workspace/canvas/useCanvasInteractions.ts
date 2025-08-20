@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
+import { useSocket } from 'hooks/common';
 import {
     ActionType,
     type CirclePayload,
@@ -40,11 +41,17 @@ export const useCanvasInteractions = ({
     isRadiusValid,
 }: UseCanvasInteractionsProps) => {
     const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
+    const { isSocketConnected } = useSocket();
 
     const handleMouseDown = useCallback(
         (event: React.MouseEvent<HTMLCanvasElement>) => {
             const canvas = previewCanvasRef.current;
             if (!canvas) return;
+            
+            // Prevent drawing when disconnected from server
+            if (!isSocketConnected) {
+                return;
+            }
 
             setIsDrawing(true);
             const { offsetX, offsetY } = event.nativeEvent;
@@ -55,7 +62,7 @@ export const useCanvasInteractions = ({
                 startPoint.current = { x: offsetX, y: offsetY };
             }
         },
-        [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath]
+        [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath, isSocketConnected]
     );
 
     useEffect(() => {

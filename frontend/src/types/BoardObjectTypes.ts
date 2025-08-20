@@ -42,6 +42,11 @@ export interface CirclePayload {
 
 export type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
 
+export interface EnhancedActionPayload extends ActionPayload {
+    transactionId?: string;
+    transactionStatus?: 'sending' | 'failed' | 'confirmed';
+}
+
 export interface SendBoardActionRequest {
     boardId: number;
     type: ActionType;

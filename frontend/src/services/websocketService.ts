@@ -16,7 +16,7 @@ import logger from 'utils/Logger';
 class WebSocketService {
   private stompClient: Client | null = null;
   private readonly messageSchemas = new Map<string, MessageValidationSchema>();
-  private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
+  private connectionState: 'disconnected' | 'connecting' | 'connected' | 'permanently_disconnected' = 'disconnected';
   private pendingSubscriptions: {
         topic: string;
         callback: (message: unknown) => void;
@@ -104,12 +104,22 @@ class WebSocketService {
    * This is called by various event handlers to ensure consistent disconnect handling.
    */
   private handleDisconnection(): void {
-    logger.debug('Handling disconnection - updating state and attempting reconnection');
+    // Prevent multiple simultaneous disconnection handling
+    if (this.connectionState === 'disconnected' || 
+        this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
+      return; // Already handling disconnection or permanently stopped
+    }
+    
+    logger.info('Connection lost - attempting to reconnect...');
     this.connectionState = 'disconnected';
     
-    // Attempt reconnection if we have stored connection parameters
-    if (this.currentToken && this.onConnectedCallback) {
+    // Only attempt reconnection if we have valid connection params and haven't exceeded limits
+    if (this.currentToken && 
+        this.onConnectedCallback && 
+        this.reconnectionAttempts < WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
       this.attemptReconnection();
+    } else {
+      this.resetReconnectionState();
     }
   }
 
@@ -118,20 +128,44 @@ class WebSocketService {
      * Delay increases exponentially: baseDelay * 2^attempts
      */
   private attemptReconnection(): void {
+    // HARD STOP - Strict check to prevent infinite loops
     if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
-      logger.error(`Maximum reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection attempts.`);
-      this.connectionState = 'disconnected';
+      logger.info(`Maximum reconnection attempts reached. Connection stopped.`);
+      this.connectionState = 'permanently_disconnected';
+      this.resetReconnectionState();
+      
+      // HARD STOP: Clear all connection parameters to prevent any future attempts
+      this.currentToken = null;
+      this.onConnectedCallback = null;
+      this.rollbackCallbacks.clear();
+      
+      // Ensure no timers are running
+      if (this.reconnectionTimer) {
+        clearTimeout(this.reconnectionTimer);
+        this.reconnectionTimer = null;
+      }
+      
+      logger.info('Please refresh the page to reconnect.');
       return;
     }
 
-    const delay = WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY * Math.pow(2, this.reconnectionAttempts);
+    const delay = Math.min(
+      WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY * Math.pow(2, this.reconnectionAttempts),
+      10000 // Cap at 10 seconds max delay for school project
+    );
     this.reconnectionAttempts++;
         
-    logger.info(`Attempting to reconnect... (attempt ${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) in ${delay}ms`);
+    logger.info(`Reconnecting... (${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS})`);
 
     this.reconnectionTimer = setTimeout(() => {
-      if (this.currentToken && this.onConnectedCallback) {
+      // Triple-check all conditions before reconnecting
+      if (this.reconnectionAttempts <= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS && 
+          this.currentToken && 
+          this.onConnectedCallback && 
+          this.connectionState === 'disconnected') {
         this.connectInternal(this.currentToken, this.onConnectedCallback);
+      } else {
+        this.resetReconnectionState();
       }
     }, delay);
   }
@@ -153,13 +187,11 @@ class WebSocketService {
     this.onConnectedCallback = onConnectedCallback;
         
     if (this.stompClient?.active && this.connectionState === 'connected') {
-      logger.debug('WebSocket already connected.');
       onConnectedCallback();
       return;
     }
 
     if (this.connectionState === 'connecting') {
-      logger.debug('WebSocket connection already in progress.');
       return;
     }
 
@@ -174,8 +206,12 @@ class WebSocketService {
       connectHeaders: {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
+      // Disable automatic reconnection - we handle this manually
+      reconnectDelay: 0,
+      heartbeatIncoming: 0,
+      heartbeatOutgoing: 0,
       onConnect: async () => {
-        logger.debug('Connected to WebSocket server!');
+        logger.info('Connected to server');
         this.connectionState = 'connected';
         this.resetReconnectionState(); // Reset reconnection attempts on successful connection
         this.processPendingSubscriptions();
@@ -192,12 +228,37 @@ class WebSocketService {
         onConnectedCallback();
       },
       onDisconnect: () => {
-        logger.debug('STOMP disconnected from WebSocket.');
-        this.handleDisconnection();
+        // Only handle disconnection if this wasn't intentional
+        if (!this.isIntentionalDisconnect) {
+          this.handleDisconnection();
+        }
       },
       onStompError: (frame) => {
-        logger.error('Broker reported error: ' + frame.headers['message']);
-        this.handleDisconnection();
+        const errorMessage = frame.headers['message'] || 'Unknown broker error';
+        
+        // Check if we've already reached max attempts
+        if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
+          return;
+        }
+        
+        logger.warn(`Server error: ${errorMessage}`);
+        
+        // For broker-related errors, stop reconnection immediately
+        if (errorMessage.includes('Broker not available') || 
+            errorMessage.includes('Connection to broker closed') ||
+            errorMessage.includes('Broker reported error') ||
+            errorMessage.includes('Connection refused')) {
+          
+          logger.info('Server unavailable - stopping reconnection attempts');
+          this.connectionState = 'disconnected';
+          this.reconnectionAttempts = WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS; // Force permanent stop
+          this.currentToken = null;
+          this.onConnectedCallback = null;
+          this.resetReconnectionState();
+        } else {
+          // Other errors - try limited reconnection
+          this.handleDisconnection();
+        }
       },
       /**
        * Critical handler for detecting server-initiated closures (like code 1009 for message too big).
@@ -207,22 +268,19 @@ class WebSocketService {
       onWebSocketClose: (event) => {
         // Check if this was an intentional disconnection
         if (this.isIntentionalDisconnect) {
-          logger.debug('WebSocket connection closed intentionally.');
           this.isIntentionalDisconnect = false; // Reset the flag
           return; // Don't treat as unexpected disconnection
         }
         
-        logger.error(`WebSocket closed unexpectedly. Code: ${event.code}, Reason: ${event.reason || 'No reason provided'}`);
+        logger.info(`Connection closed (${event.code}${event.reason ? ': ' + event.reason : ''})`);
         
-        // Transactional Rollback: Trigger all registered rollback callbacks
-        // This must happen before handleDisconnection to access current state
+        // Check for unsent transactions and handle rollbacks
         if (this.rollbackCallbacks.size > 0) {
-          logger.debug(`Triggering rollback of pending actions for ${this.rollbackCallbacks.size} active workspaces`);
           this.rollbackCallbacks.forEach((callback) => {
             try {
-              callback();
+              callback(); // Each callback will check its own pending transactions
             } catch (error) {
-              logger.error('Error during rollback callback execution:', error);
+              logger.error('Error during rollback check:', error);
             }
           });
         }
@@ -232,7 +290,6 @@ class WebSocketService {
         this.handleDisconnection();
       },
     });
-    logger.debug('Activating STOMP client...');
     this.stompClient.activate();
   }
 
@@ -249,7 +306,6 @@ class WebSocketService {
         
     if (this.stompClient?.active) {
       this.stompClient.deactivate();
-      logger.debug('Disconnected from WebSocket.');
       this.stompClient = null;
     }
     this.connectionState = 'disconnected';
@@ -279,7 +335,6 @@ class WebSocketService {
     schemaKey?: string,
   ): StompSubscription | null {
     if (this.connectionState !== 'connected' || !this.stompClient?.active) {
-      logger.debug(`WebSocket not ready, queuing subscription for ${topic}`);
       this.pendingSubscriptions.push({
         topic,
         callback: onMessageReceived as (message: unknown) => void,
@@ -290,21 +345,15 @@ class WebSocketService {
 
     try {
       const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
-        // DIAGNOSTIC LOG: Raw message received before any parsing
-        logger.debug(`[DIAGNOSTIC] Raw message received on topic ${topic}. Body: ${message.body}`);
-        
         const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
         
-        // DIAGNOSTIC LOG: Parsed message object after validation
         if (validatedMessage !== null) {
-          logger.debug(`[DIAGNOSTIC] Parsed message payload:`, JSON.stringify(validatedMessage, null, 2));
           onMessageReceived(validatedMessage);
         } else {
           logger.warn(`Invalid message received on topic ${topic}`);
         }
       });
 
-      logger.debug(`Subscribed to ${topic}`);
       return subscription;
     } catch (error) {
       logger.error(`Failed to subscribe to ${topic}:`, error);
@@ -340,7 +389,7 @@ class WebSocketService {
     }
   }
 
-  public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
+  public getConnectionState(): 'disconnected' | 'connecting' | 'connected' | 'permanently_disconnected' {
     return this.connectionState;
   }
 
@@ -350,17 +399,16 @@ class WebSocketService {
 
   /**
    * Register a rollback callback that will be called on unexpected disconnections
-   * @param callback Function to call when rollback is needed
+   * The callback should check for actual pending transactions before performing rollbacks
+   * @param callback Function to call when rollback check is needed
    * @returns Function to unregister the callback
    */
   public registerRollbackCallback(callback: () => void): () => void {
     this.rollbackCallbacks.add(callback);
-    logger.debug(`Registered rollback callback. Total callbacks: ${this.rollbackCallbacks.size}`);
     
     // Return unregister function
     return () => {
       this.rollbackCallbacks.delete(callback);
-      logger.debug(`Unregistered rollback callback. Total callbacks: ${this.rollbackCallbacks.size}`);
     };
   }
 
@@ -371,12 +419,10 @@ class WebSocketService {
    */
   public registerQueueProcessor(callback: () => Promise<void>): () => void {
     this.queueProcessorCallback = callback;
-    logger.debug('Registered offline queue processor callback');
     
     // Return unregister function
     return () => {
       this.queueProcessorCallback = null;
-      logger.debug('Unregistered offline queue processor callback');
     };
   }
 }

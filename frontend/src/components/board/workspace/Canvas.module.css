@@ -16,3 +16,26 @@
     left: 0;
     cursor: crosshair;
 }
+
+.previewCanvas.disabled {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    filter: grayscale(0.3);
+}
+
+.container.disconnected::after {
+    content: "Drawing disabled - No connection to server";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 107, 107, 0.9);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

@@ -17,8 +17,12 @@ export const WEBSOCKET_CONFIG = {
   // Reconnection configuration
   MAX_RECONNECTION_ATTEMPTS: import.meta.env.VITE_WEBSOCKET_MAX_RECONNECTION_ATTEMPTS 
     ? parseInt(import.meta.env.VITE_WEBSOCKET_MAX_RECONNECTION_ATTEMPTS) 
-    : 10,
+    : 5, // Reduced for school project
   BASE_RECONNECTION_DELAY: import.meta.env.VITE_WEBSOCKET_BASE_RECONNECTION_DELAY 
     ? parseInt(import.meta.env.VITE_WEBSOCKET_BASE_RECONNECTION_DELAY) 
-    : 1000, // 1 second
+    : 2000, // 2 seconds
+  // Transaction timeout - how long to wait for server confirmation before giving up
+  TRANSACTION_TIMEOUT: import.meta.env.VITE_TRANSACTION_TIMEOUT
+    ? parseInt(import.meta.env.VITE_TRANSACTION_TIMEOUT)
+    : 15000, // 15 seconds - reasonable for school project
 } as const;

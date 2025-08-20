@@ -28,6 +28,8 @@ interface WebSocketHandlerProps {
     setMessages: React.Dispatch<React.SetStateAction<ChatMessageResponse[]>>;
     // Transactional State: For committing pending actions
     commitTransaction: (instanceId: string) => void;
+    // Chat transaction commit handler (optional - only used if chat uses separate transaction system)
+    commitChatTransaction?: (instanceId: string) => void;
 }
 
 export const useBoardWebSocketHandler = ({
@@ -38,6 +40,7 @@ export const useBoardWebSocketHandler = ({
   setObjects,
   setMessages,
   commitTransaction,
+  commitChatTransaction,
 }: WebSocketHandlerProps) => {
   const { userEmail } = useAuth();
 
@@ -127,14 +130,25 @@ export const useBoardWebSocketHandler = ({
           logger.warn(`[UNIFIED] Unknown transactional message type: ${transactionalMessage.type}`);
         }
 
-        // UNIFIED COMMIT: Single commit point for ALL transactional messages
-        // This is the critical fix - both drawings and chat messages go through the same commit logic
-        logger.debug(`[UNIFIED] Committing transaction for type: ${transactionalMessage.type}, instanceId: ${transactionalMessage.instanceId}`);
-        commitTransaction(transactionalMessage.instanceId);
+        // SMART COMMIT: Route confirmations to the correct transaction system
+        if (transactionalMessage.type === ActionType.OBJECT_ADD || transactionalMessage.type === ActionType.OBJECT_DELETE) {
+          // Drawing actions use the main transaction system
+          logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
+          commitTransaction(transactionalMessage.instanceId);
+        } else if (transactionalMessage.type === 'CHAT') {
+          // Chat messages use their own transaction system if available
+          logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
+          if (commitChatTransaction) {
+            commitChatTransaction(transactionalMessage.instanceId);
+          } else {
+            // Fallback to main transaction system if chat system not available
+            commitTransaction(transactionalMessage.instanceId);
+          }
+        }
         
       }
     },
-    [boardId, userEmail, sessionInstanceId, setBoardName, setAccessLost, setObjects, setMessages, commitTransaction],
+    [boardId, userEmail, sessionInstanceId, setBoardName, setAccessLost, setObjects, setMessages, commitTransaction, commitChatTransaction],
   );
 
   useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', onMessageReceived, 'board');
