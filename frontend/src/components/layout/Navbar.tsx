@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, ConnectionStatusIndicator } from 'components/common';
+import { Button } from 'components/common';
 import { useAuth } from 'hooks/auth';
 
 import styles from './Navbar.module.css';
@@ -19,7 +19,6 @@ const Navbar: React.FC = () => {
     <nav className={styles.nav}>
       <div className={styles.section}>
         <span className={styles.title}>{t('navbar.title')}</span>
-        <ConnectionStatusIndicator className={styles.connectionStatus} />
       </div>
 
       <div className={styles.section}>

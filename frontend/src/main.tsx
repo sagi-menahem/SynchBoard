@@ -1,6 +1,6 @@
 import React from 'react';
 
-import App from 'App.tsx';
+import App from 'App';
 import { AppProvider } from 'context';
 import ReactDOM from 'react-dom/client';
 import { Logger } from 'utils';

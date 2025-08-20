@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
+import { ConnectionStatusBanner } from 'components/common';
 import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
 
@@ -12,6 +13,7 @@ function App() {
   return (
     <PageErrorBoundary pageName="App">
       <BrowserRouter>
+        <ConnectionStatusBanner />
         <Toaster
           position="top-center"
           toastOptions={{

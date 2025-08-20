@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button } from 'components/common';
+import { Button, Input } from 'components/common';
 import { useSocket } from 'hooks/common';
 
 import styles from './ChatInput.module.css';
@@ -66,7 +66,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.inputContainer}>
-        <input
+        <Input
           ref={inputRef}
           type="text"
           value={message}
