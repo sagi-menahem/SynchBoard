@@ -11,6 +11,9 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
+    /* CSS custom property for banner height */
+    --banner-height: 0px;
 }
 
 a {
