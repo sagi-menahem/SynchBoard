@@ -56,16 +56,13 @@ public class ChatService {
         log.info(LoggingConstants.CHAT_MESSAGE_SENT, request.getBoardId(), userEmail,
                 messageToSave.getMessageId());
 
-        // DIAGNOSTIC LOG: Message saved to DB with details for broadcast
         log.debug("[DIAGNOSTIC] Message saved to DB. MessageID: {}, InstanceID to be broadcasted: {}", 
                  messageToSave.getMessageId(), request.getInstanceId());
 
-        // Create response with the instanceId echoed back for client-side transaction matching
         ChatMessageDTO.Response response = mapMessageToDto(messageToSave, request.getInstanceId());
 
         String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
         
-        // DIAGNOSTIC LOG: Critical broadcast point - exact destination and full payload
         log.info("[DIAGNOSTIC] Broadcasting chat message. Topic: {}, Payload: {}", destination, response.toString());
         
         messagingTemplate.convertAndSend(destination, response);
@@ -88,7 +85,6 @@ public class ChatService {
         return messages.stream().map(message -> mapMessageToDto(message, null)).collect(Collectors.toList());
     }
 
-    // Overloaded method to include instanceId for real-time messages
     private ChatMessageDTO.Response mapMessageToDto(Message message, String instanceId) {
         String senderEmail;
         String senderFullName;
@@ -106,14 +102,14 @@ public class ChatService {
         }
 
         return ChatMessageDTO.Response.builder()
-                .id(message.getMessageId()) // Include message ID
+                .id(message.getMessageId())
                 .type(ChatMessageDTO.Response.MessageType.CHAT)
                 .content(message.getMessageContent())
                 .timestamp(message.getTimestamp())
                 .senderEmail(senderEmail)
                 .senderFullName(senderFullName)
                 .senderProfilePictureUrl(senderProfilePictureUrl)
-                .instanceId(instanceId) // Echo back the client's transaction ID
+                .instanceId(instanceId)
                 .build();
     }
 

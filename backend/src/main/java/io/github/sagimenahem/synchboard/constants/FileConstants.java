@@ -12,7 +12,7 @@ public final class FileConstants {
 
         public static final String DEFAULT_SENDER_EMAIL = "unknown";
 
-        public static final long MAX_FILE_SIZE_BYTES = 5L * 1024 * 1024; // 5MB
+        public static final long MAX_FILE_SIZE_BYTES = 5L * 1024 * 1024;
         public static final int MAX_FILE_SIZE_MB = 5;
 
         public static final List<String> ALLOWED_IMAGE_MIME_TYPES = Arrays.asList("image/jpeg",

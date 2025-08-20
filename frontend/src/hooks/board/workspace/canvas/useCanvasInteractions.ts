@@ -48,7 +48,6 @@ export const useCanvasInteractions = ({
       const canvas = previewCanvasRef.current;
       if (!canvas) return;
             
-      // Prevent drawing when disconnected from server
       if (!isSocketConnected) {
         return;
       }

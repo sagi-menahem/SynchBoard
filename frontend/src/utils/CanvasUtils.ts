@@ -88,20 +88,17 @@ export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRend
   return ctx;
 };
 
-/**
- * Get the appropriate opacity based on transaction status
- */
 const getTransactionOpacity = (payload: EnhancedActionPayload): number => {
-  if (!payload.transactionId) return 1.0; // Server-originated object, fully opaque
+  if (!payload.transactionId) return 1.0;
     
   switch (payload.transactionStatus) {
     case 'pending' as const:
-      return 0.7; // Semi-transparent for pending confirmation
+      return 0.7;
     case 'failed':
-      return 0.5; // More transparent for failed state
+      return 0.5;
     case 'confirmed':
     default:
-      return 1.0; // Fully opaque for confirmed or unknown states
+      return 1.0;
   }
 };
 
@@ -113,10 +110,7 @@ export const replayDrawAction = (
   const enhancedPayload = payload as EnhancedActionPayload;
   const opacity = getTransactionOpacity(enhancedPayload);
     
-  // Save current context state
   const originalGlobalAlpha = targetCtx.globalAlpha;
-    
-  // Apply transaction-based opacity
   targetCtx.globalAlpha = opacity;
   targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
@@ -128,7 +122,6 @@ export const replayDrawAction = (
     drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
   }
 
-  // Restore original context state
   targetCtx.globalAlpha = originalGlobalAlpha;
   targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 };

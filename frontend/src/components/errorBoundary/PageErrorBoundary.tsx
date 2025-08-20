@@ -14,10 +14,6 @@ interface State {
   error: Error | null;
 }
 
-/**
- * Page-level error boundary that catches errors at the route/page level.
- * Uses the new ErrorDisplay component for consistent, professional error presentation.
- */
 export class PageErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -30,8 +26,6 @@ export class PageErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     const { pageName } = this.props;
-    
-    // Log detailed error information
     logger.error(`Page Error in ${pageName || 'Unknown Page'}:`, {
       error: error.message,
       stack: error.stack,

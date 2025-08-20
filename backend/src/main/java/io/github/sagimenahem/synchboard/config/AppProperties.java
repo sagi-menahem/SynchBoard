@@ -28,7 +28,7 @@ public class AppProperties {
 
     public static class Jwt {
         private String secretKey;
-        private int expirationHours = 24; // default 24 hours
+        private int expirationHours = 24;
 
         public String getSecretKey() {
             return secretKey;

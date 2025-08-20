@@ -32,7 +32,6 @@ export const sanitizeUserContent = (content: unknown): string => {
 
   const stringContent = String(content);
     
-  // Basic sanitization - remove script tags and potentially dangerous content
   if (!stringContent || typeof stringContent !== 'string') {
     return '';
   }

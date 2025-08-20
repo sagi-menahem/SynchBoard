@@ -47,14 +47,12 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, objects.length, resetCounts, hasInitialized]);
 
-  // Use the new transactional hook for drawing actions
   const { sendTransactionalAction, commitTransaction, pendingCount } = useWebSocketTransaction<
     SendBoardActionRequest,
     ActionPayload[]
   >({
     destination: WEBSOCKET_DESTINATIONS.DRAW_ACTION,
     optimisticUpdate: (currentObjects, actionRequest, transactionId) => {
-      // Extract payload and add the transaction ID and status for visual feedback
       const newObject: EnhancedActionPayload = {
         ...(actionRequest.payload as ActionPayload),
         instanceId: transactionId,
@@ -67,7 +65,6 @@ export const useBoardWorkspace = (boardId: number) => {
       return currentObjects.filter((obj) => obj.instanceId !== transactionId);
     },
     validatePayload: (actionRequest) => {
-      // Validate message size
       const messageSize = JSON.stringify(actionRequest).length;
       if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
         logger.error(
@@ -79,7 +76,6 @@ export const useBoardWorkspace = (boardId: number) => {
     },
     onSuccess: (_, transactionId) => {
       logger.debug(`Drawing confirmed: ${transactionId}`);
-      // Update UI to show drawing as successfully saved
       setObjects((prev) => prev.map((obj) => {
         const enhancedObj = obj as EnhancedActionPayload;
         return enhancedObj.transactionId === transactionId 
@@ -94,7 +90,6 @@ export const useBoardWorkspace = (boardId: number) => {
         toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
       }
       logger.error(`Drawing action failed: ${transactionId}`, error);
-      // Update transaction status to failed for visual feedback
       setObjects((prev) => prev.map((obj) => {
         const enhancedObj = obj as EnhancedActionPayload;
         return enhancedObj.transactionId === transactionId 
@@ -105,16 +100,13 @@ export const useBoardWorkspace = (boardId: number) => {
     onRollback: (transactionId, actionRequest) => {
       const toolName = actionRequest.payload?.tool || 'drawing';
       logger.warn(`Drawing failed to save: ${toolName}`);
-      
-      // Show toast only for genuine failures (recent transactions that never reached server)
       toast.error(`Failed to save ${toolName}`, {
         duration: 4000,
-        id: `drawing-rollback-${transactionId}`, // Prevent duplicate toasts
+        id: `drawing-rollback-${transactionId}`,
       });
     },
   }, objects, setObjects);
 
-  // WebSocket handler for processing incoming messages and committing transactions
   const handleCommitTransaction = useCallback((instanceId: string) => {
     commitTransaction(instanceId);
   }, [commitTransaction]);
@@ -131,27 +123,20 @@ export const useBoardWorkspace = (boardId: number) => {
 
   const handleDrawAction = useCallback(
     async (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
-      // Create the full action request with board ID and session info
       const actionRequest: SendBoardActionRequest = {
         ...action,
         boardId,
-        instanceId: '', // Will be set by the transactional hook
+        instanceId: '',
         sender: sessionInstanceId.current,
       };
 
       try {
-        // Send the action using the transactional hook
         const transactionId = await sendTransactionalAction(actionRequest);
-        
-        // Update the action request with the actual transaction ID for consistency
         actionRequest.instanceId = transactionId;
-        
-        // Increment undo count for successful actions
         incrementUndo();
         
         logger.debug(`Drawing action sent: ${transactionId}`);
       } catch (error) {
-        // Error handling is already done by the transactional hook
         logger.error('Failed to send drawing action:', error);
       }
     },

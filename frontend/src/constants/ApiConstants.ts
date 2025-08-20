@@ -1,4 +1,3 @@
-// Use environment variables with fallback to defaults for development
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL || 'http://localhost:8080/ws';
 
@@ -42,7 +41,6 @@ export const WEBSOCKET_TOPICS = {
   USER: (userEmail: string) => `/topic/user/${userEmail}` as const,
 } as const;
 
-// Type definitions for better type safety
 export type WebSocketDestination = typeof WEBSOCKET_DESTINATIONS[keyof typeof WEBSOCKET_DESTINATIONS];
 export type WebSocketTopicFactory = typeof WEBSOCKET_TOPICS[keyof typeof WEBSOCKET_TOPICS];
 

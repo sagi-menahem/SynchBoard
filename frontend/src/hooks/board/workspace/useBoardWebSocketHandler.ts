@@ -18,9 +18,7 @@ interface WebSocketHandlerProps {
     setAccessLost: (lost: boolean) => void;
     setObjects: React.Dispatch<React.SetStateAction<ActionPayload[]>>;
     setMessages: React.Dispatch<React.SetStateAction<ChatMessageResponse[]>>;
-    // Transactional State: For committing pending actions
     commitTransaction: (instanceId: string) => void;
-    // Chat transaction commit handler (optional - only used if chat uses separate transaction system)
     commitChatTransaction?: (instanceId: string) => void;
 }
 
@@ -63,8 +61,6 @@ export const useBoardWebSocketHandler = ({
             });
         }
       } else if ('type' in payload && 'instanceId' in payload) {
-        // UNIFIED TRANSACTIONAL HANDLER: Process all messages with type and instanceId
-        // This includes both drawing actions (OBJECT_ADD, OBJECT_DELETE) and chat messages (CHAT)
         const transactionalMessage = payload as {
           type: string;
           instanceId: string;
@@ -74,17 +70,12 @@ export const useBoardWebSocketHandler = ({
         logger.debug(
           `[UNIFIED] Received transactional message. Type: ${transactionalMessage.type}, InstanceId: ${transactionalMessage.instanceId}`,
         );
-        
-        // Branch based on message type for specific processing
         if (
           transactionalMessage.type === ActionType.OBJECT_ADD ||
           transactionalMessage.type === ActionType.OBJECT_DELETE
         ) {
-          // DRAWING ACTION PROCESSING
           const action = transactionalMessage as BoardActionResponse;
           const isOwnDrawingAction = action.sender === sessionInstanceId && action.type === ActionType.OBJECT_ADD;
-          
-          // Process the action for non-own actions
           if (!isOwnDrawingAction) {
             const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
             if (action.type === ActionType.OBJECT_ADD) {
@@ -95,24 +86,20 @@ export const useBoardWebSocketHandler = ({
               setObjects((prev) => prev.filter((obj) => obj.instanceId !== action.instanceId));
             }
           }
-          
+
         } else if (transactionalMessage.type === 'CHAT') {
-          // CHAT MESSAGE PROCESSING
           const chatMessage = transactionalMessage as ChatMessageResponse;
           logger.debug(`[UNIFIED] Processing CHAT message with instanceId: ${chatMessage.instanceId}`);
           
           setMessages((prevMessages) => {
-            // Robust findIndex logic with comprehensive matching
             const messageIndex = prevMessages.findIndex((msg) => {
               const pendingMsg = msg as ChatMessageResponse & {
               transactionId?: string;
               instanceId?: string;
             };
-              // Primary match: server instanceId matches our transactionId (most common case)
               if (pendingMsg.transactionId === chatMessage.instanceId) {
                 return true;
               }
-              // Fallback match: instanceId matches instanceId (edge cases)
               if (pendingMsg.instanceId === chatMessage.instanceId) {
                 return true;
               }
@@ -122,12 +109,10 @@ export const useBoardWebSocketHandler = ({
             if (messageIndex !== -1) {
               logger.debug(`[UNIFIED] Match found for chat instanceId: ${chatMessage.instanceId}. Replacing pending message at index ${messageIndex}.`);
               const newMessages = [...prevMessages];
-              // Replace the pending message with the confirmed one from the server
               newMessages[messageIndex] = chatMessage;
               return newMessages;
             } else {
               logger.debug(`[UNIFIED] No pending chat message found for instanceId: ${chatMessage.instanceId}. Appending new message.`);
-              // If no match, it's a message from another user, so append it
               return [...prevMessages, chatMessage];
             }
           });
@@ -135,21 +120,17 @@ export const useBoardWebSocketHandler = ({
           logger.warn(`[UNIFIED] Unknown transactional message type: ${transactionalMessage.type}`);
         }
 
-        // SMART COMMIT: Route confirmations to the correct transaction system
         if (
           transactionalMessage.type === ActionType.OBJECT_ADD ||
           transactionalMessage.type === ActionType.OBJECT_DELETE
         ) {
-          // Drawing actions use the main transaction system
           logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
           commitTransaction(transactionalMessage.instanceId);
         } else if (transactionalMessage.type === 'CHAT') {
-          // Chat messages use their own transaction system if available
           logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
           if (commitChatTransaction) {
             commitChatTransaction(transactionalMessage.instanceId);
           } else {
-            // Fallback to main transaction system if chat system not available
             commitTransaction(transactionalMessage.instanceId);
           }
         }

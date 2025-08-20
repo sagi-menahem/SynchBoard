@@ -8,34 +8,21 @@ import { useWebSocketTransaction } from 'hooks/common/useWebSocketTransaction';
 import type { ChatTransactionConfig, EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
-/**
- * Enhanced chat transaction hook with offline queueing and optimistic updates
- * 
- * This hook manages the complete lifecycle of chat message transactions:
- * - Applies optimistic updates (messages appear immediately)
- * - Handles offline queueing when connection is unavailable
- * - Manages transaction status updates for UI feedback
- * - Provides robust error handling with user notifications
- */
 export const useChatTransaction = (config: ChatTransactionConfig) => {
   const { boardId, userEmail, userFullName, userProfilePictureUrl, messages, setMessages } = config;
 
-  // Memoize current messages to prevent unnecessary re-renders
   const currentMessages = useMemo(() => messages, [messages]);
 
-  // Create transaction configuration
   const transactionConfig = useMemo(() => ({
     destination: WEBSOCKET_DESTINATIONS.SEND_MESSAGE,
     actionType: 'CHAT' as const,
-    
-    // Optimistic update: Add message immediately to UI
     optimisticUpdate: (
       currentMessages: ChatMessageResponse[],
       payload: { content: string; timestamp: number; instanceId: string },
       transactionId: string,
     ): ChatMessageResponse[] => {
       const optimisticMessage: EnhancedChatMessage = {
-        id: 0, // Temporary ID, will be replaced by server
+        id: 0,
         type: 'CHAT',
         content: payload.content,
         timestamp: new Date(payload.timestamp).toISOString(),
@@ -51,7 +38,6 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       return [...currentMessages, optimisticMessage];
     },
 
-    // Rollback update: Remove message from UI on failure
     rollbackUpdate: (
       currentMessages: ChatMessageResponse[],
       transactionId: string,
@@ -62,7 +48,6 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       );
     },
 
-    // Validation: Ensure message content is valid
     validatePayload: (payload: Record<string, unknown>): boolean => {
       if (!payload.content || typeof payload.content !== 'string') {
         return false;
@@ -72,10 +57,8 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       return trimmedContent.length > 0 && trimmedContent.length <= 5000;
     },
 
-    // Success callback - called when server confirms message was received
     onSuccess: (_: unknown, transactionId: string) => {
       logger.debug(`Message confirmed: ${transactionId}`);
-      // Update UI to show message as successfully sent
       setMessages((prev) => prev.map((msg: ChatMessageResponse & { transactionId?: string }) => 
         msg.transactionId === transactionId 
           ? { ...msg, transactionStatus: 'confirmed' }
@@ -83,35 +66,26 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       ));
     },
 
-    // Failure callback
     onFailure: (error: Error, _: unknown, transactionId: string) => {
       logger.error(`Chat message failed: ${transactionId}`, error);
-      
-      // Update message status to failed
       setMessages((prev) => prev.map((msg: ChatMessageResponse & { transactionId?: string }) => 
         msg.transactionId === transactionId 
           ? { ...msg, transactionStatus: 'failed' }
           : msg,
       ));
-      
-      // Show error toast
       toast.error('Message failed to send - it will be retried when connection is restored');
     },
 
-    // Rollback callback - only called for messages that genuinely failed to send
     onRollback: (transactionId: string, payload: { content?: string }) => {
       const messagePreview = payload.content?.substring(0, 25) + ((payload.content?.length ?? 0) > 25 ? '...' : '');
       logger.warn(`Message failed to send: "${messagePreview}"`);
-      
-      // Show toast only for genuine failures (recent transactions that never reached server)
       toast.error(`Failed to send: "${messagePreview}"`, {
         duration: 4000,
-        id: `chat-rollback-${transactionId}`, // Prevent duplicate toasts
+        id: `chat-rollback-${transactionId}`,
       });
     },
   }), [userEmail, userFullName, userProfilePictureUrl, setMessages]);
 
-  // Initialize transaction hook
   const {
     sendTransactionalAction,
     isPending,
@@ -119,7 +93,6 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
     pendingCount,
   } = useWebSocketTransaction(transactionConfig, currentMessages, setMessages);
 
-  // Send chat message function
   const sendChatMessage = useCallback(
     async (content: string): Promise<string> => {
       const trimmedContent = content.trim();
@@ -136,8 +109,8 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
         type: 'CHAT',
         content: trimmedContent,
         timestamp: Date.now(),
-        instanceId: crypto.randomUUID(), // Add instanceId for optimistic update
-        boardId: boardId, // CRITICAL FIX: Include boardId in payload
+        instanceId: crypto.randomUUID(),
+        boardId: boardId,
         senderEmail: userEmail,
         senderFullName: userFullName,
         senderProfilePictureUrl: userProfilePictureUrl,
@@ -155,17 +128,13 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
     [sendTransactionalAction, userEmail, userFullName, userProfilePictureUrl, boardId],
   );
 
-  // Track transactions that need to be committed
   const pendingCommits = useRef<Set<string>>(new Set());
-  
-  // Effect to handle transaction commits safely outside of render
   useEffect(() => {
     const toCommit: string[] = [];
     
     currentMessages.forEach((msg) => {
       const enhancedMsg = msg as EnhancedChatMessage;
       
-      // Check if this message has a transactionId, is pending, and has server confirmation
       if (enhancedMsg.transactionId && 
           isPending(enhancedMsg.transactionId) && 
           enhancedMsg.id && enhancedMsg.id > 0 &&
@@ -177,22 +146,17 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
       }
     });
     
-    // Commit all detected confirmations
     toCommit.forEach((transactionId) => {
       commitTransaction(transactionId);
-      // Remove from pending after committing
       pendingCommits.current.delete(transactionId);
     });
   }, [currentMessages, isPending, commitTransaction]);
 
-  // Simple message list with transaction status
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return currentMessages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
       
-      // Check if this message has a transactionId and is pending
       if (enhancedMsg.transactionId && isPending(enhancedMsg.transactionId)) {
-        // Message is pending - check if we have server confirmation
         const hasServerConfirmation = enhancedMsg.id && enhancedMsg.id > 0;
         
         return {
