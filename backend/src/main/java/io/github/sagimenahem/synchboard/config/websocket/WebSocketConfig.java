@@ -44,7 +44,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint(WEBSOCKET_ENDPOINT)
                 .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins())
                 .withSockJS()
-                .setStreamBytesLimit(1024 * 1024) // 1MB - Critical: Sets the SockJS transport layer limit
+                .setStreamBytesLimit(1024 * 1024)
                 .setHttpMessageCacheSize(1000)
                 .setDisconnectDelay(30 * 1000);
     }
@@ -63,10 +63,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
-        // This is the critical setting that configures the underlying WebSocket
-        // transport layer (e.g., Tomcat) to accept larger messages.
-        container.setMaxTextMessageBufferSize(1024 * 1024); // 1MB
-        container.setMaxBinaryMessageBufferSize(1024 * 1024); // 1MB
+        container.setMaxTextMessageBufferSize(1024 * 1024);
+        container.setMaxBinaryMessageBufferSize(1024 * 1024);
         return container;
     }
 }

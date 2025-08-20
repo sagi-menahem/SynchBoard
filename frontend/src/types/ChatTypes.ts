@@ -1,7 +1,6 @@
 import type { ChatMessageResponse } from './MessageTypes';
 
 export interface EnhancedChatMessage extends ChatMessageResponse {
-  // Simple transaction tracking
   transactionId?: string;
   transactionStatus?: 'pending' | 'confirmed' | 'failed';
 }

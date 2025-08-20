@@ -3,27 +3,15 @@ import React, { useState } from 'react';
 import styles from './ErrorDisplay.module.css';
 
 interface ErrorDisplayProps {
-  /** The type of error boundary that triggered this display */
   errorType: 'page' | 'board' | 'component';
-  /** Custom title for the error, defaults based on errorType */
   title?: string;
-  /** Custom message describing the error, defaults based on errorType */
   message?: string;
-  /** Callback function when user clicks "Try Again" */
   onRetry?: () => void;
-  /** Callback function when user clicks "Go Back" */
   onGoBack?: () => void;
-  /** The actual error object for technical details */
   error?: Error | null;
-  /** Whether to show technical details by default */
   showTechnicalDetails?: boolean;
 }
 
-/**
- * Professional ErrorDisplay component that provides user-friendly error screens
- * consistent with SynchBoard's design system. Used by all ErrorBoundary components
- * to ensure consistent error handling UX throughout the application.
- */
 export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   errorType,
   title,
@@ -35,7 +23,6 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
 }) => {
   const [showDetails, setShowDetails] = useState(showTechnicalDetails);
 
-  // Get default configuration based on error type
   const getErrorConfig = () => {
     switch (errorType) {
       case 'page':
@@ -96,24 +83,20 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   return (
     <div className={containerClass}>
       <div className={styles.content}>
-        {/* Error Icon */}
         <div className={styles.iconContainer}>
           <span className={styles.icon} role="img" aria-label="Error">
             {config.icon}
           </span>
         </div>
 
-        {/* Error Title */}
         <h2 className={styles.title}>
           {config.title}
         </h2>
 
-        {/* Error Message */}
         <p className={styles.message}>
           {config.message}
         </p>
 
-        {/* Action Buttons */}
         <div className={styles.actions}>
           {config.showRetry && (
             <button
@@ -134,7 +117,6 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
           )}
         </div>
 
-        {/* Technical Details (Collapsible) */}
         {error && (
           <div className={styles.technicalDetails}>
             <button
@@ -166,7 +148,6 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
           </div>
         )}
 
-        {/* Help Text */}
         <div className={styles.helpText}>
           If this problem persists, please try refreshing the page or contact support.
         </div>

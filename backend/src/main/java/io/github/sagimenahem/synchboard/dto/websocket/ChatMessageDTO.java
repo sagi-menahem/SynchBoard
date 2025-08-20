@@ -16,7 +16,7 @@ public final class ChatMessageDTO {
     public static class Request {
         private String content;
         private Long boardId;
-        private String instanceId; // Added: Client-side transaction ID for message tracking
+        private String instanceId;
     }
 
     @Data
@@ -25,7 +25,7 @@ public final class ChatMessageDTO {
     @AllArgsConstructor
     public static class Response {
 
-        private Long id; // Added: Message ID from database
+        private Long id;
         private MessageType type;
         private String content;
         private LocalDateTime timestamp;
@@ -34,7 +34,7 @@ public final class ChatMessageDTO {
         private String senderFullName;
         private String senderProfilePictureUrl;
         
-        private String instanceId; // Added: Echo back the client's transaction ID
+        private String instanceId;
 
         public enum MessageType {
             CHAT, JOIN, LEAVE

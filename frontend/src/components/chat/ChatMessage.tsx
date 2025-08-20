@@ -24,29 +24,25 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
   const senderName = sanitizeUserContent(message.senderFullName);
   const messageContent = sanitizeUserContent(message.content);
 
-  // Determine message status for styling
   const getMessageStatus = (): string => {
-    if (!message.transactionId) return 'confirmed'; // Server-originated message
+    if (!message.transactionId) return 'confirmed';
     return message.transactionStatus || 'confirmed';
   };
 
   const messageStatus = getMessageStatus();
   const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
 
-  // Smart timestamp formatting
   const smartTimestamp = formatSmartTimestamp(message.timestamp);
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
   
 
   return (
     <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass}`}>
-      {/* Avatar OUTSIDE bubble for others' messages only */}
       {!isOwnMessage && (
         <img src={imageSource} alt={senderName} className={styles.avatar} />
       )}
       
       <div className={styles.messageBubble}>
-        {/* Header with sender name only */}
         <div className={styles.messageHeader}>
           <strong className={styles.senderName}>
             {senderName}
@@ -54,12 +50,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
         </div>
         
         <div className={styles.messageBody}>
-          {/* Message text */}
           <div className={styles.messageText}>
             {messageContent}
           </div>
           
-          {/* Timestamp in separate container for proper opposite alignment */}
           <div className={styles.timestampContainer}>
             <span 
               className={styles.timestamp}

@@ -14,10 +14,6 @@ interface State {
   error: Error | null;
 }
 
-/**
- * Board-specific error boundary that catches errors related to board functionality.
- * Provides context-aware error handling for board loading, rendering, and interaction errors.
- */
 export class BoardErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -30,8 +26,6 @@ export class BoardErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     const { boardId } = this.props;
-    
-    // Log detailed board-specific error information
     logger.error(`Board Error (Board ID: ${boardId || 'Unknown'}):`, {
       error: error.message,
       stack: error.stack,
@@ -48,7 +42,6 @@ export class BoardErrorBoundary extends Component<Props, State> {
   };
 
   private handleGoBack = () => {
-    // Navigate to board list page
     window.location.href = '/boards';
   };
 

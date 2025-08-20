@@ -13,10 +13,6 @@ interface ChatInputProps {
     placeholder?: string;
 }
 
-/**
- * Optimized ChatInput component that manages its own state
- * to prevent parent re-renders on every keypress
- */
 const ChatInput: React.FC<ChatInputProps> = React.memo(({ 
   onSendMessage, 
   placeholder, 
@@ -39,15 +35,12 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         
     try {
       await onSendMessage(messageContent);
-      // Clear input after successful send initiation
       setMessage('');
     } catch (error) {
       console.error('Failed to send chat message:', error);
-      // Input stays cleared even on error as per UX requirements
       setMessage('');
     } finally {
       setIsSending(false);
-      // Refocus input for continuous messaging
       setTimeout(() => {
         inputRef.current?.focus();
       }, 0);
@@ -58,7 +51,6 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     setMessage(e.target.value);
   }, []);
 
-  // Auto-focus input on component mount for better UX
   useEffect(() => {
     inputRef.current?.focus();
   }, []);

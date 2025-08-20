@@ -24,16 +24,12 @@ class WebSocketService {
         schemaKey?: string;
     }[] = [];
     
-  // Reconnection logic properties
   private reconnectionAttempts = 0;
   private reconnectionTimer: ReturnType<typeof setTimeout> | null = null;
   private currentToken: string | null = null;
   private onConnectedCallback: (() => void) | null = null;
-  // Support multiple rollback callbacks for different board workspaces
   private rollbackCallbacks = new Set<() => void>();
-  // Queue processor callback for offline queue
   private queueProcessorCallback: (() => Promise<void>) | null = null;
-  // Flag to track intentional disconnections
   private isIntentionalDisconnect = false;
 
   constructor() {
@@ -100,20 +96,14 @@ class WebSocketService {
     }
   }
 
-  /**
-   * Handles disconnection from any source and initiates reconnection if appropriate.
-   * This is called by various event handlers to ensure consistent disconnect handling.
-   */
   private handleDisconnection(): void {
-    // Prevent multiple simultaneous disconnection handling
     if (this.connectionState === 'disconnected') {
-      return; // Already handling disconnection
+      return;
     }
     
     logger.info('Connection lost - attempting to reconnect...');
     this.connectionState = 'disconnected';
     
-    // Always attempt reconnection if we have valid connection params
     if (this.currentToken && this.onConnectedCallback) {
       this.attemptReconnection();
     } else {
@@ -121,21 +111,15 @@ class WebSocketService {
     }
   }
 
-  /**
-     * Attempts to reconnect with exponential backoff strategy.
-     * Delay increases exponentially: 1s, 2s, 4s, 8s, 16s, capped at 30s
-     */
   private attemptReconnection(): void {
-    // Calculate delay with exponential backoff, capped at 30 seconds
-    const baseDelay = 1000; // Start with 1 second
+    const baseDelay = 1000;
     const delay = Math.min(
       baseDelay * Math.pow(2, this.reconnectionAttempts),
-      30000, // Cap at 30 seconds max delay
+      30000,
     );
     this.reconnectionAttempts++;
 
     this.reconnectionTimer = setTimeout(() => {
-      // Check all conditions before reconnecting
       if (this.currentToken && 
           this.onConnectedCallback && 
           this.connectionState === 'disconnected') {
@@ -146,9 +130,6 @@ class WebSocketService {
     }, delay);
   }
 
-  /**
-     * Resets reconnection state when connection is successful
-     */
   private resetReconnectionState(): void {
     this.reconnectionAttempts = 0;
     if (this.reconnectionTimer) {
@@ -158,7 +139,6 @@ class WebSocketService {
   }
 
   public connect(token: string, onConnectedCallback: () => void) {
-    // Store connection parameters for potential reconnection
     this.currentToken = token;
     this.onConnectedCallback = onConnectedCallback;
         
@@ -182,17 +162,15 @@ class WebSocketService {
       connectHeaders: {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
-      // Disable automatic reconnection - we handle this manually
       reconnectDelay: 0,
       heartbeatIncoming: 0,
       heartbeatOutgoing: 0,
       onConnect: async () => {
         logger.info('Connected to server');
         this.connectionState = 'connected';
-        this.resetReconnectionState(); // Reset reconnection attempts on successful connection
+        this.resetReconnectionState();
         this.processPendingSubscriptions();
         
-        // Process offline queue after successful reconnection
         if (this.queueProcessorCallback) {
           try {
             await this.queueProcessorCallback();
@@ -204,7 +182,6 @@ class WebSocketService {
         onConnectedCallback();
       },
       onDisconnect: () => {
-        // Only handle disconnection if this wasn't intentional
         if (!this.isIntentionalDisconnect) {
           this.handleDisconnection();
         }
@@ -213,36 +190,26 @@ class WebSocketService {
         const errorMessage = frame.headers['message'] || 'Unknown broker error';
         logger.warn(`Server error: ${errorMessage}`);
         
-        // Handle disconnection for any STOMP error
         this.handleDisconnection();
       },
-      /**
-       * Critical handler for detecting server-initiated closures (like code 1009 for message too big).
-       * This is the most reliable way to catch WebSocket closures with specific close codes
-       * that may not trigger STOMP-level callbacks immediately.
-       */
       onWebSocketClose: (event) => {
-        // Check if this was an intentional disconnection
         if (this.isIntentionalDisconnect) {
-          this.isIntentionalDisconnect = false; // Reset the flag
-          return; // Don't treat as unexpected disconnection
+          this.isIntentionalDisconnect = false;
+          return;
         }
         
         logger.info(`Connection closed (${event.code}${event.reason ? ': ' + event.reason : ''})`);
         
-        // Check for unsent transactions and handle rollbacks
         if (this.rollbackCallbacks.size > 0) {
           this.rollbackCallbacks.forEach((callback) => {
             try {
-              callback(); // Each callback will check its own pending transactions
+              callback();
             } catch (error) {
               logger.error('Error during rollback check:', error);
             }
           });
         }
         
-        // Immediately handle disconnection regardless of close code
-        // This ensures we catch silent failures like 1009 (message too big)
         this.handleDisconnection();
       },
     });
@@ -250,14 +217,12 @@ class WebSocketService {
   }
 
   public disconnect() {
-    // Clear reconnection state
     this.currentToken = null;
     this.onConnectedCallback = null;
     this.rollbackCallbacks.clear();
     this.queueProcessorCallback = null;
     this.resetReconnectionState();
     
-    // Mark this as an intentional disconnection
     this.isIntentionalDisconnect = true;
         
     if (this.stompClient?.active) {
@@ -327,7 +292,6 @@ class WebSocketService {
     const sanitizedBody = sanitizeObject(body);
     const messageBody = JSON.stringify(sanitizedBody);
     
-    // Pre-send validation to prevent messages that would exceed server limits
     if (messageBody.length > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
       const error = new Error(`Cannot send message: size ${messageBody.length} exceeds limit ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`);
       logger.error(error.message);
@@ -353,30 +317,17 @@ class WebSocketService {
     return this.connectionState === 'connected' && this.stompClient?.active === true;
   }
 
-  /**
-   * Register a rollback callback that will be called on unexpected disconnections
-   * The callback should check for actual pending transactions before performing rollbacks
-   * @param callback Function to call when rollback check is needed
-   * @returns Function to unregister the callback
-   */
   public registerRollbackCallback(callback: () => void): () => void {
     this.rollbackCallbacks.add(callback);
     
-    // Return unregister function
     return () => {
       this.rollbackCallbacks.delete(callback);
     };
   }
 
-  /**
-   * Register queue processor callback that will be called after successful reconnection
-   * @param callback Function to process offline queue
-   * @returns Function to unregister the callback
-   */
   public registerQueueProcessor(callback: () => Promise<void>): () => void {
     this.queueProcessorCallback = callback;
     
-    // Return unregister function
     return () => {
       this.queueProcessorCallback = null;
     };

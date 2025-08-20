@@ -16,11 +16,6 @@ interface State {
   error: Error | null;
 }
 
-/**
- * Component-level error boundary for granular error isolation.
- * Catches errors in individual components without affecting the entire page.
- * Supports both full ErrorDisplay and minimal inline error displays.
- */
 export class ComponentErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -33,8 +28,6 @@ export class ComponentErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     const { componentName } = this.props;
-    
-    // Log component-specific error information
     logger.error(`Component Error in ${componentName || 'Unknown Component'}:`, {
       error: error.message,
       stack: error.stack,
@@ -53,7 +46,6 @@ export class ComponentErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       const { componentName, fallbackMessage, minimal = false } = this.props;
 
-      // For minimal errors, show a compact inline error
       if (minimal) {
         return (
           <div style={{
@@ -92,7 +84,6 @@ export class ComponentErrorBoundary extends Component<Props, State> {
         );
       }
 
-      // For full errors, use the ErrorDisplay component
       return (
         <ErrorDisplay
           errorType="component"

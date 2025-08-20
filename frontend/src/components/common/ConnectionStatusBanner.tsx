@@ -15,20 +15,17 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
 
     if (connectionState === 'connected') {
-      // Hide banner immediately when connected
       setShouldShowBanner(false);
     } else if (connectionState === 'disconnected') {
-      // Start timeout to show banner after 10 seconds of disconnection
       timeoutRef.current = setTimeout(() => {
         setShouldShowBanner(true);
-      }, 10000); // 10 seconds
+      }, 10000);
     }
 
     return () => {
@@ -41,7 +38,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
 
   const showBanner = shouldShowBanner && connectionState === 'disconnected';
 
-  // Height detection with ResizeObserver and direct measurement
   useEffect(() => {
     if (!bannerRef.current) return;
 
@@ -52,7 +48,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
         const height = rect.height;
         const computedHeight = parseFloat(computedStyle.height);
         
-        // Use the larger of rect.height or computed height
         const finalHeight = Math.max(height, computedHeight);
         
         if (onHeightChange && finalHeight > 0) {
@@ -63,10 +58,8 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
       }
     };
 
-    // Immediate measurement
     measureAndNotify();
 
-    // ResizeObserver as backup
     const resizeObserver = new ResizeObserver((entries) => {
       const height = entries[0].contentRect.height;
       const borderBoxHeight = entries[0].borderBoxSize?.[0]?.blockSize || height;
@@ -82,9 +75,8 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
 
     resizeObserver.observe(bannerRef.current);
 
-    // Also measure on window resize
     const handleResize = () => {
-      setTimeout(measureAndNotify, 100); // Small delay to let layout settle
+      setTimeout(measureAndNotify, 100);
     };
     window.addEventListener('resize', handleResize);
 
@@ -95,7 +87,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
     };
   }, [onHeightChange]);
 
-  // Update height when banner visibility changes
   useEffect(() => {
     if (!showBanner) {
       if (onHeightChange) {
@@ -103,7 +94,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
       }
       document.documentElement.style.setProperty('--banner-height', '0px');
     } else {
-      // Multiple measurement attempts with increasing delays
       const measureWithRetry = (attempt = 1, maxAttempts = 5) => {
         if (!bannerRef.current) return;
         
@@ -123,7 +113,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
         } else if (attempt < maxAttempts) {
           setTimeout(() => measureWithRetry(attempt + 1, maxAttempts), attempt * 50);
         } else {
-          // Fallback: estimate height based on typical banner size
           const fallbackHeight = 60;
           if (onHeightChange) {
             onHeightChange(fallbackHeight);
