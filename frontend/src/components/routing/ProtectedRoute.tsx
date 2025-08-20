@@ -12,14 +12,14 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-    const { token } = useAuth();
+  const { token } = useAuth();
 
-    if (!token) {
-        logger.warn('SECURITY: Unauthenticated user attempted to access protected route, redirecting to login');
-        return <Navigate to={APP_ROUTES.AUTH} replace />;
-    }
+  if (!token) {
+    logger.warn('SECURITY: Unauthenticated user attempted to access protected route, redirecting to login');
+    return <Navigate to={APP_ROUTES.AUTH} replace />;
+  }
 
-    return <>{children}</>;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

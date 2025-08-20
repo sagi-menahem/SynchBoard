@@ -12,43 +12,43 @@ interface ErrorHandlerOptions {
 }
 
 export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
-    const navigate = useNavigate();
-    const { showToast = true, redirectOnError, logLevel = 'error' } = options;
+  const navigate = useNavigate();
+  const { showToast = true, redirectOnError, logLevel = 'error' } = options;
 
-    const handleError = useCallback((error: Error, context?: string) => {
-        const logMessage = `${context ? `[${context}] ` : ''}${error.message}`;
-        logger[logLevel](logMessage, error);
+  const handleError = useCallback((error: Error, context?: string) => {
+    const logMessage = `${context ? `[${context}] ` : ''}${error.message}`;
+    logger[logLevel](logMessage, error);
 
-        if (showToast) {
-            toast.error(
-                context 
-                    ? `${context}: ${error.message}`
-                    : error.message || 'An unexpected error occurred'
-            );
-        }
+    if (showToast) {
+      toast.error(
+        context 
+          ? `${context}: ${error.message}`
+          : error.message || 'An unexpected error occurred',
+      );
+    }
 
-        if (redirectOnError) {
-            navigate(redirectOnError);
-        }
-    }, [navigate, showToast, redirectOnError, logLevel]);
+    if (redirectOnError) {
+      navigate(redirectOnError);
+    }
+  }, [navigate, showToast, redirectOnError, logLevel]);
 
-    const handleAsyncError = useCallback(async <T>(
-        asyncFn: () => Promise<T>,
-        context?: string,
-        fallbackValue?: T
-    ): Promise<T | undefined> => {
-        try {
-            return await asyncFn();
-        } catch (error) {
-            handleError(error as Error, context);
-            return fallbackValue;
-        }
-    }, [handleError]);
+  const handleAsyncError = useCallback(async <T>(
+    asyncFn: () => Promise<T>,
+    context?: string,
+    fallbackValue?: T,
+  ): Promise<T | undefined> => {
+    try {
+      return await asyncFn();
+    } catch (error) {
+      handleError(error as Error, context);
+      return fallbackValue;
+    }
+  }, [handleError]);
 
-    return {
-        handleError,
-        handleAsyncError
-    };
+  return {
+    handleError,
+    handleAsyncError,
+  };
 };
 
 export { createErrorHandler };

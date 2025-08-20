@@ -11,18 +11,18 @@ interface UseCanvasRenderingProps {
 }
 
 export const useCanvasRendering = ({ 
-    mainCanvasRef, 
-    contextRef, 
-    objects, 
-    dimensions, 
-    replayDrawAction 
+  mainCanvasRef, 
+  contextRef, 
+  objects, 
+  dimensions, 
+  replayDrawAction, 
 }: UseCanvasRenderingProps) => {
-    useEffect(() => {
-        const canvas = mainCanvasRef.current;
-        const ctx = contextRef.current;
-        if (!canvas || !ctx) return;
+  useEffect(() => {
+    const canvas = mainCanvasRef.current;
+    const ctx = contextRef.current;
+    if (!canvas || !ctx) return;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
-    }, [objects, dimensions, replayDrawAction, mainCanvasRef, contextRef]);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
+  }, [objects, dimensions, replayDrawAction, mainCanvasRef, contextRef]);
 };

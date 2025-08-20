@@ -3,7 +3,6 @@ package io.github.sagimenahem.synchboard.config.security;
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_AUTH_PATH_PATTERN;
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_USER_PATH_PATTERN;
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.IMAGES_PATH_PATTERN;
-import static io.github.sagimenahem.synchboard.constants.SecurityConstants.CLIENT_ORIGIN_URL;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_ENDPOINT_WITH_SUBPATHS;
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +20,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import lombok.RequiredArgsConstructor;
 
+import io.github.sagimenahem.synchboard.config.AppProperties;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -29,6 +30,7 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final AppProperties appProperties;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,7 +52,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(CLIENT_ORIGIN_URL));
+        configuration.setAllowedOrigins(Arrays.asList(appProperties.getSecurity().getAllowedOrigins()));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

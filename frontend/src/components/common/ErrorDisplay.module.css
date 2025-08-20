@@ -1,0 +1,358 @@
+/* Base container for all error displays */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 200px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 1rem;
+  color: #1f2937;
+}
+
+/* Page-level error styling */
+.container--page {
+  min-height: 60vh;
+  margin: 0;
+  border-radius: 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: none;
+  box-shadow: none;
+}
+
+/* Board-specific error styling */
+.container--board {
+  min-height: 300px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #f59e0b;
+}
+
+/* Component-level error styling */
+.container--component {
+  min-height: 150px;
+  padding: 1.5rem;
+  background-color: #fafafa;
+  border-color: #d1d5db;
+}
+
+/* Content wrapper */
+.content {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Error icon container */
+.iconContainer {
+  margin-bottom: 1.5rem;
+}
+
+.icon {
+  font-size: 4rem;
+  display: inline-block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.container--component .icon {
+  font-size: 2.5rem;
+}
+
+/* Error title */
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.container--board .title {
+  color: #92400e;
+}
+
+.container--component .title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Error message */
+.message {
+  font-size: 1.125rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.container--component .message {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Action buttons container */
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+/* Button styling */
+.button {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 2px solid transparent;
+  min-width: 120px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+/* Primary button (Try Again) */
+.buttonPrimary {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.buttonPrimary:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.container--board .buttonPrimary {
+  background-color: #f59e0b;
+  border-color: #f59e0b;
+  color: white;
+}
+
+.container--board .buttonPrimary:hover {
+  background-color: #d97706;
+  border-color: #d97706;
+}
+
+/* Secondary button (Go Back) */
+.buttonSecondary {
+  background-color: transparent;
+  color: #6b7280;
+  border-color: #d1d5db;
+}
+
+.buttonSecondary:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Technical details section */
+.technicalDetails {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detailsToggle {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.detailsToggle:hover {
+  color: #374151;
+  background-color: #f9fafb;
+}
+
+.detailsContent {
+  margin-top: 1rem;
+  text-align: left;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+.errorInfo p {
+  margin: 0.5rem 0;
+  color: #4b5563;
+}
+
+.errorInfo strong {
+  color: #1f2937;
+}
+
+.stackTrace {
+  margin-top: 1rem;
+}
+
+.stackTrace summary {
+  cursor: pointer;
+  color: #6b7280;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+
+.stackContent {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.75rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.stackContent code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  white-space: pre;
+  line-height: 1.4;
+}
+
+/* Help text */
+.helpText {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-top: 2rem;
+  line-height: 1.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem;
+    margin: 0.5rem;
+  }
+
+  .container--page {
+    min-height: 50vh;
+    padding: 2rem 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .button {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+  }
+
+  .icon {
+    font-size: 3rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+
+  .container--page {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  }
+
+  .container--board {
+    background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+    border-color: #d97706;
+  }
+
+  .container--component {
+    background-color: #111827;
+    border-color: #4b5563;
+  }
+
+  .title {
+    color: #f9fafb;
+  }
+
+  .container--board .title {
+    color: #fbbf24;
+  }
+
+  .message {
+    color: #d1d5db;
+  }
+
+  .buttonSecondary {
+    color: #d1d5db;
+    border-color: #4b5563;
+  }
+
+  .buttonSecondary:hover {
+    background-color: #374151;
+    border-color: #6b7280;
+    color: #f9fafb;
+  }
+
+  .technicalDetails {
+    border-color: #374151;
+  }
+
+  .detailsToggle {
+    color: #d1d5db;
+  }
+
+  .detailsToggle:hover {
+    color: #f9fafb;
+    background-color: #374151;
+  }
+
+  .detailsContent {
+    background-color: #111827;
+    border-color: #374151;
+  }
+
+  .errorInfo p {
+    color: #d1d5db;
+  }
+
+  .errorInfo strong {
+    color: #f9fafb;
+  }
+
+  .stackTrace summary {
+    color: #d1d5db;
+  }
+
+  .helpText {
+    color: #9ca3af;
+  }
+}

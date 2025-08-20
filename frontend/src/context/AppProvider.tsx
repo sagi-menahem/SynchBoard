@@ -9,11 +9,11 @@ interface AppProviderProps {
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
-    return (
-        <AuthProvider>
-            <WebSocketProvider>
-                <PreferencesProvider>{children}</PreferencesProvider>
-            </WebSocketProvider>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <WebSocketProvider>
+        <PreferencesProvider>{children}</PreferencesProvider>
+      </WebSocketProvider>
+    </AuthProvider>
+  );
 };

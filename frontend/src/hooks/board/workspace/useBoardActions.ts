@@ -8,62 +8,62 @@ import * as boardService from 'services/BoardService';
 
 
 export const useBoardActions = (boardId: number) => {
-    const { t } = useTranslation();
-    const [undoCount, setUndoCount] = useState(0);
-    const [redoCount, setRedoCount] = useState(0);
+  const { t } = useTranslation();
+  const [undoCount, setUndoCount] = useState(0);
+  const [redoCount, setRedoCount] = useState(0);
 
-    const handleUndo = useCallback(() => {
-        if (undoCount === 0) {
-            logger.info('[useBoardActions] Undo attempted but nothing to undo');
-            toast.error(t('boardSync.nothingToUndo'));
-            return;
-        }
-        boardService
-            .undoLastAction(boardId)
-            .then(() => {
-                setUndoCount((prev) => prev - 1);
-                setRedoCount((prev) => prev + 1);
-            })
-            .catch((error) => {
-                logger.error('[useBoardActions] Failed to undo action:', error);
-            });
-    }, [boardId, undoCount, t]);
+  const handleUndo = useCallback(() => {
+    if (undoCount === 0) {
+      logger.info('[useBoardActions] Undo attempted but nothing to undo');
+      toast.error(t('boardSync.nothingToUndo'));
+      return;
+    }
+    boardService
+      .undoLastAction(boardId)
+      .then(() => {
+        setUndoCount((prev) => prev - 1);
+        setRedoCount((prev) => prev + 1);
+      })
+      .catch((error) => {
+        logger.error('[useBoardActions] Failed to undo action:', error);
+      });
+  }, [boardId, undoCount, t]);
 
-    const handleRedo = useCallback(() => {
-        if (redoCount === 0) {
-            logger.info('[useBoardActions] Redo attempted but nothing to redo');
-            toast.error(t('boardSync.nothingToRedo'));
-            return;
-        }
-        boardService
-            .redoLastAction(boardId)
-            .then(() => {
-                setUndoCount((prev) => prev + 1);
-                setRedoCount((prev) => prev - 1);
-            })
-            .catch((error) => {
-                logger.error('[useBoardActions] Failed to redo action:', error);
-            });
-    }, [boardId, redoCount, t]);
-
-    const resetCounts = useCallback((objectsLength: number) => {
-        setUndoCount(objectsLength);
-        setRedoCount(0);
-    }, []);
-
-    const incrementUndo = useCallback(() => {
+  const handleRedo = useCallback(() => {
+    if (redoCount === 0) {
+      logger.info('[useBoardActions] Redo attempted but nothing to redo');
+      toast.error(t('boardSync.nothingToRedo'));
+      return;
+    }
+    boardService
+      .redoLastAction(boardId)
+      .then(() => {
         setUndoCount((prev) => prev + 1);
-        setRedoCount(0);
-    }, []);
+        setRedoCount((prev) => prev - 1);
+      })
+      .catch((error) => {
+        logger.error('[useBoardActions] Failed to redo action:', error);
+      });
+  }, [boardId, redoCount, t]);
 
-    return {
-        undoCount,
-        redoCount,
-        isUndoAvailable: undoCount > 0,
-        isRedoAvailable: redoCount > 0,
-        handleUndo,
-        handleRedo,
-        resetCounts,
-        incrementUndo,
-    };
+  const resetCounts = useCallback((objectsLength: number) => {
+    setUndoCount(objectsLength);
+    setRedoCount(0);
+  }, []);
+
+  const incrementUndo = useCallback(() => {
+    setUndoCount((prev) => prev + 1);
+    setRedoCount(0);
+  }, []);
+
+  return {
+    undoCount,
+    redoCount,
+    isUndoAvailable: undoCount > 0,
+    isRedoAvailable: redoCount > 0,
+    handleUndo,
+    handleRedo,
+    resetCounts,
+    incrementUndo,
+  };
 };

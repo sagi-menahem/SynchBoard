@@ -2,6 +2,7 @@ import React from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
+import { useSocket } from 'hooks/common';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
@@ -17,26 +18,30 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-    const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
+  const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
+  const { isSocketConnected } = useSocket();
 
-    return (
-        <div ref={containerRef} className={styles.container}>
-            <canvas
-                ref={mainCanvasRef}
-                width={dimensions.width}
-                height={dimensions.height}
-                className={styles.mainCanvas}
-                style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
-            />
-            <canvas
-                ref={previewCanvasRef}
-                width={dimensions.width}
-                height={dimensions.height}
-                onMouseDown={handleMouseDown}
-                className={styles.previewCanvas}
-            />
-        </div>
-    );
+  const containerClassName = `${styles.container} ${!isSocketConnected ? styles.disconnected : ''}`;
+  const previewCanvasClassName = `${styles.previewCanvas} ${!isSocketConnected ? styles.disabled : ''}`;
+
+  return (
+    <div ref={containerRef} className={containerClassName}>
+      <canvas
+        ref={mainCanvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        className={styles.mainCanvas}
+        style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
+      />
+      <canvas
+        ref={previewCanvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        onMouseDown={handleMouseDown}
+        className={previewCanvasClassName}
+      />
+    </div>
+  );
 };
 
 export default Canvas;

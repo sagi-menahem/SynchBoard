@@ -15,20 +15,20 @@ interface BoardHeaderProps {
 }
 
 const BoardHeader: React.FC<BoardHeaderProps> = ({ boardId, boardName }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    return (
-        <div className={styles.header}>
-            <div className={styles.headerTitle}>
-                <Link to={APP_ROUTES.BOARD_LIST}>
-                    <Button>&larr; {t('boardPage.backButton')}</Button>
-                </Link>
-                <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
-                    <h1>{boardName || t('boardPage.loading')}</h1>
-                </Link>
-            </div>
-        </div>
-    );
+  return (
+    <div className={styles.header}>
+      <div className={styles.headerTitle}>
+        <Link to={APP_ROUTES.BOARD_LIST}>
+          <Button>&larr; {t('boardPage.backButton')}</Button>
+        </Link>
+        <Link to={APP_ROUTES.getBoardDetailsRoute(boardId)} className={styles.headerLink}>
+          <h1>{boardName || t('boardPage.loading')}</h1>
+        </Link>
+      </div>
+    </div>
+  );
 };
 
 export default BoardHeader;
