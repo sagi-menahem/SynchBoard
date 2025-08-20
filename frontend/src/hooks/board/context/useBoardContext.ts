@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import logger from 'utils/Logger';
 
-import { BoardContext } from 'context/BoardContext.ts';
+import { BoardContext } from 'context/BoardContext';
 
 export const useBoardContext = () => {
   const context = useContext(BoardContext);
