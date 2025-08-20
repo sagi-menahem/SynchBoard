@@ -16,6 +16,7 @@ public final class ChatMessageDTO {
     public static class Request {
         private String content;
         private Long boardId;
+        private String instanceId;
     }
 
     @Data
@@ -24,6 +25,7 @@ public final class ChatMessageDTO {
     @AllArgsConstructor
     public static class Response {
 
+        private Long id;
         private MessageType type;
         private String content;
         private LocalDateTime timestamp;
@@ -31,6 +33,8 @@ public final class ChatMessageDTO {
         private String senderEmail;
         private String senderFullName;
         private String senderProfilePictureUrl;
+        
+        private String instanceId;
 
         public enum MessageType {
             CHAT, JOIN, LEAVE

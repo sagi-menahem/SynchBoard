@@ -1,0 +1,22 @@
+.form {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid #444;
+    background-color: #2f2f2f;
+    gap: 10px;
+}
+
+.inputContainer {
+    flex: 1;
+    position: relative;
+}
+
+.inputDisabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.buttonSending {
+    opacity: 0.8;
+    cursor: wait;
+}

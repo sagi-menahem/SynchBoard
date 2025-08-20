@@ -15,41 +15,41 @@ interface ProfileDetailsSectionProps {
 }
 
 const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onUpdateProfile }) => {
-    const { t } = useTranslation();
-    const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useProfileEditing(user);
+  const { t } = useTranslation();
+  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useProfileEditing(user);
 
-    const onSave = async () => {
-        try {
-            await onUpdateProfile(formData);
-            stopEditing();
-        } catch (error) {
-            logger.error('[ProfileDetailsSection] Failed to update profile:', error);
-        }
-    };
+  const onSave = async () => {
+    try {
+      await onUpdateProfile(formData);
+      stopEditing();
+    } catch (error) {
+      logger.error('[ProfileDetailsSection] Failed to update profile:', error);
+    }
+  };
 
-    return (
-        <section className={styles.section}>
-            <h2 className={styles.sectionHeader}>
-                {t('settingsPage.profileSectionHeader')}
-                {!isEditing && (
-                    <Button onClick={startEditing} variant="secondary">
-                        {t('settingsPage.buttons.edit')}
-                    </Button>
-                )}
-            </h2>
+  return (
+    <section className={styles.section}>
+      <h2 className={styles.sectionHeader}>
+        {t('settingsPage.profileSectionHeader')}
+        {!isEditing && (
+          <Button onClick={startEditing} variant="secondary">
+            {t('settingsPage.buttons.edit')}
+          </Button>
+        )}
+      </h2>
 
-            {!isEditing ? (
-                <ProfileDisplayView user={user} />
-            ) : (
-                <ProfileEditForm
-                    formData={formData}
-                    onInputChange={onInputChange}
-                    onSave={onSave}
-                    onCancel={cancelEditing}
-                />
-            )}
-        </section>
-    );
+      {!isEditing ? (
+        <ProfileDisplayView user={user} />
+      ) : (
+        <ProfileEditForm
+          formData={formData}
+          onInputChange={onInputChange}
+          onSave={onSave}
+          onCancel={cancelEditing}
+        />
+      )}
+    </section>
+  );
 };
 
 export default ProfileDetailsSection;

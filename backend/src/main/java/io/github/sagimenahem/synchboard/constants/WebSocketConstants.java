@@ -14,6 +14,6 @@ public final class WebSocketConstants {
     public static final String MAPPING_CHAT_SEND_MESSAGE = "/chat.sendMessage";
     public static final String MAPPING_BOARD_DRAW_ACTION = "/board.drawAction";
 
-    public static final int WEBSOCKET_MESSAGE_SIZE_LIMIT = 512 * 1024;
-    public static final int WEBSOCKET_SEND_BUFFER_SIZE_LIMIT = 512 * 1024;
+    public static final int WEBSOCKET_MESSAGE_SIZE_LIMIT = 1024 * 1024;
+    public static final int WEBSOCKET_SEND_BUFFER_SIZE_LIMIT = 1024 * 1024;
 }

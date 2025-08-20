@@ -12,13 +12,13 @@ interface BoardProviderProps {
 }
 
 export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const boardData = useBoardWorkspace(boardId);
+  const boardData = useBoardWorkspace(boardId);
 
-    if (isNaN(boardId) || boardId === 0) {
-        return <div>{t('boardProvider.invalidIdError')}</div>;
-    }
+  if (isNaN(boardId) || boardId === 0) {
+    return <div>{t('boardProvider.invalidIdError')}</div>;
+  }
 
-    return <BoardContext.Provider value={boardData}>{children}</BoardContext.Provider>;
+  return <BoardContext.Provider value={boardData}>{children}</BoardContext.Provider>;
 };

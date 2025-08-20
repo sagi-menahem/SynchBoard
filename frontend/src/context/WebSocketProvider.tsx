@@ -12,28 +12,66 @@ interface WebSocketProviderProps {
 }
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
-    const { token } = useAuth();
-    const [isSocketConnected, setIsSocketConnected] = useState(false);
+  const { token, userEmail } = useAuth();
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
+  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
-    useEffect(() => {
-        if (token) {
-            websocketService.connect(token, () => {
-                logger.debug('WebSocket connection confirmed in WebSocketProvider.');
-                setIsSocketConnected(true);
-            });
-        } else {
-            setIsSocketConnected(false);
-        }
-
-        return () => {
-            websocketService.disconnect();
-            setIsSocketConnected(false);
-        };
-    }, [token]);
-
-    const value = {
-        isSocketConnected,
+  useEffect(() => {
+    const updateConnectionState = () => {
+      const currentState = websocketService.getConnectionState();
+      setConnectionState(currentState);
+      
+      setIsSocketConnected(currentState === 'connected');
+      
     };
 
-    return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
+    updateConnectionState();
+
+    let pollInterval: ReturnType<typeof setInterval>;
+    
+    const startPolling = () => {
+      pollInterval = setInterval(() => {
+        const state = websocketService.getConnectionState();
+        if (state !== connectionState) {
+          updateConnectionState();
+        }
+        
+      }, 3000);
+    };
+    
+    startPolling();
+
+    if (token) {
+      setConnectionState('connecting');
+      websocketService.connect(token, () => {
+        setIsSocketConnected(true);
+        setConnectionState('connected');
+                
+        if (userEmail) {
+          websocketService.subscribe(
+            '/user/queue/errors',
+            (errorMessage: unknown) => {
+              logger.error('Server error received:', errorMessage);
+            },
+          );
+        }
+      });
+    } else {
+      setIsSocketConnected(false);
+      setConnectionState('disconnected');
+    }
+
+    return () => {
+      clearInterval(pollInterval);
+      websocketService.disconnect();
+      setIsSocketConnected(false);
+      setConnectionState('disconnected');
+    };
+  }, [token, userEmail, connectionState]);
+  const value = {
+    isSocketConnected,
+    connectionState,
+  };
+
+  return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
 };

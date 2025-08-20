@@ -13,6 +13,7 @@ interface BoardWorkspaceProps {
     instanceId: string;
     objects: ActionPayload[];
     messages: ChatMessageResponse[];
+    setMessages: React.Dispatch<React.SetStateAction<ChatMessageResponse[]>>;
     tool: Tool;
     strokeColor: string;
     strokeWidth: number;
@@ -20,32 +21,33 @@ interface BoardWorkspaceProps {
 }
 
 const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
-    boardId,
-    instanceId,
-    objects,
-    messages,
-    tool,
-    strokeColor,
-    strokeWidth,
-    onDraw,
+  boardId,
+  instanceId,
+  objects,
+  messages,
+  setMessages,
+  tool,
+  strokeColor,
+  strokeWidth,
+  onDraw,
 }) => {
-    return (
-        <div className={styles.mainContent}>
-            <div className={styles.canvasContainer}>
-                <Canvas
-                    instanceId={instanceId}
-                    onDraw={onDraw}
-                    objects={objects}
-                    tool={tool}
-                    strokeColor={strokeColor}
-                    strokeWidth={strokeWidth}
-                />
-            </div>
-            <div className={styles.chatContainer}>
-                <ChatWindow boardId={boardId} messages={messages} />
-            </div>
-        </div>
-    );
+  return (
+    <div className={styles.mainContent}>
+      <div className={styles.canvasContainer}>
+        <Canvas
+          instanceId={instanceId}
+          onDraw={onDraw}
+          objects={objects}
+          tool={tool}
+          strokeColor={strokeColor}
+          strokeWidth={strokeWidth}
+        />
+      </div>
+      <div className={styles.chatContainer}>
+        <ChatWindow boardId={boardId} messages={messages} setMessages={setMessages} />
+      </div>
+    </div>
+  );
 };
 
 export default BoardWorkspace;

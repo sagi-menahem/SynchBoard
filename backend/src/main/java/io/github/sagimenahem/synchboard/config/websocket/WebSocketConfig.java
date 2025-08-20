@@ -1,8 +1,8 @@
 package io.github.sagimenahem.synchboard.config.websocket;
 
-import static io.github.sagimenahem.synchboard.constants.SecurityConstants.CLIENT_ORIGIN_URL;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -11,6 +11,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +41,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-        registry.addEndpoint(WEBSOCKET_ENDPOINT).setAllowedOrigins(CLIENT_ORIGIN_URL).withSockJS();
+        registry.addEndpoint(WEBSOCKET_ENDPOINT)
+                .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins())
+                .withSockJS()
+                .setStreamBytesLimit(1024 * 1024)
+                .setHttpMessageCacheSize(1000)
+                .setDisconnectDelay(30 * 1000);
     }
 
     @Override
@@ -52,5 +58,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureWebSocketTransport(@NonNull WebSocketTransportRegistration registration) {
         registration.setMessageSizeLimit(WEBSOCKET_MESSAGE_SIZE_LIMIT);
         registration.setSendBufferSizeLimit(WEBSOCKET_SEND_BUFFER_SIZE_LIMIT);
+    }
+
+    @Bean
+    public ServletServerContainerFactoryBean createWebSocketContainer() {
+        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
+        container.setMaxTextMessageBufferSize(1024 * 1024);
+        container.setMaxBinaryMessageBufferSize(1024 * 1024);
+        return container;
     }
 }

@@ -56,11 +56,17 @@ public class ChatService {
         log.info(LoggingConstants.CHAT_MESSAGE_SENT, request.getBoardId(), userEmail,
                 messageToSave.getMessageId());
 
-        ChatMessageDTO.Response response = mapMessageToDto(messageToSave);
+        log.debug("[DIAGNOSTIC] Message saved to DB. MessageID: {}, InstanceID to be broadcasted: {}", 
+                 messageToSave.getMessageId(), request.getInstanceId());
+
+        ChatMessageDTO.Response response = mapMessageToDto(messageToSave, request.getInstanceId());
 
         String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
+        
+        log.info("[DIAGNOSTIC] Broadcasting chat message. Topic: {}, Payload: {}", destination, response.toString());
+        
         messagingTemplate.convertAndSend(destination, response);
-        log.debug("Chat message broadcasted to topic: {}", destination);
+        log.debug("Chat message broadcasted to topic: {} with instanceId: {}", destination, request.getInstanceId());
     }
 
     @Transactional(readOnly = true)
@@ -76,10 +82,10 @@ public class ChatService {
 
         log.info("Retrieved {} messages for board {} by user: {}", messages.size(), boardId,
                 userEmail);
-        return messages.stream().map(this::mapMessageToDto).collect(Collectors.toList());
+        return messages.stream().map(message -> mapMessageToDto(message, null)).collect(Collectors.toList());
     }
 
-    private ChatMessageDTO.Response mapMessageToDto(Message message) {
+    private ChatMessageDTO.Response mapMessageToDto(Message message, String instanceId) {
         String senderEmail;
         String senderFullName;
         String senderProfilePictureUrl;
@@ -95,9 +101,16 @@ public class ChatService {
             senderProfilePictureUrl = null;
         }
 
-        return ChatMessageDTO.Response.builder().type(ChatMessageDTO.Response.MessageType.CHAT)
-                .content(message.getMessageContent()).timestamp(message.getTimestamp())
-                .senderEmail(senderEmail).senderFullName(senderFullName)
-                .senderProfilePictureUrl(senderProfilePictureUrl).build();
+        return ChatMessageDTO.Response.builder()
+                .id(message.getMessageId())
+                .type(ChatMessageDTO.Response.MessageType.CHAT)
+                .content(message.getMessageContent())
+                .timestamp(message.getTimestamp())
+                .senderEmail(senderEmail)
+                .senderFullName(senderFullName)
+                .senderProfilePictureUrl(senderProfilePictureUrl)
+                .instanceId(instanceId)
+                .build();
     }
+
 }

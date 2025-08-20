@@ -6,55 +6,62 @@ import { WebSocketService } from 'services';
 import logger from 'utils/Logger';
 
 export const useWebSocket = () => {
-    const context = useContext(WebSocketContext);
+  const context = useContext(WebSocketContext);
 
-    if (context === undefined) {
-        const error = new Error('useWebSocket must be used within a WebSocketProvider');
-        logger.error('[useWebSocket] Context not found - missing WebSocketProvider wrapper');
-        throw error;
-    }
+  if (context === undefined) {
+    const error = new Error('useWebSocket must be used within a WebSocketProvider');
+    logger.error('[useWebSocket] Context not found - missing WebSocketProvider wrapper');
+    throw error;
+  }
 
-    return context;
+  return context;
 };
 
-export const useSocket = <T>(topic: string, onMessageReceived: (message: T) => void, schemaKey?: string) => {
-    const { isSocketConnected } = useWebSocket();
-    const onMessageReceivedRef = useRef(onMessageReceived);
+// Alias for useWebSocket to match component import
+export const useSocket = useWebSocket;
 
-    useEffect(() => {
-        onMessageReceivedRef.current = onMessageReceived;
-    }, [onMessageReceived]);
+export const useSocketSubscription = <T>(
+  topic: string,
+  onMessageReceived: (message: T) => void,
+  schemaKey?: string,
+) => {
+  const { isSocketConnected } = useWebSocket();
+  const onMessageReceivedRef = useRef(onMessageReceived);
 
-    const stableOnMessageReceived = useCallback((message: T) => {
-        onMessageReceivedRef.current(message);
-    }, []);
+  useEffect(() => {
+    onMessageReceivedRef.current = onMessageReceived;
+  }, [onMessageReceived]);
 
-    useEffect(() => {
-        if (!isSocketConnected || !topic) {
-            return;
+  const stableOnMessageReceived = useCallback((message: T) => {
+    onMessageReceivedRef.current(message);
+  }, []);
+
+  useEffect(() => {
+    if (!isSocketConnected || !topic) {
+      return;
+    }
+
+    let subscription: ReturnType<typeof WebSocketService.subscribe> = null;
+
+    const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
+      if (WebSocketService.isConnected()) {
+        logger.debug(`useSocketSubscription: Subscribing to ${topic}`);
+        subscription = WebSocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
+      } else {
+        logger.debug(`useSocketSubscription: WebSocket not ready for ${topic}, will retry when connected`);
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (subscription) {
+        try {
+          logger.debug(`useSocketSubscription: Unsubscribing from ${topic}`);
+          subscription.unsubscribe();
+        } catch (error) {
+          logger.warn(`Failed to unsubscribe from ${topic}:`, error);
         }
-
-        let subscription: ReturnType<typeof WebSocketService.subscribe> = null;
-
-        const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
-            if (WebSocketService.isConnected()) {
-                logger.debug(`useSocket: Subscribing to ${topic}`);
-                subscription = WebSocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
-            } else {
-                logger.debug(`useSocket: WebSocket not ready for ${topic}, will retry when connected`);
-            }
-        }, 100);
-
-        return () => {
-            clearTimeout(timeoutId);
-            if (subscription) {
-                try {
-                    logger.debug(`useSocket: Unsubscribing from ${topic}`);
-                    subscription.unsubscribe();
-                } catch (error) {
-                    logger.warn(`Failed to unsubscribe from ${topic}:`, error);
-                }
-            }
-        };
-    }, [isSocketConnected, topic, stableOnMessageReceived, schemaKey]);
+      }
+    };
+  }, [isSocketConnected, topic, stableOnMessageReceived, schemaKey]);
 };
