@@ -14,7 +14,7 @@ interface WebSocketProviderProps {
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const { token, userEmail } = useAuth();
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected' | 'permanently_disconnected'>('disconnected');
+  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
   useEffect(() => {
     // Simplified connection state management with clear status indicators
@@ -25,10 +25,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       // Only consider truly connected state as socket connected
       setIsSocketConnected(currentState === 'connected');
       
-      // Log state changes for school project transparency
-      if (currentState === 'permanently_disconnected') {
-        logger.info('Connection permanently stopped. Page refresh required to reconnect.');
-      }
     };
 
     // Start with immediate state update
@@ -45,10 +41,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
           updateConnectionState();
         }
         
-        // Stop polling if permanently disconnected (no point checking further)
-        if (state === 'permanently_disconnected') {
-          clearInterval(pollInterval);
-        }
       }, 3000);
     };
     

@@ -12,7 +12,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   const { connectionState } = useSocket();
   const [shouldShowBanner, setShouldShowBanner] = useState(false);
   const bannerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     // Clear any existing timeout
