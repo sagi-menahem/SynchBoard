@@ -130,7 +130,7 @@ class WebSocketService {
     const baseDelay = 1000; // Start with 1 second
     const delay = Math.min(
       baseDelay * Math.pow(2, this.reconnectionAttempts),
-      30000 // Cap at 30 seconds max delay
+      30000, // Cap at 30 seconds max delay
     );
     this.reconnectionAttempts++;
 

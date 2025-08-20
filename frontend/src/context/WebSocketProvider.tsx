@@ -73,8 +73,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       setIsSocketConnected(false);
       setConnectionState('disconnected');
     };
-  }, [token, userEmail]);
-
+  }, [token, userEmail, connectionState]);
   const value = {
     isSocketConnected,
     connectionState,
