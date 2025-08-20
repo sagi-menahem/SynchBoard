@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useEffect, useState, useMemo, useRef, type ReactNode } from 'react';
 
 import logger from 'utils/logger';
 
@@ -16,7 +16,25 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const [isSocketConnected, setIsSocketConnected] = useState(false);
   const [connectionState, setConnectionState] = useState<ConnectionStatus>('connecting');
 
+  // Use refs to track previous values and prevent unnecessary re-runs
+  const prevTokenRef = useRef<string | null>(null);
+  const prevUserEmailRef = useRef<string | null>(null);
+
+  // Debug logs removed for production performance
+
   useEffect(() => {
+    const tokenChanged = token !== prevTokenRef.current;
+    const userEmailChanged = userEmail !== prevUserEmailRef.current;
+    
+    // Only proceed if actual values changed to prevent unnecessary cycles
+    if (!tokenChanged && !userEmailChanged) {
+      return;
+    }
+    
+    // Update refs
+    prevTokenRef.current = token;
+    prevUserEmailRef.current = userEmail;
+    
     // Subscribe to instant connection status updates instead of polling
     const unsubscribeFromConnectionChanges = websocketService.subscribeToConnectionChanges((status: ConnectionStatus) => {
       setConnectionState(status);
@@ -59,10 +77,10 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     };
   }, [token, userEmail]);
 
-  const value = {
+  const contextValue = useMemo(() => ({
     isSocketConnected,
     connectionState,
-  };
+  }), [isSocketConnected, connectionState]);
 
-  return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
+  return <WebSocketContext.Provider value={contextValue}>{children}</WebSocketContext.Provider>;
 };

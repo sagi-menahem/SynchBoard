@@ -101,8 +101,52 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
     Map<string, PendingTransaction<TPayload>>
   >(new Map());
 
+  // Cleanup ref for failed transactions to prevent memory leaks
+  const cleanupIntervalRef = useRef<number | null>(null);
+
   // Generate transaction ID using provided function or default
   const generateId = config.generateTransactionId || (() => crypto.randomUUID());
+
+  /**
+   * Clean up old failed transactions to prevent memory leaks
+   */
+  const cleanupOldTransactions = useCallback(() => {
+    const now = Date.now();
+    const CLEANUP_THRESHOLD = 60000; // 60 seconds
+    
+    setPendingTransactions((prev) => {
+      const cleaned = new Map(prev);
+      let removedCount = 0;
+      
+      for (const [id, transaction] of cleaned.entries()) {
+        // Remove failed transactions older than 60 seconds
+        if (transaction.status === 'failed' && now - transaction.timestamp > CLEANUP_THRESHOLD) {
+          if (transaction.timeoutId) {
+            clearTimeout(transaction.timeoutId);
+          }
+          cleaned.delete(id);
+          removedCount++;
+        }
+      }
+      
+      if (removedCount > 0) {
+        logger.debug(`Cleaned up ${removedCount} old failed transactions`);
+      }
+      
+      return cleaned;
+    });
+  }, []);
+
+  // Set up periodic cleanup of old transactions
+  useEffect(() => {
+    cleanupIntervalRef.current = setInterval(cleanupOldTransactions, 30000); // Clean every 30 seconds
+    
+    return () => {
+      if (cleanupIntervalRef.current) {
+        clearInterval(cleanupIntervalRef.current);
+      }
+    };
+  }, [cleanupOldTransactions]);
 
   /**
    * Update transaction status

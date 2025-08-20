@@ -14,13 +14,10 @@ interface CanvasProps {
     tool: Tool;
     strokeColor: string;
     strokeWidth: number;
-    connectionStatus?: 'connected' | 'connecting' | 'disconnected';
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
     const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
-    const { connectionStatus = 'connected' } = props;
-    const isDisconnected = connectionStatus === 'disconnected';
 
     return (
         <div ref={containerRef} className={styles.container}>
@@ -36,21 +33,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
                 width={dimensions.width}
                 height={dimensions.height}
                 onMouseDown={handleMouseDown}
-                className={`${styles.previewCanvas} ${isDisconnected ? styles.previewCanvasDisabled : ''}`}
+                className={styles.previewCanvas}
             />
-            {isDisconnected && (
-                <div className={styles.disconnectedOverlay}>
-                    <div className={styles.disconnectedMessage}>
-                        <div className={styles.disconnectedIcon}>⚠️</div>
-                        <div className={styles.disconnectedText}>
-                            <strong>Connection Lost</strong>
-                            <p>Cannot draw while disconnected from server</p>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
 
-export default Canvas;
+export default React.memo(Canvas);

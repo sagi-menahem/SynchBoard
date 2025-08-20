@@ -1,6 +1,6 @@
 import { LOCAL_STORAGE_KEYS } from 'constants';
 
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
 import { Logger } from 'utils';
@@ -34,24 +34,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }, [token]);
 
-    const login = (newToken: string) => {
+    const login = useCallback((newToken: string) => {
         logger.info('User login - setting new token');
         setToken(newToken);
         localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
-    };
+    }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         logger.info('User logout - clearing token');
         setToken(null);
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    };
+    }, []);
 
-    const value = {
+    const value = useMemo(() => ({
         token,
         userEmail,
         login,
         logout,
-    };
+    }), [token, userEmail, login, logout]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

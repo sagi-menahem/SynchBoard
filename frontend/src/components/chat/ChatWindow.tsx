@@ -220,4 +220,4 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   );
 };
 
-export default ChatWindow;
+export default React.memo(ChatWindow);
