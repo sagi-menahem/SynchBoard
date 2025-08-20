@@ -10,18 +10,36 @@ interface ConnectionStatusBannerProps {
 
 export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ onHeightChange }) => {
   const { connectionState } = useSocket();
-  const [hasConnectedOnce, setHasConnectedOnce] = useState(false);
+  const [shouldShowBanner, setShouldShowBanner] = useState(false);
   const bannerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (connectionState === 'connected' && !hasConnectedOnce) {
-      setHasConnectedOnce(true);
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
-  }, [connectionState, hasConnectedOnce]);
 
-  // FIXED LOGIC: Only show banner after successful connection AND real disconnection
-  // This prevents showing on initial load when no connection ever succeeded
-  const showBanner = hasConnectedOnce && connectionState === 'disconnected';
+    if (connectionState === 'connected') {
+      // Hide banner immediately when connected
+      setShouldShowBanner(false);
+    } else if (connectionState === 'disconnected') {
+      // Start timeout to show banner after 10 seconds of disconnection
+      timeoutRef.current = setTimeout(() => {
+        setShouldShowBanner(true);
+      }, 10000); // 10 seconds
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, [connectionState]);
+
+  const showBanner = shouldShowBanner && connectionState === 'disconnected';
 
   // Height detection with ResizeObserver and direct measurement
   useEffect(() => {
