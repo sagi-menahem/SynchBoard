@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import {
@@ -42,22 +42,36 @@ export const useCanvasInteractions = ({
     isConnected = true,
 }: UseCanvasInteractionsProps) => {
     const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
+    
+    // Use refs to stabilize frequently changing dependencies
+    const toolRef = useRef(tool);
+    const strokeWidthRef = useRef(strokeWidth);
+    const strokeColorRef = useRef(strokeColor);
+    const senderIdRef = useRef(senderId);
+    const isConnectedRef = useRef(isConnected);
+    
+    // Update refs on changes
+    toolRef.current = tool;
+    strokeWidthRef.current = strokeWidth;
+    strokeColorRef.current = strokeColor;
+    senderIdRef.current = senderId;
+    isConnectedRef.current = isConnected;
 
     const handleMouseDown = useCallback(
         (event: React.MouseEvent<HTMLCanvasElement>) => {
             const canvas = previewCanvasRef.current;
-            if (!canvas || !isConnected) return;
+            if (!canvas || !isConnectedRef.current) return;
 
             setIsDrawing(true);
             const { offsetX, offsetY } = event.nativeEvent;
 
-            if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
+            if (toolRef.current === TOOLS.BRUSH || toolRef.current === TOOLS.ERASER) {
                 currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
-            } else if (tool === TOOLS.RECTANGLE || tool === TOOLS.CIRCLE) {
+            } else if (toolRef.current === TOOLS.RECTANGLE || toolRef.current === TOOLS.CIRCLE) {
                 startPoint.current = { x: offsetX, y: offsetY };
             }
         },
-        [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath, isConnected]
+        [previewCanvasRef, setIsDrawing, startPoint, currentPath]
     );
 
     useEffect(() => {
@@ -65,17 +79,17 @@ export const useCanvasInteractions = ({
         if (!canvas) return;
 
         const handleMouseMove = (event: MouseEvent) => {
-            if (!isDrawing || !isConnected) return;
+            if (!isDrawing || !isConnectedRef.current) return;
             const previewCtx = previewContextRef.current;
             const coords = getMouseCoordinates(event, canvas);
             if (!previewCtx || !coords) return;
 
             previewCtx.clearRect(0, 0, canvas.width, canvas.height);
-            previewCtx.lineWidth = strokeWidth;
+            previewCtx.lineWidth = strokeWidthRef.current;
             previewCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
-            previewCtx.strokeStyle = tool === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColor;
+            previewCtx.strokeStyle = toolRef.current === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColorRef.current;
 
-            if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
+            if (toolRef.current === TOOLS.BRUSH || toolRef.current === TOOLS.ERASER) {
                 currentPath.current.push({ x: coords.x / canvas.width, y: coords.y / canvas.height });
                 previewCtx.beginPath();
                 if (currentPath.current.length > 1) {
@@ -91,14 +105,14 @@ export const useCanvasInteractions = ({
                     }
                     previewCtx.stroke();
                 }
-            } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
+            } else if (toolRef.current === TOOLS.RECTANGLE && startPoint.current) {
                 previewCtx.strokeRect(
                     startPoint.current.x,
                     startPoint.current.y,
                     coords.x - startPoint.current.x,
                     coords.y - startPoint.current.y
                 );
-            } else if (tool === TOOLS.CIRCLE && startPoint.current) {
+            } else if (toolRef.current === TOOLS.CIRCLE && startPoint.current) {
                 const radius = Math.sqrt(
                     Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)
                 );
@@ -109,7 +123,7 @@ export const useCanvasInteractions = ({
         };
 
         const handleMouseUp = (event: MouseEvent) => {
-            if (!isDrawing || !isConnected) return;
+            if (!isDrawing || !isConnectedRef.current) return;
             setIsDrawing(false);
             const previewCtx = previewContextRef.current;
             const coords = getMouseCoordinates(event, canvas);
@@ -117,46 +131,46 @@ export const useCanvasInteractions = ({
 
             previewCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
+            if ((toolRef.current === TOOLS.BRUSH || toolRef.current === TOOLS.ERASER) && currentPath.current.length > 1) {
                 const payload: Omit<LinePayload, 'instanceId'> = {
-                    tool,
+                    tool: toolRef.current,
                     points: [...currentPath.current],
-                    color: strokeColor,
-                    lineWidth: strokeWidth,
+                    color: strokeColorRef.current,
+                    lineWidth: strokeWidthRef.current,
                 };
-                onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
-            } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
+                onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderIdRef.current });
+            } else if (toolRef.current === TOOLS.RECTANGLE && startPoint.current) {
                 const rectX = Math.min(startPoint.current.x, coords.x) / canvas.width;
                 const rectY = Math.min(startPoint.current.y, coords.y) / canvas.height;
                 const rectWidth = Math.abs(coords.x - startPoint.current.x) / canvas.width;
                 const rectHeight = Math.abs(coords.y - startPoint.current.y) / canvas.height;
                 if (isShapeSizeValid(rectWidth, rectHeight)) {
                     const payload: Omit<RectanglePayload, 'instanceId'> = {
-                        tool,
+                        tool: toolRef.current,
                         x: rectX,
                         y: rectY,
                         width: rectWidth,
                         height: rectHeight,
-                        color: strokeColor,
-                        strokeWidth,
+                        color: strokeColorRef.current,
+                        strokeWidth: strokeWidthRef.current,
                     };
-                    onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
+                    onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderIdRef.current });
                 }
-            } else if (tool === TOOLS.CIRCLE && startPoint.current) {
+            } else if (toolRef.current === TOOLS.CIRCLE && startPoint.current) {
                 const radius =
                     Math.sqrt(
                         Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2)
                     ) / canvas.width;
                 if (isRadiusValid(radius)) {
                     const payload: Omit<CirclePayload, 'instanceId'> = {
-                        tool,
+                        tool: toolRef.current,
                         x: startPoint.current.x / canvas.width,
                         y: startPoint.current.y / canvas.height,
                         radius,
-                        color: strokeColor,
-                        strokeWidth,
+                        color: strokeColorRef.current,
+                        strokeWidth: strokeWidthRef.current,
                     };
-                    onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
+                    onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderIdRef.current });
                 }
             }
             currentPath.current = [];
@@ -174,11 +188,7 @@ export const useCanvasInteractions = ({
         };
     }, [
         isDrawing,
-        tool,
-        strokeWidth,
-        strokeColor,
         onDraw,
-        senderId,
         previewCanvasRef,
         previewContextRef,
         getMouseCoordinates,
@@ -187,7 +197,6 @@ export const useCanvasInteractions = ({
         setIsDrawing,
         startPoint,
         currentPath,
-        isConnected,
     ]);
 
     return {
