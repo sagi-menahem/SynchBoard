@@ -17,7 +17,7 @@ import { WEBSOCKET_URL } from '../constants/ApiConstants';
 class WebSocketService {
   private stompClient: Client | null = null;
   private readonly messageSchemas = new Map<string, MessageValidationSchema>();
-  private connectionState: 'disconnected' | 'connecting' | 'connected' | 'permanently_disconnected' = 'disconnected';
+  private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
   private pendingSubscriptions: {
         topic: string;
         callback: (message: unknown) => void;
@@ -106,18 +106,15 @@ class WebSocketService {
    */
   private handleDisconnection(): void {
     // Prevent multiple simultaneous disconnection handling
-    if (this.connectionState === 'disconnected' || 
-        this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
-      return; // Already handling disconnection or permanently stopped
+    if (this.connectionState === 'disconnected') {
+      return; // Already handling disconnection
     }
     
     logger.info('Connection lost - attempting to reconnect...');
     this.connectionState = 'disconnected';
     
-    // Only attempt reconnection if we have valid connection params and haven't exceeded limits
-    if (this.currentToken && 
-        this.onConnectedCallback && 
-        this.reconnectionAttempts < WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
+    // Always attempt reconnection if we have valid connection params
+    if (this.currentToken && this.onConnectedCallback) {
       this.attemptReconnection();
     } else {
       this.resetReconnectionState();
@@ -126,42 +123,20 @@ class WebSocketService {
 
   /**
      * Attempts to reconnect with exponential backoff strategy.
-     * Delay increases exponentially: baseDelay * 2^attempts
+     * Delay increases exponentially: 1s, 2s, 4s, 8s, 16s, capped at 30s
      */
   private attemptReconnection(): void {
-    // HARD STOP - Strict check to prevent infinite loops
-    if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
-      logger.info('Maximum reconnection attempts reached. Connection stopped.');
-      this.connectionState = 'permanently_disconnected';
-      this.resetReconnectionState();
-      
-      // HARD STOP: Clear all connection parameters to prevent any future attempts
-      this.currentToken = null;
-      this.onConnectedCallback = null;
-      this.rollbackCallbacks.clear();
-      
-      // Ensure no timers are running
-      if (this.reconnectionTimer) {
-        clearTimeout(this.reconnectionTimer);
-        this.reconnectionTimer = null;
-      }
-      
-      logger.info('Please refresh the page to reconnect.');
-      return;
-    }
-
+    // Calculate delay with exponential backoff, capped at 30 seconds
+    const baseDelay = 1000; // Start with 1 second
     const delay = Math.min(
-      WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY * Math.pow(2, this.reconnectionAttempts),
-      10000, // Cap at 10 seconds max delay for school project
+      baseDelay * Math.pow(2, this.reconnectionAttempts),
+      30000 // Cap at 30 seconds max delay
     );
     this.reconnectionAttempts++;
-        
-    logger.info(`Reconnecting... (${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS})`);
 
     this.reconnectionTimer = setTimeout(() => {
-      // Triple-check all conditions before reconnecting
-      if (this.reconnectionAttempts <= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS && 
-          this.currentToken && 
+      // Check all conditions before reconnecting
+      if (this.currentToken && 
           this.onConnectedCallback && 
           this.connectionState === 'disconnected') {
         this.connectInternal(this.currentToken, this.onConnectedCallback);
@@ -236,30 +211,10 @@ class WebSocketService {
       },
       onStompError: (frame) => {
         const errorMessage = frame.headers['message'] || 'Unknown broker error';
-        
-        // Check if we've already reached max attempts
-        if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
-          return;
-        }
-        
         logger.warn(`Server error: ${errorMessage}`);
         
-        // For broker-related errors, stop reconnection immediately
-        if (errorMessage.includes('Broker not available') || 
-            errorMessage.includes('Connection to broker closed') ||
-            errorMessage.includes('Broker reported error') ||
-            errorMessage.includes('Connection refused')) {
-          
-          logger.info('Server unavailable - stopping reconnection attempts');
-          this.connectionState = 'disconnected';
-          this.reconnectionAttempts = WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS; // Force permanent stop
-          this.currentToken = null;
-          this.onConnectedCallback = null;
-          this.resetReconnectionState();
-        } else {
-          // Other errors - try limited reconnection
-          this.handleDisconnection();
-        }
+        // Handle disconnection for any STOMP error
+        this.handleDisconnection();
       },
       /**
        * Critical handler for detecting server-initiated closures (like code 1009 for message too big).
@@ -390,7 +345,7 @@ class WebSocketService {
     }
   }
 
-  public getConnectionState(): 'disconnected' | 'connecting' | 'connected' | 'permanently_disconnected' {
+  public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
     return this.connectionState;
   }
 
