@@ -26,6 +26,7 @@ class WebSocketService {
     
   private reconnectionAttempts = 0;
   private reconnectionTimer: ReturnType<typeof setTimeout> | null = null;
+  private connectionTimeout: ReturnType<typeof setTimeout> | null = null;
   private currentToken: string | null = null;
   private onConnectedCallback: (() => void) | null = null;
   private rollbackCallbacks = new Set<() => void>();
@@ -112,12 +113,22 @@ class WebSocketService {
   }
 
   private attemptReconnection(): void {
-    const baseDelay = 1000;
+    // Prevent excessive reconnection attempts
+    if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
+      logger.warn(`Max reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection.`);
+      this.resetReconnectionState();
+      this.connectionState = 'disconnected';
+      return;
+    }
+
+    const baseDelay = WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY;
     const delay = Math.min(
       baseDelay * Math.pow(2, this.reconnectionAttempts),
       30000,
     );
     this.reconnectionAttempts++;
+
+    logger.info(`Attempting reconnection ${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS} in ${delay}ms`);
 
     this.reconnectionTimer = setTimeout(() => {
       if (this.currentToken && 
@@ -136,26 +147,45 @@ class WebSocketService {
       clearTimeout(this.reconnectionTimer);
       this.reconnectionTimer = null;
     }
+    if (this.connectionTimeout) {
+      clearTimeout(this.connectionTimeout);
+      this.connectionTimeout = null;
+    }
   }
 
   public connect(token: string, onConnectedCallback: () => void) {
+    // Prevent duplicate connections
+    if (this.connectionState === 'connecting' || 
+        (this.stompClient?.active && this.connectionState === 'connected')) {
+      if (this.connectionState === 'connected') {
+        onConnectedCallback();
+      }
+      return;
+    }
+
     this.currentToken = token;
     this.onConnectedCallback = onConnectedCallback;
-        
-    if (this.stompClient?.active && this.connectionState === 'connected') {
-      onConnectedCallback();
-      return;
-    }
-
-    if (this.connectionState === 'connecting') {
-      return;
-    }
-
     this.connectInternal(token, onConnectedCallback);
   }
 
   private connectInternal(token: string, onConnectedCallback: () => void): void {
     this.connectionState = 'connecting';
+
+    // Clean up existing client and timers if any
+    if (this.stompClient) {
+      this.stompClient.deactivate();
+      this.stompClient = null;
+    }
+    if (this.connectionTimeout) {
+      clearTimeout(this.connectionTimeout);
+      this.connectionTimeout = null;
+    }
+
+    // Set connection timeout
+    this.connectionTimeout = setTimeout(() => {
+      logger.warn('WebSocket connection timeout - forcing disconnect');
+      this.handleDisconnection();
+    }, 10000); // 10 second timeout
 
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS(WEBSOCKET_URL),
@@ -169,6 +199,13 @@ class WebSocketService {
         logger.info('Connected to server');
         this.connectionState = 'connected';
         this.resetReconnectionState();
+        
+        // Clear connection timeout
+        if (this.connectionTimeout) {
+          clearTimeout(this.connectionTimeout);
+          this.connectionTimeout = null;
+        }
+        
         this.processPendingSubscriptions();
         
         if (this.queueProcessorCallback) {
@@ -226,11 +263,20 @@ class WebSocketService {
     this.isIntentionalDisconnect = true;
         
     if (this.stompClient?.active) {
-      this.stompClient.deactivate();
+      try {
+        this.stompClient.deactivate();
+      } catch (error) {
+        logger.warn('Error during WebSocket disconnect:', error);
+      }
       this.stompClient = null;
     }
     this.connectionState = 'disconnected';
     this.pendingSubscriptions = [];
+    
+    // Reset disconnect flag after a brief delay
+    setTimeout(() => {
+      this.isIntentionalDisconnect = false;
+    }, 100);
   }
 
   private processPendingSubscriptions() {

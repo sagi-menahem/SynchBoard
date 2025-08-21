@@ -120,20 +120,15 @@ export const useBoardWebSocketHandler = ({
           logger.warn(`[UNIFIED] Unknown transactional message type: ${transactionalMessage.type}`);
         }
 
+        // Commit drawing/board transactions only - chat transactions are managed separately
         if (
           transactionalMessage.type === ActionType.OBJECT_ADD ||
           transactionalMessage.type === ActionType.OBJECT_DELETE
         ) {
           logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
           commitTransaction(transactionalMessage.instanceId);
-        } else if (transactionalMessage.type === 'CHAT') {
-          logger.debug(`Server confirmed ${transactionalMessage.type}: ${transactionalMessage.instanceId}`);
-          if (commitChatTransaction) {
-            commitChatTransaction(transactionalMessage.instanceId);
-          } else {
-            commitTransaction(transactionalMessage.instanceId);
-          }
         }
+        // NOTE: CHAT transaction commits are handled by useChatTransaction hook, not here
         
       }
     },

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import toast from 'react-hot-toast';
 import logger from 'utils/Logger';
 
-import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
+import { WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants/ApiConstants';
+import { useSocketSubscription } from 'hooks/common/useSocket';
 import { useWebSocketTransaction } from 'hooks/common/useWebSocketTransaction';
 import type { ChatTransactionConfig, EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
@@ -89,9 +90,34 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
   const {
     sendTransactionalAction,
     isPending,
-    commitTransaction,
     pendingCount,
+    commitTransaction,
   } = useWebSocketTransaction(transactionConfig, currentMessages, setMessages);
+
+  // Subscribe to board WebSocket topic to receive chat confirmations
+  const handleChatConfirmation = useCallback(
+    (payload: unknown) => {
+      if (typeof payload !== 'object' || !payload) return;
+      
+      // Look for CHAT messages with instanceId that match our pending transactions
+      if ('type' in payload && 'instanceId' in payload) {
+        const message = payload as ChatMessageResponse & { instanceId: string };
+        
+        if (message.type === 'CHAT' && message.instanceId) {
+          logger.debug(`Server confirmed CHAT: ${message.instanceId}`);
+          commitTransaction(message.instanceId);
+        }
+      }
+    },
+    [commitTransaction]
+  );
+
+  // Only subscribe if boardId is available
+  useSocketSubscription(
+    boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', 
+    handleChatConfirmation, 
+    'chat'
+  );
 
   const sendChatMessage = useCallback(
     async (content: string): Promise<string> => {
@@ -128,29 +154,6 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
     [sendTransactionalAction, userEmail, userFullName, userProfilePictureUrl, boardId],
   );
 
-  const pendingCommits = useRef<Set<string>>(new Set());
-  useEffect(() => {
-    const toCommit: string[] = [];
-    
-    currentMessages.forEach((msg) => {
-      const enhancedMsg = msg as EnhancedChatMessage;
-      
-      if (enhancedMsg.transactionId && 
-          isPending(enhancedMsg.transactionId) && 
-          enhancedMsg.id && enhancedMsg.id > 0 &&
-          !pendingCommits.current.has(enhancedMsg.transactionId)) {
-        
-        logger.debug(`Queueing transaction commit for ${enhancedMsg.transactionId} - server confirmation received (ID: ${enhancedMsg.id})`);
-        toCommit.push(enhancedMsg.transactionId);
-        pendingCommits.current.add(enhancedMsg.transactionId);
-      }
-    });
-    
-    toCommit.forEach((transactionId) => {
-      commitTransaction(transactionId);
-      pendingCommits.current.delete(transactionId);
-    });
-  }, [currentMessages, isPending, commitTransaction]);
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return currentMessages.map((msg): EnhancedChatMessage => {

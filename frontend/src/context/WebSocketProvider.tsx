@@ -17,33 +17,29 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
   useEffect(() => {
+    let pollInterval: ReturnType<typeof setInterval>;
+    let isEffectActive = true;
+    
     const updateConnectionState = () => {
+      if (!isEffectActive) return;
+      
       const currentState = websocketService.getConnectionState();
       setConnectionState(currentState);
-      
       setIsSocketConnected(currentState === 'connected');
-      
     };
 
-    updateConnectionState();
-
-    let pollInterval: ReturnType<typeof setInterval>;
-    
     const startPolling = () => {
       pollInterval = setInterval(() => {
-        const state = websocketService.getConnectionState();
-        if (state !== connectionState) {
-          updateConnectionState();
-        }
-        
+        if (!isEffectActive) return;
+        updateConnectionState();
       }, 3000);
     };
-    
-    startPolling();
 
     if (token) {
       setConnectionState('connecting');
       websocketService.connect(token, () => {
+        if (!isEffectActive) return;
+        
         setIsSocketConnected(true);
         setConnectionState('connected');
                 
@@ -61,13 +57,16 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       setConnectionState('disconnected');
     }
 
+    startPolling();
+
     return () => {
+      isEffectActive = false;
       clearInterval(pollInterval);
       websocketService.disconnect();
       setIsSocketConnected(false);
       setConnectionState('disconnected');
     };
-  }, [token, userEmail, connectionState]);
+  }, [token, userEmail]);
   const value = {
     isSocketConnected,
     connectionState,
