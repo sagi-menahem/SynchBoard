@@ -1,7 +1,5 @@
 import { APP_ROUTES } from 'constants';
 
-import { useCallback } from 'react';
-
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +14,7 @@ export const useAccountManager = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleDeleteAccount = useCallback(async () => {
+  const handleDeleteAccount = async () => {
     try {
       await userService.deleteAccount();
       toast.success(t('success.account.delete'));
@@ -26,7 +24,7 @@ export const useAccountManager = () => {
       logger.error('Failed to delete account:', error);
       throw error;
     }
-  }, [t, logout, navigate]);
+  };
 
   return {
     handleDeleteAccount,

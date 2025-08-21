@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 export const useContextMenu = <T>() => {
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
@@ -6,18 +6,18 @@ export const useContextMenu = <T>() => {
 
   const [data, setData] = useState<T | null>(null);
 
-  const handleContextMenu = useCallback((event: React.MouseEvent, contextData: T) => {
+  const handleContextMenu = (event: React.MouseEvent, contextData: T) => {
     event.preventDefault();
 
     setAnchorPoint({ x: event.pageX, y: event.pageY });
     setData(contextData);
     setIsOpen(true);
-  }, []);
+  };
 
-  const closeMenu = useCallback(() => {
+  const closeMenu = () => {
     setIsOpen(false);
     setData(null);
-  }, []);
+  };
 
   return {
     anchorPoint,
