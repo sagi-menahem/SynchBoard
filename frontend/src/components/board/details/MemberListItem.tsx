@@ -13,7 +13,7 @@ interface MemberListItemProps {
     onContextMenu: (event: React.MouseEvent, member: Member) => void;
 }
 
-const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }) => {
+const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onContextMenu }) => {
   const { t } = useTranslation();
   const imageSource = member.profilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
@@ -33,6 +33,8 @@ const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }
       </li>
     </div>
   );
-};
+});
+
+MemberListItem.displayName = 'MemberListItem';
 
 export default MemberListItem;

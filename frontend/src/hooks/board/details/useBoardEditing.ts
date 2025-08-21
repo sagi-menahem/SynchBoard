@@ -7,7 +7,7 @@ import logger from 'utils/logger';
 import * as boardService from 'services/boardService';
 
 
-export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
+export const useBoardEditing = (boardId: number) => {
   const { t } = useTranslation();
 
   const handleUpdateName = useCallback(
@@ -16,13 +16,12 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
       try {
         await boardService.updateBoardName(boardId, newName);
         toast.success(t('success.board.nameUpdate'));
-        onSuccess?.();
       } catch (error) {
         logger.error('Update name error:', error);
         throw error;
       }
     },
-    [boardId, onSuccess, t],
+    [boardId, t],
   );
 
   const handleUpdateDescription = useCallback(
@@ -31,13 +30,12 @@ export const useBoardEditing = (boardId: number, onSuccess?: () => void) => {
       try {
         await boardService.updateBoardDescription(boardId, newDescription);
         toast.success(t('success.board.descriptionUpdate'));
-        onSuccess?.();
       } catch (error) {
         logger.error('Update description error:', error);
         throw error;
       }
     },
-    [boardId, onSuccess, t],
+    [boardId, t],
   );
 
   return {

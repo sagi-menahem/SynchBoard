@@ -21,7 +21,7 @@ interface BoardDetailsHeaderProps {
     onSetInviteModalOpen: (isOpen: boolean) => void;
 }
 
-const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
+const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = React.memo((props) => {
     const { t } = useTranslation();
     const {
         boardDetails,
@@ -94,6 +94,8 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
             </div>
         </>
     );
-};
+});
+
+BoardDetailsHeader.displayName = 'BoardDetailsHeader';
 
 export default BoardDetailsHeader;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -47,6 +47,42 @@ const BoardDetailsPage: React.FC = () => {
     handleConfirmDeletePicture,
   } = useBoardDetailsPage(numericBoardId);
 
+  const handleSetPictureModalOpen = useCallback((isOpen: boolean) => {
+    setPictureModalOpen(isOpen);
+  }, [setPictureModalOpen]);
+
+  const handleSetEditingField = useCallback((field: 'name' | 'description' | null) => {
+    setEditingField(field);
+  }, [setEditingField]);
+
+  const handleSetLeaveConfirmOpen = useCallback((isOpen: boolean) => {
+    setLeaveConfirmOpen(isOpen);
+  }, [setLeaveConfirmOpen]);
+
+  const handleSetInviteModalOpen = useCallback((isOpen: boolean) => {
+    setInviteModalOpen(isOpen);
+  }, [setInviteModalOpen]);
+
+  const handleCloseInvite = useCallback(() => {
+    setInviteModalOpen(false);
+  }, [setInviteModalOpen]);
+
+  const handleCloseEdit = useCallback(() => {
+    setEditingField(null);
+  }, [setEditingField]);
+
+  const handleCloseLeave = useCallback(() => {
+    setLeaveConfirmOpen(false);
+  }, [setLeaveConfirmOpen]);
+
+  const handleCloseDelete = useCallback(() => {
+    setDeleteConfirmOpen(false);
+  }, [setDeleteConfirmOpen]);
+
+  const handleClosePicture = useCallback(() => {
+    setPictureModalOpen(false);
+  }, [setPictureModalOpen]);
+
   if (isLoading) {
     return <div>{t('boardDetailsPage.loading')}</div>;
   }
@@ -61,10 +97,10 @@ const BoardDetailsPage: React.FC = () => {
         boardDetails={boardDetails}
         currentUserIsAdmin={currentUserIsAdmin}
         numericBoardId={numericBoardId}
-        onSetPictureModalOpen={setPictureModalOpen}
-        onSetEditingField={setEditingField}
-        onSetLeaveConfirmOpen={setLeaveConfirmOpen}
-        onSetInviteModalOpen={setInviteModalOpen}
+        onSetPictureModalOpen={handleSetPictureModalOpen}
+        onSetEditingField={handleSetEditingField}
+        onSetLeaveConfirmOpen={handleSetLeaveConfirmOpen}
+        onSetInviteModalOpen={handleSetInviteModalOpen}
       />
 
       <ul className={styles.membersListContainer}>
@@ -87,8 +123,8 @@ const BoardDetailsPage: React.FC = () => {
         boardId={numericBoardId}
         boardName={boardDetails.name}
         boardDescription={boardDetails.description || ''}
-        onCloseInvite={() => setInviteModalOpen(false)}
-        onCloseEdit={() => setEditingField(null)}
+        onCloseInvite={handleCloseInvite}
+        onCloseEdit={handleCloseEdit}
         onInviteSuccess={handleInviteSuccess}
         onUpdateName={handleUpdateName}
         onUpdateDescription={handleUpdateDescription}
@@ -98,15 +134,15 @@ const BoardDetailsPage: React.FC = () => {
         isLeaveConfirmOpen={isLeaveConfirmOpen}
         isDeleteConfirmOpen={isDeleteConfirmOpen}
         boardName={boardDetails.name}
-        onCloseLeave={() => setLeaveConfirmOpen(false)}
-        onCloseDelete={() => setDeleteConfirmOpen(false)}
+        onCloseLeave={handleCloseLeave}
+        onCloseDelete={handleCloseDelete}
         onConfirmLeave={handleLeaveBoard}
         onConfirmDelete={handleConfirmDeletePicture}
       />
 
       <PictureManagerModal
         isOpen={isPictureModalOpen}
-        onClose={() => setPictureModalOpen(false)}
+        onClose={handleClosePicture}
         boardName={boardDetails.name}
         pictureUrl={boardDetails.pictureUrl}
         onPictureUpload={handlePictureUpload}
