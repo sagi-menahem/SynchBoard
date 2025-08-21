@@ -1,6 +1,6 @@
 import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -28,13 +28,19 @@ export const useBoardWorkspace = (boardId: number) => {
     isLoading,
     boardName,
     accessLost,
-    objects,
+    objects: baseObjects,
     messages,
     setBoardName,
     setAccessLost,
-    setObjects,
+    setObjects: setBaseObjects,
     setMessages,
   } = useBoardDataManager(boardId);
+
+  // Optimistic updates for drawing objects
+  const [optimisticObjects, addOptimisticObject] = useOptimistic(
+    baseObjects,
+    (state, newObject: ActionPayload) => [...state, newObject],
+  );
 
   const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
         useBoardActions(boardId);
@@ -42,24 +48,24 @@ export const useBoardWorkspace = (boardId: number) => {
   const [hasInitialized, setHasInitialized] = useState(false);
     
   useEffect(() => {
-    if (!isLoading && objects.length > 0 && !hasInitialized) {
-      resetCounts(objects.length);
+    if (!isLoading && baseObjects.length > 0 && !hasInitialized) {
+      resetCounts(baseObjects.length);
       setHasInitialized(true);
     }
-  }, [isLoading, objects.length, resetCounts, hasInitialized]);
+  }, [isLoading, baseObjects.length, resetCounts, hasInitialized]);
 
   const {} = useSocket();
   
   const handleCommitDrawingTransaction = useCallback((instanceId: string) => {
-    // Update drawing transaction status to confirmed
-    setObjects((prev) => prev.map((obj) => {
+    // Update drawing transaction status to confirmed in base objects
+    setBaseObjects((prev) => prev.map((obj) => {
       const enhancedObj = obj as EnhancedActionPayload;
       return enhancedObj.instanceId === instanceId 
         ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
         : obj;
     }));
     logger.debug(`Drawing confirmed: ${instanceId}`);
-  }, [setObjects]);
+  }, [setBaseObjects]);
 
   const handleCommitChatTransaction = useCallback((instanceId: string) => {
     // Chat transactions are handled by their own hook
@@ -71,7 +77,7 @@ export const useBoardWorkspace = (boardId: number) => {
     sessionInstanceId: sessionInstanceId.current,
     setBoardName,
     setAccessLost,
-    setObjects,
+    setObjects: setBaseObjects,
     setMessages,
     commitDrawingTransaction: handleCommitDrawingTransaction,
     commitChatTransaction: handleCommitChatTransaction,
@@ -97,13 +103,15 @@ export const useBoardWorkspace = (boardId: number) => {
         return;
       }
 
-      // Add optimistic update
-      const newObject: EnhancedActionPayload = {
+      // Create optimistic object
+      const optimisticObject: EnhancedActionPayload = {
         ...(actionRequest.payload as ActionPayload),
         instanceId,
         transactionStatus: 'pending' as const,
       };
-      setObjects((prev) => [...prev, newObject]);
+
+      // Add optimistic update - will automatically rollback on error
+      addOptimisticObject(optimisticObject);
 
       try {
         WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionRequest);
@@ -111,12 +119,12 @@ export const useBoardWorkspace = (boardId: number) => {
         logger.debug(`Drawing action sent: ${instanceId}`);
       } catch (error) {
         logger.error('Failed to send drawing action:', error);
-        // Remove optimistic update on failure
-        setObjects((prev) => prev.filter((obj) => obj.instanceId !== instanceId));
         toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
+        // No need to manually remove optimistic update - useOptimistic handles rollback
+        throw error; // Re-throw to trigger automatic rollback
       }
     },
-    [boardId, incrementUndo, setObjects, t],
+    [boardId, incrementUndo, addOptimisticObject, t],
   );
 
   useEffect(() => {
@@ -143,19 +151,18 @@ export const useBoardWorkspace = (boardId: number) => {
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
   const pendingDrawingActions = useMemo(() => {
-    return objects.filter((obj) => {
+    return optimisticObjects.filter((obj) => {
       const enhancedObj = obj as EnhancedActionPayload;
       return enhancedObj.transactionStatus === 'pending';
     }).length;
-  }, [objects]);
+  }, [optimisticObjects]);
 
   return {
     isLoading,
     boardName,
     accessLost,
-    objects,
+    objects: optimisticObjects, // Return optimistic objects for real-time UI
     messages,
-    setMessages,
     instanceId: sessionInstanceId.current,
     isUndoAvailable,
     isRedoAvailable,

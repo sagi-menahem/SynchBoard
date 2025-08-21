@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { WebSocketService } from 'services';
@@ -17,10 +17,9 @@ import styles from './ChatWindow.module.css';
 interface ChatWindowProps {
   boardId: number;
   messages: ChatMessageResponse[];
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessageResponse[]>>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const { t } = useTranslation();
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
@@ -29,6 +28,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchVisible, setSearchVisible] = useState(false);
+
+  // Optimistic updates for chat messages
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
+    messages,
+    (state, newMessage: ChatMessageResponse) => [...state, newMessage],
+  );
 
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
@@ -93,7 +98,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
       senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
     };
 
-    // Add optimistic update
+    // Create optimistic message
     const optimisticMessage: ChatMessageResponse & { transactionId: string } = {
       id: -1, // Temporary ID
       type: 'CHAT',
@@ -106,23 +111,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
       transactionId: instanceId,
     };
     
-    setMessages((prev) => [...prev, optimisticMessage]);
+    // Add optimistic update - will automatically rollback on error
+    addOptimisticMessage(optimisticMessage);
 
     try {
       WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
       return instanceId;
     } catch (error) {
-      // Remove optimistic update on failure
-      setMessages((prev) => prev.filter((msg) => {
-        const msgWithId = msg as typeof optimisticMessage;
-        return msgWithId.transactionId !== instanceId;
-      }));
+      // No need to manually remove optimistic update - useOptimistic handles rollback
       throw error;
     }
-  }, [userEmail, stableUserInfo, boardId, setMessages]);
+  }, [userEmail, stableUserInfo, boardId, addOptimisticMessage]);
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
-    return messages.map((msg): EnhancedChatMessage => {
+    return optimisticMessages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
       const hasTransactionId = 'transactionId' in enhancedMsg && enhancedMsg.transactionId;
       
@@ -139,7 +141,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
         transactionStatus: 'confirmed',
       };
     });
-  }, [messages]);
+  }, [optimisticMessages]);
 
   const filteredMessages = useMemo(() => {
     if (!searchTerm.trim()) {

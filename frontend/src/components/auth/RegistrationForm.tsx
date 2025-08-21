@@ -12,49 +12,41 @@ interface RegistrationFormProps {
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
   const { t } = useTranslation();
-  const {
-    email,
-    password,
-    firstName,
-    lastName,
-    phoneNumber,
-    isSubmitting,
-    setEmail,
-    setPassword,
-    setFirstName,
-    setLastName,
-    setPhoneNumber,
-    handleSubmit,
-  } = useRegisterForm(onRegistrationSuccess);
+  const { state, submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
 
   const inputs = [
-    { id: 'register-email', label: 'email', type: 'email', value: email, setter: setEmail },
-    { id: 'register-password', label: 'password', type: 'password', value: password, setter: setPassword },
-    { id: 'register-firstName', label: 'firstName', type: 'text', value: firstName, setter: setFirstName },
-    { id: 'register-lastName', label: 'lastName', type: 'text', value: lastName, setter: setLastName },
-    { id: 'register-phoneNumber', label: 'phoneNumber', type: 'tel', value: phoneNumber, setter: setPhoneNumber },
+    { id: 'register-email', name: 'email', label: 'email', type: 'email', required: true },
+    { id: 'register-password', name: 'password', label: 'password', type: 'password', required: true },
+    { id: 'register-firstName', name: 'firstName', label: 'firstName', type: 'text', required: true },
+    { id: 'register-lastName', name: 'lastName', label: 'lastName', type: 'text', required: true },
+    { id: 'register-phoneNumber', name: 'phoneNumber', label: 'phoneNumber', type: 'tel', required: false },
   ];
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form action={submitAction} className={styles.form}>
       <h2>{t('registerForm.heading')}</h2>
+
+      {state.error && (
+        <div className={styles.error} role="alert">
+          {state.error}
+        </div>
+      )}
 
       {inputs.map((input) => (
         <div key={input.id} className={styles.field}>
           <label htmlFor={input.id}>{t(`common.form.label.${input.label}`)}</label>
           <Input
             id={input.id}
+            name={input.name}
             type={input.type}
-            value={input.value}
-            onChange={(e) => input.setter(e.target.value)}
-            required
-            disabled={isSubmitting}
+            required={input.required}
+            disabled={isPending}
           />
         </div>
       ))}
 
-      <Button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-        {isSubmitting ? t('common.button.registering') : t('registerForm.button')}
+      <Button type="submit" className={styles.submitButton} disabled={isPending}>
+        {isPending ? t('common.button.registering') : t('registerForm.button')}
       </Button>
     </form>
   );

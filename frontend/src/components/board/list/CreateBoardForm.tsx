@@ -14,22 +14,27 @@ interface CreateBoardFormProps {
 
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
   const { t } = useTranslation();
-  const { name, description, isSubmitting, setName, setDescription, handleSubmit } =
-        useCreateBoardForm(onBoardCreated);
+  const { state, submitAction, isPending } = useCreateBoardForm(onBoardCreated);
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form action={submitAction} className={styles.form}>
       <h3>{t('createBoardForm.heading')}</h3>
+
+      {state.error && (
+        <div className={styles.error} role="alert">
+          {state.error}
+        </div>
+      )}
 
       <div className={styles.field}>
         <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>
         <Input
           id="board-name"
+          name="name"
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
           placeholder={t('createBoardForm.placeholder.name')}
           required
+          disabled={isPending}
         />
       </div>
 
@@ -37,20 +42,20 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
         <label htmlFor="board-description">{t('createBoardForm.label.description')}</label>
         <textarea
           id="board-description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
           placeholder={t('createBoardForm.placeholder.description')}
           rows={3}
           className={styles.description}
+          disabled={isPending}
         />
       </div>
 
       <div className={styles.buttonGroup}>
-        <Button type="button" onClick={onClose} disabled={isSubmitting} variant="secondary">
+        <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
           {t('common.button.cancel')}
         </Button>
-        <Button type="submit" disabled={isSubmitting} variant="primary">
-          {isSubmitting ? t('common.button.creating') : t('createBoardForm.button.createBoard')}
+        <Button type="submit" disabled={isPending} variant="primary">
+          {isPending ? t('common.button.creating') : t('createBoardForm.button.createBoard')}
         </Button>
       </div>
     </form>

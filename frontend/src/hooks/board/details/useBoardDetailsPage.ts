@@ -21,7 +21,11 @@ export const useBoardDetailsPage = (boardId: number) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { boardDetails, isLoading } = useBoardDetails(boardId);
-  const { handleUpdateName, handleUpdateDescription } = useBoardEditing(boardId);
+  const { handleUpdateName, handleUpdateDescription, optimisticState } = useBoardEditing(
+    boardId,
+    boardDetails?.name,
+    boardDetails?.description || undefined,
+  );
 
   const { currentUserIsAdmin, userEmail } = useBoardPermissions(boardDetails);
 
@@ -109,6 +113,7 @@ export const useBoardDetailsPage = (boardId: number) => {
   return {
     isLoading,
     boardDetails,
+    optimisticBoardState: optimisticState,
     userEmail,
     currentUserIsAdmin,
     contextMenu,
