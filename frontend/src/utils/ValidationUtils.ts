@@ -121,6 +121,18 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
 };
 
 export const validateBoardMessage = (dataObj: Record<string, unknown>): boolean => {
+  // Drawing action messages from server (confirmations)
+  if ('type' in dataObj && 'instanceId' in dataObj && 'payload' in dataObj) {
+    const actionType = dataObj['type'] as unknown;
+    if (typeof actionType === 'string') {
+      const validActionTypes = ['OBJECT_ADD', 'OBJECT_UPDATE', 'OBJECT_DELETE'];
+      if (validActionTypes.includes(actionType)) {
+        return true;
+      }
+    }
+  }
+
+  // Drawing action requests with sender
   if ('type' in dataObj && 'sender' in dataObj) {
     const requiredFields = ['type', 'sender'];
     for (const field of requiredFields) {
@@ -142,6 +154,7 @@ export const validateBoardMessage = (dataObj: Record<string, unknown>): boolean 
     return true;
   }
 
+  // Board update notifications
   if ('updateType' in dataObj && 'sourceUserEmail' in dataObj) {
     const requiredFields = ['updateType', 'sourceUserEmail'];
     for (const field of requiredFields) {
@@ -163,6 +176,7 @@ export const validateBoardMessage = (dataObj: Record<string, unknown>): boolean 
     return true;
   }
 
+  // Chat message validation - requires content field
   if ('type' in dataObj && 'content' in dataObj && 'timestamp' in dataObj && 'senderEmail' in dataObj) {
     const requiredFields = ['type', 'content', 'timestamp', 'senderEmail'];
     for (const field of requiredFields) {
@@ -181,6 +195,12 @@ export const validateBoardMessage = (dataObj: Record<string, unknown>): boolean 
       }
     }
         
+    return true;
+  }
+
+  // Generic board message validation - for messages that don't fit other patterns
+  if ('instanceId' in dataObj || 'payload' in dataObj) {
+    // These are valid board messages (drawing actions, etc.)
     return true;
   }
 

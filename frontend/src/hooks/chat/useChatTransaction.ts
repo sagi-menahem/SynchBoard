@@ -94,12 +94,12 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
     commitTransaction,
   } = useWebSocketTransaction(transactionConfig, currentMessages, setMessages);
 
-  // Subscribe to board WebSocket topic to receive chat confirmations
+  // Subscribe to board WebSocket topic to receive ONLY chat confirmations
   const handleChatConfirmation = useCallback(
     (payload: unknown) => {
       if (typeof payload !== 'object' || !payload) return;
       
-      // Look for CHAT messages with instanceId that match our pending transactions
+      // ONLY handle CHAT messages, ignore all drawing/board messages
       if ('type' in payload && 'instanceId' in payload) {
         const message = payload as ChatMessageResponse & { instanceId: string };
         
@@ -107,12 +107,13 @@ export const useChatTransaction = (config: ChatTransactionConfig) => {
           logger.debug(`Server confirmed CHAT: ${message.instanceId}`);
           commitTransaction(message.instanceId);
         }
+        // Explicitly ignore drawing messages (OBJECT_ADD, OBJECT_DELETE, etc.)
       }
     },
     [commitTransaction]
   );
 
-  // Only subscribe if boardId is available
+  // Subscribe to board topic for chat confirmations only
   useSocketSubscription(
     boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', 
     handleChatConfirmation, 
