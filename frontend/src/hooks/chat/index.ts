@@ -1,1 +1,0 @@
-// Chat hooks - cleaned up as part of unified transaction system

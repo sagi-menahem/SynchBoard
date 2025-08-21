@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { WebSocketService } from 'services';
 import { formatDateSeparator } from 'utils/DateUtils';
 
 import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth';
 import { usePreferences, useSocket } from 'hooks/common';
-import { WebSocketService } from 'services';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
@@ -188,7 +188,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
-            autoFocus
           />
           <button
             onClick={() => {
