@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { useSocket } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common';
 
 import styles from './ConnectionStatusBanner.module.css';
 
@@ -9,34 +9,8 @@ interface ConnectionStatusBannerProps {
 }
 
 export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ onHeightChange }) => {
-  const { connectionState } = useSocket();
-  const [shouldShowBanner, setShouldShowBanner] = useState(false);
+  const { shouldShowBanner } = useConnectionStatus();
   const bannerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-
-    if (connectionState === 'connected') {
-      setShouldShowBanner(false);
-    } else if (connectionState === 'disconnected') {
-      timeoutRef.current = setTimeout(() => {
-        setShouldShowBanner(true);
-      }, 10000);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    };
-  }, [connectionState]);
-
-  const showBanner = shouldShowBanner && connectionState === 'disconnected';
 
   useEffect(() => {
     if (!bannerRef.current) return;
@@ -88,7 +62,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   }, [onHeightChange]);
 
   useEffect(() => {
-    if (!showBanner) {
+    if (!shouldShowBanner) {
       if (onHeightChange) {
         onHeightChange(0);
       }
@@ -123,10 +97,10 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
       
       measureWithRetry();
     }
-  }, [showBanner, onHeightChange]);
+  }, [shouldShowBanner, onHeightChange]);
 
 
-  if (!showBanner) {
+  if (!shouldShowBanner) {
     return null;
   }
 

@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { WebSocketService } from 'services';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';

@@ -1,7 +1,7 @@
 
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 import {
   type MessageValidationSchema,
   sanitizeObject,

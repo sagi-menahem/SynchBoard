@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
-import { useSocket } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
@@ -19,10 +19,10 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { canvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
-  const { isSocketConnected } = useSocket();
+  const { shouldBlockFunctionality } = useConnectionStatus();
 
-  const containerClassName = `${styles.container} ${!isSocketConnected ? styles.disconnected : ''}`;
-  const canvasClassName = `${styles.canvas} ${!isSocketConnected ? styles.disabled : ''}`;
+  const containerClassName = `${styles.container} ${shouldBlockFunctionality ? styles.disconnected : ''}`;
+  const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
 
   return (
     <div ref={containerRef} className={containerClassName}>

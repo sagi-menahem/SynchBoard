@@ -1,3 +1,4 @@
+export { useConnectionStatus } from './useConnectionStatus';
 export { useContextMenu } from './useContextMenu';
 export { useDraggable } from './useDraggable';
 export { createErrorHandler, useErrorHandler } from './useErrorHandler';
