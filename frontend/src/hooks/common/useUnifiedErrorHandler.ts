@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 interface ErrorHandlerOptions {
   showToast?: boolean;

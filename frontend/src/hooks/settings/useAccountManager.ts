@@ -5,10 +5,10 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
-import * as userService from 'services/UserService';
+import * as userService from 'services/userService';
 
 
 export const useAccountManager = () => {

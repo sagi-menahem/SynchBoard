@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState, type ReactNode } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
-import * as userService from 'services/UserService';
+import * as userService from 'services/userService';
 import type { UserPreferences } from 'types/UserTypes';
 
 import { PreferencesContext } from './PreferencesContext';

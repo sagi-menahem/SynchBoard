@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
-import { useSocket } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common';
 import {
   ActionType,
   type CirclePayload,
@@ -41,7 +41,7 @@ export const useCanvasInteractions = ({
   isRadiusValid,
 }: UseCanvasInteractionsProps) => {
   const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
-  const { isSocketConnected } = useSocket();
+  const { shouldBlockFunctionality } = useConnectionStatus();
 
   // Store original canvas data for preview restoration
   const originalImageData = useRef<ImageData | null>(null);
@@ -52,7 +52,7 @@ export const useCanvasInteractions = ({
       const ctx = contextRef.current;
       if (!canvas || !ctx) return;
             
-      if (!isSocketConnected) {
+      if (shouldBlockFunctionality) {
         return;
       }
 
@@ -68,7 +68,7 @@ export const useCanvasInteractions = ({
         startPoint.current = { x: offsetX, y: offsetY };
       }
     },
-    [tool, canvasRef, contextRef, setIsDrawing, startPoint, currentPath, isSocketConnected],
+    [tool, canvasRef, contextRef, setIsDrawing, startPoint, currentPath, shouldBlockFunctionality],
   );
 
   useEffect(() => {

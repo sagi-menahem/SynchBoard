@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input } from 'components/common';
-import { useSocket } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common';
 
 import styles from './ChatInput.module.css';
 
@@ -18,7 +18,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
   placeholder, 
 }) => {
   const { t } = useTranslation();
-  const { isSocketConnected } = useSocket();
+  const { shouldBlockFunctionality } = useConnectionStatus();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,7 +27,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     event.preventDefault();
         
     const messageContent = message.trim();
-    if (!messageContent || !isSocketConnected || isSending) {
+    if (!messageContent || shouldBlockFunctionality || isSending) {
       return;
     }
 
@@ -45,7 +45,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         inputRef.current?.focus();
       }, 0);
     }
-  }, [message, onSendMessage, isSocketConnected, isSending]);
+  }, [message, onSendMessage, shouldBlockFunctionality, isSending]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -70,7 +70,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
       </div>
       <Button 
         type="submit" 
-        disabled={!message.trim() || !isSocketConnected || isSending}
+        disabled={!message.trim() || shouldBlockFunctionality || isSending}
         className={isSending ? styles.buttonSending : ''}
       >
         {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}
