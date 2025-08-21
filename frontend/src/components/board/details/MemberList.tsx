@@ -9,7 +9,7 @@ interface MemberListProps {
     onMemberContextMenu: (event: React.MouseEvent, member: Member) => void;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ members, onMemberContextMenu }) => {
+const MemberList: React.FC<MemberListProps> = React.memo(({ members, onMemberContextMenu }) => {
     return (
         <>
             {members.map((member) => (
@@ -17,6 +17,8 @@ const MemberList: React.FC<MemberListProps> = ({ members, onMemberContextMenu })
             ))}
         </>
     );
-};
+});
+
+MemberList.displayName = 'MemberList';
 
 export default MemberList;

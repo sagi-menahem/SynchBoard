@@ -20,8 +20,8 @@ import type { EditingField } from 'types/CommonTypes';
 export const useBoardDetailsPage = (boardId: number) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { boardDetails, isLoading, refetch } = useBoardDetails(boardId);
-  const { handleUpdateName, handleUpdateDescription } = useBoardEditing(boardId, refetch);
+  const { boardDetails, isLoading } = useBoardDetails(boardId);
+  const { handleUpdateName, handleUpdateDescription } = useBoardEditing(boardId);
 
   const { currentUserIsAdmin, userEmail } = useBoardPermissions(boardDetails);
 
@@ -32,15 +32,14 @@ export const useBoardDetailsPage = (boardId: number) => {
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const { contextMenu, handlePromote: memberPromote, handleRemove: memberRemove, handleRightClick } = 
-        useBoardMemberManagement(boardId, currentUserIsAdmin, refetch);
+        useBoardMemberManagement(boardId, currentUserIsAdmin);
 
   const handleInviteSuccess = useCallback(
     (newMember: Member) => {
       logger.debug('New member invited:', newMember);
-      refetch();
       setInviteModalOpen(false);
     },
-    [refetch],
+    [],
   );
 
   const handlePromote = useCallback(async () => {
@@ -80,7 +79,6 @@ export const useBoardDetailsPage = (boardId: number) => {
       try {
         await boardService.uploadBoardPicture(boardId, file);
         toast.success(t('success.board.pictureUpdate'));
-        refetch();
       } catch (error) {
         logger.error('Picture upload error:', error);
         throw error;
@@ -88,7 +86,7 @@ export const useBoardDetailsPage = (boardId: number) => {
         setPictureModalOpen(false);
       }
     },
-    [boardId, refetch, t],
+    [boardId, t],
   );
 
   const promptPictureDelete = useCallback(() => {
@@ -100,14 +98,13 @@ export const useBoardDetailsPage = (boardId: number) => {
     try {
       await boardService.deleteBoardPicture(boardId);
       toast.success(t('success.board.pictureDelete'));
-      refetch();
     } catch (error) {
       logger.error('Picture delete error:', error);
       throw error;
     } finally {
       setDeleteConfirmOpen(false);
     }
-  }, [boardId, refetch, t]);
+  }, [boardId, t]);
 
   return {
     isLoading,

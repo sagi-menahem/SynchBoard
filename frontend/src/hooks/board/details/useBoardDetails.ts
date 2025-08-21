@@ -8,7 +8,6 @@ import { BoardService } from 'services';
 import type { BoardDetails, BoardUpdateDTO } from 'types';
 import { Logger } from 'utils';
 
-import { useAuth } from 'hooks/auth';
 import { useSocketSubscription } from 'hooks/common';
 
 
@@ -18,7 +17,6 @@ const logger = Logger;
 export const useBoardDetails = (boardId: number | undefined) => {
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { userEmail } = useAuth();
   const navigate = useNavigate();
 
   const fetchDetails = useCallback(() => {
@@ -51,9 +49,6 @@ export const useBoardDetails = (boardId: number | undefined) => {
 
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {
-      if (message.sourceUserEmail === userEmail) {
-        return;
-      }
       logger.debug(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
             
       if (!boardId || isNaN(boardId)) {
@@ -72,7 +67,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
           }
         });
     },
-    [boardId, userEmail, navigate],
+    [boardId, navigate],
   );
 
   useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
