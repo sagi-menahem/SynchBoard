@@ -275,13 +275,19 @@ export const useWebSocketTransaction = <TPayload extends object, TState>(
       const transaction = updated.get(transactionId);
       
       if (transaction) {
-        logger.debug(`Server confirmed transaction: ${transactionId}`);
+        logger.debug(`Server confirmed ${config.actionType || 'transaction'}: ${transactionId}`);
         
         if (transaction.timeoutId) {
           clearTimeout(transaction.timeoutId);
         }
-        config.onSuccess?.(transaction.payload, transactionId);
+        
+        // Mark as confirmed and clean up immediately to prevent double processing
         updated.delete(transactionId);
+        
+        // Execute success callback after state update to prevent race conditions
+        setTimeout(() => {
+          config.onSuccess?.(transaction.payload, transactionId);
+        }, 0);
         
         logger.debug(`Transaction completed and cleaned up: ${transactionId} (${updated.size} remaining)`);
       } else {
