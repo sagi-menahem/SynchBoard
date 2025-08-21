@@ -3,9 +3,10 @@ import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { formatDateSeparator } from 'utils/DateUtils';
 
+import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth';
-import { useChatTransaction } from 'hooks/chat';
 import { usePreferences, useSocket } from 'hooks/common';
+import { WebSocketService } from 'services';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
@@ -69,12 +70,76 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     userProfilePictureUrl: undefined,
   }), [userEmail]);
 
-  const { sendChatMessage, allMessages } = useChatTransaction({
-    boardId,
-    messages,
-    setMessages,
-    ...stableUserInfo,
-  });
+  const sendChatMessage = useCallback(async (content: string) => {
+    const trimmedContent = content.trim();
+    
+    if (!trimmedContent) {
+      throw new Error('Message content cannot be empty');
+    }
+
+    if (trimmedContent.length > 5000) {
+      throw new Error('Message is too long (maximum 5000 characters)');
+    }
+
+    const instanceId = crypto.randomUUID();
+    const payload = {
+      type: 'CHAT',
+      content: trimmedContent,
+      timestamp: Date.now(),
+      instanceId,
+      boardId: boardId,
+      senderEmail: userEmail,
+      senderFullName: stableUserInfo.userFullName,
+      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
+    };
+
+    // Add optimistic update
+    const optimisticMessage: ChatMessageResponse & { transactionId: string } = {
+      id: -1, // Temporary ID
+      type: 'CHAT',
+      content: trimmedContent,
+      timestamp: new Date().toISOString(),
+      senderEmail: userEmail || '',
+      senderFullName: stableUserInfo.userFullName,
+      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
+      instanceId,
+      transactionId: instanceId,
+    };
+    
+    setMessages((prev) => [...prev, optimisticMessage]);
+
+    try {
+      WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
+      return instanceId;
+    } catch (error) {
+      // Remove optimistic update on failure
+      setMessages((prev) => prev.filter((msg) => {
+        const msgWithId = msg as typeof optimisticMessage;
+        return msgWithId.transactionId !== instanceId;
+      }));
+      throw error;
+    }
+  }, [userEmail, stableUserInfo, boardId, setMessages]);
+
+  const allMessages = useMemo((): EnhancedChatMessage[] => {
+    return messages.map((msg): EnhancedChatMessage => {
+      const enhancedMsg = msg as EnhancedChatMessage;
+      const hasTransactionId = 'transactionId' in enhancedMsg && enhancedMsg.transactionId;
+      
+      if (hasTransactionId) {
+        const hasServerConfirmation = enhancedMsg.id && enhancedMsg.id > 0;
+        return {
+          ...enhancedMsg,
+          transactionStatus: hasServerConfirmation ? 'confirmed' : 'pending',
+        };
+      }
+      
+      return {
+        ...enhancedMsg,
+        transactionStatus: 'confirmed',
+      };
+    });
+  }, [messages]);
 
   const filteredMessages = useMemo(() => {
     if (!searchTerm.trim()) {
