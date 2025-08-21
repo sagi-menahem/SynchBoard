@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 
 import { AxiosError } from 'axios';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { WEBSOCKET_TOPICS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import * as boardService from 'services/BoardService';
+import * as boardService from 'services/boardService';
 import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 import type { BoardUpdateDTO } from 'types/WebSocketTypes';
@@ -137,8 +137,8 @@ export const useUnifiedWebSocketHandler = ({
         if (transactionalMessage.type === ActionType.OBJECT_ADD || 
             transactionalMessage.type === ActionType.OBJECT_DELETE) {
           handleDrawingMessage(transactionalMessage as BoardActionResponse);
-        // Handle chat messages
         } else if (transactionalMessage.type === 'CHAT') {
+          // Handle chat messages
           handleChatMessage(transactionalMessage as ChatMessageResponse);
         } else {
           logger.warn(`Unknown transactional message type: ${transactionalMessage.type}`);
