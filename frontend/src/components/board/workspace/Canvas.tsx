@@ -18,27 +18,21 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-  const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
+  const { canvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
   const { isSocketConnected } = useSocket();
 
   const containerClassName = `${styles.container} ${!isSocketConnected ? styles.disconnected : ''}`;
-  const previewCanvasClassName = `${styles.previewCanvas} ${!isSocketConnected ? styles.disabled : ''}`;
+  const canvasClassName = `${styles.canvas} ${!isSocketConnected ? styles.disabled : ''}`;
 
   return (
     <div ref={containerRef} className={containerClassName}>
       <canvas
-        ref={mainCanvasRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        className={styles.mainCanvas}
-        style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
-      />
-      <canvas
-        ref={previewCanvasRef}
+        ref={canvasRef}
         width={dimensions.width}
         height={dimensions.height}
         onMouseDown={handleMouseDown}
-        className={previewCanvasClassName}
+        className={canvasClassName}
+        style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
       />
     </div>
   );

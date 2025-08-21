@@ -25,17 +25,16 @@ export const useCanvas = ({
   onDraw,
 }: UseCanvasProps) => {
   const { dimensions, refs, drawingState, utils } = useCanvasCore();
-  const { mainCanvasRef, previewCanvasRef, containerRef, contextRef, previewContextRef } = refs;
+  const { canvasRef, containerRef, contextRef } = refs;
 
   useEffect(() => {
     if (dimensions.width > 0 && dimensions.height > 0) {
-      contextRef.current = utils.setupCanvasContext(mainCanvasRef.current);
-      previewContextRef.current = utils.setupCanvasContext(previewCanvasRef.current);
+      contextRef.current = utils.setupCanvasContext(canvasRef.current);
     }
-  }, [dimensions, mainCanvasRef, previewCanvasRef, contextRef, previewContextRef, utils]);
+  }, [dimensions, canvasRef, contextRef, utils]);
 
   useCanvasRendering({
-    mainCanvasRef,
+    canvasRef,
     contextRef,
     objects,
     dimensions,
@@ -43,8 +42,8 @@ export const useCanvas = ({
   });
 
   const { handleMouseDown } = useCanvasInteractions({
-    previewCanvasRef,
-    previewContextRef,
+    canvasRef,
+    contextRef,
     tool,
     strokeWidth,
     strokeColor,
@@ -57,8 +56,7 @@ export const useCanvas = ({
   });
 
   return {
-    mainCanvasRef,
-    previewCanvasRef,
+    canvasRef,
     containerRef,
     dimensions,
     handleMouseDown,

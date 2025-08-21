@@ -25,22 +25,18 @@ export interface DrawingState {
 }
 
 interface CanvasRefs {
-    mainCanvasRef: React.RefObject<HTMLCanvasElement | null>;
-    previewCanvasRef: React.RefObject<HTMLCanvasElement | null>;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
     containerRef: React.RefObject<HTMLDivElement | null>;
     contextRef: React.RefObject<CanvasRenderingContext2D | null>;
-    previewContextRef: React.RefObject<CanvasRenderingContext2D | null>;
 }
 
 export const useCanvasCore = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
     
-  const mainCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const previewContextRef = useRef<CanvasRenderingContext2D | null>(null);
   const startPoint = useRef<Point | null>(null);
   const currentPath = useRef<Point[]>([]);
 
@@ -65,11 +61,9 @@ export const useCanvasCore = () => {
 
 
   const refs: CanvasRefs = {
-    mainCanvasRef,
-    previewCanvasRef,
+    canvasRef,
     containerRef,
     contextRef,
-    previewContextRef,
   };
 
   const drawingState: DrawingState = {

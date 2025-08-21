@@ -19,6 +19,7 @@ import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.*;
+import io.github.sagimenahem.synchboard.service.security.MembershipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,15 +33,12 @@ public class BoardObjectService {
     private final GroupBoardRepository groupBoardRepository;
     private final ObjectMapper objectMapper;
     private final ActionHistoryRepository actionHistoryRepository;
-    private final GroupMemberRepository groupMemberRepository;
+    private final MembershipService membershipService;
 
     @Transactional
     public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
 
-        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail,
-                request.getBoardId())) {
-            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-        }
+        membershipService.validateBoardAccess(userEmail, request.getBoardId());
 
         User user = userRepository.findById(userEmail).orElseThrow(
                 () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
@@ -77,9 +75,7 @@ public class BoardObjectService {
 
     @Transactional(readOnly = true)
     public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId, String userEmail) {
-        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-        }
+        membershipService.validateBoardAccess(userEmail, boardId);
 
         List<BoardObject> boardObjects = boardObjectRepository.findActiveByBoardWithUsers(boardId);
 

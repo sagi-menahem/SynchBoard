@@ -6,7 +6,7 @@ import {
   sanitizeObject,
   validateBoardMessage,
   validateMessage,
-} from 'utils';
+} from 'utils/UnifiedValidation';
 import logger from 'utils/Logger';
 
 import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
@@ -193,8 +193,8 @@ class WebSocketService {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
       reconnectDelay: 0,
-      heartbeatIncoming: 0,
-      heartbeatOutgoing: 0,
+      heartbeatIncoming: 30000, // 30 seconds - expect heartbeat from server
+      heartbeatOutgoing: 30000, // 30 seconds - send heartbeat to server
       onConnect: async () => {
         logger.info('Connected to server');
         this.connectionState = 'connected';

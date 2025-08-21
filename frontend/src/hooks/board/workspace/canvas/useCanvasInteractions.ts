@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useSocket } from 'hooks/common';
@@ -14,8 +14,8 @@ import type { Tool } from 'types/CommonTypes';
 import type { DrawingState } from './useCanvasCore';
 
 interface UseCanvasInteractionsProps {
-    previewCanvasRef: React.RefObject<HTMLCanvasElement | null>;
-    previewContextRef: React.RefObject<CanvasRenderingContext2D | null>;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
+    contextRef: React.RefObject<CanvasRenderingContext2D | null>;
     tool: Tool;
     strokeWidth: number;
     strokeColor: string;
@@ -28,8 +28,8 @@ interface UseCanvasInteractionsProps {
 }
 
 export const useCanvasInteractions = ({
-  previewCanvasRef,
-  previewContextRef,
+  canvasRef,
+  contextRef,
   tool,
   strokeWidth,
   strokeColor,
@@ -43,15 +43,22 @@ export const useCanvasInteractions = ({
   const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
   const { isSocketConnected } = useSocket();
 
+  // Store original canvas data for preview restoration
+  const originalImageData = useRef<ImageData | null>(null);
+
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
-      const canvas = previewCanvasRef.current;
-      if (!canvas) return;
+      const canvas = canvasRef.current;
+      const ctx = contextRef.current;
+      if (!canvas || !ctx) return;
             
       if (!isSocketConnected) {
         return;
       }
 
+      // Store the current canvas state for preview restoration
+      originalImageData.current = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      
       setIsDrawing(true);
       const { offsetX, offsetY } = event.nativeEvent;
 
@@ -61,42 +68,49 @@ export const useCanvasInteractions = ({
         startPoint.current = { x: offsetX, y: offsetY };
       }
     },
-    [tool, previewCanvasRef, setIsDrawing, startPoint, currentPath, isSocketConnected],
+    [tool, canvasRef, contextRef, setIsDrawing, startPoint, currentPath, isSocketConnected],
   );
 
   useEffect(() => {
-    const canvas = previewCanvasRef.current;
-    if (!canvas) return;
+    const canvas = canvasRef.current;
+    const ctx = contextRef.current;
+    if (!canvas || !ctx) return;
 
     const handleMouseMove = (event: MouseEvent) => {
-      if (!isDrawing) return;
-      const previewCtx = previewContextRef.current;
+      if (!isDrawing || !originalImageData.current) return;
       const coords = getMouseCoordinates(event, canvas);
-      if (!previewCtx || !coords) return;
+      if (!coords) return;
 
-      previewCtx.clearRect(0, 0, canvas.width, canvas.height);
-      previewCtx.lineWidth = strokeWidth;
-      previewCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
-      previewCtx.strokeStyle = tool === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColor;
+      // Restore original canvas state
+      ctx.putImageData(originalImageData.current, 0, 0);
+      
+      // Draw preview on top
+      ctx.lineWidth = strokeWidth;
+      ctx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
+      ctx.strokeStyle = tool === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColor;
+      
+      // Make preview slightly transparent to distinguish from final
+      const originalAlpha = ctx.globalAlpha;
+      ctx.globalAlpha = 0.7;
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
         currentPath.current.push({ x: coords.x / canvas.width, y: coords.y / canvas.height });
-        previewCtx.beginPath();
+        ctx.beginPath();
         if (currentPath.current.length > 1) {
-          previewCtx.moveTo(
+          ctx.moveTo(
             currentPath.current[0].x * canvas.width,
             currentPath.current[0].y * canvas.height,
           );
           for (let i = 1; i < currentPath.current.length; i++) {
-            previewCtx.lineTo(
+            ctx.lineTo(
               currentPath.current[i].x * canvas.width,
               currentPath.current[i].y * canvas.height,
             );
           }
-          previewCtx.stroke();
+          ctx.stroke();
         }
       } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
-        previewCtx.strokeRect(
+        ctx.strokeRect(
           startPoint.current.x,
           startPoint.current.y,
           coords.x - startPoint.current.x,
@@ -106,20 +120,24 @@ export const useCanvasInteractions = ({
         const radius = Math.sqrt(
           Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
         );
-        previewCtx.beginPath();
-        previewCtx.arc(startPoint.current.x, startPoint.current.y, radius, 0, 2 * Math.PI);
-        previewCtx.stroke();
+        ctx.beginPath();
+        ctx.arc(startPoint.current.x, startPoint.current.y, radius, 0, 2 * Math.PI);
+        ctx.stroke();
       }
+      
+      // Restore original alpha
+      ctx.globalAlpha = originalAlpha;
     };
 
     const handleMouseUp = (event: MouseEvent) => {
-      if (!isDrawing) return;
+      if (!isDrawing || !originalImageData.current) return;
       setIsDrawing(false);
-      const previewCtx = previewContextRef.current;
       const coords = getMouseCoordinates(event, canvas);
-      if (!canvas || !previewCtx || !coords) return;
+      if (!canvas || !ctx || !coords) return;
 
-      previewCtx.clearRect(0, 0, canvas.width, canvas.height);
+      // Restore original canvas state (removes preview)
+      ctx.putImageData(originalImageData.current, 0, 0);
+      originalImageData.current = null;
 
       if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
         const payload: Omit<LinePayload, 'instanceId'> = {
@@ -183,8 +201,8 @@ export const useCanvasInteractions = ({
     strokeColor,
     onDraw,
     senderId,
-    previewCanvasRef,
-    previewContextRef,
+    canvasRef,
+    contextRef,
     getMouseCoordinates,
     isShapeSizeValid,
     isRadiusValid,

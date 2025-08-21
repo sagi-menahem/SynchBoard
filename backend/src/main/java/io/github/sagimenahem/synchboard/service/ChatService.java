@@ -16,9 +16,9 @@ import io.github.sagimenahem.synchboard.entity.Message;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
-import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.MessageRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
+import io.github.sagimenahem.synchboard.service.security.MembershipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
     private final GroupBoardRepository groupBoardRepository;
-    private final GroupMemberRepository groupMemberRepository;
+    private final MembershipService membershipService;
     private final SimpMessageSendingOperations messagingTemplate;
 
     @Transactional
@@ -73,10 +73,7 @@ public class ChatService {
     public List<ChatMessageDTO.Response> getMessagesForBoard(Long boardId, String userEmail) {
         log.debug("Fetching messages for board {} by user: {}", boardId, userEmail);
 
-        if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
-            log.warn(LoggingConstants.AUTH_ACCESS_DENIED, userEmail, "board " + boardId);
-            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-        }
+        membershipService.validateBoardAccess(userEmail, boardId);
 
         List<Message> messages = messageRepository.findByBoardWithSender(boardId);
 

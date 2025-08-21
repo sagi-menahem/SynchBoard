@@ -79,7 +79,7 @@ export const drawCirclePayload = (
 export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | null => {
   if (!canvas) return null;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (ctx) {
     ctx.lineCap = CANVAS_CONFIG.LINE_STYLE;
     ctx.lineJoin = CANVAS_CONFIG.LINE_STYLE;

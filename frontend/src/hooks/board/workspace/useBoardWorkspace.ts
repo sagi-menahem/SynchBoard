@@ -1,6 +1,6 @@
 import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +10,9 @@ import logger from 'utils/Logger';
 import { useAuth } from 'hooks/auth';
 import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
-import { useBoardWebSocketHandler } from 'hooks/board/workspace/useBoardWebSocketHandler';
-import { useWebSocketTransaction } from 'hooks/common';
+import { useUnifiedWebSocketHandler } from 'hooks/common/useUnifiedWebSocketHandler';
+import { useSocket } from 'hooks/common';
+import { WebSocketService } from 'services';
 import { useSocketSubscription } from 'hooks/common/useSocket';
 import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
@@ -47,100 +48,75 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, objects.length, resetCounts, hasInitialized]);
 
-  const { sendTransactionalAction, commitTransaction, pendingCount } = useWebSocketTransaction<
-    SendBoardActionRequest,
-    ActionPayload[]
-  >({
-    destination: WEBSOCKET_DESTINATIONS.DRAW_ACTION,
-    optimisticUpdate: (currentObjects, actionRequest, transactionId) => {
-      const newObject: EnhancedActionPayload = {
-        ...(actionRequest.payload as ActionPayload),
-        instanceId: transactionId,
-        transactionId,
-        transactionStatus: 'pending' as const,
-      };
-      return [...currentObjects, newObject];
-    },
-    rollbackUpdate: (currentObjects, transactionId) => {
-      return currentObjects.filter((obj) => obj.instanceId !== transactionId);
-    },
-    validatePayload: (actionRequest) => {
-      const messageSize = JSON.stringify(actionRequest).length;
-      if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
-        logger.error(
-          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`,
-        );
-        return false;
-      }
-      return true;
-    },
-    onSuccess: (_, transactionId) => {
-      logger.debug(`Drawing confirmed: ${transactionId}`);
-      setObjects((prev) => prev.map((obj) => {
-        const enhancedObj = obj as EnhancedActionPayload;
-        return enhancedObj.transactionId === transactionId 
-          ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
-          : obj;
-      }));
-    },
-    onFailure: (error, _, transactionId) => {
-      if (error.message === 'Payload validation failed') {
-        toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
-      } else {
-        toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
-      }
-      logger.error(`Drawing action failed: ${transactionId}`, error);
-      setObjects((prev) => prev.map((obj) => {
-        const enhancedObj = obj as EnhancedActionPayload;
-        return enhancedObj.transactionId === transactionId 
-          ? { ...enhancedObj, transactionStatus: 'failed' as const }
-          : obj;
-      }));
-    },
-    onRollback: (transactionId, actionRequest) => {
-      const toolName = actionRequest.payload?.tool || 'drawing';
-      logger.warn(`Drawing failed to save: ${toolName}`);
-      toast.error(`Failed to save ${toolName}`, {
-        duration: 4000,
-        id: `drawing-rollback-${transactionId}`,
-      });
-    },
-  }, objects, setObjects);
+  const {} = useSocket();
+  
+  const handleCommitDrawingTransaction = useCallback((instanceId: string) => {
+    // Update drawing transaction status to confirmed
+    setObjects((prev) => prev.map((obj) => {
+      const enhancedObj = obj as EnhancedActionPayload;
+      return enhancedObj.instanceId === instanceId 
+        ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
+        : obj;
+    }));
+    logger.debug(`Drawing confirmed: ${instanceId}`);
+  }, [setObjects]);
 
-  const handleCommitTransaction = useCallback((instanceId: string) => {
-    commitTransaction(instanceId);
-  }, [commitTransaction]);
+  const handleCommitChatTransaction = useCallback((instanceId: string) => {
+    // Chat transactions are handled by their own hook
+    logger.debug(`Chat transaction committed via unified handler: ${instanceId}`);
+  }, []);
 
-  useBoardWebSocketHandler({
+  useUnifiedWebSocketHandler({
     boardId,
     sessionInstanceId: sessionInstanceId.current,
     setBoardName,
     setAccessLost,
     setObjects,
     setMessages,
-    commitTransaction: handleCommitTransaction,
+    commitDrawingTransaction: handleCommitDrawingTransaction,
+    commitChatTransaction: handleCommitChatTransaction,
   });
 
   const handleDrawAction = useCallback(
     async (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
+      const instanceId = crypto.randomUUID();
       const actionRequest: SendBoardActionRequest = {
         ...action,
         boardId,
-        instanceId: '',
+        instanceId,
         sender: sessionInstanceId.current,
       };
 
+      // Validate payload size
+      const messageSize = JSON.stringify(actionRequest).length;
+      if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
+        logger.error(
+          `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`,
+        );
+        toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
+        return;
+      }
+
+      // Add optimistic update
+      const newObject: EnhancedActionPayload = {
+        ...(actionRequest.payload as ActionPayload),
+        instanceId,
+        transactionStatus: 'pending' as const,
+      };
+      setObjects((prev) => [...prev, newObject]);
+
       try {
-        const transactionId = await sendTransactionalAction(actionRequest);
-        actionRequest.instanceId = transactionId;
+        WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionRequest);
         incrementUndo();
-        
-        logger.debug(`Drawing action sent: ${transactionId}`);
+        logger.debug(`Drawing action sent: ${instanceId}`);
       } catch (error) {
         logger.error('Failed to send drawing action:', error);
+        // Remove optimistic update on failure
+        setObjects((prev) => prev.filter((obj) => obj.instanceId !== instanceId));
+        toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
       }
     },
-    [boardId, sendTransactionalAction, incrementUndo],
+    [boardId, incrementUndo, setObjects, t],
   );
 
   useEffect(() => {
@@ -166,6 +142,13 @@ export const useBoardWorkspace = (boardId: number) => {
 
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
+  const pendingDrawingActions = useMemo(() => {
+    return objects.filter((obj) => {
+      const enhancedObj = obj as EnhancedActionPayload;
+      return enhancedObj.transactionStatus === 'pending';
+    }).length;
+  }, [objects]);
+
   return {
     isLoading,
     boardName,
@@ -176,7 +159,7 @@ export const useBoardWorkspace = (boardId: number) => {
     instanceId: sessionInstanceId.current,
     isUndoAvailable,
     isRedoAvailable,
-    pendingDrawingActions: pendingCount,
+    pendingDrawingActions,
     handleDrawAction,
     handleUndo,
     handleRedo,
