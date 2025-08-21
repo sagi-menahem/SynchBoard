@@ -91,8 +91,8 @@ export const useUnifiedErrorHandler = () => {
       error, 
       context,
       options: { 
-        defaultMessage: `Failed to complete ${actionType}. Please try again.`
-      }
+        defaultMessage: `Failed to complete ${actionType}. Please try again.`,
+      },
     });
   }, [handleError]);
 
@@ -101,8 +101,8 @@ export const useUnifiedErrorHandler = () => {
       error, 
       context,
       options: {
-        defaultMessage: t('errors.networkError', 'Network error. Please check your connection and try again.')
-      }
+        defaultMessage: t('errors.networkError', 'Network error. Please check your connection and try again.'),
+      },
     });
   }, [handleError, t]);
 

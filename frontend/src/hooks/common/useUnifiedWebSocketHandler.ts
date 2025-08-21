@@ -137,12 +137,10 @@ export const useUnifiedWebSocketHandler = ({
         if (transactionalMessage.type === ActionType.OBJECT_ADD || 
             transactionalMessage.type === ActionType.OBJECT_DELETE) {
           handleDrawingMessage(transactionalMessage as BoardActionResponse);
-        }
         // Handle chat messages
-        else if (transactionalMessage.type === 'CHAT') {
+        } else if (transactionalMessage.type === 'CHAT') {
           handleChatMessage(transactionalMessage as ChatMessageResponse);
-        }
-        else {
+        } else {
           logger.warn(`Unknown transactional message type: ${transactionalMessage.type}`);
         }
         return;
@@ -157,7 +155,7 @@ export const useUnifiedWebSocketHandler = ({
   useSocketSubscription(
     boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', 
     onUnifiedMessageReceived, 
-    'unified-board'
+    'unified-board',
   );
 
   return {

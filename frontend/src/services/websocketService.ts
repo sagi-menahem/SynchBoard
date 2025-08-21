@@ -1,13 +1,13 @@
 
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import logger from 'utils/Logger';
 import {
   type MessageValidationSchema,
   sanitizeObject,
   validateBoardMessage,
   validateMessage,
 } from 'utils/UnifiedValidation';
-import logger from 'utils/Logger';
 
 import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
 import { WEBSOCKET_URL } from '../constants/ApiConstants';

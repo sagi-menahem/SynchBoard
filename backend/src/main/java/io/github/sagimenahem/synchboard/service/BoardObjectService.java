@@ -3,7 +3,6 @@ package io.github.sagimenahem.synchboard.service;
 import static io.github.sagimenahem.synchboard.constants.FileConstants.DEFAULT_SENDER_EMAIL;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +17,10 @@ import io.github.sagimenahem.synchboard.entity.GroupBoard;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
-import io.github.sagimenahem.synchboard.repository.*;
+import io.github.sagimenahem.synchboard.repository.ActionHistoryRepository;
+import io.github.sagimenahem.synchboard.repository.BoardObjectRepository;
+import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
+import io.github.sagimenahem.synchboard.repository.UserRepository;
 import io.github.sagimenahem.synchboard.service.security.MembershipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,84 +30,96 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardObjectService {
 
-    private final BoardObjectRepository boardObjectRepository;
-    private final UserRepository userRepository;
-    private final GroupBoardRepository groupBoardRepository;
-    private final ObjectMapper objectMapper;
-    private final ActionHistoryRepository actionHistoryRepository;
-    private final MembershipService membershipService;
+        private final BoardObjectRepository boardObjectRepository;
+        private final UserRepository userRepository;
+        private final GroupBoardRepository groupBoardRepository;
+        private final ObjectMapper objectMapper;
+        private final ActionHistoryRepository actionHistoryRepository;
+        private final MembershipService membershipService;
 
-    @Transactional
-    public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
+        @Transactional
+        public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
 
-        membershipService.validateBoardAccess(userEmail, request.getBoardId());
+                membershipService.validateBoardAccess(userEmail, request.getBoardId());
 
-        User user = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+                User user = userRepository.findById(userEmail)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                MessageConstants.USER_NOT_FOUND + userEmail));
 
-        GroupBoard board = groupBoardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
+                GroupBoard board = groupBoardRepository.findById(request.getBoardId()).orElseThrow(
+                                () -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND
+                                                + request.getBoardId()));
 
-        if (request.getType() == ActionType.OBJECT_ADD) {
-            try {
-                String payloadAsString = objectMapper.writeValueAsString(request.getPayload());
+                if (request.getType() == ActionType.OBJECT_ADD) {
+                        try {
+                                String payloadAsString = objectMapper
+                                                .writeValueAsString(request.getPayload());
 
-                BoardObject newBoardObject = BoardObject.builder().board(board).createdByUser(user)
-                        .lastEditedByUser(user).objectType(request.getType().name())
-                        .objectData(payloadAsString).instanceId(request.getInstanceId()).build();
+                                BoardObject newBoardObject = BoardObject.builder().board(board)
+                                                .createdByUser(user).lastEditedByUser(user)
+                                                .objectType(request.getType().name())
+                                                .objectData(payloadAsString)
+                                                .instanceId(request.getInstanceId()).build();
 
-                BoardObject persistedBoardObject =
-                        boardObjectRepository.saveAndFlush(newBoardObject);
+                                BoardObject persistedBoardObject =
+                                                boardObjectRepository.saveAndFlush(newBoardObject);
 
-                ActionHistory historyRecord = ActionHistory.builder().board(board).user(user)
-                        .boardObject(persistedBoardObject).actionType(request.getType().name())
-                        .stateBefore(null).stateAfter(payloadAsString).build();
+                                ActionHistory historyRecord = ActionHistory.builder().board(board)
+                                                .user(user).boardObject(persistedBoardObject)
+                                                .actionType(request.getType().name())
+                                                .stateBefore(null).stateAfter(payloadAsString)
+                                                .build();
 
-                actionHistoryRepository.save(historyRecord);
+                                actionHistoryRepository.save(historyRecord);
 
-            } catch (JsonProcessingException e) {
-                log.error("Failed to process JSON payload for board action on board {}: {}",
-                        request.getBoardId(), e.getMessage(), e);
-                throw new InvalidRequestException(
-                        "Invalid board action data format: " + e.getMessage());
-            }
+                        } catch (JsonProcessingException e) {
+                                log.error("Failed to process JSON payload for board action on board {}: {}",
+                                                request.getBoardId(), e.getMessage(), e);
+                                throw new InvalidRequestException(
+                                                "Invalid board action data format: "
+                                                                + e.getMessage());
+                        }
+                }
         }
-    }
 
-    @Transactional(readOnly = true)
-    public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId, String userEmail) {
-        membershipService.validateBoardAccess(userEmail, boardId);
+        @Transactional(readOnly = true)
+        public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId, String userEmail) {
+                membershipService.validateBoardAccess(userEmail, boardId);
 
-        List<BoardObject> boardObjects = boardObjectRepository.findActiveByBoardWithUsers(boardId);
+                List<BoardObject> boardObjects =
+                                boardObjectRepository.findActiveByBoardWithUsers(boardId);
 
-        return boardObjects.stream().map(this::mapEntityToResponse).collect(Collectors.toList());
-    }
-
-    private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
-        try {
-            JsonNode payload = objectMapper.readTree(entity.getObjectData());
-
-            String senderEmail = DEFAULT_SENDER_EMAIL;
-            if (entity.getCreatedByUser() != null) {
-                senderEmail = entity.getCreatedByUser().getEmail();
-            }
-
-            return BoardActionDTO.Response.builder()
-                    .type(ActionType.valueOf(entity.getObjectType())).payload(payload)
-                    .sender(senderEmail).instanceId(entity.getInstanceId()).build();
-        } catch (JsonProcessingException e) {
-            log.error("Failed to parse BoardObject JSON data for object ID: {}, data: {}",
-                    entity.getObjectId(), entity.getObjectData(), e);
-
-            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE).payload(null)
-                    .sender("system-error").instanceId(entity.getInstanceId()).build();
-        } catch (IllegalArgumentException e) {
-            log.error("Invalid object type '{}' for BoardObject ID: {}", entity.getObjectType(),
-                    entity.getObjectId(), e);
-
-            return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE).payload(null)
-                    .sender("system-error").instanceId(entity.getInstanceId()).build();
+                return boardObjects.stream().map(this::mapEntityToResponse)
+                                .collect(Collectors.toList());
         }
-    }
+
+        private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
+                try {
+                        JsonNode payload = objectMapper.readTree(entity.getObjectData());
+
+                        String senderEmail = DEFAULT_SENDER_EMAIL;
+                        if (entity.getCreatedByUser() != null) {
+                                senderEmail = entity.getCreatedByUser().getEmail();
+                        }
+
+                        return BoardActionDTO.Response.builder()
+                                        .type(ActionType.valueOf(entity.getObjectType()))
+                                        .payload(payload).sender(senderEmail)
+                                        .instanceId(entity.getInstanceId()).build();
+                } catch (JsonProcessingException e) {
+                        log.error("Failed to parse BoardObject JSON data for object ID: {}, data: {}",
+                                        entity.getObjectId(), entity.getObjectData(), e);
+
+                        return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE)
+                                        .payload(null).sender("system-error")
+                                        .instanceId(entity.getInstanceId()).build();
+                } catch (IllegalArgumentException e) {
+                        log.error("Invalid object type '{}' for BoardObject ID: {}",
+                                        entity.getObjectType(), entity.getObjectId(), e);
+
+                        return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE)
+                                        .payload(null).sender("system-error")
+                                        .instanceId(entity.getInstanceId()).build();
+                }
+        }
 }
