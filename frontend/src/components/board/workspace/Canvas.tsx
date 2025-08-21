@@ -19,9 +19,9 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { canvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
-  const { shouldBlockFunctionality } = useConnectionStatus();
+  const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
 
-  const containerClassName = `${styles.container} ${shouldBlockFunctionality ? styles.disconnected : ''}`;
+  const containerClassName = `${styles.container} ${shouldShowBanner ? styles.disconnected : ''}`;
   const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
 
   return (

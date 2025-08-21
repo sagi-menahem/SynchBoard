@@ -24,7 +24,7 @@ export interface ConnectionStatusState {
   isSocketConnected: boolean;
 }
 
-const BANNER_DELAY_MS = 10000; // 10 seconds delay before showing banner
+const BANNER_DELAY_MS = 5000; // 5 seconds delay before showing banner
 
 /**
  * Centralized connection status hook that provides a single source of truth
