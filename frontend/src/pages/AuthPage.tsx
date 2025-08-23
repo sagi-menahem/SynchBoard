@@ -19,9 +19,6 @@ import { useOAuthCallback } from 'hooks/auth/useOAuthCallback';
 import styles from './AuthPage.module.css';
 
 const AuthPage: React.FC = () => {
-  const pageId = Math.random().toString(36).substr(2, 9);
-  console.log(`[AuthPage-${pageId}] Component created, pathname: ${window.location.pathname}`);
-  
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
@@ -32,7 +29,6 @@ const AuthPage: React.FC = () => {
   const [pendingEmail, setPendingEmail] = useState('');
 
   const { isProcessing } = useOAuthCallback();
-  console.log(`[AuthPage-${pageId}] useOAuthCallback returned isProcessing: ${isProcessing}`);
 
   const handleRegistrationSuccess = (email: string) => {
     setPendingEmail(email);
