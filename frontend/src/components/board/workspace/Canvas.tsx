@@ -20,21 +20,16 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { canvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
+  const [showLoading, setShowLoading] = useState(true);
 
-  // Only show loading if dimensions aren't ready - no arbitrary timer
-  const shouldShowLoading = dimensions.width === 0 || dimensions.height === 0;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if (shouldShowLoading) {
-    return (
-      <div ref={containerRef} className={`${styles.container} ${styles.canvasPlaceholder}`}>
-        <div className={styles.placeholderContent}>
-          <div className={styles.placeholderSpinner}></div>
-          <p className={styles.placeholderText}>Loading canvas...</p>
-        </div>
-      </div>
-    );
-  }
-
+  const shouldShowLoading = showLoading || dimensions.width === 0 || dimensions.height === 0;
   const containerClassName = `${styles.container} ${shouldShowBanner ? styles.disconnected : ''}`;
   const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
 
@@ -48,6 +43,14 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         className={canvasClassName}
         style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
       />
+      {shouldShowLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.placeholderContent}>
+            <div className={styles.placeholderSpinner}></div>
+            <p className={styles.placeholderText}>Loading canvas...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
