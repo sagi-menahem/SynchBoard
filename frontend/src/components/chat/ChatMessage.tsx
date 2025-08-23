@@ -1,8 +1,8 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
-import { formatSmartTimestamp, formatDetailedTimestamp } from 'utils/DateUtils';
-import { isSafeUrl, sanitizeUserContent } from 'utils/UnifiedValidation';
+import { getUserColor, isSafeUrl, sanitizeUserContent, type UserColorMap } from 'utils';
+import { formatDetailedTimestamp, formatSmartTimestamp } from 'utils/DateUtils';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
@@ -12,17 +12,20 @@ import styles from './ChatMessage.module.css';
 interface ChatMessageProps {
   message: EnhancedChatMessage;
   isOwnMessage?: boolean;
+  userColorMap: UserColorMap;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false, userColorMap }) => {
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;
 
   const imageSource = isSafeUrl(profileUrl) ? profileUrl : defaultUserImage;
 
-  const senderName = sanitizeUserContent(message.senderFullName);
+  const senderEmail = sanitizeUserContent(message.senderEmail);
   const messageContent = sanitizeUserContent(message.content);
+  
+  const userColor = getUserColor(senderEmail, userColorMap);
 
   const getMessageStatus = (): string => {
     if (!message.transactionId) return 'confirmed';
@@ -39,13 +42,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
   return (
     <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass}`}>
       {!isOwnMessage && (
-        <img src={imageSource} alt={senderName} className={styles.avatar} />
+        <img src={imageSource} alt={senderEmail} className={styles.avatar} />
       )}
       
       <div className={styles.messageBubble}>
         <div className={styles.messageHeader}>
-          <strong className={styles.senderName}>
-            {senderName}
+          <strong className={styles.senderName} style={{ color: userColor }}>
+            {senderEmail}
           </strong>
         </div>
         
