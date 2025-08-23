@@ -30,6 +30,41 @@
       "name": "app.security.allowed-origins",
       "type": "java.lang.String",
       "description": "Allowed origins for CORS configuration"
+    },
+    {
+      "name": "sendgrid.api-key",
+      "type": "java.lang.String",
+      "description": "SendGrid API key for sending emails"
+    },
+    {
+      "name": "sendgrid.from-email",
+      "type": "java.lang.String",
+      "description": "Email address to send emails from",
+      "defaultValue": "noreply@synchboard.com"
+    },
+    {
+      "name": "sendgrid.from-name",
+      "type": "java.lang.String",
+      "description": "Name to display as sender",
+      "defaultValue": "SynchBoard Team"
+    },
+    {
+      "name": "verification.code-expiry-minutes",
+      "type": "java.lang.Integer",
+      "description": "Minutes until email verification code expires",
+      "defaultValue": 15
+    },
+    {
+      "name": "verification.max-attempts",
+      "type": "java.lang.Integer",
+      "description": "Maximum verification attempts allowed",
+      "defaultValue": 3
+    },
+    {
+      "name": "password-reset.code-expiry-minutes",
+      "type": "java.lang.Integer",
+      "description": "Minutes until password reset code expires",
+      "defaultValue": 60
     }
   ]
 }
