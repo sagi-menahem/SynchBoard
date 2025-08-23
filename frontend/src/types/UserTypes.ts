@@ -2,8 +2,10 @@ export interface RegisterRequest {
     email: string;
     password: string;
     firstName: string;
-    lastName: string;
-    phoneNumber: string;
+    lastName?: string;
+    gender: 'male' | 'female';
+    phoneNumber?: string;
+    dateOfBirth?: string;
 }
 export interface LoginRequest {
     email: string;
@@ -17,16 +19,20 @@ export interface AuthResponse {
 export interface UserProfile {
     email: string;
     firstName: string;
-    lastName: string;
-    phoneNumber: string;
+    lastName: string | null;
+    gender: 'male' | 'female';
+    phoneNumber: string | null;
+    dateOfBirth: string | null;
     profilePictureUrl: string | null;
     chatBackgroundSetting: string | null;
 }
 
 export interface UpdateUserProfileRequest {
     firstName: string;
-    lastName: string;
-    phoneNumber: string;
+    lastName?: string;
+    gender: 'male' | 'female';
+    phoneNumber?: string;
+    dateOfBirth?: string;
 }
 
 export interface ChangePasswordRequest {

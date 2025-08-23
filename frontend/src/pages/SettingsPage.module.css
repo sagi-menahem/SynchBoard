@@ -94,3 +94,67 @@
     background-color: #a52a2a;
     border-color: #a52a2a;
 }
+
+.required {
+    color: #f87171;
+    font-weight: bold;
+}
+
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.25rem 0;
+}
+
+.radioLabel input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: #3b82f6;
+    cursor: pointer;
+}
+
+.radioLabel:hover {
+    color: #e5e5e5;
+}
+
+.dateInput {
+    width: 100%;
+    padding: 12px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.dateInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.dateInput::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}

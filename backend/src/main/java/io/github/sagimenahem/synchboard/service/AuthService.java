@@ -40,10 +40,15 @@ public class AuthService {
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }
 
-        User newUser = User.builder().firstName(request.getFirstName())
-                .lastName(request.getLastName()).email(request.getEmail())
+        User newUser = User.builder()
+                .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .phoneNumber(request.getPhoneNumber()).build();
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .gender(request.getGender())
+                .phoneNumber(request.getPhoneNumber())
+                .dateOfBirth(request.getDateOfBirth())
+                .build();
 
         userRepository.save(newUser);
         log.info(SECURITY_PREFIX + " Registration successful for user: {}", request.getEmail());

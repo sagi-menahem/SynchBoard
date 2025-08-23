@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import Button from 'components/common/Button';
-import Input from 'components/common/Input';
+import PasswordInput from 'components/common/PasswordInput';
 import { APP_CONFIG } from 'constants/AppConstants';
 import type { ChangePasswordRequest } from 'types/UserTypes';
 
@@ -21,6 +21,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
 
   const handlePasswordFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,32 +54,38 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
     <form onSubmit={handlePasswordFormSubmit}>
       <div className={styles.field}>
         <label htmlFor="currentPassword">{t('settingsPage.currentPasswordLabel')}</label>
-        <Input
+        <PasswordInput
           id="currentPassword"
-          type="password"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           required
+          autoComplete="current-password"
+          showPassword={showPasswords}
+          onToggleVisibility={setShowPasswords}
         />
       </div>
       <div className={styles.field}>
         <label htmlFor="newPassword">{t('settingsPage.newPasswordLabel')}</label>
-        <Input
+        <PasswordInput
           id="newPassword"
-          type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           required
+          autoComplete="new-password"
+          showPassword={showPasswords}
+          onToggleVisibility={setShowPasswords}
         />
       </div>
       <div className={styles.field}>
         <label htmlFor="confirmPassword">{t('settingsPage.confirmPasswordLabel')}</label>
-        <Input
+        <PasswordInput
           id="confirmPassword"
-          type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
+          autoComplete="new-password"
+          showPassword={showPasswords}
+          onToggleVisibility={setShowPasswords}
         />
       </div>
       <Button type="submit" disabled={isSubmitting}>

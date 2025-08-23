@@ -10,8 +10,16 @@
                 "password": "Password:",
                 "firstName": "First Name:",
                 "lastName": "Last Name:",
-                "phoneNumber": "Phone Number:"
-            }
+                "gender": "Gender:",
+                "phoneNumber": "Phone Number:",
+                "dateOfBirth": "Date of Birth:"
+            },
+            "option": {
+                "male": "Male",
+                "female": "Female"
+            },
+            "showPassword": "Show password",
+            "hidePassword": "Hide password"
         },
         "button": {
             "cancel": "Cancel",
@@ -162,7 +170,10 @@
         "profileSectionHeader": "Profile Information",
         "firstNameLabel": "First Name",
         "lastNameLabel": "Last Name",
+        "genderLabel": "Gender",
         "phoneNumberLabel": "Phone Number",
+        "dateOfBirthLabel": "Date of Birth",
+        "notProvided": "Not provided",
         "updateSuccess": "Profile updated successfully!",
         "updateError": "Failed to update profile.",
         "buttons": {
@@ -215,7 +226,9 @@
         "password.sameAsOld": "New password cannot be the same as the old one.",
         "unexpected": "An unexpected error occurred. Please try again.",
         "auth.badCredentials": "Incorrect username or password.",
-        "sessionExpired": "Your session has expired. Please log in again."
+        "sessionExpired": "Your session has expired. Please log in again.",
+        "gender.invalid": "Please select a valid gender (male or female).",
+        "dateOfBirth.invalid": "Please enter a valid date of birth."
     },
     "success": {
         "profile.update": "Profile updated successfully!",

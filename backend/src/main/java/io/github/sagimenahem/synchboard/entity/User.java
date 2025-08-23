@@ -1,6 +1,7 @@
 package io.github.sagimenahem.synchboard.entity;
 
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -31,11 +32,17 @@ public class User implements UserDetails {
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
     @Column(name = "profile_picture_url")
     private String profilePictureUrl;
