@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useOptimistic, useRef, useState, startTransition } from 'react';
+import React, { startTransition, useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { WebSocketService } from 'services';
+import { createUserColorMap, Logger, type UserColorMap } from 'utils';
 import { formatDateSeparator } from 'utils/DateUtils';
 
 import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
@@ -28,8 +29,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchVisible, setSearchVisible] = useState(false);
+  
+  const [userColorMap] = useState<UserColorMap>(() => createUserColorMap());
 
-  // Optimistic updates for chat messages
   const [optimisticMessages, addOptimisticMessage] = useOptimistic(
     messages,
     (state, newMessage: ChatMessageResponse) => [...state, newMessage],
@@ -98,9 +100,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
     };
 
-    // Create optimistic message
     const optimisticMessage: ChatMessageResponse & { transactionId: string } = {
-      id: -1, // Temporary ID
+      id: -1,
       type: 'CHAT',
       content: trimmedContent,
       timestamp: new Date().toISOString(),
@@ -111,7 +112,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       transactionId: instanceId,
     };
     
-    // Add optimistic update in transition to avoid React 19 warning
     startTransition(() => {
       addOptimisticMessage(optimisticMessage);
     });
@@ -120,7 +120,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
       return instanceId;
     } catch (error) {
-      // No need to manually remove optimistic update - useOptimistic handles rollback
+      Logger.error('Failed to send chat message:', error);
       throw error;
     }
   }, [userEmail, stableUserInfo, boardId, addOptimisticMessage]);
@@ -153,7 +153,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     const lowercaseSearch = searchTerm.toLowerCase();
     return allMessages.filter((msg) => 
       msg.content.toLowerCase().includes(lowercaseSearch) ||
-      msg.senderFullName.toLowerCase().includes(lowercaseSearch),
+      msg.senderEmail.toLowerCase().includes(lowercaseSearch),
     );
   }, [allMessages, searchTerm]);
 
@@ -165,7 +165,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     try {
       await sendChatMessage(content);
     } catch (error) {
-      console.error('Failed to send chat message:', error);
+      Logger.error('Failed to send chat message via handler:', error);
     }
   }, [sendChatMessage, boardId]);
 
@@ -221,6 +221,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
             <ChatMessage 
               message={message} 
               isOwnMessage={message.senderEmail === userEmail}
+              userColorMap={userColorMap}
             />
           </React.Fragment>
         ))}
