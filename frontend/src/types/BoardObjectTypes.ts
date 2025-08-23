@@ -6,7 +6,7 @@ export const ActionType = {
 
 export type ActionType = (typeof ActionType)[keyof typeof ActionType];
 
-interface Point {
+export interface Point {
     x: number;
     y: number;
 }
