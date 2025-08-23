@@ -7,7 +7,7 @@ import type {
   VerifyEmailRequest,
   ResendVerificationRequest,
   ForgotPasswordRequest,
-  ResetPasswordRequest
+  ResetPasswordRequest,
 } from 'types/UserTypes';
 
 import apiClient from './apiClient';

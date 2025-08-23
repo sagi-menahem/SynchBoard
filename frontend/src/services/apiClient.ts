@@ -74,7 +74,7 @@ apiClient.interceptors.response.use(
     }
 
 
-    if (error.response && isBackendError(error.response.data)) {
+    if (error.response && isBackendError(error.response.data) && !isLoginAttempt) {
       const backendKey = error.response.data.message;
       const fullKey = `errors.${backendKey}`;
 

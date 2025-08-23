@@ -15,7 +15,10 @@ interface ForgotPasswordState {
 export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) => void) => {
   const { t } = useTranslation();
 
-  const forgotPasswordAction = async (_previousState: ForgotPasswordState, formData: FormData): Promise<ForgotPasswordState> => {
+  const forgotPasswordAction = async (
+    _previousState: ForgotPasswordState, 
+    formData: FormData,
+  ): Promise<ForgotPasswordState> => {
     const email = formData.get('email') as string;
 
     if (!email) {
@@ -49,7 +52,6 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
       logger.error('Forgot password request failed for user:', err, { email });
       return {
         success: false,
-        error: err instanceof Error ? err.message : t('forgotPassword.error.unknown', 'Failed to send password reset code'),
       };
     }
   };
