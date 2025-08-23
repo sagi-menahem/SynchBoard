@@ -16,5 +16,4 @@ public class UserProfileDTO {
     private String phoneNumber;
     private String profilePictureUrl;
     private String chatBackgroundSetting;
-    private String fontSizeSetting;
 }

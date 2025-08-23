@@ -43,9 +43,6 @@ public class User implements UserDetails {
     @Column(name = "chat_background_setting")
     private String chatBackgroundSetting;
 
-    @Column(name = "font_size_setting")
-    private String fontSizeSetting;
-
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 

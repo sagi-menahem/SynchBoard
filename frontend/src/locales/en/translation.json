@@ -213,7 +213,6 @@
         "user.alreadyAdmin": "This user is already an admin.",
         "password.incorrect": "The current password you entered is incorrect.",
         "password.sameAsOld": "New password cannot be the same as the old one.",
-        "fontSize.invalid": "An invalid font size was selected.",
         "unexpected": "An unexpected error occurred. Please try again.",
         "auth.badCredentials": "Incorrect username or password.",
         "sessionExpired": "Your session has expired. Please log in again."
