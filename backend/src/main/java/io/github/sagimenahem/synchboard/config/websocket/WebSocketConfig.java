@@ -31,11 +31,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
+        // Use STOMP broker relay with ActiveMQ Artemis
         config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
                 .setRelayHost(appProperties.getStomp().getBrokerHost())
-                .setRelayPort(appProperties.getStomp().getBrokerPort()).setClientLogin(brokerUser)
-                .setClientPasscode(brokerPassword).setSystemLogin(brokerUser)
-                .setSystemPasscode(brokerPassword);
+                .setRelayPort(appProperties.getStomp().getBrokerPort())
+                .setClientLogin(brokerUser)
+                .setClientPasscode(brokerPassword)
+                .setSystemLogin(brokerUser)
+                .setSystemPasscode(brokerPassword)
+                .setSystemHeartbeatSendInterval(15000)
+                .setSystemHeartbeatReceiveInterval(15000)
+                .setVirtualHost("/");
+        
         config.setApplicationDestinationPrefixes(WEBSOCKET_APP_PREFIX);
     }
 

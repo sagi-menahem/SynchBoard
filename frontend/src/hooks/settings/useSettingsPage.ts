@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { useAccountManager, usePasswordManager } from 'hooks/settings';
 import { useProfilePictureManager, useUserProfileManager } from 'hooks/settings/profile';

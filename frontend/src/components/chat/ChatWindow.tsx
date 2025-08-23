@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
+import React, { startTransition, useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { WebSocketService } from 'services';
+import { createUserColorMap, Logger, type UserColorMap } from 'utils';
 import { formatDateSeparator } from 'utils/DateUtils';
 
+import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth';
-import { useChatTransaction } from 'hooks/chat';
 import { usePreferences, useSocket } from 'hooks/common';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
@@ -16,10 +18,9 @@ import styles from './ChatWindow.module.css';
 interface ChatWindowProps {
   boardId: number;
   messages: ChatMessageResponse[];
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessageResponse[]>>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const { t } = useTranslation();
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
@@ -28,6 +29,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchVisible, setSearchVisible] = useState(false);
+  
+  const [userColorMap] = useState<UserColorMap>(() => createUserColorMap());
+
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
+    messages,
+    (state, newMessage: ChatMessageResponse) => [...state, newMessage],
+  );
 
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
@@ -69,12 +77,73 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     userProfilePictureUrl: undefined,
   }), [userEmail]);
 
-  const { sendChatMessage, allMessages } = useChatTransaction({
-    boardId,
-    messages,
-    setMessages,
-    ...stableUserInfo,
-  });
+  const sendChatMessage = useCallback(async (content: string) => {
+    const trimmedContent = content.trim();
+    
+    if (!trimmedContent) {
+      throw new Error('Message content cannot be empty');
+    }
+
+    if (trimmedContent.length > 5000) {
+      throw new Error('Message is too long (maximum 5000 characters)');
+    }
+
+    const instanceId = crypto.randomUUID();
+    const payload = {
+      type: 'CHAT',
+      content: trimmedContent,
+      timestamp: Date.now(),
+      instanceId,
+      boardId: boardId,
+      senderEmail: userEmail,
+      senderFullName: stableUserInfo.userFullName,
+      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
+    };
+
+    const optimisticMessage: ChatMessageResponse & { transactionId: string } = {
+      id: -1,
+      type: 'CHAT',
+      content: trimmedContent,
+      timestamp: new Date().toISOString(),
+      senderEmail: userEmail || '',
+      senderFullName: stableUserInfo.userFullName,
+      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
+      instanceId,
+      transactionId: instanceId,
+    };
+    
+    startTransition(() => {
+      addOptimisticMessage(optimisticMessage);
+    });
+
+    try {
+      WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
+      return instanceId;
+    } catch (error) {
+      Logger.error('Failed to send chat message:', error);
+      throw error;
+    }
+  }, [userEmail, stableUserInfo, boardId, addOptimisticMessage]);
+
+  const allMessages = useMemo((): EnhancedChatMessage[] => {
+    return optimisticMessages.map((msg): EnhancedChatMessage => {
+      const enhancedMsg = msg as EnhancedChatMessage;
+      const hasTransactionId = 'transactionId' in enhancedMsg && enhancedMsg.transactionId;
+      
+      if (hasTransactionId) {
+        const hasServerConfirmation = enhancedMsg.id && enhancedMsg.id > 0;
+        return {
+          ...enhancedMsg,
+          transactionStatus: hasServerConfirmation ? 'confirmed' : 'pending',
+        };
+      }
+      
+      return {
+        ...enhancedMsg,
+        transactionStatus: 'confirmed',
+      };
+    });
+  }, [optimisticMessages]);
 
   const filteredMessages = useMemo(() => {
     if (!searchTerm.trim()) {
@@ -84,7 +153,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     const lowercaseSearch = searchTerm.toLowerCase();
     return allMessages.filter((msg) => 
       msg.content.toLowerCase().includes(lowercaseSearch) ||
-      msg.senderFullName.toLowerCase().includes(lowercaseSearch),
+      msg.senderEmail.toLowerCase().includes(lowercaseSearch),
     );
   }, [allMessages, searchTerm]);
 
@@ -96,7 +165,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
     try {
       await sendChatMessage(content);
     } catch (error) {
-      console.error('Failed to send chat message:', error);
+      Logger.error('Failed to send chat message via handler:', error);
     }
   }, [sendChatMessage, boardId]);
 
@@ -123,7 +192,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
-            autoFocus
           />
           <button
             onClick={() => {
@@ -153,6 +221,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, setMessages 
             <ChatMessage 
               message={message} 
               isOwnMessage={message.senderEmail === userEmail}
+              userColorMap={userColorMap}
             />
           </React.Fragment>
         ))}

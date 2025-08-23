@@ -1,5 +1,5 @@
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
-import type { ActionPayload, CirclePayload, EnhancedActionPayload, LinePayload, RectanglePayload } from 'types/BoardObjectTypes';
+import type { ActionPayload, CirclePayload, EnhancedActionPayload, LinePayload, Point, RectanglePayload } from 'types/BoardObjectTypes';
 
 export const getMouseCoordinates = (
   event: MouseEvent, 
@@ -79,7 +79,7 @@ export const drawCirclePayload = (
 export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | null => {
   if (!canvas) return null;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (ctx) {
     ctx.lineCap = CANVAS_CONFIG.LINE_STYLE;
     ctx.lineJoin = CANVAS_CONFIG.LINE_STYLE;
@@ -124,4 +124,33 @@ export const replayDrawAction = (
 
   targetCtx.globalAlpha = originalGlobalAlpha;
   targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
+};
+
+export const optimizeDrawingPoints = (
+  points: Point[],
+  enabled: boolean = CANVAS_CONFIG.OPTIMIZATION.ENABLED,
+): Point[] => {
+  const { MIN_POINTS_THRESHOLD, DECIMATION_FACTOR, PRESERVE_ENDPOINTS } = CANVAS_CONFIG.OPTIMIZATION;
+  
+  if (!enabled || points.length < MIN_POINTS_THRESHOLD) {
+    return points;
+  }
+  
+  if (points.length <= 3) {
+    return points;
+  }
+  
+  const optimizedPoints = points.filter((_, index) => {
+    if (PRESERVE_ENDPOINTS && (index === 0 || index === points.length - 1)) {
+      return true;
+    }
+    
+    return index % DECIMATION_FACTOR === 0;
+  });
+  
+  if (optimizedPoints.length < 2 && points.length >= 2) {
+    return [points[0], points[points.length - 1]];
+  }
+  
+  return optimizedPoints;
 };

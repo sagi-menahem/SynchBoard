@@ -20,5 +20,5 @@ export const WEBSOCKET_CONFIG = {
     : 2000,
   TRANSACTION_TIMEOUT: import.meta.env.VITE_TRANSACTION_TIMEOUT
     ? parseInt(import.meta.env.VITE_TRANSACTION_TIMEOUT)
-    : 15000
+    : 30000,
 } as const;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';

@@ -1,45 +1,69 @@
-import { useState } from 'react';
+import { useActionState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 import { APP_CONFIG } from 'constants/AppConstants';
-import { createBoard } from 'services/BoardService';
+import { createBoard } from 'services/boardService';
 import type { Board, CreateBoardRequest } from 'types/BoardTypes';
 
+interface CreateBoardState {
+  success: boolean;
+  error?: string;
+  data?: Board;
+}
 
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (name.trim().length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
-      logger.warn('[useCreateBoardForm] Board name validation failed - too short');
-      toast.error(t('createBoardForm.nameLengthError'));
-      return;
+  const createBoardAction = async (_previousState: CreateBoardState, formData: FormData): Promise<CreateBoardState> => {
+    const name = (formData.get('name') as string)?.trim() || '';
+    const description = (formData.get('description') as string)?.trim() || '';
+
+    // Validation
+    if (!name) {
+      return {
+        success: false,
+        error: t('createBoardForm.validation.nameRequired', 'Board name is required'),
+      };
     }
-    setIsSubmitting(true);
+
+    if (name.length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
+      logger.warn('[useCreateBoardForm] Board name validation failed - too short');
+      return {
+        success: false,
+        error: t('createBoardForm.nameLengthError'),
+      };
+    }
+
     const boardData: CreateBoardRequest = { name, description };
 
-    createBoard(boardData)
-      .then((newBoard) => {
-        toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
-        onBoardCreated(newBoard);
-      })
-      .catch((err) => logger.error('[useCreateBoardForm] Failed to create board:', err))
-      .finally(() => setIsSubmitting(false));
+    try {
+      const newBoard = await createBoard(boardData);
+      toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
+      onBoardCreated(newBoard);
+      
+      return {
+        success: true,
+        data: newBoard,
+      };
+    } catch (err: unknown) {
+      logger.error('[useCreateBoardForm] Failed to create board:', err);
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : t('createBoardForm.error.unknown', 'Failed to create board'),
+      };
+    }
   };
 
+  const [state, submitAction, isPending] = useActionState(createBoardAction, {
+    success: false,
+  });
+
   return {
-    name,
-    description,
-    isSubmitting,
-    setName,
-    setDescription,
-    handleSubmit,
+    state,
+    submitAction,
+    isPending,
   };
 };

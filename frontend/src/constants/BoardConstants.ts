@@ -18,6 +18,13 @@ export const STROKE_WIDTH_RANGE = {
   MAX: 50,
 };
 
+export interface PointOptimizationConfig {
+  readonly ENABLED: boolean;
+  readonly MIN_POINTS_THRESHOLD: number;
+  readonly DECIMATION_FACTOR: number;
+  readonly PRESERVE_ENDPOINTS: boolean;
+}
+
 export const CANVAS_CONFIG = {
   LINE_STYLE: 'round',
   CURSOR: 'crosshair',
@@ -28,4 +35,10 @@ export const CANVAS_CONFIG = {
     DRAW: 'source-over',
     ERASE: 'destination-out',
   },
+  OPTIMIZATION: {
+    ENABLED: true,
+    MIN_POINTS_THRESHOLD: 15,
+    DECIMATION_FACTOR: 2,
+    PRESERVE_ENDPOINTS: true,
+  } satisfies PointOptimizationConfig,
 } as const;

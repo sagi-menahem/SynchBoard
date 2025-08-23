@@ -1,4 +1,4 @@
-import logger from 'utils/Logger';
+import logger from 'utils/logger';
 
 export interface MessageValidationSchema {
     requiredFields?: string[];
@@ -121,6 +121,16 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
 };
 
 export const validateBoardMessage = (dataObj: Record<string, unknown>): boolean => {
+  if ('type' in dataObj && 'instanceId' in dataObj && 'payload' in dataObj) {
+    const actionType = dataObj['type'] as unknown;
+    if (typeof actionType === 'string') {
+      const validActionTypes = ['OBJECT_ADD', 'OBJECT_UPDATE', 'OBJECT_DELETE'];
+      if (validActionTypes.includes(actionType)) {
+        return true;
+      }
+    }
+  }
+
   if ('type' in dataObj && 'sender' in dataObj) {
     const requiredFields = ['type', 'sender'];
     for (const field of requiredFields) {
@@ -181,6 +191,10 @@ export const validateBoardMessage = (dataObj: Record<string, unknown>): boolean 
       }
     }
         
+    return true;
+  }
+
+  if ('instanceId' in dataObj || 'payload' in dataObj) {
     return true;
   }
 

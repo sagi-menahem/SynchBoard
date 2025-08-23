@@ -13,7 +13,7 @@ interface MemberListItemProps {
     onContextMenu: (event: React.MouseEvent, member: Member) => void;
 }
 
-const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }) => {
+const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onContextMenu }) => {
   const { t } = useTranslation();
   const imageSource = member.profilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
@@ -22,17 +22,18 @@ const MemberListItem: React.FC<MemberListItemProps> = ({ member, onContextMenu }
   return (
     <div onContextMenu={(e) => onContextMenu(e, member)}>
       <li className={styles.memberItem}>
-        <img src={imageSource} alt={`${member.firstName} ${member.lastName}`} className={styles.memberAvatar} />
+        <img src={imageSource} alt={member.email} className={styles.memberAvatar} />
         <div>
           <div className={styles.memberName}>
-            {member.firstName} {member.lastName}
+            {member.email}
           </div>
-          <div className={styles.memberEmail}>{member.email}</div>
         </div>
         {member.isAdmin && <span className={styles.adminBadge}>{t('boardDetailsPage.adminBadge')}</span>}
       </li>
     </div>
   );
-};
+});
+
+MemberListItem.displayName = 'MemberListItem';
 
 export default MemberListItem;
