@@ -34,12 +34,17 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Canvas loading placeholder styles */
-.canvasPlaceholder {
+.loadingOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: #222;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 .placeholderContent {
