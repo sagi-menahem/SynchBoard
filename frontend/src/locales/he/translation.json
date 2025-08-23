@@ -238,7 +238,8 @@
         "board.nameUpdate": "שם הלוח עודכן בהצלחה!",
         "board.descriptionUpdate": "תיאור הלוח עודכן בהצלחה!",
         "board.pictureUpdate": "תמונת הלוח עודכנה בהצלחה!",
-        "board.pictureDelete": "תמונת הלוח נמחקה."
+        "board.pictureDelete": "תמונת הלוח נמחקה.",
+        "preferences.update": "העדפות עודכנו בהצלחה!"
     },
     "boardSync": {
         "nothingToUndo": "אין פעולות לביטול.",

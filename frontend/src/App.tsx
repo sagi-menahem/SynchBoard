@@ -47,6 +47,22 @@ function App() {
                 </PageErrorBoundary>
               } 
             />
+            <Route 
+              path={APP_ROUTES.AUTH_CALLBACK} 
+              element={
+                <PageErrorBoundary pageName="AuthCallback">
+                  <AuthPage />
+                </PageErrorBoundary>
+              } 
+            />
+            <Route 
+              path={APP_ROUTES.AUTH_ERROR} 
+              element={
+                <PageErrorBoundary pageName="AuthError">
+                  <AuthPage />
+                </PageErrorBoundary>
+              } 
+            />
             
 
             <Route

@@ -24,7 +24,7 @@ const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {
             </div>
             <div className={styles.field}>
                 <label>{t('settingsPage.genderLabel')}</label>
-                <p>{t(`common.form.option.${user.gender}`)}</p>
+                <p>{user.gender ? t(`common.form.option.${user.gender}`) : t('settingsPage.notProvided')}</p>
             </div>
             <div className={styles.field}>
                 <label>{t('settingsPage.dateOfBirthLabel')}</label>

@@ -17,7 +17,7 @@ export const useAccountManager = () => {
   const handleDeleteAccount = async () => {
     try {
       await userService.deleteAccount();
-      toast.success(t('success.account.delete'));
+      toast.success(t('settingsPage.accountDeleteSuccess'));
       logout();
       navigate(APP_ROUTES.AUTH);
     } catch (error) {
