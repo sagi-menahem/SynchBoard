@@ -52,7 +52,7 @@ export const useUnifiedWebSocketHandler = ({
         .getBoardDetails(boardId)
         .then((details) => setBoardName(details.name))
         .catch((err) => {
-          console.warn('Failed to refresh board name after details update:', err);
+          logger.warn('Failed to refresh board name after details update:', err);
         });
     }
   }, [boardId, userEmail, setBoardName, setAccessLost, setMessages]);
