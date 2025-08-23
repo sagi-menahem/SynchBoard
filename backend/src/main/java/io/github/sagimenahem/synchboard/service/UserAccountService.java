@@ -76,7 +76,12 @@ public class UserAccountService {
             fileStorageService.delete(existingFilename);
         }
 
+        log.info("About to delete user from database: {}", userEmail);
         userRepository.delete(user);
         log.warn(USER_ACCOUNT_DELETED, userEmail);
+        
+        // Verify deletion
+        boolean userStillExists = userRepository.existsById(userEmail);
+        log.info("User deletion verification for {}: still exists in DB = {}", userEmail, userStillExists);
     }
 }

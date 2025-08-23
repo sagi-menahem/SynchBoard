@@ -136,7 +136,7 @@ public class FileStorageService {
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
             log.info(LoggingConstants.FILE_UPLOAD_SUCCESS, uniqueFilename, "system");
-            return uniqueFilename;
+            return "/images/" + uniqueFilename;
 
         } catch (IOException e) {
             log.error(LoggingConstants.FILE_UPLOAD_FAILED, originalFilename, "system",
@@ -276,6 +276,81 @@ public class FileStorageService {
         } catch (IOException e) {
             log.error("Error validating SVG content, rejecting file for security", e);
             return false;
+        }
+    }
+    
+    /**
+     * Download and store an image from a URL (for OAuth profile pictures)
+     */
+    public String downloadAndStoreImageFromUrl(String imageUrl) {
+        if (imageUrl == null || imageUrl.isBlank()) {
+            log.debug("No image URL provided");
+            return null;
+        }
+        
+        try {
+            java.net.URI uri = java.net.URI.create(imageUrl);
+            java.net.URL url = uri.toURL();
+            java.net.URLConnection connection = url.openConnection();
+            
+            // Set a reasonable timeout and user agent
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(10000);
+            connection.setRequestProperty("User-Agent", "SynchBoard/1.0");
+            
+            String contentType = connection.getContentType();
+            if (contentType != null) {
+                contentType = contentType.split(";")[0].toLowerCase().trim();
+            }
+            
+            // Validate content type
+            if (contentType == null || !FILE_SIGNATURES.containsKey(contentType)) {
+                log.warn("Unsupported image content type from URL: {} - {}", imageUrl, contentType);
+                return null;
+            }
+            
+            // Generate unique filename with appropriate extension
+            String extension = getFileExtensionFromContentType(contentType);
+            String uniqueFilename = generateUniqueFilename(extension);
+            
+            // Download and store the image
+            try (InputStream inputStream = connection.getInputStream()) {
+                Path destinationFile = this.rootLocation.resolve(uniqueFilename).normalize();
+                
+                if (!destinationFile.startsWith(this.rootLocation)) {
+                    log.error("Security check failed - destination outside upload directory: {}", 
+                            destinationFile);
+                    return null;
+                }
+                
+                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+                
+                log.info("Successfully downloaded and stored image from URL: {} as {}", 
+                        imageUrl, uniqueFilename);
+                return "/images/" + uniqueFilename;
+            }
+            
+        } catch (java.net.MalformedURLException | java.lang.IllegalArgumentException e) {
+            log.warn("Invalid image URL: {}", imageUrl);
+            return null;
+        } catch (IOException e) {
+            log.error("Failed to download image from URL: {} - {}", imageUrl, e.getMessage());
+            return null;
+        }
+    }
+    
+    private String getFileExtensionFromContentType(String contentType) {
+        switch (contentType) {
+            case "image/jpeg":
+                return ".jpg";
+            case "image/png":
+                return ".png";
+            case "image/gif":
+                return ".gif";
+            case "image/webp":
+                return ".webp";
+            default:
+                return ".jpg"; // Default fallback
         }
     }
 }

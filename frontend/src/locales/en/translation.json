@@ -238,7 +238,8 @@
         "board.nameUpdate": "Board name updated successfully!",
         "board.descriptionUpdate": "Board description updated successfully!",
         "board.pictureUpdate": "Board picture updated successfully!",
-        "board.pictureDelete": "Board picture deleted."
+        "board.pictureDelete": "Board picture deleted.",
+        "preferences.update": "Preferences updated successfully!"
     },
     "boardSync": {
         "nothingToUndo": "Nothing to undo.",

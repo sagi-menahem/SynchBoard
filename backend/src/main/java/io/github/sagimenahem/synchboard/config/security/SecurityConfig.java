@@ -31,6 +31,8 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final AppProperties appProperties;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,12 +41,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(API_AUTH_PATH_PATTERN)
                         .permitAll().requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
                         .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN).permitAll()
+                        .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll() // OAuth2 endpoints
                         .requestMatchers(API_USER_PATH_PATTERN).authenticated().anyRequest()
                         .authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2SuccessHandler)
+                        .failureHandler(oAuth2FailureHandler)
+                );
 
         return http.build();
     }
