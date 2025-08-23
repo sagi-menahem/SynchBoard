@@ -22,7 +22,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     boardName,
     objects,
     messages,
-    setMessages,
     instanceId,
     handleDrawAction,
     handleUndo,
@@ -60,7 +59,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         instanceId={instanceId}
         objects={objects}
         messages={messages}
-        setMessages={setMessages}
         tool={tool}
         strokeColor={strokeColor}
         strokeWidth={strokeWidth}

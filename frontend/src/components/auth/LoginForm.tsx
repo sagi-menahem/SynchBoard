@@ -8,21 +8,26 @@ import { useLoginForm } from 'hooks/auth/forms';
 
 const LoginForm: React.FC = () => {
   const { t } = useTranslation();
-  const { email, password, isSubmitting, setEmail, setPassword, handleSubmit } = useLoginForm();
+  const { state, submitAction, isPending } = useLoginForm();
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form action={submitAction} className={styles.form}>
       <h2>{t('loginForm.heading')}</h2>
+
+      {state.error && (
+        <div className={styles.error} role="alert">
+          {state.error}
+        </div>
+      )}
 
       <div className={styles.field}>
         <label htmlFor="login-email">{t('common.form.label.email')}</label>
         <Input
           id="login-email"
+          name="email"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           required
-          disabled={isSubmitting}
+          disabled={isPending}
         />
       </div>
 
@@ -30,16 +35,15 @@ const LoginForm: React.FC = () => {
         <label htmlFor="login-password">{t('common.form.label.password')}</label>
         <Input
           id="login-password"
+          name="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           required
-          disabled={isSubmitting}
+          disabled={isPending}
         />
       </div>
 
-      <Button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-        {isSubmitting ? t('common.button.loggingIn') : t('loginForm.button')}
+      <Button type="submit" className={styles.submitButton} disabled={isPending}>
+        {isPending ? t('common.button.loggingIn') : t('loginForm.button')}
       </Button>
     </form>
   );

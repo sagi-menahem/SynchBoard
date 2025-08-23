@@ -35,11 +35,11 @@ const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
     <ContextMenu x={x} y={y} onClose={onClose}>
       {!member.isAdmin && (
         <ContextMenuItem onClick={onPromote}>
-          {t('contextMenu.promoteToAdmin', { userName: member.firstName })}
+          {t('contextMenu.promoteToAdmin', { userName: member.email })}
         </ContextMenuItem>
       )}
       <ContextMenuItem onClick={onRemove} destructive>
-        {t('contextMenu.removeFromBoard', { userName: member.firstName })}
+        {t('contextMenu.removeFromBoard', { userName: member.email })}
       </ContextMenuItem>
     </ContextMenu>
   );

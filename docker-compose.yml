@@ -1,0 +1,130 @@
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:17-alpine
+    container_name: synchboard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: synchboard_db
+      POSTGRES_USER: synchboard_user
+      POSTGRES_PASSWORD: test12345
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synchboard_user -d synchboard_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - synchboard-network
+
+  # ActiveMQ Message Broker Service
+  activemq:
+    image: apache/activemq-artemis:2.37.0
+    container_name: synchboard-activemq
+    restart: unless-stopped
+    environment:
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
+      ANONYMOUS_LOGIN: false
+      EXTRA_ARGS: "--http-host 0.0.0.0 --relax-jolokia"
+    ports:
+      # Web Console
+      - "8161:8161"
+      # Core (TCP)
+      - "61616:61616"
+      # STOMP
+      - "61613:61613"
+      # AMQP
+      - "5672:5672"
+      # MQTT
+      - "1883:1883"
+    volumes:
+      - activemq_data:/var/lib/artemis-instance
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8161/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - synchboard-network
+
+  # Optional: pgAdmin for PostgreSQL management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: synchboard-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@synchboard.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - synchboard-network
+    profiles:
+      - tools
+
+# Optional: Backend service (uncomment when needed)
+# backend:
+#   build: 
+#     context: ./backend
+#     dockerfile: Dockerfile
+#   container_name: synchboard-backend
+#   restart: unless-stopped
+#   env_file:
+#     - ./backend/.env
+#   environment:
+#     DB_URL: jdbc:postgresql://postgres:5432/synchboard_db
+#     STOMP_BROKER_HOST: activemq
+#     ACTIVEMQ_BROKER_URL: tcp://activemq:61616?wireFormat.maxInactivityDuration=0
+#   ports:
+#     - "8080:8080"
+#   volumes:
+#     - ./backend/uploads:/app/uploads
+#     - ./backend/logs:/app/logs
+#   depends_on:
+#     postgres:
+#       condition: service_healthy
+#     activemq:
+#       condition: service_healthy
+#   networks:
+#     - synchboard-network
+
+# Optional: Frontend service (uncomment when needed)
+# frontend:
+#   build:
+#     context: ./frontend
+#     dockerfile: Dockerfile
+#   container_name: synchboard-frontend
+#   restart: unless-stopped
+#   ports:
+#     - "5173:5173"
+#   environment:
+#     VITE_API_URL: http://localhost:8080
+#   depends_on:
+#     - backend
+#   networks:
+#     - synchboard-network
+
+volumes:
+  postgres_data:
+    name: synchboard_postgres_data
+  activemq_data:
+    name: synchboard_activemq_data
+  pgadmin_data:
+    name: synchboard_pgadmin_data
+
+networks:
+  synchboard-network:
+    name: synchboard_network
+    driver: bridge

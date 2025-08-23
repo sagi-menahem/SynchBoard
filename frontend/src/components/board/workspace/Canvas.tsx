@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
-import { useSocket } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
@@ -18,28 +18,39 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-  const { mainCanvasRef, previewCanvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
-  const { isSocketConnected } = useSocket();
+  const { canvasRef, containerRef, dimensions, handleMouseDown } = useCanvas(props);
+  const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
+  const [showLoading, setShowLoading] = useState(true);
 
-  const containerClassName = `${styles.container} ${!isSocketConnected ? styles.disconnected : ''}`;
-  const previewCanvasClassName = `${styles.previewCanvas} ${!isSocketConnected ? styles.disabled : ''}`;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const shouldShowLoading = showLoading || dimensions.width === 0 || dimensions.height === 0;
+  const containerClassName = `${styles.container} ${shouldShowBanner ? styles.disconnected : ''}`;
+  const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
 
   return (
     <div ref={containerRef} className={containerClassName}>
       <canvas
-        ref={mainCanvasRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        className={styles.mainCanvas}
-        style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
-      />
-      <canvas
-        ref={previewCanvasRef}
+        ref={canvasRef}
         width={dimensions.width}
         height={dimensions.height}
         onMouseDown={handleMouseDown}
-        className={previewCanvasClassName}
+        className={canvasClassName}
+        style={{ backgroundColor: CANVAS_CONFIG.BACKGROUND_COLOR }}
       />
+      {shouldShowLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.placeholderContent}>
+            <div className={styles.placeholderSpinner}></div>
+            <p className={styles.placeholderText}>Loading canvas...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

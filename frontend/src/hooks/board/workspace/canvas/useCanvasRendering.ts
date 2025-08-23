@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import type { ActionPayload } from 'types/BoardObjectTypes';
 
 interface UseCanvasRenderingProps {
-    mainCanvasRef: React.RefObject<HTMLCanvasElement | null>;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
     contextRef: React.RefObject<CanvasRenderingContext2D | null>;
     objects: ActionPayload[];
     dimensions: { width: number; height: number };
@@ -11,18 +11,21 @@ interface UseCanvasRenderingProps {
 }
 
 export const useCanvasRendering = ({ 
-  mainCanvasRef, 
+  canvasRef, 
   contextRef, 
   objects, 
   dimensions, 
   replayDrawAction, 
 }: UseCanvasRenderingProps) => {
   useEffect(() => {
-    const canvas = mainCanvasRef.current;
+    const canvas = canvasRef.current;
     const ctx = contextRef.current;
-    if (!canvas || !ctx) return;
+    
+    if (!canvas || !ctx || dimensions.width === 0 || dimensions.height === 0) {
+      return;
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
-  }, [objects, dimensions, replayDrawAction, mainCanvasRef, contextRef]);
+  }, [objects, dimensions, replayDrawAction, canvasRef, contextRef]);
 };

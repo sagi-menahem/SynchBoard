@@ -57,7 +57,7 @@ export default [
       ],
       // Formatting rules (replacing Prettier)
       // Note: Some formatting is already handled by tseslint.configs.stylistic
-      'indent': ['error', 2, { SwitchCase: 1 }],
+      // 'indent': ['error', 2, { SwitchCase: 1 }], // Disabled to avoid conflict with TypeScript ESLint
       'brace-style': ['error', '1tbs', { allowSingleLine: true }],
       'max-len': ['error', { code: 120, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
       'arrow-parens': ['error', 'always'],
@@ -109,7 +109,7 @@ export default [
       'semi': ['error', 'always'],
       'quotes': ['error', 'single', { avoidEscape: true }],
       'comma-dangle': ['error', 'always-multiline'],
-      'indent': ['error', 2, { SwitchCase: 1 }],
+      // 'indent': ['error', 2, { SwitchCase: 1 }], // Disabled to avoid conflict
       'object-curly-spacing': ['error', 'always'],
       'space-before-function-paren': ['error', {
         anonymous: 'never',

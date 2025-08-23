@@ -47,6 +47,7 @@ const BoardDetailsPage: React.FC = () => {
     handleConfirmDeletePicture,
   } = useBoardDetailsPage(numericBoardId);
 
+
   if (isLoading) {
     return <div>{t('boardDetailsPage.loading')}</div>;
   }
