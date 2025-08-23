@@ -20,8 +20,13 @@ export const useCanvasRendering = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
-    if (!canvas || !ctx) return;
+    
+    // Ensure canvas context is ready and dimensions are valid
+    if (!canvas || !ctx || dimensions.width === 0 || dimensions.height === 0) {
+      return;
+    }
 
+    // Clear and re-render all objects
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
   }, [objects, dimensions, replayDrawAction, canvasRef, contextRef]);

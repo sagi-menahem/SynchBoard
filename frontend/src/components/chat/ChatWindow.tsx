@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useOptimistic, useRef, useState, startTransition } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { WebSocketService } from 'services';
@@ -111,8 +111,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       transactionId: instanceId,
     };
     
-    // Add optimistic update - will automatically rollback on error
-    addOptimisticMessage(optimisticMessage);
+    // Add optimistic update in transition to avoid React 19 warning
+    startTransition(() => {
+      addOptimisticMessage(optimisticMessage);
+    });
 
     try {
       WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);

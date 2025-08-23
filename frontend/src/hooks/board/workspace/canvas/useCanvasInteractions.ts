@@ -49,7 +49,18 @@ export const useCanvasInteractions = ({
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
-      const ctx = contextRef.current;
+      let ctx = contextRef.current;
+      
+      // If canvas exists but context doesn't, initialize it
+      if (canvas && !ctx) {
+        ctx = canvas.getContext('2d', { willReadFrequently: true });
+        if (ctx) {
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          contextRef.current = ctx;
+        }
+      }
+      
       if (!canvas || !ctx) return;
             
       if (shouldBlockFunctionality) {

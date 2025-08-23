@@ -1,6 +1,6 @@
 import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants';
 
-import { useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useOptimistic, useRef, useState, startTransition } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -110,8 +110,10 @@ export const useBoardWorkspace = (boardId: number) => {
         transactionStatus: 'pending' as const,
       };
 
-      // Add optimistic update - will automatically rollback on error
-      addOptimisticObject(optimisticObject);
+      // Add optimistic update in transition - will automatically rollback on error
+      startTransition(() => {
+        addOptimisticObject(optimisticObject);
+      });
 
       try {
         WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionRequest);
