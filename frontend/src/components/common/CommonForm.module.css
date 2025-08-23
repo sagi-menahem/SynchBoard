@@ -97,3 +97,45 @@
 .dateInput::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
 }
+
+.submitButton {
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+    background-color: #6b7280;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.fieldHint {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.additionalActions {
+    margin-top: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #374151;
+}
+
+.additionalActions p {
+    color: #d1d5db;
+    margin-bottom: 1rem;
+}

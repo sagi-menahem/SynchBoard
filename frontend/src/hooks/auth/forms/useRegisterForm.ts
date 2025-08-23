@@ -12,7 +12,7 @@ interface RegisterState {
   error?: string;
 }
 
-export const useRegisterForm = (onRegistrationSuccess: () => void) => {
+export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) => {
   const { t } = useTranslation();
 
   const registerAction = async (_previousState: RegisterState, formData: FormData): Promise<RegisterState> => {
@@ -43,10 +43,10 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
     logger.debug('Registration form submission for user:', email);
 
     try {
-      await authService.register(registerData);
+      const message = await authService.register(registerData);
       logger.info('Registration successful for user:', email);
-      toast.success(t('registerForm.registrationSuccess'));
-      onRegistrationSuccess();
+      toast.success(message || t('registerForm.registrationSuccess'));
+      onRegistrationSuccess(email);
       
       return {
         success: true,

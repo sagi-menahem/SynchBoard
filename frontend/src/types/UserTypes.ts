@@ -43,3 +43,22 @@ export interface ChangePasswordRequest {
 export interface UserPreferences {
     chatBackgroundSetting: string | null;
 }
+
+export interface VerifyEmailRequest {
+    email: string;
+    verificationCode: string;
+}
+
+export interface ResendVerificationRequest {
+    email: string;
+}
+
+export interface ForgotPasswordRequest {
+    email: string;
+}
+
+export interface ResetPasswordRequest {
+    email: string;
+    resetCode: string;
+    newPassword: string;
+}
