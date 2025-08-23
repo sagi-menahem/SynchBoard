@@ -28,7 +28,7 @@ export const useCanvas = ({
   const { canvasRef, containerRef, contextRef } = refs;
 
   useEffect(() => {
-    if (dimensions.width > 0 && dimensions.height > 0) {
+    if (dimensions.width > 0 && dimensions.height > 0 && canvasRef.current && !contextRef.current) {
       contextRef.current = utils.setupCanvasContext(canvasRef.current);
     }
   }, [dimensions, canvasRef, contextRef, utils]);
