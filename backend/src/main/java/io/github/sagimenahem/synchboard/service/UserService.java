@@ -2,7 +2,6 @@ package io.github.sagimenahem.synchboard.service;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.ALLOWED_FONT_SIZES;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
 import io.github.sagimenahem.synchboard.entity.User;
-import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
@@ -125,15 +123,7 @@ public class UserService {
             return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
         });
 
-        String newFontSize = dto.getFontSizeSetting();
-        if (newFontSize != null && !ALLOWED_FONT_SIZES.contains(newFontSize)) {
-            log.warn(ERROR_VALIDATION, "fontSizeSetting", newFontSize,
-                    "must be one of: " + ALLOWED_FONT_SIZES);
-            throw new InvalidRequestException(MessageConstants.FONT_SIZE_INVALID);
-        }
-
         user.setChatBackgroundSetting(dto.getChatBackgroundSetting());
-        user.setFontSizeSetting(newFontSize);
 
         User updatedUser = userRepository.save(user);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
@@ -144,8 +134,7 @@ public class UserService {
         return UserProfileDTO.builder().email(user.getEmail()).firstName(user.getFirstName())
                 .lastName(user.getLastName()).phoneNumber(user.getPhoneNumber())
                 .profilePictureUrl(user.getProfilePictureUrl())
-                .chatBackgroundSetting(user.getChatBackgroundSetting())
-                .fontSizeSetting(user.getFontSizeSetting()).build();
+                .chatBackgroundSetting(user.getChatBackgroundSetting()).build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {

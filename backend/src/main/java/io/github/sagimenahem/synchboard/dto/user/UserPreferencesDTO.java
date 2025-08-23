@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserPreferencesDTO {
     private String chatBackgroundSetting;
-    private String fontSizeSetting;
 }
