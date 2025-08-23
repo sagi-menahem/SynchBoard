@@ -56,9 +56,30 @@ public class User implements UserDetails {
     @Column(name = "email_verification_token")
     private String emailVerificationToken;
 
+    @Column(name = "reset_code", length = 6)
+    private String resetCode;
+
+    @Column(name = "reset_expiry")
+    private LocalDateTime resetExpiry;
+
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
+    }
+
+    /**
+     * Check if password reset code has expired
+     */
+    public boolean isResetCodeExpired() {
+        return this.resetExpiry == null || LocalDateTime.now().isAfter(this.resetExpiry);
+    }
+
+    /**
+     * Clear password reset code and expiry
+     */
+    public void clearResetCode() {
+        this.resetCode = null;
+        this.resetExpiry = null;
     }
 
     @Override

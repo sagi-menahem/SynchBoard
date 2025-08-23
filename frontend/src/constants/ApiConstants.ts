@@ -4,6 +4,10 @@ export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL || 'http://local
 export const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
+  VERIFY_EMAIL: '/auth/verify-email',
+  RESEND_VERIFICATION: '/auth/resend-verification',
+  FORGOT_PASSWORD: '/auth/forgot-password',
+  RESET_PASSWORD: '/auth/reset-password',
 
   BOARDS: '/boards',
   BOARD_OBJECTS: (boardId: number) => `/boards/${boardId}/objects`,
@@ -29,7 +33,14 @@ export const API_ENDPOINTS = {
   DELETE_ACCOUNT: '/user/account',
 } as const;
 
-export const PUBLIC_API_ENDPOINTS: readonly string[] = [API_ENDPOINTS.LOGIN, API_ENDPOINTS.REGISTER];
+export const PUBLIC_API_ENDPOINTS: readonly string[] = [
+  API_ENDPOINTS.LOGIN, 
+  API_ENDPOINTS.REGISTER,
+  API_ENDPOINTS.VERIFY_EMAIL,
+  API_ENDPOINTS.RESEND_VERIFICATION,
+  API_ENDPOINTS.FORGOT_PASSWORD,
+  API_ENDPOINTS.RESET_PASSWORD,
+];
 
 export const WEBSOCKET_DESTINATIONS = {
   DRAW_ACTION: '/app/board.drawAction',

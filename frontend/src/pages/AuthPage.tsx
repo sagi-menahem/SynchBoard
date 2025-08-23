@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { LoginForm, RegistrationForm } from 'components/auth';
 import { Button } from 'components/common';
+import { APP_ROUTES } from 'constants';
 
 import styles from './AuthPage.module.css';
 
 const AuthPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isLoginView, setIsLoginView] = useState(true);
 
-  const handleRegistrationSuccess = () => {
-    setIsLoginView(true);
+  const handleRegistrationSuccess = (email: string) => {
+    navigate(`${APP_ROUTES.VERIFY_EMAIL}?email=${encodeURIComponent(email)}`);
   };
 
   const toggleAuthMode = () => {

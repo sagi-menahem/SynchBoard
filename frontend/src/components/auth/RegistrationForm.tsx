@@ -7,7 +7,7 @@ import styles from 'components/common/CommonForm.module.css';
 import { useRegisterForm } from 'hooks/auth/forms';
 
 interface RegistrationFormProps {
-    onRegistrationSuccess: () => void;
+    onRegistrationSuccess: (email: string) => void;
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {

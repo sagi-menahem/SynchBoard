@@ -1,13 +1,15 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, PasswordInput } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { useLoginForm } from 'hooks/auth/forms';
+import { APP_ROUTES } from 'constants';
 
 const LoginForm: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { state, submitAction, isPending } = useLoginForm();
 
   return (
@@ -45,6 +47,17 @@ const LoginForm: React.FC = () => {
       <Button type="submit" className={styles.submitButton} disabled={isPending}>
         {isPending ? t('common.button.loggingIn') : t('loginForm.button')}
       </Button>
+
+      <div className={styles.additionalActions}>
+        <Button 
+          variant="secondary" 
+          onClick={() => navigate(APP_ROUTES.FORGOT_PASSWORD)}
+          type="button"
+          style={{ width: '100%', marginTop: '1rem' }}
+        >
+          {t('loginForm.forgotPassword', 'Forgot Password?')}
+        </Button>
+      </div>
     </form>
   );
 };
