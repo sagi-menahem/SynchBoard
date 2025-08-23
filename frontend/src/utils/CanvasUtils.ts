@@ -126,52 +126,28 @@ export const replayDrawAction = (
   targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 };
 
-/**
- * Optimizes point arrays for drawing tools by reducing redundant points
- * while preserving visual quality and drawing accuracy.
- * 
- * This function is designed to work universally with all drawing tools
- * that use point arrays (brush, eraser, and future tools like pen, highlighter, etc.)
- * 
- * @param points Array of normalized points (0.0-1.0 coordinates)
- * @param enabled Whether optimization is enabled (default: from config)
- * @returns Optimized point array with reduced redundancy
- * 
- * Features:
- * - Always preserves start and end points for drawing accuracy
- * - Only applies to strokes above minimum threshold (avoids over-optimizing short strokes)
- * - Configurable decimation factor for different optimization levels
- * - Safe fallback when optimization is disabled
- * - Future-proof design for additional drawing tools
- */
 export const optimizeDrawingPoints = (
   points: Point[],
   enabled: boolean = CANVAS_CONFIG.OPTIMIZATION.ENABLED,
 ): Point[] => {
   const { MIN_POINTS_THRESHOLD, DECIMATION_FACTOR, PRESERVE_ENDPOINTS } = CANVAS_CONFIG.OPTIMIZATION;
   
-  // Skip optimization if disabled or stroke is too short
   if (!enabled || points.length < MIN_POINTS_THRESHOLD) {
     return points;
   }
   
-  // For very short strokes, no optimization needed
   if (points.length <= 3) {
     return points;
   }
   
-  // Apply simple decimation: keep every nth point
   const optimizedPoints = points.filter((_, index) => {
-    // Always preserve start and end points if configured
     if (PRESERVE_ENDPOINTS && (index === 0 || index === points.length - 1)) {
       return true;
     }
     
-    // Keep every nth point based on decimation factor
     return index % DECIMATION_FACTOR === 0;
   });
   
-  // Ensure we always have at least start and end points
   if (optimizedPoints.length < 2 && points.length >= 2) {
     return [points[0], points[points.length - 1]];
   }

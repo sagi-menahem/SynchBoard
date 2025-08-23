@@ -6,7 +6,6 @@ export interface MessageValidationSchema {
   maxLength?: number;
 }
 
-// Centralized XSS sanitization function
 const XSS_PATTERNS = {
   SCRIPT_TAG: /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
   IFRAME_TAG: /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi,
@@ -26,7 +25,6 @@ export const sanitizeString = (input: unknown): string => {
     return '';
   }
 
-  // Apply all XSS sanitization patterns
   let sanitized = stringContent;
   for (const pattern of Object.values(XSS_PATTERNS)) {
     sanitized = sanitized.replace(pattern, '');
@@ -90,7 +88,6 @@ export const isSafeUrl = (url: string): boolean => {
 };
 
 export const isPrototypePollutionAttempt = (obj: Record<string, unknown>): boolean => {
-  // Only check for dangerous keys that are explicitly set as own properties
   const dangerousKeys = ['__proto__', 'prototype'];
   
   for (const key of dangerousKeys) {
@@ -99,9 +96,6 @@ export const isPrototypePollutionAttempt = (obj: Record<string, unknown>): boole
     }
   }
   
-  // Check for constructor.prototype pollution only if constructor is set to a malicious value
-  // Only flag if constructor is explicitly set to a non-function object with prototype
-  // Normal objects should have constructor as a function reference, not an object
   if (Object.prototype.hasOwnProperty.call(obj, 'constructor')) {
     const constructor = obj['constructor'];
     if (constructor && 
@@ -123,14 +117,12 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
 
   const dataObj = data as Record<string, unknown>;
 
-  // Check for prototype pollution attempts
   if (isPrototypePollutionAttempt(dataObj)) {
     logger.warn('Message validation failed: prototype pollution attempt detected', dataObj);
     return false;
   }
 
   if (schema) {
-    // Validate required fields
     if (schema.requiredFields) {
       for (const field of schema.requiredFields) {
         if (!(field in dataObj) || dataObj[field] === undefined || dataObj[field] === null) {
@@ -140,7 +132,6 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
       }
     }
 
-    // Validate allowed types
     if (schema.allowedTypes && 'type' in dataObj) {
       if (!schema.allowedTypes.includes(String(dataObj.type))) {
         logger.warn(`Message validation failed: type '${dataObj.type}' is not allowed`);
@@ -148,7 +139,6 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
       }
     }
 
-    // Validate content length
     if (schema.maxLength && 'content' in dataObj) {
       const content = String(dataObj.content);
       if (content.length > schema.maxLength) {
@@ -170,6 +160,5 @@ export const validateBoardMessage = (data: Record<string, unknown>): boolean => 
   return true;
 };
 
-// Alias for backward compatibility
 export const sanitizeUserContent = sanitizeString;
 export const sanitizeWebSocketString = sanitizeString;

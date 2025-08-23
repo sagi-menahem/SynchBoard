@@ -72,7 +72,6 @@ export const useUnifiedWebSocketHandler = ({
       }
     }
 
-    // Commit drawing transaction
     logger.debug(`Server confirmed drawing ${action.type}: ${action.instanceId}`);
     commitDrawingTransaction(action.instanceId);
   }, [sessionInstanceId, setObjects, commitDrawingTransaction]);
@@ -87,7 +86,6 @@ export const useUnifiedWebSocketHandler = ({
           instanceId?: string;
         };
         
-        // Match by transactionId or instanceId
         return pendingMsg.transactionId === chatMessage.instanceId || 
                pendingMsg.instanceId === chatMessage.instanceId;
       });
@@ -103,7 +101,6 @@ export const useUnifiedWebSocketHandler = ({
       }
     });
 
-    // Commit chat transaction
     logger.debug(`Server confirmed chat message: ${chatMessage.instanceId}`);
     if (chatMessage.instanceId) {
       commitChatTransaction(chatMessage.instanceId);
@@ -114,13 +111,11 @@ export const useUnifiedWebSocketHandler = ({
     (payload: unknown) => {
       if (typeof payload !== 'object' || !payload) return;
 
-      // Handle board updates (member changes, name changes, etc.)
       if ('updateType' in payload && 'sourceUserEmail' in payload) {
         handleBoardUpdate(payload as BoardUpdateDTO);
         return;
       }
 
-      // Handle transactional messages (drawing and chat)
       if ('type' in payload && 'instanceId' in payload) {
         const transactionalMessage = payload as {
           type: string;
@@ -133,12 +128,10 @@ export const useUnifiedWebSocketHandler = ({
           `Received transactional message. Type: ${transactionalMessage.type}, InstanceId: ${transactionalMessage.instanceId}`,
         );
 
-        // Handle drawing messages
         if (transactionalMessage.type === ActionType.OBJECT_ADD || 
             transactionalMessage.type === ActionType.OBJECT_DELETE) {
           handleDrawingMessage(transactionalMessage as BoardActionResponse);
         } else if (transactionalMessage.type === 'CHAT') {
-          // Handle chat messages
           handleChatMessage(transactionalMessage as ChatMessageResponse);
         } else {
           logger.warn(`Unknown transactional message type: ${transactionalMessage.type}`);
@@ -151,7 +144,6 @@ export const useUnifiedWebSocketHandler = ({
     [handleBoardUpdate, handleDrawingMessage, handleChatMessage],
   );
 
-  // Single subscription for all board-related messages
   useSocketSubscription(
     boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', 
     onUnifiedMessageReceived, 
