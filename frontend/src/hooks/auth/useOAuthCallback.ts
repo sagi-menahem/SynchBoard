@@ -44,6 +44,8 @@ export const useOAuthCallback = () => {
 
     const handleOAuthCallback = async () => {
       logger.info(`[OAuth-${hookId}] Processing OAuth callback`);
+      // Set global loading state
+      sessionStorage.setItem('oauth_loading', 'true');
 
       try {
         // Check for error first
@@ -82,11 +84,18 @@ export const useOAuthCallback = () => {
           }
           window.history.replaceState({}, document.title, window.location.pathname);
           navigate(APP_ROUTES.BOARD_LIST, { replace: true });
-          setIsProcessing(false);
-          // Clean up after navigation
+          
+          // Keep loading screen visible for longer to prevent flash
           setTimeout(() => {
-            sessionStorage.removeItem('oauth_success_shown');
-          }, 1000);
+            logger.info(`[OAuth-${hookId}] Hiding loading screen after navigation delay`);
+            setIsProcessing(false);
+            // Clear global loading state
+            sessionStorage.removeItem('oauth_loading');
+            // Clean up after navigation
+            setTimeout(() => {
+              sessionStorage.removeItem('oauth_success_shown');
+            }, 500);
+          }, 1200); // Keep loading screen for 1200ms after navigation
         }, 100);
 
       } catch (error) {

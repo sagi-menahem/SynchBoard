@@ -5,7 +5,11 @@ interface AuthLoadingOverlayProps {
 }
 
 export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisible }) => {
-  if (!isVisible) return null;
+  // Also check sessionStorage for global loading state
+  const globalLoading = sessionStorage.getItem('oauth_loading') === 'true';
+  const shouldShow = isVisible || globalLoading;
+  
+  if (!shouldShow) return null;
 
   return (
     <div style={{

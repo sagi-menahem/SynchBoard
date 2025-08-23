@@ -6,6 +6,8 @@ import { AuthPage, BoardDetailsPage, BoardListPage, BoardPage, SettingsPage } fr
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { AuthLoadingOverlay } from 'components/auth';
+
 import { ConnectionStatusBanner } from 'components/common';
 import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
 import { Layout } from 'components/layout';
@@ -37,6 +39,9 @@ function App() {
               },
             }}
           />
+
+          {/* Global OAuth loading overlay */}
+          <AuthLoadingOverlay isVisible={false} />
 
           <Routes>
             <Route 
