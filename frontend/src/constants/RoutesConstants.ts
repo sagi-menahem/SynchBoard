@@ -1,8 +1,5 @@
 export const APP_ROUTES = {
   AUTH: '/',
-  VERIFY_EMAIL: '/verify-email',
-  FORGOT_PASSWORD: '/forgot-password',
-  RESET_PASSWORD: '/reset-password',
   BOARD_LIST: '/boards',
   SETTINGS: '/settings',
 

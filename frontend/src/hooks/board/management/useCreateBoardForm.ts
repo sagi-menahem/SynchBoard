@@ -52,7 +52,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       logger.error('[useCreateBoardForm] Failed to create board:', err);
       return {
         success: false,
-        error: err instanceof Error ? err.message : t('createBoardForm.error.unknown', 'Failed to create board'),
       };
     }
   };

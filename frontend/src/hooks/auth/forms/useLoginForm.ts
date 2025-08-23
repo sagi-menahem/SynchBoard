@@ -55,9 +55,21 @@ export const useLoginForm = () => {
       };
     } catch (err: unknown) {
       logger.error('Login failed for user:', err, { email });
+      
+      let errorMessage = t('loginForm.error.unknown', 'Login failed');
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
+        if (axiosError.response?.data?.message) {
+          errorMessage = axiosError.response.data.message;
+        } else if (axiosError.message) {
+          errorMessage = axiosError.message;
+        }
+      }
+      
+      toast.error(errorMessage);
+      
       return {
         success: false,
-        error: err instanceof Error ? err.message : t('loginForm.error.unknown', 'Login failed'),
       };
     }
   };

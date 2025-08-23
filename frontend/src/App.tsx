@@ -2,7 +2,7 @@ import { APP_ROUTES } from 'constants';
 
 import { useState } from 'react';
 
-import { AuthPage, BoardDetailsPage, BoardListPage, BoardPage, SettingsPage, EmailVerificationPage, ForgotPasswordPage, PasswordResetPage } from 'pages';
+import { AuthPage, BoardDetailsPage, BoardListPage, BoardPage, SettingsPage } from 'pages';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -48,32 +48,6 @@ function App() {
               } 
             />
             
-            <Route 
-              path={APP_ROUTES.VERIFY_EMAIL} 
-              element={
-                <PageErrorBoundary pageName="EmailVerification">
-                  <EmailVerificationPage />
-                </PageErrorBoundary>
-              } 
-            />
-            
-            <Route 
-              path={APP_ROUTES.FORGOT_PASSWORD} 
-              element={
-                <PageErrorBoundary pageName="ForgotPassword">
-                  <ForgotPasswordPage />
-                </PageErrorBoundary>
-              } 
-            />
-            
-            <Route 
-              path={APP_ROUTES.RESET_PASSWORD} 
-              element={
-                <PageErrorBoundary pageName="PasswordReset">
-                  <PasswordResetPage />
-                </PageErrorBoundary>
-              } 
-            />
 
             <Route
               element={

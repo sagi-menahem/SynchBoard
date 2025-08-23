@@ -22,7 +22,7 @@ public final class MessageConstants {
     public static final String PASSWORD_INCORRECT = "password.incorrect";
     public static final String UNEXPECTED_ERROR = "unexpected";
     public static final String PASSWORD_SAME_AS_OLD = "password.sameAsOld";
-    public static final String AUTH_BAD_CREDENTIALS = "auth.badCredentials";
+    public static final String AUTH_BAD_CREDENTIALS = "Incorrect username or password";
     public static final String GENDER_INVALID = "gender.invalid";
     public static final String DATE_OF_BIRTH_INVALID = "dateOfBirth.invalid";
 }

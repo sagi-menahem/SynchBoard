@@ -55,7 +55,6 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       logger.error('Registration failed for user:', err, { email });
       return {
         success: false,
-        error: err instanceof Error ? err.message : t('registerForm.error.unknown', 'Registration failed'),
       };
     }
   };

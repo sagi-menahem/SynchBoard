@@ -51,7 +51,6 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
       logger.error('Email verification failed for user:', err, { email });
       return {
         success: false,
-        error: err instanceof Error ? err.message : t('verifyEmail.error.unknown', 'Email verification failed'),
       };
     }
   };

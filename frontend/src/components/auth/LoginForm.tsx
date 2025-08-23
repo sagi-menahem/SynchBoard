@@ -1,15 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, PasswordInput } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { useLoginForm } from 'hooks/auth/forms';
-import { APP_ROUTES } from 'constants';
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  onForgotPassword: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { state, submitAction, isPending } = useLoginForm();
 
   return (
@@ -48,15 +50,30 @@ const LoginForm: React.FC = () => {
         {isPending ? t('common.button.loggingIn') : t('loginForm.button')}
       </Button>
 
-      <div className={styles.additionalActions}>
-        <Button 
-          variant="secondary" 
-          onClick={() => navigate(APP_ROUTES.FORGOT_PASSWORD)}
+      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <button
           type="button"
-          style={{ width: '100%', marginTop: '1rem' }}
+          onClick={onForgotPassword}
+          style={{ 
+            background: 'transparent', 
+            backgroundColor: 'transparent',
+            border: 'none', 
+            padding: '0.2em',
+            cursor: 'pointer',
+            fontSize: '0.875rem',
+            color: '#8186ff',
+            textDecoration: 'underline',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#6d72e8';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#8186ff';
+          }}
         >
           {t('loginForm.forgotPassword', 'Forgot Password?')}
-        </Button>
+        </button>
       </div>
     </form>
   );
