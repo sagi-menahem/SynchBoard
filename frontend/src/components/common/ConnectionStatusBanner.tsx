@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
+import { useAuth } from 'hooks/auth';
 import { useConnectionStatus } from 'hooks/common';
 
 import styles from './ConnectionStatusBanner.module.css';
@@ -9,6 +10,7 @@ interface ConnectionStatusBannerProps {
 }
 
 export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ onHeightChange }) => {
+  const { token } = useAuth();
   const { shouldShowBanner } = useConnectionStatus();
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +64,8 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   }, [onHeightChange]);
 
   useEffect(() => {
-    if (!shouldShowBanner) {
+    // Don't show banner if user is not authenticated
+    if (!token || !shouldShowBanner) {
       if (onHeightChange) {
         onHeightChange(0);
       }
@@ -97,10 +100,11 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
       
       measureWithRetry();
     }
-  }, [shouldShowBanner, onHeightChange]);
+  }, [token, shouldShowBanner, onHeightChange]);
 
 
-  if (!shouldShowBanner) {
+  // Only show banner for authenticated users
+  if (!token || !shouldShowBanner) {
     return null;
   }
 
