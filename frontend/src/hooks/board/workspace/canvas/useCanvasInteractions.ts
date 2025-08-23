@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
+import { optimizeDrawingPoints } from 'utils';
+
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useConnectionStatus } from 'hooks/common';
 import {
@@ -151,9 +153,12 @@ export const useCanvasInteractions = ({
       originalImageData.current = null;
 
       if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
+        // Optimize points for network efficiency while maintaining visual quality
+        const optimizedPoints = optimizeDrawingPoints([...currentPath.current]);
+        
         const payload: Omit<LinePayload, 'instanceId'> = {
           tool,
-          points: [...currentPath.current],
+          points: optimizedPoints,
           color: strokeColor,
           lineWidth: strokeWidth,
         };

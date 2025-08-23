@@ -1,5 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
+import type { Point } from 'types/BoardObjectTypes';
 import {
   drawCirclePayload,
   drawLinePayload,
@@ -10,11 +11,6 @@ import {
   replayDrawAction,
   setupCanvasContext,
 } from 'utils';
-
-interface Point {
-    x: number;
-    y: number;
-}
 
 export interface DrawingState {
     isDrawing: boolean;
