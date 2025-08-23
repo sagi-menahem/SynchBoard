@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Input } from 'components/common';
+import { Button, Input, PasswordInput } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { useLoginForm } from 'hooks/auth/forms';
 
@@ -33,12 +33,12 @@ const LoginForm: React.FC = () => {
 
       <div className={styles.field}>
         <label htmlFor="login-password">{t('common.form.label.password')}</label>
-        <Input
+        <PasswordInput
           id="login-password"
           name="password"
-          type="password"
           required
           disabled={isPending}
+          autoComplete="current-password"
         />
       </div>
 

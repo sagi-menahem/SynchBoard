@@ -54,10 +54,12 @@ public class UserService {
 
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
+        user.setGender(dto.getGender());
         user.setPhoneNumber(dto.getPhoneNumber());
+        user.setDateOfBirth(dto.getDateOfBirth());
 
         User updatedUser = userRepository.save(user);
-        log.info(USER_PROFILE_UPDATED, userEmail, "firstName, lastName, phoneNumber");
+        log.info(USER_PROFILE_UPDATED, userEmail, "firstName, lastName, gender, phoneNumber, dateOfBirth");
 
         broadcastUserUpdateToSharedBoards(userEmail);
         return mapUserToUserProfileDTO(updatedUser);
@@ -131,10 +133,16 @@ public class UserService {
     }
 
     private UserProfileDTO mapUserToUserProfileDTO(User user) {
-        return UserProfileDTO.builder().email(user.getEmail()).firstName(user.getFirstName())
-                .lastName(user.getLastName()).phoneNumber(user.getPhoneNumber())
+        return UserProfileDTO.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .gender(user.getGender())
+                .phoneNumber(user.getPhoneNumber())
+                .dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
-                .chatBackgroundSetting(user.getChatBackgroundSetting()).build();
+                .chatBackgroundSetting(user.getChatBackgroundSetting())
+                .build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {

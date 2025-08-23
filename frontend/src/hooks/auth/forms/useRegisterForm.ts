@@ -20,17 +20,26 @@ export const useRegisterForm = (onRegistrationSuccess: () => void) => {
     const password = formData.get('password') as string;
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
+    const gender = formData.get('gender') as 'male' | 'female';
     const phoneNumber = formData.get('phoneNumber') as string;
+    const dateOfBirth = formData.get('dateOfBirth') as string;
 
-    // Basic validation
-    if (!email || !password || !firstName || !lastName) {
+    if (!email || !password || !firstName || !gender) {
       return {
         success: false,
         error: t('registerForm.validation.required', 'All required fields must be filled'),
       };
     }
 
-    const registerData: RegisterRequest = { email, password, firstName, lastName, phoneNumber };
+    const registerData: RegisterRequest = { 
+      email, 
+      password, 
+      firstName, 
+      gender,
+      ...(lastName && { lastName }),
+      ...(phoneNumber && { phoneNumber }),
+      ...(dateOfBirth && { dateOfBirth }),
+    };
     logger.debug('Registration form submission for user:', email);
 
     try {

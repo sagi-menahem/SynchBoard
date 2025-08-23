@@ -10,8 +10,16 @@
                 "password": "סיסמה:",
                 "firstName": "שם פרטי:",
                 "lastName": "שם משפחה:",
-                "phoneNumber": "מספר טלפון:"
-            }
+                "gender": "מגדר:",
+                "phoneNumber": "מספר טלפון:",
+                "dateOfBirth": "תאריך לידה:"
+            },
+            "option": {
+                "male": "זכר",
+                "female": "נקבה"
+            },
+            "showPassword": "הצג סיסמה",
+            "hidePassword": "הסתר סיסמה"
         },
         "button": {
             "cancel": "ביטול",
@@ -162,7 +170,10 @@
         "profileSectionHeader": "פרטי פרופיל",
         "firstNameLabel": "שם פרטי",
         "lastNameLabel": "שם משפחה",
+        "genderLabel": "מגדר",
         "phoneNumberLabel": "מספר טלפון",
+        "dateOfBirthLabel": "תאריך לידה",
+        "notProvided": "לא סופק",
         "updateSuccess": "הפרופיל עודכן בהצלחה!",
         "updateError": "עדכון הפרופיל נכשל.",
         "buttons": {
@@ -215,7 +226,9 @@
         "password.sameAsOld": "הסיסמה החדשה אינה יכולה להיות זהה לישנה.",
         "unexpected": "אירעה שגיאה לא צפויה. אנא נסה שנית.",
         "auth.badCredentials": "שם המשתמש או הסיסמה שהזנת אינם נכונים.",
-        "sessionExpired": "תוקף החיבור שלך פג. אנא התחבר מחדש."
+        "sessionExpired": "תוקף החיבור שלך פג. אנא התחבר מחדש.",
+        "gender.invalid": "יש לבחור מגדר תקין (זכר או נקבה).",
+        "dateOfBirth.invalid": "יש להזין תאריך לידה תקין."
     },
     "success": {
         "profile.update": "הפרופיל עודכן בהצלחה!",

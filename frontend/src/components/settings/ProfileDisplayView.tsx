@@ -20,11 +20,19 @@ const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {
             </div>
             <div className={styles.field}>
                 <label>{t('settingsPage.lastNameLabel')}</label>
-                <p>{user.lastName}</p>
+                <p>{user.lastName || t('settingsPage.notProvided')}</p>
+            </div>
+            <div className={styles.field}>
+                <label>{t('settingsPage.genderLabel')}</label>
+                <p>{t(`common.form.option.${user.gender}`)}</p>
+            </div>
+            <div className={styles.field}>
+                <label>{t('settingsPage.dateOfBirthLabel')}</label>
+                <p>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('settingsPage.notProvided')}</p>
             </div>
             <div className={styles.field}>
                 <label>{t('settingsPage.phoneNumberLabel')}</label>
-                <p>{user.phoneNumber}</p>
+                <p>{user.phoneNumber || t('settingsPage.notProvided')}</p>
             </div>
         </>
     );
