@@ -28,7 +28,7 @@ public class CreateBoardRequest {
 
     private List<String> inviteEmails;
 
-    @Pattern(regexp = "^#[0-9A-Fa-f]{6}$", message = "Canvas background color must be a valid hex color")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "Canvas background color must be a valid hex color")
     private String canvasBackgroundColor;
 
     @Min(value = 400, message = "Canvas width must be at least 400 pixels")
