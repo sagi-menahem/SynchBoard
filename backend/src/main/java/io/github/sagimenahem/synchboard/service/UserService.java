@@ -1,6 +1,5 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,8 @@ public class UserService {
         user.setDateOfBirth(dto.getDateOfBirth());
 
         User updatedUser = userRepository.save(user);
-        log.info(USER_PROFILE_UPDATED, userEmail, "firstName, lastName, gender, phoneNumber, dateOfBirth");
+        log.info(USER_PROFILE_UPDATED, userEmail,
+                "firstName, lastName, gender, phoneNumber, dateOfBirth");
 
         broadcastUserUpdateToSharedBoards(userEmail);
         return mapUserToUserProfileDTO(updatedUser);
@@ -75,14 +75,19 @@ public class UserService {
         });
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
-            String existingFilename =
-                    user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
-            log.debug(FILE_PREFIX + " Deleting existing profile picture: {}", existingFilename);
-            fileStorageService.delete(existingFilename);
+            String existingFilename = extractFilenameFromPictureUrl(user.getProfilePictureUrl());
+            if (existingFilename != null && !existingFilename.isBlank()) {
+                log.debug(FILE_PREFIX + " Deleting existing profile picture: {}", existingFilename);
+                try {
+                    fileStorageService.delete(existingFilename);
+                } catch (Exception e) {
+                    log.warn("Failed to delete existing profile picture file: {} - {}",
+                            existingFilename, e.getMessage());
+                }
+            }
         }
 
-        String newFilename = fileStorageService.store(file);
-        String newPictureUrl = IMAGES_BASE_PATH + newFilename;
+        String newPictureUrl = fileStorageService.store(file);
         user.setProfilePictureUrl(newPictureUrl);
 
         User updatedUser = userRepository.save(user);
@@ -102,12 +107,18 @@ public class UserService {
         });
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
-            String existingFilename =
-                    user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
-            fileStorageService.delete(existingFilename);
+            String existingFilename = extractFilenameFromPictureUrl(user.getProfilePictureUrl());
+            if (existingFilename != null && !existingFilename.isBlank()) {
+                try {
+                    fileStorageService.delete(existingFilename);
+                    log.info(FILE_DELETE_SUCCESS, existingFilename, userEmail);
+                } catch (Exception e) {
+                    log.warn("Failed to delete profile picture file: {} - {}", existingFilename,
+                            e.getMessage());
+                }
+            }
             user.setProfilePictureUrl(null);
             userRepository.save(user);
-            log.info(FILE_DELETE_SUCCESS, existingFilename, userEmail);
         } else {
             log.debug(FILE_PREFIX + " No profile picture to delete for user: {}", userEmail);
         }
@@ -132,17 +143,25 @@ public class UserService {
         return mapUserToUserProfileDTO(updatedUser);
     }
 
+    private String extractFilenameFromPictureUrl(String pictureUrl) {
+        if (pictureUrl == null || pictureUrl.isBlank()) {
+            return null;
+        }
+
+        int lastSlashIndex = pictureUrl.lastIndexOf("/");
+        if (lastSlashIndex != -1 && lastSlashIndex < pictureUrl.length() - 1) {
+            return pictureUrl.substring(lastSlashIndex + 1);
+        }
+
+        return null;
+    }
+
     private UserProfileDTO mapUserToUserProfileDTO(User user) {
-        return UserProfileDTO.builder()
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .gender(user.getGender())
-                .phoneNumber(user.getPhoneNumber())
-                .dateOfBirth(user.getDateOfBirth())
+        return UserProfileDTO.builder().email(user.getEmail()).firstName(user.getFirstName())
+                .lastName(user.getLastName()).gender(user.getGender())
+                .phoneNumber(user.getPhoneNumber()).dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
-                .chatBackgroundSetting(user.getChatBackgroundSetting())
-                .build();
+                .chatBackgroundSetting(user.getChatBackgroundSetting()).build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
