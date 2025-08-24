@@ -48,21 +48,6 @@ public class GroupBoardController {
                 String userEmail = authentication.getName();
                 log.info(API_REQUEST_RECEIVED, "POST", API_BOARDS_BASE_PATH, userEmail);
                 
-                // Debug: Log all form parameters
-                log.info("[DEBUG] All form parameters:");
-                httpRequest.getParameterMap().forEach((key, values) -> 
-                    log.info("[DEBUG]   {}: {}", key, String.join(", ", values)));
-                
-                // Debug: Check multipart files separately
-                if (httpRequest instanceof MultipartHttpServletRequest) {
-                    MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) httpRequest;
-                    log.info("[DEBUG] Multipart files:");
-                    multipartRequest.getFileMap().forEach((key, file) -> 
-                        log.info("[DEBUG]   File {}: {} (size: {})", key, file.getOriginalFilename(), file.getSize()));
-                }
-                
-                log.info("[DEBUG] Received CreateBoardRequest - Color={}, Width={}, Height={}", 
-                         request.getCanvasBackgroundColor(), request.getCanvasWidth(), request.getCanvasHeight());
                 
                 // Apply defaults if values are null
                 if (request.getCanvasBackgroundColor() == null) {
