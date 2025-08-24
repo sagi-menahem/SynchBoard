@@ -59,6 +59,9 @@ public class BoardService {
             return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + ownerEmail);
         });
 
+        log.info("[DEBUG] Canvas settings from request - Color: {}, Width: {}, Height: {}", 
+                  request.getCanvasBackgroundColor(), request.getCanvasWidth(), request.getCanvasHeight());
+
         GroupBoard newBoard = GroupBoard.builder().boardGroupName(request.getName())
                 .groupDescription(request.getDescription()).createdByUser(owner)
                 .canvasBackgroundColor(request.getCanvasBackgroundColor())
