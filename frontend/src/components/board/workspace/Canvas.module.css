@@ -21,17 +21,36 @@
     min-height: 100%;
     padding: 20px;
     box-sizing: border-box;
+    /* Dynamic striped background pattern */
+    background: var(--canvas-container-bg, #1a1a1a);
+    background-image: 
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 15px,
+            var(--canvas-pattern-color, rgba(255, 255, 255, 0.02)) 15px,
+            var(--canvas-pattern-color, rgba(255, 255, 255, 0.02)) 30px
+        );
 }
 
 .canvasWrapper {
     display: inline-block;
-    border: 1px solid var(--border-color);
-    transform-origin: top left;
+    border: 2px solid var(--canvas-border-color, #444);
+    transform-origin: center center;
+    /* Enhanced shadow for clear canvas boundaries */
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 8px 24px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .canvas {
     display: block;
     cursor: crosshair;
+    /* Ensure canvas doesn't inherit rounded corners */
+    border-radius: 2px;
 }
 
 .canvas.disabled {
