@@ -27,6 +27,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   const { preferences } = usePreferences();
   const [showLoading, setShowLoading] = useState(true);
+  const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
   const canvasConfig = props.canvasConfig || {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
@@ -41,15 +42,57 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Track container dimensions for dynamic sizing
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerDimensions({ width: rect.width, height: rect.height });
+      }
+    };
+
+    // Initial measurement
+    updateDimensions();
+
+    // Track resize
+    const resizeObserver = new ResizeObserver(updateDimensions);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [containerRef]);
+
+  // Calculate scaled canvas dimensions
+  const scaledWidth = canvasConfig.width * zoomScale;
+  const scaledHeight = canvasConfig.height * zoomScale;
+  const padding = 40; // 20px padding on each side
+
+  // Determine if background should be hidden
+  const hideBackground = scaledWidth >= (containerDimensions.width - padding) || 
+                         scaledHeight >= (containerDimensions.height - padding);
+
+  // Dynamic container content sizing
+  const canvasContainerStyle = {
+    width: `${Math.max(scaledWidth + padding, containerDimensions.width || 0)}px`,
+    height: `${Math.max(scaledHeight + padding, containerDimensions.height || 0)}px`,
+  };
+
   const shouldShowLoading = showLoading;
   const containerClassName = `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`;
   const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
+  const canvasContainerClassName = `${styles.canvasContainer} ${hideBackground ? styles.hideBackground : ''}`;
 
   return (
     <div ref={containerRef} className={containerClassName}>
       <div 
-        className={styles.canvasContainer}
-        style={{ backgroundColor: preferences.boardBackgroundSetting || undefined }}
+        className={canvasContainerClassName}
+        style={{ 
+          backgroundColor: preferences.boardBackgroundSetting || undefined,
+          ...canvasContainerStyle
+        }}
       >
         <div 
           className={styles.canvasWrapper} 

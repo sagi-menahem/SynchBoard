@@ -33,6 +33,11 @@
         );
 }
 
+.canvasContainer.hideBackground {
+    background: transparent !important;
+    background-image: none !important;
+}
+
 .canvasWrapper {
     display: inline-block;
     transform-origin: center center;
