@@ -75,8 +75,16 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       height = preset.height;
     }
     
+    console.log('[DEBUG] Canvas size selected:', canvasSize);
+    console.log('[DEBUG] Canvas dimensions being sent:', { width, height });
+    
     formData.append('canvasWidth', width.toString());
     formData.append('canvasHeight', height.toString());
+    
+    console.log('[DEBUG] FormData contents:');
+    for (let [key, value] of formData.entries()) {
+      console.log(`[DEBUG]   ${key}: ${value}`);
+    }
     
     startTransition(() => {
       submitAction(formData);

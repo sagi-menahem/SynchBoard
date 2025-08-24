@@ -22,6 +22,9 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const description = (formData.get('description') as string)?.trim() || '';
     const picture = formData.get('picture') as File;
     const inviteEmails = formData.getAll('inviteEmails') as string[];
+    const canvasBackgroundColor = formData.get('canvasBackgroundColor') as string;
+    const canvasWidth = formData.get('canvasWidth') as string;
+    const canvasHeight = formData.get('canvasHeight') as string;
 
     // Validation
     if (!name) {
@@ -53,6 +56,17 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
         submitFormData.append('inviteEmails', email.trim());
       }
     });
+    
+    // Add canvas settings
+    if (canvasBackgroundColor) {
+      submitFormData.append('canvasBackgroundColor', canvasBackgroundColor);
+    }
+    if (canvasWidth) {
+      submitFormData.append('canvasWidth', canvasWidth);
+    }
+    if (canvasHeight) {
+      submitFormData.append('canvasHeight', canvasHeight);
+    }
 
     try {
       const newBoard = await createBoard(submitFormData);

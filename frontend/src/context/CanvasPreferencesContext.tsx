@@ -93,9 +93,14 @@ interface CanvasPreferencesProviderProps {
 
 export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(canvasPreferencesReducer, initialState);
-  const { userEmail } = useAuth();
+  const { userEmail, isAuthenticated } = useAuth();
 
   const refreshPreferences = useCallback(async () => {
+    if (!isAuthenticated) {
+      logger.debug('[CanvasPreferences] User not authenticated, skipping preferences load');
+      return;
+    }
+    
     try {
       dispatch({ type: 'LOAD_START' });
       const canvasPrefs = await userService.getCanvasPreferences();
@@ -111,7 +116,7 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
       logger.error('Failed to load canvas preferences:', error);
       dispatch({ type: 'LOAD_ERROR', payload: 'Failed to load preferences' });
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const updateZoomLevel = useCallback(async (zoomLevel: number) => {
     try {
@@ -157,8 +162,10 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
   );
 
   useEffect(() => {
-    refreshPreferences();
-  }, [refreshPreferences]);
+    if (isAuthenticated) {
+      refreshPreferences();
+    }
+  }, [isAuthenticated, refreshPreferences]);
 
   const value: CanvasPreferencesContextType = {
     preferences: state.preferences,

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import io.github.sagimenahem.synchboard.dto.board.*;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
@@ -41,10 +43,37 @@ public class GroupBoardController {
         }
 
         @PostMapping
-        public ResponseEntity<BoardDTO> createBoard(@Valid @ModelAttribute CreateBoardRequest request,
-                        Authentication authentication) {
+        public ResponseEntity<BoardDTO> createBoard(@ModelAttribute CreateBoardRequest request,
+                        Authentication authentication, HttpServletRequest httpRequest) {
                 String userEmail = authentication.getName();
                 log.info(API_REQUEST_RECEIVED, "POST", API_BOARDS_BASE_PATH, userEmail);
+                
+                // Debug: Log all form parameters
+                log.info("[DEBUG] All form parameters:");
+                httpRequest.getParameterMap().forEach((key, values) -> 
+                    log.info("[DEBUG]   {}: {}", key, String.join(", ", values)));
+                
+                // Debug: Check multipart files separately
+                if (httpRequest instanceof MultipartHttpServletRequest) {
+                    MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) httpRequest;
+                    log.info("[DEBUG] Multipart files:");
+                    multipartRequest.getFileMap().forEach((key, file) -> 
+                        log.info("[DEBUG]   File {}: {} (size: {})", key, file.getOriginalFilename(), file.getSize()));
+                }
+                
+                log.info("[DEBUG] Received CreateBoardRequest - Color={}, Width={}, Height={}", 
+                         request.getCanvasBackgroundColor(), request.getCanvasWidth(), request.getCanvasHeight());
+                
+                // Apply defaults if values are null
+                if (request.getCanvasBackgroundColor() == null) {
+                    request.setCanvasBackgroundColor("#222");
+                }
+                if (request.getCanvasWidth() == null) {
+                    request.setCanvasWidth(1200);
+                }
+                if (request.getCanvasHeight() == null) {
+                    request.setCanvasHeight(800);
+                }
 
                 BoardDTO newBoard = boardService.createBoard(request, userEmail);
                 log.info(BOARD_CREATED, newBoard.getId(), request.getName(), userEmail);
