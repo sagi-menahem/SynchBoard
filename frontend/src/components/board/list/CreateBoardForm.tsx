@@ -1,16 +1,13 @@
 import React, { startTransition, useRef, useState } from 'react';
 
-import { HexColorPicker } from 'react-colorful';
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
-import { Button, Input } from 'components/common';
+import { Button, Input, ColorPicker } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import utilStyles from 'components/common/utils.module.css';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
-import { PRESET_COLORS } from 'constants/ColorConstants';
 import { useCreateBoardForm } from 'hooks/board/management';
-import { useClickOutside } from 'hooks/common/useClickOutside';
 import type { Board } from 'types/BoardTypes';
 
 import BoardImageUpload from './BoardImageUpload';
@@ -40,10 +37,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'>('WIDESCREEN');
   const [customWidth, setCustomWidth] = useState<number>(CANVAS_CONFIG.DEFAULT_WIDTH);
   const [customHeight, setCustomHeight] = useState<number>(CANVAS_CONFIG.DEFAULT_HEIGHT);
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const colorPickerRef = useRef<HTMLDivElement>(null);
-
-  useClickOutside(colorPickerRef as React.RefObject<HTMLElement>, () => setShowColorPicker(false), showColorPicker);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -127,40 +120,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <div className={utilStyles.settingRow}>
           <span className={utilStyles.settingLabel}>{t('createBoardForm.label.canvasBackground')}:</span>
-          <div className={utilStyles.colorPickerWrapper} ref={colorPickerRef}>
-            <button
-              type="button"
-              className={`${utilStyles.colorPreview} ${utilStyles.clickableColorPreview} ${isPending ? utilStyles.disabled : ''}`}
-              style={{ backgroundColor: canvasBackgroundColor }}
-              onClick={() => !isPending && setShowColorPicker(!showColorPicker)}
-              title={`${t('createBoardForm.label.canvasBackground')}: ${canvasBackgroundColor}`}
-              disabled={isPending}
-              aria-label={`${t('createBoardForm.label.canvasBackground')}: ${canvasBackgroundColor}`}
-            />
-            {showColorPicker && !isPending && (
-              <div className={utilStyles.colorPickerPopover}>
-                <HexColorPicker 
-                  color={canvasBackgroundColor} 
-                  onChange={setCanvasBackgroundColor}
-                />
-                <div className={utilStyles.presetColors}>
-                  {PRESET_COLORS.map((presetColor) => (
-                    <button
-                      key={presetColor}
-                      type="button"
-                      className={utilStyles.presetColorButton}
-                      style={{ backgroundColor: presetColor }}
-                      onClick={() => {
-                        setCanvasBackgroundColor(presetColor);
-                        setShowColorPicker(false);
-                      }}
-                      title={presetColor}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <ColorPicker
+            color={canvasBackgroundColor}
+            onChange={setCanvasBackgroundColor}
+            disabled={isPending}
+          />
           <span className={utilStyles.settingValue}>
             {(() => {
               const colorName = getColorName(canvasBackgroundColor);

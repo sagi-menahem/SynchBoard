@@ -1,5 +1,5 @@
 export interface BoardUpdateDTO {
-    updateType: 'DETAILS_UPDATED' | 'MEMBERS_UPDATED';
+    updateType: 'DETAILS_UPDATED' | 'MEMBERS_UPDATED' | 'CANVAS_UPDATED';
     sourceUserEmail: string;
 }
 
