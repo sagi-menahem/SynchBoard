@@ -2,7 +2,7 @@ import React, { useState, startTransition } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Input } from 'components/common';
+import { Button, Input, ColorPicker } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCreateBoardForm } from 'hooks/board/management';
@@ -106,14 +106,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="canvas-background">{t('createBoardForm.label.canvasBackground')}</label>
-        <input
-          id="canvas-background"
-          type="color"
-          value={canvasBackgroundColor}
-          onChange={(e) => setCanvasBackgroundColor(e.target.value)}
+        <ColorPicker
+          color={canvasBackgroundColor}
+          onChange={setCanvasBackgroundColor}
           disabled={isPending}
-          className={styles.colorInput}
+          label={t('createBoardForm.label.canvasBackground')}
         />
       </div>
 

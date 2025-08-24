@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button } from 'components/common';
+import { Button, ColorPicker } from 'components/common';
 import { useDraggable } from 'hooks/common';
 import type { Tool } from 'types/CommonTypes';
 
@@ -53,15 +53,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
       role="toolbar"
       aria-label={t('toolbar.ariaLabel')}
     >
-      <label className={styles.label}>
-        {t('toolbar.label.color')}
-        <input
-          type="color"
-          value={strokeColor}
-          onChange={(e) => setStrokeColor(e.target.value)}
-          className={styles.colorInput}
+      <div className={styles.colorPickerWrapper}>
+        <ColorPicker
+          color={strokeColor}
+          onChange={setStrokeColor}
+          label={t('toolbar.label.color')}
         />
-      </label>
+      </div>
 
       <label className={styles.label}>
         {t('toolbar.label.lineWidth', { width: strokeWidth })}
