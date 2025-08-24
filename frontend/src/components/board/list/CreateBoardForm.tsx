@@ -1,9 +1,9 @@
-import React, { startTransition, useRef, useState } from 'react';
+import React, { startTransition, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
-import { Button, Input, ColorPicker } from 'components/common';
+import { Button, ColorPicker, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import utilStyles from 'components/common/utils.module.css';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
@@ -149,6 +149,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                     checked={canvasSize === size}
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isPending}
+                    aria-label={`${t(`canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
                   />
                   <div className={styles.presetLabel}>
                     <span className={styles.presetName}>
@@ -172,13 +173,13 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                 checked={canvasSize === 'custom'}
                 onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                 disabled={isPending}
+                aria-label={`${t('canvasSize.custom.label')}`}
               />
               <div className={styles.presetLabel}>
                 <span className={styles.presetName}>
                   {t('canvasSize.custom.label')}
                 </span>
                 <span className={styles.presetInfo}>
-                  {t('canvasSize.custom.description')}
                 </span>
               </div>
             </label>

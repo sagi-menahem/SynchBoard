@@ -306,8 +306,7 @@
             }
         },
         "custom": {
-            "label": "Custom Size",
-            "description": "Set your own width and height"
+            "label": "Custom Size"
         }
     },
     "boardDetails": {
