@@ -57,9 +57,6 @@ export const CANVAS_CONFIG = {
   },
 } as const;
 
-export const ZOOM_LEVELS = [25, 50, 75, 100, 125, 150, 200] as const;
-
 export const DEFAULT_CANVAS_PREFERENCES = {
-  ZOOM_LEVEL: 100,
   SPLIT_RATIO: 70,
 } as const;

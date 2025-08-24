@@ -17,8 +17,6 @@ interface UseCanvasProps {
     objects: ActionPayload[];
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     canvasConfig?: CanvasConfig;
-    zoomLevel?: number;
-    zoomScale?: number;
 }
 
 export const useCanvas = ({
@@ -29,7 +27,6 @@ export const useCanvas = ({
   objects,
   onDraw,
   canvasConfig,
-  zoomScale = 1,
 }: UseCanvasProps) => {
   const { dimensions, refs, drawingState, utils } = useCanvasCore();
   const { canvasRef, containerRef, contextRef } = refs;
@@ -69,7 +66,7 @@ export const useCanvas = ({
     senderId,
     drawingState,
     getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => 
-      utils.getMouseCoordinates(event, canvas, zoomScale),
+      utils.getMouseCoordinates(event, canvas),
     isShapeSizeValid: utils.isShapeSizeValid,
     isRadiusValid: utils.isRadiusValid,
   });

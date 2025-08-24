@@ -12,7 +12,6 @@ import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 
 export interface CanvasUserPreferences {
-  canvasZoomLevel: number;
   canvasChatSplitRatio: number;
   layoutMode: LayoutMode;
 }
@@ -27,14 +26,12 @@ type CanvasPreferencesAction =
   | { type: 'LOAD_START' }
   | { type: 'LOAD_SUCCESS'; payload: CanvasUserPreferences }
   | { type: 'LOAD_ERROR'; payload: string }
-  | { type: 'UPDATE_ZOOM'; payload: number }
   | { type: 'UPDATE_SPLIT_RATIO'; payload: number }
   | { type: 'UPDATE_LAYOUT_MODE'; payload: LayoutMode }
   | { type: 'RESET_ERROR' };
 
 const initialState: CanvasPreferencesState = {
   preferences: {
-    canvasZoomLevel: 100,
     canvasChatSplitRatio: 70,
     layoutMode: 'balanced',
   },
@@ -53,11 +50,6 @@ const canvasPreferencesReducer = (
       return { ...state, isLoading: false, preferences: action.payload, error: null };
     case 'LOAD_ERROR':
       return { ...state, isLoading: false, error: action.payload };
-    case 'UPDATE_ZOOM':
-      return {
-        ...state,
-        preferences: { ...state.preferences, canvasZoomLevel: action.payload },
-      };
     case 'UPDATE_SPLIT_RATIO':
       return {
         ...state,
@@ -79,7 +71,6 @@ interface CanvasPreferencesContextType {
   preferences: CanvasUserPreferences;
   isLoading: boolean;
   error: string | null;
-  updateZoomLevel: (zoomLevel: number) => Promise<void>;
   updateSplitRatio: (splitRatio: number) => Promise<void>;
   updateLayoutMode: (layoutMode: LayoutMode) => Promise<void>;
   refreshPreferences: () => Promise<void>;
@@ -106,7 +97,6 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
       const canvasPrefs = await userService.getCanvasPreferences();
       
       const preferences: CanvasUserPreferences = {
-        canvasZoomLevel: canvasPrefs.canvasZoomLevel,
         canvasChatSplitRatio: canvasPrefs.canvasChatSplitRatio,
         layoutMode: 'balanced', // Default layout mode, not stored in backend yet
       };
@@ -118,16 +108,6 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
     }
   }, [isAuthenticated]);
 
-  const updateZoomLevel = useCallback(async (zoomLevel: number) => {
-    try {
-      dispatch({ type: 'UPDATE_ZOOM', payload: zoomLevel });
-      await userService.updateCanvasPreferences({ canvasZoomLevel: zoomLevel });
-    } catch (error) {
-      logger.error('Failed to update zoom level:', error);
-      await refreshPreferences(); // Revert on error
-      throw error;
-    }
-  }, [refreshPreferences]);
 
   const updateSplitRatio = useCallback(async (splitRatio: number) => {
     try {
@@ -171,7 +151,6 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
     preferences: state.preferences,
     isLoading: state.isLoading,
     error: state.error,
-    updateZoomLevel,
     updateSplitRatio,
     updateLayoutMode,
     refreshPreferences,

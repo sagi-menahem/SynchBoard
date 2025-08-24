@@ -16,6 +16,8 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     position: relative;
     /* Dynamic striped background pattern - matches chat */
     background: var(--canvas-container-bg, #1a1a1a);

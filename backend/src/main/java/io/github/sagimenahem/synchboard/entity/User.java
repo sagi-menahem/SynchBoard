@@ -58,9 +58,6 @@ public class User implements UserDetails {
     @Column(name = "board_background_setting")
     private String boardBackgroundSetting;
 
-    @Column(name = "canvas_zoom_level")
-    @Builder.Default
-    private Integer canvasZoomLevel = 100;
 
     @Column(name = "canvas_chat_split_ratio")
     @Builder.Default
@@ -81,9 +78,6 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
-        if (this.canvasZoomLevel == null) {
-            this.canvasZoomLevel = 100;
-        }
         if (this.canvasChatSplitRatio == null) {
             this.canvasChatSplitRatio = 70;
         }
