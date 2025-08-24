@@ -14,6 +14,12 @@
     
     /* CSS custom property for banner height */
     --banner-height: 0px;
+    
+    /* Canvas container theme variables */
+    --canvas-container-bg: #1a1a1a;
+    --canvas-pattern-color: rgba(255, 255, 255, 0.02);
+    --canvas-border-color: #444;
+    --border-color: #555;
 }
 
 a {
@@ -62,6 +68,12 @@ button:focus-visible {
     :root {
         color: #213547;
         background-color: #ffffff;
+        
+        /* Canvas container light theme variables */
+        --canvas-container-bg: #f5f5f5;
+        --canvas-pattern-color: rgba(0, 0, 0, 0.02);
+        --canvas-border-color: #d0d0d0;
+        --border-color: #ccc;
     }
 
     a:hover {
