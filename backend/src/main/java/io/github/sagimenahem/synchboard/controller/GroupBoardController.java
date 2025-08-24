@@ -8,12 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import io.github.sagimenahem.synchboard.dto.board.*;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
 import io.github.sagimenahem.synchboard.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,17 +46,17 @@ public class GroupBoardController {
                         Authentication authentication, HttpServletRequest httpRequest) {
                 String userEmail = authentication.getName();
                 log.info(API_REQUEST_RECEIVED, "POST", API_BOARDS_BASE_PATH, userEmail);
-                
-                
+
+
                 // Apply defaults if values are null
                 if (request.getCanvasBackgroundColor() == null) {
-                    request.setCanvasBackgroundColor("#222");
+                        request.setCanvasBackgroundColor("#222");
                 }
                 if (request.getCanvasWidth() == null) {
-                    request.setCanvasWidth(1200);
+                        request.setCanvasWidth(1200);
                 }
                 if (request.getCanvasHeight() == null) {
-                    request.setCanvasHeight(800);
+                        request.setCanvasHeight(800);
                 }
 
                 BoardDTO newBoard = boardService.createBoard(request, userEmail);
@@ -277,7 +276,8 @@ public class GroupBoardController {
                 log.info(AUDIT_PREFIX + " Canvas settings update. BoardId: {}, User: {}", boardId,
                                 userEmail);
 
-                BoardDTO updatedBoard = boardService.updateCanvasSettings(boardId, request, userEmail);
+                BoardDTO updatedBoard =
+                                boardService.updateCanvasSettings(boardId, request, userEmail);
                 log.info(BOARD_UPDATED, boardId, "canvas settings", userEmail);
                 return ResponseEntity.ok(updatedBoard);
         }

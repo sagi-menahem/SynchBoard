@@ -35,13 +35,9 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   
   const {
     preferences: canvasPreferences,
-    updateZoomLevel,
     updateSplitRatio,
   } = useCanvasPreferences();
 
-  const handleZoomChange = useCallback((newZoom: number) => {
-    updateZoomLevel(newZoom);
-  }, [updateZoomLevel]);
 
   const handleSplitRatioChange = useCallback((newRatio: number) => {
     updateSplitRatio(newRatio);
@@ -73,8 +69,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         isUndoAvailable={isUndoAvailable}
         onRedo={handleRedo}
         isRedoAvailable={isRedoAvailable}
-        zoomLevel={canvasPreferences.canvasZoomLevel}
-        onZoomChange={handleZoomChange}
       />
 
       <BoardWorkspace
@@ -86,7 +80,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         strokeColor={strokeColor}
         strokeWidth={strokeWidth}
         canvasConfig={canvasConfig}
-        zoomLevel={canvasPreferences.canvasZoomLevel}
         splitRatio={canvasPreferences.canvasChatSplitRatio}
         onDraw={handleDrawAction}
         onSplitRatioChange={handleSplitRatioChange}

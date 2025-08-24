@@ -1,4 +1,4 @@
-import { STROKE_WIDTH_RANGE, TOOL_LIST, ZOOM_LEVELS } from 'constants';
+import { STROKE_WIDTH_RANGE, TOOL_LIST } from 'constants';
 
 import React from 'react';
 
@@ -22,8 +22,6 @@ interface ToolbarProps {
     isUndoAvailable: boolean;
     onRedo: () => void;
     isRedoAvailable: boolean;
-    zoomLevel?: number;
-    onZoomChange?: (zoom: number) => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -38,8 +36,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
   isUndoAvailable,
   onRedo,
   isRedoAvailable,
-  zoomLevel = 100,
-  onZoomChange,
 }) => {
   const { t } = useTranslation();
   const { draggableRef, handleMouseDown, style: draggableStyle } = useDraggable({ containerRef });
@@ -94,50 +90,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
       </div>
 
-      {onZoomChange && (
-        <div className={styles.zoomContainer}>
-          <label className={styles.label}>
-            {t('toolbar.label.zoom', { zoom: zoomLevel })}
-            <div className={styles.zoomControls}>
-              <Button 
-                onClick={() => {
-                  const currentIndex = ZOOM_LEVELS.indexOf(zoomLevel);
-                  if (currentIndex > 0) {
-                    onZoomChange(ZOOM_LEVELS[currentIndex - 1]);
-                  }
-                }}
-                disabled={!ZOOM_LEVELS.includes(zoomLevel) || ZOOM_LEVELS.indexOf(zoomLevel) === 0}
-                variant="secondary"
-                className={styles.zoomButton}
-              >
-                -
-              </Button>
-              <span className={styles.zoomLevel}>{zoomLevel}%</span>
-              <Button 
-                onClick={() => {
-                  const currentIndex = ZOOM_LEVELS.indexOf(zoomLevel);
-                  if (currentIndex < ZOOM_LEVELS.length - 1) {
-                    onZoomChange(ZOOM_LEVELS[currentIndex + 1]);
-                  }
-                }}
-                disabled={!ZOOM_LEVELS.includes(zoomLevel) || ZOOM_LEVELS.indexOf(zoomLevel) === ZOOM_LEVELS.length - 1}
-                variant="secondary"
-                className={styles.zoomButton}
-              >
-                +
-              </Button>
-              <Button 
-                onClick={() => onZoomChange(100)}
-                disabled={zoomLevel === 100}
-                variant="secondary"
-                className={styles.resetButton}
-              >
-                {t('toolbar.tool.resetZoom')}
-              </Button>
-            </div>
-          </label>
-        </div>
-      )}
 
 
     </div>

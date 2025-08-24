@@ -195,7 +195,6 @@ public class UserService {
         });
         
         return CanvasPreferencesDTO.builder()
-                .canvasZoomLevel(user.getCanvasZoomLevel())
                 .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
                 .build();
     }
@@ -209,9 +208,6 @@ public class UserService {
             return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
         });
         
-        if (preferences.getCanvasZoomLevel() != null) {
-            user.setCanvasZoomLevel(preferences.getCanvasZoomLevel());
-        }
         if (preferences.getCanvasChatSplitRatio() != null) {
             user.setCanvasChatSplitRatio(preferences.getCanvasChatSplitRatio());
         }
@@ -220,7 +216,6 @@ public class UserService {
         log.info("Canvas preferences updated for user: {}", userEmail);
         
         return CanvasPreferencesDTO.builder()
-                .canvasZoomLevel(user.getCanvasZoomLevel())
                 .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
                 .build();
     }

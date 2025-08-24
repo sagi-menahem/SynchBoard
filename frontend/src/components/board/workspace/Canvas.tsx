@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
@@ -17,17 +17,13 @@ interface CanvasProps {
     strokeColor: string;
     strokeWidth: number;
     canvasConfig?: CanvasConfig;
-    zoomLevel?: number;
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-  const zoomLevel = props.zoomLevel || 100;
-  const zoomScale = zoomLevel / 100;
-  const { canvasRef, containerRef, handleMouseDown } = useCanvas({ ...props, zoomScale });
+  const { canvasRef, containerRef, handleMouseDown } = useCanvas({ ...props });
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   const { preferences } = usePreferences();
   const [showLoading, setShowLoading] = useState(true);
-  const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
   const canvasConfig = props.canvasConfig || {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
@@ -42,60 +38,18 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Track container dimensions for zoom-based sizing
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const updateDimensions = () => {
-      const rect = container.getBoundingClientRect();
-      setContainerDimensions({
-        width: rect.width,
-        height: rect.height,
-      });
-    };
-
-    const resizeObserver = new ResizeObserver(updateDimensions);
-    resizeObserver.observe(container);
-    updateDimensions(); // Initial measurement
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [containerRef]);
-
-
-  // Calculate scaled canvas dimensions
-  const scaledWidth = canvasConfig.width * zoomScale;
-  const scaledHeight = canvasConfig.height * zoomScale;
-  
-  // Dynamic padding - minimal for small canvases
-  const padding = 20;
+  // Canvas at 100% zoom (1:1 scale)
+  const canvasWidth = canvasConfig.width;
+  const canvasHeight = canvasConfig.height;
+  const padding = 40; // 20px padding on each side
 
   // Always show striped background for visual reference
   const hideBackground = false;
 
-  // Calculate required canvas space
-  const requiredWidth = scaledWidth + padding;
-  const requiredHeight = scaledHeight + padding;
-  
-  // Determine if we need scrolling or if canvas fits within available space
-  const needsHorizontalScroll = containerDimensions.width > 0 && requiredWidth > containerDimensions.width;
-  const needsVerticalScroll = containerDimensions.height > 0 && requiredHeight > containerDimensions.height;
-  
-  // Smart container sizing based on zoom and available space
-  const canvasContainerStyle = needsHorizontalScroll || needsVerticalScroll ? {
-    // Canvas is larger than container - enable scrolling
-    minWidth: `${requiredWidth}px`,
-    minHeight: `${requiredHeight}px`,
-    width: `${requiredWidth}px`,
-    height: `${requiredHeight}px`,
-  } : {
-    // Canvas fits within container - fill available space to center properly
-    width: '100%',
-    height: '100%',
-    minWidth: `${requiredWidth}px`,
-    minHeight: `${requiredHeight}px`,
+  // Container sizing for 100% zoom behavior
+  const canvasContainerStyle = {
+    minWidth: `${canvasWidth + padding}px`,
+    minHeight: `${canvasHeight + padding}px`,
   };
 
   const shouldShowLoading = showLoading;
@@ -115,16 +69,14 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         <div 
           className={styles.canvasWrapper} 
           style={{ 
-            transform: `scale(${zoomScale})`, 
-            transformOrigin: 'center center',
-            width: `${canvasConfig.width}px`,
-            height: `${canvasConfig.height}px`,
+            width: `${canvasWidth}px`,
+            height: `${canvasHeight}px`,
           }}
         >
           <canvas
             ref={canvasRef}
-            width={canvasConfig.width}
-            height={canvasConfig.height}
+            width={canvasWidth}
+            height={canvasHeight}
             onMouseDown={handleMouseDown}
             className={canvasClassName}
             style={{ backgroundColor: canvasConfig.backgroundColor }}

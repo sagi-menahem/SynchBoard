@@ -54,6 +54,5 @@ export interface UpdateCanvasSettingsRequest {
 }
 
 export interface CanvasPreferences {
-    canvasZoomLevel: number;
     canvasChatSplitRatio: number;
 }

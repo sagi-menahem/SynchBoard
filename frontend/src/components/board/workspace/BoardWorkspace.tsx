@@ -21,7 +21,6 @@ interface BoardWorkspaceProps {
     strokeColor: string;
     strokeWidth: number;
     canvasConfig?: CanvasConfig;
-    zoomLevel?: number;
     splitRatio?: number;
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     onSplitRatioChange?: (ratio: number) => void;
@@ -36,7 +35,6 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   strokeColor,
   strokeWidth,
   canvasConfig,
-  zoomLevel,
   splitRatio = 70,
   onDraw,
   onSplitRatioChange,
@@ -63,7 +61,6 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       strokeColor={strokeColor}
       strokeWidth={strokeWidth}
       canvasConfig={canvasConfig}
-      zoomLevel={zoomLevel}
     />
   );
 
