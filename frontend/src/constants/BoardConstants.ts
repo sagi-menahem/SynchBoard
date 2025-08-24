@@ -47,16 +47,38 @@ export const CANVAS_CONFIG = {
     DECIMATION_FACTOR: 2,
     PRESERVE_ENDPOINTS: true,
   } satisfies PointOptimizationConfig,
-  SIZE_PRESETS: {
-    MEDIUM_LANDSCAPE: { width: 1920, height: 1080, label: 'Medium (1920×1080)', orientation: 'landscape' },
-    LARGE_LANDSCAPE: { width: 2560, height: 1440, label: 'Large (2560×1440)', orientation: 'landscape' },
-    EXTRA_LARGE_LANDSCAPE: { width: 3840, height: 2160, label: 'Extra Large (3840×2160)', orientation: 'landscape' },
-    MEDIUM_PORTRAIT: { width: 1080, height: 1920, label: 'Medium (1080×1920)', orientation: 'portrait' },
-    LARGE_PORTRAIT: { width: 1440, height: 2560, label: 'Large (1440×2560)', orientation: 'portrait' },
-    EXTRA_LARGE_PORTRAIT: { width: 2160, height: 3840, label: 'Extra Large (2160×3840)', orientation: 'portrait' },
+  CANVAS_SIZE_PRESETS: {
+    WIDESCREEN: { 
+      width: 1920, 
+      height: 1080, 
+      ratio: '16:9',
+      key: 'widescreen'
+    },
+    SQUARE: { 
+      width: 1200, 
+      height: 1200, 
+      ratio: '1:1',
+      key: 'square'
+    },
+    PORTRAIT: { 
+      width: 1080, 
+      height: 1920, 
+      ratio: '9:16',
+      key: 'portrait'
+    },
+    DOCUMENT: { 
+      width: 1240, 
+      height: 1754, 
+      ratio: 'A4',
+      key: 'document'
+    }
   },
+  PRESET_ORDER: ['WIDESCREEN', 'SQUARE', 'PORTRAIT', 'DOCUMENT'] as const,
 } as const;
 
 export const DEFAULT_CANVAS_PREFERENCES = {
   SPLIT_RATIO: 70,
+  DEFAULT_PRESET: 'WIDESCREEN',
+  DEFAULT_WIDTH: CANVAS_CONFIG.CANVAS_SIZE_PRESETS.WIDESCREEN.width,
+  DEFAULT_HEIGHT: CANVAS_CONFIG.CANVAS_SIZE_PRESETS.WIDESCREEN.height,
 } as const;

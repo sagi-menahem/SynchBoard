@@ -28,12 +28,10 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   
   const getTranslationKey = (sizeKey: string): string => {
     const keyMap: Record<string, string> = {
-      'MEDIUM_LANDSCAPE': 'mediumLandscape',
-      'LARGE_LANDSCAPE': 'largeLandscape', 
-      'EXTRA_LARGE_LANDSCAPE': 'extraLargeLandscape',
-      'MEDIUM_PORTRAIT': 'mediumPortrait',
-      'LARGE_PORTRAIT': 'largePortrait',
-      'EXTRA_LARGE_PORTRAIT': 'extraLargePortrait',
+      'WIDESCREEN': 'widescreen',
+      'SQUARE': 'square',
+      'PORTRAIT': 'portrait',
+      'DOCUMENT': 'document',
     };
     return keyMap[sizeKey] || sizeKey.toLowerCase();
   };
@@ -43,12 +41,12 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   const colorPickerRef = useRef<HTMLDivElement>(null);
   
   const [backgroundColor, setBackgroundColor] = useState(boardDetails.canvasBackgroundColor);
-  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.SIZE_PRESETS | 'custom'>(() => {
+  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'>(() => {
     // Determine current size preset or custom
-    const presets = CANVAS_CONFIG.SIZE_PRESETS;
+    const presets = CANVAS_CONFIG.CANVAS_SIZE_PRESETS;
     for (const [key, preset] of Object.entries(presets)) {
       if (boardDetails.canvasWidth === preset.width && boardDetails.canvasHeight === preset.height) {
-        return key as keyof typeof CANVAS_CONFIG.SIZE_PRESETS;
+        return key as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS;
       }
     }
     return 'custom';
@@ -73,7 +71,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         width = customWidth;
         height = customHeight;
       } else {
-        const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
+        const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS];
         width = preset.width;
         height = preset.height;
       }
@@ -179,11 +177,10 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           <div className={styles.formField}>
             <label className={styles.fieldLabel}>{t('boardDetails.canvasSettings.size')}</label>
             <div className={styles.sizeOptions}>
-              {/* Landscape Options */}
+              {/* Canvas Size Presets */}
               <div className={styles.sizeGroup}>
-                <h5 className={styles.groupLabel}>{t('createBoardForm.canvasSize.landscape')}</h5>
-                {(['MEDIUM_LANDSCAPE', 'LARGE_LANDSCAPE', 'EXTRA_LARGE_LANDSCAPE'] as const).map((size) => {
-                  const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
+                {CANVAS_CONFIG.PRESET_ORDER.map((size) => {
+                  const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];
                   return (
                     <label key={size} className={styles.radioOption}>
                       <input
@@ -193,27 +190,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                         onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                         disabled={isUpdating}
                       />
-                      {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
-                    </label>
-                  );
-                })}
-              </div>
-              
-              {/* Portrait Options */}
-              <div className={styles.sizeGroup}>
-                <h5 className={styles.groupLabel}>{t('createBoardForm.canvasSize.portrait')}</h5>
-                {(['MEDIUM_PORTRAIT', 'LARGE_PORTRAIT', 'EXTRA_LARGE_PORTRAIT'] as const).map((size) => {
-                  const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
-                  return (
-                    <label key={size} className={styles.radioOption}>
-                      <input
-                        type="radio"
-                        value={size}
-                        checked={canvasSize === size}
-                        onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
-                        disabled={isUpdating}
-                      />
-                      {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
+                      <div className={styles.presetLabel}>
+                        <span className={styles.presetName}>
+                          {t(`canvasSize.presets.${getTranslationKey(size)}.label`)}
+                        </span>
+                        <span className={styles.presetInfo}>
+                          ({preset.ratio}) - {preset.width}×{preset.height}
+                        </span>
+                      </div>
                     </label>
                   );
                 })}
@@ -221,7 +205,6 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               
               {/* Custom Option */}
               <div className={styles.sizeGroup}>
-                <h5 className={styles.groupLabel}>{t('createBoardForm.canvasSize.customGroup')}</h5>
                 <label className={styles.radioOption}>
                   <input
                     type="radio"
@@ -230,7 +213,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isUpdating}
                   />
-                  {t('createBoardForm.canvasSize.custom')}
+                  <div className={styles.presetLabel}>
+                    <span className={styles.presetName}>
+                      {t('canvasSize.custom.label')}
+                    </span>
+                    <span className={styles.presetInfo}>
+                      {t('canvasSize.custom.description')}
+                    </span>
+                  </div>
                 </label>
               </div>
             </div>
