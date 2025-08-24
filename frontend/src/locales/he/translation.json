@@ -286,6 +286,30 @@
         "board.canvasSettingsUpdate": "הגדרות הקנבס עודכנו בהצלחה!",
         "preferences.update": "העדפות עודכנו בהצלחה!"
     },
+    "canvasSize": {
+        "presets": {
+            "widescreen": {
+                "label": "מסך רחב",
+                "description": "מושלם למצגות ותוכן רחב (16:9)"
+            },
+            "square": {
+                "label": "ריבוע",
+                "description": "אידיאלי לרשתות חברתיות ופריסות מאוזנות (1:1)"
+            },
+            "portrait": {
+                "label": "פורטרט",
+                "description": "מעולה לתוכן מובייל ופריסות אנכיות (9:16)"
+            },
+            "document": {
+                "label": "מסמך",
+                "description": "פורמט מסמך סטנדרטי דומה לנייר A4"
+            }
+        },
+        "custom": {
+            "label": "גודל מותאם אישית",
+            "description": "קבע רוחב וגובה בעצמך"
+        }
+    },
     "boardDetails": {
         "canvasSettings": {
             "title": "הגדרות קנבס",

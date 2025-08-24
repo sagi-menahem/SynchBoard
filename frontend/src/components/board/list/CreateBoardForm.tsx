@@ -26,12 +26,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   
   const getTranslationKey = (sizeKey: string): string => {
     const keyMap: Record<string, string> = {
-      'MEDIUM_LANDSCAPE': 'mediumLandscape',
-      'LARGE_LANDSCAPE': 'largeLandscape', 
-      'EXTRA_LARGE_LANDSCAPE': 'extraLargeLandscape',
-      'MEDIUM_PORTRAIT': 'mediumPortrait',
-      'LARGE_PORTRAIT': 'largePortrait',
-      'EXTRA_LARGE_PORTRAIT': 'extraLargePortrait',
+      'WIDESCREEN': 'widescreen',
+      'SQUARE': 'square',
+      'PORTRAIT': 'portrait',
+      'DOCUMENT': 'document',
     };
     return keyMap[sizeKey] || sizeKey.toLowerCase();
   };
@@ -39,7 +37,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
   const [canvasBackgroundColor, setCanvasBackgroundColor] = useState<string>(CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR);
-  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.SIZE_PRESETS | 'custom'>('MEDIUM_LANDSCAPE');
+  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'>('WIDESCREEN');
   const [customWidth, setCustomWidth] = useState<number>(CANVAS_CONFIG.DEFAULT_WIDTH);
   const [customHeight, setCustomHeight] = useState<number>(CANVAS_CONFIG.DEFAULT_HEIGHT);
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -70,7 +68,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       width = customWidth;
       height = customHeight;
     } else {
-      const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
+      const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS];
       width = preset.width;
       height = preset.height;
     }
@@ -175,11 +173,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>{t('createBoardForm.label.canvasSize')}</label>
         <div className={styles.canvasSizeOptions}>
-          {/* Landscape Options */}
+          {/* Canvas Size Presets */}
           <div className={styles.sizeGroup}>
-            <h4 className={styles.groupLabel}>{t('createBoardForm.canvasSize.landscape')}</h4>
-            {(['MEDIUM_LANDSCAPE', 'LARGE_LANDSCAPE', 'EXTRA_LARGE_LANDSCAPE'] as const).map((size) => {
-              const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
+            {CANVAS_CONFIG.PRESET_ORDER.map((size) => {
+              const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];
               return (
                 <label key={size} className={styles.radioOption}>
                   <input
@@ -189,27 +186,14 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isPending}
                   />
-                  {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
-                </label>
-              );
-            })}
-          </div>
-          
-          {/* Portrait Options */}
-          <div className={styles.sizeGroup}>
-            <h4 className={styles.groupLabel}>{t('createBoardForm.canvasSize.portrait')}</h4>
-            {(['MEDIUM_PORTRAIT', 'LARGE_PORTRAIT', 'EXTRA_LARGE_PORTRAIT'] as const).map((size) => {
-              const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
-              return (
-                <label key={size} className={styles.radioOption}>
-                  <input
-                    type="radio"
-                    value={size}
-                    checked={canvasSize === size}
-                    onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
-                    disabled={isPending}
-                  />
-                  {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
+                  <div className={styles.presetLabel}>
+                    <span className={styles.presetName}>
+                      {t(`canvasSize.presets.${getTranslationKey(size)}.label`)}
+                    </span>
+                    <span className={styles.presetInfo}>
+                      ({preset.ratio}) - {preset.width}×{preset.height}
+                    </span>
+                  </div>
                 </label>
               );
             })}
@@ -217,7 +201,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           
           {/* Custom Option */}
           <div className={styles.sizeGroup}>
-            <h4 className={styles.groupLabel}>{t('createBoardForm.canvasSize.customGroup')}</h4>
             <label className={styles.radioOption}>
               <input
                 type="radio"
@@ -226,7 +209,14 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                 onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                 disabled={isPending}
               />
-              {t('createBoardForm.canvasSize.custom')}
+              <div className={styles.presetLabel}>
+                <span className={styles.presetName}>
+                  {t('canvasSize.custom.label')}
+                </span>
+                <span className={styles.presetInfo}>
+                  {t('canvasSize.custom.description')}
+                </span>
+              </div>
             </label>
           </div>
         </div>

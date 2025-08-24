@@ -286,6 +286,30 @@
         "board.canvasSettingsUpdate": "Canvas settings updated successfully!",
         "preferences.update": "Preferences updated successfully!"
     },
+    "canvasSize": {
+        "presets": {
+            "widescreen": {
+                "label": "Widescreen",
+                "description": "Perfect for presentations and wide content (16:9)"
+            },
+            "square": {
+                "label": "Square",
+                "description": "Ideal for social media and balanced layouts (1:1)"
+            },
+            "portrait": {
+                "label": "Portrait",
+                "description": "Great for mobile content and vertical layouts (9:16)"
+            },
+            "document": {
+                "label": "Document",
+                "description": "Standard document format similar to A4 paper"
+            }
+        },
+        "custom": {
+            "label": "Custom Size",
+            "description": "Set your own width and height"
+        }
+    },
     "boardDetails": {
         "canvasSettings": {
             "title": "Canvas Settings",

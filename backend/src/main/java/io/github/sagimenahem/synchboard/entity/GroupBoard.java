@@ -48,11 +48,11 @@ public class GroupBoard {
 
     @Column(name = "canvas_width")
     @Builder.Default
-    private Integer canvasWidth = 1200;
+    private Integer canvasWidth = 1920;
 
     @Column(name = "canvas_height")
     @Builder.Default
-    private Integer canvasHeight = 800;
+    private Integer canvasHeight = 1080;
 
     @PrePersist
     protected void onCreate() {
