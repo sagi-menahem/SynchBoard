@@ -53,126 +53,106 @@ export const createUserColorMap = (): UserColorMap => {
   return new Map<string, string>();
 };
 
+// Helper function to convert hex to RGB
+const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+  // Handle both 3-digit and 6-digit hex
+  const result = /^#?([a-f\d]{1,2})([a-f\d]{1,2})([a-f\d]{1,2})$/i.exec(hex);
+  if (!result) return null;
+  
+  let r, g, b;
+  if (hex.length === 4) {
+    // 3-digit hex
+    r = parseInt(result[1] + result[1], 16);
+    g = parseInt(result[2] + result[2], 16);
+    b = parseInt(result[3] + result[3], 16);
+  } else {
+    // 6-digit hex
+    r = parseInt(result[1], 16);
+    g = parseInt(result[2], 16);
+    b = parseInt(result[3], 16);
+  }
+  
+  return { r, g, b };
+};
+
+// Helper function to calculate color distance
+const getColorDistance = (color1: { r: number; g: number; b: number }, color2: { r: number; g: number; b: number }): number => {
+  return Math.sqrt(
+    Math.pow(color1.r - color2.r, 2) +
+    Math.pow(color1.g - color2.g, 2) +
+    Math.pow(color1.b - color2.b, 2)
+  );
+};
+
 export const getColorName = (hexColor: string): string | null => {
   const colorMap: Record<string, string> = {
-    // Whites and Grays
+    // Preset colors from ColorPicker component
     '#FFFFFF': 'white',
-    '#F8F8F8': 'lightGray',
-    '#E0E0E0': 'gray',
-    '#BDBDBD': 'mediumGray',
-    '#9E9E9E': 'darkGray',
-    '#757575': 'charcoal',
-    '#616161': 'darkCharcoal',
-    '#424242': 'veryDarkGray',
-    '#2F2F2F': 'almostBlack',
     '#000000': 'black',
-    
-    // Reds
-    '#D32F2F': 'darkRed',
     '#F44336': 'red',
-    '#FF5252': 'lightRed',
     '#E91E63': 'pink',
-    '#FF4081': 'lightPink',
-    '#F50057': 'magenta',
-    
-    // Purples
     '#9C27B0': 'purple',
-    '#BA68C8': 'lightPurple',
-    '#E040FB': 'brightPurple',
-    '#7B1FA2': 'darkPurple',
-    '#AA00FF': 'violet',
-    '#D500F9': 'brightViolet',
-    
-    // Deep Purples
     '#673AB7': 'deepPurple',
-    '#7E57C2': 'lightDeepPurple',
-    '#B388FF': 'paleDeepPurple',
-    '#512DA8': 'darkDeepPurple',
-    '#651FFF': 'brightDeepPurple',
-    '#7C4DFF': 'lightBrightDeepPurple',
-    
-    // Blues
     '#3F51B5': 'indigo',
-    '#5C6BC0': 'lightIndigo',
-    '#536DFE': 'brightIndigo',
-    '#303F9F': 'darkIndigo',
-    '#3D5AFE': 'brightBlue',
-    '#448AFF': 'lightBrightBlue',
     '#2196F3': 'blue',
-    '#42A5F5': 'lightBlue',
-    '#2979FF': 'mediumBlue',
-    '#1976D2': 'darkBlue',
-    '#2962FF': 'royalBlue',
-    '#0091EA': 'deepBlue',
-    
-    // Cyans
     '#00BCD4': 'cyan',
-    '#26C6DA': 'lightCyan',
-    '#00E5FF': 'brightCyan',
-    '#0097A7': 'darkCyan',
-    '#00B8D4': 'mediumCyan',
-    
-    // Teals
     '#009688': 'teal',
-    '#26A69A': 'lightTeal',
-    '#1DE9B6': 'brightTeal',
-    '#00897B': 'darkTeal',
-    '#00BFA5': 'mediumTeal',
-    '#00E676': 'brightGreen',
-    
-    // Greens
     '#4CAF50': 'green',
-    '#66BB6A': 'lightGreen',
-    '#69F0AE': 'paleGreen',
-    '#388E3C': 'darkGreen',
-    '#00C853': 'brightGreen2',
-    
-    // Light Greens
     '#8BC34A': 'limeGreen',
-    '#9CCC65': 'lightLimeGreen',
-    '#B2FF59': 'brightLimeGreen',
-    '#689F38': 'darkLimeGreen',
+    '#CDDC39': 'lime',
+    '#FFEB3B': 'yellow',
+    '#FFC107': 'amber',
+    '#FF9800': 'orange',
+    '#FF5722': 'deepOrange2',
+    '#795548': 'brownOrange',
+    '#9E9E9E': 'darkGray',
+    '#607D8B': 'charcoal',
+    '#F8F8F8': 'lightGray',
+    '#424242': 'veryDarkGray',
+    '#E040FB': 'brightPurple',
+    '#651FFF': 'brightDeepPurple',
+    '#3D5AFE': 'brightBlue',
+    '#2979FF': 'mediumBlue',
+    '#00E5FF': 'brightCyan',
+    '#1DE9B6': 'brightTeal',
     '#76FF03': 'neonGreen',
     '#C6FF00': 'brightNeonGreen',
-    
-    // Lime
-    '#CDDC39': 'lime',
-    '#D4E157': 'lightLime',
-    '#EEFF41': 'brightLime',
-    '#AFB42B': 'darkLime',
-    '#AEEA00': 'neonLime',
-    
-    // Yellows
-    '#FFEB3B': 'yellow',
-    '#FFF176': 'lightYellow',
-    '#FFFF00': 'brightYellow',
-    '#FBC02D': 'darkYellow',
     '#FFD600': 'gold',
-    
-    // Ambers
-    '#FFC107': 'amber',
-    '#FFD54F': 'lightAmber',
-    '#FFC400': 'brightAmber',
-    '#FFA000': 'darkAmber',
-    '#FFAB00': 'deepAmber',
-    
-    // Oranges
-    '#FF9800': 'orange',
-    '#FFB74D': 'lightOrange',
-    '#FF9100': 'brightOrange',
-    '#F57C00': 'darkOrange',
-    '#FF6D00': 'deepOrange',
     '#FF6F00': 'redOrange',
-    
-    // Deep Oranges / Reds
-    '#FF5722': 'deepOrange2',
-    '#FF8A65': 'lightDeepOrange',
-    '#FF3D00': 'brightDeepOrange',
-    '#E64A19': 'darkDeepOrange',
     '#DD2C00': 'veryDarkOrange',
-    '#BF360C': 'brownOrange',
+    '#6D4C41': 'brownOrange',
+    '#757575': 'charcoal',
+    '#546E7A': 'charcoal',
+    
+    // Additional common colors
+    '#222222': 'almostBlack',
+    '#222': 'almostBlack',
   };
 
   const upperHex = hexColor.toUpperCase();
-  return colorMap[upperHex] || null;
+  
+  // Try exact match first
+  if (colorMap[upperHex]) {
+    return colorMap[upperHex];
+  }
+  
+  // If no exact match, find the closest color
+  const inputRgb = hexToRgb(hexColor);
+  if (!inputRgb) return null;
+  
+  let closestColor = null;
+  let minDistance = Infinity;
+  
+  for (const [hex, colorName] of Object.entries(colorMap)) {
+    const rgb = hexToRgb(hex);
+    if (!rgb) continue;
+    
+    const distance = getColorDistance(inputRgb, rgb);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestColor = colorName;
+    }
+  }
+  
+  return closestColor;
 };

@@ -13,7 +13,7 @@ import { useBoardActions } from 'hooks/board/workspace/useBoardActions';
 import { useBoardDataManager } from 'hooks/board/workspace/useBoardDataManager';
 import { useSocket } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
-import { useUnifiedWebSocketHandler } from 'hooks/common/useUnifiedWebSocketHandler';
+import { useWebSocketHandler } from 'hooks/common/useWebSocketHandler';
 import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
@@ -73,7 +73,7 @@ export const useBoardWorkspace = (boardId: number) => {
     logger.debug(`Chat transaction committed via unified handler: ${instanceId}`);
   }, []);
 
-  useUnifiedWebSocketHandler({
+  useWebSocketHandler({
     boardId,
     sessionInstanceId: sessionInstanceId.current,
     setBoardName,

@@ -123,6 +123,9 @@
         "userNotFound": "User {{email}} not found",
         "errorCheckingUser": "Error checking if user exists. Please try again.",
         "canvasSize": {
+            "landscape": "Landscape",
+            "portrait": "Portrait", 
+            "customGroup": "Custom Size",
             "mediumLandscape": "Medium",
             "largeLandscape": "Large",
             "extraLargeLandscape": "Extra Large",

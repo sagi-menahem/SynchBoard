@@ -132,49 +132,6 @@
     transform: none;
 }
 
-.fieldHint {
-    color: #9ca3af;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-}
-
-.additionalActions {
-    margin-top: 2rem;
-    text-align: center;
-    padding-top: 1rem;
-    border-top: 1px solid #374151;
-}
-
-.additionalActions p {
-    color: #d1d5db;
-    margin-bottom: 1rem;
-}
-
-.forgotPasswordLink {
-    color: var(--color-primary-link, #8186ff);
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 0.875rem;
-    transition: color 0.2s ease;
-    display: block;
-    text-align: center;
-}
-
-.forgotPasswordLink:hover {
-    color: #6d72e8;
-    text-decoration: underline;
-}
-
-.colorInput {
-    width: 60px;
-    height: 40px;
-    border: 1px solid #555;
-    border-radius: 6px;
-    background: transparent;
-    cursor: pointer;
-    margin-top: 0.25rem;
-}
-
 .canvasSizeOptions {
     display: flex;
     flex-direction: column;

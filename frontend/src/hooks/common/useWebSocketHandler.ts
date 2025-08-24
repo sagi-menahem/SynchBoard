@@ -11,7 +11,7 @@ import { ActionType, type ActionPayload, type BoardActionResponse } from 'types/
 import type { ChatMessageResponse } from 'types/MessageTypes';
 import type { BoardUpdateDTO } from 'types/WebSocketTypes';
 
-interface UnifiedWebSocketHandlerProps {
+interface WebSocketHandlerProps {
   boardId: number;
   sessionInstanceId: string;
   setBoardName: (name: string) => void;
@@ -22,7 +22,7 @@ interface UnifiedWebSocketHandlerProps {
   commitChatTransaction: (instanceId: string) => void;
 }
 
-export const useUnifiedWebSocketHandler = ({
+export const useWebSocketHandler = ({
   boardId,
   sessionInstanceId,
   setBoardName,
@@ -31,7 +31,7 @@ export const useUnifiedWebSocketHandler = ({
   setMessages,
   commitDrawingTransaction,
   commitChatTransaction,
-}: UnifiedWebSocketHandlerProps) => {
+}: WebSocketHandlerProps) => {
   const { userEmail } = useAuth();
 
   const handleBoardUpdate = useCallback((update: BoardUpdateDTO) => {
@@ -107,7 +107,7 @@ export const useUnifiedWebSocketHandler = ({
     }
   }, [setMessages, commitChatTransaction]);
 
-  const onUnifiedMessageReceived = useCallback(
+  const onMessageReceived = useCallback(
     (payload: unknown) => {
       if (typeof payload !== 'object' || !payload) return;
 
@@ -146,11 +146,11 @@ export const useUnifiedWebSocketHandler = ({
 
   useSocketSubscription(
     boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', 
-    onUnifiedMessageReceived, 
-    'unified-board',
+    onMessageReceived, 
+    'board-websocket',
   );
 
   return {
-    onUnifiedMessageReceived,
+    onMessageReceived,
   };
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Input, Modal } from 'components/common';
+import { BaseAuthModal, Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { useResendVerificationCode, useVerifyEmailForm } from 'hooks/auth/forms';
 
@@ -42,75 +42,64 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
     }
   };
 
+  const resendActions = (
+    <div style={{ paddingTop: '1rem', borderTop: '1px solid #444', textAlign: 'center' }}>
+      <p style={{ color: '#ccc', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+        {t('verifyEmail.didNotReceive', 'Didn\'t receive the code?')}
+      </p>
+      <Button 
+        variant="secondary" 
+        onClick={handleResendCode}
+        disabled={resendCooldown > 0}
+        style={{ fontSize: '0.875rem' }}
+      >
+        {resendCooldown > 0 
+          ? t('verifyEmail.resend.cooldown', 'Resend in {{seconds}}s', { seconds: resendCooldown })
+          : t('verifyEmail.resend.button', 'Resend Code')
+        }
+      </Button>
+    </div>
+  );
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div style={{ maxWidth: '400px' }}>
-        <h2 style={{ marginTop: 0, marginBottom: '1rem', color: '#fff' }}>
-          {t('verifyEmail.heading', 'Check Your Email')}
-        </h2>
-        <p style={{ color: '#ccc', marginBottom: '1.5rem' }}>
+    <BaseAuthModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t('verifyEmail.heading', 'Check Your Email')}
+      description={
+        <>
           {t('verifyEmail.description', 'Enter the 6-digit code sent to')} <strong style={{ color: '#fff' }}>{email}</strong>
-        </p>
-
-        <form action={submitAction}>
-          {state.error && (
-            <div className={styles.error} role="alert" style={{ marginBottom: '1rem' }}>
-              {state.error}
-            </div>
-          )}
-
-          <div className={styles.field}>
-            <label htmlFor="verification-code">
-              {t('verifyEmail.label.code', 'Verification Code')}
-              <span className={styles.required}> *</span>
-            </label>
-            <Input
-              id="verification-code"
-              name="verificationCode"
-              type="text"
-              required
-              disabled={isPending}
-              maxLength={6}
-              pattern="[0-9]{6}"
-              placeholder={t('verifyEmail.placeholder.code', '123456')}
-              autoComplete="one-time-code"
-              style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}
-            />
-            <small style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
-              {t('verifyEmail.hint.code', 'Enter the 6-digit code from your email')}
-            </small>
-          </div>
-
-          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem', justifyContent: 'center' }}>
-            <Button variant="secondary" onClick={onClose} disabled={isPending}>
-              {t('common.button.cancel', 'Cancel')}
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending ? t('common.button.verifying', 'Verifying...') : t('verifyEmail.button', 'Verify Email')}
-            </Button>
-          </div>
-        </form>
-
-        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #444', textAlign: 'center' }}>
-          <p style={{ color: '#ccc', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
-            {t('verifyEmail.didNotReceive', 'Didn\'t receive the code?')}
-          </p>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button 
-              variant="secondary" 
-              onClick={handleResendCode}
-              disabled={resendCooldown > 0}
-              style={{ fontSize: '0.875rem' }}
-            >
-              {resendCooldown > 0 
-                ? t('verifyEmail.resend.cooldown', 'Resend in {{seconds}}s', { seconds: resendCooldown })
-                : t('verifyEmail.resend.button', 'Resend Code')
-              }
-            </Button>
-          </div>
-        </div>
+        </>
+      }
+      onSubmit={submitAction}
+      isPending={isPending}
+      error={state.error}
+      submitButtonText={isPending ? t('common.button.verifying', 'Verifying...') : t('verifyEmail.button', 'Verify Email')}
+      cancelButtonText={t('common.button.cancel', 'Cancel')}
+      additionalActions={resendActions}
+    >
+      <div className={styles.field}>
+        <label htmlFor="verification-code">
+          {t('verifyEmail.label.code', 'Verification Code')}
+          <span className={styles.required}> *</span>
+        </label>
+        <Input
+          id="verification-code"
+          name="verificationCode"
+          type="text"
+          required
+          disabled={isPending}
+          maxLength={6}
+          pattern="[0-9]{6}"
+          placeholder={t('verifyEmail.placeholder.code', '123456')}
+          autoComplete="one-time-code"
+          style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}
+        />
+        <small style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
+          {t('verifyEmail.hint.code', 'Enter the 6-digit code from your email')}
+        </small>
       </div>
-    </Modal>
+    </BaseAuthModal>
   );
 };
 

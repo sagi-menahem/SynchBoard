@@ -20,6 +20,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   label,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
   const swatchRef = useRef<HTMLButtonElement>(null);
 
@@ -51,7 +52,38 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const handleColorChange = (color: string) => {
     onChange(color);
+    // Don't close during dragging - only close on mouse release
+    if (!isDragging) {
+      setShowPicker(false);
+    }
   };
+
+  const handleMouseDown = () => {
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    // Close the picker when mouse is released after dragging
+    setShowPicker(false);
+  };
+
+  // Listen for global mouse up events to handle dragging outside the picker
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDragging) {
+        setIsDragging(false);
+        setShowPicker(false);
+      }
+    };
+
+    if (isDragging) {
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+      return () => {
+        document.removeEventListener('mouseup', handleGlobalMouseUp);
+      };
+    }
+  }, [isDragging]);
 
   return (
     <div className={`${styles.colorPickerContainer} ${className}`}>
@@ -71,10 +103,15 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       {showPicker && !disabled && (
         <div ref={pickerRef} className={styles.popover}>
           <div className={styles.colorfulWrapper}>
-            <HexColorPicker 
-              color={color} 
-              onChange={handleColorChange}
-            />
+            <div
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+            >
+              <HexColorPicker 
+                color={color} 
+                onChange={handleColorChange}
+              />
+            </div>
             <div className={styles.presetColors}>
               {[
                 '#FFFFFF', '#000000', '#F44336', '#E91E63', '#9C27B0', '#673AB7',

@@ -1,3 +1,4 @@
+export { default as BaseAuthModal } from './BaseAuthModal';
 export { default as Button } from './Button';
 export { default as ColorPicker } from './ColorPicker';
 export { default as ConfirmationDialog } from './ConfirmationDialog';
@@ -9,4 +10,5 @@ export { ErrorDisplay } from './ErrorDisplay';
 export { default as Input } from './Input';
 export { default as Modal } from './Modal';
 export { default as PasswordInput } from './PasswordInput';
+export { default as PictureManager } from './PictureManager';
 export { default as ResizableSplitPanel } from './ResizableSplitPanel';
