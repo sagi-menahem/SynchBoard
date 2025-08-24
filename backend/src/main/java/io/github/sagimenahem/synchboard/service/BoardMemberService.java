@@ -262,7 +262,16 @@ public class BoardMemberService {
                         int lastSlashIndex = pictureUrl.lastIndexOf("/");
                         if (lastSlashIndex != -1 && lastSlashIndex < pictureUrl.length() - 1) {
                                 String filename = pictureUrl.substring(lastSlashIndex + 1);
-                                fileStorageService.delete(filename);
+                                if (filename != null && !filename.isBlank()) {
+                                        try {
+                                                fileStorageService.delete(filename);
+                                                log.debug("Existing board picture deleted during board cleanup: {}",
+                                                                filename);
+                                        } catch (Exception e) {
+                                                log.warn("Failed to delete board picture file during cleanup: {} - {}",
+                                                                filename, e.getMessage());
+                                        }
+                                }
                         }
                 }
         }

@@ -1,6 +1,5 @@
 package io.github.sagimenahem.synchboard.service;
 
-import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -169,8 +168,7 @@ public class BoardService {
         GroupBoard boardToUpdate = member.getGroupBoard();
         deleteExistingPicture(boardToUpdate);
 
-        String newFilename = fileStorageService.store(file);
-        String newPictureUrl = IMAGES_BASE_PATH + newFilename;
+        String newPictureUrl = fileStorageService.store(file);
         boardToUpdate.setGroupPictureUrl(newPictureUrl);
 
         log.info(BOARD_UPDATED, boardId, "picture", userEmail);
@@ -213,9 +211,8 @@ public class BoardService {
     private void deleteExistingPicture(GroupBoard board) {
         String pictureUrl = board.getGroupPictureUrl();
         if (pictureUrl != null && !pictureUrl.isBlank()) {
-            int lastSlashIndex = pictureUrl.lastIndexOf("/");
-            if (lastSlashIndex != -1 && lastSlashIndex < pictureUrl.length() - 1) {
-                String filename = pictureUrl.substring(lastSlashIndex + 1);
+            String filename = extractFilenameFromPictureUrl(pictureUrl);
+            if (filename != null && !filename.isBlank()) {
                 try {
                     fileStorageService.delete(filename);
                     log.debug("Existing board picture deleted: {}", filename);
@@ -224,6 +221,19 @@ public class BoardService {
                 }
             }
         }
+    }
+
+    private String extractFilenameFromPictureUrl(String pictureUrl) {
+        if (pictureUrl == null || pictureUrl.isBlank()) {
+            return null;
+        }
+
+        int lastSlashIndex = pictureUrl.lastIndexOf("/");
+        if (lastSlashIndex != -1 && lastSlashIndex < pictureUrl.length() - 1) {
+            return pictureUrl.substring(lastSlashIndex + 1);
+        }
+
+        return null;
     }
 
     private BoardDTO mapToBoardResponse(GroupMember membership) {
