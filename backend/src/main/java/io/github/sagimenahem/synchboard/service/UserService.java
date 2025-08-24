@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
@@ -182,5 +183,45 @@ public class UserService {
             notificationService.broadcastBoardUpdatesToMultipleBoards(boardIds,
                     BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public CanvasPreferencesDTO getCanvasPreferences(String userEmail) {
+        log.debug("Fetching canvas preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        return CanvasPreferencesDTO.builder()
+                .canvasZoomLevel(user.getCanvasZoomLevel())
+                .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
+                .build();
+    }
+
+    @Transactional
+    public CanvasPreferencesDTO updateCanvasPreferences(String userEmail, CanvasPreferencesDTO preferences) {
+        log.debug("Updating canvas preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        if (preferences.getCanvasZoomLevel() != null) {
+            user.setCanvasZoomLevel(preferences.getCanvasZoomLevel());
+        }
+        if (preferences.getCanvasChatSplitRatio() != null) {
+            user.setCanvasChatSplitRatio(preferences.getCanvasChatSplitRatio());
+        }
+        
+        userRepository.save(user);
+        log.info("Canvas preferences updated for user: {}", userEmail);
+        
+        return CanvasPreferencesDTO.builder()
+                .canvasZoomLevel(user.getCanvasZoomLevel())
+                .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
+                .build();
     }
 }

@@ -23,4 +23,10 @@ public class BoardDTO {
     private LocalDateTime lastModifiedDate;
 
     private Boolean isAdmin;
+
+    private String canvasBackgroundColor;
+
+    private Integer canvasWidth;
+
+    private Integer canvasHeight;
 }

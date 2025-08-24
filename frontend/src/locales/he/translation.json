@@ -94,12 +94,19 @@
             "boardName": "שם הלוח",
             "description": "תיאור (אופציונלי)",
             "boardImage": "תמונת לוח (אופציונלי)",
-            "inviteMembers": "הזמן חברים (אופציונלי)"
+            "inviteMembers": "הזמן חברים (אופציונלי)",
+            "canvasBackground": "צבע רקע הקנבס",
+            "canvasSize": "גודל הקנבס",
+            "width": "רוחב",
+            "height": "גובה",
+            "pixels": "פיקסלים"
         },
         "placeholder": {
             "name": "לדוגמה, תכנון פרויקט לרבעון 3",
             "description": "על מה הלוח הזה?",
-            "inviteEmails": "הזן כתובת אימייל"
+            "inviteEmails": "הזן כתובת אימייל",
+            "width": "רוחב",
+            "height": "גובה"
         },
         "button": {
             "createBoard": "צור לוח"
@@ -115,14 +122,23 @@
         "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח",
         "userNotFound": "המשתמש {{email}} לא נמצא",
         "errorCheckingUser": "שגיאה בבדיקה אם המשתמש קיים. אנא נסה שנית.",
+        "canvasSize": {
+            "small": "קטן",
+            "medium": "בינוני",
+            "large": "גדול",
+            "custom": "מותאם אישית"
+        },
         "validation": {
             "nameRequired": "שם הלוח נדרש"
         }
     },
     "toolbar": {
+        "ariaLabel": "סרגל כלי ציור",
         "label": {
             "color": "צבע",
-            "lineWidth": "עובי קו: {{width}}"
+            "lineWidth": "עובי קו: {{width}}",
+            "zoom": "זום: {{zoom}}%",
+            "layout": "פריסה"
         },
         "tool": {
             "brush": "מברשת",
@@ -130,7 +146,11 @@
             "circle": "עיגול",
             "eraser": "מחק",
             "undo": "בטל",
-            "redo": "בצע שוב"
+            "redo": "בצע שוב",
+            "resetZoom": "איפוס",
+            "focusCanvas": "התמקד בקנבס",
+            "balanced": "מאוזן",
+            "focusChat": "התמקד בצ'אט"
         }
     },
     "chatWindow": {
@@ -257,7 +277,21 @@
         "board.descriptionUpdate": "תיאור הלוח עודכן בהצלחה!",
         "board.pictureUpdate": "תמונת הלוח עודכנה בהצלחה!",
         "board.pictureDelete": "תמונת הלוח נמחקה.",
+        "board.canvasSettingsUpdate": "הגדרות הקנבס עודכנו בהצלחה!",
         "preferences.update": "העדפות עודכנו בהצלחה!"
+    },
+    "boardDetails": {
+        "canvasSettings": {
+            "title": "הגדרות קנבס",
+            "backgroundColor": "צבע רקע",
+            "size": "גודל קנבס",
+            "width": "רוחב",
+            "height": "גובה", 
+            "pixels": "פיקסלים",
+            "edit": "עריכת הגדרות",
+            "applyChanges": "החל שינויים",
+            "custom": "מותאם אישית"
+        }
     },
     "boardSync": {
         "nothingToUndo": "אין פעולות לביטול.",

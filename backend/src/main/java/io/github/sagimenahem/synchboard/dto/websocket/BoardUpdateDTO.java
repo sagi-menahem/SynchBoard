@@ -18,6 +18,8 @@ public class BoardUpdateDTO {
 
         DETAILS_UPDATED,
 
-        MEMBERS_UPDATED
+        MEMBERS_UPDATED,
+
+        CANVAS_UPDATED
     }
 }

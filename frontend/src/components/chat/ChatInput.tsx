@@ -36,7 +36,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     try {
       await onSendMessage(messageContent);
       setMessage('');
-    } catch (error) {
+    } catch {
       // Error is already handled by the parent component
       setMessage('');
     } finally {

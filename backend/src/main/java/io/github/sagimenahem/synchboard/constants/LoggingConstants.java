@@ -71,6 +71,8 @@ public final class LoggingConstants {
             CRITICAL_PREFIX + " User account deleted. User: {}";
     public static final String USER_PREFERENCES_UPDATED =
             DATA_PREFIX + " User preferences updated. User: {}";
+    public static final String USER_PREFERENCES_FETCHED =
+            DATA_PREFIX + " User preferences fetched. User: {}";
     public static final String USER_NOT_FOUND = DATA_PREFIX + " User not found. Email: {}";
 
     public static final String WEBSOCKET_MESSAGE_SENT =

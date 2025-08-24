@@ -94,12 +94,19 @@
             "boardName": "Board Name",
             "description": "Description (Optional)",
             "boardImage": "Board Image (Optional)",
-            "inviteMembers": "Invite Members (Optional)"
+            "inviteMembers": "Invite Members (Optional)",
+            "canvasBackground": "Canvas Background Color",
+            "canvasSize": "Canvas Size",
+            "width": "Width",
+            "height": "Height",
+            "pixels": "pixels"
         },
         "placeholder": {
             "name": "e.g., Q3 Project Planning",
             "description": "What is this board about?",
-            "inviteEmails": "Enter email address"
+            "inviteEmails": "Enter email address",
+            "width": "Width",
+            "height": "Height"
         },
         "button": {
             "createBoard": "Create Board"
@@ -115,14 +122,23 @@
         "cannotInviteSelf": "You cannot invite yourself to the board",
         "userNotFound": "User {{email}} not found",
         "errorCheckingUser": "Error checking if user exists. Please try again.",
+        "canvasSize": {
+            "small": "Small",
+            "medium": "Medium",
+            "large": "Large",
+            "custom": "Custom"
+        },
         "validation": {
             "nameRequired": "Board name is required"
         }
     },
     "toolbar": {
+        "ariaLabel": "Drawing toolbar",
         "label": {
             "color": "Color",
-            "lineWidth": "Line Width: {{width}}"
+            "lineWidth": "Line Width: {{width}}",
+            "zoom": "Zoom: {{zoom}}%",
+            "layout": "Layout"
         },
         "tool": {
             "brush": "Brush",
@@ -130,7 +146,11 @@
             "circle": "Circle",
             "eraser": "Eraser",
             "undo": "Undo",
-            "redo": "Redo"
+            "redo": "Redo",
+            "resetZoom": "Reset",
+            "focusCanvas": "Focus Canvas",
+            "balanced": "Balanced",
+            "focusChat": "Focus Chat"
         }
     },
     "chatWindow": {
@@ -257,7 +277,21 @@
         "board.descriptionUpdate": "Board description updated successfully!",
         "board.pictureUpdate": "Board picture updated successfully!",
         "board.pictureDelete": "Board picture deleted.",
+        "board.canvasSettingsUpdate": "Canvas settings updated successfully!",
         "preferences.update": "Preferences updated successfully!"
+    },
+    "boardDetails": {
+        "canvasSettings": {
+            "title": "Canvas Settings",
+            "backgroundColor": "Background Color",
+            "size": "Canvas Size",
+            "width": "Width",
+            "height": "Height", 
+            "pixels": "pixels",
+            "edit": "Edit Settings",
+            "applyChanges": "Apply Changes",
+            "custom": "Custom"
+        }
     },
     "boardSync": {
         "nothingToUndo": "Nothing to undo.",

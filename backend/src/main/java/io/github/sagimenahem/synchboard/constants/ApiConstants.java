@@ -30,6 +30,7 @@ public final class ApiConstants {
     public static final String API_BOARDS_DESCRIPTION = "/{boardId}/description";
     public static final String API_BOARDS_PICTURE = "/{boardId}/picture";
     public static final String API_BOARDS_MESSAGES = "/{boardId}/messages";
+    public static final String API_BOARDS_CANVAS_SETTINGS = "/{boardId}/canvas-settings";
 
     public static final String PATH_VAR_BOARD_ID = "boardId";
     public static final String PATH_VAR_MEMBER_EMAIL = "memberEmail";
@@ -43,6 +44,7 @@ public final class ApiConstants {
     public static final String API_USER_PROFILE_PICTURE = "/profile-picture";
     public static final String API_USER_ACCOUNT = "/account";
     public static final String API_USER_PREFERENCES = "/preferences";
+    public static final String API_USER_CANVAS_PREFERENCES = "/canvas-preferences";
     public static final String API_USER_EXISTS = "/exists/{email}";
 
     public static final String AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE = "Hello, authenticated user!";

@@ -4,11 +4,12 @@ import type { ActionPayload, CirclePayload, EnhancedActionPayload, LinePayload, 
 export const getMouseCoordinates = (
   event: MouseEvent, 
   canvas: HTMLCanvasElement,
+  zoomScale: number = 1,
 ): { x: number; y: number } | null => {
   const rect = canvas.getBoundingClientRect();
   return {
-    x: event.clientX - rect.left,
-    y: event.clientY - rect.top,
+    x: (event.clientX - rect.left) / zoomScale,
+    y: (event.clientY - rect.top) / zoomScale,
   };
 };
 

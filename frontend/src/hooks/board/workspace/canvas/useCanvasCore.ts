@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import {
   drawCirclePayload,
@@ -43,18 +43,10 @@ export const useCanvasCore = () => {
     currentPath.current = [];
   }, []);
 
-  useLayoutEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      setDimensions({ width, height });
-    });
-
-    resizeObserver.observe(container);
-    return () => resizeObserver.disconnect();
-  }, [containerRef]);
+  // For fixed-size canvas, we set dimensions based on canvas config
+  const setCanvasDimensions = useCallback((width: number, height: number) => {
+    setDimensions({ width, height });
+  }, []);
 
 
   const refs: CanvasRefs = {
@@ -80,6 +72,7 @@ export const useCanvasCore = () => {
     getMouseCoordinates,
     isShapeSizeValid,
     isRadiusValid,
+    setCanvasDimensions,
   };
 
   return {

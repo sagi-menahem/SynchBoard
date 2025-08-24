@@ -12,6 +12,7 @@ import io.github.sagimenahem.synchboard.dto.board.BoardDTO;
 import io.github.sagimenahem.synchboard.dto.board.BoardDetailsDTO;
 import io.github.sagimenahem.synchboard.dto.board.CreateBoardRequest;
 import io.github.sagimenahem.synchboard.dto.board.MemberDTO;
+import io.github.sagimenahem.synchboard.dto.board.UpdateCanvasSettingsRequest;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
@@ -59,7 +60,11 @@ public class BoardService {
         });
 
         GroupBoard newBoard = GroupBoard.builder().boardGroupName(request.getName())
-                .groupDescription(request.getDescription()).createdByUser(owner).build();
+                .groupDescription(request.getDescription()).createdByUser(owner)
+                .canvasBackgroundColor(request.getCanvasBackgroundColor())
+                .canvasWidth(request.getCanvasWidth())
+                .canvasHeight(request.getCanvasHeight())
+                .build();
 
         // Handle board picture upload if provided
         if (request.getPicture() != null && !request.getPicture().isEmpty()) {
@@ -117,7 +122,11 @@ public class BoardService {
                 memberDTOs.size());
         return BoardDetailsDTO.builder().id(board.getBoardGroupId()).name(board.getBoardGroupName())
                 .description(board.getGroupDescription()).pictureUrl(board.getGroupPictureUrl())
-                .members(memberDTOs).build();
+                .members(memberDTOs)
+                .canvasBackgroundColor(board.getCanvasBackgroundColor())
+                .canvasWidth(board.getCanvasWidth())
+                .canvasHeight(board.getCanvasHeight())
+                .build();
     }
 
     @Transactional
@@ -263,7 +272,11 @@ public class BoardService {
                 .description(membership.getGroupBoard().getGroupDescription())
                 .pictureUrl(membership.getGroupBoard().getGroupPictureUrl())
                 .lastModifiedDate(membership.getGroupBoard().getLastModifiedDate())
-                .isAdmin(membership.getIsAdmin()).build();
+                .isAdmin(membership.getIsAdmin())
+                .canvasBackgroundColor(membership.getGroupBoard().getCanvasBackgroundColor())
+                .canvasWidth(membership.getGroupBoard().getCanvasWidth())
+                .canvasHeight(membership.getGroupBoard().getCanvasHeight())
+                .build();
     }
 
     private MemberDTO mapToMemberDTO(GroupMember membership) {
@@ -306,5 +319,42 @@ public class BoardService {
 
         log.info("Board {} creation: {} successful invites, {} failed invites", 
                  boardId, successfulInvites, failedInvites);
+    }
+
+    @Transactional
+    public BoardDTO updateCanvasSettings(Long boardId, UpdateCanvasSettingsRequest request, String userEmail) {
+        log.debug("Updating canvas settings. BoardId: {}, User: {}", boardId, userEmail);
+
+        GroupMember member = groupMemberRepository
+                .findByBoardGroupIdAndUserEmail(boardId, userEmail).orElseThrow(() -> {
+                    log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
+
+        if (!member.getIsAdmin()) {
+            log.warn("Non-admin user {} attempted to update canvas settings for board {}", userEmail, boardId);
+            throw new AccessDeniedException("Only board administrators can update canvas settings");
+        }
+
+        GroupBoard boardToUpdate = member.getGroupBoard();
+        
+        if (request.getCanvasBackgroundColor() != null) {
+            boardToUpdate.setCanvasBackgroundColor(request.getCanvasBackgroundColor());
+        }
+        if (request.getCanvasWidth() != null) {
+            boardToUpdate.setCanvasWidth(request.getCanvasWidth());
+        }
+        if (request.getCanvasHeight() != null) {
+            boardToUpdate.setCanvasHeight(request.getCanvasHeight());
+        }
+
+        groupBoardRepository.save(boardToUpdate);
+
+        log.info(BOARD_UPDATED, boardId, "canvas settings", userEmail);
+
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.CANVAS_UPDATED, userEmail);
+        notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
+
+        return mapToBoardResponse(member);
     }
 }

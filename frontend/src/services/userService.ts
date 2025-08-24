@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from 'constants';
 
+import type { CanvasPreferences } from 'types/BoardTypes';
 import type { ChangePasswordRequest, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'types/UserTypes';
 
 import apiClient from './apiClient';
@@ -43,5 +44,15 @@ export const deleteAccount = async (): Promise<void> => {
 
 export const checkUserExists = async (email: string): Promise<boolean> => {
   const response = await apiClient.get<boolean>(API_ENDPOINTS.CHECK_USER_EXISTS(email));
+  return response.data;
+};
+
+export const getCanvasPreferences = async (): Promise<CanvasPreferences> => {
+  const response = await apiClient.get<CanvasPreferences>(API_ENDPOINTS.GET_CANVAS_PREFERENCES);
+  return response.data;
+};
+
+export const updateCanvasPreferences = async (preferences: Partial<CanvasPreferences>): Promise<CanvasPreferences> => {
+  const response = await apiClient.put<CanvasPreferences>(API_ENDPOINTS.UPDATE_CANVAS_PREFERENCES, preferences);
   return response.data;
 };

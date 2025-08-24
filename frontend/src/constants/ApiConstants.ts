@@ -23,6 +23,7 @@ export const API_ENDPOINTS = {
   UPLOAD_BOARD_PICTURE: (boardId: number) => `/boards/${boardId}/picture`,
   DELETE_BOARD_PICTURE: (boardId: number) => `/boards/${boardId}/picture`,
   GET_BOARD_MESSAGES: (boardId: number) => `/boards/${boardId}/messages`,
+  UPDATE_CANVAS_SETTINGS: (boardId: number) => `/boards/${boardId}/canvas-settings`,
 
   GET_USER_PROFILE: '/user/profile',
   UPDATE_USER_PROFILE: '/user/profile',
@@ -30,6 +31,8 @@ export const API_ENDPOINTS = {
   UPLOAD_PROFILE_PICTURE: '/user/profile-picture',
   DELETE_PROFILE_PICTURE: '/user/profile-picture',
   UPDATE_USER_PREFERENCES: '/user/preferences',
+  GET_CANVAS_PREFERENCES: '/user/canvas-preferences',
+  UPDATE_CANVAS_PREFERENCES: '/user/canvas-preferences',
   DELETE_ACCOUNT: '/user/account',
   CHECK_USER_EXISTS: (email: string) => `/user/exists/${encodeURIComponent(email)}`,
 } as const;
@@ -46,6 +49,7 @@ export const PUBLIC_API_ENDPOINTS: readonly string[] = [
 export const WEBSOCKET_DESTINATIONS = {
   DRAW_ACTION: '/app/board.drawAction',
   SEND_MESSAGE: '/app/chat.sendMessage',
+  CANVAS_SETTINGS_UPDATE: '/app/board.canvasSettingsUpdate',
 } as const;
 
 export const WEBSOCKET_TOPICS = {

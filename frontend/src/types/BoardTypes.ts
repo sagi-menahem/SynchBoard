@@ -1,3 +1,9 @@
+export interface CanvasConfig {
+    backgroundColor: string;
+    width: number;
+    height: number;
+}
+
 export interface Board {
     id: number;
     name: string;
@@ -5,11 +11,17 @@ export interface Board {
     pictureUrl: string | null;
     lastModifiedDate: string;
     isAdmin: boolean;
+    canvasBackgroundColor: string;
+    canvasWidth: number;
+    canvasHeight: number;
 }
 
 export interface CreateBoardRequest {
     name: string;
     description?: string;
+    canvasBackgroundColor?: string;
+    canvasWidth?: number;
+    canvasHeight?: number;
 }
 
 export interface Member {
@@ -30,4 +42,18 @@ export interface BoardDetails {
     description: string | null;
     pictureUrl: string | null;
     members: Member[];
+    canvasBackgroundColor: string;
+    canvasWidth: number;
+    canvasHeight: number;
+}
+
+export interface UpdateCanvasSettingsRequest {
+    canvasBackgroundColor?: string;
+    canvasWidth?: number;
+    canvasHeight?: number;
+}
+
+export interface CanvasPreferences {
+    canvasZoomLevel: number;
+    canvasChatSplitRatio: number;
 }

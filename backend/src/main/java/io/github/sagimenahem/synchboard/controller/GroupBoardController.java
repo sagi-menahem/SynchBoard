@@ -252,4 +252,19 @@ public class GroupBoardController {
                                 boardId);
                 return ResponseEntity.ok(messages);
         }
+
+        @PutMapping(API_BOARDS_CANVAS_SETTINGS)
+        public ResponseEntity<BoardDTO> updateCanvasSettings(
+                        @PathVariable(PATH_VAR_BOARD_ID) Long boardId,
+                        @Valid @RequestBody UpdateCanvasSettingsRequest request,
+                        Authentication authentication) {
+
+                String userEmail = authentication.getName();
+                log.info(AUDIT_PREFIX + " Canvas settings update. BoardId: {}, User: {}", boardId,
+                                userEmail);
+
+                BoardDTO updatedBoard = boardService.updateCanvasSettings(boardId, request, userEmail);
+                log.info(BOARD_UPDATED, boardId, "canvas settings", userEmail);
+                return ResponseEntity.ok(updatedBoard);
+        }
 }

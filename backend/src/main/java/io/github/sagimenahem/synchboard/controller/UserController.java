@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ChangePasswordRequest;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
@@ -110,5 +111,28 @@ public class UserController {
                 userService.updateUserPreferences(userEmail, userPreferencesDTO);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping(API_USER_CANVAS_PREFERENCES)
+    public ResponseEntity<CanvasPreferencesDTO> getCanvasPreferences(Authentication authentication) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_CANVAS_PREFERENCES, userEmail);
+
+        CanvasPreferencesDTO canvasPreferences = userService.getCanvasPreferences(userEmail);
+        log.debug(USER_PREFERENCES_FETCHED, userEmail);
+        return ResponseEntity.ok(canvasPreferences);
+    }
+
+    @PutMapping(API_USER_CANVAS_PREFERENCES)
+    public ResponseEntity<CanvasPreferencesDTO> updateCanvasPreferences(Authentication authentication,
+            @Valid @RequestBody CanvasPreferencesDTO canvasPreferencesDTO) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_CANVAS_PREFERENCES,
+                userEmail);
+
+        CanvasPreferencesDTO updatedPreferences =
+                userService.updateCanvasPreferences(userEmail, canvasPreferencesDTO);
+        log.info(USER_PREFERENCES_UPDATED, userEmail);
+        return ResponseEntity.ok(updatedPreferences);
     }
 }

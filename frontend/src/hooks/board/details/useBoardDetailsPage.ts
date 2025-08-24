@@ -14,7 +14,7 @@ import {
   useBoardPermissions,
 } from 'hooks/board/details';
 import * as boardService from 'services/boardService';
-import type { Member } from 'types/BoardTypes';
+import type { Member, UpdateCanvasSettingsRequest } from 'types/BoardTypes';
 import type { EditingField } from 'types/CommonTypes';
 
 export const useBoardDetailsPage = (boardId: number) => {
@@ -110,6 +110,19 @@ export const useBoardDetailsPage = (boardId: number) => {
     }
   }, [boardId, t]);
 
+  const handleCanvasSettingsUpdate = useCallback(
+    async (settings: UpdateCanvasSettingsRequest) => {
+      try {
+        await boardService.updateCanvasSettings(boardId, settings);
+        toast.success(t('success.board.canvasSettingsUpdate'));
+      } catch (error) {
+        logger.error('Canvas settings update error:', error);
+        throw error;
+      }
+    },
+    [boardId, t],
+  );
+
   return {
     isLoading,
     boardDetails,
@@ -137,5 +150,6 @@ export const useBoardDetailsPage = (boardId: number) => {
     handlePictureUpload,
     promptPictureDelete,
     handleConfirmDeletePicture,
+    handleCanvasSettingsUpdate,
   };
 };

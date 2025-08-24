@@ -5,12 +5,14 @@ import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
 import type { ActionPayload } from 'types/BoardObjectTypes';
+import type { BoardDetails } from 'types/BoardTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
 
 export const useBoardDataManager = (boardId: number) => {
   const [isLoading, setIsLoading] = useState(true);
   const [boardName, setBoardName] = useState<string | null>(null);
+  const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
   const [accessLost, setAccessLost] = useState(false);
   const [objects, setObjects] = useState<ActionPayload[]>([]);
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
@@ -24,6 +26,7 @@ export const useBoardDataManager = (boardId: number) => {
     ])
       .then(([details, objectActions, messageHistory]) => {
         setBoardName(details.name);
+        setBoardDetails(details);
         const initialObjects = objectActions
           .filter((a) => a.payload)
           .map((a) => ({ ...(a.payload as object), instanceId: a.instanceId }) as ActionPayload);
@@ -52,10 +55,12 @@ export const useBoardDataManager = (boardId: number) => {
   return {
     isLoading,
     boardName,
+    boardDetails,
     accessLost,
     objects,
     messages,
     setBoardName,
+    setBoardDetails,
     setAccessLost,
     setObjects,
     setMessages,

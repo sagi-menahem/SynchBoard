@@ -58,6 +58,14 @@ public class User implements UserDetails {
     @Column(name = "chat_background_setting")
     private String chatBackgroundSetting;
 
+    @Column(name = "canvas_zoom_level")
+    @Builder.Default
+    private Integer canvasZoomLevel = 100;
+
+    @Column(name = "canvas_chat_split_ratio")
+    @Builder.Default
+    private Integer canvasChatSplitRatio = 70;
+
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
@@ -73,6 +81,12 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
+        if (this.canvasZoomLevel == null) {
+            this.canvasZoomLevel = 100;
+        }
+        if (this.canvasChatSplitRatio == null) {
+            this.canvasChatSplitRatio = 70;
+        }
     }
 
     /**

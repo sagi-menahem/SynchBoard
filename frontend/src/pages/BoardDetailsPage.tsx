@@ -7,6 +7,7 @@ import {
   BoardConfirmDialogs,
   BoardDetailsHeader,
   BoardEditModals,
+  CanvasSettingsSection,
   MemberContextMenu,
   MemberList,
   PictureManagerModal,
@@ -45,6 +46,7 @@ const BoardDetailsPage: React.FC = () => {
     handlePictureUpload,
     promptPictureDelete,
     handleConfirmDeletePicture,
+    handleCanvasSettingsUpdate,
   } = useBoardDetailsPage(numericBoardId);
 
 
@@ -66,6 +68,12 @@ const BoardDetailsPage: React.FC = () => {
         onSetEditingField={setEditingField}
         onSetLeaveConfirmOpen={setLeaveConfirmOpen}
         onSetInviteModalOpen={setInviteModalOpen}
+      />
+
+      <CanvasSettingsSection
+        boardDetails={boardDetails}
+        isAdmin={currentUserIsAdmin}
+        onUpdateSettings={handleCanvasSettingsUpdate}
       />
 
       <ul className={styles.membersListContainer}>
