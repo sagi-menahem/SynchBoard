@@ -15,7 +15,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
 
     List<GroupMember> findAllByUserEmail(String userEmail);
     
-    @Query("SELECT gm FROM GroupMember gm JOIN FETCH gm.groupBoard WHERE gm.userEmail = :userEmail")
+    @Query("SELECT gm FROM GroupMember gm JOIN FETCH gm.groupBoard gb WHERE gm.userEmail = :userEmail ORDER BY gb.lastModifiedDate DESC")
     List<GroupMember> findByUserWithBoard(@Param("userEmail") String userEmail);
 
     boolean existsByUserEmailAndBoardGroupId(String userEmail, Long boardGroupId);

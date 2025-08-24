@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 import io.github.sagimenahem.synchboard.constants.ApiConstants;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
@@ -22,4 +23,9 @@ public interface GroupBoardRepository extends JpaRepository<GroupBoard, Long> {
            "JOIN FETCH gm.user " +
            "WHERE gm.boardGroupId = :boardId")
     List<GroupMember> findMembersWithDetails(@Param("boardId") Long boardId);
+    
+    @Modifying
+    @Transactional
+    @Query("UPDATE GroupBoard gb SET gb.lastModifiedDate = CURRENT_TIMESTAMP WHERE gb.boardGroupId = :boardId")
+    void updateLastModifiedDate(@Param("boardId") Long boardId);
 }

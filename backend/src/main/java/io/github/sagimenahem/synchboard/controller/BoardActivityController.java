@@ -14,6 +14,8 @@ import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
 import io.github.sagimenahem.synchboard.service.BoardObjectService;
 import io.github.sagimenahem.synchboard.service.ChatService;
+import io.github.sagimenahem.synchboard.service.BoardNotificationService;
+import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +27,8 @@ public class BoardActivityController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final BoardObjectService boardObjectService;
     private final ChatService chatService;
+    private final BoardNotificationService notificationService;
+    private final GroupBoardRepository groupBoardRepository;
 
     @MessageMapping(MAPPING_CHAT_SEND_MESSAGE)
     public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
@@ -37,6 +41,9 @@ public class BoardActivityController {
         try {
             chatService.processAndSaveMessage(request, principal);
             log.info(CHAT_MESSAGE_SENT, request.getBoardId(), userEmail, "new-message");
+            
+            // Update board's lastModifiedDate and notify board list users
+            updateBoardActivity(request.getBoardId());
         } catch (Exception e) {
             log.error(
                     WEBSOCKET_PREFIX
@@ -64,12 +71,32 @@ public class BoardActivityController {
 
             boardObjectService.saveDrawAction(request, userEmail);
             log.info(ACTION_SAVED, request.getBoardId(), userEmail, request.getType());
+            
+            // Update board's lastModifiedDate and notify board list users
+            updateBoardActivity(request.getBoardId());
         } catch (Exception e) {
             log.error(WEBSOCKET_PREFIX
                     + " Failed to process draw action. BoardId: {}, User: {}, Type: {}, Error: {}",
                     request.getBoardId(), userEmail, request.getType(), e.getMessage(), e);
             messagingTemplate.convertAndSendToUser(userEmail, "/topic/errors",
                     new ErrorResponseDTO("Failed to save draw action", "DRAW_ACTION_ERROR"));
+        }
+    }
+    
+    /**
+     * Updates the board's lastModifiedDate and notifies board list users
+     */
+    private void updateBoardActivity(Long boardId) {
+        try {
+            // Update board's lastModifiedDate (triggers @PreUpdate)
+            groupBoardRepository.updateLastModifiedDate(boardId);
+            
+            // Notify all board members that board details changed (for board list updates)
+            notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
+            
+            log.debug("Board activity updated for boardId: {}", boardId);
+        } catch (Exception e) {
+            log.warn("Failed to update board activity for boardId: {}, Error: {}", boardId, e.getMessage());
         }
     }
 }

@@ -154,3 +154,40 @@ export const optimizeDrawingPoints = (
   
   return optimizedPoints;
 };
+
+export interface CanvasPresetInfo {
+  name: string;
+  ratio: string | null;
+  isCustom: boolean;
+}
+
+export const getCanvasPresetInfo = (width: number, height: number): CanvasPresetInfo => {
+  // Check if dimensions match any preset
+  for (const [key, preset] of Object.entries(CANVAS_CONFIG.CANVAS_SIZE_PRESETS)) {
+    if (preset.width === width && preset.height === height) {
+      return {
+        name: key.toLowerCase(),
+        ratio: preset.ratio,
+        isCustom: false,
+      };
+    }
+  }
+  
+  // Return custom if no preset match
+  return {
+    name: 'custom',
+    ratio: null,
+    isCustom: true,
+  };
+};
+
+export const formatCanvasResolution = (width: number, height: number, t: (key: string) => string): string => {
+  const presetInfo = getCanvasPresetInfo(width, height);
+  
+  if (presetInfo.isCustom) {
+    return `${t('canvasSize.custom.label')} - ${width}×${height}`;
+  }
+  
+  const presetName = t(`canvasSize.presets.${presetInfo.name}.label`);
+  return `${presetName} (${presetInfo.ratio}) - ${width}×${height}`;
+};

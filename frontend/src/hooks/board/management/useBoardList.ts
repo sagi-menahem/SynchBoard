@@ -72,12 +72,44 @@ export const useBoardList = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const updateSpecificBoard = useCallback(async (boardId: number) => {
+    try {
+      const updatedBoard = await BoardService.getBoardDetails(boardId);
+      setBoards(prevBoards => {
+        const updatedBoards = prevBoards.map(board => 
+          board.id === boardId ? {
+            ...board,
+            canvasBackgroundColor: updatedBoard.canvasBackgroundColor,
+            canvasWidth: updatedBoard.canvasWidth,
+            canvasHeight: updatedBoard.canvasHeight,
+            lastModifiedDate: new Date().toISOString(), // Set to current time for immediate sorting
+          } : board
+        );
+        
+        // Sort by lastModifiedDate DESC to maintain order
+        return updatedBoards.sort((a, b) => 
+          new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime()
+        );
+      });
+    } catch (error) {
+      logger.warn('Failed to update specific board, falling back to full refetch:', error);
+      fetchBoards();
+    }
+  }, [fetchBoards]);
+
   const handleUserUpdate = useCallback(
     (message: UserUpdateDTO) => {
-      logger.debug(`[useBoardList] Received user update: ${message.updateType}. Refetching board list.`);
-      fetchBoards();
+      logger.debug(`[useBoardList] Received user update: ${message.updateType}`);
+      
+      if (message.updateType === 'BOARD_DETAILS_CHANGED' && message.boardId) {
+        logger.debug(`[useBoardList] Board ${message.boardId} details changed. Updating specific board.`);
+        updateSpecificBoard(message.boardId);
+      } else {
+        logger.debug(`[useBoardList] ${message.updateType} received. Refetching board list.`);
+        fetchBoards();
+      }
     },
-    [fetchBoards],
+    [fetchBoards, updateSpecificBoard],
   );
 
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');

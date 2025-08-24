@@ -31,16 +31,110 @@
 .boardCardContent {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
-.boardCardContent h2,
-.boardCardContent p {
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.cardHeader h2 {
+    flex: 1;
+    margin-right: 1rem;
     margin: 0;
 }
 
-.boardCardContent p {
-    margin-top: 0.25rem;
+.metadataColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.colorInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.colorName {
+    font-size: 0.75rem;
     color: #ccc;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.canvasColorBadge {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid #555;
+    flex-shrink: 0;
+}
+
+.cardBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+}
+
+.description {
+    flex: 1;
+    margin: 0;
+    color: #ccc;
+}
+
+.resolutionInfo {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.canvasResolution {
+    font-size: 0.75rem;
+    color: #999;
+    white-space: nowrap;
+    font-family: monospace;
+}
+
+.cardFooter {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    width: 100%;
+    position: relative;
+}
+
+.leftSection {
+    flex: 1;
+    /* Empty space for future expansion */
+}
+
+.centerSection {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+}
+
+.rightSection {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lastModified {
+    font-size: 0.75rem;
+    color: #888;
+    white-space: nowrap;
 }
 
 .adminLabel {
