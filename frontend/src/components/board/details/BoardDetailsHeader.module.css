@@ -80,9 +80,16 @@
     transform: scale(1.05);
 }
 
+.imageButton:focus, 
 .imageButton:focus-visible {
+     outline: none;
+     box-shadow: 0 0 0 2px #a9a9ff;
+}
+
+.imageButton:active {
     outline: none;
     box-shadow: 0 0 0 2px #a9a9ff;
+    transform: scale(0.98);
 }
 
 .editableTextButton {
