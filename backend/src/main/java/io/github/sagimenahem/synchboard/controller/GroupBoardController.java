@@ -41,7 +41,7 @@ public class GroupBoardController {
         }
 
         @PostMapping
-        public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody CreateBoardRequest request,
+        public ResponseEntity<BoardDTO> createBoard(@Valid @ModelAttribute CreateBoardRequest request,
                         Authentication authentication) {
                 String userEmail = authentication.getName();
                 log.info(API_REQUEST_RECEIVED, "POST", API_BOARDS_BASE_PATH, userEmail);

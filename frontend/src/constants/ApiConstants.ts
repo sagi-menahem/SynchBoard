@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
   DELETE_PROFILE_PICTURE: '/user/profile-picture',
   UPDATE_USER_PREFERENCES: '/user/preferences',
   DELETE_ACCOUNT: '/user/account',
+  CHECK_USER_EXISTS: (email: string) => `/user/exists/${encodeURIComponent(email)}`,
 } as const;
 
 export const PUBLIC_API_ENDPOINTS: readonly string[] = [

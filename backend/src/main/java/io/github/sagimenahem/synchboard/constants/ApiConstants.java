@@ -43,6 +43,7 @@ public final class ApiConstants {
     public static final String API_USER_PROFILE_PICTURE = "/profile-picture";
     public static final String API_USER_ACCOUNT = "/account";
     public static final String API_USER_PREFERENCES = "/preferences";
+    public static final String API_USER_EXISTS = "/exists/{email}";
 
     public static final String AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE = "Hello, authenticated user!";
 }

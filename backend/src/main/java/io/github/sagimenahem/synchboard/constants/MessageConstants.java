@@ -11,14 +11,15 @@ public final class MessageConstants {
     public static final String BOARD_NAME_LENGHT =
             "Board name must be between 3 and 100 characters.";
 
-    public static final String USER_NOT_FOUND = "user.notFound";
-    public static final String BOARD_NOT_FOUND = "board.notFound";
-    public static final String EMAIL_IN_USE = "email.inUse";
-    public static final String USER_ALREADY_MEMBER = "user.alreadyMember";
-    public static final String AUTH_NOT_ADMIN = "auth.notAdmin";
-    public static final String AUTH_NOT_MEMBER = "auth.notMember";
-    public static final String BOARD_CANNOT_REMOVE_SELF = "board.cannotRemoveSelf";
-    public static final String USER_IS_ALREADY_ADMIN = "user.alreadyAdmin";
+    public static final String USER_NOT_FOUND = "User not found: ";
+    public static final String BOARD_NOT_FOUND = "Board not found: ";
+    public static final String EMAIL_IN_USE = "Email already in use: ";
+    public static final String USER_ALREADY_MEMBER = "User is already a member of this board";
+    public static final String CANNOT_INVITE_SELF = "cannotInviteSelf";
+    public static final String AUTH_NOT_ADMIN = "You must be an admin to perform this action";
+    public static final String AUTH_NOT_MEMBER = "You are not a member of this board";
+    public static final String BOARD_CANNOT_REMOVE_SELF = "You cannot remove yourself from the board";
+    public static final String USER_IS_ALREADY_ADMIN = "User is already an admin";
     public static final String PASSWORD_INCORRECT = "password.incorrect";
     public static final String UNEXPECTED_ERROR = "unexpected";
     public static final String PASSWORD_SAME_AS_OLD = "password.sameAsOld";

@@ -40,3 +40,8 @@ export const updateUserPreferences = async (data: UserPreferences): Promise<User
 export const deleteAccount = async (): Promise<void> => {
   await apiClient.delete(API_ENDPOINTS.DELETE_ACCOUNT);
 };
+
+export const checkUserExists = async (email: string): Promise<boolean> => {
+  const response = await apiClient.get<boolean>(API_ENDPOINTS.CHECK_USER_EXISTS(email));
+  return response.data;
+};
