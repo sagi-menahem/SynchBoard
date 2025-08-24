@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
-import { Button, Input, ColorPicker } from 'components/common';
+import { Button, ColorPicker, Input } from 'components/common';
+import utilStyles from 'components/common/utils.module.css';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'types/BoardTypes';
 
 import styles from './CanvasSettingsSection.module.css';
-import utilStyles from 'components/common/utils.module.css';
 
 interface CanvasSettingsSectionProps {
   boardDetails: BoardDetails;
@@ -156,6 +156,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                         checked={canvasSize === size}
                         onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                         disabled={isUpdating}
+                        aria-label={`${t(`canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
                       />
                       <div className={styles.presetLabel}>
                         <span className={styles.presetName}>
@@ -179,13 +180,13 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                     checked={canvasSize === 'custom'}
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isUpdating}
+                    aria-label={`${t('canvasSize.custom.label')}`}
                   />
                   <div className={styles.presetLabel}>
                     <span className={styles.presetName}>
                       {t('canvasSize.custom.label')}
                     </span>
                     <span className={styles.presetInfo}>
-                      {t('canvasSize.custom.description')}
                     </span>
                   </div>
                 </label>
