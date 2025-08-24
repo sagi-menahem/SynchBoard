@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { getColorName } from 'utils/ColorUtils';
 
-import { Button, Input, ColorPicker } from 'components/common';
+import { Button, ColorPicker, Input } from 'components/common';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'types/BoardTypes';
 
@@ -20,21 +21,29 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   onUpdateSettings,
 }) => {
   const { t } = useTranslation();
+  
+  const getTranslationKey = (sizeKey: string): string => {
+    const keyMap: Record<string, string> = {
+      'MEDIUM_LANDSCAPE': 'mediumLandscape',
+      'LARGE_LANDSCAPE': 'largeLandscape', 
+      'EXTRA_LARGE_LANDSCAPE': 'extraLargeLandscape',
+      'MEDIUM_PORTRAIT': 'mediumPortrait',
+      'LARGE_PORTRAIT': 'largePortrait',
+      'EXTRA_LARGE_PORTRAIT': 'extraLargePortrait',
+    };
+    return keyMap[sizeKey] || sizeKey.toLowerCase();
+  };
   const [isEditing, setIsEditing] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   
   const [backgroundColor, setBackgroundColor] = useState(boardDetails.canvasBackgroundColor);
-  const [canvasSize, setCanvasSize] = useState<'small' | 'medium' | 'large' | 'custom'>(() => {
+  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.SIZE_PRESETS | 'custom'>(() => {
     // Determine current size preset or custom
     const presets = CANVAS_CONFIG.SIZE_PRESETS;
-    if (boardDetails.canvasWidth === presets.SMALL.width && boardDetails.canvasHeight === presets.SMALL.height) {
-      return 'small';
-    }
-    if (boardDetails.canvasWidth === presets.MEDIUM.width && boardDetails.canvasHeight === presets.MEDIUM.height) {
-      return 'medium';
-    }
-    if (boardDetails.canvasWidth === presets.LARGE.width && boardDetails.canvasHeight === presets.LARGE.height) {
-      return 'large';
+    for (const [key, preset] of Object.entries(presets)) {
+      if (boardDetails.canvasWidth === preset.width && boardDetails.canvasHeight === preset.height) {
+        return key as keyof typeof CANVAS_CONFIG.SIZE_PRESETS;
+      }
     }
     return 'custom';
   });
@@ -56,7 +65,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         width = customWidth;
         height = customHeight;
       } else {
-        const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
+        const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
         width = preset.width;
         height = preset.height;
       }
@@ -83,8 +92,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <div 
               className={styles.colorPreview} 
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
+              title={boardDetails.canvasBackgroundColor}
             />
-            <span className={styles.settingValue}>{boardDetails.canvasBackgroundColor}</span>
+            <span className={styles.settingValue}>
+              {(() => {
+                const colorName = getColorName(boardDetails.canvasBackgroundColor);
+                return colorName ? t(`colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+              })()}
+            </span>
           </div>
           <div className={styles.settingRow}>
             <span className={styles.settingLabel}>{t('boardDetails.canvasSettings.size')}:</span>
@@ -122,21 +137,60 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           <div className={styles.formField}>
             <label className={styles.fieldLabel}>{t('boardDetails.canvasSettings.size')}</label>
             <div className={styles.sizeOptions}>
-              {(['small', 'medium', 'large', 'custom'] as const).map((size) => (
-                <label key={size} className={styles.radioOption}>
+              {/* Landscape Options */}
+              <div className={styles.sizeGroup}>
+                <h5 className={styles.groupLabel}>{t('createBoardForm.canvasSize.landscape')}</h5>
+                {(['MEDIUM_LANDSCAPE', 'LARGE_LANDSCAPE', 'EXTRA_LARGE_LANDSCAPE'] as const).map((size) => {
+                  const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
+                  return (
+                    <label key={size} className={styles.radioOption}>
+                      <input
+                        type="radio"
+                        value={size}
+                        checked={canvasSize === size}
+                        onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
+                        disabled={isUpdating}
+                      />
+                      {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
+                    </label>
+                  );
+                })}
+              </div>
+              
+              {/* Portrait Options */}
+              <div className={styles.sizeGroup}>
+                <h5 className={styles.groupLabel}>{t('createBoardForm.canvasSize.portrait')}</h5>
+                {(['MEDIUM_PORTRAIT', 'LARGE_PORTRAIT', 'EXTRA_LARGE_PORTRAIT'] as const).map((size) => {
+                  const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
+                  return (
+                    <label key={size} className={styles.radioOption}>
+                      <input
+                        type="radio"
+                        value={size}
+                        checked={canvasSize === size}
+                        onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
+                        disabled={isUpdating}
+                      />
+                      {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
+                    </label>
+                  );
+                })}
+              </div>
+              
+              {/* Custom Option */}
+              <div className={styles.sizeGroup}>
+                <h5 className={styles.groupLabel}>{t('createBoardForm.canvasSize.customGroup')}</h5>
+                <label className={styles.radioOption}>
                   <input
                     type="radio"
-                    value={size}
-                    checked={canvasSize === size}
+                    value="custom"
+                    checked={canvasSize === 'custom'}
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isUpdating}
                   />
-                  {size === 'custom' 
-                    ? t('boardDetails.canvasSettings.custom') 
-                    : `${t(`boardDetails.canvasSettings.${size}`)} (${CANVAS_CONFIG.SIZE_PRESETS[size.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS].width}×${CANVAS_CONFIG.SIZE_PRESETS[size.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS].height})`
-                  }
+                  {t('createBoardForm.canvasSize.custom')}
                 </label>
-              ))}
+              </div>
             </div>
             {canvasSize === 'custom' && (
               <div className={styles.customSizeInputs}>
@@ -190,8 +244,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <div 
               className={styles.colorPreview} 
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
+              title={boardDetails.canvasBackgroundColor}
             />
-            <span className={styles.settingValue}>{boardDetails.canvasBackgroundColor}</span>
+            <span className={styles.settingValue}>
+              {(() => {
+                const colorName = getColorName(boardDetails.canvasBackgroundColor);
+                return colorName ? t(`colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+              })()}
+            </span>
           </div>
           <div className={styles.settingRow}>
             <span className={styles.settingLabel}>{t('boardDetails.canvasSettings.size')}:</span>

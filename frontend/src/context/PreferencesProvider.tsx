@@ -15,7 +15,7 @@ interface PreferencesProviderProps {
 }
 
 const defaultPreferences: UserPreferences = {
-  chatBackgroundSetting: '#282828',
+  boardBackgroundSetting: '#282828',
 };
 
 export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ children }) => {
@@ -28,7 +28,7 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
       .getUserProfile()
       .then((profile) => {
         setPreferences({
-          chatBackgroundSetting: profile.chatBackgroundSetting || defaultPreferences.chatBackgroundSetting,
+          boardBackgroundSetting: profile.boardBackgroundSetting || defaultPreferences.boardBackgroundSetting,
         });
       })
       .catch((error) => {

@@ -1,8 +1,8 @@
-import React, { useState, startTransition } from 'react';
+import React, { startTransition, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Input, ColorPicker } from 'components/common';
+import { Button, ColorPicker, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCreateBoardForm } from 'hooks/board/management';
@@ -18,13 +18,25 @@ interface CreateBoardFormProps {
 
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
   const { t } = useTranslation();
+  
+  const getTranslationKey = (sizeKey: string): string => {
+    const keyMap: Record<string, string> = {
+      'MEDIUM_LANDSCAPE': 'mediumLandscape',
+      'LARGE_LANDSCAPE': 'largeLandscape', 
+      'EXTRA_LARGE_LANDSCAPE': 'extraLargeLandscape',
+      'MEDIUM_PORTRAIT': 'mediumPortrait',
+      'LARGE_PORTRAIT': 'largePortrait',
+      'EXTRA_LARGE_PORTRAIT': 'extraLargePortrait',
+    };
+    return keyMap[sizeKey] || sizeKey.toLowerCase();
+  };
   const { state, submitAction, isPending } = useCreateBoardForm(onBoardCreated);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
-  const [canvasBackgroundColor, setCanvasBackgroundColor] = useState(CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR);
-  const [canvasSize, setCanvasSize] = useState<'small' | 'medium' | 'large' | 'custom'>('medium');
-  const [customWidth, setCustomWidth] = useState(CANVAS_CONFIG.DEFAULT_WIDTH);
-  const [customHeight, setCustomHeight] = useState(CANVAS_CONFIG.DEFAULT_HEIGHT);
+  const [canvasBackgroundColor, setCanvasBackgroundColor] = useState<string>(CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR);
+  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.SIZE_PRESETS | 'custom'>('MEDIUM_LANDSCAPE');
+  const [customWidth, setCustomWidth] = useState<number>(CANVAS_CONFIG.DEFAULT_WIDTH);
+  const [customHeight, setCustomHeight] = useState<number>(CANVAS_CONFIG.DEFAULT_HEIGHT);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,7 +61,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       width = customWidth;
       height = customHeight;
     } else {
-      const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
+      const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
       width = preset.width;
       height = preset.height;
     }
@@ -117,21 +129,60 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>{t('createBoardForm.label.canvasSize')}</label>
         <div className={styles.canvasSizeOptions}>
-          {(['small', 'medium', 'large', 'custom'] as const).map((size) => (
-            <label key={size} className={styles.radioOption}>
+          {/* Landscape Options */}
+          <div className={styles.sizeGroup}>
+            <h4 className={styles.groupLabel}>{t('createBoardForm.canvasSize.landscape')}</h4>
+            {(['MEDIUM_LANDSCAPE', 'LARGE_LANDSCAPE', 'EXTRA_LARGE_LANDSCAPE'] as const).map((size) => {
+              const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
+              return (
+                <label key={size} className={styles.radioOption}>
+                  <input
+                    type="radio"
+                    value={size}
+                    checked={canvasSize === size}
+                    onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
+                    disabled={isPending}
+                  />
+                  {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
+                </label>
+              );
+            })}
+          </div>
+          
+          {/* Portrait Options */}
+          <div className={styles.sizeGroup}>
+            <h4 className={styles.groupLabel}>{t('createBoardForm.canvasSize.portrait')}</h4>
+            {(['MEDIUM_PORTRAIT', 'LARGE_PORTRAIT', 'EXTRA_LARGE_PORTRAIT'] as const).map((size) => {
+              const preset = CANVAS_CONFIG.SIZE_PRESETS[size];
+              return (
+                <label key={size} className={styles.radioOption}>
+                  <input
+                    type="radio"
+                    value={size}
+                    checked={canvasSize === size}
+                    onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
+                    disabled={isPending}
+                  />
+                  {t(`createBoardForm.canvasSize.${getTranslationKey(size)}`)} ({preset.width}×{preset.height})
+                </label>
+              );
+            })}
+          </div>
+          
+          {/* Custom Option */}
+          <div className={styles.sizeGroup}>
+            <h4 className={styles.groupLabel}>{t('createBoardForm.canvasSize.customGroup')}</h4>
+            <label className={styles.radioOption}>
               <input
                 type="radio"
-                value={size}
-                checked={canvasSize === size}
+                value="custom"
+                checked={canvasSize === 'custom'}
                 onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                 disabled={isPending}
               />
-              {size === 'custom' 
-                ? t('createBoardForm.canvasSize.custom') 
-                : `${t(`createBoardForm.canvasSize.${size}`)} (${CANVAS_CONFIG.SIZE_PRESETS[size.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS].width}x${CANVAS_CONFIG.SIZE_PRESETS[size.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS].height})`
-              }
+              {t('createBoardForm.canvasSize.custom')}
             </label>
-          ))}
+          </div>
         </div>
         {canvasSize === 'custom' && (
           <div className={styles.customSizeInputs}>

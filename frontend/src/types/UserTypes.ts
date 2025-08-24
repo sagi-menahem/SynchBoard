@@ -24,7 +24,7 @@ export interface UserProfile {
     phoneNumber: string | null;
     dateOfBirth: string | null;
     profilePictureUrl: string | null;
-    chatBackgroundSetting: string | null;
+    boardBackgroundSetting: string | null;
 }
 
 export interface UpdateUserProfileRequest {
@@ -41,7 +41,7 @@ export interface ChangePasswordRequest {
 }
 
 export interface UserPreferences {
-    chatBackgroundSetting: string | null;
+    boardBackgroundSetting: string | null;
 }
 
 export interface VerifyEmailRequest {

@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 
 import { Button, ConfirmationDialog } from 'components/common';
 import {
+  BoardAppearanceSection,
   ChangePasswordForm,
-  ChatAppearanceSection,
   DangerZoneSection,
   ProfileDetailsSection,
   ProfilePictureManager,
@@ -66,7 +66,7 @@ const SettingsPage: React.FC = () => {
         <ChangePasswordForm onSubmit={handleChangePassword} />
       </section>
 
-      <ChatAppearanceSection />
+      <BoardAppearanceSection />
 
       <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
 

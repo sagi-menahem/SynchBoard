@@ -182,7 +182,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   return (
     <div
       className={styles.container}
-      style={{ backgroundColor: preferences.chatBackgroundSetting || undefined }}
+      style={{ backgroundColor: preferences.boardBackgroundSetting || undefined }}
     >
       {searchVisible && (
         <div className={styles.searchContainer}>

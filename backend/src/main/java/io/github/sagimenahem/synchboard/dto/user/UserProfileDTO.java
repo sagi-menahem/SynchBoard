@@ -18,5 +18,5 @@ public class UserProfileDTO {
     private String phoneNumber;
     private LocalDate dateOfBirth;
     private String profilePictureUrl;
-    private String chatBackgroundSetting;
+    private String boardBackgroundSetting;
 }

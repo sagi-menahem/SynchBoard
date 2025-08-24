@@ -32,9 +32,9 @@ export const CANVAS_CONFIG = {
   DEFAULT_WIDTH: 1200,
   DEFAULT_HEIGHT: 800,
   MIN_WIDTH: 400,
-  MAX_WIDTH: 3000,
+  MAX_WIDTH: 4000,
   MIN_HEIGHT: 300,
-  MAX_HEIGHT: 2000,
+  MAX_HEIGHT: 4000,
   PREVIEW_ERASER_COLOR: '#222',
   MIN_SHAPE_SIZE_THRESHOLD: 0.001,
   COMPOSITE_OPERATIONS: {
@@ -48,9 +48,12 @@ export const CANVAS_CONFIG = {
     PRESERVE_ENDPOINTS: true,
   } satisfies PointOptimizationConfig,
   SIZE_PRESETS: {
-    SMALL: { width: 800, height: 600, label: 'Small (800x600)' },
-    MEDIUM: { width: 1200, height: 800, label: 'Medium (1200x800)' },
-    LARGE: { width: 1600, height: 1200, label: 'Large (1600x1200)' },
+    MEDIUM_LANDSCAPE: { width: 1920, height: 1080, label: 'Medium (1920×1080)', orientation: 'landscape' },
+    LARGE_LANDSCAPE: { width: 2560, height: 1440, label: 'Large (2560×1440)', orientation: 'landscape' },
+    EXTRA_LARGE_LANDSCAPE: { width: 3840, height: 2160, label: 'Extra Large (3840×2160)', orientation: 'landscape' },
+    MEDIUM_PORTRAIT: { width: 1080, height: 1920, label: 'Medium (1080×1920)', orientation: 'portrait' },
+    LARGE_PORTRAIT: { width: 1440, height: 2560, label: 'Large (1440×2560)', orientation: 'portrait' },
+    EXTRA_LARGE_PORTRAIT: { width: 2160, height: 3840, label: 'Extra Large (2160×3840)', orientation: 'portrait' },
   },
 } as const;
 

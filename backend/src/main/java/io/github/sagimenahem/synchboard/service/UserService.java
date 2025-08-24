@@ -143,7 +143,7 @@ public class UserService {
             return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
         });
 
-        user.setChatBackgroundSetting(dto.getChatBackgroundSetting());
+        user.setBoardBackgroundSetting(dto.getBoardBackgroundSetting());
 
         User updatedUser = userRepository.save(user);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
@@ -168,7 +168,7 @@ public class UserService {
                 .lastName(user.getLastName()).gender(user.getGender())
                 .phoneNumber(user.getPhoneNumber()).dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
-                .chatBackgroundSetting(user.getChatBackgroundSetting()).build();
+                .boardBackgroundSetting(user.getBoardBackgroundSetting()).build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
