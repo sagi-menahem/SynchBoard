@@ -1,7 +1,7 @@
-import React, { startTransition, useState, useRef } from 'react';
+import React, { startTransition, useRef, useState } from 'react';
 
-import { useTranslation } from 'react-i18next';
 import { HexColorPicker } from 'react-colorful';
+import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
 import { Button, Input } from 'components/common';
@@ -45,7 +45,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   const [showColorPicker, setShowColorPicker] = useState(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
-  useClickOutside(colorPickerRef, () => setShowColorPicker(false), showColorPicker);
+  useClickOutside(colorPickerRef as React.RefObject<HTMLElement>, () => setShowColorPicker(false), showColorPicker);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,7 +82,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     formData.append('canvasHeight', height.toString());
     
     console.log('[DEBUG] FormData contents:');
-    for (let [key, value] of formData.entries()) {
+    for (const [key, value] of formData.entries()) {
       console.log(`[DEBUG]   ${key}: ${value}`);
     }
     
@@ -138,11 +138,14 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
         <div className={utilStyles.settingRow}>
           <span className={utilStyles.settingLabel}>{t('createBoardForm.label.canvasBackground')}:</span>
           <div className={utilStyles.colorPickerWrapper} ref={colorPickerRef}>
-            <div 
+            <button
+              type="button"
               className={`${utilStyles.colorPreview} ${utilStyles.clickableColorPreview} ${isPending ? utilStyles.disabled : ''}`}
               style={{ backgroundColor: canvasBackgroundColor }}
               onClick={() => !isPending && setShowColorPicker(!showColorPicker)}
               title={`${t('createBoardForm.label.canvasBackground')}: ${canvasBackgroundColor}`}
+              disabled={isPending}
+              aria-label={`${t('createBoardForm.label.canvasBackground')}: ${canvasBackgroundColor}`}
             />
             {showColorPicker && !isPending && (
               <div className={utilStyles.colorPickerPopover}>
