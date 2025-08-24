@@ -1,3 +1,4 @@
+
 package io.github.sagimenahem.synchboard.config.security;
 
 import org.springframework.context.annotation.Bean;
