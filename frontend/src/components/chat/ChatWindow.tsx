@@ -29,6 +29,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchVisible, setSearchVisible] = useState(false);
+  const [updateTrigger, forceUpdate] = useState(0);
   
   const [userColorMap] = useState<UserColorMap>(() => createUserColorMap());
 
@@ -69,6 +70,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Force re-render every 55 seconds to update timestamps (matching board list)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      forceUpdate(prev => prev + 1); // Increment trigger to force re-render
+    }, 55000); // Update every 55 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const stableUserInfo = useMemo(() => ({
@@ -219,6 +229,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
               </div>
             )}
             <ChatMessage 
+              key={`${message.transactionId || message.id}-${updateTrigger}`}
               message={message} 
               isOwnMessage={message.senderEmail === userEmail}
               userColorMap={userColorMap}
