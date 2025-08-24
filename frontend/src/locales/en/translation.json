@@ -92,14 +92,31 @@
         "failedError": "Failed to create board. Please try again.",
         "label": {
             "boardName": "Board Name",
-            "description": "Description (Optional)"
+            "description": "Description (Optional)",
+            "boardImage": "Board Image (Optional)",
+            "inviteMembers": "Invite Members (Optional)"
         },
         "placeholder": {
             "name": "e.g., Q3 Project Planning",
-            "description": "What is this board about?"
+            "description": "What is this board about?",
+            "inviteEmails": "Enter email address"
         },
         "button": {
             "createBoard": "Create Board"
+        },
+        "boardImageAlt": "Board image preview",
+        "clickToUpload": "Click to upload image",
+        "removeImage": "Remove Image",
+        "addMember": "Add",
+        "removeMember": "Remove {{email}}",
+        "inviteCount": "{{count}} member(s) will be invited",
+        "invalidEmail": "Please enter a valid email address",
+        "emailAlreadyAdded": "This email has already been added",
+        "cannotInviteSelf": "You cannot invite yourself to the board",
+        "userNotFound": "User {{email}} not found",
+        "errorCheckingUser": "Error checking if user exists. Please try again.",
+        "validation": {
+            "nameRequired": "Board name is required"
         }
     },
     "toolbar": {
@@ -218,6 +235,7 @@
         "board.notFound": "Board not found.",
         "email.inUse": "This email address is already in use.",
         "user.alreadyMember": "This user is already a member of the board.",
+        "cannotInviteSelf": "You cannot invite yourself to the board.",
         "auth.notAdmin": "You do not have admin privileges for this action.",
         "auth.notMember": "You are not a member of this board.",
         "board.cannotRemoveSelf": "You cannot remove yourself via this action.",

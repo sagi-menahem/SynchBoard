@@ -27,6 +27,13 @@ public class UserController {
     private final AuthService authService;
     private final UserAccountService userAccountService;
 
+    @GetMapping(API_USER_EXISTS)
+    public ResponseEntity<Boolean> checkUserExists(@PathVariable("email") String email) {
+        log.debug("Checking if user exists: {}", email);
+        boolean exists = userService.userExists(email);
+        return ResponseEntity.ok(exists);
+    }
+
     @GetMapping(API_USER_PROFILE)
     public ResponseEntity<UserProfileDTO> getCurrentUserProfile(Authentication authentication) {
         String userEmail = authentication.getName();

@@ -6,7 +6,7 @@ import logger from 'utils/logger';
 
 import { APP_CONFIG } from 'constants/AppConstants';
 import { createBoard } from 'services/boardService';
-import type { Board, CreateBoardRequest } from 'types/BoardTypes';
+import type { Board } from 'types/BoardTypes';
 
 interface CreateBoardState {
   success: boolean;
@@ -20,6 +20,8 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
   const createBoardAction = async (_previousState: CreateBoardState, formData: FormData): Promise<CreateBoardState> => {
     const name = (formData.get('name') as string)?.trim() || '';
     const description = (formData.get('description') as string)?.trim() || '';
+    const picture = formData.get('picture') as File;
+    const inviteEmails = formData.getAll('inviteEmails') as string[];
 
     // Validation
     if (!name) {
@@ -37,10 +39,23 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       };
     }
 
-    const boardData: CreateBoardRequest = { name, description };
+    // Create FormData for multipart submission
+    const submitFormData = new FormData();
+    submitFormData.append('name', name);
+    submitFormData.append('description', description);
+    
+    if (picture && picture.size > 0) {
+      submitFormData.append('picture', picture);
+    }
+    
+    inviteEmails.forEach((email) => {
+      if (email.trim()) {
+        submitFormData.append('inviteEmails', email.trim());
+      }
+    });
 
     try {
-      const newBoard = await createBoard(boardData);
+      const newBoard = await createBoard(submitFormData);
       toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
       onBoardCreated(newBoard);
       

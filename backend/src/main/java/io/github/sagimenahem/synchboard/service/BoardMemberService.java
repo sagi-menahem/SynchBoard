@@ -54,6 +54,13 @@ public class BoardMemberService {
                         throw new AccessDeniedException(MessageConstants.AUTH_NOT_ADMIN);
                 }
 
+                // Check for self-invitation
+                if (invitedUserEmail.equals(invitingUserEmail)) {
+                        log.warn("Self-invitation attempt: user {} tried to invite themselves to board {}",
+                                        invitingUserEmail, boardId);
+                        throw new InvalidRequestException(MessageConstants.CANNOT_INVITE_SELF);
+                }
+
                 User userToInvite = userRepository.findById(invitedUserEmail).orElseThrow(
                                 () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND
                                                 + invitedUserEmail));

@@ -17,6 +17,7 @@ import io.github.sagimenahem.synchboard.entity.GroupBoard;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
+import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
@@ -34,6 +35,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
     private final BoardNotificationService notificationService;
+    private final BoardMemberService boardMemberService;
 
     @Transactional(readOnly = true)
     public List<BoardDTO> getBoardsForUser(String userEmail) {
@@ -58,6 +60,19 @@ public class BoardService {
 
         GroupBoard newBoard = GroupBoard.builder().boardGroupName(request.getName())
                 .groupDescription(request.getDescription()).createdByUser(owner).build();
+
+        // Handle board picture upload if provided
+        if (request.getPicture() != null && !request.getPicture().isEmpty()) {
+            try {
+                String pictureUrl = fileStorageService.store(request.getPicture());
+                newBoard.setGroupPictureUrl(pictureUrl);
+                log.debug("Board picture uploaded: {}", pictureUrl);
+            } catch (Exception e) {
+                log.warn("Failed to upload board picture during creation: {}", e.getMessage());
+                // Continue without picture - not a critical failure
+            }
+        }
+
         groupBoardRepository.save(newBoard);
 
         GroupMember newMembership =
@@ -66,6 +81,12 @@ public class BoardService {
         groupMemberRepository.save(newMembership);
 
         log.info(BOARD_CREATED, newBoard.getBoardGroupId(), request.getName(), ownerEmail);
+
+        // Handle member invitations if provided
+        if (request.getInviteEmails() != null && !request.getInviteEmails().isEmpty()) {
+            inviteMembers(newBoard.getBoardGroupId(), request.getInviteEmails(), ownerEmail);
+        }
+
         notificationService.broadcastUserUpdate(ownerEmail);
         return mapToBoardResponse(newMembership);
     }
@@ -251,5 +272,39 @@ public class BoardService {
                 .lastName(membership.getUser().getLastName())
                 .profilePictureUrl(membership.getUser().getProfilePictureUrl())
                 .isAdmin(membership.getIsAdmin()).build();
+    }
+
+    private void inviteMembers(Long boardId, List<String> inviteEmails, String invitingUserEmail) {
+        if (inviteEmails == null || inviteEmails.isEmpty()) {
+            return;
+        }
+
+        int successfulInvites = 0;
+        int failedInvites = 0;
+
+        for (String email : inviteEmails) {
+            if (email != null && !email.trim().isEmpty()) {
+                try {
+                    boardMemberService.inviteMember(boardId, email.trim(), invitingUserEmail);
+                    successfulInvites++;
+                    log.debug("Successfully invited {} to board {}", email, boardId);
+                } catch (InvalidRequestException e) {
+                    failedInvites++;
+                    log.warn("Invalid invitation request for {} to board {}: {}", email, boardId, e.getMessage());
+                } catch (ResourceNotFoundException e) {
+                    failedInvites++;
+                    log.warn("User {} not found when inviting to board {}", email, boardId);
+                } catch (ResourceConflictException e) {
+                    failedInvites++;
+                    log.warn("User {} is already a member of board {}", email, boardId);
+                } catch (Exception e) {
+                    failedInvites++;
+                    log.warn("Failed to invite {} to board {}: {}", email, boardId, e.getMessage());
+                }
+            }
+        }
+
+        log.info("Board {} creation: {} successful invites, {} failed invites", 
+                 boardId, successfulInvites, failedInvites);
     }
 }

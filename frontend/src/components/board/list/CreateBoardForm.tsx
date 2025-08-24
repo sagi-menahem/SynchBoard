@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, startTransition } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -6,6 +6,9 @@ import { Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { useCreateBoardForm } from 'hooks/board/management';
 import type { Board } from 'types/BoardTypes';
+
+import BoardImageUpload from './BoardImageUpload';
+import MemberInviteInput from './MemberInviteInput';
 
 interface CreateBoardFormProps {
     onBoardCreated: (newBoard: Board) => void;
@@ -15,9 +18,31 @@ interface CreateBoardFormProps {
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
   const { t } = useTranslation();
   const { state, submitAction, isPending } = useCreateBoardForm(onBoardCreated);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [inviteEmails, setInviteEmails] = useState<string[]>([]);
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    const formData = new FormData(event.currentTarget);
+    
+    // Add image if selected
+    if (selectedImage) {
+      formData.append('picture', selectedImage);
+    }
+    
+    // Add invite emails
+    inviteEmails.forEach((email) => {
+      formData.append('inviteEmails', email);
+    });
+    
+    startTransition(() => {
+      submitAction(formData);
+    });
+  };
 
   return (
-    <form action={submitAction} className={styles.form}>
+    <form onSubmit={handleFormSubmit} className={styles.form}>
       <h3>{t('createBoardForm.heading')}</h3>
 
       {state.error && (
@@ -25,6 +50,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           {state.error}
         </div>
       )}
+
+      <div className={styles.imageField}>
+        <BoardImageUpload onImageSelect={setSelectedImage} disabled={isPending} />
+      </div>
 
       <div className={styles.field}>
         <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>
@@ -48,6 +77,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           className={styles.description}
           disabled={isPending}
         />
+      </div>
+
+      <div className={styles.field}>
+        <label>{t('createBoardForm.label.inviteMembers')}</label>
+        <MemberInviteInput onMembersChange={setInviteEmails} disabled={isPending} />
       </div>
 
       <div className={styles.buttonGroup}>

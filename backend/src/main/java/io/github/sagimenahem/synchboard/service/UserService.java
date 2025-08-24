@@ -30,6 +30,12 @@ public class UserService {
     private final BoardNotificationService notificationService;
 
     @Transactional(readOnly = true)
+    public boolean userExists(String userEmail) {
+        log.debug("Checking if user exists: {}", userEmail);
+        return userRepository.existsById(userEmail);
+    }
+
+    @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(String userEmail) {
         log.debug(DATA_PREFIX + " Fetching user profile for: {}", userEmail);
 

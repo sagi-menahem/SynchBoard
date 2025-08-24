@@ -92,14 +92,31 @@
         "failedError": "יצירת הלוח נכשלה. אנא נסה שנית.",
         "label": {
             "boardName": "שם הלוח",
-            "description": "תיאור (אופציונלי)"
+            "description": "תיאור (אופציונלי)",
+            "boardImage": "תמונת לוח (אופציונלי)",
+            "inviteMembers": "הזמן חברים (אופציונלי)"
         },
         "placeholder": {
             "name": "לדוגמה, תכנון פרויקט לרבעון 3",
-            "description": "על מה הלוח הזה?"
+            "description": "על מה הלוח הזה?",
+            "inviteEmails": "הזן כתובת אימייל"
         },
         "button": {
             "createBoard": "צור לוח"
+        },
+        "boardImageAlt": "תצוגה מקדימה של תמונת הלוח",
+        "clickToUpload": "לחץ להעלאת תמונה",
+        "removeImage": "הסר תמונה",
+        "addMember": "הוסף",
+        "removeMember": "הסר {{email}}",
+        "inviteCount": "{{count}} חבר/ים יוזמנו",
+        "invalidEmail": "אנא הזן כתובת אימייל תקינה",
+        "emailAlreadyAdded": "האימייל הזה כבר נוסף",
+        "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח",
+        "userNotFound": "המשתמש {{email}} לא נמצא",
+        "errorCheckingUser": "שגיאה בבדיקה אם המשתמש קיים. אנא נסה שנית.",
+        "validation": {
+            "nameRequired": "שם הלוח נדרש"
         }
     },
     "toolbar": {
@@ -218,6 +235,7 @@
         "board.notFound": "הלוח לא נמצא.",
         "email.inUse": "כתובת האימייל הזו כבר בשימוש.",
         "user.alreadyMember": "המשתמש הזה כבר חבר בלוח.",
+        "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח.",
         "auth.notAdmin": "אין לך הרשאות ניהול לביצוע פעולה זו.",
         "auth.notMember": "אינך חבר בלוח זה.",
         "board.cannotRemoveSelf": "אינך יכול להסיר את עצמך דרך פעולה זו.",
