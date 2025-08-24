@@ -1,3 +1,4 @@
+export { useClickOutside } from './useClickOutside';
 export { useConnectionStatus } from './useConnectionStatus';
 export { useContextMenu } from './useContextMenu';
 export { useDraggable } from './useDraggable';

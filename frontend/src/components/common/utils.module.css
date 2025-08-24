@@ -218,3 +218,82 @@
 .shadowMd { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
 .shadowLg { box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
 .shadowXl { box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1); }
+
+/* Color Picker Shared Utilities */
+.colorPickerWrapper {
+  position: relative;
+}
+
+.colorPickerPopover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  margin-top: 8px;
+}
+
+.colorPreview {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--border-primary);
+  flex-shrink: 0;
+}
+
+.clickableColorPreview {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickableColorPreview:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.clickableColorPreview.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.presetColors {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.presetColorButton {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #666;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.presetColorButton:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.settingLabel {
+  color: var(--text-secondary);
+  font-weight: 500;
+  min-width: 120px;
+}
+
+.settingValue {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
