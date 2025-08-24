@@ -55,8 +55,8 @@ public class User implements UserDetails {
     @Column(name = "profile_picture_url")
     private String profilePictureUrl;
 
-    @Column(name = "chat_background_setting")
-    private String chatBackgroundSetting;
+    @Column(name = "board_background_setting")
+    private String boardBackgroundSetting;
 
     @Column(name = "canvas_zoom_level")
     @Builder.Default

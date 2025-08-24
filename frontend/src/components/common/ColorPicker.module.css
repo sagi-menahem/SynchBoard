@@ -53,10 +53,12 @@
   top: calc(100% + 8px);
   left: 0;
   z-index: 1000;
-  background: white;
+  background: #2a2a2a;
+  border: 1px solid #444;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   animation: popoverIn 0.2s ease-out;
+  padding: 12px;
 }
 
 /* Position popover on the right if there's not enough space below */
@@ -78,23 +80,61 @@
   }
 }
 
-/* Override some default SketchPicker styles for better integration */
-.popover :global(.sketch-picker) {
-  box-shadow: none !important;
-  border-radius: 8px !important;
-  background: #2a2a2a !important;
+.colorfulWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.popover :global(.sketch-picker input) {
-  background: #1a1a1a !important;
-  color: #fff !important;
-  border: 1px solid #444 !important;
+/* Style the react-colorful picker */
+.colorfulWrapper :global(.react-colorful) {
+  width: 200px;
+  height: 150px;
 }
 
-.popover :global(.sketch-picker label) {
-  color: #ccc !important;
+.colorfulWrapper :global(.react-colorful__saturation) {
+  border-radius: 4px 4px 0 0;
+  border-bottom: none;
 }
 
-.popover :global(.sketch-picker .flexbox-fix > div:first-child > div) {
-  background: #1a1a1a !important;
+.colorfulWrapper :global(.react-colorful__hue) {
+  height: 20px;
+  border-radius: 0 0 4px 4px;
+}
+
+.colorfulWrapper :global(.react-colorful__pointer) {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.presetColors {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.presetColor {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #555;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: none;
+  padding: 0;
+}
+
+.presetColor:hover {
+  border-color: #3b82f6;
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.presetColor:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { SketchPicker } from 'react-color';
-import type { ColorResult } from 'react-color';
+import { HexColorPicker } from 'react-colorful';
 
 import styles from './ColorPicker.module.css';
 
@@ -18,7 +17,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   onChange, 
   disabled = false,
   className = '',
-  label
+  label,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
@@ -50,8 +49,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   };
 
-  const handleColorChange = (colorResult: ColorResult) => {
-    onChange(colorResult.hex);
+  const handleColorChange = (color: string) => {
+    onChange(color);
   };
 
   return (
@@ -71,29 +70,31 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       
       {showPicker && !disabled && (
         <div ref={pickerRef} className={styles.popover}>
-          <SketchPicker 
-            color={color} 
-            onChange={handleColorChange}
-            disableAlpha={true}
-            presetColors={[
-              '#FFFFFF', '#F8F8F8', '#E0E0E0', '#BDBDBD', '#9E9E9E', '#757575',
-              '#000000', '#2F2F2F', '#424242', '#616161', '#757575', '#9E9E9E',
-              '#D32F2F', '#F44336', '#FF5252', '#E91E63', '#FF4081', '#F50057',
-              '#9C27B0', '#BA68C8', '#E040FB', '#7B1FA2', '#AA00FF', '#D500F9',
-              '#673AB7', '#7E57C2', '#B388FF', '#512DA8', '#651FFF', '#7C4DFF',
-              '#3F51B5', '#5C6BC0', '#536DFE', '#303F9F', '#3D5AFE', '#448AFF',
-              '#2196F3', '#42A5F5', '#2979FF', '#1976D2', '#2962FF', '#0091EA',
-              '#00BCD4', '#26C6DA', '#00E5FF', '#0097A7', '#00B8D4', '#00E5FF',
-              '#009688', '#26A69A', '#1DE9B6', '#00897B', '#00BFA5', '#00E676',
-              '#4CAF50', '#66BB6A', '#69F0AE', '#388E3C', '#00C853', '#00E676',
-              '#8BC34A', '#9CCC65', '#B2FF59', '#689F38', '#76FF03', '#C6FF00',
-              '#CDDC39', '#D4E157', '#EEFF41', '#AFB42B', '#AEEA00', '#FFD600',
-              '#FFEB3B', '#FFF176', '#FFFF00', '#FBC02D', '#FFD600', '#FFAB00',
-              '#FFC107', '#FFD54F', '#FFC400', '#FFA000', '#FFAB00', '#FF6F00',
-              '#FF9800', '#FFB74D', '#FF9100', '#F57C00', '#FF6D00', '#DD2C00',
-              '#FF5722', '#FF8A65', '#FF3D00', '#E64A19', '#DD2C00', '#BF360C',
-            ]}
-          />
+          <div className={styles.colorfulWrapper}>
+            <HexColorPicker 
+              color={color} 
+              onChange={handleColorChange}
+            />
+            <div className={styles.presetColors}>
+              {[
+                '#FFFFFF', '#000000', '#F44336', '#E91E63', '#9C27B0', '#673AB7',
+                '#3F51B5', '#2196F3', '#00BCD4', '#009688', '#4CAF50', '#8BC34A',
+                '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#795548',
+                '#9E9E9E', '#607D8B', '#F8F8F8', '#424242', '#E040FB', '#651FFF',
+                '#3D5AFE', '#2979FF', '#00E5FF', '#1DE9B6', '#76FF03', '#C6FF00',
+                '#FFD600', '#FF6F00', '#DD2C00', '#6D4C41', '#757575', '#546E7A',
+              ].map((presetColor) => (
+                <button
+                  key={presetColor}
+                  type="button"
+                  className={styles.presetColor}
+                  style={{ backgroundColor: presetColor }}
+                  onClick={() => handleColorChange(presetColor)}
+                  title={presetColor}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

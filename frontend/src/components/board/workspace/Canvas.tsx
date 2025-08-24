@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
-import { useConnectionStatus } from 'hooks/common';
+import { useConnectionStatus, usePreferences } from 'hooks/common';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { CanvasConfig } from 'types/BoardTypes';
 import type { Tool } from 'types/CommonTypes';
@@ -25,6 +25,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const zoomScale = zoomLevel / 100;
   const { canvasRef, containerRef, handleMouseDown } = useCanvas({ ...props, zoomScale });
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
+  const { preferences } = usePreferences();
   const [showLoading, setShowLoading] = useState(true);
 
   const canvasConfig = props.canvasConfig || {
@@ -46,7 +47,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
 
   return (
     <div ref={containerRef} className={containerClassName}>
-      <div className={styles.canvasContainer}>
+      <div 
+        className={styles.canvasContainer}
+        style={{ backgroundColor: preferences.boardBackgroundSetting || undefined }}
+      >
         <div 
           className={styles.canvasWrapper} 
           style={{ 

@@ -1,5 +1,5 @@
+export { default as BoardAppearanceSection } from './BoardAppearanceSection';
 export { default as ChangePasswordForm } from './ChangePasswordForm';
-export { default as ChatAppearanceSection } from './ChatAppearanceSection';
 export { default as DangerZoneSection } from './DangerZoneSection';
 export { default as ProfileDetailsSection } from './ProfileDetailsSection';
 export { default as ProfileDisplayView } from './ProfileDisplayView';
