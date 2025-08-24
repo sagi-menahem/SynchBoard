@@ -1,6 +1,6 @@
 import { APP_ROUTES } from 'constants';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import styles from './BoardListPage.module.css';
 const BoardListPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [, forceUpdate] = useState({});
   const {
     boards,
     isLoading,
@@ -34,6 +35,15 @@ const BoardListPage: React.FC = () => {
     handleConfirmLeave,
     handleLeaveClick,
   } = useBoardList();
+
+  // Force re-render every 60 seconds to update timestamps
+  useEffect(() => {
+    const interval = setInterval(() => {
+      forceUpdate({}); // Trigger re-render to recalculate timestamps
+    }, 55000); // Update every 55 seconds (1 minute)
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (isLoading) {
     return <div>{t('boardListPage.loading')}</div>;
