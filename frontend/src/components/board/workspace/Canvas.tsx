@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
@@ -42,42 +42,60 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Track container dimensions for dynamic sizing
+  // Track container dimensions for zoom-based sizing
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const updateDimensions = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setContainerDimensions({ width: rect.width, height: rect.height });
-      }
+      const rect = container.getBoundingClientRect();
+      setContainerDimensions({
+        width: rect.width,
+        height: rect.height,
+      });
     };
 
-    // Initial measurement
-    updateDimensions();
-
-    // Track resize
     const resizeObserver = new ResizeObserver(updateDimensions);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
+    resizeObserver.observe(container);
+    updateDimensions(); // Initial measurement
 
     return () => {
       resizeObserver.disconnect();
     };
   }, [containerRef]);
 
+
   // Calculate scaled canvas dimensions
   const scaledWidth = canvasConfig.width * zoomScale;
   const scaledHeight = canvasConfig.height * zoomScale;
-  const padding = 40; // 20px padding on each side
+  
+  // Dynamic padding - minimal for small canvases
+  const padding = 20;
 
-  // Determine if background should be hidden
-  const hideBackground = scaledWidth >= (containerDimensions.width - padding) || 
-                         scaledHeight >= (containerDimensions.height - padding);
+  // Always show striped background for visual reference
+  const hideBackground = false;
 
-  // Dynamic container content sizing
-  const canvasContainerStyle = {
-    width: `${Math.max(scaledWidth + padding, containerDimensions.width || 0)}px`,
-    height: `${Math.max(scaledHeight + padding, containerDimensions.height || 0)}px`,
+  // Calculate required canvas space
+  const requiredWidth = scaledWidth + padding;
+  const requiredHeight = scaledHeight + padding;
+  
+  // Determine if we need scrolling or if canvas fits within available space
+  const needsHorizontalScroll = containerDimensions.width > 0 && requiredWidth > containerDimensions.width;
+  const needsVerticalScroll = containerDimensions.height > 0 && requiredHeight > containerDimensions.height;
+  
+  // Smart container sizing based on zoom and available space
+  const canvasContainerStyle = needsHorizontalScroll || needsVerticalScroll ? {
+    // Canvas is larger than container - enable scrolling
+    minWidth: `${requiredWidth}px`,
+    minHeight: `${requiredHeight}px`,
+    width: `${requiredWidth}px`,
+    height: `${requiredHeight}px`,
+  } : {
+    // Canvas fits within container - fill available space to center properly
+    width: '100%',
+    height: '100%',
+    minWidth: `${requiredWidth}px`,
+    minHeight: `${requiredHeight}px`,
   };
 
   const shouldShowLoading = showLoading;

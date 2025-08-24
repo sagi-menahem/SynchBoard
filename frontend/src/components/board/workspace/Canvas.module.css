@@ -5,8 +5,6 @@
     overflow: auto;
     direction: rtl;
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
 }
 
 .scrollContainer > * {
@@ -17,10 +15,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 100%;
-    min-height: 100%;
-    padding: 20px;
     box-sizing: border-box;
+    position: relative;
     /* Dynamic striped background pattern - matches chat */
     background: var(--canvas-container-bg, #1a1a1a);
     background-image: 

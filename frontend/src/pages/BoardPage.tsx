@@ -58,7 +58,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   } : undefined;
 
   return (
-    <div className={styles.page} ref={pageRef}>
+    <div className={styles.page} ref={pageRef} data-board-page>
       <BoardHeader boardId={boardId} boardName={boardName} />
 
       <Toolbar
