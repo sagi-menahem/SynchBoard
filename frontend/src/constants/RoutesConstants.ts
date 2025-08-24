@@ -1,5 +1,5 @@
 export const APP_ROUTES = {
-  AUTH: '/',
+  AUTH: '/auth',
   AUTH_CALLBACK: '/auth/callback',
   AUTH_ERROR: '/auth/error',
   BOARD_LIST: '/boards',

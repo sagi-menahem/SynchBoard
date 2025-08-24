@@ -48,11 +48,18 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response) => {
-    logger.debug(`API Response: ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`);
+    logger.debug(`[API] Response: ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`);
     return response;
   },
   (error: AxiosError) => {
-    logger.error(`API Error: ${error.response?.status || 'Network Error'} ${error.config?.method?.toUpperCase()} ${error.config?.url}`, error);
+    logger.error('[API] Error Response', {
+      status: error.response?.status || 'Network Error',
+      method: error.config?.method?.toUpperCase(),
+      url: error.config?.url,
+      currentPath: window.location.pathname,
+      hasToken: !!localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN),
+      errorData: error.response?.data,
+    });
         
     const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
@@ -60,14 +67,20 @@ apiClient.interceptors.response.use(
 
     if (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) {
       if (error.response.status === 401 || !isBoardRequest) {
-        logger.warn(`Session invalidated due to ${error.response.status} response`);
+        logger.warn(`[API] Session invalidated due to ${error.response.status} response`, {
+          currentPath: window.location.pathname,
+          clearingToken: true,
+          timestamp: new Date().toISOString(),
+        });
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
         toast.error(i18n.t('errors.sessionExpired'), { id: 'session-expired' });
 
-        if (window.location.pathname !== '/') {
-          logger.info('Redirecting to login page due to authentication failure');
-          window.location.href = '/';
+        if (window.location.pathname !== '/auth') {
+          logger.info('[API] Redirecting to login page due to authentication failure', {
+            fromPath: window.location.pathname,
+          });
+          window.location.href = '/auth';
         }
         return Promise.reject(error);
       }

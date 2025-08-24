@@ -13,12 +13,24 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { token } = useAuth();
+  
+  logger.info('[ProtectedRoute] Checking authentication', {
+    tokenExists: !!token,
+    tokenLength: token?.length,
+    currentPath: window.location.pathname,
+    localStorageToken: !!localStorage.getItem('AUTH_TOKEN'),
+  });
 
   if (!token) {
-    logger.warn('SECURITY: Unauthenticated user attempted to access protected route, redirecting to login');
+    logger.warn('[ProtectedRoute] SECURITY: No token found - redirecting to login', {
+      attemptedPath: window.location.pathname,
+      localStorageHasToken: !!localStorage.getItem('AUTH_TOKEN'),
+      timestamp: new Date().toISOString(),
+    });
     return <Navigate to={APP_ROUTES.AUTH} replace />;
   }
 
+  logger.debug('[ProtectedRoute] Authentication valid, rendering protected content');
   return <>{children}</>;
 };
 
