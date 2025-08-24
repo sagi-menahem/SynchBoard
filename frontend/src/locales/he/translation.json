@@ -123,6 +123,9 @@
         "userNotFound": "המשתמש {{email}} לא נמצא",
         "errorCheckingUser": "שגיאה בבדיקה אם המשתמש קיים. אנא נסה שנית.",
         "canvasSize": {
+            "landscape": "לרוחב",
+            "portrait": "לאורך",
+            "customGroup": "גודל מותאם אישית",
             "mediumLandscape": "בינוני",
             "largeLandscape": "גדול",
             "extraLargeLandscape": "גדול מאוד",

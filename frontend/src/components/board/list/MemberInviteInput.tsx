@@ -3,6 +3,7 @@ import type { KeyboardEvent } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import { Button, Input } from 'components/common';
 import { useAuth } from 'hooks/auth/useAuth';
@@ -59,7 +60,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
       onMembersChange(newEmails);
       setInputValue('');
     } catch (error) {
-      console.error('Error checking user existence:', error);
+      logger.error('Error checking user existence:', error);
       toast.error(t('createBoardForm.errorCheckingUser'));
     }
   };
