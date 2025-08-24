@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.leftPanel,
+.rightPanel {
+  overflow: hidden;
+  min-width: 200px;
+}
+
+.leftPanel {
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: white;
+}
+
+.rightPanel {
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.divider {
+  width: 12px;
+  cursor: col-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  padding: 0;
+  transition: background-color 0.2s ease;
+  position: relative;
+  margin: 0 4px;
+  height: 100%;
+}
+
+.divider:hover {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.divider.dragging {
+  background: rgba(59, 130, 246, 0.25);
+}
+
+.dividerHandle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 50px;
+}
+
+.dividerHandle::before,
+.dividerHandle::after,
+.dividerHandle span {
+  content: '';
+  width: 3px;
+  height: 3px;
+  background: #888;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.divider:hover .dividerHandle::before,
+.divider:hover .dividerHandle::after,
+.divider:hover .dividerHandle span {
+  background: #3b82f6;
+}
+
+.divider.dragging .dividerHandle::before,
+.divider.dragging .dividerHandle::after,
+.divider.dragging .dividerHandle span {
+  background: #3b82f6;
+}

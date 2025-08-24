@@ -43,7 +43,7 @@ class WebSocketService {
 
     this.messageSchemas.set('user', {
       requiredFields: ['updateType'],
-      allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED'],
+      allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED', 'CANVAS_SETTINGS_CHANGED'],
     });
 
     this.messageSchemas.set('chat', {

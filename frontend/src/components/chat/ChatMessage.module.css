@@ -27,6 +27,9 @@
   border-radius: 8px;
   position: relative;
   box-sizing: border-box;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* My messages - full width bubble */
@@ -80,6 +83,10 @@
   color: rgba(255, 255, 255, 0.75);  /* 75% opacity - more noticeable */
   font-size: 1rem;  /* Keep larger size */
   font-weight: 600;  /* Keep semi-bold */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 /* Message body - Clean structure */
@@ -110,9 +117,12 @@
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
+  hyphens: auto;
   font-size: 0.95rem;  /* Current size or slightly smaller than name */
   font-weight: 400;
   margin-bottom: 2px;
+  max-width: 100%;
+  white-space: pre-wrap;
 }
 
 /* Text alignment and brightness based on message type */

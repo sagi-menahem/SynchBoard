@@ -5,8 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
 import { useLoginForm } from 'hooks/auth/forms';
-import GoogleLoginButton from './GoogleLoginButton';
 import { oauthService } from 'services/oauthService';
+
+import GoogleLoginButton from './GoogleLoginButton';
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -67,7 +68,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
           backgroundColor: '#e1e5e9', 
           margin: '-0.6rem 0 0 0',
           zIndex: -1,
-          position: 'relative'
+          position: 'relative',
         }} />
       </div>
 

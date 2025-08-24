@@ -42,10 +42,31 @@ public class GroupBoard {
     @Column(name = "last_modified_date")
     private LocalDateTime lastModifiedDate;
 
+    @Column(name = "canvas_background_color")
+    @Builder.Default
+    private String canvasBackgroundColor = "#222";
+
+    @Column(name = "canvas_width")
+    @Builder.Default
+    private Integer canvasWidth = 1200;
+
+    @Column(name = "canvas_height")
+    @Builder.Default
+    private Integer canvasHeight = 800;
+
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
         this.lastModifiedDate = LocalDateTime.now();
+        if (this.canvasBackgroundColor == null) {
+            this.canvasBackgroundColor = "#222";
+        }
+        if (this.canvasWidth == null) {
+            this.canvasWidth = 1200;
+        }
+        if (this.canvasHeight == null) {
+            this.canvasHeight = 800;
+        }
     }
 
     @PreUpdate

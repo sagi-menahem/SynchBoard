@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from 'constants';
 
 import type { BoardActionResponse } from 'types/BoardObjectTypes';
-import type { Board, BoardDetails, CreateBoardRequest, Member } from 'types/BoardTypes';
+import type { Board, BoardDetails, CreateBoardRequest, Member, UpdateCanvasSettingsRequest } from 'types/BoardTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 
 import apiClient from './apiClient';
@@ -84,5 +84,10 @@ export const deleteBoardPicture = async (boardId: number): Promise<Board> => {
 
 export const getBoardMessages = async (boardId: number): Promise<ChatMessageResponse[]> => {
   const response = await apiClient.get<ChatMessageResponse[]>(API_ENDPOINTS.GET_BOARD_MESSAGES(boardId));
+  return response.data;
+};
+
+export const updateCanvasSettings = async (boardId: number, settings: UpdateCanvasSettingsRequest): Promise<Board> => {
+  const response = await apiClient.put<Board>(API_ENDPOINTS.UPDATE_CANVAS_SETTINGS(boardId), settings);
   return response.data;
 };

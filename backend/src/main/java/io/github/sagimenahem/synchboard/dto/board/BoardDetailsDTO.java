@@ -16,4 +16,7 @@ public class BoardDetailsDTO {
     private String description;
     private String pictureUrl;
     private List<MemberDTO> members;
+    private String canvasBackgroundColor;
+    private Integer canvasWidth;
+    private Integer canvasHeight;
 }

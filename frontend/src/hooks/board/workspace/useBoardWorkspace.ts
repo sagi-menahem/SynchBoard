@@ -27,6 +27,7 @@ export const useBoardWorkspace = (boardId: number) => {
   const {
     isLoading,
     boardName,
+    boardDetails,
     accessLost,
     objects: baseObjects,
     messages,
@@ -162,6 +163,7 @@ export const useBoardWorkspace = (boardId: number) => {
   return {
     isLoading,
     boardName,
+    boardDetails,
     accessLost,
     objects: optimisticObjects, // Return optimistic objects for real-time UI
     messages,

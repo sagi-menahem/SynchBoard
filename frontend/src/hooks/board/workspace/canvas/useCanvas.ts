@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
+import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
+import type { CanvasConfig } from 'types/BoardTypes';
 import type { Tool } from 'types/CommonTypes';
 
 import { useCanvasCore } from './useCanvasCore';
@@ -14,6 +16,9 @@ interface UseCanvasProps {
     strokeWidth: number;
     objects: ActionPayload[];
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+    canvasConfig?: CanvasConfig;
+    zoomLevel?: number;
+    zoomScale?: number;
 }
 
 export const useCanvas = ({
@@ -23,9 +28,22 @@ export const useCanvas = ({
   strokeWidth,
   objects,
   onDraw,
+  canvasConfig,
+  zoomScale = 1,
 }: UseCanvasProps) => {
   const { dimensions, refs, drawingState, utils } = useCanvasCore();
   const { canvasRef, containerRef, contextRef } = refs;
+
+  const finalCanvasConfig = canvasConfig || {
+    backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
+    width: CANVAS_CONFIG.DEFAULT_WIDTH,
+    height: CANVAS_CONFIG.DEFAULT_HEIGHT,
+  };
+
+  // Set canvas dimensions based on canvas config
+  useEffect(() => {
+    utils.setCanvasDimensions(finalCanvasConfig.width, finalCanvasConfig.height);
+  }, [finalCanvasConfig.width, finalCanvasConfig.height, utils]);
 
   useEffect(() => {
     if (dimensions.width > 0 && dimensions.height > 0 && canvasRef.current && !contextRef.current) {
@@ -50,7 +68,8 @@ export const useCanvas = ({
     onDraw,
     senderId,
     drawingState,
-    getMouseCoordinates: utils.getMouseCoordinates,
+    getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => 
+      utils.getMouseCoordinates(event, canvas, zoomScale),
     isShapeSizeValid: utils.isShapeSizeValid,
     isRadiusValid: utils.isRadiusValid,
   });

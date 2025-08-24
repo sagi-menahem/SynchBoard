@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Input } from 'components/common';
 import styles from 'components/common/CommonForm.module.css';
+import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import { useCreateBoardForm } from 'hooks/board/management';
 import type { Board } from 'types/BoardTypes';
 
@@ -20,6 +21,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   const { state, submitAction, isPending } = useCreateBoardForm(onBoardCreated);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
+  const [canvasBackgroundColor, setCanvasBackgroundColor] = useState(CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR);
+  const [canvasSize, setCanvasSize] = useState<'small' | 'medium' | 'large' | 'custom'>('medium');
+  const [customWidth, setCustomWidth] = useState(CANVAS_CONFIG.DEFAULT_WIDTH);
+  const [customHeight, setCustomHeight] = useState(CANVAS_CONFIG.DEFAULT_HEIGHT);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,6 +40,22 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     inviteEmails.forEach((email) => {
       formData.append('inviteEmails', email);
     });
+
+    // Add canvas settings
+    formData.append('canvasBackgroundColor', canvasBackgroundColor);
+    
+    let width, height;
+    if (canvasSize === 'custom') {
+      width = customWidth;
+      height = customHeight;
+    } else {
+      const preset = CANVAS_CONFIG.SIZE_PRESETS[canvasSize.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS];
+      width = preset.width;
+      height = preset.height;
+    }
+    
+    formData.append('canvasWidth', width.toString());
+    formData.append('canvasHeight', height.toString());
     
     startTransition(() => {
       submitAction(formData);
@@ -82,6 +103,63 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>{t('createBoardForm.label.inviteMembers')}</label>
         <MemberInviteInput onMembersChange={setInviteEmails} disabled={isPending} />
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="canvas-background">{t('createBoardForm.label.canvasBackground')}</label>
+        <input
+          id="canvas-background"
+          type="color"
+          value={canvasBackgroundColor}
+          onChange={(e) => setCanvasBackgroundColor(e.target.value)}
+          disabled={isPending}
+          className={styles.colorInput}
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label>{t('createBoardForm.label.canvasSize')}</label>
+        <div className={styles.canvasSizeOptions}>
+          {(['small', 'medium', 'large', 'custom'] as const).map((size) => (
+            <label key={size} className={styles.radioOption}>
+              <input
+                type="radio"
+                value={size}
+                checked={canvasSize === size}
+                onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
+                disabled={isPending}
+              />
+              {size === 'custom' 
+                ? t('createBoardForm.canvasSize.custom') 
+                : `${t(`createBoardForm.canvasSize.${size}`)} (${CANVAS_CONFIG.SIZE_PRESETS[size.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS].width}x${CANVAS_CONFIG.SIZE_PRESETS[size.toUpperCase() as keyof typeof CANVAS_CONFIG.SIZE_PRESETS].height})`
+              }
+            </label>
+          ))}
+        </div>
+        {canvasSize === 'custom' && (
+          <div className={styles.customSizeInputs}>
+            <Input
+              type="number"
+              value={customWidth}
+              onChange={(e) => setCustomWidth(parseInt(e.target.value) || CANVAS_CONFIG.DEFAULT_WIDTH)}
+              min={CANVAS_CONFIG.MIN_WIDTH}
+              max={CANVAS_CONFIG.MAX_WIDTH}
+              disabled={isPending}
+              placeholder={t('createBoardForm.placeholder.width')}
+            />
+            <span>×</span>
+            <Input
+              type="number"
+              value={customHeight}
+              onChange={(e) => setCustomHeight(parseInt(e.target.value) || CANVAS_CONFIG.DEFAULT_HEIGHT)}
+              min={CANVAS_CONFIG.MIN_HEIGHT}
+              max={CANVAS_CONFIG.MAX_HEIGHT}
+              disabled={isPending}
+              placeholder={t('createBoardForm.placeholder.height')}
+            />
+            <span>{t('createBoardForm.label.pixels')}</span>
+          </div>
+        )}
       </div>
 
       <div className={styles.buttonGroup}>

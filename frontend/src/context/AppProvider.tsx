@@ -1,6 +1,7 @@
 import React, { type ReactNode } from 'react';
 
 import { AuthProvider } from './AuthProvider';
+import { CanvasPreferencesProvider } from './CanvasPreferencesContext';
 import { PreferencesProvider } from './PreferencesProvider';
 import { WebSocketProvider } from './WebSocketProvider';
 
@@ -12,7 +13,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <AuthProvider>
       <WebSocketProvider>
-        <PreferencesProvider>{children}</PreferencesProvider>
+        <PreferencesProvider>
+          <CanvasPreferencesProvider>{children}</CanvasPreferencesProvider>
+        </PreferencesProvider>
       </WebSocketProvider>
     </AuthProvider>
   );

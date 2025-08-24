@@ -37,7 +37,7 @@ export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisibl
       <p style={{ 
         fontSize: '16px', 
         color: '#666',
-        margin: 0 
+        margin: 0, 
       }}>
         Signing you in...
       </p>
