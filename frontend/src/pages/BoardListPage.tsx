@@ -53,8 +53,13 @@ const BoardListPage: React.FC = () => {
 
       {boards.length > 0 ? (
         <div className={styles.boardList}>
-          {boards.map((board) => (
-            <div key={board.id} onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}>
+          {boards.map((board, index) => (
+            <div 
+              key={board.id}
+              className={styles.boardListItem}
+              style={{ animationDelay: `${index * 0.05}s` }}
+              onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
+            >
               <BoardCard board={board} />
             </div>
           ))}
