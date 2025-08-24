@@ -1,4 +1,5 @@
 export { default as Button } from './Button';
+export { default as ColorPicker } from './ColorPicker';
 export { default as ConfirmationDialog } from './ConfirmationDialog';
 export { ConnectionStatusBanner } from './ConnectionStatusBanner';
 export { ContextMenu } from './ContextMenu';

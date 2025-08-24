@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Input } from 'components/common';
+import { Button, Input, ColorPicker } from 'components/common';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'types/BoardTypes';
 
@@ -111,16 +111,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       {isEditing ? (
         <div className={styles.editForm}>
           <div className={styles.formField}>
-            <label htmlFor="canvas-bg-color" className={styles.fieldLabel}>
-              {t('boardDetails.canvasSettings.backgroundColor')}
-            </label>
-            <input
-              id="canvas-bg-color"
-              type="color"
-              value={backgroundColor}
-              onChange={(e) => setBackgroundColor(e.target.value)}
+            <ColorPicker
+              color={backgroundColor}
+              onChange={setBackgroundColor}
               disabled={isUpdating}
-              className={styles.colorInput}
+              label={t('boardDetails.canvasSettings.backgroundColor')}
             />
           </div>
 
