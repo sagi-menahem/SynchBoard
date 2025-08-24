@@ -1,13 +1,10 @@
 import React, { useState, useRef } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { HexColorPicker } from 'react-colorful';
 import { getColorName } from 'utils/ColorUtils';
 
-import { Button, Input } from 'components/common';
+import { Button, Input, ColorPicker } from 'components/common';
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
-import { PRESET_COLORS } from 'constants/ColorConstants';
-import { useClickOutside } from 'hooks/common/useClickOutside';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'types/BoardTypes';
 
 import styles from './CanvasSettingsSection.module.css';
@@ -37,8 +34,6 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   };
   const [isEditing, setIsEditing] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const colorPickerRef = useRef<HTMLDivElement>(null);
   
   const [backgroundColor, setBackgroundColor] = useState(boardDetails.canvasBackgroundColor);
   const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'>(() => {
@@ -53,8 +48,6 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   });
   const [customWidth, setCustomWidth] = useState(boardDetails.canvasWidth);
   const [customHeight, setCustomHeight] = useState(boardDetails.canvasHeight);
-
-  useClickOutside(colorPickerRef, () => setShowColorPicker(false), showColorPicker);
 
   const handleCancel = () => {
     setBackgroundColor(boardDetails.canvasBackgroundColor);
@@ -134,37 +127,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           <div className={styles.formField}>
             <div className={utilStyles.settingRow}>
               <span className={utilStyles.settingLabel}>{t('boardDetails.canvasSettings.backgroundColor')}:</span>
-              <div className={utilStyles.colorPickerWrapper} ref={colorPickerRef}>
-                <div 
-                  className={`${utilStyles.colorPreview} ${utilStyles.clickableColorPreview} ${isUpdating ? utilStyles.disabled : ''}`}
-                  style={{ backgroundColor: backgroundColor }}
-                  onClick={() => !isUpdating && setShowColorPicker(!showColorPicker)}
-                  title={`${t('boardDetails.canvasSettings.backgroundColor')}: ${backgroundColor}`}
-                />
-                {showColorPicker && !isUpdating && (
-                  <div className={utilStyles.colorPickerPopover}>
-                    <HexColorPicker 
-                      color={backgroundColor} 
-                      onChange={setBackgroundColor}
-                    />
-                    <div className={utilStyles.presetColors}>
-                      {PRESET_COLORS.map((presetColor) => (
-                        <button
-                          key={presetColor}
-                          type="button"
-                          className={utilStyles.presetColorButton}
-                          style={{ backgroundColor: presetColor }}
-                          onClick={() => {
-                            setBackgroundColor(presetColor);
-                            setShowColorPicker(false);
-                          }}
-                          title={presetColor}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <ColorPicker
+                color={backgroundColor}
+                onChange={setBackgroundColor}
+                disabled={isUpdating}
+              />
               <span className={utilStyles.settingValue}>
                 {(() => {
                   const colorName = getColorName(backgroundColor);

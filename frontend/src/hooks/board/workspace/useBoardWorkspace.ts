@@ -15,7 +15,7 @@ import { useSocket } from 'hooks/common';
 import { useSocketSubscription } from 'hooks/common/useSocket';
 import { useWebSocketHandler } from 'hooks/common/useWebSocketHandler';
 import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
-import type { UserUpdateDTO } from 'types/WebSocketTypes';
+import type { BoardUpdateDTO, UserUpdateDTO } from 'types/WebSocketTypes';
 
 
 export const useBoardWorkspace = (boardId: number) => {
@@ -32,9 +32,11 @@ export const useBoardWorkspace = (boardId: number) => {
     objects: baseObjects,
     messages,
     setBoardName,
+    setBoardDetails,
     setAccessLost,
     setObjects: setBaseObjects,
     setMessages,
+    fetchInitialData,
   } = useBoardDataManager(boardId);
 
   // Optimistic updates for drawing objects
@@ -152,6 +154,21 @@ export const useBoardWorkspace = (boardId: number) => {
   );
 
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
+
+  const handleBoardUpdate = useCallback(
+    (message: BoardUpdateDTO) => {
+      logger.debug(`[useBoardWorkspace] Received board update: ${message.updateType}`);
+      
+      if (message.updateType === 'CANVAS_UPDATED') {
+        logger.debug('[useBoardWorkspace] Canvas settings updated. Refreshing board details...');
+        // Refresh board details to get updated canvas settings
+        fetchInitialData();
+      }
+    },
+    [fetchInitialData],
+  );
+
+  useSocketSubscription(WEBSOCKET_TOPICS.BOARD(boardId), handleBoardUpdate, 'board');
 
   const pendingDrawingActions = useMemo(() => {
     return optimisticObjects.filter((obj) => {
