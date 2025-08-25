@@ -13,7 +13,7 @@ export const TOOLS = {
   ARROW: 'arrow',
   TEXT: 'text',
   COLOR_PICKER: 'colorPicker',
-  FILL: 'fill',
+  RECOLOR: 'recolor',
   DOWNLOAD: 'download',
 } as const;
 

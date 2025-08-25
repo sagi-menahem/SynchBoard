@@ -1,6 +1,7 @@
 package io.github.sagimenahem.synchboard.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.sagimenahem.synchboard.constants.ApiConstants;
 import io.github.sagimenahem.synchboard.entity.BoardObject;
+import io.github.sagimenahem.synchboard.entity.GroupBoard;
 
 @Repository
 public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> {
@@ -17,6 +19,8 @@ public interface BoardObjectRepository extends JpaRepository<BoardObject, Long> 
     
     @Query("SELECT bo FROM BoardObject bo LEFT JOIN FETCH bo.createdByUser LEFT JOIN FETCH bo.lastEditedByUser WHERE bo.board.boardGroupId = :boardGroupId AND bo.isActive = true")
     List<BoardObject> findActiveByBoardWithUsers(@Param("boardGroupId") Long boardGroupId);
+    
+    Optional<BoardObject> findByInstanceIdAndBoardAndIsActive(String instanceId, GroupBoard board, boolean isActive);
 
     @Transactional
     void deleteAllByBoard_BoardGroupId(Long boardGroupId);

@@ -58,7 +58,10 @@ export const useWebSocketHandler = ({
   }, [boardId, userEmail, setBoardName, setAccessLost, setMessages]);
 
   const handleDrawingMessage = useCallback((action: BoardActionResponse) => {
-    const isOwnDrawingAction = action.sender === sessionInstanceId && action.type === ActionType.OBJECT_ADD;
+    const isOwnDrawingAction = action.sender === sessionInstanceId && (
+      action.type === ActionType.OBJECT_ADD || 
+      action.type === ActionType.OBJECT_UPDATE
+    );
     
     if (!isOwnDrawingAction) {
       const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
@@ -66,6 +69,11 @@ export const useWebSocketHandler = ({
       if (action.type === ActionType.OBJECT_ADD) {
         logger.debug(`Processing drawing OBJECT_ADD for instanceId: ${action.instanceId}`);
         setObjects((prev) => [...prev, actionPayload]);
+      } else if (action.type === ActionType.OBJECT_UPDATE) {
+        logger.debug(`Processing drawing OBJECT_UPDATE for instanceId: ${action.instanceId}`);
+        setObjects((prev) => prev.map((obj) => 
+          obj.instanceId === action.instanceId ? actionPayload : obj
+        ));
       } else if (action.type === ActionType.OBJECT_DELETE) {
         logger.debug(`Processing drawing OBJECT_DELETE for instanceId: ${action.instanceId}`);
         setObjects((prev) => prev.filter((obj) => obj.instanceId !== action.instanceId));
@@ -129,6 +137,7 @@ export const useWebSocketHandler = ({
         );
 
         if (transactionalMessage.type === ActionType.OBJECT_ADD || 
+            transactionalMessage.type === ActionType.OBJECT_UPDATE ||
             transactionalMessage.type === ActionType.OBJECT_DELETE) {
           handleDrawingMessage(transactionalMessage as BoardActionResponse);
         } else if (transactionalMessage.type === 'CHAT') {

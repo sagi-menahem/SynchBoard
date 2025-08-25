@@ -26,6 +26,8 @@ export const useCanvasRendering = ({
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Render all objects in order
     objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
   }, [objects, dimensions, replayDrawAction, canvasRef, contextRef]);
 };

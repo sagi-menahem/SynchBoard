@@ -25,7 +25,8 @@ export interface RectanglePayload {
     y: number;
     width: number;
     height: number;
-    color: string;
+    color: string;                // Stroke color
+    fillColor?: string | null;    // Fill color (null = no fill)
     strokeWidth: number;
     tool: 'square' | 'rectangle';
 }
@@ -35,7 +36,8 @@ export interface CirclePayload {
     x: number;
     y: number;
     radius: number;
-    color: string;
+    color: string;                // Stroke color
+    fillColor?: string | null;    // Fill color (null = no fill)
     strokeWidth: number;
     tool: 'circle';
 }
@@ -48,7 +50,8 @@ export interface TrianglePayload {
     y2: number;
     x3: number;
     y3: number;
-    color: string;
+    color: string;                // Stroke color
+    fillColor?: string | null;    // Fill color (null = no fill)
     strokeWidth: number;
     tool: 'triangle';
 }
@@ -59,7 +62,8 @@ export interface PolygonPayload {
     y: number;
     radius: number;
     sides: number;
-    color: string;
+    color: string;                // Stroke color
+    fillColor?: string | null;    // Fill color (null = no fill)
     strokeWidth: number;
     tool: 'pentagon' | 'hexagon' | 'star';
 }
@@ -74,14 +78,6 @@ export interface TextBoxPayload {
     fontSize: number; // From toolbar slider (12-48px)
     color: string;
     tool: 'text';
-}
-
-export interface FillPayload {
-    instanceId: string;
-    x: number;
-    y: number;
-    color: string;
-    tool: 'fill';
 }
 
 export interface StraightLinePayload {
@@ -114,7 +110,6 @@ export type ActionPayload =
   | TrianglePayload 
   | PolygonPayload 
   | TextBoxPayload 
-  | FillPayload
   | StraightLinePayload
   | ArrowPayload;
 

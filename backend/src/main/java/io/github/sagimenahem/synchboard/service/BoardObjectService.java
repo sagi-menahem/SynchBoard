@@ -50,11 +50,10 @@ public class BoardObjectService {
                                 () -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND
                                                 + request.getBoardId()));
 
-                if (request.getType() == ActionType.OBJECT_ADD) {
-                        try {
-                                String payloadAsString = objectMapper
-                                                .writeValueAsString(request.getPayload());
+                try {
+                        String payloadAsString = objectMapper.writeValueAsString(request.getPayload());
 
+                        if (request.getType() == ActionType.OBJECT_ADD) {
                                 BoardObject newBoardObject = BoardObject.builder().board(board)
                                                 .createdByUser(user).lastEditedByUser(user)
                                                 .objectType(request.getType().name())
@@ -72,13 +71,63 @@ public class BoardObjectService {
 
                                 actionHistoryRepository.save(historyRecord);
 
-                        } catch (JsonProcessingException e) {
-                                log.error("Failed to process JSON payload for board action on board {}: {}",
-                                                request.getBoardId(), e.getMessage(), e);
-                                throw new InvalidRequestException(
-                                                "Invalid board action data format: "
-                                                                + e.getMessage());
+                        } else if (request.getType() == ActionType.OBJECT_UPDATE) {
+                                log.debug("OBJECT_UPDATE: Searching for instanceId: {} in board: {}", 
+                                        request.getInstanceId(), board.getBoardGroupId());
+                                
+                                BoardObject existingObject = boardObjectRepository
+                                                .findByInstanceIdAndBoardAndIsActive(
+                                                                request.getInstanceId(), board, true)
+                                                .orElseThrow(() -> {
+                                                        log.error("OBJECT_UPDATE: BoardObject not found - instanceId: {}, boardId: {}", 
+                                                                request.getInstanceId(), board.getBoardGroupId());
+                                                        return new ResourceNotFoundException(
+                                                                "BoardObject not found with instanceId: " +
+                                                                                request.getInstanceId());
+                                                });
+
+                                String previousPayload = existingObject.getObjectData();
+                                existingObject.setObjectData(payloadAsString);
+                                existingObject.setLastEditedByUser(user);
+
+                                boardObjectRepository.saveAndFlush(existingObject);
+
+                                ActionHistory historyRecord = ActionHistory.builder().board(board)
+                                                .user(user).boardObject(existingObject)
+                                                .actionType(request.getType().name())
+                                                .stateBefore(previousPayload).stateAfter(payloadAsString)
+                                                .build();
+
+                                actionHistoryRepository.save(historyRecord);
+
+                        } else if (request.getType() == ActionType.OBJECT_DELETE) {
+                                BoardObject objectToDelete = boardObjectRepository
+                                                .findByInstanceIdAndBoardAndIsActive(
+                                                                request.getInstanceId(), board, true)
+                                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                                "BoardObject not found with instanceId: " +
+                                                                                request.getInstanceId()));
+
+                                String previousPayload = objectToDelete.getObjectData();
+                                objectToDelete.setActive(false);
+                                objectToDelete.setLastEditedByUser(user);
+
+                                boardObjectRepository.saveAndFlush(objectToDelete);
+
+                                ActionHistory historyRecord = ActionHistory.builder().board(board)
+                                                .user(user).boardObject(objectToDelete)
+                                                .actionType(request.getType().name())
+                                                .stateBefore(previousPayload).stateAfter(null)
+                                                .build();
+
+                                actionHistoryRepository.save(historyRecord);
                         }
+
+                } catch (JsonProcessingException e) {
+                        log.error("Failed to process JSON payload for board action on board {}: {}",
+                                        request.getBoardId(), e.getMessage(), e);
+                        throw new InvalidRequestException(
+                                        "Invalid board action data format: " + e.getMessage());
                 }
         }
 

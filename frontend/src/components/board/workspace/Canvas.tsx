@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { floodFill } from 'utils/canvas/floodFill';
+import { processRecolorClick } from 'utils/canvas/recolorLogic';
+import { getRecolorCursor } from 'utils/canvas/cursorUtils';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
 import { useConnectionStatus, usePreferences } from 'hooks/common';
-import type { ActionPayload, FillPayload, SendBoardActionRequest, TextBoxPayload } from 'types/BoardObjectTypes';
+import type { ActionPayload, SendBoardActionRequest, TextBoxPayload } from 'types/BoardObjectTypes';
 import type { CanvasConfig } from 'types/BoardTypes';
 import type { Tool } from 'types/CommonTypes';
 
@@ -26,6 +27,7 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = (props) => {
   const [textInput, setTextInput] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
+  const [recolorCursor, setRecolorCursor] = useState<string>('crosshair');
   
   const handleTextInputRequest = useCallback(
     (x: number, y: number, width: number, height: number) => {
@@ -85,26 +87,28 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       }
       e.preventDefault();
       return;
-    } else if (props.tool === TOOLS.FILL && canvasRef.current) {
+    } else if (props.tool === TOOLS.RECOLOR && canvasRef.current) {
       const canvas = canvasRef.current;
       const rect = canvas.getBoundingClientRect();
-      const x = Math.floor(e.clientX - rect.left);
-      const y = Math.floor(e.clientY - rect.top);
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
       
-      // Perform flood fill
-      floodFill(canvas, x, y, props.strokeColor);
+      // Use the recolor logic system
+      const recolorAction = processRecolorClick(
+        { x: clickX, y: clickY },
+        props.objects,
+        canvas.width,
+        canvas.height,
+        props.strokeColor,
+        props.instanceId
+      );
       
-      // Send fill action for real-time sync
-      props.onDraw({
-        type: 'OBJECT_ADD',
-        payload: {
-          tool: TOOLS.FILL,
-          x: x / canvas.width,
-          y: y / canvas.height,
-          color: props.strokeColor,
-        } as Omit<FillPayload, 'instanceId'>,
-        sender: props.instanceId,
-      });
+      if (recolorAction.shouldPerformAction && recolorAction.action) {
+        console.debug('Recolor action:', recolorAction.reason);
+        props.onDraw(recolorAction.action);
+      } else {
+        console.debug('No recolor action:', recolorAction.reason);
+      }
       
       e.preventDefault();
       return;
@@ -137,6 +141,25 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     setTextInput(null);
   };
 
+  // Handle mouse move for recolor tool cursor feedback
+  const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (props.tool !== TOOLS.RECOLOR || !canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const cursor = getRecolorCursor(
+      { x: mouseX, y: mouseY },
+      props.objects,
+      canvas.width,
+      canvas.height
+    );
+
+    setRecolorCursor(cursor);
+  }, [props.tool, props.objects, canvasRef]);
+
   const shouldShowLoading = showLoading;
   const containerClassName = `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`;
   const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
@@ -163,8 +186,12 @@ const Canvas: React.FC<CanvasProps> = (props) => {
             width={canvasWidth}
             height={canvasHeight}
             onMouseDown={handleCanvasClick}
+            onMouseMove={handleCanvasMouseMove}
             className={canvasClassName}
-            style={{ backgroundColor: canvasConfig.backgroundColor }}
+            style={{ 
+              backgroundColor: canvasConfig.backgroundColor,
+              cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair'
+            }}
           />
           
           {textInput && (

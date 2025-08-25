@@ -104,9 +104,10 @@ export const useCanvasInteractions = ({
         const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
         // This would need to be passed up to parent component to update color
         console.log('Color picked:', hex);
-      } else if (tool === TOOLS.FILL) {
-        // Simple flood fill implementation would go here
-        console.log('Fill tool clicked at:', offsetX, offsetY);
+      } else if (tool === TOOLS.RECOLOR) {
+        // Recolor logic is now handled in Canvas.tsx through handleCanvasClick
+        // This section handles mouse down events, but recolor is click-based
+        console.debug('Recolor tool mouse down at:', offsetX, offsetY);
       }
     },
     [tool, canvasRef, contextRef, setIsDrawing, startPoint, currentPath, shouldBlockFunctionality],

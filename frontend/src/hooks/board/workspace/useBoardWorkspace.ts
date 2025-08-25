@@ -86,8 +86,9 @@ export const useBoardWorkspace = (boardId: number) => {
   });
 
   const handleDrawAction = useCallback(
-    async (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
-      const instanceId = crypto.randomUUID();
+    async (action: Omit<SendBoardActionRequest, 'boardId'> | Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
+      // Use existing instanceId for updates, generate new one for adds
+      const instanceId = 'instanceId' in action ? action.instanceId : crypto.randomUUID();
       const actionRequest: SendBoardActionRequest = {
         ...action,
         boardId,
