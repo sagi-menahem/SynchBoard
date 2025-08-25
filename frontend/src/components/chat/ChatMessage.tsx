@@ -2,11 +2,11 @@ import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
 import { getUserColor, isSafeUrl, sanitizeUserContent, type UserColorMap } from 'utils';
-import { formatDetailedTimestamp, formatSmartTimestamp } from 'utils/DateUtils';
+import { formatDetailedTimestamp } from 'utils/DateUtils';
 
+import { RelativeTimestamp } from 'components/common';
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
-import { RelativeTimestamp } from 'components/common';
 
 import styles from './ChatMessage.module.css';
 
@@ -17,7 +17,12 @@ interface ChatMessageProps {
   shouldAnimate?: boolean;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false, userColorMap, shouldAnimate = true }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ 
+  message, 
+  isOwnMessage = false, 
+  userColorMap, 
+  shouldAnimate = true, 
+}) => {
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;

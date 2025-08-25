@@ -40,7 +40,56 @@ export interface CirclePayload {
     tool: 'circle';
 }
 
-export type ActionPayload = LinePayload | RectanglePayload | CirclePayload;
+export interface TrianglePayload {
+    instanceId: string;
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    x3: number;
+    y3: number;
+    color: string;
+    strokeWidth: number;
+    tool: 'triangle';
+}
+
+export interface PolygonPayload {
+    instanceId: string;
+    x: number;
+    y: number;
+    radius: number;
+    sides: number;
+    color: string;
+    strokeWidth: number;
+    tool: 'pentagon' | 'hexagon';
+}
+
+export interface TextPayload {
+    instanceId: string;
+    x: number;
+    y: number;
+    text: string;
+    fontSize: number;
+    color: string;
+    tool: 'text';
+}
+
+export interface FillPayload {
+    instanceId: string;
+    x: number;
+    y: number;
+    color: string;
+    tool: 'fill';
+}
+
+export type ActionPayload = 
+  | LinePayload 
+  | RectanglePayload 
+  | CirclePayload 
+  | TrianglePayload 
+  | PolygonPayload 
+  | TextPayload 
+  | FillPayload;
 
 export type EnhancedActionPayload = ActionPayload & {
     transactionId?: string;

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Canvas } from 'components/board/workspace';
 import { ChatWindow } from 'components/chat';
@@ -24,6 +24,7 @@ interface BoardWorkspaceProps {
     splitRatio?: number;
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     onSplitRatioChange?: (ratio: number) => void;
+    onColorPick?: (color: string) => void;
 }
 
 const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
@@ -38,6 +39,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   splitRatio = 70,
   onDraw,
   onSplitRatioChange,
+  onColorPick,
 }) => {
   const [currentSplitRatio, setCurrentSplitRatio] = useState(splitRatio);
 
@@ -61,6 +63,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       strokeColor={strokeColor}
       strokeWidth={strokeWidth}
       canvasConfig={canvasConfig}
+      onColorPick={onColorPick}
     />
   );
 

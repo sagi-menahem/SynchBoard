@@ -41,7 +41,7 @@ export interface ChangePasswordRequest {
 }
 
 export interface UserPreferences {
-    boardBackgroundSetting: string | null;
+    boardBackgroundSetting?: string | null;
 }
 
 export interface VerifyEmailRequest {

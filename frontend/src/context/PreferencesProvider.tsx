@@ -60,9 +60,26 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
       });
   };
 
+  const updatePreferencesSilent = (newPrefs: UserPreferences): Promise<void> => {
+    const oldPrefs = preferences;
+    setPreferences(newPrefs);
+
+    return userService
+      .updateUserPreferences(newPrefs)
+      .then(() => {
+        // Success - no toast notification
+      })
+      .catch((error) => {
+        logger.error('Failed to save preferences silently', error);
+        setPreferences(oldPrefs);
+        throw error;
+      });
+  };
+
   const value = {
     preferences,
     updatePreferences,
+    updatePreferencesSilent,
   };
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>;

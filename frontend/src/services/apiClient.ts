@@ -65,12 +65,22 @@ apiClient.interceptors.response.use(
 
     const isBoardRequest = error.config?.url?.includes('/boards/');
 
-    if (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) {
-      if (error.response.status === 401 || !isBoardRequest) {
-        logger.warn(`[API] Session invalidated due to ${error.response.status} response`, {
+    // Check for user not found errors (when database is cleared but token exists)
+    const responseData = error.response?.data as { message?: string } | undefined;
+    const isUserNotFoundError = error.response?.status === 500 && 
+      responseData?.message?.includes?.('User not found') ||
+      error.response?.status === 500 && 
+      error.message?.includes?.('User not found');
+
+    if ((error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) || 
+        (isUserNotFoundError && !isLoginAttempt)) {
+      if (error.response?.status === 401 || !isBoardRequest || isUserNotFoundError) {
+        const reason = isUserNotFoundError ? 'user not found in database' : `${error.response?.status} response`;
+        logger.warn(`[API] Session invalidated due to ${reason}`, {
           currentPath: window.location.pathname,
           clearingToken: true,
           timestamp: new Date().toISOString(),
+          isUserNotFoundError,
         });
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
@@ -79,6 +89,7 @@ apiClient.interceptors.response.use(
         if (window.location.pathname !== '/auth') {
           logger.info('[API] Redirecting to login page due to authentication failure', {
             fromPath: window.location.pathname,
+            reason,
           });
           window.location.href = '/auth';
         }

@@ -5,9 +5,10 @@ import React from 'react';
 import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { getColorName } from 'utils/ColorUtils';
-import { formatCanvasResolution } from 'utils/CanvasUtils';
 import type { Board } from 'types';
+import { formatCanvasResolution } from 'utils/CanvasUtils';
+import { getColorName } from 'utils/ColorUtils';
+
 import { RelativeTimestamp } from 'components/common';
 
 import styles from './BoardCard.module.css';

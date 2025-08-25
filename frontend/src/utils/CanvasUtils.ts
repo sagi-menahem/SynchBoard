@@ -1,5 +1,18 @@
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
-import type { ActionPayload, CirclePayload, EnhancedActionPayload, LinePayload, Point, RectanglePayload } from 'types/BoardObjectTypes';
+import type {
+  ActionPayload,
+  CirclePayload,
+  EnhancedActionPayload,
+  FillPayload,
+  LinePayload,
+  Point,
+  PolygonPayload,
+  RectanglePayload,
+  TextPayload,
+  TrianglePayload,
+} from 'types/BoardObjectTypes';
+
+import { floodFill } from './canvas/floodFill';
 
 export const getMouseCoordinates = (
   event: MouseEvent, 
@@ -76,6 +89,74 @@ export const drawCirclePayload = (
   targetCtx.stroke();
 };
 
+export const drawTrianglePayload = (
+  payload: TrianglePayload,
+  targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x1, y1, x2, y2, x3, y3, color, strokeWidth } = payload;
+
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
+  targetCtx.beginPath();
+  targetCtx.moveTo(x1 * targetCanvas.width, y1 * targetCanvas.height);
+  targetCtx.lineTo(x2 * targetCanvas.width, y2 * targetCanvas.height);
+  targetCtx.lineTo(x3 * targetCanvas.width, y3 * targetCanvas.height);
+  targetCtx.closePath();
+  targetCtx.stroke();
+};
+
+export const drawPolygonPayload = (
+  payload: PolygonPayload,
+  targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x, y, radius, sides, color, strokeWidth } = payload;
+
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
+  targetCtx.beginPath();
+
+  for (let i = 0; i < sides; i++) {
+    const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
+    const pointX = (x + radius * Math.cos(angle)) * targetCanvas.width;
+    const pointY = (y + radius * Math.sin(angle)) * targetCanvas.height;
+    
+    if (i === 0) {
+      targetCtx.moveTo(pointX, pointY);
+    } else {
+      targetCtx.lineTo(pointX, pointY);
+    }
+  }
+  
+  targetCtx.closePath();
+  targetCtx.stroke();
+};
+
+export const drawTextPayload = (
+  payload: TextPayload,
+  targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x, y, text, fontSize, color } = payload;
+
+  targetCtx.fillStyle = color;
+  targetCtx.font = `${fontSize}px system-ui, -apple-system, sans-serif`;
+  targetCtx.textBaseline = 'top';
+  targetCtx.fillText(text, x * targetCanvas.width, y * targetCanvas.height);
+};
+
+export const drawFillPayload = (
+  payload: FillPayload,
+  _targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x, y, color } = payload;
+  
+  // Apply flood fill at the specified coordinates
+  floodFill(targetCanvas, Math.floor(x * targetCanvas.width), Math.floor(y * targetCanvas.height), color);
+};
+
 export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | null => {
   if (!canvas) return null;
 
@@ -120,6 +201,14 @@ export const replayDrawAction = (
     drawRectanglePayload(payload as RectanglePayload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.CIRCLE) {
     drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.TRIANGLE) {
+    drawTrianglePayload(payload as TrianglePayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.PENTAGON || payload.tool === TOOLS.HEXAGON) {
+    drawPolygonPayload(payload as PolygonPayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.TEXT) {
+    drawTextPayload(payload as TextPayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.FILL) {
+    drawFillPayload(payload as FillPayload, targetCtx, targetCanvas);
   }
 
   targetCtx.globalAlpha = originalGlobalAlpha;

@@ -1,10 +1,10 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { BoardProvider, useCanvasPreferences } from 'context';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import { BoardHeader, BoardWorkspace, Toolbar } from 'components/board/workspace';
+import { BoardWorkspace, HeaderToolbar } from 'components/board/workspace';
 import { useBoardContext, useToolbarState } from 'hooks/board';
 
 import styles from './BoardPage.module.css';
@@ -33,6 +33,10 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   const { tool, setTool, strokeColor, setStrokeColor, strokeWidth, setStrokeWidth } = useToolbarState();
   
+  const handleColorPick = useCallback((color: string) => {
+    setStrokeColor(color);
+  }, [setStrokeColor]);
+  
   const {
     preferences: canvasPreferences,
     updateSplitRatio,
@@ -55,10 +59,9 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   return (
     <div className={styles.page} ref={pageRef} data-board-page>
-      <BoardHeader boardId={boardId} boardName={boardName} />
-
-      <Toolbar
-        containerRef={pageRef}
+      <HeaderToolbar
+        boardId={boardId}
+        boardName={boardName || 'Board'}
         strokeColor={strokeColor}
         setStrokeColor={setStrokeColor}
         strokeWidth={strokeWidth}
@@ -71,19 +74,22 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         isRedoAvailable={isRedoAvailable}
       />
 
-      <BoardWorkspace
-        boardId={boardId}
-        instanceId={instanceId}
-        objects={objects}
-        messages={messages}
-        tool={tool}
-        strokeColor={strokeColor}
-        strokeWidth={strokeWidth}
-        canvasConfig={canvasConfig}
-        splitRatio={canvasPreferences.canvasChatSplitRatio}
-        onDraw={handleDrawAction}
-        onSplitRatioChange={handleSplitRatioChange}
-      />
+      <div className={styles.boardWorkspaceArea}>
+        <BoardWorkspace
+          boardId={boardId}
+          instanceId={instanceId}
+          objects={objects}
+          messages={messages}
+          tool={tool}
+          strokeColor={strokeColor}
+          strokeWidth={strokeWidth}
+          canvasConfig={canvasConfig}
+          splitRatio={canvasPreferences.canvasChatSplitRatio}
+          onDraw={handleDrawAction}
+          onSplitRatioChange={handleSplitRatioChange}
+          onColorPick={handleColorPick}
+        />
+      </div>
     </div>
   );
 };

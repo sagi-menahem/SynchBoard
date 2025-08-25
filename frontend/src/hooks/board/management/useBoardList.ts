@@ -75,20 +75,20 @@ export const useBoardList = () => {
   const updateSpecificBoard = useCallback(async (boardId: number) => {
     try {
       const updatedBoard = await BoardService.getBoardDetails(boardId);
-      setBoards(prevBoards => {
-        const updatedBoards = prevBoards.map(board => 
+      setBoards((prevBoards) => {
+        const updatedBoards = prevBoards.map((board) => 
           board.id === boardId ? {
             ...board,
             canvasBackgroundColor: updatedBoard.canvasBackgroundColor,
             canvasWidth: updatedBoard.canvasWidth,
             canvasHeight: updatedBoard.canvasHeight,
             lastModifiedDate: new Date().toISOString(), // Set to current time for immediate sorting
-          } : board
+          } : board,
         );
         
         // Sort by lastModifiedDate DESC to maintain order
         return updatedBoards.sort((a, b) => 
-          new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime()
+          new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime(),
         );
       });
     } catch (error) {
