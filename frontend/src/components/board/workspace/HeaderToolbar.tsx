@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 
 import { ColorPicker, Slider } from 'components/common';
 import type { Tool } from 'types/CommonTypes';
+import type { CanvasConfig } from 'types/BoardTypes';
 
 import styles from './HeaderToolbar.module.css';
 import { LineToolsGroup } from './LineToolsGroup';
@@ -37,6 +38,7 @@ interface HeaderToolbarProps {
   isUndoAvailable: boolean;
   onRedo: () => void;
   isRedoAvailable: boolean;
+  canvasConfig?: CanvasConfig;
 }
 
 export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
@@ -52,6 +54,7 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
   isUndoAvailable,
   onRedo,
   isRedoAvailable,
+  canvasConfig,
 }) => {
   const { t } = useTranslation();
 
@@ -59,12 +62,32 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
     const canvas = document.querySelector('canvas') as HTMLCanvasElement;
     if (!canvas) return;
     
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Create a temporary canvas to draw the background + content
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    if (!tempCtx) return;
+
+    // Fill background color
+    const backgroundColor = canvasConfig?.backgroundColor || '#FFFFFF';
+    tempCtx.fillStyle = backgroundColor;
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    
+    // Draw the existing canvas content on top of the background
+    tempCtx.drawImage(canvas, 0, 0);
+    
+    // Create download link using the temporary canvas
     const link = document.createElement('a');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
     link.download = `${boardName}-${timestamp}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = tempCanvas.toDataURL('image/png');
     link.click();
-  }, [boardName]);
+  }, [boardName, canvasConfig]);
 
   const handleToolClick = useCallback((toolName: Tool) => {
     if (toolName === TOOLS.DOWNLOAD) {
