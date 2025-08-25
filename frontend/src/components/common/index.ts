@@ -13,3 +13,4 @@ export { default as PasswordInput } from './PasswordInput';
 export { default as PictureManager } from './PictureManager';
 export { default as RelativeTimestamp } from './RelativeTimestamp';
 export { default as ResizableSplitPanel } from './ResizableSplitPanel';
+export { Slider } from './Slider';

@@ -3,6 +3,13 @@ export const TOOLS = {
   ERASER: 'eraser',
   RECTANGLE: 'rectangle',
   CIRCLE: 'circle',
+  TRIANGLE: 'triangle',
+  PENTAGON: 'pentagon',
+  HEXAGON: 'hexagon',
+  TEXT: 'text',
+  COLOR_PICKER: 'colorPicker',
+  FILL: 'fill',
+  DOWNLOAD: 'download',
 } as const;
 
 export const TOOL_LIST = Object.values(TOOLS);
@@ -52,26 +59,26 @@ export const CANVAS_CONFIG = {
       width: 1920, 
       height: 1080, 
       ratio: '16:9',
-      key: 'widescreen'
+      key: 'widescreen',
     },
     SQUARE: { 
       width: 1200, 
       height: 1200, 
       ratio: '1:1',
-      key: 'square'
+      key: 'square',
     },
     PORTRAIT: { 
       width: 1080, 
       height: 1920, 
       ratio: '9:16',
-      key: 'portrait'
+      key: 'portrait',
     },
     DOCUMENT: { 
       width: 1240, 
       height: 1754, 
       ratio: 'A4',
-      key: 'document'
-    }
+      key: 'document',
+    },
   },
   PRESET_ORDER: ['WIDESCREEN', 'SQUARE', 'PORTRAIT', 'DOCUMENT'] as const,
 } as const;

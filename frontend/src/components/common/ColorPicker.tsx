@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { HexColorPicker } from 'react-colorful';
 
@@ -94,6 +94,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
             <div
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
+              role="presentation"
             >
               <HexColorPicker 
                 color={color} 

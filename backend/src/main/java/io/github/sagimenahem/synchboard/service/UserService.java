@@ -168,7 +168,8 @@ public class UserService {
                 .lastName(user.getLastName()).gender(user.getGender())
                 .phoneNumber(user.getPhoneNumber()).dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
-                .boardBackgroundSetting(user.getBoardBackgroundSetting()).build();
+                .boardBackgroundSetting(user.getBoardBackgroundSetting())
+                .build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {

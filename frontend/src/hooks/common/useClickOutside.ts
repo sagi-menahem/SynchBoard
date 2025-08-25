@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect, type RefObject } from 'react';
 
 /**
  * Custom hook to handle click outside events
@@ -7,9 +7,9 @@ import { useEffect, RefObject } from 'react';
  * @param isActive - Whether the hook should be active (default: true)
  */
 export const useClickOutside = <T extends HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   callback: () => void,
-  isActive: boolean = true
+  isActive = true,
 ): void => {
   useEffect(() => {
     if (!isActive) return;

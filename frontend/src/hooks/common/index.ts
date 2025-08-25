@@ -1,7 +1,6 @@
 export { useClickOutside } from './useClickOutside';
 export { useConnectionStatus } from './useConnectionStatus';
 export { useContextMenu } from './useContextMenu';
-export { useDraggable } from './useDraggable';
 export { createErrorHandler, useErrorHandler } from './useErrorHandler';
 export { usePreferences } from './usePreferences';
 export { useSocket, useSocketSubscription, useWebSocket } from './useSocket';

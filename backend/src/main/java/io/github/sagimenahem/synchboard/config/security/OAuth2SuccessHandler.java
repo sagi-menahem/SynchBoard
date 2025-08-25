@@ -57,10 +57,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             }
             
             // Check if user exists with this email
-            Optional<User> existingUser = userRepository.findById(email);
-            User userForToken;
+            Optional<User> existingUser;
+            try {
+                existingUser = userRepository.findById(email);
+                log.info(SECURITY_PREFIX + " OAuth2 user lookup result for {}: exists={}", email, existingUser.isPresent());
+            } catch (Exception dbException) {
+                log.error(SECURITY_PREFIX + " Database error during OAuth2 user lookup for {}: {}", email, dbException.getMessage());
+                handleAuthenticationFailure(response, "Database is not available. Please try again later.");
+                return;
+            }
             
-            log.info(SECURITY_PREFIX + " OAuth2 user lookup result for {}: exists={}", email, existingUser.isPresent());
+            User userForToken;
             
             if (existingUser.isPresent()) {
                 User user = existingUser.get();
@@ -78,14 +85,26 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 // Update user info from Google (in case it changed)
                 log.info(SECURITY_PREFIX + " Updating existing OAuth2 user data for: {}", email);
                 updateUserFromOAuth2(user, name, pictureUrl, providerId);
-                userForToken = userRepository.save(user);
-                log.info(SECURITY_PREFIX + " Updated existing OAuth2 user: {}", email);
+                try {
+                    userForToken = userRepository.save(user);
+                    log.info(SECURITY_PREFIX + " Updated existing OAuth2 user: {}", email);
+                } catch (Exception dbException) {
+                    log.error(SECURITY_PREFIX + " Database error during OAuth2 user update for {}: {}", email, dbException.getMessage());
+                    handleAuthenticationFailure(response, "Database is not available. Please try again later.");
+                    return;
+                }
             } else {
                 // Create new user
                 log.info(SECURITY_PREFIX + " Creating new OAuth2 user for: {}", email);
                 User newUser = createUserFromOAuth2(email, name, pictureUrl, providerId);
-                userForToken = userRepository.save(newUser);
-                log.info(SECURITY_PREFIX + " Created new OAuth2 user: {} with creation date: {}", email, newUser.getCreationDate());
+                try {
+                    userForToken = userRepository.save(newUser);
+                    log.info(SECURITY_PREFIX + " Created new OAuth2 user: {} with creation date: {}", email, newUser.getCreationDate());
+                } catch (Exception dbException) {
+                    log.error(SECURITY_PREFIX + " Database error during OAuth2 user creation for {}: {}", email, dbException.getMessage());
+                    handleAuthenticationFailure(response, "Database is not available. Please try again later.");
+                    return;
+                }
             }
             
             // Generate JWT token

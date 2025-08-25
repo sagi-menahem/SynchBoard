@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { formatSmartTimestamp } from 'utils/DateUtils';
 
 interface RelativeTimestampProps {

@@ -1,6 +1,6 @@
 import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'constants';
 
-import { useCallback, useEffect, useMemo, useOptimistic, useRef, useState, startTransition } from 'react';
+import { startTransition, useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,6 @@ export const useBoardWorkspace = (boardId: number) => {
     objects: baseObjects,
     messages,
     setBoardName,
-    setBoardDetails,
     setAccessLost,
     setObjects: setBaseObjects,
     setMessages,

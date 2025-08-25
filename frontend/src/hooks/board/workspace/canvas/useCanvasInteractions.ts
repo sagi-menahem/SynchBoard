@@ -9,6 +9,8 @@ import {
   type CirclePayload,
   type LinePayload,
   type RectanglePayload,
+  type TrianglePayload,
+  type PolygonPayload,
   type SendBoardActionRequest,
 } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
@@ -77,8 +79,24 @@ export const useCanvasInteractions = ({
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
         currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
-      } else if (tool === TOOLS.RECTANGLE || tool === TOOLS.CIRCLE) {
+      } else if (
+        tool === TOOLS.RECTANGLE || 
+        tool === TOOLS.CIRCLE || 
+        tool === TOOLS.TRIANGLE || 
+        tool === TOOLS.PENTAGON || 
+        tool === TOOLS.HEXAGON
+      ) {
         startPoint.current = { x: offsetX, y: offsetY };
+      } else if (tool === TOOLS.COLOR_PICKER) {
+        // Handle color picker immediately
+        const imageData = ctx.getImageData(offsetX, offsetY, 1, 1);
+        const data = imageData.data;
+        const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
+        // This would need to be passed up to parent component to update color
+        console.log('Color picked:', hex);
+      } else if (tool === TOOLS.FILL) {
+        // Simple flood fill implementation would go here
+        console.log('Fill tool clicked at:', offsetX, offsetY);
       }
     },
     [tool, canvasRef, contextRef, setIsDrawing, startPoint, currentPath, shouldBlockFunctionality],
@@ -136,6 +154,33 @@ export const useCanvasInteractions = ({
         ctx.beginPath();
         ctx.arc(startPoint.current.x, startPoint.current.y, radius, 0, 2 * Math.PI);
         ctx.stroke();
+      } else if (tool === TOOLS.TRIANGLE && startPoint.current) {
+        const width = coords.x - startPoint.current.x;
+        const height = coords.y - startPoint.current.y;
+        ctx.beginPath();
+        ctx.moveTo(startPoint.current.x + width / 2, startPoint.current.y);
+        ctx.lineTo(startPoint.current.x, startPoint.current.y + height);
+        ctx.lineTo(startPoint.current.x + width, startPoint.current.y + height);
+        ctx.closePath();
+        ctx.stroke();
+      } else if ((tool === TOOLS.PENTAGON || tool === TOOLS.HEXAGON) && startPoint.current) {
+        const radius = Math.sqrt(
+          Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
+        );
+        const sides = tool === TOOLS.PENTAGON ? 5 : 6;
+        ctx.beginPath();
+        for (let i = 0; i < sides; i++) {
+          const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
+          const x = startPoint.current.x + radius * Math.cos(angle);
+          const y = startPoint.current.y + radius * Math.sin(angle);
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.closePath();
+        ctx.stroke();
       }
       
       // Restore original alpha
@@ -191,6 +236,41 @@ export const useCanvasInteractions = ({
             x: startPoint.current.x / canvas.width,
             y: startPoint.current.y / canvas.height,
             radius,
+            color: strokeColor,
+            strokeWidth,
+          };
+          onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
+        }
+      } else if (tool === TOOLS.TRIANGLE && startPoint.current) {
+        const width = Math.abs(coords.x - startPoint.current.x) / canvas.width;
+        const height = Math.abs(coords.y - startPoint.current.y) / canvas.height;
+        if (isShapeSizeValid(width, height)) {
+          const payload: Omit<TrianglePayload, 'instanceId'> = {
+            tool,
+            x1: (startPoint.current.x + (coords.x - startPoint.current.x) / 2) / canvas.width,
+            y1: startPoint.current.y / canvas.height,
+            x2: startPoint.current.x / canvas.width,
+            y2: coords.y / canvas.height,
+            x3: coords.x / canvas.width,
+            y3: coords.y / canvas.height,
+            color: strokeColor,
+            strokeWidth,
+          };
+          onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
+        }
+      } else if ((tool === TOOLS.PENTAGON || tool === TOOLS.HEXAGON) && startPoint.current) {
+        const radius =
+          Math.sqrt(
+            Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
+          ) / canvas.width;
+        if (isRadiusValid(radius)) {
+          const sides = tool === TOOLS.PENTAGON ? 5 : 6;
+          const payload: Omit<PolygonPayload, 'instanceId'> = {
+            tool,
+            x: startPoint.current.x / canvas.width,
+            y: startPoint.current.y / canvas.height,
+            radius,
+            sides,
             color: strokeColor,
             strokeWidth,
           };
