@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { optimizeDrawingPoints } from 'utils';
+import { optimizeDrawingPoints, Logger } from 'utils';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useConnectionStatus } from 'hooks/common';
@@ -103,7 +103,7 @@ export const useCanvasInteractions = ({
         const data = imageData.data;
         const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
         // This would need to be passed up to parent component to update color
-        console.log('Color picked:', hex);
+        Logger.debug('Color picked:', hex);
       } else if (tool === TOOLS.RECOLOR) {
         // Recolor logic is now handled in Canvas.tsx through handleCanvasClick
         // This section handles mouse down events, but recolor is click-based

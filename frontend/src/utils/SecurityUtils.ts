@@ -161,4 +161,3 @@ export const validateBoardMessage = (data: Record<string, unknown>): boolean => 
 };
 
 export const sanitizeUserContent = sanitizeString;
-export const sanitizeWebSocketString = sanitizeString;
