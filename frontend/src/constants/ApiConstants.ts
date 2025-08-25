@@ -33,6 +33,8 @@ export const API_ENDPOINTS = {
   UPDATE_USER_PREFERENCES: '/user/preferences',
   GET_CANVAS_PREFERENCES: '/user/canvas-preferences',
   UPDATE_CANVAS_PREFERENCES: '/user/canvas-preferences',
+  GET_TOOL_PREFERENCES: '/user/tool-preferences',
+  UPDATE_TOOL_PREFERENCES: '/user/tool-preferences',
   DELETE_ACCOUNT: '/user/account',
   CHECK_USER_EXISTS: (email: string) => `/user/exists/${encodeURIComponent(email)}`,
 } as const;

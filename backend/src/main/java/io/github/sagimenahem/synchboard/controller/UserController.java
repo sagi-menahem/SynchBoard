@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ChangePasswordRequest;
+import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
@@ -132,6 +133,29 @@ public class UserController {
 
         CanvasPreferencesDTO updatedPreferences =
                 userService.updateCanvasPreferences(userEmail, canvasPreferencesDTO);
+        log.info(USER_PREFERENCES_UPDATED, userEmail);
+        return ResponseEntity.ok(updatedPreferences);
+    }
+
+    @GetMapping(API_USER_TOOL_PREFERENCES)
+    public ResponseEntity<ToolPreferencesDTO> getToolPreferences(Authentication authentication) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_TOOL_PREFERENCES, userEmail);
+
+        ToolPreferencesDTO toolPreferences = userService.getToolPreferences(userEmail);
+        log.debug(USER_PREFERENCES_FETCHED, userEmail);
+        return ResponseEntity.ok(toolPreferences);
+    }
+
+    @PutMapping(API_USER_TOOL_PREFERENCES)
+    public ResponseEntity<ToolPreferencesDTO> updateToolPreferences(Authentication authentication,
+            @Valid @RequestBody ToolPreferencesDTO toolPreferencesDTO) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_TOOL_PREFERENCES,
+                userEmail);
+
+        ToolPreferencesDTO updatedPreferences =
+                userService.updateToolPreferences(userEmail, toolPreferencesDTO);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
         return ResponseEntity.ok(updatedPreferences);
     }

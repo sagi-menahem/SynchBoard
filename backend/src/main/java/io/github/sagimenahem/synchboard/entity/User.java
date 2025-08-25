@@ -63,6 +63,19 @@ public class User implements UserDetails {
     @Builder.Default
     private Integer canvasChatSplitRatio = 70;
 
+    // Tool preferences
+    @Column(name = "default_tool")
+    @Builder.Default
+    private String defaultTool = "brush";
+
+    @Column(name = "default_stroke_color")
+    @Builder.Default
+    private String defaultStrokeColor = "#FFFFFF";
+
+    @Column(name = "default_stroke_width")
+    @Builder.Default
+    private Integer defaultStrokeWidth = 3;
+
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
@@ -80,6 +93,15 @@ public class User implements UserDetails {
         this.creationDate = LocalDateTime.now();
         if (this.canvasChatSplitRatio == null) {
             this.canvasChatSplitRatio = 70;
+        }
+        if (this.defaultTool == null) {
+            this.defaultTool = "brush";
+        }
+        if (this.defaultStrokeColor == null) {
+            this.defaultStrokeColor = "#FFFFFF";
+        }
+        if (this.defaultStrokeWidth == null) {
+            this.defaultStrokeWidth = 3;
         }
     }
 

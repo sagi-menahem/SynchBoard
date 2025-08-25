@@ -44,6 +44,12 @@ export interface UserPreferences {
     boardBackgroundSetting?: string | null;
 }
 
+export interface ToolPreferences {
+    defaultTool: import('types/CommonTypes').Tool;
+    defaultStrokeColor: string;
+    defaultStrokeWidth: number;
+}
+
 export interface VerifyEmailRequest {
     email: string;
     verificationCode: string;
