@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { getColorName } from 'utils/ColorUtils';
 import { formatCanvasResolution } from 'utils/CanvasUtils';
-import { formatSmartTimestamp } from 'utils/DateUtils';
 import type { Board } from 'types';
+import { RelativeTimestamp } from 'components/common';
 
 import styles from './BoardCard.module.css';
 
@@ -24,7 +24,6 @@ const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
   const colorName = getColorName(board.canvasBackgroundColor);
   const colorDisplayName = colorName ? t(`colors.${colorName}`) : board.canvasBackgroundColor;
   const canvasResolution = formatCanvasResolution(board.canvasWidth, board.canvasHeight, t);
-  const lastModified = formatSmartTimestamp(board.lastModifiedDate);
 
   return (
     <Link to={APP_ROUTES.getBoardDetailRoute(board.id)} className={styles.boardCard}>
@@ -57,7 +56,10 @@ const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
             {board.isAdmin && <span className={styles.adminLabel}>{t('boardListPage.adminLabel')}</span>}
           </div>
           <div className={styles.rightSection}>
-            <span className={styles.lastModified}>{lastModified}</span>
+            <RelativeTimestamp
+              timestamp={board.lastModifiedDate}
+              className={styles.lastModified}
+            />
           </div>
         </div>
       </div>

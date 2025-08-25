@@ -29,7 +29,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchVisible, setSearchVisible] = useState(false);
-  const [updateTrigger, forceUpdate] = useState(0);
+  const [previousMessageCount, setPreviousMessageCount] = useState(0);
   
   const [userColorMap] = useState<UserColorMap>(() => createUserColorMap());
 
@@ -53,8 +53,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
   useEffect(() => {
     const timeoutId = setTimeout(scrollToBottom, 100);
+    // Track if message count changed (new messages received)
+    if (messages.length !== previousMessageCount) {
+      setPreviousMessageCount(messages.length);
+    }
     return () => clearTimeout(timeoutId);
-  }, [messages, scrollToBottom]);
+  }, [messages, scrollToBottom, previousMessageCount]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -72,14 +76,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Force re-render every 55 seconds to update timestamps (matching board list)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      forceUpdate(prev => prev + 1); // Increment trigger to force re-render
-    }, 55000); // Update every 55 seconds
-
-    return () => clearInterval(interval);
-  }, []);
 
   const stableUserInfo = useMemo(() => ({
     userEmail: userEmail || '',
@@ -221,21 +217,26 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       )}
       
       <div className={styles.messageList} ref={messagesContainerRef}>
-        {filteredMessages.map((message, index) => (
-          <React.Fragment key={message.transactionId || `${message.senderEmail}-${message.timestamp}-${index}`}>
-            {shouldShowDateSeparator(message, filteredMessages[index - 1] || null) && (
-              <div className={styles.dateSeparator}>
-                {formatDateSeparator(message.timestamp)}
-              </div>
-            )}
-            <ChatMessage 
-              key={`${message.transactionId || message.id}-${updateTrigger}`}
-              message={message} 
-              isOwnMessage={message.senderEmail === userEmail}
-              userColorMap={userColorMap}
-            />
-          </React.Fragment>
-        ))}
+        {filteredMessages.map((message, index) => {
+          // Check if this message is genuinely new (not just a timestamp update)
+          const isNewMessage = index >= previousMessageCount;
+          
+          return (
+            <React.Fragment key={message.transactionId || `${message.senderEmail}-${message.timestamp}-${index}`}>
+              {shouldShowDateSeparator(message, filteredMessages[index - 1] || null) && (
+                <div className={styles.dateSeparator}>
+                  {formatDateSeparator(message.timestamp)}
+                </div>
+              )}
+              <ChatMessage 
+                message={message} 
+                isOwnMessage={message.senderEmail === userEmail}
+                userColorMap={userColorMap}
+                shouldAnimate={isNewMessage}
+              />
+            </React.Fragment>
+          );
+        })}
         <div ref={messagesEndRef} />
       </div>
       

@@ -20,7 +20,6 @@ import styles from './BoardListPage.module.css';
 const BoardListPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [updateTrigger, forceUpdate] = useState(0);
   const {
     boards,
     isLoading,
@@ -36,14 +35,6 @@ const BoardListPage: React.FC = () => {
     handleLeaveClick,
   } = useBoardList();
 
-  // Force re-render every 55 seconds to update timestamps
-  useEffect(() => {
-    const interval = setInterval(() => {
-      forceUpdate(prev => prev + 1); // Increment trigger to force re-render
-    }, 55000); // Update every 55 seconds
-
-    return () => clearInterval(interval);
-  }, []);
 
   if (isLoading) {
     return <div>{t('boardListPage.loading')}</div>;
@@ -65,7 +56,7 @@ const BoardListPage: React.FC = () => {
         <div className={styles.boardList}>
           {boards.map((board, index) => (
             <div 
-              key={`${board.id}-${updateTrigger}`}
+              key={board.id}
               className={styles.boardListItem}
               style={{ animationDelay: `${index * 0.05}s` }}
               onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}

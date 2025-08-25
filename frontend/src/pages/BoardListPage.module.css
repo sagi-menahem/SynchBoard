@@ -24,6 +24,10 @@
     animation: boardStaggerIn 0.3s ease-out backwards;
 }
 
+.boardListItem.noAnimation {
+    animation: none;
+}
+
 @keyframes boardStaggerIn {
     from {
         opacity: 0;

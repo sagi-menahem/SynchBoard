@@ -9,6 +9,11 @@
   animation: messageSlideIn 0.3s ease-out;
 }
 
+/* Disable animation for timestamp-only updates */
+.messageContainer.noAnimation {
+  animation: none;
+}
+
 /* My messages - no avatar, full width bubble */
 .myMessage {
   display: flex;

@@ -6,6 +6,7 @@ import { formatDetailedTimestamp, formatSmartTimestamp } from 'utils/DateUtils';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
+import { RelativeTimestamp } from 'components/common';
 
 import styles from './ChatMessage.module.css';
 
@@ -13,9 +14,10 @@ interface ChatMessageProps {
   message: EnhancedChatMessage;
   isOwnMessage?: boolean;
   userColorMap: UserColorMap;
+  shouldAnimate?: boolean;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false, userColorMap }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false, userColorMap, shouldAnimate = true }) => {
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;
@@ -35,12 +37,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
   const messageStatus = getMessageStatus();
   const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
 
-  const smartTimestamp = formatSmartTimestamp(message.timestamp);
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
   
 
   return (
-    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass}`}>
+    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass} ${!shouldAnimate ? styles.noAnimation : ''}`}>
       {!isOwnMessage && (
         <img src={imageSource} alt={senderEmail} className={styles.avatar} />
       )}
@@ -58,12 +59,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
           </div>
           
           <div className={styles.timestampContainer}>
-            <span 
+            <RelativeTimestamp
+              timestamp={message.timestamp}
               className={styles.timestamp}
               title={detailedTimestamp}
-            >
-              {smartTimestamp}
-            </span>
+            />
           </div>
           
           {messageStatus === 'failed' && (
@@ -82,4 +82,4 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isOwnMessage = false
 
 ChatMessage.displayName = 'ChatMessage';
 
-export default React.memo(ChatMessage);
+export default ChatMessage;
