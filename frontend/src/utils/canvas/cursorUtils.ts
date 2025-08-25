@@ -29,32 +29,3 @@ export const getRecolorCursor = (
   }
 };
 
-/**
- * Get a tooltip description for what will happen if the user clicks
- */
-export const getRecolorTooltip = (
-  mousePosition: Point,
-  objects: ActionPayload[],
-  canvasWidth: number,
-  canvasHeight: number,
-): string => {
-  const hitResult = detectObjectHit(mousePosition, objects, canvasWidth, canvasHeight);
-  
-  if (!hitResult.hit || !hitResult.object || !hitResult.hitType) {
-    return 'Click on objects to recolor them';
-  }
-  
-  const { object, hitType } = hitResult;
-  const toolName = object.tool.charAt(0).toUpperCase() + object.tool.slice(1);
-  
-  switch (hitType) {
-    case 'fill':
-      return `Click to fill ${toolName.toLowerCase()}`;
-    case 'stroke':
-      return `Click to recolor ${toolName.toLowerCase()} border`;
-    case 'object':
-      return `Click to recolor ${toolName.toLowerCase()}`;
-    default:
-      return 'Click on objects to recolor them';
-  }
-};
