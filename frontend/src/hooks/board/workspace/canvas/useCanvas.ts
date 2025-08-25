@@ -17,6 +17,7 @@ interface UseCanvasProps {
     objects: ActionPayload[];
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     canvasConfig?: CanvasConfig;
+    onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
 }
 
 export const useCanvas = ({
@@ -27,6 +28,7 @@ export const useCanvas = ({
   objects,
   onDraw,
   canvasConfig,
+  onTextInputRequest,
 }: UseCanvasProps) => {
   const { dimensions, refs, drawingState, utils } = useCanvasCore();
   const { canvasRef, containerRef, contextRef } = refs;
@@ -69,6 +71,7 @@ export const useCanvas = ({
       utils.getMouseCoordinates(event, canvas),
     isShapeSizeValid: utils.isShapeSizeValid,
     isRadiusValid: utils.isRadiusValid,
+    onTextInputRequest,
   });
 
   return {

@@ -1,6 +1,7 @@
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import type {
   ActionPayload,
+  ArrowPayload,
   CirclePayload,
   EnhancedActionPayload,
   FillPayload,
@@ -8,7 +9,8 @@ import type {
   Point,
   PolygonPayload,
   RectanglePayload,
-  TextPayload,
+  StraightLinePayload,
+  TextBoxPayload,
   TrianglePayload,
 } from 'types/BoardObjectTypes';
 
@@ -117,10 +119,16 @@ export const drawPolygonPayload = (
   targetCtx.lineWidth = strokeWidth;
   targetCtx.beginPath();
 
+  // Use the smaller dimension for radius scaling to maintain aspect ratio
+  const radiusScale = Math.min(targetCanvas.width, targetCanvas.height);
+  const centerX = x * targetCanvas.width;
+  const centerY = y * targetCanvas.height;
+  const actualRadius = radius * radiusScale;
+
   for (let i = 0; i < sides; i++) {
     const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
-    const pointX = (x + radius * Math.cos(angle)) * targetCanvas.width;
-    const pointY = (y + radius * Math.sin(angle)) * targetCanvas.height;
+    const pointX = centerX + actualRadius * Math.cos(angle);
+    const pointY = centerY + actualRadius * Math.sin(angle);
     
     if (i === 0) {
       targetCtx.moveTo(pointX, pointY);
@@ -134,16 +142,77 @@ export const drawPolygonPayload = (
 };
 
 export const drawTextPayload = (
-  payload: TextPayload,
+  payload: TextBoxPayload,
   targetCtx: CanvasRenderingContext2D,
   targetCanvas: HTMLCanvasElement,
 ): void => {
-  const { x, y, text, fontSize, color } = payload;
+  const { x, y, width, height, text, fontSize, color } = payload;
 
+  // Convert normalized coordinates to pixel coordinates
+  const pixelX = x * targetCanvas.width;
+  const pixelY = y * targetCanvas.height;
+  const pixelWidth = width * targetCanvas.width;
+  const pixelHeight = height * targetCanvas.height;
+
+  // Set up text properties
   targetCtx.fillStyle = color;
   targetCtx.font = `${fontSize}px system-ui, -apple-system, sans-serif`;
   targetCtx.textBaseline = 'top';
-  targetCtx.fillText(text, x * targetCanvas.width, y * targetCanvas.height);
+
+  // Save canvas state for clipping
+  targetCtx.save();
+  
+  // Create clipping rectangle
+  targetCtx.beginPath();
+  targetCtx.rect(pixelX, pixelY, pixelWidth, pixelHeight);
+  targetCtx.clip();
+
+  // Calculate line height (font size + small spacing)
+  const lineHeight = fontSize * 1.2;
+  
+  // Split text into words for word wrapping
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+  
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const metrics = targetCtx.measureText(testLine);
+    
+    if (metrics.width > pixelWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  // Draw text lines
+  let currentY = pixelY;
+  for (const line of lines) {
+    if (currentY + lineHeight > pixelY + pixelHeight) {
+      // Text exceeds bounds - draw overflow indicator
+      const overflowText = '...';
+      const overflowY = pixelY + pixelHeight - fontSize;
+      
+      // Clear the last bit of space for the ellipsis
+      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4);
+      
+      // Draw the ellipsis
+      targetCtx.fillText(overflowText, pixelX, overflowY);
+      break;
+    }
+    
+    targetCtx.fillText(line, pixelX, currentY);
+    currentY += lineHeight;
+  }
+  
+  // Restore canvas state
+  targetCtx.restore();
 };
 
 export const drawFillPayload = (
@@ -155,6 +224,122 @@ export const drawFillPayload = (
   
   // Apply flood fill at the specified coordinates
   floodFill(targetCanvas, Math.floor(x * targetCanvas.width), Math.floor(y * targetCanvas.height), color);
+};
+
+export const drawStarPayload = (
+  payload: PolygonPayload,
+  targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x, y, radius, color, strokeWidth } = payload;
+  
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
+  targetCtx.beginPath();
+  
+  const radiusScale = Math.min(targetCanvas.width, targetCanvas.height);
+  const centerX = x * targetCanvas.width;
+  const centerY = y * targetCanvas.height;
+  const outerRadius = radius * radiusScale;
+  const innerRadius = outerRadius * 0.4; // Inner radius is 40% of outer
+  const points = 5; // 5-pointed star
+  
+  for (let i = 0; i < points * 2; i++) {
+    const angle = (i * Math.PI) / points - Math.PI / 2;
+    const r = i % 2 === 0 ? outerRadius : innerRadius;
+    const pointX = centerX + r * Math.cos(angle);
+    const pointY = centerY + r * Math.sin(angle);
+    
+    if (i === 0) {
+      targetCtx.moveTo(pointX, pointY);
+    } else {
+      targetCtx.lineTo(pointX, pointY);
+    }
+  }
+  
+  targetCtx.closePath();
+  targetCtx.stroke();
+};
+
+export const drawStraightLinePayload = (
+  payload: StraightLinePayload,
+  targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x1, y1, x2, y2, color, strokeWidth, dashPattern } = payload;
+  
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
+  
+  if (dashPattern) {
+    targetCtx.setLineDash(dashPattern);
+  }
+  
+  targetCtx.beginPath();
+  targetCtx.moveTo(x1 * targetCanvas.width, y1 * targetCanvas.height);
+  targetCtx.lineTo(x2 * targetCanvas.width, y2 * targetCanvas.height);
+  targetCtx.stroke();
+  
+  if (dashPattern) {
+    targetCtx.setLineDash([]); // Reset dash pattern
+  }
+};
+
+export const drawArrowPayload = (
+  payload: ArrowPayload,
+  targetCtx: CanvasRenderingContext2D,
+  targetCanvas: HTMLCanvasElement,
+): void => {
+  const { x1, y1, x2, y2, color, strokeWidth } = payload;
+  
+  const startX = x1 * targetCanvas.width;
+  const startY = y1 * targetCanvas.height;
+  const endX = x2 * targetCanvas.width;
+  const endY = y2 * targetCanvas.height;
+  
+  // Calculate arrow properties
+  const angle = Math.atan2(endY - startY, endX - startX);
+  const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+  
+  // Improved arrowhead dimensions - scale with stroke width and line length
+  const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
+  const arrowWidth = arrowLength * 0.6; // Width of arrowhead base
+  const arrowAngle = Math.atan(arrowWidth / arrowLength);
+  
+  // Calculate where the line should end (before the arrowhead)
+  const lineEndX = endX - (arrowLength * 0.3) * Math.cos(angle);
+  const lineEndY = endY - (arrowLength * 0.3) * Math.sin(angle);
+  
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
+  targetCtx.fillStyle = color;
+  targetCtx.lineCap = 'round';
+  targetCtx.lineJoin = 'round';
+  
+  // Draw the line (slightly shorter to avoid overlap with arrowhead)
+  targetCtx.beginPath();
+  targetCtx.moveTo(startX, startY);
+  targetCtx.lineTo(lineEndX, lineEndY);
+  targetCtx.stroke();
+  
+  // Draw improved arrowhead - more proportional and elegant
+  const arrowPoint1X = endX - arrowLength * Math.cos(angle - arrowAngle);
+  const arrowPoint1Y = endY - arrowLength * Math.sin(angle - arrowAngle);
+  const arrowPoint2X = endX - arrowLength * Math.cos(angle + arrowAngle);
+  const arrowPoint2Y = endY - arrowLength * Math.sin(angle + arrowAngle);
+  
+  // Draw filled arrowhead
+  targetCtx.beginPath();
+  targetCtx.moveTo(endX, endY);
+  targetCtx.lineTo(arrowPoint1X, arrowPoint1Y);
+  targetCtx.lineTo(arrowPoint2X, arrowPoint2Y);
+  targetCtx.closePath();
+  targetCtx.fill();
+  
+  // Add a subtle stroke to the arrowhead for better definition
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = Math.max(1, strokeWidth * 0.5);
+  targetCtx.stroke();
 };
 
 export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | null => {
@@ -197,7 +382,7 @@ export const replayDrawAction = (
 
   if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
     drawLinePayload(payload as LinePayload, targetCtx, targetCanvas);
-  } else if (payload.tool === TOOLS.RECTANGLE) {
+  } else if (payload.tool === TOOLS.SQUARE || payload.tool === TOOLS.RECTANGLE) {
     drawRectanglePayload(payload as RectanglePayload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.CIRCLE) {
     drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
@@ -205,8 +390,14 @@ export const replayDrawAction = (
     drawTrianglePayload(payload as TrianglePayload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.PENTAGON || payload.tool === TOOLS.HEXAGON) {
     drawPolygonPayload(payload as PolygonPayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.STAR) {
+    drawStarPayload(payload as PolygonPayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.LINE || payload.tool === TOOLS.DOTTED_LINE) {
+    drawStraightLinePayload(payload as StraightLinePayload, targetCtx, targetCanvas);
+  } else if (payload.tool === TOOLS.ARROW) {
+    drawArrowPayload(payload as ArrowPayload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.TEXT) {
-    drawTextPayload(payload as TextPayload, targetCtx, targetCanvas);
+    drawTextPayload(payload as TextBoxPayload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.FILL) {
     drawFillPayload(payload as FillPayload, targetCtx, targetCanvas);
   }

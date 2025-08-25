@@ -21,6 +21,7 @@ import { ColorPicker, Slider } from 'components/common';
 import type { Tool } from 'types/CommonTypes';
 
 import styles from './HeaderToolbar.module.css';
+import { LineToolsGroup } from './LineToolsGroup';
 import { ShapeToolsDropdown } from './ShapeToolsDropdown';
 
 interface HeaderToolbarProps {
@@ -125,6 +126,15 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
         <div className={styles.toolGroup}>
           <span className={styles.toolLabel}>Shapes</span>
           <ShapeToolsDropdown
+            currentTool={tool}
+            onToolSelect={setTool}
+          />
+        </div>
+
+        {/* Line Tools */}
+        <div className={styles.toolGroup}>
+          <span className={styles.toolLabel}>Lines</span>
+          <LineToolsGroup
             currentTool={tool}
             onToolSelect={setTool}
           />

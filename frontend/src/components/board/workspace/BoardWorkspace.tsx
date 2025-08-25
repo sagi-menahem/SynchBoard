@@ -20,6 +20,7 @@ interface BoardWorkspaceProps {
     tool: Tool;
     strokeColor: string;
     strokeWidth: number;
+    fontSize: number;
     canvasConfig?: CanvasConfig;
     splitRatio?: number;
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
@@ -35,6 +36,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   tool,
   strokeColor,
   strokeWidth,
+  fontSize,
   canvasConfig,
   splitRatio = 70,
   onDraw,
@@ -62,6 +64,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       tool={tool}
       strokeColor={strokeColor}
       strokeWidth={strokeWidth}
+      fontSize={fontSize}
       canvasConfig={canvasConfig}
       onColorPick={onColorPick}
     />

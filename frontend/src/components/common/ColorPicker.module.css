@@ -1,27 +1,33 @@
 .colorPickerContainer {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 .label {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: #fff;
-  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  height: 28px; /* Match swatch height */
 }
 
 .swatch {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  border: 2px solid #555;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  padding: 4px;
-  background-clip: content-box;
+  padding: 0;
+  background-clip: border-box;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .swatchInner {
@@ -32,15 +38,15 @@
 }
 
 .swatch:hover:not(.disabled) {
-  border-color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.6);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .swatch:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
 .swatch.disabled {
