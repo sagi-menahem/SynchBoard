@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
-    padding-top: 124px; /* Account for both navbar (64px) and HeaderToolbar (60px) */
+    padding-top: 140px; /* Account for navbar (64px) + HeaderToolbar (60px) + spacing (16px) */
     overflow: hidden !important; /* Force override parent overflow */
     box-sizing: border-box;
 }

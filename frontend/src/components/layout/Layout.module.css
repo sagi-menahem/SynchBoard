@@ -1,16 +1,16 @@
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh; /* Changed from min-height to height for exact viewport fit */
     width: 100%;
     box-sizing: border-box;
 }
 
 .mainContent {
-    flex: 1;
+    flex: 1; /* Take remaining space after navbar */
     display: flex;
     justify-content: center;
-    overflow-y: auto;
+    overflow: hidden;
     box-sizing: border-box;
     /*background: var(--page-background, #f5f5f5);*/
 }
