@@ -5,6 +5,8 @@ import styles from './HeaderToolbar.module.css';
 interface TextInputOverlayProps {
   x: number;
   y: number;
+  width: number;
+  height: number;
   color: string;
   fontSize: number;
   onSubmit: (text: string) => void;
@@ -14,26 +16,25 @@ interface TextInputOverlayProps {
 const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
   x,
   y,
+  width,
+  height,
   color,
   fontSize,
   onSubmit,
   onCancel,
 }) => {
   const [text, setText] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (textareaRef.current) {
+      textareaRef.current.focus();
     }
   }, []);
 
   const handleSubmit = useCallback(() => {
-    if (text.trim() && text.trim().length <= 80) {
+    if (text.trim()) {
       onSubmit(text.trim());
-    } else if (text.trim().length > 80) {
-      // Truncate to 80 characters if too long
-      onSubmit(text.trim().substring(0, 80));
     } else {
       onCancel();
     }
@@ -55,23 +56,26 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
       style={{
         left: `${x}px`,
         top: `${y}px`,
+        width: `${width}px`,
+        height: `${height}px`,
         color,
         fontSize: `${fontSize}px`,
       }}
     >
-      <input
-        ref={inputRef}
-        type="text"
+      <textarea
+        ref={textareaRef}
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={handleSubmit}
         className={styles.textInput}
         placeholder="Type text..."
-        maxLength={80}
         style={{
           color,
           fontSize: `${fontSize}px`,
+          width: '100%',
+          height: '100%',
+          resize: 'none',
         }}
       />
     </div>

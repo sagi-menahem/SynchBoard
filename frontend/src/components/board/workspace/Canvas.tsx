@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { floodFill } from 'utils/canvas/floodFill';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
 import { useConnectionStatus, usePreferences } from 'hooks/common';
-import type { ActionPayload, FillPayload, SendBoardActionRequest, TextPayload } from 'types/BoardObjectTypes';
+import type { ActionPayload, FillPayload, SendBoardActionRequest, TextBoxPayload } from 'types/BoardObjectTypes';
 import type { CanvasConfig } from 'types/BoardTypes';
 import type { Tool } from 'types/CommonTypes';
 
@@ -19,16 +19,28 @@ interface CanvasProps {
     tool: Tool;
     strokeColor: string;
     strokeWidth: number;
+    fontSize: number;
     canvasConfig?: CanvasConfig;
     onColorPick?: (color: string) => void;
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
-  const { canvasRef, containerRef, handleMouseDown } = useCanvas({ ...props });
+  const [textInput, setTextInput] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
+  
+  const handleTextInputRequest = useCallback(
+    (x: number, y: number, width: number, height: number) => {
+      setTextInput({ x, y, width, height });
+    },
+    [],
+  );
+  
+  const { canvasRef, containerRef, handleMouseDown } = useCanvas({
+    ...props,
+    onTextInputRequest: handleTextInputRequest,
+  });
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   const { preferences } = usePreferences();
   const [showLoading, setShowLoading] = useState(true);
-  const [textInput, setTextInput] = useState<{ x: number; y: number } | null>(null);
 
   const canvasConfig = props.canvasConfig || {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
@@ -57,17 +69,9 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     minHeight: `${canvasHeight + padding}px`,
   };
 
-  // Handle canvas click for text tool and color picker
+  // Handle canvas click for color picker and fill tool
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (props.tool === TOOLS.TEXT) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      setTextInput({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-      e.preventDefault();
-      return;
-    } else if (props.tool === TOOLS.COLOR_PICKER && canvasRef.current) {
+    if (props.tool === TOOLS.COLOR_PICKER && canvasRef.current) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
       if (ctx) {
@@ -117,10 +121,12 @@ const Canvas: React.FC<CanvasProps> = (props) => {
           tool: TOOLS.TEXT,
           x: textInput.x / canvas.width,
           y: textInput.y / canvas.height,
+          width: textInput.width / canvas.width,
+          height: textInput.height / canvas.height,
           text,
-          fontSize: props.strokeWidth,
+          fontSize: props.fontSize,
           color: props.strokeColor,
-        } as Omit<TextPayload, 'instanceId'>,
+        } as Omit<TextBoxPayload, 'instanceId'>,
         sender: props.instanceId,
       });
     }
@@ -165,8 +171,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
             <TextInputOverlay
               x={textInput.x}
               y={textInput.y}
+              width={textInput.width}
+              height={textInput.height}
               color={props.strokeColor}
-              fontSize={props.strokeWidth}
+              fontSize={props.fontSize}
               onSubmit={handleTextSubmit}
               onCancel={handleTextCancel}
             />

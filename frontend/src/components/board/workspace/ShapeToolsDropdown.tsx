@@ -8,6 +8,7 @@ import {
   Hexagon,
   Pentagon,
   Square,
+  Star,
   Triangle,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -24,9 +25,11 @@ interface ShapeToolsDropdownProps {
 }
 
 const shapeTools = [
+  { tool: TOOLS.SQUARE, icon: Square, labelKey: 'square' },
   { tool: TOOLS.RECTANGLE, icon: Square, labelKey: 'rectangle' },
   { tool: TOOLS.CIRCLE, icon: Circle, labelKey: 'circle' },
   { tool: TOOLS.TRIANGLE, icon: Triangle, labelKey: 'triangle' },
+  { tool: TOOLS.STAR, icon: Star, labelKey: 'star' },
   { tool: TOOLS.PENTAGON, icon: Pentagon, labelKey: 'pentagon' },
   { tool: TOOLS.HEXAGON, icon: Hexagon, labelKey: 'hexagon' },
 ];

@@ -71,14 +71,17 @@
 }
 
 .colorPickerWrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  height: 36px; /* Match icon button height */
 }
 
 .strokeControl {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  min-width: 120px;
+  min-width: 140px;
+  height: 36px; /* Match icon button height */
+  margin-left: 8px;
 }
 
 .backButton {
@@ -190,20 +193,28 @@
 }
 
 .toolLabel {
-  font-size: 12px;
-  color: #999;
-  margin-right: 8px;
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);
+  margin-right: 12px;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  height: 36px; /* Match icon button height for perfect vertical alignment */
 }
 
 /* Text input overlay for text tool */
 .textInputOverlay {
   position: absolute;
   background-color: rgba(45, 45, 45, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 8px;
   z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
 }
 
 .textInput {
@@ -212,7 +223,28 @@
   color: #fff;
   font-family: system-ui, -apple-system, sans-serif;
   outline: none;
-  min-width: 100px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* Custom scrollbar for WebKit browsers */
+.textInput::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textInput::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.textInput::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.textInput::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* Responsive Design */
@@ -232,5 +264,9 @@
   
   .strokeControl {
     min-width: 100px;
+  }
+  
+  .textInputOverlay {
+    padding: 6px;
   }
 }

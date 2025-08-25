@@ -83,6 +83,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           tool={tool}
           strokeColor={strokeColor}
           strokeWidth={strokeWidth}
+          fontSize={strokeWidth}
           canvasConfig={canvasConfig}
           splitRatio={canvasPreferences.canvasChatSplitRatio}
           onDraw={handleDrawAction}
