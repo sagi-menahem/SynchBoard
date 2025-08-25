@@ -40,28 +40,44 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const handleColorChange = (color: string) => {
     onChange(color);
-    // Don't close during dragging - only close on mouse release
-    if (!isDragging) {
-      setShowPicker(false);
-    }
+    // Don't close the picker while interacting with it
+    // The picker will close on mouse up via handleMouseUp
+  };
+
+  const handlePaletteColorClick = (color: string) => {
+    onChange(color);
+    // Keep the picker open to allow trying multiple colors
   };
 
   const handleMouseDown = () => {
     setIsDragging(true);
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: React.MouseEvent) => {
+    // Check if the mouse up is on the main saturation area (not the hue slider)
+    const target = e.target as HTMLElement;
+    const isSaturationArea = target.closest('.react-colorful__saturation');
+    
     setIsDragging(false);
-    // Close the picker when mouse is released after dragging
-    setShowPicker(false);
+    // Only close if releasing on the saturation area (main color selection)
+    // Don't close when adjusting the hue slider
+    if (isSaturationArea) {
+      setShowPicker(false);
+    }
   };
 
   // Listen for global mouse up events to handle dragging outside the picker
   useEffect(() => {
-    const handleGlobalMouseUp = () => {
+    const handleGlobalMouseUp = (e: MouseEvent) => {
       if (isDragging) {
+        const target = e.target as HTMLElement;
+        const isSaturationArea = target.closest('.react-colorful__saturation');
+        
         setIsDragging(false);
-        setShowPicker(false);
+        // Only close if releasing on the saturation area
+        if (isSaturationArea) {
+          setShowPicker(false);
+        }
       }
     };
 
@@ -108,7 +124,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                   type="button"
                   className={styles.presetColor}
                   style={{ backgroundColor: presetColor }}
-                  onClick={() => handleColorChange(presetColor)}
+                  onClick={() => handlePaletteColorClick(presetColor)}
                   title={presetColor}
                 />
               ))}
