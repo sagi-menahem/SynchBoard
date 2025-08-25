@@ -72,6 +72,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         isUndoAvailable={isUndoAvailable}
         onRedo={handleRedo}
         isRedoAvailable={isRedoAvailable}
+        canvasConfig={canvasConfig}
       />
 
       <div className={styles.boardWorkspaceArea}>

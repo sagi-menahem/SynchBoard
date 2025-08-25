@@ -82,8 +82,17 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         const y = e.clientY - rect.top;
         const imageData = ctx.getImageData(x, y, 1, 1);
         const data = imageData.data;
-        const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
-        props.onColorPick?.(hex);
+        
+        // Check if the pixel is transparent (indicating we're clicking on the background)
+        if (data[3] === 0) {
+          // Return the canvas background color instead of black
+          const backgroundColor = canvasConfig.backgroundColor || '#FFFFFF';
+          props.onColorPick?.(backgroundColor);
+        } else {
+          // Return the actual pixel color
+          const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
+          props.onColorPick?.(hex);
+        }
       }
       e.preventDefault();
       return;
