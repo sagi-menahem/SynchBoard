@@ -10,7 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "board_objects")
+@Table(name = "board_objects", 
+       uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "board_group_id"}))
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class BoardObject {
     @Column(name = "object_id")
     private Long objectId;
 
-    @Column(name = "instance_id", nullable = false, unique = true)
+    @Column(name = "instance_id", nullable = false)
     private String instanceId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -89,7 +89,7 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
             />
           </div>
           
-          {tool !== TOOLS.COLOR_PICKER && tool !== TOOLS.FILL && tool !== TOOLS.DOWNLOAD && (
+          {tool !== TOOLS.COLOR_PICKER && tool !== TOOLS.RECOLOR && tool !== TOOLS.DOWNLOAD && (
             <div className={styles.strokeControl}>
               <Slider
                 value={strokeWidth}
@@ -158,9 +158,9 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
             <Pipette size={20} />
           </button>
           <button
-            className={`${styles.iconButton} ${tool === TOOLS.FILL ? styles.active : ''}`}
-            onClick={() => handleToolClick(TOOLS.FILL)}
-            title={t('toolbar.tool.fill')}
+            className={`${styles.iconButton} ${tool === TOOLS.RECOLOR ? styles.active : ''}`}
+            onClick={() => handleToolClick(TOOLS.RECOLOR)}
+            title={t('toolbar.tool.recolor')}
           >
             <PaintBucket size={20} />
           </button>

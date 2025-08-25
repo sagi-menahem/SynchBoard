@@ -4,7 +4,6 @@ import type {
   ArrowPayload,
   CirclePayload,
   EnhancedActionPayload,
-  FillPayload,
   LinePayload,
   Point,
   PolygonPayload,
@@ -13,8 +12,6 @@ import type {
   TextBoxPayload,
   TrianglePayload,
 } from 'types/BoardObjectTypes';
-
-import { floodFill } from './canvas/floodFill';
 
 export const getMouseCoordinates = (
   event: MouseEvent, 
@@ -65,16 +62,23 @@ export const drawRectanglePayload = (
   targetCtx: CanvasRenderingContext2D, 
   targetCanvas: HTMLCanvasElement,
 ): void => {
-  const { x, y, width, height, color, strokeWidth } = payload;
+  const { x, y, width, height, color, fillColor, strokeWidth } = payload;
 
+  const rectX = x * targetCanvas.width;
+  const rectY = y * targetCanvas.height;
+  const rectWidth = width * targetCanvas.width;
+  const rectHeight = height * targetCanvas.height;
+
+  // Draw fill if fillColor is provided and not null
+  if (fillColor && fillColor !== null) {
+    targetCtx.fillStyle = fillColor;
+    targetCtx.fillRect(rectX, rectY, rectWidth, rectHeight);
+  }
+
+  // Draw stroke
   targetCtx.strokeStyle = color;
   targetCtx.lineWidth = strokeWidth;
-  targetCtx.strokeRect(
-    x * targetCanvas.width,
-    y * targetCanvas.height,
-    width * targetCanvas.width,
-    height * targetCanvas.height,
-  );
+  targetCtx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 };
 
 export const drawCirclePayload = (
@@ -82,12 +86,24 @@ export const drawCirclePayload = (
   targetCtx: CanvasRenderingContext2D, 
   targetCanvas: HTMLCanvasElement,
 ): void => {
-  const { x, y, radius, color, strokeWidth } = payload;
+  const { x, y, radius, color, fillColor, strokeWidth } = payload;
 
+  const centerX = x * targetCanvas.width;
+  const centerY = y * targetCanvas.height;
+  const actualRadius = radius * targetCanvas.width;
+
+  targetCtx.beginPath();
+  targetCtx.arc(centerX, centerY, actualRadius, 0, 2 * Math.PI);
+
+  // Draw fill if fillColor is provided and not null
+  if (fillColor && fillColor !== null) {
+    targetCtx.fillStyle = fillColor;
+    targetCtx.fill();
+  }
+
+  // Draw stroke
   targetCtx.strokeStyle = color;
   targetCtx.lineWidth = strokeWidth;
-  targetCtx.beginPath();
-  targetCtx.arc(x * targetCanvas.width, y * targetCanvas.height, radius * targetCanvas.width, 0, 2 * Math.PI);
   targetCtx.stroke();
 };
 
@@ -96,15 +112,23 @@ export const drawTrianglePayload = (
   targetCtx: CanvasRenderingContext2D,
   targetCanvas: HTMLCanvasElement,
 ): void => {
-  const { x1, y1, x2, y2, x3, y3, color, strokeWidth } = payload;
+  const { x1, y1, x2, y2, x3, y3, color, fillColor, strokeWidth } = payload;
 
-  targetCtx.strokeStyle = color;
-  targetCtx.lineWidth = strokeWidth;
   targetCtx.beginPath();
   targetCtx.moveTo(x1 * targetCanvas.width, y1 * targetCanvas.height);
   targetCtx.lineTo(x2 * targetCanvas.width, y2 * targetCanvas.height);
   targetCtx.lineTo(x3 * targetCanvas.width, y3 * targetCanvas.height);
   targetCtx.closePath();
+
+  // Draw fill if fillColor is provided and not null
+  if (fillColor && fillColor !== null) {
+    targetCtx.fillStyle = fillColor;
+    targetCtx.fill();
+  }
+
+  // Draw stroke
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
   targetCtx.stroke();
 };
 
@@ -113,11 +137,7 @@ export const drawPolygonPayload = (
   targetCtx: CanvasRenderingContext2D,
   targetCanvas: HTMLCanvasElement,
 ): void => {
-  const { x, y, radius, sides, color, strokeWidth } = payload;
-
-  targetCtx.strokeStyle = color;
-  targetCtx.lineWidth = strokeWidth;
-  targetCtx.beginPath();
+  const { x, y, radius, sides, color, fillColor, strokeWidth } = payload;
 
   // Use the smaller dimension for radius scaling to maintain aspect ratio
   const radiusScale = Math.min(targetCanvas.width, targetCanvas.height);
@@ -125,6 +145,7 @@ export const drawPolygonPayload = (
   const centerY = y * targetCanvas.height;
   const actualRadius = radius * radiusScale;
 
+  targetCtx.beginPath();
   for (let i = 0; i < sides; i++) {
     const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
     const pointX = centerX + actualRadius * Math.cos(angle);
@@ -136,8 +157,17 @@ export const drawPolygonPayload = (
       targetCtx.lineTo(pointX, pointY);
     }
   }
-  
   targetCtx.closePath();
+
+  // Draw fill if fillColor is provided and not null
+  if (fillColor && fillColor !== null) {
+    targetCtx.fillStyle = fillColor;
+    targetCtx.fill();
+  }
+
+  // Draw stroke
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
   targetCtx.stroke();
 };
 
@@ -215,27 +245,13 @@ export const drawTextPayload = (
   targetCtx.restore();
 };
 
-export const drawFillPayload = (
-  payload: FillPayload,
-  _targetCtx: CanvasRenderingContext2D,
-  targetCanvas: HTMLCanvasElement,
-): void => {
-  const { x, y, color } = payload;
-  
-  // Apply flood fill at the specified coordinates
-  floodFill(targetCanvas, Math.floor(x * targetCanvas.width), Math.floor(y * targetCanvas.height), color);
-};
 
 export const drawStarPayload = (
   payload: PolygonPayload,
   targetCtx: CanvasRenderingContext2D,
   targetCanvas: HTMLCanvasElement,
 ): void => {
-  const { x, y, radius, color, strokeWidth } = payload;
-  
-  targetCtx.strokeStyle = color;
-  targetCtx.lineWidth = strokeWidth;
-  targetCtx.beginPath();
+  const { x, y, radius, color, fillColor, strokeWidth } = payload;
   
   const radiusScale = Math.min(targetCanvas.width, targetCanvas.height);
   const centerX = x * targetCanvas.width;
@@ -244,6 +260,7 @@ export const drawStarPayload = (
   const innerRadius = outerRadius * 0.4; // Inner radius is 40% of outer
   const points = 5; // 5-pointed star
   
+  targetCtx.beginPath();
   for (let i = 0; i < points * 2; i++) {
     const angle = (i * Math.PI) / points - Math.PI / 2;
     const r = i % 2 === 0 ? outerRadius : innerRadius;
@@ -256,8 +273,17 @@ export const drawStarPayload = (
       targetCtx.lineTo(pointX, pointY);
     }
   }
-  
   targetCtx.closePath();
+
+  // Draw fill if fillColor is provided and not null
+  if (fillColor && fillColor !== null) {
+    targetCtx.fillStyle = fillColor;
+    targetCtx.fill();
+  }
+
+  // Draw stroke
+  targetCtx.strokeStyle = color;
+  targetCtx.lineWidth = strokeWidth;
   targetCtx.stroke();
 };
 
@@ -398,8 +424,6 @@ export const replayDrawAction = (
     drawArrowPayload(payload as ArrowPayload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.TEXT) {
     drawTextPayload(payload as TextBoxPayload, targetCtx, targetCanvas);
-  } else if (payload.tool === TOOLS.FILL) {
-    drawFillPayload(payload as FillPayload, targetCtx, targetCanvas);
   }
 
   targetCtx.globalAlpha = originalGlobalAlpha;
