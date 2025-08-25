@@ -192,16 +192,16 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
 
       {/* Right Section: Navigation */}
       <div className={styles.navigationSection}>
-        <Link to={APP_ROUTES.BOARD_LIST} className={styles.backButton}>
-          <LayoutGrid size={16} />
-          <span>Boards</span>
-        </Link>
-        
         <Link 
           to={APP_ROUTES.getBoardDetailsRoute(boardId)} 
           className={styles.boardName}
         >
           {boardName}
+        </Link>
+        
+        <Link to={APP_ROUTES.BOARD_LIST} className={styles.backButton}>
+          <LayoutGrid size={16} />
+          <span>Boards</span>
         </Link>
       </div>
     </div>
