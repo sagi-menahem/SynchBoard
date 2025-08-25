@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
+import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
@@ -218,6 +219,51 @@ public class UserService {
         
         return CanvasPreferencesDTO.builder()
                 .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ToolPreferencesDTO getToolPreferences(String userEmail) {
+        log.debug("Fetching tool preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        return ToolPreferencesDTO.builder()
+                .defaultTool(user.getDefaultTool())
+                .defaultStrokeColor(user.getDefaultStrokeColor())
+                .defaultStrokeWidth(user.getDefaultStrokeWidth())
+                .build();
+    }
+
+    @Transactional
+    public ToolPreferencesDTO updateToolPreferences(String userEmail, ToolPreferencesDTO preferences) {
+        log.debug("Updating tool preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        if (preferences.getDefaultTool() != null) {
+            user.setDefaultTool(preferences.getDefaultTool());
+        }
+        if (preferences.getDefaultStrokeColor() != null) {
+            user.setDefaultStrokeColor(preferences.getDefaultStrokeColor());
+        }
+        if (preferences.getDefaultStrokeWidth() != null) {
+            user.setDefaultStrokeWidth(preferences.getDefaultStrokeWidth());
+        }
+        
+        userRepository.save(user);
+        log.info("Tool preferences updated for user: {}", userEmail);
+        
+        return ToolPreferencesDTO.builder()
+                .defaultTool(user.getDefaultTool())
+                .defaultStrokeColor(user.getDefaultStrokeColor())
+                .defaultStrokeWidth(user.getDefaultStrokeWidth())
                 .build();
     }
 }

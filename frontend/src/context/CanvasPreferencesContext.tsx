@@ -84,7 +84,8 @@ interface CanvasPreferencesProviderProps {
 
 export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(canvasPreferencesReducer, initialState);
-  const { userEmail, isAuthenticated } = useAuth();
+  const { userEmail, token } = useAuth();
+  const isAuthenticated = !!token;
 
   const refreshPreferences = useCallback(async () => {
     if (!isAuthenticated) {

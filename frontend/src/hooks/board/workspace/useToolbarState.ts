@@ -1,19 +1,38 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 
-import { DEFAULT_DRAWING_CONFIG, TOOLS } from 'constants/BoardConstants';
+import { useToolPreferences } from 'context/ToolPreferencesContext';
 import type { Tool } from 'types/CommonTypes';
 
 export const useToolbarState = () => {
-  const [tool, setTool] = useState<Tool>(TOOLS.BRUSH);
-  const [strokeColor, setStrokeColor] = useState<string>(DEFAULT_DRAWING_CONFIG.STROKE_COLOR);
-  const [strokeWidth, setStrokeWidth] = useState<number>(DEFAULT_DRAWING_CONFIG.STROKE_WIDTH);
+  const { 
+    preferences,
+    isLoading,
+    error,
+    updateTool,
+    updateStrokeColor,
+    updateStrokeWidth 
+  } = useToolPreferences();
+
+  const setTool = useCallback((newTool: Tool) => {
+    updateTool(newTool);
+  }, [updateTool]);
+
+  const setStrokeColor = useCallback((newColor: string) => {
+    updateStrokeColor(newColor);
+  }, [updateStrokeColor]);
+
+  const setStrokeWidth = useCallback((newWidth: number) => {
+    updateStrokeWidth(newWidth);
+  }, [updateStrokeWidth]);
 
   return {
-    tool,
+    tool: preferences.defaultTool,
     setTool,
-    strokeColor,
+    strokeColor: preferences.defaultStrokeColor,
     setStrokeColor,
-    strokeWidth,
+    strokeWidth: preferences.defaultStrokeWidth,
     setStrokeWidth,
+    isLoading,
+    error,
   };
 };
