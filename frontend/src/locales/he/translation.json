@@ -71,10 +71,6 @@
         "title": "ערוך שם לוח",
         "label": "שם הלוח"
     },
-    "editBoardDescriptionForm": {
-        "title": "ערוך תיאור לוח",
-        "label": "תיאור"
-    },
     "sidebar": {
         "title": "סרגל צד",
         "onlineUsers": "משתמשים מחוברים:"
@@ -208,7 +204,13 @@
         "noDescription": "אין תיאור.",
         "inviteButton": "+ הזמן חבר",
         "membersHeader": "חברים",
-        "adminBadge": "מנהל"
+        "adminBadge": "מנהל",
+        "boardPicture": "תמונת הלוח",
+        "changePicture": "שנה תמונה",
+        "deletePicture": "מחק תמונה",
+        "boardDescription": "תיאור הלוח",
+        "editDescription": "עריכת תיאור",
+        "descriptionPlaceholder": "הזן תיאור עבור הלוח הזה..."
     },
     "contextMenu": {
         "promoteToAdmin": "קדם את {{userName}} למנהל",

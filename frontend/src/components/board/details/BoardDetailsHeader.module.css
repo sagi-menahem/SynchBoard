@@ -22,6 +22,11 @@
     margin: 0;
 }
 
+.editButton {
+    font-size: 0.9rem !important;
+    padding: 0.25rem 0.75rem !important;
+}
+
 /* Board Image Section */
 .imageContainer {
     display: flex;
@@ -30,11 +35,10 @@
 }
 
 .boardImage {
-    width: 120px;
-    height: 120px;
-    border-radius: 8px;
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
     object-fit: cover;
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .buttonGroup {
@@ -65,6 +69,62 @@
     margin: 0;
     font-weight: 400;
     letter-spacing: 0.01em;
+}
+
+/* Inline editing styles */
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formActions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+    border-top: 1px solid #404040;
+}
+
+.cancelButton,
+.saveButton {
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.descriptionTextarea {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.descriptionTextarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.descriptionTextarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.descriptionTextarea:disabled {
+    background-color: #2a2a2a;
+    cursor: not-allowed;
 }
 
 /* Desktop-only design - no mobile responsive code needed */

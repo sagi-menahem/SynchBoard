@@ -11,7 +11,6 @@ import {
   CanvasSettingsSection,
   MemberContextMenu,
   MemberList,
-  PictureManagerModal,
 } from 'components/board/details';
 import { UniversalToolbar } from 'components/common';
 import { useBoardDetailsPage } from 'hooks/board/details';
@@ -36,8 +35,6 @@ const BoardDetailsPage: React.FC = () => {
     setEditingField,
     isLeaveConfirmOpen,
     setLeaveConfirmOpen,
-    isPictureModalOpen,
-    setPictureModalOpen,
     isDeleteConfirmOpen,
     setDeleteConfirmOpen,
     handleInviteSuccess,
@@ -139,8 +136,8 @@ const BoardDetailsPage: React.FC = () => {
         <BoardDetailsHeader
           boardDetails={boardDetails}
           currentUserIsAdmin={currentUserIsAdmin}
-          onSetPictureModalOpen={setPictureModalOpen}
-          onSetEditingField={setEditingField}
+          onPictureUpload={handlePictureUpload}
+          onUpdateDescription={handleUpdateDescription}
           onDeletePicture={promptPictureDelete}
         />
 
@@ -173,12 +170,10 @@ const BoardDetailsPage: React.FC = () => {
         editingField={editingField}
         boardId={numericBoardId}
         boardName={boardDetails.name}
-        boardDescription={boardDetails.description || ''}
         onCloseInvite={() => setInviteModalOpen(false)}
         onCloseEdit={() => setEditingField(null)}
         onInviteSuccess={handleInviteSuccess}
         onUpdateName={handleUpdateName}
-        onUpdateDescription={handleUpdateDescription}
       />
 
       <BoardConfirmDialogs
@@ -191,14 +186,6 @@ const BoardDetailsPage: React.FC = () => {
         onConfirmDelete={handleConfirmDeletePicture}
       />
 
-      <PictureManagerModal
-        isOpen={isPictureModalOpen}
-        onClose={() => setPictureModalOpen(false)}
-        boardName={boardDetails.name}
-        pictureUrl={boardDetails.pictureUrl}
-        onPictureUpload={handlePictureUpload}
-        onPictureDelete={promptPictureDelete}
-      />
 
       {/* Quick Canvas Settings Modal */}
       {isQuickSettingsOpen && (

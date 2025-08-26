@@ -71,10 +71,6 @@
         "title": "Edit Board Name",
         "label": "Board Name"
     },
-    "editBoardDescriptionForm": {
-        "title": "Edit Board Description",
-        "label": "Description"
-    },
     "sidebar": {
         "title": "Sidebar",
         "onlineUsers": "Online Users:"
@@ -213,7 +209,13 @@
         "noDescription": "No description.",
         "inviteButton": "+ Invite Member",
         "membersHeader": "Members",
-        "adminBadge": "Admin"
+        "adminBadge": "Admin",
+        "boardPicture": "Board Picture",
+        "changePicture": "Change Picture",
+        "deletePicture": "Delete Picture",
+        "boardDescription": "Board Description",
+        "editDescription": "Edit Description",
+        "descriptionPlaceholder": "Enter a description for this board..."
     },
     "contextMenu": {
         "promoteToAdmin": "Promote {{userName}} to Admin",
