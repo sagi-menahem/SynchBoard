@@ -101,6 +101,7 @@
     resize: vertical;
     min-height: 80px;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 .descriptionTextarea:focus {
