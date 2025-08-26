@@ -10,7 +10,7 @@ export const useToolbarState = () => {
     error,
     updateTool,
     updateStrokeColor,
-    updateStrokeWidth 
+    updateStrokeWidth, 
   } = useToolPreferences();
 
   const setTool = useCallback((newTool: Tool) => {

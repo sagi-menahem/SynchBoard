@@ -5,7 +5,7 @@ import React from 'react';
 import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import type { Board } from 'types';
+import type { Board, ViewMode } from 'types';
 import { formatCanvasResolution } from 'utils/CanvasUtils';
 import { getColorName } from 'utils/ColorUtils';
 
@@ -15,9 +15,10 @@ import styles from './BoardCard.module.css';
 
 interface BoardCardProps {
     board: Board;
+    viewMode?: ViewMode;
 }
 
-const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
+const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
   const { t } = useTranslation();
 
   const imageSource = board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage;
@@ -27,7 +28,10 @@ const BoardCard: React.FC<BoardCardProps> = ({ board }) => {
   const canvasResolution = formatCanvasResolution(board.canvasWidth, board.canvasHeight, t);
 
   return (
-    <Link to={APP_ROUTES.getBoardDetailRoute(board.id)} className={styles.boardCard}>
+    <Link 
+      to={APP_ROUTES.getBoardDetailRoute(board.id)} 
+      className={`${styles.boardCard} ${styles[viewMode]}`}
+    >
       <img src={imageSource} alt={board.name} className={styles.boardCardImage} />
       <div className={styles.boardCardContent}>
         <div className={styles.cardHeader}>

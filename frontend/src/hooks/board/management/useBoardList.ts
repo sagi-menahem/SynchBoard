@@ -1,6 +1,6 @@
 import { APP_ROUTES, WEBSOCKET_TOPICS } from 'constants';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import logger from 'utils/logger';
 import { useAuth } from 'hooks/auth';
 import { useContextMenu, useSocketSubscription } from 'hooks/common';
 import type { Board } from 'types/BoardTypes';
+import type { ViewMode } from 'types/ToolbarTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 
@@ -24,6 +25,35 @@ export const useBoardList = () => {
   const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [boardToLeave, setBoardToLeave] = useState<Board | null>(null);
   const { userEmail } = useAuth();
+
+  // New state for search and view functionality
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+
+  // Filter boards based on search query
+  const filteredBoards = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return boards;
+    }
+    
+    return boards.filter((board) =>
+      board.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [boards, searchQuery]);
+
+  // Search functionality
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery('');
+  }, []);
+
+  // View mode functionality
+  const handleViewModeChange = useCallback((mode: ViewMode) => {
+    setViewMode(mode);
+  }, []);
 
   const fetchBoards = useCallback(() => {
     if (!boards.length) {
@@ -118,7 +148,8 @@ export const useBoardList = () => {
   useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
 
   return {
-    boards,
+    boards: filteredBoards,
+    allBoards: boards,
     isLoading,
     isModalOpen,
     contextMenu,
@@ -130,5 +161,12 @@ export const useBoardList = () => {
     closeModal,
     handleConfirmLeave,
     handleLeaveClick,
+    // New search functionality
+    searchQuery,
+    handleSearch,
+    handleClearSearch,
+    // New view mode functionality
+    viewMode,
+    handleViewModeChange,
   };
 };

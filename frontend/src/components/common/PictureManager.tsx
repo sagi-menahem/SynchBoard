@@ -78,7 +78,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
         {showDeleteButton && onDelete && imageUrl && (
           <Button 
             onClick={onDelete} 
-            variant="danger"
+            variant="secondary"
           >
             {deleteButtonText || t('pictureManager.deleteButton')}
           </Button>

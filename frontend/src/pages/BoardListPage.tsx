@@ -1,19 +1,21 @@
 import { APP_ROUTES } from 'constants';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { Plus, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { BoardCard, CreateBoardForm } from 'components/board/list';
 import {
-  Button,
   ConfirmationDialog,
   ContextMenu,
   ContextMenuItem,
   Modal,
+  UniversalToolbar,
 } from 'components/common';
 import { useBoardList } from 'hooks/board/management';
+import type { ToolbarConfig } from 'types/ToolbarTypes';
 
 import styles from './BoardListPage.module.css';
 
@@ -33,41 +35,98 @@ const BoardListPage: React.FC = () => {
     closeModal,
     handleConfirmLeave,
     handleLeaveClick,
+    searchQuery,
+    handleSearch,
+    handleClearSearch,
+    viewMode,
+    handleViewModeChange,
   } = useBoardList();
+
+  // Toolbar configuration
+  const toolbarConfig: ToolbarConfig = useMemo(() => ({
+    pageType: 'boards',
+    leftSection: [
+      {
+        type: 'title',
+        content: t('boardListPage.heading'),
+      },
+      {
+        type: 'button',
+        icon: Plus,
+        label: t('boardListPage.createNewBoardButton'),
+        onClick: openModal,
+        primary: true,
+      },
+      {
+        type: 'search',
+        placeholder: t('toolbar.search.boardName'),
+        value: searchQuery,
+        onSearch: handleSearch,
+        onClear: handleClearSearch,
+      },
+    ],
+    rightSection: [
+      {
+        type: 'viewToggle',
+        value: viewMode,
+        onChange: handleViewModeChange,
+      },
+      {
+        type: 'button',
+        icon: Settings,
+        label: t('boardListPage.setting'),
+        onClick: () => navigate(APP_ROUTES.SETTINGS),
+      },
+    ],
+  }), [
+    t,
+    openModal,
+    searchQuery,
+    handleSearch,
+    handleClearSearch,
+    viewMode,
+    handleViewModeChange,
+    navigate,
+  ]);
 
 
   if (isLoading) {
-    return <div>{t('boardListPage.loading')}</div>;
+    return (
+      <>
+        <UniversalToolbar config={toolbarConfig} />
+        <div className={styles.pageContent}>
+          <div className={styles.loading}>{t('boardListPage.loading')}</div>
+        </div>
+      </>
+    );
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>{t('boardListPage.heading')}</h1>
-        <div className={styles.headerActions}>
-          <Button onClick={openModal}>{t('boardListPage.createNewBoardButton')}</Button>
-          <Button onClick={() => navigate(APP_ROUTES.SETTINGS)} variant="secondary">
-            {t('boardListPage.setting')}
-          </Button>
-        </div>
-      </div>
-
-      {boards.length > 0 ? (
-        <div className={styles.boardList}>
-          {boards.map((board, index) => (
-            <div 
-              key={board.id}
-              className={styles.boardListItem}
-              style={{ animationDelay: `${index * 0.05}s` }}
-              onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
-            >
-              <BoardCard board={board} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>{t('boardListPage.noBoardsMessage')}</p>
-      )}
+    <>
+      <UniversalToolbar config={toolbarConfig} />
+      <div className={styles.pageContent}>
+        {boards.length > 0 ? (
+          <div className={`${styles.boardList} ${styles[viewMode]}`}>
+            {boards.map((board, index) => (
+              <div 
+                key={board.id}
+                className={styles.boardListItem}
+                style={{ animationDelay: `${index * 0.05}s` }}
+                onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
+              >
+                <BoardCard board={board} viewMode={viewMode} />
+              </div>
+            ))}
+          </div>
+        ) : searchQuery ? (
+          <div className={styles.emptyState}>
+            <p>{t('boardListPage.noSearchResults', { query: searchQuery })}</p>
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <p>{t('boardListPage.noBoardsMessage')}</p>
+          </div>
+        )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
@@ -96,7 +155,8 @@ const BoardListPage: React.FC = () => {
           message={t('leaveBoard.confirmText', { boardName: boardToLeave.name })}
         />
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

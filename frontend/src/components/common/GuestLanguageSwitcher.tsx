@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useLanguageSync } from 'hooks/common';
+
 import styles from './GuestLanguageSwitcher.module.css';
 
 interface GuestLanguageSwitcherProps {

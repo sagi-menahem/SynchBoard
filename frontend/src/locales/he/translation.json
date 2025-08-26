@@ -182,6 +182,7 @@
         "noDescription": "אין תיאור.",
         "adminLabel": " (מנהל)",
         "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!",
+        "noSearchResults": "לא נמצאו לוחות התואמים ל-\"{{query}}\".",
         "setting": "הגדרות"
     },
     "boardDetailsPage": {
@@ -341,6 +342,19 @@
     "boardSync": {
         "nothingToUndo": "אין פעולות לביטול.",
         "nothingToRedo": "אין פעולות לביצוע מחדש."
+    },
+    "toolbar": {
+        "search": {
+            "boardName": "חפש לוחות...",
+            "placeholder": "הקלד שם לוח..."
+        },
+        "view": {
+            "grid": "תצוגת רשת",
+            "list": "תצוגת רשימה"
+        },
+        "activity": {
+            "membersOnline": "{{count}} חברים מחוברים"
+        }
     },
     "colors": {
         "white": "לבן",

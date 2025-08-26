@@ -20,13 +20,19 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   const { t } = useTranslation();
   const { state, submitAction, isPending } = useForgotPasswordForm(onSuccess);
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    submitAction(formData);
+  };
+
   return (
     <BaseAuthModal
       isOpen={isOpen}
       onClose={onClose}
       title={t('forgotPassword.heading', 'Reset Your Password')}
       description={t('forgotPassword.description', 'Enter your email to receive a reset code')}
-      onSubmit={submitAction}
+      onSubmit={handleSubmit}
       isPending={isPending}
       error={state.error}
       submitButtonText={isPending ? t('common.button.sending', 'Sending...') : t('forgotPassword.button', 'Send Reset Code')}

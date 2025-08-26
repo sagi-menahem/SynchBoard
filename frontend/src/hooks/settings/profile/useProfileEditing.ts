@@ -7,6 +7,7 @@ export const useProfileEditing = (user: UserProfile | null) => {
   const [formData, setFormData] = useState<UpdateUserProfileRequest>({
     firstName: '',
     lastName: '',
+    gender: 'male',
     phoneNumber: '',
   });
 
@@ -14,8 +15,9 @@ export const useProfileEditing = (user: UserProfile | null) => {
     if (user) {
       setFormData({
         firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
+        lastName: user.lastName || '',
+        gender: user.gender,
+        phoneNumber: user.phoneNumber || '',
       });
     }
   }, [user]);
@@ -30,8 +32,9 @@ export const useProfileEditing = (user: UserProfile | null) => {
     if (user) {
       setFormData({
         firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
+        lastName: user.lastName || '',
+        gender: user.gender,
+        phoneNumber: user.phoneNumber || '',
       });
     }
     setIsEditing(false);

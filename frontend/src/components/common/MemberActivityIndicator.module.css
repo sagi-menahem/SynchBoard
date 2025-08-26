@@ -1,0 +1,98 @@
+.activityIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.activityIndicator.clickable {
+  cursor: pointer;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.activityIndicator.clickable:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.icon {
+  color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+}
+
+.counts {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.onlineCount {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 2px;
+}
+
+.totalCount {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.onlineIndicator {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Focus states for accessibility */
+.activityIndicator.clickable:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .activityIndicator {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .onlineIndicator {
+    width: 5px;
+    height: 5px;
+    top: 5px;
+    right: 5px;
+  }
+}

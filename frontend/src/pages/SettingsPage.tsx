@@ -1,11 +1,12 @@
 import { APP_ROUTES } from 'constants';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { ArrowLeft, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { Button, ConfirmationDialog } from 'components/common';
+import { ConfirmationDialog, UniversalToolbar } from 'components/common';
 import {
   BoardAppearanceSection,
   ChangePasswordForm,
@@ -16,11 +17,13 @@ import {
 } from 'components/settings';
 import { useAuth } from 'hooks/auth';
 import { useSettingsPage } from 'hooks/settings';
+import type { ToolbarConfig } from 'types/ToolbarTypes';
 
 import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { logout } = useAuth();
   const {
     user,
@@ -36,27 +39,58 @@ const SettingsPage: React.FC = () => {
     handleDeleteAccount,
   } = useSettingsPage();
 
+  // Toolbar configuration
+  const toolbarConfig: ToolbarConfig = useMemo(() => ({
+    pageType: 'settings',
+    leftSection: [
+      {
+        type: 'title',
+        content: t('settingsPage.heading'),
+      },
+    ],
+    rightSection: [
+      {
+        type: 'button',
+        icon: LogOut,
+        label: t('settingsPage.logoutButton'),
+        onClick: logout,
+        variant: 'destructive',
+      },
+      {
+        type: 'button',
+        icon: ArrowLeft,
+        label: t('settingsPage.backToBoards'),
+        onClick: () => navigate(APP_ROUTES.BOARD_LIST),
+      },
+    ],
+  }), [t, logout, navigate]);
+
   if (isLoading) {
-    return <div>{t('settingsPage.loading')}</div>;
+    return (
+      <>
+        <UniversalToolbar config={toolbarConfig} />
+        <div className={styles.pageContent}>
+          <div className={styles.loading}>{t('settingsPage.loading')}</div>
+        </div>
+      </>
+    );
   }
 
   if (!user) {
-    return <div>{t('settingsPage.loadError')}</div>;
+    return (
+      <>
+        <UniversalToolbar config={toolbarConfig} />
+        <div className={styles.pageContent}>
+          <div className={styles.loadError}>{t('settingsPage.loadError')}</div>
+        </div>
+      </>
+    );
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.pageHeader}>
-        <h1>{t('settingsPage.heading')}</h1>
-        <div className={styles.headerActions}>
-          <Button onClick={logout} variant="secondary">
-            {t('settingsPage.logoutButton')}
-          </Button>
-          <Link to={APP_ROUTES.BOARD_LIST}>
-            <Button variant="secondary">&larr; {t('settingsPage.backToBoards')}</Button>
-          </Link>
-        </div>
-      </div>
+    <>
+      <UniversalToolbar config={toolbarConfig} />
+      <div className={styles.pageContent}>
 
       <section className={styles.section}>
         <h2 className={styles.sectionHeader}>{t('settingsPage.pictureSectionHeader')}</h2>
@@ -88,14 +122,15 @@ const SettingsPage: React.FC = () => {
         message={t('settingsPage.deletePictureConfirmText')}
       />
 
-      <ConfirmationDialog
-        isOpen={isAccountDeleteConfirmOpen}
-        onClose={() => setAccountDeleteConfirmOpen(false)}
-        onConfirm={handleDeleteAccount}
-        title={t('settingsPage.deleteAccountConfirmTitle')}
-        message={t('settingsPage.deleteAccountConfirmText')}
-      />
-    </div>
+        <ConfirmationDialog
+          isOpen={isAccountDeleteConfirmOpen}
+          onClose={() => setAccountDeleteConfirmOpen(false)}
+          onConfirm={handleDeleteAccount}
+          title={t('settingsPage.deleteAccountConfirmTitle')}
+          message={t('settingsPage.deleteAccountConfirmText')}
+        />
+      </div>
+    </>
   );
 };
 

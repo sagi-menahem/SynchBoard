@@ -7,7 +7,6 @@ import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { Logger } from 'utils';
 
-import { useLanguageSync } from 'hooks/common';
 
 import { AuthLoadingOverlay } from 'components/auth';
 import { ConnectionStatusBanner } from 'components/common';
@@ -15,6 +14,7 @@ import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary'
 import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
 import RootRedirect from 'components/routing/RootRedirect';
+import { useLanguageSync } from 'hooks/common';
 
 const logger = Logger;
 

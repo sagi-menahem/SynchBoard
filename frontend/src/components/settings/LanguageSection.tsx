@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
-import { usePreferences } from 'hooks/common';
+import styles from 'pages/SettingsPage.module.css';
 import * as userService from 'services/userService';
 import type { LanguagePreferences } from 'types/UserTypes';
-import styles from 'pages/SettingsPage.module.css';
 
 const LanguageSection: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { preferences } = usePreferences();
   const [languagePrefs, setLanguagePrefs] = useState<LanguagePreferences>({ preferredLanguage: 'en' });
   const [isLoading, setIsLoading] = useState(true);
 

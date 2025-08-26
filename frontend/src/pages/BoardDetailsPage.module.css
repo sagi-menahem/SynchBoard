@@ -1,11 +1,150 @@
-.container {
+/* Page Layout */
+.pageContent {
+    padding-top: 72px; /* Account for fixed toolbar */
+    min-height: 100vh;
     width: 100%;
-    max-width: 800px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
+    box-sizing: border-box;
     text-align: left;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+}
+
+.notFound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+}
+
+/* Members Section */
+.membersSection {
+    margin-top: 2rem;
+}
+
+.sectionTitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .membersListContainer {
     list-style: none;
     padding: 0;
-    margin-top: 1rem;
+    margin: 0;
+}
+
+/* Quick Settings Modal */
+.quickSettingsModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 2rem;
+}
+
+.quickSettingsContent {
+    background: linear-gradient(to bottom, #2f2f2f, #2a2a2a);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.closeQuickSettings {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.closeQuickSettings:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pageContent {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 80px;
+    }
+    
+    .quickSettingsModal {
+        padding: 1rem;
+    }
+    
+    .quickSettingsContent {
+        padding: 1.5rem;
+        max-height: 85vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .pageContent {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-top: 88px;
+    }
+    
+    .sectionTitle {
+        font-size: 1.1rem;
+    }
+    
+    .quickSettingsModal {
+        padding: 0.5rem;
+    }
+    
+    .quickSettingsContent {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .closeQuickSettings {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
 }

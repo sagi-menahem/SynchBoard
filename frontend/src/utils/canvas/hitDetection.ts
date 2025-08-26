@@ -1,4 +1,15 @@
-import type { ActionPayload, Point } from 'types/BoardObjectTypes';
+import type {
+  ActionPayload,
+  ArrowPayload,
+  CirclePayload,
+  LinePayload,
+  Point,
+  PolygonPayload,
+  RectanglePayload,
+  StraightLinePayload,
+  TextBoxPayload,
+  TrianglePayload,
+} from 'types/BoardObjectTypes';
 
 export interface HitResult {
   hit: boolean;
@@ -287,68 +298,101 @@ export const detectObjectHit = (
     
     // Handle different object types
     if (obj.tool === 'square' || obj.tool === 'rectangle') {
-      const rect = obj as any; // RectanglePayload
+      const rect = obj as RectanglePayload;
       
       // Check if it's inside the shape (for fill)
       if (isPointInRectangle(clickPoint, rect.x, rect.y, rect.width, rect.height, canvasWidth, canvasHeight)) {
         // If inside, check if it's on the border first (border takes priority)
-        if (isPointOnRectangleBorder(clickPoint, rect.x, rect.y, rect.width, rect.height, rect.strokeWidth, canvasWidth, canvasHeight)) {
+        if (isPointOnRectangleBorder(
+          clickPoint, rect.x, rect.y, rect.width, rect.height, rect.strokeWidth, canvasWidth, canvasHeight,
+        )) {
           return { hit: true, object: obj, hitType: 'stroke' };
         }
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'circle') {
-      const circle = obj as any; // CirclePayload
+      const circle = obj as CirclePayload;
       
       if (isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)) {
         // If inside, check if it's on the border first (border takes priority)
-        if (isPointOnCircleBorder(clickPoint, circle.x, circle.y, circle.radius, circle.strokeWidth, canvasWidth, canvasHeight)) {
+        if (isPointOnCircleBorder(
+          clickPoint, circle.x, circle.y, circle.radius, circle.strokeWidth, canvasWidth, canvasHeight,
+        )) {
           return { hit: true, object: obj, hitType: 'stroke' };
         }
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'triangle') {
-      const triangle = obj as any; // TrianglePayload
+      const triangle = obj as TrianglePayload;
       
-      if (isPointInTriangle(clickPoint, triangle.x1, triangle.y1, triangle.x2, triangle.y2, triangle.x3, triangle.y3, canvasWidth, canvasHeight)) {
+      if (isPointInTriangle(
+        clickPoint,
+        triangle.x1,
+        triangle.y1,
+        triangle.x2,
+        triangle.y2,
+        triangle.x3,
+        triangle.y3,
+        canvasWidth,
+        canvasHeight,
+      )) {
         // If inside, check if it's on the border first (border takes priority)
-        if (isPointOnTriangleBorder(clickPoint, triangle.x1, triangle.y1, triangle.x2, triangle.y2, triangle.x3, triangle.y3, triangle.strokeWidth, canvasWidth, canvasHeight)) {
+        if (isPointOnTriangleBorder(
+          clickPoint,
+          triangle.x1,
+          triangle.y1,
+          triangle.x2,
+          triangle.y2,
+          triangle.x3,
+          triangle.y3,
+          triangle.strokeWidth,
+          canvasWidth,
+          canvasHeight,
+        )) {
           return { hit: true, object: obj, hitType: 'stroke' };
         }
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'pentagon' || obj.tool === 'hexagon') {
-      const polygon = obj as any; // PolygonPayload
+      const polygon = obj as PolygonPayload;
       
-      if (isPointInPolygon(clickPoint, polygon.x, polygon.y, polygon.radius, polygon.sides, canvasWidth, canvasHeight)) {
+      if (isPointInPolygon(
+        clickPoint, polygon.x, polygon.y, polygon.radius, polygon.sides, canvasWidth, canvasHeight,
+      )) {
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'star') {
-      const star = obj as any; // PolygonPayload
+      const star = obj as PolygonPayload;
       
       if (isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)) {
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'line' || obj.tool === 'dottedLine') {
-      const line = obj as any; // StraightLinePayload
+      const line = obj as StraightLinePayload;
       
-      if (isPointOnLine(clickPoint, line.x1, line.y1, line.x2, line.y2, line.strokeWidth, canvasWidth, canvasHeight)) {
+      if (isPointOnLine(
+        clickPoint, line.x1, line.y1, line.x2, line.y2, line.strokeWidth, canvasWidth, canvasHeight,
+      )) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'arrow') {
-      const arrow = obj as any; // ArrowPayload
+      const arrow = obj as ArrowPayload;
       
-      if (isPointOnLine(clickPoint, arrow.x1, arrow.y1, arrow.x2, arrow.y2, arrow.strokeWidth, canvasWidth, canvasHeight)) {
+      if (isPointOnLine(
+        clickPoint, arrow.x1, arrow.y1, arrow.x2, arrow.y2, arrow.strokeWidth, canvasWidth, canvasHeight,
+      )) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'text') {
-      const textBox = obj as any; // TextBoxPayload
+      const textBox = obj as TextBoxPayload;
       
-      if (isPointInTextBox(clickPoint, textBox.x, textBox.y, textBox.width, textBox.height, canvasWidth, canvasHeight)) {
+      if (isPointInTextBox(
+        clickPoint, textBox.x, textBox.y, textBox.width, textBox.height, canvasWidth, canvasHeight,
+      )) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'brush' || obj.tool === 'eraser') {
-      const line = obj as any; // LinePayload
+      const line = obj as LinePayload;
       
       // Check if point is near any segment of the drawn path
       for (let j = 0; j < line.points.length - 1; j++) {
