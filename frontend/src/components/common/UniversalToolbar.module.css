@@ -1,6 +1,6 @@
 .universalToolbar {
   position: fixed;
-  top: 0; /* Simplified positioning - banner height handled by App.tsx padding */
+  top: var(--banner-height, 0px); /* Position below banner */
   left: 0;
   right: 0;
   width: 100vw; /* Explicitly set full viewport width */
@@ -17,7 +17,6 @@
   z-index: 50;
   user-select: none;
   overflow: visible; /* Ensure toolbar content is not clipped */
-  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .toolbarSection {
