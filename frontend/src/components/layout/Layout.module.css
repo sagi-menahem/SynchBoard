@@ -4,8 +4,6 @@
     height: 100vh; /* Changed from min-height to height for exact viewport fit */
     width: 100%;
     box-sizing: border-box;
-    /* Account for fixed toolbar positioning */
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 40px));
 }
 
 .mainContent {

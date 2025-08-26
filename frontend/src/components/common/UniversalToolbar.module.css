@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   width: 100vw; /* Explicitly set full viewport width */
-  height: 40px;
+  height: 72px; /* Increased to 72px for optimal canvas tool icon fit */
   box-sizing: border-box; /* Include padding in width calculation */
   background: linear-gradient(to bottom, rgba(40, 40, 40, 0.98), rgba(35, 35, 35, 0.98));
   backdrop-filter: blur(12px);
