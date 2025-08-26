@@ -1,115 +1,70 @@
-/* Option C: Minimal Clean Design */
-.cleanHeader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+/* Two-Section Design matching Profile Picture style */
+
+.section {
+    background-color: #2f2f2f;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1.5rem;
     margin-bottom: 2rem;
-    padding: 2rem 0;
-    text-align: center;
 }
 
-/* Compact Board Image */
-.compactImageButton {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
 
-.compactImageButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.sectionTitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
 }
 
-.compactImageButton:focus-visible {
-    outline: 2px solid #a9a9ff;
-    outline-offset: 4px;
+/* Board Image Section */
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
 }
 
-.compactImageButton:active {
-    transform: translateY(0);
-}
-
-.compactBoardImage {
+.boardImage {
     width: 120px;
     height: 120px;
-    border-radius: 12px;
-    object-fit: cover;
-    transition: all 0.3s ease;
-}
-
-.compactImageButton:hover .compactBoardImage {
-    filter: brightness(1.1);
-}
-
-/* Description Container */
-.descriptionContainer {
-    max-width: 600px;
-    width: 100%;
-}
-
-.descriptionButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 16px;
     border-radius: 8px;
-    width: 100%;
-    position: relative;
-    transition: all 0.2s ease;
-    text-align: center;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.buttonGroup {
     display: flex;
-    align-items: center;
+    gap: 0.75rem;
     justify-content: center;
-    gap: 12px;
 }
 
-.descriptionButton:hover {
-    background: rgba(255, 255, 255, 0.02);
+.destructiveButton {
+    background-color: #c93434;
+    border-color: transparent;
 }
 
-.descriptionButton:focus-visible {
-    outline: 2px solid #a9a9ff;
-    outline-offset: 2px;
+.destructiveButton:hover:not(:disabled) {
+    background-color: #a52a2a;
+    border-color: #a52a2a;
 }
 
-.elegantDescription {
+/* Board Description Section */
+.descriptionContent {
+    padding: 0;
+}
+
+.description {
     color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
     line-height: 1.6;
     margin: 0;
     font-weight: 400;
     letter-spacing: 0.01em;
-    transition: color 0.2s ease;
-}
-
-.descriptionButton:hover .elegantDescription {
-    color: rgba(255, 255, 255, 0.95);
-}
-
-/* Edit Icon - subtle, appears on hover */
-.editIcon {
-    color: rgba(255, 255, 255, 0.4);
-    transition: all 0.2s ease;
-    opacity: 0;
-    transform: translateX(-4px);
-}
-
-.descriptionButton:hover .editIcon {
-    opacity: 1;
-    transform: translateX(0);
-    color: rgba(169, 169, 255, 0.8);
-}
-
-.descriptionButton:focus-visible .editIcon {
-    opacity: 1;
-    transform: translateX(0);
-    color: rgba(169, 169, 255, 0.8);
 }
 
 /* Desktop-only design - no mobile responsive code needed */

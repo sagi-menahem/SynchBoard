@@ -1,9 +1,9 @@
 import React from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
-import { Edit } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import Button from 'components/common/Button';
 import { API_BASE_URL } from 'constants/ApiConstants';
 import type { BoardDetails } from 'types/BoardTypes';
 
@@ -14,6 +14,7 @@ interface BoardDetailsHeaderProps {
     currentUserIsAdmin: boolean;
     onSetPictureModalOpen: (isOpen: boolean) => void;
     onSetEditingField: (field: 'name' | 'description' | null) => void;
+    onDeletePicture: () => void;
 }
 
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
@@ -23,6 +24,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
         currentUserIsAdmin,
         onSetPictureModalOpen,
         onSetEditingField,
+        onDeletePicture,
     } = props;
 
     const imageSource = boardDetails.pictureUrl
@@ -30,38 +32,61 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
         : defaultBoardImage;
 
     return (
-        <div className={styles.cleanHeader}>
-            {/* Compact Board Image */}
-            <button
-                type="button"
-                className={styles.compactImageButton}
-                onClick={() => onSetPictureModalOpen(true)}
-                aria-label={t('boardDetailsPage.changeBoardImage')}
-            >
-                <img
-                    src={imageSource}
-                    alt={boardDetails.name}
-                    className={styles.compactBoardImage}
-                />
-            </button>
-            
-            {/* Centered, elegant description */}
-            <div className={styles.descriptionContainer}>
-                <button
-                    type="button"
-                    className={styles.descriptionButton}
-                    onClick={() => onSetEditingField('description')}
-                    aria-label={t('boardDetailsPage.editBoardDescription')}
-                >
-                    <p className={styles.elegantDescription}>
+        <>
+            {/* Board Picture Section */}
+            <div className={styles.section}>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>{t('boardDetailsPage.boardPicture')}</h2>
+                </div>
+                
+                <div className={styles.imageContainer}>
+                    <img
+                        src={imageSource}
+                        alt={boardDetails.name}
+                        className={styles.boardImage}
+                    />
+                </div>
+                
+                {currentUserIsAdmin && (
+                    <div className={styles.buttonGroup}>
+                        <Button 
+                            onClick={() => onSetPictureModalOpen(true)}
+                            variant="secondary"
+                        >
+                            {t('boardDetailsPage.changePicture')}
+                        </Button>
+                        <Button 
+                            onClick={onDeletePicture}
+                            variant="secondary"
+                            className={styles.destructiveButton}
+                        >
+                            {t('boardDetailsPage.deletePicture')}
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            {/* Board Description Section */}
+            <div className={styles.section}>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>{t('boardDetailsPage.boardDescription')}</h2>
+                    {currentUserIsAdmin && (
+                        <Button 
+                            onClick={() => onSetEditingField('description')}
+                            variant="secondary"
+                        >
+                            {t('common.edit')}
+                        </Button>
+                    )}
+                </div>
+                
+                <div className={styles.descriptionContent}>
+                    <p className={styles.description}>
                         {boardDetails.description || t('boardDetailsPage.noDescription')}
                     </p>
-                    {currentUserIsAdmin && (
-                        <Edit size={16} className={styles.editIcon} />
-                    )}
-                </button>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
