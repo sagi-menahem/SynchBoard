@@ -1,6 +1,7 @@
 import React, { useState, useCallback, type KeyboardEvent } from 'react';
 
 import { Search, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import styles from './SearchBar.module.css';
 
@@ -19,6 +20,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onClear,
   className,
 }) => {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState(value);
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
@@ -63,7 +65,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             type="button"
             onClick={handleClear}
             className={styles.clearButton}
-            title="Clear search"
+            title={t('toolbar.search.clear')}
           >
             <X size={16} />
           </button>

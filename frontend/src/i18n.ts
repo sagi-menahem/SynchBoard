@@ -38,6 +38,37 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
+
+  // RTL Support Configuration
+  react: {
+    useSuspense: false,
+  },
+
+  // Language detection options
+  detection: {
+    order: ['localStorage', 'navigator'],
+    caches: ['localStorage'],
+  },
 });
+
+// RTL Language Support
+export const RTL_LANGUAGES = ['he', 'ar'];
+
+// Utility function to check if a language is RTL
+export const isRTL = (language: string): boolean => {
+  return RTL_LANGUAGES.includes(language);
+};
+
+// Utility function to get text direction for a language
+export const getTextDirection = (language: string): 'ltr' | 'rtl' => {
+  return isRTL(language) ? 'rtl' : 'ltr';
+};
+
+// Function to update document direction
+export const updateDocumentDirection = (language: string): void => {
+  const direction = getTextDirection(language);
+  document.documentElement.dir = direction;
+  document.documentElement.lang = language;
+};
 
 export default i18n;

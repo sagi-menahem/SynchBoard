@@ -166,6 +166,21 @@
             "focusCanvas": "התמקד בקנבס",
             "balanced": "מאוזן",
             "focusChat": "התמקד בצ'אט"
+        },
+        "search": {
+            "boardName": "חפש לוחות...",
+            "placeholder": "הקלד שם לוח...",
+            "clear": "נקה חיפוש"
+        },
+        "view": {
+            "grid": "תצוגת רשת",
+            "list": "תצוגת רשימה"
+        },
+        "activity": {
+            "membersOnline": "{{count}} חברים מחוברים"
+        },
+        "editBoard": {
+            "tooltip": "ערוך שם לוח"
         }
     },
     "chatWindow": {
@@ -187,6 +202,7 @@
     },
     "boardDetailsPage": {
         "backToBoardButton": "חזרה ללוח",
+        "boardDetailsButton": "פרטי הלוח",
         "loading": "טוען פרטי לוח...",
         "notFound": "הלוח לא נמצא או שאין לך גישה אליו.",
         "noDescription": "אין תיאור.",
@@ -342,19 +358,6 @@
     "boardSync": {
         "nothingToUndo": "אין פעולות לביטול.",
         "nothingToRedo": "אין פעולות לביצוע מחדש."
-    },
-    "toolbar": {
-        "search": {
-            "boardName": "חפש לוחות...",
-            "placeholder": "הקלד שם לוח..."
-        },
-        "view": {
-            "grid": "תצוגת רשת",
-            "list": "תצוגת רשימה"
-        },
-        "activity": {
-            "membersOnline": "{{count}} חברים מחוברים"
-        }
     },
     "colors": {
         "white": "לבן",
