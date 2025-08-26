@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 24px; /* Increased gap below toolbar for better visual separation */
+    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px); /* Banner + toolbar + gap */
     min-height: 100vh;
     width: 100%;
     max-width: 1200px;

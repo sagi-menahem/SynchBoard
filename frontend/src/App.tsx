@@ -65,6 +65,53 @@ function AppRoutes() {
       />
       
 
+      {/* Pages with toolbar - rendered OUTSIDE Layout */}
+      <Route 
+        path={APP_ROUTES.BOARD_LIST} 
+        element={
+          <ProtectedRoute>
+            <PageErrorBoundary pageName="BoardList">
+              <BoardListPage />
+            </PageErrorBoundary>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
+        element={
+          <ProtectedRoute>
+            <PageErrorBoundary pageName="Board">
+              <BoardErrorBoundary>
+                <BoardPage />
+              </BoardErrorBoundary>
+            </PageErrorBoundary>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
+        element={
+          <ProtectedRoute>
+            <PageErrorBoundary pageName="BoardDetails">
+              <BoardErrorBoundary>
+                <BoardDetailsPage />
+              </BoardErrorBoundary>
+            </PageErrorBoundary>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={APP_ROUTES.SETTINGS} 
+        element={
+          <ProtectedRoute>
+            <PageErrorBoundary pageName="Settings">
+              <SettingsPage />
+            </PageErrorBoundary>
+          </ProtectedRoute>
+        } 
+      />
+      
+      {/* Fallback route for pages that need Layout (currently none) */}
       <Route
         element={
           <ProtectedRoute>
@@ -72,42 +119,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route 
-          path={APP_ROUTES.BOARD_LIST} 
-          element={
-            <PageErrorBoundary pageName="BoardList">
-              <BoardListPage />
-            </PageErrorBoundary>
-          } 
-        />
-        <Route 
-          path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
-          element={
-            <PageErrorBoundary pageName="Board">
-              <BoardErrorBoundary>
-                <BoardPage />
-              </BoardErrorBoundary>
-            </PageErrorBoundary>
-          } 
-        />
-        <Route 
-          path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
-          element={
-            <PageErrorBoundary pageName="BoardDetails">
-              <BoardErrorBoundary>
-                <BoardDetailsPage />
-              </BoardErrorBoundary>
-            </PageErrorBoundary>
-          } 
-        />
-        <Route 
-          path={APP_ROUTES.SETTINGS} 
-          element={
-            <PageErrorBoundary pageName="Settings">
-              <SettingsPage />
-            </PageErrorBoundary>
-          } 
-        />
+        {/* Reserved for future pages that don't need toolbar */}
       </Route>
     </Routes>
   );
@@ -118,7 +130,7 @@ function App() {
   const { i18n } = useTranslation();
   
   // Fixed toolbar height for desktop-only application
-  const toolbarHeight = 40;
+  const toolbarHeight = 72;
   
   // Initialize global language synchronization
   useLanguageSync();
