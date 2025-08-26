@@ -142,10 +142,14 @@
         "ariaLabel": "Drawing toolbar",
         "label": {
             "color": "Color",
-            "lineWidth": "Line Width: {{width}}",
-            "fontSize": "Font Size: {{size}}",
-            "size": "Size: {{size}}",
-            "zoom": "Zoom: {{zoom}}%",
+            "size": "Size",
+            "draw": "Draw",
+            "shapes": "Shapes",
+            "lines": "Lines",
+            "tools": "Tools",
+            "history": "History",
+            "export": "Export",
+            "BackToBoards": "Back to Boards",
             "layout": "Layout"
         },
         "expand": "Expand Toolbar",

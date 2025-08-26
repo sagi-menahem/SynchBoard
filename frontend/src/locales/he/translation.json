@@ -142,10 +142,14 @@
         "ariaLabel": "סרגל כלי ציור",
         "label": {
             "color": "צבע",
-            "lineWidth": "עובי קו: {{width}}",
-            "fontSize": "גודל גופן: {{size}}",
-            "size": "גודל: {{size}}",
-            "zoom": "זום: {{zoom}}%",
+            "size": "גודל",
+            "draw": "ציור",
+            "shapes": "צורות",
+            "lines": "קווים",
+            "tools": "כלים",
+            "history": "היסטוריה",
+            "export": "ייצוא",
+            "BackToBoards": "בחזרה ללוחות",
             "layout": "פריסה"
         },
         "expand": "הרחב סרגל כלים",
