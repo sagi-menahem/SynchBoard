@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { ArrowLeft, Edit, LogOut, Settings, UserPlus } from 'lucide-react';
+import { ArrowLeft, Edit, LogOut, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -84,12 +84,6 @@ const BoardDetailsPage: React.FC = () => {
       }] : []),
     ],
     rightSection: [
-      {
-        type: 'button',
-        icon: Settings,
-        label: t('boardDetails.canvasSettings.edit'),
-        onClick: () => setQuickSettingsOpen(true),
-      },
       {
         type: 'button',
         icon: LogOut,
