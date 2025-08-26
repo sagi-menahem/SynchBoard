@@ -90,9 +90,7 @@ const BoardListPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent} data-has-toolbar>
-          <LoadingOverlay message={t('boardListPage.loading')} />
-        </div>
+        <LoadingOverlay message={t('boardListPage.loading')} />
       </>
     );
   }

@@ -137,9 +137,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent}>
-          <LoadingOverlay message={t('boardPage.loading')} />
-        </div>
+        <LoadingOverlay message={t('boardPage.loading')} />
       </>
     );
   }

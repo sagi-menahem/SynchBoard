@@ -28,7 +28,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
     setIsLoading(true);
     
     const startTime = Date.now();
-    const minDelay = 250; // 300ms minimum delay
+    const minDelay = 200; // 200ms minimum delay
 
     BoardService.getBoardDetails(boardId)
       .then((data: unknown) => {

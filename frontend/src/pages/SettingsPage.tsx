@@ -76,9 +76,7 @@ const SettingsPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent} data-has-toolbar>
-          <LoadingOverlay message={t('settingsPage.loading')} />
-        </div>
+        <LoadingOverlay message={t('settingsPage.loading')} />
       </>
     );
   }
