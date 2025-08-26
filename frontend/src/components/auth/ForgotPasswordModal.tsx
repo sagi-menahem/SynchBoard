@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { BaseAuthModal, Input } from 'components/common';
@@ -40,6 +41,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     >
       <div className={styles.field}>
         <label htmlFor="forgot-email">
+          <Mail size={14} />
           {t('common.form.label.email', 'Email Address')}
           <span className={styles.required}> *</span>
         </label>

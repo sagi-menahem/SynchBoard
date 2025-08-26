@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { Hash, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, Modal } from 'components/common';
@@ -43,7 +44,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   };
 
   const resendActions = (
-    <div style={{ paddingTop: '1rem', borderTop: '1px solid #444', textAlign: 'center' }}>
+    <div className={styles.additionalActions} style={{ paddingTop: '1rem', borderTop: '1px solid #444' }}>
       <p style={{ color: '#ccc', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
         {t('verifyEmail.didNotReceive', 'Didn\'t receive the code?')}
       </p>
@@ -63,12 +64,15 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div style={{ maxWidth: '400px' }}>
-        <h2 style={{ marginTop: 0, marginBottom: '1rem', color: '#fff' }}>
-          {t('verifyEmail.heading', 'Check Your Email')}
-        </h2>
+      <div className={styles.modalContainer} style={{ maxWidth: '400px' }}>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>
+            <Mail size={20} />
+            {t('verifyEmail.heading', 'Check Your Email')}
+          </h2>
+        </div>
         
-        <p style={{ color: '#ccc', marginBottom: '1.5rem' }}>
+        <p className={styles.modalDescription}>
           {t('verifyEmail.description', 'Enter the 6-digit code sent to')} <strong style={{ color: '#fff' }}>{email}</strong>
         </p>
 
@@ -81,6 +85,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
 
           <div className={styles.field}>
             <label htmlFor="verification-code">
+              <Hash size={14} />
               {t('verifyEmail.label.code', 'Verification Code')}
               <span className={styles.required}> *</span>
             </label>
@@ -120,11 +125,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
           </div>
         </form>
 
-        {resendActions && (
-          <div style={{ marginTop: '1rem' }}>
-            {resendActions}
-          </div>
-        )}
+        {resendActions}
       </div>
     </Modal>
   );

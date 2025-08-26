@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Type } from 'lucide-react';
+
 import styles from './HeaderToolbar.module.css';
 
 interface TextInputOverlayProps {
@@ -70,6 +72,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         onBlur={handleSubmit}
         className={styles.textInput}
         placeholder="Type text..."
+        dir="auto"
         style={{
           color,
           fontSize: `${fontSize}px`,

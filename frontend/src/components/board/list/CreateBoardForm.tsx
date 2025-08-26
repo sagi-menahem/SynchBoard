@@ -1,5 +1,6 @@
 import React, { startTransition, useState } from 'react';
 
+import { FileText, Image, Mail, Monitor, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
@@ -75,8 +76,15 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className={styles.form}>
-      <h3>{t('createBoardForm.heading')}</h3>
+    <div className={styles.modalContainer}>
+      <div className={styles.modalHeader}>
+        <h3 className={styles.modalTitle}>
+          <Plus size={20} />
+          {t('createBoardForm.heading')}
+        </h3>
+      </div>
+
+      <form onSubmit={handleFormSubmit} className={styles.form}>
 
       {state.error && (
         <div className={styles.error} role="alert">
@@ -89,7 +97,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="board-name">{t('createBoardForm.label.boardName')}</label>
+        <label htmlFor="board-name">
+          <FileText size={14} />
+          {t('createBoardForm.label.boardName')}
+        </label>
         <Input
           id="board-name"
           name="name"
@@ -101,7 +112,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="board-description">{t('createBoardForm.label.description')}</label>
+        <label htmlFor="board-description">
+          <FileText size={14} />
+          {t('createBoardForm.label.description')}
+        </label>
         <textarea
           id="board-description"
           name="description"
@@ -113,7 +127,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label>{t('createBoardForm.label.inviteMembers')}</label>
+        <label>
+          <Users size={14} />
+          {t('createBoardForm.label.inviteMembers')}
+        </label>
         <MemberInviteInput onMembersChange={setInviteEmails} disabled={isPending} />
       </div>
 
@@ -135,7 +152,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label>{t('createBoardForm.label.canvasSize')}</label>
+        <label>
+          <Monitor size={14} />
+          {t('createBoardForm.label.canvasSize')}
+        </label>
         <div className={styles.canvasSizeOptions}>
           {/* Canvas Size Presets */}
           <div className={styles.sizeGroup}>
@@ -219,7 +239,8 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           {isPending ? t('common.button.creating') : t('createBoardForm.button.createBoard')}
         </Button>
       </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
