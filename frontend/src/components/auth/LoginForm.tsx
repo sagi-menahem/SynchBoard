@@ -7,9 +7,8 @@ import { Button, Input, PasswordInput } from 'components/common';
 import { useLoginForm } from 'hooks/auth/forms';
 import { oauthService } from 'services/oauthService';
 
-import styles from './LoginForm.module.css';
-
 import GoogleLoginButton from './GoogleLoginButton';
+import styles from './LoginForm.module.css';
 
 interface LoginFormProps {
   onForgotPassword: () => void;

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Type } from 'lucide-react';
 
 import styles from './HeaderToolbar.module.css';
 

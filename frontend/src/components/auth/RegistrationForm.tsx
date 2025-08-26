@@ -16,11 +16,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
   const { t } = useTranslation();
   const { state, submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
 
-  const inputs = [
-    { id: 'register-email', name: 'email', label: 'email', type: 'email', required: true },
-    { id: 'register-firstName', name: 'firstName', label: 'firstName', type: 'text', required: true },
-    { id: 'register-lastName', name: 'lastName', label: 'lastName', type: 'text', required: false },
-  ];
 
   return (
     <form action={submitAction} className={styles.form}>
