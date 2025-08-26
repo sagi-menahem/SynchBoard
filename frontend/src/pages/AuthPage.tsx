@@ -2,7 +2,7 @@ import { APP_ROUTES } from 'constants';
 
 import React, { useState } from 'react';
 
-import { Lock, LogIn, UserPlus } from 'lucide-react';
+import { Users, LogIn, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,18 +52,20 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className={styles.pageContent}>
-      <div className={styles.languageSwitcherWrapper}>
-        <GuestLanguageSwitcher />
-      </div>
       
       {isProcessing && <LoadingOverlay message="Signing you in..." />}
       
       {!isProcessing && (
         <section className={styles.authSection}>
-          <h1 className={styles.pageTitle}>
-            <Lock size={20} />
-            {t('authPage.pageTitle')}
-          </h1>
+          <div className={styles.sectionHeader}>
+            <h1 className={styles.pageTitle}>
+              <Users size={20} />
+              {t('authPage.pageTitle')}
+            </h1>
+            <div className={styles.languageSwitcherInline}>
+              <GuestLanguageSwitcher />
+            </div>
+          </div>
           
           <div className={styles.authContainer}>
             {isLoginView ? (
@@ -88,7 +90,7 @@ const AuthPage: React.FC = () => {
                 <div className={styles.formHeader}>
                   <h2 className={styles.formTitle}>
                     <UserPlus size={18} />
-                    {t('registrationForm.heading')}
+                    {t('registerForm.heading')}
                   </h2>
                 </div>
                 <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />

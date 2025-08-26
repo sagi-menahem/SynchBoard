@@ -20,6 +20,16 @@
     font-size: 0.875rem;
 }
 
+/* Center text in inputs */
+.field input {
+    text-align: center;
+}
+
+/* Specific styling for date inputs */
+.field input[type="date"] {
+    text-align: center;
+}
+
 .required {
     color: #f87171;
     font-weight: bold;
@@ -60,6 +70,9 @@
 /* Submit Button */
 .submitButton {
     margin-top: 0.5rem;
+    width: 50%;
+    align-self: center;
+    justify-content: center;
 }
 
 /* Responsive */
