@@ -26,6 +26,9 @@ export const useBoardDetails = (boardId: number | undefined) => {
     }
 
     setIsLoading(true);
+    
+    const startTime = Date.now();
+    const minDelay = 250; // 300ms minimum delay
 
     BoardService.getBoardDetails(boardId)
       .then((data: unknown) => {
@@ -39,7 +42,12 @@ export const useBoardDetails = (boardId: number | undefined) => {
         setBoardDetails(null);
       })
       .finally(() => {
-        setIsLoading(false);
+        const elapsed = Date.now() - startTime;
+        const remainingDelay = Math.max(0, minDelay - elapsed);
+        
+        setTimeout(() => {
+          setIsLoading(false);
+        }, remainingDelay);
       });
   }, [boardId, navigate]);
 
