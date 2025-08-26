@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { optimizeDrawingPoints, Logger } from 'utils';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
-import { useConnectionStatus } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common/useConnectionStatus';
 import {
   ActionType,
   type ArrowPayload,

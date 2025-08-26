@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input } from 'components/common';
-import { useConnectionStatus } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common/useConnectionStatus';
 
 import styles from './ChatInput.module.css';
 

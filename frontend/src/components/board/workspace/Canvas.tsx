@@ -5,7 +5,8 @@ import { processRecolorClick } from 'utils/canvas/recolorLogic';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
-import { useConnectionStatus, usePreferences } from 'hooks/common';
+import { usePreferences } from 'hooks/common';
+import { useConnectionStatus } from 'hooks/common/useConnectionStatus';
 import type { ActionPayload, SendBoardActionRequest, TextBoxPayload } from 'types/BoardObjectTypes';
 import type { CanvasConfig } from 'types/BoardTypes';
 import type { Tool } from 'types/CommonTypes';

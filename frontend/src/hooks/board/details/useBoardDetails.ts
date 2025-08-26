@@ -8,7 +8,7 @@ import { BoardService } from 'services';
 import type { BoardDetails, BoardUpdateDTO } from 'types';
 import { Logger } from 'utils';
 
-import { useSocketSubscription } from 'hooks/common';
+import { useSocketSubscription } from 'hooks/common/useSocket';
 
 
 const logger = Logger;
