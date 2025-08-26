@@ -7,7 +7,8 @@ import { formatDateSeparator } from 'utils/DateUtils';
 
 import { WEBSOCKET_DESTINATIONS } from 'constants/ApiConstants';
 import { useAuth } from 'hooks/auth';
-import { usePreferences, useSocket } from 'hooks/common';
+import { usePreferences } from 'hooks/common';
+import { useSocket } from 'hooks/common/useSocket';
 import type { EnhancedChatMessage } from 'types/ChatTypes';
 import type { ChatMessageResponse } from 'types/MessageTypes';
 

@@ -1,9 +1,8 @@
 import { APP_ROUTES } from 'constants';
 
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 
 import { updateDocumentDirection } from 'i18n';
-import { AuthPage, BoardDetailsPage, BoardListPage, BoardPage, SettingsPage } from 'pages';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
@@ -17,7 +16,28 @@ import ProtectedRoute from 'components/routing/ProtectedRoute';
 import RootRedirect from 'components/routing/RootRedirect';
 import { useLanguageSync } from 'hooks/common';
 
+// Lazy load pages for code splitting
+const AuthPage = lazy(() => import('pages/AuthPage'));
+const BoardDetailsPage = lazy(() => import('pages/BoardDetailsPage'));
+const BoardListPage = lazy(() => import('pages/BoardListPage'));
+const BoardPage = lazy(() => import('pages/BoardPage'));
+const SettingsPage = lazy(() => import('pages/SettingsPage'));
+
 const logger = Logger;
+
+// Simple loading component for lazy routes
+const PageLoader = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '50vh',
+    color: '#ccc',
+    fontSize: '1rem'
+  }}>
+    Loading...
+  </div>
+);
 
 function AppRoutes() {
   const location = useLocation();
@@ -43,7 +63,9 @@ function AppRoutes() {
         path="/auth" 
         element={
           <ErrorBoundary type="page" context="Auth">
-            <AuthPage />
+            <Suspense fallback={<PageLoader />}>
+              <AuthPage />
+            </Suspense>
           </ErrorBoundary>
         } 
       />
@@ -51,7 +73,9 @@ function AppRoutes() {
         path={APP_ROUTES.AUTH_CALLBACK} 
         element={
           <ErrorBoundary type="page" context="AuthCallback">
-            <AuthPage />
+            <Suspense fallback={<PageLoader />}>
+              <AuthPage />
+            </Suspense>
           </ErrorBoundary>
         } 
       />
@@ -59,7 +83,9 @@ function AppRoutes() {
         path={APP_ROUTES.AUTH_ERROR} 
         element={
           <ErrorBoundary type="page" context="AuthError">
-            <AuthPage />
+            <Suspense fallback={<PageLoader />}>
+              <AuthPage />
+            </Suspense>
           </ErrorBoundary>
         } 
       />
@@ -71,7 +97,9 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary type="page" context="BoardList">
-              <BoardListPage />
+              <Suspense fallback={<PageLoader />}>
+                <BoardListPage />
+              </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
         } 
@@ -81,7 +109,9 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary type="board" context="Board">
-              <BoardPage />
+              <Suspense fallback={<PageLoader />}>
+                <BoardPage />
+              </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
         } 
@@ -91,7 +121,9 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary type="board" context="BoardDetails">
-              <BoardDetailsPage />
+              <Suspense fallback={<PageLoader />}>
+                <BoardDetailsPage />
+              </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
         } 
@@ -101,7 +133,9 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary type="page" context="Settings">
-              <SettingsPage />
+              <Suspense fallback={<PageLoader />}>
+                <SettingsPage />
+              </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
         } 

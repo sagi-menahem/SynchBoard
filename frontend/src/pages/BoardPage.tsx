@@ -1,21 +1,21 @@
-import { APP_ROUTES } from 'constants';
+import { APP_ROUTES } from "constants";
 
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from "react";
 
-import { BoardProvider, useCanvasPreferences } from 'context';
-import { ArrowRight, Settings } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { BoardProvider, useCanvasPreferences } from "context";
+import { ArrowRight, Settings } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { BoardWorkspace, CanvasToolSection } from 'components/board/workspace';
-import { LoadingOverlay, UniversalToolbar } from 'components/common';
-import { useBoardContext, useToolbarState } from 'hooks/board';
-import type { ToolbarConfig } from 'types/ToolbarTypes';
+import { BoardWorkspace, CanvasToolSection } from "components/board/workspace";
+import { LoadingOverlay, UniversalToolbar } from "components/common";
+import { useBoardContext, useToolbarState } from "hooks/board";
+import type { ToolbarConfig } from "types/ToolbarTypes";
 
-import styles from './BoardPage.module.css';
+import styles from "./BoardPage.module.css";
 
 interface BoardPageContentProps {
-    boardId: number;
+  boardId: number;
 }
 
 const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
@@ -37,93 +37,108 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     isRedoAvailable,
   } = useBoardContext();
 
-  const { tool, setTool, strokeColor, setStrokeColor, strokeWidth, setStrokeWidth } = useToolbarState();
-  
-  const handleColorPick = useCallback((color: string) => {
-    setStrokeColor(color);
-  }, [setStrokeColor]);
-  
   const {
-    preferences: canvasPreferences,
-    updateSplitRatio,
-  } = useCanvasPreferences();
-
-
-  const handleSplitRatioChange = useCallback((newRatio: number) => {
-    updateSplitRatio(newRatio);
-  }, [updateSplitRatio]);
-
-  // Memoized canvas config to prevent unnecessary re-renders
-  const canvasConfig = useMemo(() => {
-    return boardDetails ? {
-      backgroundColor: boardDetails.canvasBackgroundColor,
-      width: boardDetails.canvasWidth,
-      height: boardDetails.canvasHeight,
-    } : undefined;
-  }, [boardDetails]);
-
-  // Toolbar configuration
-  const toolbarConfig: ToolbarConfig = useMemo(() => ({
-    pageType: 'canvas',
-    leftSection: [
-      {
-        type: 'custom',
-        content: (
-          <CanvasToolSection
-            boardName={boardName || 'Board'}
-            strokeColor={strokeColor}
-            setStrokeColor={setStrokeColor}
-            strokeWidth={strokeWidth}
-            setStrokeWidth={setStrokeWidth}
-            tool={tool}
-            setTool={setTool}
-            onUndo={handleUndo}
-            isUndoAvailable={isUndoAvailable}
-            onRedo={handleRedo}
-            isRedoAvailable={isRedoAvailable}
-            canvasConfig={canvasConfig}
-          />
-        ),
-      },
-    ],
-    rightSection: [
-      {
-        type: 'button',
-        icon: Settings,
-        label: t('boardDetailsPage.boardDetailsButton') || 'Board Details',
-        onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
-      },
-      {
-        type: 'button',
-        icon: ArrowRight,
-        label: t('toolbar.label.BackToBoards'),
-        onClick: () => navigate(APP_ROUTES.BOARD_LIST),
-      },
-    ],
-  }), [
-    boardName,
+    tool,
+    setTool,
     strokeColor,
     setStrokeColor,
     strokeWidth,
     setStrokeWidth,
-    tool,
-    setTool,
-    handleUndo,
-    isUndoAvailable,
-    handleRedo,
-    isRedoAvailable,
-    canvasConfig,
-    t,
-    navigate,
-    boardId,
-  ]);
+  } = useToolbarState();
+
+  const handleColorPick = useCallback(
+    (color: string) => {
+      setStrokeColor(color);
+    },
+    [setStrokeColor]
+  );
+
+  const { preferences: canvasPreferences, updateSplitRatio } =
+    useCanvasPreferences();
+
+  const handleSplitRatioChange = useCallback(
+    (newRatio: number) => {
+      updateSplitRatio(newRatio);
+    },
+    [updateSplitRatio]
+  );
+
+  // Memoized canvas config to prevent unnecessary re-renders
+  const canvasConfig = useMemo(() => {
+    return boardDetails
+      ? {
+          backgroundColor: boardDetails.canvasBackgroundColor,
+          width: boardDetails.canvasWidth,
+          height: boardDetails.canvasHeight,
+        }
+      : undefined;
+  }, [boardDetails]);
+
+  // Toolbar configuration
+  const toolbarConfig: ToolbarConfig = useMemo(
+    () => ({
+      pageType: "canvas",
+      leftSection: [
+        {
+          type: "custom",
+          content: (
+            <CanvasToolSection
+              boardName={boardName || "Board"}
+              strokeColor={strokeColor}
+              setStrokeColor={setStrokeColor}
+              strokeWidth={strokeWidth}
+              setStrokeWidth={setStrokeWidth}
+              tool={tool}
+              setTool={setTool}
+              onUndo={handleUndo}
+              isUndoAvailable={isUndoAvailable}
+              onRedo={handleRedo}
+              isRedoAvailable={isRedoAvailable}
+              canvasConfig={canvasConfig}
+            />
+          ),
+        },
+      ],
+      rightSection: [
+        {
+          type: "button",
+          icon: Settings,
+          label: t("boardDetailsPage.boardDetailsButton") || "Board Details",
+          onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
+        },
+        {
+          type: "button",
+          icon: ArrowRight,
+          label: t("toolbar.label.BackToBoards"),
+          onClick: () => navigate(APP_ROUTES.BOARD_LIST),
+        },
+      ],
+    }),
+    [
+      boardName,
+      strokeColor,
+      setStrokeColor,
+      strokeWidth,
+      setStrokeWidth,
+      tool,
+      setTool,
+      handleUndo,
+      isUndoAvailable,
+      handleRedo,
+      isRedoAvailable,
+      canvasConfig,
+      t,
+      navigate,
+      boardId,
+    ]
+  );
 
   if (isLoading) {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent}>
-          <LoadingOverlay message={t('boardPage.loading')} />
+          <LoadingOverlay message={t("boardPage.loading")} />
         </div>
       </>
     );
@@ -159,12 +174,12 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 const BoardPage: React.FC = () => {
   const { t } = useTranslation();
   const { boardId } = useParams<{ boardId: string }>();
-  const numericBoardId = parseInt(boardId || '0', 10);
+  const numericBoardId = parseInt(boardId || "0", 10);
 
   if (!numericBoardId) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        {t('boardPage.loading')}
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        {t("boardPage.loading")}
       </div>
     );
   }

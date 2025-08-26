@@ -9,7 +9,8 @@ import { BoardService } from 'services';
 import logger from 'utils/logger';
 
 import { useAuth } from 'hooks/auth';
-import { useContextMenu, useSocketSubscription } from 'hooks/common';
+import { useContextMenu } from 'hooks/common';
+import { useSocketSubscription } from 'hooks/common/useSocket';
 import type { Board } from 'types/BoardTypes';
 import type { ViewMode } from 'types/ToolbarTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
