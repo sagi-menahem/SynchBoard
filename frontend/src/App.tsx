@@ -11,7 +11,7 @@ import { Logger } from 'utils';
 
 import { AuthLoadingOverlay } from 'components/auth';
 import { ConnectionStatusBanner } from 'components/common';
-import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
+import { ErrorBoundary } from 'components/errorBoundary';
 import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
 import RootRedirect from 'components/routing/RootRedirect';
@@ -42,25 +42,25 @@ function AppRoutes() {
       <Route 
         path="/auth" 
         element={
-          <PageErrorBoundary pageName="Auth">
+          <ErrorBoundary type="page" context="Auth">
             <AuthPage />
-          </PageErrorBoundary>
+          </ErrorBoundary>
         } 
       />
       <Route 
         path={APP_ROUTES.AUTH_CALLBACK} 
         element={
-          <PageErrorBoundary pageName="AuthCallback">
+          <ErrorBoundary type="page" context="AuthCallback">
             <AuthPage />
-          </PageErrorBoundary>
+          </ErrorBoundary>
         } 
       />
       <Route 
         path={APP_ROUTES.AUTH_ERROR} 
         element={
-          <PageErrorBoundary pageName="AuthError">
+          <ErrorBoundary type="page" context="AuthError">
             <AuthPage />
-          </PageErrorBoundary>
+          </ErrorBoundary>
         } 
       />
       
@@ -70,9 +70,9 @@ function AppRoutes() {
         path={APP_ROUTES.BOARD_LIST} 
         element={
           <ProtectedRoute>
-            <PageErrorBoundary pageName="BoardList">
+            <ErrorBoundary type="page" context="BoardList">
               <BoardListPage />
-            </PageErrorBoundary>
+            </ErrorBoundary>
           </ProtectedRoute>
         } 
       />
@@ -80,11 +80,9 @@ function AppRoutes() {
         path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
         element={
           <ProtectedRoute>
-            <PageErrorBoundary pageName="Board">
-              <BoardErrorBoundary>
-                <BoardPage />
-              </BoardErrorBoundary>
-            </PageErrorBoundary>
+            <ErrorBoundary type="board" context="Board">
+              <BoardPage />
+            </ErrorBoundary>
           </ProtectedRoute>
         } 
       />
@@ -92,11 +90,9 @@ function AppRoutes() {
         path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
         element={
           <ProtectedRoute>
-            <PageErrorBoundary pageName="BoardDetails">
-              <BoardErrorBoundary>
-                <BoardDetailsPage />
-              </BoardErrorBoundary>
-            </PageErrorBoundary>
+            <ErrorBoundary type="board" context="BoardDetails">
+              <BoardDetailsPage />
+            </ErrorBoundary>
           </ProtectedRoute>
         } 
       />
@@ -104,9 +100,9 @@ function AppRoutes() {
         path={APP_ROUTES.SETTINGS} 
         element={
           <ProtectedRoute>
-            <PageErrorBoundary pageName="Settings">
+            <ErrorBoundary type="page" context="Settings">
               <SettingsPage />
-            </PageErrorBoundary>
+            </ErrorBoundary>
           </ProtectedRoute>
         } 
       />
@@ -153,7 +149,7 @@ function App() {
   };
 
   return (
-    <PageErrorBoundary pageName="App">
+    <ErrorBoundary type="page" context="App">
       <BrowserRouter>
         <ConnectionStatusBanner onHeightChange={handleBannerHeightChange} />
         <div style={{ 
@@ -180,7 +176,7 @@ function App() {
           <AppRoutes />
         </div>
       </BrowserRouter>
-    </PageErrorBoundary>
+    </ErrorBoundary>
   );
 }
 

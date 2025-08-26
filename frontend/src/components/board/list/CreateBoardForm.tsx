@@ -1,6 +1,6 @@
 import React, { startTransition, useState } from 'react';
 
-import { FileText, Image, Mail, Monitor, Plus, Users } from 'lucide-react';
+import { FileText, Monitor, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
