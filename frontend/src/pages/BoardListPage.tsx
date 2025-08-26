@@ -39,7 +39,6 @@ const BoardListPage: React.FC = () => {
     handleSearch,
     handleClearSearch,
     viewMode,
-    handleViewModeChange,
   } = useBoardList();
 
   // Toolbar configuration
@@ -67,11 +66,6 @@ const BoardListPage: React.FC = () => {
     ],
     rightSection: [
       {
-        type: 'viewToggle',
-        value: viewMode,
-        onChange: handleViewModeChange,
-      },
-      {
         type: 'button',
         icon: Settings,
         label: t('boardListPage.setting'),
@@ -84,8 +78,6 @@ const BoardListPage: React.FC = () => {
     searchQuery,
     handleSearch,
     handleClearSearch,
-    viewMode,
-    handleViewModeChange,
     navigate,
   ]);
 
