@@ -64,8 +64,7 @@ const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onU
         </Button>
         <Button 
           onClick={onDelete}
-          variant="secondary"
-          className={styles.destructiveButton}
+          variant="destructive"
         >
           <Trash2 size={16} />
           {t('settingsPage.deletePicture')}
