@@ -2,7 +2,6 @@ import { useCallback, useOptimistic, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
 
@@ -32,10 +31,15 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
       setOptimisticState({ name: newName });
       
       try {
-        await boardService.updateBoardName(boardId, newName);
-        toast.success(t('success.board.nameUpdate'));
+        await toast.promise(
+          boardService.updateBoardName(boardId, newName),
+          {
+            loading: t('loading.board.nameUpdate'),
+            success: t('success.board.nameUpdate'),
+            error: t('errors.board.nameUpdate'),
+          }
+        );
       } catch (error) {
-        logger.error('Update name error:', error);
         // Optimistic update will automatically rollback on error
         throw error;
       }
@@ -51,10 +55,15 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
       setOptimisticState({ description: newDescription });
       
       try {
-        await boardService.updateBoardDescription(boardId, newDescription);
-        toast.success(t('success.board.descriptionUpdate'));
+        await toast.promise(
+          boardService.updateBoardDescription(boardId, newDescription),
+          {
+            loading: t('loading.board.descriptionUpdate'),
+            success: t('success.board.descriptionUpdate'),
+            error: t('errors.board.descriptionUpdate'),
+          }
+        );
       } catch (error) {
-        logger.error('Update description error:', error);
         // Optimistic update will automatically rollback on error
         throw error;
       }

@@ -1,6 +1,6 @@
 import React, { startTransition, useState } from 'react';
 
-import { FileText, Monitor, Plus, Users } from 'lucide-react';
+import { FileText, Monitor, Pencil, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
@@ -98,7 +98,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
 
       <div className={styles.field}>
         <label htmlFor="board-name">
-          <FileText size={14} />
+          <Pencil size={14} />
           {t('createBoardForm.label.boardName')}
         </label>
         <Input

@@ -39,14 +39,16 @@ export const useUserProfileManager = () => {
 
   const handleUpdateProfile = useCallback(
     async (data: UpdateUserProfileRequest) => {
-      try {
-        const updatedUser = await userService.updateUserProfile(data);
+      const promise = userService.updateUserProfile(data).then((updatedUser) => {
         setUser(updatedUser);
-        toast.success(t('success.profile.update'));
-      } catch (error) {
-        logger.error('Failed to update profile:', error);
-        throw error;
-      }
+        return updatedUser;
+      });
+
+      await toast.promise(promise, {
+        loading: t('loading.profile.update'),
+        success: t('success.profile.update'),
+        error: t('errors.profile.update'),
+      });
     },
     [t],
   );

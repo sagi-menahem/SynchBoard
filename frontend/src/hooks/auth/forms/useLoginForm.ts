@@ -40,11 +40,28 @@ export const useLoginForm = () => {
     logger.debug('Login form submission for user:', email);
 
     try {
-      const response = await AuthService.login(credentials);
-      const token = (response as { token: string }).token;
+      const response = await toast.promise(
+        AuthService.login(credentials),
+        {
+          loading: t('loading.auth.login'),
+          success: t('loginForm.loginSuccess'),
+          error: (err) => {
+            let errorMessage = t('loginForm.error.unknown', 'Login failed');
+            if (err && typeof err === 'object' && 'response' in err) {
+              const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
+              if (axiosError.response?.data?.message) {
+                errorMessage = axiosError.response.data.message;
+              } else if (axiosError.message) {
+                errorMessage = axiosError.message;
+              }
+            }
+            return errorMessage;
+          },
+        }
+      );
       
+      const token = (response as { token: string }).token;
       logger.info('Login successful for user:', email);
-      toast.success(t('loginForm.loginSuccess'));
       
       login(token);
       navigate(APP_ROUTES.BOARD_LIST);
@@ -55,18 +72,6 @@ export const useLoginForm = () => {
       };
     } catch (err: unknown) {
       logger.error('Login failed for user:', err, { email });
-      
-      let errorMessage = t('loginForm.error.unknown', 'Login failed');
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
-        if (axiosError.response?.data?.message) {
-          errorMessage = axiosError.response.data.message;
-        } else if (axiosError.message) {
-          errorMessage = axiosError.message;
-        }
-      }
-      
-      toast.error(errorMessage);
       
       return {
         success: false,

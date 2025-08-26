@@ -195,12 +195,48 @@ function App() {
           minHeight: '100vh',
         } as React.CSSProperties}>
           <Toaster
-            position="top-center"
+            position="bottom-right"
+            gutter={8}
+            containerStyle={{
+              bottom: 20,
+              right: 20,
+            }}
             toastOptions={{
               duration: 5000,
               style: {
-                background: '#363636',
+                background: 'linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%)',
                 color: '#fff',
+                border: '1px solid #444',
+                borderRadius: '8px',
+                padding: '12px 16px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+              },
+              success: {
+                style: {
+                  border: 'none',
+                },
+                iconTheme: {
+                  primary: '#fff',
+                  secondary: '#2f2f2f',
+                },
+              },
+              error: {
+                style: {
+                  border: '1px solid #ef4444',
+                },
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+              loading: {
+                style: {
+                  border: '1px solid #3b82f6',
+                },
+                iconTheme: {
+                  primary: '#3b82f6',
+                  secondary: '#fff',
+                },
               },
             }}
           />

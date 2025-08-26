@@ -1,7 +1,6 @@
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { UserService } from 'services';
-import logger from 'utils/logger';
 
 import type { ChangePasswordRequest } from 'types/UserTypes';
 
@@ -10,13 +9,14 @@ export const usePasswordManager = () => {
   const { t } = useTranslation();
 
   const handleChangePassword = async (data: ChangePasswordRequest) => {
-    try {
-      await UserService.changePassword(data);
-      toast.success(t('success.password.update'));
-    } catch (error) {
-      logger.error('Failed to change password:', error);
-      throw error;
-    }
+    await toast.promise(
+      UserService.changePassword(data),
+      {
+        loading: t('loading.password.update'),
+        success: t('success.password.update'),
+        error: t('errors.password.update'),
+      }
+    );
   };
 
   return {
