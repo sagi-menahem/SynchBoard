@@ -39,14 +39,20 @@
         "promptToRegister": "Don't have an account?",
         "switchToRegisterButton": "Register here",
         "promptToLogin": "Already have an account?",
-        "switchToLoginButton": "Login here"
+        "switchToLoginButton": "Login here",
+        "googleButton": {
+            "continueWith": "Continue with Google",
+            "loading": "Loading..."
+        }
     },
     "loginForm": {
         "_comment": "Texts for src/components/auth/LoginForm.tsx",
         "heading": "Login",
         "button": "Login",
         "failedError": "Login failed, please check your details and try again.",
-        "loginSuccess": "Login successful! Welcome back."
+        "loginSuccess": "Login successful! Welcome back.",
+        "orContinueWith": "or continue with",
+        "forgotPassword": "Forgot Password?"
     },
     "registerForm": {
         "_comment": "Texts for src/components/auth/RegisterForm.tsx",
