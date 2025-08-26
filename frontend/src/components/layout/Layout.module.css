@@ -10,9 +10,14 @@
     flex: 1; /* Take remaining space after navbar */
     display: flex;
     justify-content: center;
-    overflow: hidden;
+    overflow-y: auto; /* Enable scrolling by default for all pages */
     box-sizing: border-box;
     /*background: var(--page-background, #f5f5f5);*/
+}
+
+/* Special handling for board page - no scrolling */
+.mainContent:has([data-board-page]) {
+    overflow: hidden;
 }
 
 /* Add padding for regular pages, but not for board pages */
