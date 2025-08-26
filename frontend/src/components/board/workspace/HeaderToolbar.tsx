@@ -3,10 +3,10 @@ import { APP_ROUTES, STROKE_WIDTH_RANGE, TOOLS } from 'constants';
 import React, { useCallback } from 'react';
 
 import {
+  ArrowRight,
   Brush,
   Download,
   Eraser,
-  LayoutGrid,
   PaintBucket,
   Pipette,
   Redo,
@@ -251,8 +251,8 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
         </Link>
         
         <Link to={APP_ROUTES.BOARD_LIST} className={styles.backButton}>
-          <LayoutGrid size={16} />
           <span>{t('toolbar.label.BackToBoards')}</span>
+          <ArrowRight size={16} />
         </Link>
       </div>
     </div>
