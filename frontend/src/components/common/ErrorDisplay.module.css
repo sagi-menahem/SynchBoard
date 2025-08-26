@@ -5,12 +5,12 @@
   justify-content: center;
   padding: 2rem;
   min-height: 200px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background-color: #2f2f2f;
+  border-radius: 8px;
+  border: 1px solid #444;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   margin: 1rem;
-  color: #1f2937;
+  color: #fff;
 }
 
 /* Page-level error styling */
@@ -18,7 +18,7 @@
   min-height: 60vh;
   margin: 0;
   border-radius: 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%);
   border: none;
   box-shadow: none;
 }
@@ -26,16 +26,16 @@
 /* Board-specific error styling */
 .container--board {
   min-height: 300px;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.2) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.4);
 }
 
 /* Component-level error styling */
 .container--component {
   min-height: 150px;
   padding: 1.5rem;
-  background-color: #fafafa;
-  border-color: #d1d5db;
+  background-color: #2f2f2f;
+  border-color: #444;
 }
 
 /* Content wrapper */
@@ -64,7 +64,7 @@
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #fff;
   margin: 0 0 1rem 0;
   line-height: 1.2;
 }
@@ -81,7 +81,7 @@
 /* Error message */
 .message {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: #ccc;
   line-height: 1.6;
   margin: 0 0 2rem 0;
 }
@@ -150,27 +150,27 @@
 /* Secondary button (Go Back) */
 .buttonSecondary {
   background-color: transparent;
-  color: #6b7280;
-  border-color: #d1d5db;
+  color: #ccc;
+  border-color: #555;
 }
 
 .buttonSecondary:hover {
-  background-color: #f9fafb;
-  border-color: #9ca3af;
-  color: #374151;
+  background-color: #444;
+  border-color: #666;
+  color: #fff;
 }
 
 /* Technical details section */
 .technicalDetails {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #555;
 }
 
 .detailsToggle {
   background: none;
   border: none;
-  color: #6b7280;
+  color: #ccc;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
@@ -184,15 +184,15 @@
 }
 
 .detailsToggle:hover {
-  color: #374151;
-  background-color: #f9fafb;
+  color: #fff;
+  background-color: #444;
 }
 
 .detailsContent {
   margin-top: 1rem;
   text-align: left;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background-color: #1f1f1f;
+  border: 1px solid #555;
   border-radius: 8px;
   padding: 1rem;
   font-size: 0.875rem;
@@ -200,11 +200,11 @@
 
 .errorInfo p {
   margin: 0.5rem 0;
-  color: #4b5563;
+  color: #ccc;
 }
 
 .errorInfo strong {
-  color: #1f2937;
+  color: #fff;
 }
 
 .stackTrace {
@@ -213,7 +213,7 @@
 
 .stackTrace summary {
   cursor: pointer;
-  color: #6b7280;
+  color: #ccc;
   font-weight: 500;
   padding: 0.5rem 0;
 }
@@ -237,7 +237,7 @@
 /* Help text */
 .helpText {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: #999;
   margin-top: 2rem;
   line-height: 1.5;
 }
@@ -277,82 +277,4 @@
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .container {
-    background-color: #1f2937;
-    border-color: #374151;
-    color: #f9fafb;
-  }
-
-  .container--page {
-    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-  }
-
-  .container--board {
-    background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
-    border-color: #d97706;
-  }
-
-  .container--component {
-    background-color: #111827;
-    border-color: #4b5563;
-  }
-
-  .title {
-    color: #f9fafb;
-  }
-
-  .container--board .title {
-    color: #fbbf24;
-  }
-
-  .message {
-    color: #d1d5db;
-  }
-
-  .buttonSecondary {
-    color: #d1d5db;
-    border-color: #4b5563;
-  }
-
-  .buttonSecondary:hover {
-    background-color: #374151;
-    border-color: #6b7280;
-    color: #f9fafb;
-  }
-
-  .technicalDetails {
-    border-color: #374151;
-  }
-
-  .detailsToggle {
-    color: #d1d5db;
-  }
-
-  .detailsToggle:hover {
-    color: #f9fafb;
-    background-color: #374151;
-  }
-
-  .detailsContent {
-    background-color: #111827;
-    border-color: #374151;
-  }
-
-  .errorInfo p {
-    color: #d1d5db;
-  }
-
-  .errorInfo strong {
-    color: #f9fafb;
-  }
-
-  .stackTrace summary {
-    color: #d1d5db;
-  }
-
-  .helpText {
-    color: #9ca3af;
-  }
-}
+/* Dark theme is now default - no media query needed */

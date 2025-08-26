@@ -50,14 +50,14 @@ export class ComponentErrorBoundary extends Component<Props, State> {
         return (
           <div style={{
             padding: '1rem',
-            backgroundColor: '#fef2f2',
-            border: '1px solid #fecaca',
+            backgroundColor: '#2f2f2f',
+            border: '1px solid #444',
             borderRadius: '6px',
             textAlign: 'center',
             margin: '0.5rem 0',
           }}>
             <p style={{ 
-              color: '#dc2626', 
+              color: '#ef4444', 
               fontSize: '0.875rem', 
               margin: '0 0 0.75rem 0',
               fontWeight: 500,
@@ -69,13 +69,13 @@ export class ComponentErrorBoundary extends Component<Props, State> {
               style={{
                 padding: '0.375rem 1rem',
                 fontSize: '0.875rem',
-                backgroundColor: '#3b82f6',
+                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
                 fontWeight: 500,
-                transition: 'background-color 0.2s ease',
+                transition: 'all 0.2s ease',
               }}
             >
               Try Again

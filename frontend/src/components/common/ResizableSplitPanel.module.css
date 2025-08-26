@@ -13,14 +13,14 @@
 .leftPanel {
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  background: white;
+  background: #2f2f2f;
   flex-shrink: 0;
 }
 
 .rightPanel {
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  background: white;
+  background: #2f2f2f;
   display: flex;
   flex-direction: column;
 }
