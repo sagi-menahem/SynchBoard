@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from './Button';
@@ -25,13 +26,16 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
-        <h3>{title}</h3>
+        <div className={styles.header}>
+          <AlertTriangle size={20} className={styles.warningIcon} />
+          <h3 className={styles.title}>{title}</h3>
+        </div>
         <p className={styles.message}>{message}</p>
         <div className={styles.buttonGroup}>
           <Button variant="secondary" onClick={onClose}>
             {t('common.button.cancel')}
           </Button>
-          <Button onClick={handleConfirm} className={styles.confirmButton}>
+          <Button variant="destructive" onClick={handleConfirm}>
             {t('common.button.confirm')}
           </Button>
         </div>

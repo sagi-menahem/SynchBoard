@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { X } from 'lucide-react';
+
 import Button from './Button';
 import styles from './Modal.module.css';
 
@@ -38,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         aria-modal="true"
       >
         <Button onClick={onClose} className={styles.closeButton} variant="secondary">
-                    &times;
+          <X size={16} />
         </Button>
         {children}
       </div>

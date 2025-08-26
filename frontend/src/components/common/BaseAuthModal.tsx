@@ -35,13 +35,15 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div style={{ maxWidth }}>
-        <h2 style={{ marginTop: 0, marginBottom: '1rem', color: '#fff' }}>
-          {title}
-        </h2>
+      <div className={styles.modalContainer} style={{ maxWidth }}>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>
+            {title}
+          </h2>
+        </div>
         
         {description && (
-          <p style={{ color: '#ccc', marginBottom: '1.5rem' }}>
+          <p className={styles.modalDescription}>
             {description}
           </p>
         )}
@@ -75,7 +77,7 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
         </form>
 
         {additionalActions && (
-          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <div className={styles.additionalActions}>
             {additionalActions}
           </div>
         )}
