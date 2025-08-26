@@ -102,15 +102,6 @@ const AuthPage: React.FC = () => {
                     {t('authPage.switchToLoginButton')}
                   </Button>
                 </div>
-                <div className={styles.forgotPasswordSection}>
-                  <Button 
-                    variant="secondary" 
-                    onClick={() => setShowForgotPassword(true)}
-                    className={styles.forgotPasswordButton}
-                  >
-                    {t('authPage.forgotPassword', 'Forgot Password?')}
-                  </Button>
-                </div>
               </>
             )}
           </div>

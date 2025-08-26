@@ -39,14 +39,20 @@
         "promptToRegister": "אין לך חשבון?",
         "switchToRegisterButton": "הרשם כאן",
         "promptToLogin": "כבר יש לך חשבון?",
-        "switchToLoginButton": "התחבר כאן"
+        "switchToLoginButton": "התחבר כאן",
+        "googleButton": {
+            "continueWith": "המשך עם Google",
+            "loading": "טוען..."
+        }
     },
     "loginForm": {
         "_comment": "Texts for src/components/auth/LoginForm.tsx",
         "heading": "התחברות",
         "button": "התחבר",
         "failedError": "ההתחברות נכשלה, אנא בדוק את פרטיך ונסה שנית.",
-        "loginSuccess": "התחברת בהצלחה! ברוך שובך."
+        "loginSuccess": "התחברת בהצלחה! ברוך שובך.",
+        "orContinueWith": "או המשך עם",
+        "forgotPassword": "שכחת סיסמה?"
     },
     "registerForm": {
         "_comment": "Texts for src/components/auth/RegisterForm.tsx",
