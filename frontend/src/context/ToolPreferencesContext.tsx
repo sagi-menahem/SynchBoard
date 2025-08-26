@@ -118,7 +118,7 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
             defaultTool: toolPreferences.defaultTool,
             defaultStrokeColor: toolPreferences.defaultStrokeColor,
             defaultStrokeWidth: toolPreferences.defaultStrokeWidth,
-          }
+          },
         });
       } catch (error) {
         logger.error('Failed to load tool preferences:', error);

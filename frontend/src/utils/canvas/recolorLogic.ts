@@ -1,5 +1,14 @@
+import type {
+  ActionPayload,
+  CirclePayload,
+  Point,
+  PolygonPayload,
+  RectanglePayload,
+  SendBoardActionRequest,
+  TrianglePayload,
+} from 'types/BoardObjectTypes';
+
 import { detectObjectHit, type HitResult } from './hitDetection';
-import type { ActionPayload, Point, SendBoardActionRequest } from 'types/BoardObjectTypes';
 
 export interface RecolorAction {
   shouldPerformAction: boolean;
@@ -16,7 +25,7 @@ export const processRecolorClick = (
   canvasWidth: number,
   canvasHeight: number,
   newColor: string,
-  instanceId: string
+  instanceId: string,
 ): RecolorAction => {
   // Detect what was clicked
   const hitResult: HitResult = detectObjectHit(clickPoint, objects, canvasWidth, canvasHeight);
@@ -24,7 +33,7 @@ export const processRecolorClick = (
   if (!hitResult.hit || !hitResult.object || !hitResult.hitType) {
     return {
       shouldPerformAction: false,
-      reason: 'No object hit - clicking on empty area'
+      reason: 'No object hit - clicking on empty area',
     };
   }
   
@@ -34,21 +43,17 @@ export const processRecolorClick = (
   if (hitType === 'fill') {
     // Clicked inside a closed shape - set fill color
     return createFillColorAction(object, newColor, instanceId);
-  }
-  
-  else if (hitType === 'stroke') {
+  } else if (hitType === 'stroke') {
     // Clicked on the border of a closed shape - set stroke color
     return createStrokeColorAction(object, newColor, instanceId);
-  }
-  
-  else if (hitType === 'object') {
+  } else if (hitType === 'object') {
     // Clicked on a line, arrow, text, or brush stroke - recolor the entire object
     return createObjectColorAction(object, newColor, instanceId);
   }
   
   return {
     shouldPerformAction: false,
-    reason: `Unknown hit type: ${hitType}`
+    reason: `Unknown hit type: ${hitType}`,
   };
 };
 
@@ -58,27 +63,23 @@ export const processRecolorClick = (
 const createFillColorAction = (
   object: ActionPayload,
   newColor: string,
-  instanceId: string
+  instanceId: string,
 ): RecolorAction => {
   const updatedPayload = { ...object };
   
   // Add fillColor to the object based on its type
   if (object.tool === 'square' || object.tool === 'rectangle') {
-    (updatedPayload as any).fillColor = newColor;
-  }
-  else if (object.tool === 'circle') {
-    (updatedPayload as any).fillColor = newColor;
-  }
-  else if (object.tool === 'triangle') {
-    (updatedPayload as any).fillColor = newColor;
-  }
-  else if (object.tool === 'pentagon' || object.tool === 'hexagon' || object.tool === 'star') {
-    (updatedPayload as any).fillColor = newColor;
-  }
-  else {
+    (updatedPayload as RectanglePayload).fillColor = newColor;
+  } else if (object.tool === 'circle') {
+    (updatedPayload as CirclePayload).fillColor = newColor;
+  } else if (object.tool === 'triangle') {
+    (updatedPayload as TrianglePayload).fillColor = newColor;
+  } else if (object.tool === 'pentagon' || object.tool === 'hexagon' || object.tool === 'star') {
+    (updatedPayload as PolygonPayload).fillColor = newColor;
+  } else {
     return {
       shouldPerformAction: false,
-      reason: `Cannot set fill color on object type: ${object.tool}`
+      reason: `Cannot set fill color on object type: ${object.tool}`,
     };
   }
   
@@ -88,9 +89,9 @@ const createFillColorAction = (
       type: 'OBJECT_UPDATE',
       payload: updatedPayload as Omit<ActionPayload, 'instanceId'>,
       sender: instanceId,
-      instanceId: object.instanceId
+      instanceId: object.instanceId,
     },
-    reason: `Setting fill color to ${newColor} on ${object.tool}`
+    reason: `Setting fill color to ${newColor} on ${object.tool}`,
   };
 };
 
@@ -100,10 +101,10 @@ const createFillColorAction = (
 const createStrokeColorAction = (
   object: ActionPayload,
   newColor: string,
-  instanceId: string
+  instanceId: string,
 ): RecolorAction => {
   const updatedPayload = { ...object };
-  (updatedPayload as any).color = newColor;
+  (updatedPayload as ActionPayload & { color: string }).color = newColor;
   
   return {
     shouldPerformAction: true,
@@ -111,9 +112,9 @@ const createStrokeColorAction = (
       type: 'OBJECT_UPDATE',
       payload: updatedPayload as Omit<ActionPayload, 'instanceId'>,
       sender: instanceId,
-      instanceId: object.instanceId
+      instanceId: object.instanceId,
     },
-    reason: `Setting stroke color to ${newColor} on ${object.tool}`
+    reason: `Setting stroke color to ${newColor} on ${object.tool}`,
   };
 };
 
@@ -123,10 +124,10 @@ const createStrokeColorAction = (
 const createObjectColorAction = (
   object: ActionPayload,
   newColor: string,
-  instanceId: string
+  instanceId: string,
 ): RecolorAction => {
   const updatedPayload = { ...object };
-  (updatedPayload as any).color = newColor;
+  (updatedPayload as ActionPayload & { color: string }).color = newColor;
   
   return {
     shouldPerformAction: true,
@@ -134,9 +135,9 @@ const createObjectColorAction = (
       type: 'OBJECT_UPDATE',
       payload: updatedPayload as Omit<ActionPayload, 'instanceId'>,
       sender: instanceId,
-      instanceId: object.instanceId
+      instanceId: object.instanceId,
     },
-    reason: `Recoloring ${object.tool} to ${newColor}`
+    reason: `Recoloring ${object.tool} to ${newColor}`,
   };
 };
 
@@ -147,7 +148,7 @@ export const getRecolorDescription = (
   clickPoint: Point,
   objects: ActionPayload[],
   canvasWidth: number,
-  canvasHeight: number
+  canvasHeight: number,
 ): string => {
   const hitResult = detectObjectHit(clickPoint, objects, canvasWidth, canvasHeight);
   

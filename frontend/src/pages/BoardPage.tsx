@@ -1,11 +1,16 @@
-import React, { useCallback, useRef } from 'react';
+import { APP_ROUTES } from 'constants';
+
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import { BoardProvider, useCanvasPreferences } from 'context';
+import { ArrowLeft, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { BoardWorkspace, HeaderToolbar } from 'components/board/workspace';
+import { BoardWorkspace, CanvasToolSection } from 'components/board/workspace';
+import { UniversalToolbar } from 'components/common';
 import { useBoardContext, useToolbarState } from 'hooks/board';
+import type { ToolbarConfig } from 'types/ToolbarTypes';
 
 import styles from './BoardPage.module.css';
 
@@ -15,6 +20,7 @@ interface BoardPageContentProps {
 
 const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -47,52 +53,105 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     updateSplitRatio(newRatio);
   }, [updateSplitRatio]);
 
+  // Memoized canvas config to prevent unnecessary re-renders
+  const canvasConfig = useMemo(() => {
+    return boardDetails ? {
+      backgroundColor: boardDetails.canvasBackgroundColor,
+      width: boardDetails.canvasWidth,
+      height: boardDetails.canvasHeight,
+    } : undefined;
+  }, [boardDetails]);
+
+  // Toolbar configuration
+  const toolbarConfig: ToolbarConfig = useMemo(() => ({
+    pageType: 'canvas',
+    leftSection: [
+      {
+        type: 'custom',
+        content: (
+          <CanvasToolSection
+            boardName={boardName || 'Board'}
+            strokeColor={strokeColor}
+            setStrokeColor={setStrokeColor}
+            strokeWidth={strokeWidth}
+            setStrokeWidth={setStrokeWidth}
+            tool={tool}
+            setTool={setTool}
+            onUndo={handleUndo}
+            isUndoAvailable={isUndoAvailable}
+            onRedo={handleRedo}
+            isRedoAvailable={isRedoAvailable}
+            canvasConfig={canvasConfig}
+          />
+        ),
+      },
+    ],
+    rightSection: [
+      {
+        type: 'button',
+        icon: Settings,
+        label: t('boardDetailsPage.boardDetailsButton') || 'Board Details',
+        onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
+      },
+      {
+        type: 'button',
+        icon: ArrowLeft,
+        label: t('toolbar.label.BackToBoards'),
+        onClick: () => navigate(APP_ROUTES.BOARD_LIST),
+      },
+    ],
+  }), [
+    boardName,
+    strokeColor,
+    setStrokeColor,
+    strokeWidth,
+    setStrokeWidth,
+    tool,
+    setTool,
+    handleUndo,
+    isUndoAvailable,
+    handleRedo,
+    isRedoAvailable,
+    canvasConfig,
+    t,
+    navigate,
+    boardId,
+  ]);
+
   if (isLoading) {
-    return <div>{t('boardPage.loading')}</div>;
+    return (
+      <>
+        <UniversalToolbar config={toolbarConfig} />
+        <div className={styles.pageContent}>
+          <div className={styles.loading}>{t('boardPage.loading')}</div>
+        </div>
+      </>
+    );
   }
 
-  const canvasConfig = boardDetails ? {
-    backgroundColor: boardDetails.canvasBackgroundColor,
-    width: boardDetails.canvasWidth,
-    height: boardDetails.canvasHeight,
-  } : undefined;
-
   return (
-    <div className={styles.page} ref={pageRef} data-board-page>
-      <HeaderToolbar
-        boardId={boardId}
-        boardName={boardName || 'Board'}
-        strokeColor={strokeColor}
-        setStrokeColor={setStrokeColor}
-        strokeWidth={strokeWidth}
-        setStrokeWidth={setStrokeWidth}
-        tool={tool}
-        setTool={setTool}
-        onUndo={handleUndo}
-        isUndoAvailable={isUndoAvailable}
-        onRedo={handleRedo}
-        isRedoAvailable={isRedoAvailable}
-        canvasConfig={canvasConfig}
-      />
-
-      <div className={styles.boardWorkspaceArea}>
-        <BoardWorkspace
-          boardId={boardId}
-          instanceId={instanceId}
-          objects={objects}
-          messages={messages}
-          tool={tool}
-          strokeColor={strokeColor}
-          strokeWidth={strokeWidth}
-          fontSize={strokeWidth}
-          canvasConfig={canvasConfig}
-          splitRatio={canvasPreferences.canvasChatSplitRatio}
-          onDraw={handleDrawAction}
-          onSplitRatioChange={handleSplitRatioChange}
-          onColorPick={handleColorPick}
-        />
+    <>
+      <UniversalToolbar config={toolbarConfig} />
+      <div className={styles.pageContent} ref={pageRef} data-board-page>
+        <div className={styles.boardWorkspaceArea}>
+          <BoardWorkspace
+            boardId={boardId}
+            instanceId={instanceId}
+            objects={objects}
+            messages={messages}
+            tool={tool}
+            strokeColor={strokeColor}
+            strokeWidth={strokeWidth}
+            fontSize={strokeWidth}
+            canvasConfig={canvasConfig}
+            splitRatio={canvasPreferences.canvasChatSplitRatio}
+            onDraw={handleDrawAction}
+            onSplitRatioChange={handleSplitRatioChange}
+            onColorPick={handleColorPick}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -102,7 +161,11 @@ const BoardPage: React.FC = () => {
   const numericBoardId = parseInt(boardId || '0', 10);
 
   if (!numericBoardId) {
-    return <div>{t('boardPage.loading')}</div>;
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        {t('boardPage.loading')}
+      </div>
+    );
   }
 
   return (

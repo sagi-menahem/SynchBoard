@@ -47,8 +47,8 @@ export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
     setIsOpen(false);
   };
 
-  const currentLineTool = LINE_TOOLS.find(tool => tool.value === currentTool) || LINE_TOOLS[0];
-  const isLineToolActive = LINE_TOOLS.some(tool => tool.value === currentTool);
+  const currentLineTool = LINE_TOOLS.find((tool) => tool.value === currentTool) || LINE_TOOLS[0];
+  const isLineToolActive = LINE_TOOLS.some((tool) => tool.value === currentTool);
 
   return (
     <div className={styles.shapeDropdown} ref={dropdownRef}>

@@ -72,7 +72,7 @@ export const useWebSocketHandler = ({
       } else if (action.type === ActionType.OBJECT_UPDATE) {
         logger.debug(`Processing drawing OBJECT_UPDATE for instanceId: ${action.instanceId}`);
         setObjects((prev) => prev.map((obj) => 
-          obj.instanceId === action.instanceId ? actionPayload : obj
+          obj.instanceId === action.instanceId ? actionPayload : obj,
         ));
       } else if (action.type === ActionType.OBJECT_DELETE) {
         logger.debug(`Processing drawing OBJECT_DELETE for instanceId: ${action.instanceId}`);

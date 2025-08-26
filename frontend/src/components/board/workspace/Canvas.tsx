@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { processRecolorClick } from 'utils/canvas/recolorLogic';
 import { getRecolorCursor } from 'utils/canvas/cursorUtils';
+import { processRecolorClick } from 'utils/canvas/recolorLogic';
 
 import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
 import { useCanvas } from 'hooks/board/workspace/canvas/useCanvas';
@@ -109,7 +109,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         canvas.width,
         canvas.height,
         props.strokeColor,
-        props.instanceId
+        props.instanceId,
       );
       
       if (recolorAction.shouldPerformAction && recolorAction.action) {
@@ -163,7 +163,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       { x: mouseX, y: mouseY },
       props.objects,
       canvas.width,
-      canvas.height
+      canvas.height,
     );
 
     setRecolorCursor(cursor);
@@ -199,7 +199,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
             className={canvasClassName}
             style={{ 
               backgroundColor: canvasConfig.backgroundColor,
-              cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair'
+              cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
             }}
           />
           

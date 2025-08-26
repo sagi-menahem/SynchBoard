@@ -10,7 +10,7 @@ const GUEST_LANGUAGE_KEY = 'guest-language';
 
 export const useLanguageSync = () => {
   const { i18n } = useTranslation();
-  const { token, isLoading: authLoading } = useAuth();
+  const { token, isInitializing: authLoading } = useAuth();
 
   const loadUserLanguage = useCallback(async () => {
     if (!token) return;
