@@ -110,8 +110,7 @@
 
 .radioGroup {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     margin-top: 0.5rem;
 }
 
@@ -119,21 +118,14 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: #ccc;
+    font-size: 0.875rem;
     cursor: pointer;
-    color: #fff;
-    font-size: 1rem;
-    padding: 0.25rem 0;
 }
 
 .radioLabel input[type="radio"] {
-    width: 1.2rem;
-    height: 1.2rem;
+    margin: 0;
     accent-color: #3b82f6;
-    cursor: pointer;
-}
-
-.radioLabel:hover {
-    color: #e5e5e5;
 }
 
 .dateInput {
