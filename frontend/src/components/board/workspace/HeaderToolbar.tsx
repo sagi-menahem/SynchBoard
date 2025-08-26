@@ -18,11 +18,11 @@ import { Link } from 'react-router-dom';
 
 
 import { ColorPicker, Slider } from 'components/common';
-import type { Tool } from 'types/CommonTypes';
 import type { CanvasConfig } from 'types/BoardTypes';
+import type { Tool } from 'types/CommonTypes';
 
 import styles from './HeaderToolbar.module.css';
-import { LineToolsGroup } from './LineToolsGroup';
+import { LineToolsDropdown } from './LineToolsDropdown';
 import { ShapeToolsDropdown } from './ShapeToolsDropdown';
 
 interface HeaderToolbarProps {
@@ -101,125 +101,143 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
     <div className={styles.headerToolbar}>
       {/* Left Section: Tool Controls */}
       <div className={styles.toolSection}>
-        {/* Styling Controls */}
+        {/* Color Control */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>Style</span>
-          <div className={styles.colorPickerWrapper}>
-            <ColorPicker
-              color={strokeColor}
-              onChange={setStrokeColor}
-              label={t('toolbar.label.color')}
-            />
-          </div>
-          
-          {tool !== TOOLS.COLOR_PICKER && tool !== TOOLS.RECOLOR && tool !== TOOLS.DOWNLOAD && (
-            <div className={styles.strokeControl}>
-              <Slider
-                value={strokeWidth}
-                min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
-                max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
-                onChange={setStrokeWidth}
-                label="Size"
-                aria-label={`Size: ${strokeWidth}`}
+          <div className={styles.toolControls}>
+            <div className={styles.colorPickerWrapper}>
+              <ColorPicker
+                color={strokeColor}
+                onChange={setStrokeColor}
               />
             </div>
-          )}
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.color')}</span>
         </div>
+
+        {/* Size Control */}
+        {tool !== TOOLS.COLOR_PICKER && tool !== TOOLS.RECOLOR && tool !== TOOLS.DOWNLOAD && (
+          <div className={styles.toolGroup}>
+            <div className={styles.toolControls}>
+              <div className={styles.strokeControl}>
+                <Slider
+                  value={strokeWidth}
+                  min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
+                  max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
+                  onChange={setStrokeWidth}
+                  aria-label={`Size: ${strokeWidth}`}
+                />
+              </div>
+            </div>
+            <span className={styles.toolLabel}>{t('toolbar.label.size')}</span>
+          </div>
+        )}
 
         {/* Basic Tools */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>Draw</span>
-          <button
-            className={`${styles.iconButton} ${tool === TOOLS.BRUSH ? styles.active : ''}`}
-            onClick={() => handleToolClick(TOOLS.BRUSH)}
-            title={t('toolbar.tool.brush')}
-          >
-            <Brush size={20} />
-          </button>
-          <button
-            className={`${styles.iconButton} ${tool === TOOLS.ERASER ? styles.active : ''}`}
-            onClick={() => handleToolClick(TOOLS.ERASER)}
-            title={t('toolbar.tool.eraser')}
-          >
-            <Eraser size={20} />
-          </button>
+          <div className={styles.toolControls}>
+            <button
+              className={`${styles.iconButton} ${tool === TOOLS.BRUSH ? styles.active : ''}`}
+              onClick={() => handleToolClick(TOOLS.BRUSH)}
+              title={t('toolbar.tool.brush')}
+            >
+              <Brush size={20} />
+            </button>
+            <button
+              className={`${styles.iconButton} ${tool === TOOLS.ERASER ? styles.active : ''}`}
+              onClick={() => handleToolClick(TOOLS.ERASER)}
+              title={t('toolbar.tool.eraser')}
+            >
+              <Eraser size={20} />
+            </button>
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.draw')}</span>
         </div>
 
         {/* Shape Tools */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>Shapes</span>
-          <ShapeToolsDropdown
-            currentTool={tool}
-            onToolSelect={setTool}
-          />
+          <div className={styles.toolControls}>
+            <ShapeToolsDropdown
+              currentTool={tool}
+              onToolSelect={setTool}
+            />
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.shapes')}</span>
         </div>
 
         {/* Line Tools */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>Lines</span>
-          <LineToolsGroup
-            currentTool={tool}
-            onToolSelect={setTool}
-          />
+          <div className={styles.toolControls}>
+            <LineToolsDropdown
+              currentTool={tool}
+              onToolSelect={setTool}
+            />
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.lines')}</span>
         </div>
 
         {/* Special Tools */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>Tools</span>
-          <button
-            className={`${styles.iconButton} ${tool === TOOLS.TEXT ? styles.active : ''}`}
-            onClick={() => handleToolClick(TOOLS.TEXT)}
-            title={t('toolbar.tool.text')}
-          >
-            <Type size={20} />
-          </button>
-          <button
-            className={`${styles.iconButton} ${tool === TOOLS.COLOR_PICKER ? styles.active : ''}`}
-            onClick={() => handleToolClick(TOOLS.COLOR_PICKER)}
-            title={t('toolbar.tool.colorPicker')}
-          >
-            <Pipette size={20} />
-          </button>
-          <button
-            className={`${styles.iconButton} ${tool === TOOLS.RECOLOR ? styles.active : ''}`}
-            onClick={() => handleToolClick(TOOLS.RECOLOR)}
-            title={t('toolbar.tool.recolor')}
-          >
-            <PaintBucket size={20} />
-          </button>
+          <div className={styles.toolControls}>
+            <button
+              className={`${styles.iconButton} ${tool === TOOLS.TEXT ? styles.active : ''}`}
+              onClick={() => handleToolClick(TOOLS.TEXT)}
+              title={t('toolbar.tool.text')}
+            >
+              <Type size={20} />
+            </button>
+            <button
+              className={`${styles.iconButton} ${tool === TOOLS.COLOR_PICKER ? styles.active : ''}`}
+              onClick={() => handleToolClick(TOOLS.COLOR_PICKER)}
+              title={t('toolbar.tool.colorPicker')}
+            >
+              <Pipette size={20} />
+            </button>
+            <button
+              className={`${styles.iconButton} ${tool === TOOLS.RECOLOR ? styles.active : ''}`}
+              onClick={() => handleToolClick(TOOLS.RECOLOR)}
+              title={t('toolbar.tool.recolor')}
+            >
+              <PaintBucket size={20} />
+            </button>
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.tools')}</span>
         </div>
 
         {/* History */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>History</span>
-          <button
-            className={styles.iconButton}
-            onClick={onUndo}
-            disabled={!isUndoAvailable}
-            title={t('toolbar.tool.undo')}
-          >
-            <Undo size={20} />
-          </button>
-          <button
-            className={styles.iconButton}
-            onClick={onRedo}
-            disabled={!isRedoAvailable}
-            title={t('toolbar.tool.redo')}
-          >
-            <Redo size={20} />
-          </button>
+          <div className={styles.toolControls}>
+            <button
+              className={styles.iconButton}
+              onClick={onUndo}
+              disabled={!isUndoAvailable}
+              title={t('toolbar.tool.undo')}
+            >
+              <Undo size={20} />
+            </button>
+            <button
+              className={styles.iconButton}
+              onClick={onRedo}
+              disabled={!isRedoAvailable}
+              title={t('toolbar.tool.redo')}
+            >
+              <Redo size={20} />
+            </button>
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.history')}</span>
         </div>
 
         {/* Actions */}
         <div className={styles.toolGroup}>
-          <span className={styles.toolLabel}>Export</span>
-          <button
-            className={styles.iconButton}
-            onClick={handleDownload}
-            title={t('toolbar.tool.download')}
-          >
-            <Download size={20} />
-          </button>
+          <div className={styles.toolControls}>
+            <button
+              className={styles.iconButton}
+              onClick={handleDownload}
+              title={t('toolbar.tool.download')}
+            >
+              <Download size={20} />
+            </button>
+          </div>
+          <span className={styles.toolLabel}>{t('toolbar.label.export')}</span>
         </div>
       </div>
 
@@ -234,7 +252,7 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
         
         <Link to={APP_ROUTES.BOARD_LIST} className={styles.backButton}>
           <LayoutGrid size={16} />
-          <span>Boards</span>
+          <span>{t('toolbar.label.BackToBoards')}</span>
         </Link>
       </div>
     </div>
