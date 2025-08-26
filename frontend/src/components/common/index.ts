@@ -9,6 +9,7 @@ export { ContextMenuSeparator } from './ContextMenuSeparator';
 export { ErrorDisplay } from './ErrorDisplay';
 export { default as GuestLanguageSwitcher } from './GuestLanguageSwitcher';
 export { default as Input } from './Input';
+export { default as LoadingOverlay } from './LoadingOverlay';
 export { default as MemberActivityIndicator } from './MemberActivityIndicator';
 export { default as Modal } from './Modal';
 export { default as PasswordInput } from './PasswordInput';

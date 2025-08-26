@@ -11,6 +11,7 @@ import {
   ConfirmationDialog,
   ContextMenu,
   ContextMenuItem,
+  LoadingOverlay,
   Modal,
   UniversalToolbar,
 } from 'components/common';
@@ -89,7 +90,7 @@ const BoardListPage: React.FC = () => {
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
-          <div className={styles.loading}>{t('boardListPage.loading')}</div>
+          <LoadingOverlay message={t('boardListPage.loading')} />
         </div>
       </>
     );
