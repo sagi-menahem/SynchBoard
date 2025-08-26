@@ -18,7 +18,7 @@ export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisibl
       left: 0,
       width: '100%',
       height: '100%',
-      backgroundColor: 'white',
+      backgroundColor: '#2f2f2f',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -28,15 +28,15 @@ export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisibl
       <div style={{
         width: '40px',
         height: '40px',
-        border: '4px solid #f3f3f3',
-        borderTop: '4px solid #3498db',
+        border: '4px solid #444',
+        borderTop: '4px solid #3b82f6',
         borderRadius: '50%',
         animation: 'spin 1s linear infinite',
         marginBottom: '16px',
       }} />
       <p style={{ 
         fontSize: '16px', 
-        color: '#666',
+        color: '#ccc',
         margin: 0, 
       }}>
         Signing you in...
