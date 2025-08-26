@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 52px; /* Toolbar height (40px) + gap (12px) */
+    padding-top: 24px; /* Increased gap below toolbar for better visual separation */
     min-height: 100vh;
     width: 100%;
     max-width: 1200px;
@@ -88,45 +88,4 @@
     }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .pageContent {
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-top: 52px; /* Desktop-only - no mobile */
-    }
-
-    .boardList.grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1rem;
-    }
-    
-    .boardList.list {
-        gap: 0.75rem;
-    }
-    
-    .emptyState {
-        padding: 2rem 1rem;
-    }
-    
-    .emptyState p {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-    .pageContent {
-        padding-left: 12px;
-        padding-right: 12px;
-        padding-top: 52px; /* Desktop-only - no mobile */
-    }
-
-    .boardList.grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .loading {
-        font-size: 14px;
-    }
-}
+/* Desktop-only design - no mobile responsive code needed */
