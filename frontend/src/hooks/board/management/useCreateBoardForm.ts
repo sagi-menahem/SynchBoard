@@ -69,8 +69,14 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     }
 
     try {
-      const newBoard = await createBoard(submitFormData);
-      toast.success(t('createBoardSuccess', { boardName: newBoard.name }));
+      const newBoard = await toast.promise(
+        createBoard(submitFormData),
+        {
+          loading: t('loading.board.create'),
+          success: (board) => t('createBoardSuccess', { boardName: board.name }),
+          error: t('errors.board.create'),
+        }
+      );
       onBoardCreated(newBoard);
       
       return {

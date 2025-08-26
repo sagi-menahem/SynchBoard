@@ -43,9 +43,15 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
     logger.debug('Registration form submission for user:', email);
 
     try {
-      const message = await authService.register(registerData);
+      await toast.promise(
+        authService.register(registerData),
+        {
+          loading: t('loading.auth.register'),
+          success: (msg) => msg || t('registerForm.registrationSuccess'),
+          error: t('errors.auth.register'),
+        }
+      );
       logger.info('Registration successful for user:', email);
-      toast.success(message || t('registerForm.registrationSuccess'));
       onRegistrationSuccess(email);
       
       return {

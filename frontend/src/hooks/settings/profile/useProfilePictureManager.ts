@@ -1,6 +1,5 @@
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import logger from 'utils/logger';
 
 import * as userService from 'services/userService';
 import type { UserProfile } from 'types/UserTypes';
@@ -10,27 +9,29 @@ export const useProfilePictureManager = (onSuccess?: (updatedUser: UserProfile) 
   const { t } = useTranslation();
 
   const handlePictureUpload = async (file: File) => {
-    try {
-      const updatedUser = await userService.uploadProfilePicture(file);
-      toast.success(t('success.picture.update'));
-      onSuccess?.(updatedUser);
-      return updatedUser;
-    } catch (error) {
-      logger.error('Failed to upload picture:', error);
-      throw error;
-    }
+    const updatedUser = await toast.promise(
+      userService.uploadProfilePicture(file),
+      {
+        loading: t('loading.picture.upload'),
+        success: t('success.picture.update'),
+        error: t('errors.picture.upload'),
+      }
+    );
+    onSuccess?.(updatedUser);
+    return updatedUser;
   };
 
   const handlePictureDelete = async () => {
-    try {
-      const updatedUser = await userService.deleteProfilePicture();
-      toast.success(t('success.picture.delete'));
-      onSuccess?.(updatedUser);
-      return updatedUser;
-    } catch (error) {
-      logger.error('Failed to delete picture:', error);
-      throw error;
-    }
+    const updatedUser = await toast.promise(
+      userService.deleteProfilePicture(),
+      {
+        loading: t('loading.picture.delete'),
+        success: t('success.picture.delete'),
+        error: t('errors.picture.delete'),
+      }
+    );
+    onSuccess?.(updatedUser);
+    return updatedUser;
   };
 
   return {
