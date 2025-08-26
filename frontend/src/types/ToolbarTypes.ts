@@ -76,6 +76,7 @@ export type PageType = 'boards' | 'board-details' | 'settings' | 'canvas' | 'aut
 export interface ToolbarConfig {
   pageType: PageType;
   leftSection?: ToolbarItem[];
+  centerSection?: ToolbarItem[];
   rightSection?: ToolbarItem[];
   className?: string;
 }

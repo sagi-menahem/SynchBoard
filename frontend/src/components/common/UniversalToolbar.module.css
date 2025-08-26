@@ -26,14 +26,20 @@
 }
 
 .leftSection {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   justify-content: flex-start;
   min-width: 0; /* Allow shrinking */
   overflow: visible; /* Allow content to be visible - remove hidden constraint */
 }
 
+.centerSection {
+  flex: 0 0 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
 .rightSection {
-  flex: 0 0 auto; /* Don't shrink, maintain button visibility */
+  flex: 1 1 0;
   justify-content: flex-end;
   min-width: min-content; /* Take only space needed for buttons */
 }
