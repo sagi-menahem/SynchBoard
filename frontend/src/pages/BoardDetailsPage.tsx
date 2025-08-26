@@ -65,24 +65,16 @@ const BoardDetailsPage: React.FC = () => {
     pageType: 'board-details',
     leftSection: [
       {
-        type: 'custom',
-        content: (
-          <div className={styles.boardTitleContainer}>
-            <h1 className={styles.boardTitle}>
-              {boardDetails?.name || 'Loading...'}
-            </h1>
-            {boardDetails && currentUserIsAdmin && (
-              <button
-                onClick={() => setEditingField('name')}
-                className={styles.editButton}
-                title={t('toolbar.editBoard.tooltip')}
-              >
-                <Edit size={14} />
-              </button>
-            )}
-          </div>
-        ),
+        type: 'title',
+        content: boardDetails?.name || 'Loading...',
       },
+      ...(boardDetails && currentUserIsAdmin ? [{
+        type: 'button' as const,
+        icon: Edit,
+        label: t('toolbar.editBoard.tooltip'),
+        onClick: () => setEditingField('name'),
+        variant: 'icon' as const,
+      }] : []),
       ...(currentUserIsAdmin ? [{
         type: 'button' as const,
         icon: UserPlus,
@@ -153,11 +145,8 @@ const BoardDetailsPage: React.FC = () => {
         <BoardDetailsHeader
           boardDetails={boardDetails}
           currentUserIsAdmin={currentUserIsAdmin}
-          numericBoardId={numericBoardId}
           onSetPictureModalOpen={setPictureModalOpen}
           onSetEditingField={setEditingField}
-          onSetLeaveConfirmOpen={setLeaveConfirmOpen}
-          onSetInviteModalOpen={setInviteModalOpen}
         />
 
         <CanvasSettingsSection

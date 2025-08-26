@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 52px; /* Toolbar height (40px) + gap (12px) */
+    padding-top: 24px; /* Increased gap below toolbar for better visual separation */
     min-height: 100vh;
     width: 100%;
     max-width: 600px;
@@ -170,25 +170,4 @@
     opacity: 1;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .pageContent {
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-top: 52px;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .pageContent {
-        padding-left: 12px;
-        padding-right: 12px;
-        padding-top: 52px; /* Desktop-only - no mobile */
-    }
-    
-    .section {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-    }
-}
+/* Desktop-only design - no mobile responsive code needed */

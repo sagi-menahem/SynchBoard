@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 52px; /* Toolbar height (40px) + gap (12px) */
+    padding-top: 24px; /* Increased gap below toolbar for better visual separation */
     height: 100vh;
     display: flex;
     flex-direction: column;

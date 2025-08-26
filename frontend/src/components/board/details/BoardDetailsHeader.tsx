@@ -1,12 +1,10 @@
 import React from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
+import { Edit } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
-import Button from 'components/common/Button';
 import { API_BASE_URL } from 'constants/ApiConstants';
-import { APP_ROUTES } from 'constants/RoutesConstants';
 import type { BoardDetails } from 'types/BoardTypes';
 
 import styles from './BoardDetailsHeader.module.css';
@@ -14,11 +12,8 @@ import styles from './BoardDetailsHeader.module.css';
 interface BoardDetailsHeaderProps {
     boardDetails: BoardDetails;
     currentUserIsAdmin: boolean;
-    numericBoardId: number;
     onSetPictureModalOpen: (isOpen: boolean) => void;
     onSetEditingField: (field: 'name' | 'description' | null) => void;
-    onSetLeaveConfirmOpen: (isOpen: boolean) => void;
-    onSetInviteModalOpen: (isOpen: boolean) => void;
 }
 
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
@@ -26,11 +21,8 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
     const {
         boardDetails,
         currentUserIsAdmin,
-        numericBoardId,
         onSetPictureModalOpen,
         onSetEditingField,
-        onSetLeaveConfirmOpen,
-        onSetInviteModalOpen,
     } = props;
 
     const imageSource = boardDetails.pictureUrl
@@ -38,61 +30,38 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
         : defaultBoardImage;
 
     return (
-        <>
-            <div className={styles.header}>
-                <div className={styles.headerLeft}>
-                    <button
-                        type="button"
-                        className={styles.imageButton}
-                        onClick={() => onSetPictureModalOpen(true)}
-                        aria-label={t('boardDetailsPage.changeBoardImage')}
-                    >
-                        <img
-                            src={imageSource}
-                            alt={boardDetails.name}
-                            className={styles.boardImage}
-                        />
-                    </button>
-                    <div>
-                        <button
-                            type="button"
-                            className={styles.editableTextButton}
-                            onClick={() => onSetEditingField('name')}
-                            aria-label={t('boardDetailsPage.editBoardName')}
-                        >
-                            <h1 className={styles.editableText}>
-                                {boardDetails.name}
-                            </h1>
-                        </button>
-                        <button
-                            type="button"
-                            className={styles.editableTextButton}
-                            onClick={() => onSetEditingField('description')}
-                            aria-label={t('boardDetailsPage.editBoardDescription')}
-                        >
-                            <p className={`${styles.description} ${styles.editableText}`}>
-                                {boardDetails.description || t('boardDetailsPage.noDescription')}
-                            </p>
-                        </button>
-                    </div>
-                </div>
-                <Link to={APP_ROUTES.getBoardDetailRoute(numericBoardId)}>
-                    <Button variant="secondary">&larr; {t('boardDetailsPage.backToBoardButton')}</Button>
-                </Link>
-            </div>
-
-            <div className={styles.header}>
-                <h2>{t('boardDetailsPage.membersHeader')}</h2>
-                <div className={styles.headerActions}>
-                    <Button onClick={() => onSetLeaveConfirmOpen(true)} className={styles.destructiveButton}>
-                        {t('leaveBoard.button')}
-                    </Button>
+        <div className={styles.cleanHeader}>
+            {/* Compact Board Image */}
+            <button
+                type="button"
+                className={styles.compactImageButton}
+                onClick={() => onSetPictureModalOpen(true)}
+                aria-label={t('boardDetailsPage.changeBoardImage')}
+            >
+                <img
+                    src={imageSource}
+                    alt={boardDetails.name}
+                    className={styles.compactBoardImage}
+                />
+            </button>
+            
+            {/* Centered, elegant description */}
+            <div className={styles.descriptionContainer}>
+                <button
+                    type="button"
+                    className={styles.descriptionButton}
+                    onClick={() => onSetEditingField('description')}
+                    aria-label={t('boardDetailsPage.editBoardDescription')}
+                >
+                    <p className={styles.elegantDescription}>
+                        {boardDetails.description || t('boardDetailsPage.noDescription')}
+                    </p>
                     {currentUserIsAdmin && (
-                        <Button onClick={() => onSetInviteModalOpen(true)}>{t('boardDetailsPage.inviteButton')}</Button>
+                        <Edit size={16} className={styles.editIcon} />
                     )}
-                </div>
+                </button>
             </div>
-        </>
+        </div>
     );
 };
 

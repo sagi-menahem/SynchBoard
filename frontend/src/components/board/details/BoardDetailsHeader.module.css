@@ -1,110 +1,115 @@
-.header {
+/* Option C: Minimal Clean Design */
+.cleanHeader {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #444;
-}
-
-.headerLeft {
-    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+    text-align: center;
 }
 
-.boardImage {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+/* Compact Board Image */
+.compactImageButton {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.compactImageButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.compactImageButton:focus-visible {
+    outline: 2px solid #a9a9ff;
+    outline-offset: 4px;
+}
+
+.compactImageButton:active {
+    transform: translateY(0);
+}
+
+.compactBoardImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
     object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.compactImageButton:hover .compactBoardImage {
+    filter: brightness(1.1);
+}
+
+/* Description Container */
+.descriptionContainer {
+    max-width: 600px;
+    width: 100%;
+}
+
+.descriptionButton {
+    background: none;
+    border: none;
     cursor: pointer;
-    transition:
-        transform 0.2s ease-in-out,
-        box-shadow 0.2s ease-in-out;
-    background-color: transparent;
-}
-
-.boardImage:hover {
-    transform: scale(1.05);
-    box-shadow:
-        0 0 15px rgba(169, 169, 255, 0.5),
-        0 0 0 8px rgba(169, 169, 255, 0.3);
-}
-
-.editableText {
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-.editableText:hover {
-    color: #a9a9ff;
-}
-
-.description {
-    color: #ccc;
-    margin-top: 0.5rem;
-}
-
-.headerActions {
+    padding: 16px;
+    border-radius: 8px;
+    width: 100%;
+    position: relative;
+    transition: all 0.2s ease;
+    text-align: center;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 12px;
 }
 
-.destructiveButton {
-    background-color: #c93434;
-    border-color: transparent;
+.descriptionButton:hover {
+    background: rgba(255, 255, 255, 0.02);
 }
 
-.destructiveButton:hover:not(:disabled) {
-    background-color: #a52a2a;
-    border-color: #a52a2a;
-}
-
-.imageButton {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    border-radius: 50%;
-    transition:
-        transform 0.2s ease-in-out,
-        box-shadow 0.2s ease-in-out;
-}
-
-.imageButton:hover {
-    transform: scale(1.05);
-}
-
-.imageButton:focus, 
-.imageButton:focus-visible {
-     outline: none;
-     box-shadow: 0 0 0 2px #a9a9ff;
-}
-
-.imageButton:active {
-    outline: none;
-    box-shadow: 0 0 0 2px #a9a9ff;
-    transform: scale(0.98);
-}
-
-.editableTextButton {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    text-align: left;
-    width: 100%;
-    color: inherit;
-    font: inherit;
-}
-
-.editableTextButton:focus-visible {
+.descriptionButton:focus-visible {
     outline: 2px solid #a9a9ff;
     outline-offset: 2px;
-    border-radius: 4px;
 }
+
+.elegantDescription {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color 0.2s ease;
+}
+
+.descriptionButton:hover .elegantDescription {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Edit Icon - subtle, appears on hover */
+.editIcon {
+    color: rgba(255, 255, 255, 0.4);
+    transition: all 0.2s ease;
+    opacity: 0;
+    transform: translateX(-4px);
+}
+
+.descriptionButton:hover .editIcon {
+    opacity: 1;
+    transform: translateX(0);
+    color: rgba(169, 169, 255, 0.8);
+}
+
+.descriptionButton:focus-visible .editIcon {
+    opacity: 1;
+    transform: translateX(0);
+    color: rgba(169, 169, 255, 0.8);
+}
+
+/* Desktop-only design - no mobile responsive code needed */
