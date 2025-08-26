@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
@@ -89,6 +90,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         />
       </div>
       <Button type="submit" disabled={isSubmitting}>
+        <Save size={16} />
         {isSubmitting ? t('common.button.saving') : t('settingsPage.buttons.save')}
       </Button>
     </form>

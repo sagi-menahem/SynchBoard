@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { X, Save } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';
@@ -77,9 +78,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
             </div>
             <div className={styles.buttonGroup}>
                 <Button onClick={onCancel} variant="secondary">
+                    <X size={16} />
                     {t('settingsPage.buttons.cancel')}
                 </Button>
                 <Button onClick={onSave} variant="primary">
+                    <Save size={16} />
                     {t('settingsPage.buttons.save')}
                 </Button>
             </div>

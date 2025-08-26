@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { PencilLine } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
@@ -33,6 +34,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
         {t('settingsPage.profileSectionHeader')}
         {!isEditing && (
           <Button onClick={startEditing} variant="secondary" className={styles.editButton}>
+            <PencilLine size={16} />
             {t('settingsPage.buttons.edit')}
           </Button>
         )}
