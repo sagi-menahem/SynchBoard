@@ -1,9 +1,10 @@
-import { WEBSOCKET_TOPICS } from 'constants';
+import { APP_ROUTES, WEBSOCKET_TOPICS } from 'constants';
 
 import { useCallback, useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { BoardService } from 'services';
 import logger from 'utils/logger';
 
@@ -15,6 +16,7 @@ import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
 export const useBoardList = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [boards, setBoards] = useState<Board[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +44,7 @@ export const useBoardList = () => {
   const handleBoardCreated = (newBoard: Board) => {
     setBoards((prevBoards) => [...prevBoards, newBoard]);
     setIsModalOpen(false);
+    navigate(APP_ROUTES.getBoardDetailRoute(newBoard.id));
   };
 
   const handleConfirmLeave = useCallback(() => {
