@@ -111,9 +111,7 @@ const BoardDetailsPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent} data-has-toolbar>
-          <LoadingOverlay message={t('boardDetailsPage.loading')} />
-        </div>
+        <LoadingOverlay message={t('boardDetailsPage.loading')} />
       </>
     );
   }

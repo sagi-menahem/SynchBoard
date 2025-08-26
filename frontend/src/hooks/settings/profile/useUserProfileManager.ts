@@ -17,7 +17,7 @@ export const useUserProfileManager = () => {
     setIsLoading(true);
     
     const startTime = Date.now();
-    const minDelay = 250; // 300ms minimum delay
+    const minDelay = 200; // 200ms minimum delay
     
     userService
       .getUserProfile()

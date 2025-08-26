@@ -58,7 +58,7 @@ export const useBoardList = () => {
     }
     
     const startTime = Date.now();
-    const minDelay = 250; // 300ms minimum delay
+    const minDelay = 200; // 200ms minimum delay
     
     BoardService.getBoards()
       .then((userBoards) => {

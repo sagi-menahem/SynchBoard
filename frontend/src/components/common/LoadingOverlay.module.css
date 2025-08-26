@@ -1,14 +1,14 @@
 .loadingOverlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #2f2f2f;
+    background-color: #1f1f1f;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: 9999;
 }
 
 .loadingContent {

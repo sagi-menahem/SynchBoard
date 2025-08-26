@@ -21,7 +21,7 @@ export const useBoardDataManager = (boardId: number) => {
     setIsLoading(true);
     
     const startTime = Date.now();
-    const minDelay = 250; // 300ms minimum delay
+    const minDelay = 200; // 200ms minimum delay
     
     Promise.all([
       boardService.getBoardDetails(boardId),
