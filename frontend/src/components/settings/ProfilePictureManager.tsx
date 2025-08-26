@@ -1,10 +1,15 @@
-import React from 'react';
+import { API_BASE_URL, APP_CONFIG } from 'constants';
+
+import React, { useRef } from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
+import { Upload, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { PictureManager } from 'components/common';
+import { Button } from 'components/common';
 import type { UserProfile } from 'types/UserTypes';
+
+import styles from './ProfilePictureManager.module.css';
 
 interface ProfilePictureManagerProps {
     user: UserProfile;
@@ -14,17 +19,59 @@ interface ProfilePictureManagerProps {
 
 const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onUpload, onDelete }) => {
   const { t } = useTranslation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const imageSource = user.profilePictureUrl
+    ? `${API_BASE_URL.replace('/api', '')}${user.profilePictureUrl}`
+    : defaultUserImage;
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      onUpload(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
 
   return (
-    <PictureManager
-      imageUrl={user.profilePictureUrl}
-      defaultImage={defaultUserImage}
-      altText={t('settingsPage.profilePictureAlt', { userName: user.firstName })}
-      onUpload={onUpload}
-      onDelete={onDelete}
-      showDeleteButton={!!user.profilePictureUrl}
-      imageClassName="profile"
-    />
+    <>
+      <div className={styles.imageContainer}>
+        <img
+          src={imageSource}
+          alt={t('settingsPage.profilePictureAlt', { userName: user.firstName })}
+          className={styles.profileImage}
+        />
+      </div>
+      
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        accept={APP_CONFIG.ALLOWED_IMAGE_TYPES}
+      />
+      
+      <div className={styles.buttonGroup}>
+        <Button 
+          onClick={triggerFileInput}
+          variant="secondary"
+        >
+          <Upload size={16} />
+          {t('settingsPage.changePicture')}
+        </Button>
+        <Button 
+          onClick={onDelete}
+          variant="secondary"
+          className={styles.destructiveButton}
+        >
+          <Trash2 size={16} />
+          {t('settingsPage.deletePicture')}
+        </Button>
+      </div>
+    </>
   );
 };
 

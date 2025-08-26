@@ -262,6 +262,8 @@
         "passwordTooShort": "סיסמה חדשה חייבת להכיל לפחות 8 תווים.",
         "pictureSectionHeader": "תמונת פרופיל",
         "profilePictureAlt": "תמונת פרופיל של {{userName}}",
+        "changePicture": "שנה תמונה",
+        "deletePicture": "מחק תמונה",
         "deletePictureConfirmTitle": "למחוק את התמונה?",
         "deletePictureConfirmText": "האם אתה בטוח שברצונך למחוק את תמונת הפרופיל שלך?",
         "pictureUpdateSuccess": "תמונת הפרופיל עודכנה!",
