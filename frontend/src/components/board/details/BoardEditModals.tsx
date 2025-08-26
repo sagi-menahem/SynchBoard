@@ -8,15 +8,13 @@ import type { Member } from 'types/BoardTypes';
 
 interface BoardEditModalsProps {
     isInviteModalOpen: boolean;
-    editingField: 'name' | 'description' | null;
+    editingField: 'name' | null;
     boardId: number;
     boardName: string;
-    boardDescription: string;
     onCloseInvite: () => void;
     onCloseEdit: () => void;
     onInviteSuccess: (member: Member) => void;
     onUpdateName: (name: string) => Promise<void>;
-    onUpdateDescription: (description: string) => Promise<void>;
 }
 
 const BoardEditModals: React.FC<BoardEditModalsProps> = ({
@@ -24,12 +22,10 @@ const BoardEditModals: React.FC<BoardEditModalsProps> = ({
     editingField,
     boardId,
     boardName,
-    boardDescription,
     onCloseInvite,
     onCloseEdit,
     onInviteSuccess,
     onUpdateName,
-    onUpdateDescription,
 }) => {
     const { t } = useTranslation();
 
@@ -39,26 +35,14 @@ const BoardEditModals: React.FC<BoardEditModalsProps> = ({
                 <InviteMemberForm boardId={boardId} onInviteSuccess={onInviteSuccess} />
             </Modal>
 
-            <Modal isOpen={editingField !== null} onClose={onCloseEdit}>
-                {editingField === 'name' && (
-                    <EditFieldForm
-                        title={t('editBoardNameForm.title')}
-                        label={t('editBoardNameForm.label')}
-                        initialValue={boardName}
-                        onSave={onUpdateName}
-                        onClose={onCloseEdit}
-                    />
-                )}
-                {editingField === 'description' && (
-                    <EditFieldForm
-                        title={t('editBoardDescriptionForm.title')}
-                        label={t('editBoardDescriptionForm.label')}
-                        initialValue={boardDescription || ''}
-                        inputType="textarea"
-                        onSave={onUpdateDescription}
-                        onClose={onCloseEdit}
-                    />
-                )}
+            <Modal isOpen={editingField === 'name'} onClose={onCloseEdit}>
+                <EditFieldForm
+                    title={t('editBoardNameForm.title')}
+                    label={t('editBoardNameForm.label')}
+                    initialValue={boardName}
+                    onSave={onUpdateName}
+                    onClose={onCloseEdit}
+                />
             </Modal>
         </>
     );

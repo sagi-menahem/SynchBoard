@@ -32,7 +32,6 @@ export const useBoardDetailsPage = (boardId: number) => {
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [editingField, setEditingField] = useState<EditingField | null>(null);
   const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
-  const [isPictureModalOpen, setPictureModalOpen] = useState(false);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const { contextMenu, handlePromote: memberPromote, handleRemove: memberRemove, handleRightClick } = 
@@ -87,14 +86,13 @@ export const useBoardDetailsPage = (boardId: number) => {
         logger.error('Picture upload error:', error);
         throw error;
       } finally {
-        setPictureModalOpen(false);
+        // Picture uploaded successfully
       }
     },
     [boardId, t],
   );
 
   const promptPictureDelete = useCallback(() => {
-    setPictureModalOpen(false);
     setDeleteConfirmOpen(true);
   }, []);
 
@@ -136,8 +134,6 @@ export const useBoardDetailsPage = (boardId: number) => {
     setEditingField,
     isLeaveConfirmOpen,
     setLeaveConfirmOpen,
-    isPictureModalOpen,
-    setPictureModalOpen,
     isDeleteConfirmOpen,
     setDeleteConfirmOpen,
     handleInviteSuccess,

@@ -7,4 +7,3 @@ export { default as InviteMemberForm } from './InviteMemberForm';
 export { default as MemberContextMenu } from './MemberContextMenu';
 export { default as MemberList } from './MemberList';
 export { default as MemberListItem } from './MemberListItem';
-export { default as PictureManagerModal } from './PictureManagerModal';

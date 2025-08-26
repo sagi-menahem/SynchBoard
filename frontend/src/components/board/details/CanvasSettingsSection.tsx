@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Settings2, X, Save } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 
@@ -117,6 +118,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         <h4 className={styles.sectionTitle}>{t('boardDetails.canvasSettings.title')}</h4>
         {!isEditing && (
           <Button onClick={() => setIsEditing(true)} variant="secondary" className={styles.editButton}>
+            <Settings2 size={16} />
             {t('boardDetails.canvasSettings.edit')}
           </Button>
         )}
@@ -225,6 +227,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               variant="secondary"
               className={styles.cancelButton}
             >
+              <X size={16} />
               {t('common.button.cancel')}
             </Button>
             <Button 
@@ -233,6 +236,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               variant="primary"
               className={styles.saveButton}
             >
+              <Save size={16} />
               {isUpdating ? t('common.button.saving') : t('boardDetails.canvasSettings.applyChanges')}
             </Button>
           </div>
