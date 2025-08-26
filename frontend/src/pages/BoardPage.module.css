@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 40px; /* Exact match to UniversalToolbar height: 40px */
+    padding-top: 52px; /* Toolbar height (40px) + gap (12px) */
     height: 100vh;
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 40px; /* Exact toolbar height - no overlap */
+    padding-top: 52px; /* Toolbar height (40px) + gap (12px) */
     min-height: 100vh;
     width: 100%;
     max-width: 1200px;
@@ -93,7 +93,7 @@
     .pageContent {
         padding-left: 16px;
         padding-right: 16px;
-        padding-top: 40px; /* Desktop-only - no mobile */
+        padding-top: 52px; /* Desktop-only - no mobile */
     }
 
     .boardList.grid {
@@ -118,7 +118,7 @@
     .pageContent {
         padding-left: 12px;
         padding-right: 12px;
-        padding-top: 40px; /* Desktop-only - no mobile */
+        padding-top: 52px; /* Desktop-only - no mobile */
     }
 
     .boardList.grid {
