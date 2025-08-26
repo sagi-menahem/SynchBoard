@@ -33,7 +33,7 @@ const PageLoader = () => (
     alignItems: 'center',
     minHeight: '50vh',
     color: '#ccc',
-    fontSize: '1rem'
+    fontSize: '1rem',
   }}>
     Loading...
   </div>
@@ -62,7 +62,7 @@ function AppRoutes() {
       <Route 
         path="/auth" 
         element={
-          <ErrorBoundary type="page" context="Auth">
+          <ErrorBoundary>
             <Suspense fallback={<PageLoader />}>
               <AuthPage />
             </Suspense>
@@ -72,7 +72,7 @@ function AppRoutes() {
       <Route 
         path={APP_ROUTES.AUTH_CALLBACK} 
         element={
-          <ErrorBoundary type="page" context="AuthCallback">
+          <ErrorBoundary>
             <Suspense fallback={<PageLoader />}>
               <AuthPage />
             </Suspense>
@@ -82,7 +82,7 @@ function AppRoutes() {
       <Route 
         path={APP_ROUTES.AUTH_ERROR} 
         element={
-          <ErrorBoundary type="page" context="AuthError">
+          <ErrorBoundary>
             <Suspense fallback={<PageLoader />}>
               <AuthPage />
             </Suspense>
@@ -96,7 +96,7 @@ function AppRoutes() {
         path={APP_ROUTES.BOARD_LIST} 
         element={
           <ProtectedRoute>
-            <ErrorBoundary type="page" context="BoardList">
+            <ErrorBoundary>
               <Suspense fallback={<PageLoader />}>
                 <BoardListPage />
               </Suspense>
@@ -108,7 +108,7 @@ function AppRoutes() {
         path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
         element={
           <ProtectedRoute>
-            <ErrorBoundary type="board" context="Board">
+            <ErrorBoundary>
               <Suspense fallback={<PageLoader />}>
                 <BoardPage />
               </Suspense>
@@ -120,7 +120,7 @@ function AppRoutes() {
         path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
         element={
           <ProtectedRoute>
-            <ErrorBoundary type="board" context="BoardDetails">
+            <ErrorBoundary>
               <Suspense fallback={<PageLoader />}>
                 <BoardDetailsPage />
               </Suspense>
@@ -132,7 +132,7 @@ function AppRoutes() {
         path={APP_ROUTES.SETTINGS} 
         element={
           <ProtectedRoute>
-            <ErrorBoundary type="page" context="Settings">
+            <ErrorBoundary>
               <Suspense fallback={<PageLoader />}>
                 <SettingsPage />
               </Suspense>
@@ -183,7 +183,7 @@ function App() {
   };
 
   return (
-    <ErrorBoundary type="page" context="App">
+    <ErrorBoundary>
       <BrowserRouter>
         <ConnectionStatusBanner onHeightChange={handleBannerHeightChange} />
         <div style={{ 

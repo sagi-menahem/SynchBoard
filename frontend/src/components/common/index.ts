@@ -6,7 +6,6 @@ export { ConnectionStatusBanner } from './ConnectionStatusBanner';
 export { ContextMenu } from './ContextMenu';
 export { ContextMenuItem } from './ContextMenuItem';
 export { ContextMenuSeparator } from './ContextMenuSeparator';
-export { ErrorDisplay } from './ErrorDisplay';
 export { default as GuestLanguageSwitcher } from './GuestLanguageSwitcher';
 export { default as Input } from './Input';
 export { default as LoadingOverlay } from './LoadingOverlay';

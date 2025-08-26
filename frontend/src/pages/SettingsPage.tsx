@@ -1,16 +1,16 @@
-import { APP_ROUTES } from "constants";
+import { APP_ROUTES } from 'constants';
 
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 
-import { ArrowRight, LogOut } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { ArrowRight, LogOut } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import {
   ConfirmationDialog,
   LoadingOverlay,
   UniversalToolbar,
-} from "components/common";
+} from 'components/common';
 import {
   BoardAppearanceSection,
   ChangePasswordForm,
@@ -18,12 +18,12 @@ import {
   LanguageSection,
   ProfileDetailsSection,
   ProfilePictureManager,
-} from "components/settings";
-import { useAuth } from "hooks/auth";
-import { useSettingsPage } from "hooks/settings";
-import type { ToolbarConfig } from "types/ToolbarTypes";
+} from 'components/settings';
+import { useAuth } from 'hooks/auth';
+import { useSettingsPage } from 'hooks/settings';
+import type { ToolbarConfig } from 'types/ToolbarTypes';
 
-import styles from "./SettingsPage.module.css";
+import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -46,30 +46,30 @@ const SettingsPage: React.FC = () => {
   // Toolbar configuration
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
-      pageType: "settings",
+      pageType: 'settings',
       leftSection: [
         {
-          type: "title",
-          content: t("settingsPage.heading"),
+          type: 'title',
+          content: t('settingsPage.heading'),
         },
       ],
       rightSection: [
         {
-          type: "button",
+          type: 'button',
           icon: LogOut,
-          label: t("settingsPage.logoutButton"),
+          label: t('settingsPage.logoutButton'),
           onClick: logout,
-          variant: "destructive",
+          variant: 'destructive',
         },
         {
-          type: "button",
+          type: 'button',
           icon: ArrowRight,
-          label: t("settingsPage.backToBoards"),
+          label: t('settingsPage.backToBoards'),
           onClick: () => navigate(APP_ROUTES.BOARD_LIST),
         },
       ],
     }),
-    [t, logout, navigate]
+    [t, logout, navigate],
   );
 
   if (isLoading) {
@@ -77,7 +77,7 @@ const SettingsPage: React.FC = () => {
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
-          <LoadingOverlay message={t("settingsPage.loading")} />
+          <LoadingOverlay message={t('settingsPage.loading')} />
         </div>
       </>
     );
@@ -88,7 +88,7 @@ const SettingsPage: React.FC = () => {
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
-          <div className={styles.loadError}>{t("settingsPage.loadError")}</div>
+          <div className={styles.loadError}>{t('settingsPage.loadError')}</div>
         </div>
       </>
     );
@@ -100,7 +100,7 @@ const SettingsPage: React.FC = () => {
       <div className={styles.pageContent} data-has-toolbar>
         <section className={styles.section}>
           <h2 className={styles.sectionHeader}>
-            {t("settingsPage.pictureSectionHeader")}
+            {t('settingsPage.pictureSectionHeader')}
           </h2>
           <ProfilePictureManager
             user={user}
@@ -118,7 +118,7 @@ const SettingsPage: React.FC = () => {
 
         <section className={styles.section}>
           <h2 className={styles.sectionHeader}>
-            {t("settingsPage.passwordSectionHeader")}
+            {t('settingsPage.passwordSectionHeader')}
           </h2>
           <ChangePasswordForm onSubmit={handleChangePassword} />
         </section>
@@ -133,16 +133,16 @@ const SettingsPage: React.FC = () => {
           isOpen={isPicDeleteConfirmOpen}
           onClose={() => setPicDeleteConfirmOpen(false)}
           onConfirm={handlePictureDelete}
-          title={t("settingsPage.deletePictureConfirmTitle")}
-          message={t("settingsPage.deletePictureConfirmText")}
+          title={t('settingsPage.deletePictureConfirmTitle')}
+          message={t('settingsPage.deletePictureConfirmText')}
         />
 
         <ConfirmationDialog
           isOpen={isAccountDeleteConfirmOpen}
           onClose={() => setAccountDeleteConfirmOpen(false)}
           onConfirm={handleDeleteAccount}
-          title={t("settingsPage.deleteAccountConfirmTitle")}
-          message={t("settingsPage.deleteAccountConfirmText")}
+          title={t('settingsPage.deleteAccountConfirmTitle')}
+          message={t('settingsPage.deleteAccountConfirmText')}
         />
       </div>
     </>

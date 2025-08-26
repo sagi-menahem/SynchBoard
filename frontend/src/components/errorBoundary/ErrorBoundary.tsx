@@ -2,18 +2,9 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 import logger from 'utils/logger';
 
-import { ErrorDisplay } from 'components/common';
-
-type ErrorType = 'page' | 'board' | 'component';
-
 interface Props {
   children: ReactNode;
-  type: ErrorType;
-  context?: string | number;
-  fallbackMessage?: string;
-  minimal?: boolean;
   onRetry?: () => void;
-  onGoBack?: () => void;
 }
 
 interface State {
@@ -32,134 +23,117 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const { type, context } = this.props;
-    
-    const logContext = {
+    logger.error('Application Error:', {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
-      context,
       timestamp: new Date().toISOString(),
       url: window.location.href,
-      errorBoundaryType: type,
-    };
-
-    switch (type) {
-      case 'page':
-        logger.error(`Page Error in ${context || 'Unknown Page'}:`, {
-          ...logContext,
-          userAgent: navigator.userAgent,
-        });
-        break;
-      case 'board':
-        logger.error(`Board Error (Board ID: ${context || 'Unknown'}):`, logContext);
-        break;
-      case 'component':
-        logger.error(`Component Error in ${context || 'Unknown Component'}:`, logContext);
-        break;
-    }
+    });
   }
 
   private handleRetry = () => {
     this.setState({ hasError: false, error: null });
-    this.props.onRetry?.();
-  };
-
-  private handleGoBack = () => {
-    if (this.props.onGoBack) {
-      this.props.onGoBack();
-    } else if (this.props.type === 'board') {
-      window.location.href = '/boards';
+    if (this.props.onRetry) {
+      this.props.onRetry();
     } else {
-      window.history.back();
+      window.location.reload();
     }
   };
-
-  private getErrorTypeConfig() {
-    const { type, context, fallbackMessage } = this.props;
-
-    switch (type) {
-      case 'page':
-        return {
-          title: `${context || 'Page'} Error`,
-          message: fallbackMessage || 'This page encountered an error and cannot be displayed. Please try refreshing the page or navigate back to continue using SynchBoard.',
-        };
-      case 'board':
-        return {
-          title: 'Board Error',
-          message: fallbackMessage || (
-            context
-              ? `Unable to load board ${context}. The board may be temporarily unavailable, or you may not have access to it.`
-              : 'Unable to load this board. This could be due to a connection issue or the board may not exist.'
-          ),
-        };
-      case 'component':
-        return {
-          title: `${context || 'Component'} Error`,
-          message: fallbackMessage || `The ${context || 'component'} encountered an error and cannot be displayed. This is likely a temporary issue.`,
-        };
-      default:
-        return {
-          title: 'Unexpected Error',
-          message: 'An unexpected error occurred.',
-        };
-    }
-  }
 
   render() {
     if (this.state.hasError) {
-      const { type, context, fallbackMessage, minimal = false } = this.props;
-      const { title, message } = this.getErrorTypeConfig();
-
-      // Minimal error display for components
-      if (minimal && type === 'component') {
-        return (
-          <div style={{
-            padding: '1rem',
-            backgroundColor: '#2f2f2f',
-            border: '1px solid #444',
-            borderRadius: '6px',
-            textAlign: 'center',
-            margin: '0.5rem 0',
-          }}>
-            <p style={{ 
-              color: '#ef4444', 
-              fontSize: '0.875rem', 
-              margin: '0 0 0.75rem 0',
-              fontWeight: 500,
-            }}>
-              {fallbackMessage || `${context || 'Component'} failed to load`}
-            </p>
-            <button 
-              onClick={this.handleRetry}
-              style={{
-                padding: '0.375rem 1rem',
-                fontSize: '0.875rem',
-                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: 500,
-                transition: 'all 0.2s ease',
-              }}
-            >
-              Try Again
-            </button>
-          </div>
-        );
-      }
-
-      // Full error display
       return (
-        <ErrorDisplay
-          errorType={type}
-          title={title}
-          message={message}
-          error={this.state.error}
-          onRetry={this.handleRetry}
-          onGoBack={this.handleGoBack}
-        />
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%)',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          paddingTop: '20vh',
+          color: '#fff',
+          zIndex: 9999,
+          padding: '2rem',
+        }}>
+          <div style={{
+            textAlign: 'center',
+            maxWidth: '500px',
+            width: '100%',
+          }}>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{
+                fontSize: '4rem',
+                display: 'inline-block',
+                filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+              }}>
+                ⚠️
+              </div>
+            </div>
+            
+            <h1 style={{
+              fontSize: '1.875rem',
+              fontWeight: 700,
+              color: '#fff',
+              margin: '0 0 1rem 0',
+              lineHeight: '1.2',
+            }}>
+              Something went wrong
+            </h1>
+            
+            <p style={{
+              fontSize: '1.125rem',
+              color: '#ccc',
+              lineHeight: '1.6',
+              margin: '0 0 2rem 0',
+            }}>
+              An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.
+            </p>
+            
+            <div style={{
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+            }}>
+              <button
+                onClick={this.handleRetry}
+                style={{
+                  padding: '0.75rem 2rem',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease-in-out',
+                  border: '2px solid #3b82f6',
+                  minWidth: '120px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2563eb';
+                  e.currentTarget.style.borderColor = '#2563eb';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#3b82f6';
+                  e.currentTarget.style.borderColor = '#3b82f6';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
       );
     }
 

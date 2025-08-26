@@ -18,6 +18,7 @@ import {
 import { useBoardList } from 'hooks/board/management';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
+
 import styles from './BoardListPage.module.css';
 
 const BoardListPage: React.FC = () => {
