@@ -267,6 +267,8 @@
         "passwordTooShort": "New password must be at least 8 characters long.",
         "pictureSectionHeader": "Profile Picture",
         "profilePictureAlt": "Profile picture for {{userName}}",
+        "changePicture": "Change Picture",
+        "deletePicture": "Delete Picture",
         "deletePictureConfirmTitle": "Delete Picture?",
         "deletePictureConfirmText": "Are you sure you want to delete your profile picture?",
         "pictureUpdateSuccess": "Profile picture updated!",
