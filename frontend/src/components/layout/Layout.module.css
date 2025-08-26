@@ -7,7 +7,7 @@
 }
 
 .mainContent {
-    flex: 1; /* Take remaining space after navbar */
+    flex: 1; /* Take remaining space */
     display: flex;
     justify-content: center;
     overflow-y: auto; /* Enable scrolling by default for all pages */

@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from 'constants';
 
 import type { CanvasPreferences } from 'types/BoardTypes';
-import type { ChangePasswordRequest, ToolPreferences, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'types/UserTypes';
+import type { ChangePasswordRequest, LanguagePreferences, ToolPreferences, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'types/UserTypes';
 
 import apiClient from './apiClient';
 
@@ -64,5 +64,15 @@ export const getToolPreferences = async (): Promise<ToolPreferences> => {
 
 export const updateToolPreferences = async (preferences: ToolPreferences): Promise<ToolPreferences> => {
   const response = await apiClient.put<ToolPreferences>(API_ENDPOINTS.UPDATE_TOOL_PREFERENCES, preferences);
+  return response.data;
+};
+
+export const getLanguagePreferences = async (): Promise<LanguagePreferences> => {
+  const response = await apiClient.get<LanguagePreferences>(API_ENDPOINTS.GET_LANGUAGE_PREFERENCES);
+  return response.data;
+};
+
+export const updateLanguagePreferences = async (preferences: LanguagePreferences): Promise<LanguagePreferences> => {
+  const response = await apiClient.put<LanguagePreferences>(API_ENDPOINTS.UPDATE_LANGUAGE_PREFERENCES, preferences);
   return response.data;
 };

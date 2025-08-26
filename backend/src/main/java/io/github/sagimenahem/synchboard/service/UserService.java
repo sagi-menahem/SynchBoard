@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
+import io.github.sagimenahem.synchboard.dto.user.LanguagePreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
@@ -170,6 +171,7 @@ public class UserService {
                 .phoneNumber(user.getPhoneNumber()).dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
                 .boardBackgroundSetting(user.getBoardBackgroundSetting())
+                .preferredLanguage(user.getPreferredLanguage())
                 .build();
     }
 
@@ -264,6 +266,41 @@ public class UserService {
                 .defaultTool(user.getDefaultTool())
                 .defaultStrokeColor(user.getDefaultStrokeColor())
                 .defaultStrokeWidth(user.getDefaultStrokeWidth())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public LanguagePreferencesDTO getLanguagePreferences(String userEmail) {
+        log.debug("Fetching language preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        return LanguagePreferencesDTO.builder()
+                .preferredLanguage(user.getPreferredLanguage())
+                .build();
+    }
+
+    @Transactional
+    public LanguagePreferencesDTO updateLanguagePreferences(String userEmail, LanguagePreferencesDTO preferences) {
+        log.debug("Updating language preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        if (preferences.getPreferredLanguage() != null) {
+            user.setPreferredLanguage(preferences.getPreferredLanguage());
+        }
+        
+        userRepository.save(user);
+        log.info("Language preferences updated for user: {}", userEmail);
+        
+        return LanguagePreferencesDTO.builder()
+                .preferredLanguage(user.getPreferredLanguage())
                 .build();
     }
 }

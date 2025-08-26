@@ -10,15 +10,18 @@ import {
   BoardAppearanceSection,
   ChangePasswordForm,
   DangerZoneSection,
+  LanguageSection,
   ProfileDetailsSection,
   ProfilePictureManager,
 } from 'components/settings';
+import { useAuth } from 'hooks/auth';
 import { useSettingsPage } from 'hooks/settings';
 
 import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
+  const { logout } = useAuth();
   const {
     user,
     isLoading,
@@ -45,9 +48,14 @@ const SettingsPage: React.FC = () => {
     <div className={styles.pageContainer}>
       <div className={styles.pageHeader}>
         <h1>{t('settingsPage.heading')}</h1>
-        <Link to={APP_ROUTES.BOARD_LIST}>
-          <Button variant="secondary">&larr; {t('settingsPage.backToBoards')}</Button>
-        </Link>
+        <div className={styles.headerActions}>
+          <Button onClick={logout} variant="secondary">
+            {t('settingsPage.logoutButton')}
+          </Button>
+          <Link to={APP_ROUTES.BOARD_LIST}>
+            <Button variant="secondary">&larr; {t('settingsPage.backToBoards')}</Button>
+          </Link>
+        </div>
       </div>
 
       <section className={styles.section}>
@@ -60,6 +68,8 @@ const SettingsPage: React.FC = () => {
       </section>
 
       <ProfileDetailsSection user={user} onUpdateProfile={handleUpdateProfile} />
+
+      <LanguageSection />
 
       <section className={styles.section}>
         <h2 className={styles.sectionHeader}>{t('settingsPage.passwordSectionHeader')}</h2>

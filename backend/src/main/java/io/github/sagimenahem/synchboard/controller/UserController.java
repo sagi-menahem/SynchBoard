@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ChangePasswordRequest;
+import io.github.sagimenahem.synchboard.dto.user.LanguagePreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
@@ -156,6 +157,29 @@ public class UserController {
 
         ToolPreferencesDTO updatedPreferences =
                 userService.updateToolPreferences(userEmail, toolPreferencesDTO);
+        log.info(USER_PREFERENCES_UPDATED, userEmail);
+        return ResponseEntity.ok(updatedPreferences);
+    }
+
+    @GetMapping(API_USER_LANGUAGE_PREFERENCES)
+    public ResponseEntity<LanguagePreferencesDTO> getLanguagePreferences(Authentication authentication) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_LANGUAGE_PREFERENCES, userEmail);
+
+        LanguagePreferencesDTO languagePreferences = userService.getLanguagePreferences(userEmail);
+        log.debug(USER_PREFERENCES_FETCHED, userEmail);
+        return ResponseEntity.ok(languagePreferences);
+    }
+
+    @PutMapping(API_USER_LANGUAGE_PREFERENCES)
+    public ResponseEntity<LanguagePreferencesDTO> updateLanguagePreferences(Authentication authentication,
+            @Valid @RequestBody LanguagePreferencesDTO languagePreferencesDTO) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_LANGUAGE_PREFERENCES,
+                userEmail);
+
+        LanguagePreferencesDTO updatedPreferences =
+                userService.updateLanguagePreferences(userEmail, languagePreferencesDTO);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
         return ResponseEntity.ok(updatedPreferences);
     }

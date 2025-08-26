@@ -4,6 +4,7 @@
     "removeSuccess": "{{userName}} הוסר מהלוח.",
     "common": {
         "_comment": "Shared text used across multiple components",
+        "language": "שפה:",
         "form": {
             "label": {
                 "email": "אימייל:",
@@ -73,14 +74,6 @@
     "editBoardDescriptionForm": {
         "title": "ערוך תיאור לוח",
         "label": "תיאור"
-    },
-    "navbar": {
-        "title": "SynchBoard",
-        "logout": "התנתק",
-        "language": {
-            "en": "English",
-            "he": "עברית"
-        }
     },
     "sidebar": {
         "title": "סרגל צד",
@@ -263,6 +256,13 @@
         "accountDeleteSuccess": "החשבון שלך נמחק.",
         "accountDeleteError": "מחיקת החשבון נכשלה.",
         "backToBoards": "חזרה לרשימת הלוחות",
+        "logoutButton": "התנתק",
+        "languageHeader": "העדפות שפה",
+        "languageLabel": "בחר שפה",
+        "language": {
+            "en": "English",
+            "he": "עברית"
+        },
         "boardAppearanceHeader": "עיצוב הלוח",
         "boardBackgroundColorLabel": "צבע רקע",
         "chatFontSizeLabel": "גודל גופן",

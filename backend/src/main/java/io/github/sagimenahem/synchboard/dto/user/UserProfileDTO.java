@@ -19,4 +19,5 @@ public class UserProfileDTO {
     private LocalDate dateOfBirth;
     private String profilePictureUrl;
     private String boardBackgroundSetting;
+    private String preferredLanguage;
 }

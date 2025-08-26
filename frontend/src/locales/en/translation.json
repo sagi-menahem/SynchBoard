@@ -4,6 +4,7 @@
     "removeSuccess": "{{userName}} has been removed from the board.",
     "common": {
         "_comment": "Shared text used across multiple components",
+        "language": "Language:",
         "form": {
             "label": {
                 "email": "Email:",
@@ -73,14 +74,6 @@
     "editBoardDescriptionForm": {
         "title": "Edit Board Description",
         "label": "Description"
-    },
-    "navbar": {
-        "title": "SynchBoard",
-        "logout": "Logout",
-        "language": {
-            "en": "English",
-            "he": "Hebrew"
-        }
     },
     "sidebar": {
         "title": "Sidebar",
@@ -268,6 +261,13 @@
         "accountDeleteSuccess": "Your account has been deleted.",
         "accountDeleteError": "Failed to delete your account.",
         "backToBoards": "Back to Boards",
+        "logoutButton": "Logout",
+        "languageHeader": "Language Preferences",
+        "languageLabel": "Select Language",
+        "language": {
+            "en": "English",
+            "he": "עברית"
+        },
         "boardAppearanceHeader": "Board Appearance",
         "boardBackgroundColorLabel": "Background Color",
         "chatFontSizeLabel": "Font Size",

@@ -11,6 +11,11 @@
     margin-bottom: 1.5rem;
 }
 
+.headerActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .section {
     background-color: #2f2f2f;
     border: 1px solid #444;

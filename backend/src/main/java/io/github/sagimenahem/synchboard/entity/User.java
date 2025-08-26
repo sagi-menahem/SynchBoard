@@ -76,6 +76,10 @@ public class User implements UserDetails {
     @Builder.Default
     private Integer defaultStrokeWidth = 3;
 
+    @Column(name = "preferred_language")
+    @Builder.Default
+    private String preferredLanguage = "en";
+
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
@@ -102,6 +106,9 @@ public class User implements UserDetails {
         }
         if (this.defaultStrokeWidth == null) {
             this.defaultStrokeWidth = 3;
+        }
+        if (this.preferredLanguage == null) {
+            this.preferredLanguage = "en";
         }
     }
 
