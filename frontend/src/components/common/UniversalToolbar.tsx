@@ -149,11 +149,12 @@ const ToolbarSection: React.FC<{ items: ToolbarItem[]; className?: string }> = (
 };
 
 export const UniversalToolbar: React.FC<UniversalToolbarProps> = ({ config, className }) => {
-  const { leftSection = [], rightSection = [] } = config;
+  const { leftSection = [], centerSection = [], rightSection = [] } = config;
 
   return (
     <header className={`${styles.universalToolbar} ${className || ''}`}>
       <ToolbarSection items={leftSection} className={styles.leftSection} />
+      <ToolbarSection items={centerSection} className={styles.centerSection} />
       <ToolbarSection items={rightSection} className={styles.rightSection} />
     </header>
   );

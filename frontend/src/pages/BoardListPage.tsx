@@ -56,6 +56,8 @@ const BoardListPage: React.FC = () => {
         onClick: openModal,
         primary: true,
       },
+    ],
+    centerSection: [
       {
         type: 'search',
         placeholder: t('toolbar.search.boardName'),
