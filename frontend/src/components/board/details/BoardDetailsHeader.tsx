@@ -99,8 +99,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                         </Button>
                         <Button 
                             onClick={onDeletePicture}
-                            variant="secondary"
-                            className={styles.destructiveButton}
+                            variant="destructive"
                         >
                             <Trash2 size={16} />
                             {t('boardDetailsPage.deletePicture')}
