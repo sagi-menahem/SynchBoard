@@ -192,7 +192,7 @@
     },
     "boardListPage": {
         "heading": "My Boards",
-        "createNewBoardButton": "+ Create New Board",
+        "createNewBoardButton": "Create New Board",
         "loading": "Loading your boards...",
         "fetchError": "Failed to fetch boards. Please try again later.",
         "noDescription": "No description.",
@@ -207,7 +207,7 @@
         "loading": "Loading board details...",
         "notFound": "Board not found or you do not have access.",
         "noDescription": "No description.",
-        "inviteButton": "+ Invite Member",
+        "inviteButton": "Invite Member",
         "membersHeader": "Members",
         "adminBadge": "Admin",
         "boardPicture": "Board Picture",

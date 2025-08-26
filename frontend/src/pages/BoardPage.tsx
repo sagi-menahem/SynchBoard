@@ -3,7 +3,7 @@ import { APP_ROUTES } from 'constants';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import { BoardProvider, useCanvasPreferences } from 'context';
-import { ArrowLeft, Settings } from 'lucide-react';
+import { ArrowRight, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -95,7 +95,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       },
       {
         type: 'button',
-        icon: ArrowLeft,
+        icon: ArrowRight,
         label: t('toolbar.label.BackToBoards'),
         onClick: () => navigate(APP_ROUTES.BOARD_LIST),
       },
