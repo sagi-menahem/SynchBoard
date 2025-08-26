@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
+import { LogIn, Mail, Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, PasswordInput } from 'components/common';
-import styles from 'components/common/CommonForm.module.css';
 import { useLoginForm } from 'hooks/auth/forms';
 import { oauthService } from 'services/oauthService';
+
+import styles from './LoginForm.module.css';
 
 import GoogleLoginButton from './GoogleLoginButton';
 
@@ -25,8 +27,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
 
   return (
     <form action={submitAction} className={styles.form}>
-      <h2>{t('loginForm.heading')}</h2>
-
       {state.error && (
         <div className={styles.error} role="alert">
           {state.error}
@@ -34,7 +34,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       )}
 
       <div className={styles.field}>
-        <label htmlFor="login-email">{t('common.form.label.email')}</label>
+        <label htmlFor="login-email">
+          <Mail size={14} />
+          {t('common.form.label.email')}
+        </label>
         <Input
           id="login-email"
           name="email"
@@ -45,7 +48,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="login-password">{t('common.form.label.password')}</label>
+        <label htmlFor="login-password">
+          <Lock size={14} />
+          {t('common.form.label.password')}
+        </label>
         <PasswordInput
           id="login-password"
           name="password"
@@ -55,21 +61,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         />
       </div>
 
-      <Button type="submit" className={styles.submitButton} disabled={isPending}>
+      <Button type="submit" variant="primary" disabled={isPending} className={styles.submitButton}>
+        <LogIn size={16} />
         {isPending ? t('common.button.loggingIn') : t('loginForm.button')}
       </Button>
 
-      <div style={{ margin: '1.5rem 0', textAlign: 'center', color: '#666' }}>
-        <span style={{ padding: '0 1rem', backgroundColor: '#fff', fontSize: '0.875rem' }}>
+      <div className={styles.divider}>
+        <span className={styles.dividerText}>
           {t('loginForm.orContinueWith', 'or continue with')}
         </span>
-        <div style={{ 
-          height: '1px', 
-          backgroundColor: '#e1e5e9', 
-          margin: '-0.6rem 0 0 0',
-          zIndex: -1,
-          position: 'relative',
-        }} />
       </div>
 
       <GoogleLoginButton 
@@ -77,30 +77,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         disabled={isPending || isGoogleLoading} 
       />
 
-      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-        <button
+      <div className={styles.forgotPasswordSection}>
+        <Button
           type="button"
+          variant="secondary"
           onClick={onForgotPassword}
-          style={{ 
-            background: 'transparent', 
-            backgroundColor: 'transparent',
-            border: 'none', 
-            padding: '0.2em',
-            cursor: 'pointer',
-            fontSize: '0.875rem',
-            color: '#8186ff',
-            textDecoration: 'underline',
-            transition: 'color 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#6d72e8';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#8186ff';
-          }}
+          className={styles.forgotPasswordButton}
         >
           {t('loginForm.forgotPassword', 'Forgot Password?')}
-        </button>
+        </Button>
       </div>
     </form>
   );
