@@ -1,10 +1,13 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Page Layout - Match Settings page */
+.pageContent {
     position: relative;
     min-height: 100vh;
-    padding: 2rem 1rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
+    padding-top: 3rem;
+    box-sizing: border-box;
 }
 
 .languageSwitcherWrapper {
@@ -14,121 +17,97 @@
     z-index: 10;
 }
 
-.toggleText {
-    margin-top: 1rem;
-}
-
-.toggleButton {
-    background: none;
-    border: none;
-    color: var(--color-primary-link, #8186ff);
-    padding: 0.2em;
-    text-decoration: underline;
-}
-
-.subtleLink {
-    text-align: center;
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.forgotPasswordLink {
-    color: #9ca3af;
-    cursor: pointer;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.forgotPasswordLink:hover {
-    color: #6b7280;
-    text-decoration: underline;
-}
-
-.header {
-    text-align: center;
+/* Auth Section - Match Settings section styling */
+.authSection {
+    background-color: #2f2f2f;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 1.5rem;
     margin-bottom: 2rem;
 }
 
-.iconContainer {
+/* Page Title - Match Settings page title */
+.pageTitle {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+/* Form Container */
+.authContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Form Headers */
+.formHeader {
     margin-bottom: 1rem;
 }
 
-.lockIcon {
-    width: 3rem;
-    height: 3rem;
-    color: #3b82f6;
-    background-color: #eff6ff;
-    border-radius: 50%;
-    padding: 0.75rem;
-}
-
-.subtitle {
-    color: #6b7280;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-    line-height: 1.5;
-}
-
-.header h1 {
-    color: #1f2937;
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.emailIcon {
-    width: 3rem;
-    height: 3rem;
-    color: #10b981;
-    background-color: #ecfdf5;
-    border-radius: 50%;
-    padding: 0.75rem;
-}
-
-.pageHeader {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.pageTitle {
-    color: #111827;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.1;
-}
-
-.formSection {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.formHeader {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
 .formTitle {
-    color: #374151;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 0 0.75rem 0;
-    line-height: 1.3;
-}
-
-.formDescription {
-    color: #6b7280;
-    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     margin: 0;
-    line-height: 1.5;
-    font-weight: 400;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
-.emailText {
-    color: #111827;
-    font-weight: 600;
+/* Auth Actions */
+.authActions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+.toggleText {
+    color: #ccc;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Forgot Password Section */
+.forgotPasswordSection {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.forgotPasswordButton {
+    font-size: 0.875rem;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+    .pageContent {
+        padding: 1rem;
+        padding-top: 2rem;
+    }
+    
+    .authSection {
+        padding: 1rem;
+    }
+    
+    .pageTitle {
+        font-size: 1.5rem;
+    }
+    
+    .formTitle {
+        font-size: 1.125rem;
+    }
+    
+    .authActions {
+        gap: 0.75rem;
+    }
 }

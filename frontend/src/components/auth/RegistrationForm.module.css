@@ -1,0 +1,75 @@
+/* Form Styling - Match Settings page patterns */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Form Fields */
+.field {
+    margin-bottom: 1rem;
+}
+
+.field label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #ccc;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.required {
+    color: #f87171;
+    font-weight: bold;
+}
+
+/* Radio Group */
+.radioGroup {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ccc;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.radioLabel input[type="radio"] {
+    margin: 0;
+    accent-color: #3b82f6;
+}
+
+/* Error Styling */
+.error {
+    background-color: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #f87171;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+/* Submit Button */
+.submitButton {
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .form {
+        gap: 1rem;
+    }
+    
+    .radioGroup {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
