@@ -16,7 +16,7 @@ const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }
     <section className={`${styles.section} ${styles.dangerZone}`}>
       <h2 className={styles.sectionHeader}>{t('settingsPage.dangerZoneHeader')}</h2>
       <p>{t('settingsPage.dangerZoneText')}</p>
-      <Button onClick={onDeleteAccount} className={styles.destructiveButton}>
+      <Button onClick={onDeleteAccount} variant="destructive">
         {t('settingsPage.deleteAccountButton')}
       </Button>
     </section>

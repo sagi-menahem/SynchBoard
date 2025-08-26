@@ -32,7 +32,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
       <h2 className={styles.sectionHeader}>
         {t('settingsPage.profileSectionHeader')}
         {!isEditing && (
-          <Button onClick={startEditing} variant="secondary">
+          <Button onClick={startEditing} variant="secondary" className={styles.editButton}>
             {t('settingsPage.buttons.edit')}
           </Button>
         )}

@@ -37,6 +37,11 @@
     margin-top: 0;
 }
 
+.editButton {
+    font-size: 0.9rem !important;
+    padding: 0.25rem 0.75rem !important;
+}
+
 .field {
     margin-bottom: 1rem;
 }
@@ -93,17 +98,8 @@
 }
 
 .dangerZone {
-    border-color: #c93434;
-}
-
-.destructiveButton {
-    background-color: #c93434;
-    border-color: transparent;
-}
-
-.destructiveButton:hover:not(:disabled) {
-    background-color: #a52a2a;
-    border-color: #a52a2a;
+    border-color: rgba(220, 38, 38, 0.4);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.1);
 }
 
 .required {

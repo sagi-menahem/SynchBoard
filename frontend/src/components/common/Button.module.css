@@ -45,3 +45,16 @@
 .secondary:hover:not(:disabled) {
     background-color: #6a6a6a;
 }
+
+.destructive {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.3), rgba(220, 38, 38, 0.2));
+    color: #fff;
+    border-color: rgba(220, 38, 38, 0.4);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.1);
+}
+
+.destructive:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.4), rgba(220, 38, 38, 0.3));
+    border-color: rgba(220, 38, 38, 0.6);
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.2);
+}

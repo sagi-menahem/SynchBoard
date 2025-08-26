@@ -18,12 +18,3 @@
     justify-content: center;
 }
 
-.destructiveButton {
-    background-color: #c93434;
-    border-color: transparent;
-}
-
-.destructiveButton:hover:not(:disabled) {
-    background-color: #a52a2a;
-    border-color: #a52a2a;
-}
