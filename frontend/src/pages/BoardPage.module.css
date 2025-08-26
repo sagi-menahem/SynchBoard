@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 72px; /* Account for fixed toolbar */
+    padding-top: 64px; /* Account for fixed toolbar with breathing room */
     height: 100vh;
     display: flex;
     flex-direction: column;

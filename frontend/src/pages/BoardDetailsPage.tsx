@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { ArrowLeft, LogOut, Settings, UserPlus } from 'lucide-react';
+import { ArrowLeft, Edit, LogOut, Settings, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {
   BoardConfirmDialogs,
@@ -21,6 +21,7 @@ import styles from './BoardDetailsPage.module.css';
 
 const BoardDetailsPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { boardId } = useParams<{ boardId: string }>();
   const numericBoardId = parseInt(boardId || '0', 10);
 
@@ -56,16 +57,31 @@ const BoardDetailsPage: React.FC = () => {
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
   // Calculate online members (mock data - you may have real data from WebSocket)
-  const onlineMemberCount = boardDetails?.members?.length || 0; // TODO: implement real online status
-  const totalMemberCount = boardDetails?.members?.length || 0;
+  // const onlineMemberCount = boardDetails?.members?.length || 0; // TODO: implement real online status
+  // const totalMemberCount = boardDetails?.members?.length || 0;
 
   // Toolbar configuration
   const toolbarConfig: ToolbarConfig = useMemo(() => ({
     pageType: 'board-details',
     leftSection: [
       {
-        type: 'title',
-        content: boardDetails?.name || 'Loading...',
+        type: 'custom',
+        content: (
+          <div className={styles.boardTitleContainer}>
+            <h1 className={styles.boardTitle}>
+              {boardDetails?.name || 'Loading...'}
+            </h1>
+            {boardDetails && currentUserIsAdmin && (
+              <button
+                onClick={() => setEditingField('name')}
+                className={styles.editButton}
+                title={t('toolbar.editBoard.tooltip')}
+              >
+                <Edit size={14} />
+              </button>
+            )}
+          </div>
+        ),
       },
       ...(currentUserIsAdmin ? [{
         type: 'button' as const,
@@ -76,16 +92,6 @@ const BoardDetailsPage: React.FC = () => {
       }] : []),
     ],
     rightSection: [
-      {
-        type: 'memberActivity',
-        memberCount: totalMemberCount,
-        onlineCount: onlineMemberCount,
-        onClick: () => {
-          // Scroll to members section
-          const membersSection = document.querySelector('[data-section="members"]');
-          membersSection?.scrollIntoView({ behavior: 'smooth' });
-        },
-      },
       {
         type: 'button',
         icon: Settings,
@@ -103,18 +109,18 @@ const BoardDetailsPage: React.FC = () => {
         type: 'button',
         icon: ArrowLeft,
         label: t('boardDetailsPage.backToBoardButton'),
-        onClick: () => window.location.href = `/board/${numericBoardId}`,
+        onClick: () => navigate(`/board/${numericBoardId}`),
       },
     ],
   }), [
-    boardDetails?.name,
+    boardDetails,
     currentUserIsAdmin,
     t,
-    setInviteModalOpen,
-    totalMemberCount,
-    onlineMemberCount,
-    setLeaveConfirmOpen,
     numericBoardId,
+    navigate,
+    setInviteModalOpen,
+    setLeaveConfirmOpen,
+    setEditingField,
   ]);
 
 

@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 72px; /* Account for fixed toolbar */
+    padding-top: 64px; /* Account for fixed toolbar with breathing room */
     min-height: 100vh;
     width: 100%;
     max-width: 1200px;
@@ -109,7 +109,7 @@
     .pageContent {
         padding-left: 16px;
         padding-right: 16px;
-        padding-top: 80px;
+        padding-top: 64px;
     }
     
     .quickSettingsModal {
@@ -126,7 +126,7 @@
     .pageContent {
         padding-left: 12px;
         padding-right: 12px;
-        padding-top: 88px;
+        padding-top: 60px;
     }
     
     .sectionTitle {
@@ -146,5 +146,67 @@
         width: 28px;
         height: 28px;
         font-size: 16px;
+    }
+}
+
+/* Board Title with Edit Button */
+.boardTitleContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.boardTitle {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.editButton {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.65);
+    border-radius: 4px;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.editButton:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Responsive Design for Board Title */
+@media (max-width: 768px) {
+    .boardTitle {
+        font-size: 16px;
+        max-width: 200px;
+    }
+    
+    .editButton {
+        display: none; /* Hide edit button on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .boardTitle {
+        font-size: 14px;
+        max-width: 150px;
+    }
+    
+    .editButton {
+        display: none; /* Hide edit button on mobile */
     }
 }

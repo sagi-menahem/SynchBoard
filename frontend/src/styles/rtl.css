@@ -1,0 +1,258 @@
+/* RTL Support Styles */
+
+/* Base RTL Styles */
+[dir="rtl"] {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* RTL Transition Animations */
+html {
+  transition: direction 0.3s ease-in-out;
+}
+
+body {
+  transition: text-align 0.3s ease-in-out;
+}
+
+/* RTL-specific adjustments for common elements */
+[dir="rtl"] .universalToolbar {
+  direction: rtl;
+}
+
+[dir="rtl"] .universalToolbar .leftSection {
+  text-align: right;
+}
+
+[dir="rtl"] .universalToolbar .rightSection {
+  text-align: left;
+}
+
+/* RTL adjustments for buttons and interactive elements */
+[dir="rtl"] .toolbarButton {
+  direction: rtl;
+}
+
+[dir="rtl"] .toolbarButton .buttonLabel {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL adjustments for search components */
+[dir="rtl"] .searchContainer {
+  direction: rtl;
+}
+
+[dir="rtl"] .searchInput {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .searchInput::placeholder {
+  text-align: right;
+}
+
+/* RTL adjustments for modals and forms */
+[dir="rtl"] .modal {
+  direction: rtl;
+}
+
+[dir="rtl"] .modalContent {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .formField {
+  direction: rtl;
+}
+
+[dir="rtl"] .formField label {
+  text-align: right;
+}
+
+[dir="rtl"] .formField input,
+[dir="rtl"] .formField textarea,
+[dir="rtl"] .formField select {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .formField input::placeholder,
+[dir="rtl"] .formField textarea::placeholder {
+  text-align: right;
+}
+
+/* RTL adjustments for lists and cards */
+[dir="rtl"] .boardList {
+  direction: rtl;
+}
+
+[dir="rtl"] .boardCard {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .boardCard .cardTitle {
+  text-align: right;
+}
+
+[dir="rtl"] .boardCard .cardDescription {
+  text-align: right;
+}
+
+/* RTL adjustments for settings pages */
+[dir="rtl"] .pageContent {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .section {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .sectionHeader {
+  text-align: right;
+}
+
+[dir="rtl"] .field {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL adjustments for navigation */
+[dir="rtl"] .sidebar {
+  direction: rtl;
+}
+
+[dir="rtl"] .sidebarContent {
+  text-align: right;
+}
+
+[dir="rtl"] .navItem {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL adjustments for context menus */
+[dir="rtl"] .contextMenu {
+  direction: rtl;
+}
+
+[dir="rtl"] .contextMenuItem {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL adjustments for chat components */
+[dir="rtl"] .chatWindow {
+  direction: rtl;
+}
+
+[dir="rtl"] .chatMessage {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .chatInput {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .chatInput input {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .chatInput input::placeholder {
+  text-align: right;
+}
+
+/* RTL icon adjustments */
+[dir="rtl"] .icon {
+  transform: scaleX(-1);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Specific icons that should not be flipped in RTL */
+[dir="rtl"] .icon.no-flip {
+  transform: none;
+}
+
+/* RTL adjustments for error boundaries */
+[dir="rtl"] .errorBoundary {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .errorMessage {
+  text-align: right;
+}
+
+/* RTL adjustments for loading states */
+[dir="rtl"] .loading {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL adjustments for toast notifications */
+[dir="rtl"] .toast {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Animation for direction change */
+@keyframes rtlTransition {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+[dir="rtl"] * {
+  animation: rtlTransition 0.3s ease-in-out;
+}
+
+/* Disable animation after initial load */
+.no-rtl-animation * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  [dir="rtl"] .universalToolbar {
+    padding: 0 12px;
+    direction: rtl;
+  }
+  
+  [dir="rtl"] .pageContent {
+    padding-left: 16px;
+    padding-right: 16px;
+    direction: rtl;
+  }
+  
+  /* Hide edit buttons on small screens */
+  [dir="rtl"] .toolbarTitle + button {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  [dir="rtl"] .universalToolbar {
+    padding: 0 8px;
+    direction: rtl;
+  }
+  
+  [dir="rtl"] .pageContent {
+    padding-left: 12px;
+    padding-right: 12px;
+    direction: rtl;
+  }
+  
+  /* Hide edit buttons on very small screens */
+  [dir="rtl"] .toolbarTitle + button {
+    display: none;
+  }
+}

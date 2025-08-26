@@ -171,6 +171,21 @@
             "focusCanvas": "Focus Canvas",
             "balanced": "Balanced",
             "focusChat": "Focus Chat"
+        },
+        "search": {
+            "boardName": "Search boards...",
+            "placeholder": "Type board name...",
+            "clear": "Clear search"
+        },
+        "view": {
+            "grid": "Grid view",
+            "list": "List view"
+        },
+        "activity": {
+            "membersOnline": "{{count}} members online"
+        },
+        "editBoard": {
+            "tooltip": "Edit board name"
         }
     },
     "chatWindow": {
@@ -192,6 +207,7 @@
     },
     "boardDetailsPage": {
         "backToBoardButton": "Back to Board",
+        "boardDetailsButton": "Board details",
         "loading": "Loading board details...",
         "notFound": "Board not found or you do not have access.",
         "noDescription": "No description.",
@@ -347,19 +363,6 @@
     "boardSync": {
         "nothingToUndo": "Nothing to undo.",
         "nothingToRedo": "Nothing to redo."
-    },
-    "toolbar": {
-        "search": {
-            "boardName": "Search boards...",
-            "placeholder": "Type board name..."
-        },
-        "view": {
-            "grid": "Grid view",
-            "list": "List view"
-        },
-        "activity": {
-            "membersOnline": "{{count}} members online"
-        }
     },
     "colors": {
         "white": "White",

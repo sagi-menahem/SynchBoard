@@ -2,11 +2,12 @@ import { APP_ROUTES } from 'constants';
 
 import { useEffect, useState } from 'react';
 
+import { updateDocumentDirection } from 'i18n';
 import { AuthPage, BoardDetailsPage, BoardListPage, BoardPage, SettingsPage } from 'pages';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { Logger } from 'utils';
-
 
 import { AuthLoadingOverlay } from 'components/auth';
 import { ConnectionStatusBanner } from 'components/common';
@@ -114,6 +115,7 @@ function AppRoutes() {
 
 function App() {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
+  const { i18n } = useTranslation();
   
   // Initialize global language synchronization
   useLanguageSync();
@@ -125,6 +127,11 @@ function App() {
       timestamp: new Date().toISOString(),
     });
   }, []);
+
+  // RTL Support: Update document direction when language changes
+  useEffect(() => {
+    updateDocumentDirection(i18n.language);
+  }, [i18n.language]);
 
   const handleBannerHeightChange = (height: number) => {
     setBannerHeight(height);
