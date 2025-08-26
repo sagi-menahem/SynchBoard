@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';
@@ -17,6 +18,7 @@ const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }
       <h2 className={styles.sectionHeader}>{t('settingsPage.dangerZoneHeader')}</h2>
       <p>{t('settingsPage.dangerZoneText')}</p>
       <Button onClick={onDeleteAccount} variant="destructive">
+        <Trash2 size={16} />
         {t('settingsPage.deleteAccountButton')}
       </Button>
     </section>
