@@ -63,7 +63,7 @@ const BoardDetailsPage: React.FC = () => {
     leftSection: [
       {
         type: 'title',
-        content: boardDetails?.name || 'Loading...',
+        content: boardDetails?.name || t('common.loading'),
       },
       ...(boardDetails && currentUserIsAdmin ? [{
         type: 'button' as const,

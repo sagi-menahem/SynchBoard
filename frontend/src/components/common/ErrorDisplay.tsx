@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import styles from './ErrorDisplay.module.css';
 
 interface ErrorDisplayProps {
@@ -21,38 +23,39 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   error,
   showTechnicalDetails = false,
 }) => {
+  const { t } = useTranslation();
   const [showDetails, setShowDetails] = useState(showTechnicalDetails);
 
   const getErrorConfig = () => {
     switch (errorType) {
       case 'page':
         return {
-          title: title || 'Oops! Page Not Available',
-          message: message || 'This page encountered an error and cannot be displayed right now. Please try refreshing the page or go back to the previous screen.',
+          title: title || t('errorDisplay.pageUnavailable'),
+          message: message || t('errorDisplay.pageUnavailableMessage'),
           icon: '🚫',
           showRetry: true,
           showGoBack: true,
         };
       case 'board':
         return {
-          title: title || 'Board Loading Error',
-          message: message || 'Unable to load this board. This might be a temporary issue with the board data or your connection.',
+          title: title || t('errorDisplay.boardLoadingError'),
+          message: message || t('errorDisplay.boardLoadingErrorMessage'),
           icon: '📋',
           showRetry: true,
           showGoBack: true,
         };
       case 'component':
         return {
-          title: title || 'Feature Temporarily Unavailable',
-          message: message || 'A component on this page encountered an error. You can try refreshing to restore functionality.',
+          title: title || t('errorDisplay.featureUnavailable'),
+          message: message || t('errorDisplay.featureUnavailableMessage'),
           icon: '⚠️',
           showRetry: true,
           showGoBack: false,
         };
       default:
         return {
-          title: title || 'Something Went Wrong',
-          message: message || 'An unexpected error occurred.',
+          title: title || t('errorDisplay.somethingWentWrong'),
+          message: message || t('errorDisplay.unexpectedError'),
           icon: '❌',
           showRetry: true,
           showGoBack: false,
@@ -84,7 +87,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     <div className={containerClass}>
       <div className={styles.content}>
         <div className={styles.iconContainer}>
-          <span className={styles.icon} role="img" aria-label="Error">
+          <span className={styles.icon} role="img" aria-label={t('errorDisplay.errorAriaLabel')}>
             {config.icon}
           </span>
         </div>
@@ -103,7 +106,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               className={`${styles.button} ${styles.buttonPrimary}`}
               onClick={handleRetry}
             >
-              Try Again
+              {t('errorDisplay.tryAgain')}
             </button>
           )}
           
@@ -112,7 +115,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               className={`${styles.button} ${styles.buttonSecondary}`}
               onClick={handleGoBack}
             >
-              Go Back
+              {t('errorDisplay.goBack')}
             </button>
           )}
         </div>
@@ -124,20 +127,20 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               onClick={() => setShowDetails(!showDetails)}
               aria-expanded={showDetails}
             >
-              {showDetails ? '▼' : '▶'} Technical Details
+              {showDetails ? '▼' : '▶'} {t('errorDisplay.technicalDetails')}
             </button>
             
             {showDetails && (
               <div className={styles.detailsContent}>
                 <div className={styles.errorInfo}>
-                  <p><strong>Error:</strong> {error.message}</p>
-                  <p><strong>Time:</strong> {new Date().toLocaleString()}</p>
-                  <p><strong>Location:</strong> {window.location.href}</p>
+                  <p><strong>{t('errorDisplay.error')}</strong> {error.message}</p>
+                  <p><strong>{t('errorDisplay.time')}</strong> {new Date().toLocaleString()}</p>
+                  <p><strong>{t('errorDisplay.location')}</strong> {window.location.href}</p>
                 </div>
                 
                 {error.stack && (
                   <details className={styles.stackTrace}>
-                    <summary>Stack Trace</summary>
+                    <summary>{t('errorDisplay.stackTrace')}</summary>
                     <pre className={styles.stackContent}>
                       <code>{error.stack}</code>
                     </pre>
@@ -149,7 +152,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
         )}
 
         <div className={styles.helpText}>
-          If this problem persists, please try refreshing the page or contact support.
+          {t('errorDisplay.helpText')}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import i18n from 'i18n';
 import { toast } from 'react-hot-toast';
 import logger from 'utils/logger';
 
@@ -7,5 +8,5 @@ export const createErrorHandler = (context: string) => (error: Error) => {
     context,
   });
     
-  toast.error(`${context} encountered an error`);
+  toast.error(i18n.t('errors.componentError', { context }));
 };

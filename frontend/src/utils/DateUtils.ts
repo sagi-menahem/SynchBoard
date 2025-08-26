@@ -1,3 +1,5 @@
+import i18n from 'i18next';
+
 export const formatSmartTimestamp = (timestamp: number | Date | string): string => {
   let date: Date;
   if (typeof timestamp === 'string') {
@@ -9,7 +11,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   }
   
   if (!date || isNaN(date.getTime())) {
-    return 'Invalid date';
+    return i18n.t('dates.invalidDate');
   }
   
   const now = new Date();
@@ -18,11 +20,11 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
   if (diffMinutes < 1) {
-    return 'Just now';
+    return i18n.t('dates.justNow');
   }
 
   if (diffMinutes < 60) {
-    return `${diffMinutes} min ago`;
+    return i18n.t('dates.minutesAgo', { count: diffMinutes });
   }
 
   if (diffHours < 24 && date.getDate() === now.getDate()) {
@@ -32,7 +34,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   if (date.getDate() === yesterday.getDate() && date.getMonth() === yesterday.getMonth()) {
-    return `Yesterday ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    return `${i18n.t('dates.yesterday')} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   }
 
   if (date.getFullYear() === now.getFullYear()) {
@@ -63,7 +65,7 @@ export const formatDetailedTimestamp = (timestamp: number | Date | string): stri
   }
   
   if (!date || isNaN(date.getTime())) {
-    return 'Invalid date';
+    return i18n.t('dates.invalidDate');
   }
   
   return date.toLocaleString();
@@ -80,7 +82,7 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   }
   
   if (!date || isNaN(date.getTime())) {
-    return 'Invalid date';
+    return i18n.t('dates.invalidDate');
   }
   
   const now = new Date();
@@ -90,11 +92,11 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   yesterday.setDate(yesterday.getDate() - 1);
   
   if (messageDate.getTime() === today.getTime()) {
-    return 'Today';
+    return i18n.t('dates.today');
   }
   
   if (messageDate.getTime() === yesterday.getTime()) {
-    return 'Yesterday';
+    return i18n.t('dates.yesterday');
   }
   
   if (date.getFullYear() === now.getFullYear()) {

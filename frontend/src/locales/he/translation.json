@@ -5,6 +5,7 @@
     "common": {
         "_comment": "Shared text used across multiple components",
         "language": "שפה:",
+        "loading": "טוען...",
         "form": {
             "label": {
                 "email": "אימייל:",
@@ -31,7 +32,12 @@
             "save": "שמור",
             "saving": "שומר...",
             "confirm": "אישור"
-        }
+        },
+        "chooseColor": "בחר צבע"
+    },
+    "auth": {
+        "_comment": "Authentication-related texts",
+        "signingInMessage": "מתחבר אותך..."
     },
     "authPage": {
         "_comment": "Texts for src/pages/AuthPage.tsx",
@@ -315,7 +321,8 @@
         "auth.badCredentials": "שם המשתמש או הסיסמה שהזנת אינם נכונים.",
         "sessionExpired": "תוקף החיבור שלך פג. אנא התחבר מחדש.",
         "gender.invalid": "יש לבחור מגדר תקין (זכר או נקבה).",
-        "dateOfBirth.invalid": "יש להזין תאריך לידה תקין."
+        "dateOfBirth.invalid": "יש להזין תאריך לידה תקין.",
+        "componentError": "{{context}} נתקל בשגיאה"
     },
     "success": {
         "profile.update": "הפרופיל עודכן בהצלחה!",
@@ -459,5 +466,64 @@
         "darkDeepOrange": "כתום עמוק כהה",
         "veryDarkOrange": "כתום כהה מאוד",
         "brownOrange": "כתום חום"
+    },
+    "errorDisplay": {
+        "pageUnavailable": "אופס! הדף לא זמין",
+        "pageUnavailableMessage": "דף זה נתקל בשגיאה ואינו יכול להיות מוצג כעת. אנא נסה לרענן את הדף או חזור למסך הקודם.",
+        "boardLoadingError": "שגיאה בטעינת הלוח",
+        "boardLoadingErrorMessage": "לא ניתן לטעון את הלוח הזה. ייתכן שזו בעיה זמנית עם נתוני הלוח או החיבור שלך.",
+        "featureUnavailable": "התכונה אינה זמינה זמנית",
+        "featureUnavailableMessage": "רכיב בדף זה נתקל בשגיאה. אתה יכול לנסות לרענן כדי לשחזר את הפונקציונליות.",
+        "somethingWentWrong": "משהו השתבש",
+        "unexpectedError": "אירעה שגיאה בלתי צפויה.",
+        "tryAgain": "נסה שוב",
+        "goBack": "חזור אחורה",
+        "technicalDetails": "פרטים טכניים",
+        "error": "שגיאה:",
+        "time": "זמן:",
+        "location": "מיקום:",
+        "stackTrace": "מעקב שגיאות",
+        "helpText": "אם הבעיה נמשכת, נסה לרענן את הדף או פנה לתמיכה.",
+        "errorAriaLabel": "שגיאה"
+    },
+    "errorBoundary": {
+        "title": "משהו השתבש",
+        "message": "אירעה שגיאה בלתי צפויה. אנא נסה לרענן את הדף או פנה לתמיכה אם הבעיה נמשכת.",
+        "tryAgain": "נסה שוב"
+    },
+    "canvas": {
+        "loading": "טוען קנבס..."
+    },
+    "chat": {
+        "searchPlaceholder": "חיפוש הודעות...",
+        "emptyMessage": "תוכן ההודעה לא יכול להיות ריק",
+        "messageTooLong": "ההודעה ארוכה מדי (מקסימום 5000 תווים)",
+        "message": {
+            "failedToSendTooltip": "נכשל בשליחה - ההודעה תישלח שוב כשהחיבור יחזור"
+        }
+    },
+    "textInput": {
+        "placeholder": "הקלד טקסט..."
+    },
+    "tools": {
+        "shapeTools": "כלי צורות",
+        "line": "קו",
+        "dottedLine": "קו מקווקו",
+        "arrow": "חץ"
+    },
+    "accessibility": {
+        "closeModal": "סגור חלון",
+        "resizePanels": "שנה גודל פאנלים",
+        "sizeSlider": "גודל: {{size}}"
+    },
+    "dates": {
+        "invalidDate": "תאריך לא תקין",
+        "justNow": "הרגע",
+        "minAgo": "דק׳ לפני",
+        "yesterday": "אתמול",
+        "today": "היום"
+    },
+    "errorHandler": {
+        "unexpectedError": "אירעה שגיאה בלתי צפויה"
     }
 }

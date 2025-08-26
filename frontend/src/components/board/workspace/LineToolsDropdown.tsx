@@ -14,9 +14,9 @@ interface LineToolsDropdownProps {
 }
 
 const LINE_TOOLS = [
-  { value: TOOLS.LINE, icon: Minus, label: 'Line' },
-  { value: TOOLS.DOTTED_LINE, icon: MoreHorizontal, label: 'Dotted Line' },
-  { value: TOOLS.ARROW, icon: ArrowRight, label: 'Arrow' },
+  { value: TOOLS.LINE, icon: Minus, labelKey: 'line' },
+  { value: TOOLS.DOTTED_LINE, icon: MoreHorizontal, labelKey: 'dottedLine' },
+  { value: TOOLS.ARROW, icon: ArrowRight, labelKey: 'arrow' },
 ] as const;
 
 export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
@@ -63,7 +63,7 @@ export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
       
       {isOpen && (
         <div className={styles.dropdownContent}>
-          {LINE_TOOLS.map(({ value, icon: Icon, label }) => (
+          {LINE_TOOLS.map(({ value, icon: Icon, labelKey }) => (
             <button
               key={value}
               className={`${styles.dropdownItem} ${value === currentTool ? styles.active : ''}`}
@@ -71,7 +71,7 @@ export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
               title={t(`toolbar.tool.${value}`)}
             >
               <Icon size={20} />
-              <span>{label}</span>
+              <span>{t(`toolbar.tool.${labelKey}`)}</span>
             </button>
           ))}
         </div>

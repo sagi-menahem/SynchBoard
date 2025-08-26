@@ -62,7 +62,7 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
       <button
         className={`${styles.dropdownButton} ${isShapeToolActive ? styles.active : ''}`}
         onClick={handleToggle}
-        title="Shape Tools"
+        title={t('toolbar.shapeTools')}
       >
         <currentShapeTool.icon size={16} />
         <ChevronDown size={12} />

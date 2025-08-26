@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import Button from './Button';
 import styles from './Modal.module.css';
@@ -12,6 +13,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  const { t } = useTranslation();
   if (!isOpen) {
     return null;
   }
@@ -31,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       <button
         className={styles.backdrop}
         onClick={onClose}
-        aria-label="Close modal"
+        aria-label={t('accessibility.closeModal')}
         tabIndex={-1}
       />
       <div

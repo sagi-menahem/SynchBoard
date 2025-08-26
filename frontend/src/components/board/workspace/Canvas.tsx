@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { getRecolorCursor } from 'utils/canvas/cursorUtils';
 import { processRecolorClick } from 'utils/canvas/recolorLogic';
 
@@ -28,6 +29,7 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
+  const { t } = useTranslation();
   const [textInput, setTextInput] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
   const [recolorCursor, setRecolorCursor] = useState<string>('crosshair');
   
@@ -215,7 +217,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         <div className={styles.loadingOverlay}>
           <div className={styles.placeholderContent}>
             <div className={styles.placeholderSpinner}></div>
-            <p className={styles.placeholderText}>Loading canvas...</p>
+            <p className={styles.placeholderText}>{t('canvas.loading')}</p>
           </div>
         </div>
       )}

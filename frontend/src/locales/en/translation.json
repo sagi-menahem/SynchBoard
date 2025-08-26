@@ -5,6 +5,7 @@
     "common": {
         "_comment": "Shared text used across multiple components",
         "language": "Language:",
+        "loading": "Loading...",
         "form": {
             "label": {
                 "email": "Email:",
@@ -31,7 +32,12 @@
             "save": "Save",
             "saving": "Saving...",
             "confirm": "Confirm"
-        }
+        },
+        "chooseColor": "Choose color"
+    },
+    "auth": {
+        "_comment": "Authentication-related texts",
+        "signingInMessage": "Signing you in..."
     },
     "authPage": {
         "_comment": "Texts for src/pages/AuthPage.tsx",
@@ -320,7 +326,8 @@
         "auth.badCredentials": "Incorrect username or password.",
         "sessionExpired": "Your session has expired. Please log in again.",
         "gender.invalid": "Please select a valid gender (male or female).",
-        "dateOfBirth.invalid": "Please enter a valid date of birth."
+        "dateOfBirth.invalid": "Please enter a valid date of birth.",
+        "componentError": "{{context}} encountered an error"
     },
     "success": {
         "profile.update": "Profile updated successfully!",
@@ -464,5 +471,64 @@
         "darkDeepOrange": "Dark Deep Orange",
         "veryDarkOrange": "Very Dark Orange",
         "brownOrange": "Brown Orange"
+    },
+    "errorDisplay": {
+        "pageUnavailable": "Oops! Page Not Available",
+        "pageUnavailableMessage": "This page encountered an error and cannot be displayed right now. Please try refreshing the page or go back to the previous screen.",
+        "boardLoadingError": "Board Loading Error",
+        "boardLoadingErrorMessage": "Unable to load this board. This might be a temporary issue with the board data or your connection.",
+        "featureUnavailable": "Feature Temporarily Unavailable",
+        "featureUnavailableMessage": "A component on this page encountered an error. You can try refreshing to restore functionality.",
+        "somethingWentWrong": "Something Went Wrong",
+        "unexpectedError": "An unexpected error occurred.",
+        "tryAgain": "Try Again",
+        "goBack": "Go Back",
+        "technicalDetails": "Technical Details",
+        "error": "Error:",
+        "time": "Time:",
+        "location": "Location:",
+        "stackTrace": "Stack Trace",
+        "helpText": "If this problem persists, please try refreshing the page or contact support.",
+        "errorAriaLabel": "Error"
+    },
+    "errorBoundary": {
+        "title": "Something went wrong",
+        "message": "An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.",
+        "tryAgain": "Try Again"
+    },
+    "canvas": {
+        "loading": "Loading canvas..."
+    },
+    "chat": {
+        "searchPlaceholder": "Search messages...",
+        "emptyMessage": "Message content cannot be empty",
+        "messageTooLong": "Message is too long (maximum 5000 characters)",
+        "message": {
+            "failedToSendTooltip": "Failed to send - message will be retried when connection is restored"
+        }
+    },
+    "textInput": {
+        "placeholder": "Type text..."
+    },
+    "tools": {
+        "shapeTools": "Shape Tools",
+        "line": "Line",
+        "dottedLine": "Dotted Line",
+        "arrow": "Arrow"
+    },
+    "accessibility": {
+        "closeModal": "Close modal",
+        "resizePanels": "Resize panels",
+        "sizeSlider": "Size: {{size}}"
+    },
+    "dates": {
+        "invalidDate": "Invalid date",
+        "justNow": "Just now",
+        "minAgo": "min ago",
+        "yesterday": "Yesterday",
+        "today": "Today"
+    },
+    "errorHandler": {
+        "unexpectedError": "An unexpected error occurred"
     }
 }

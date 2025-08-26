@@ -26,18 +26,21 @@ const SettingsPage = lazy(() => import('pages/SettingsPage'));
 const logger = Logger;
 
 // Simple loading component for lazy routes
-const PageLoader = () => (
-  <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '50vh',
-    color: '#ccc',
-    fontSize: '1rem',
-  }}>
-    Loading...
-  </div>
-);
+const PageLoader = () => {
+  const { t } = useTranslation();
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '50vh',
+      color: '#ccc',
+      fontSize: '1rem',
+    }}>
+      {t('common.loading')}
+    </div>
+  );
+};
 
 function AppRoutes() {
   const location = useLocation();
