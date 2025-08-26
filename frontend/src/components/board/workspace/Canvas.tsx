@@ -23,6 +23,7 @@ interface CanvasProps {
     fontSize: number;
     canvasConfig?: CanvasConfig;
     onColorPick?: (color: string) => void;
+    isLoading?: boolean;
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
@@ -42,20 +43,12 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   });
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   const { preferences } = usePreferences();
-  const [showLoading, setShowLoading] = useState(true);
 
   const canvasConfig = props.canvasConfig || {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
     width: CANVAS_CONFIG.DEFAULT_WIDTH,
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false);
-    }, 400);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Canvas at 100% zoom (1:1 scale)
   const canvasWidth = canvasConfig.width;
@@ -169,7 +162,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     setRecolorCursor(cursor);
   }, [props.tool, props.objects, canvasRef]);
 
-  const shouldShowLoading = showLoading;
+  const shouldShowLoading = props.isLoading ?? false;
   const containerClassName = `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`;
   const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
   const canvasContainerClassName = `${styles.canvasContainer} ${hideBackground ? styles.hideBackground : ''}`;

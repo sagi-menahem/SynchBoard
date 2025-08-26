@@ -148,6 +148,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             onDraw={handleDrawAction}
             onSplitRatioChange={handleSplitRatioChange}
             onColorPick={handleColorPick}
+            isLoading={isLoading}
           />
         </div>
       </div>

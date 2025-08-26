@@ -26,6 +26,7 @@ interface BoardWorkspaceProps {
     onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
     onSplitRatioChange?: (ratio: number) => void;
     onColorPick?: (color: string) => void;
+    isLoading?: boolean;
 }
 
 const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
@@ -42,6 +43,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   onDraw,
   onSplitRatioChange,
   onColorPick,
+  isLoading,
 }) => {
   const [currentSplitRatio, setCurrentSplitRatio] = useState(splitRatio);
 
@@ -67,6 +69,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       fontSize={fontSize}
       canvasConfig={canvasConfig}
       onColorPick={onColorPick}
+      isLoading={isLoading}
     />
   );
 
