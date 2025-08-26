@@ -29,12 +29,16 @@
 }
 
 .primary {
-    background-color: #646cff;
-    color: white;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+    color: #fff;
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.1);
 }
 
 .primary:hover:not(:disabled) {
-    background-color: #535bf2;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(59, 130, 246, 0.3));
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
 }
 
 .secondary {
