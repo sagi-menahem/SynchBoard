@@ -10,16 +10,17 @@
     box-sizing: border-box;
 }
 
-/* Section Header - like Settings page */
-.sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+/* Language Switcher in corner */
+.languageSwitcherCorner {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
 }
 
-.languageSwitcherInline {
-    flex-shrink: 0;
+/* Section Header - like Settings page */
+.sectionHeader {
+    margin-bottom: 1.5rem;
 }
 
 /* Auth Section - Match Settings section styling */
@@ -97,6 +98,11 @@
     .pageContent {
         padding: 1rem;
         padding-top: 2rem;
+    }
+    
+    .languageSwitcherCorner {
+        top: 16px;
+        right: 16px;
     }
     
     .authSection {

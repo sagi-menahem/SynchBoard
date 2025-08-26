@@ -53,6 +53,10 @@ const AuthPage: React.FC = () => {
   return (
     <div className={styles.pageContent}>
       
+      <div className={styles.languageSwitcherCorner}>
+        <GuestLanguageSwitcher />
+      </div>
+      
       {isProcessing && <LoadingOverlay message="Signing you in..." />}
       
       {!isProcessing && (
@@ -62,9 +66,6 @@ const AuthPage: React.FC = () => {
               <Users size={20} />
               {t('authPage.pageTitle')}
             </h1>
-            <div className={styles.languageSwitcherInline}>
-              <GuestLanguageSwitcher />
-            </div>
           </div>
           
           <div className={styles.authContainer}>
