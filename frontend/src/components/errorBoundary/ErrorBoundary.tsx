@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
+import i18n from 'i18next';
 import logger from 'utils/logger';
 
 interface Props {
@@ -81,7 +82,7 @@ export class ErrorBoundary extends Component<Props, State> {
               margin: '0 0 1rem 0',
               lineHeight: '1.2',
             }}>
-              Something went wrong
+              {i18n.t('errorBoundary.title')}
             </h1>
             
             <p style={{
@@ -90,7 +91,7 @@ export class ErrorBoundary extends Component<Props, State> {
               lineHeight: '1.6',
               margin: '0 0 2rem 0',
             }}>
-              An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.
+              {i18n.t('errorBoundary.message')}
             </p>
             
             <div style={{
@@ -129,7 +130,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                Try Again
+                {i18n.t('errorBoundary.tryAgain')}
               </button>
             </div>
           </div>

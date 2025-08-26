@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { HexColorPicker } from 'react-colorful';
+import { useTranslation } from 'react-i18next';
 
 import { PRESET_COLORS } from 'constants/ColorConstants';
 import { useClickOutside } from 'hooks/common/useClickOutside';
@@ -22,6 +23,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   className = '',
   label,
 }) => {
+  const { t } = useTranslation();
   const [showPicker, setShowPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
@@ -98,7 +100,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         className={`${styles.swatch} ${disabled ? styles.disabled : ''}`}
         onClick={handleSwatchClick}
         disabled={disabled}
-        aria-label={label || 'Choose color'}
+        aria-label={label || t('common.chooseColor')}
         style={{ backgroundColor: color }}
       >
         <div className={styles.swatchInner} />

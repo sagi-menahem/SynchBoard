@@ -117,7 +117,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
                 min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
                 max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
                 onChange={setStrokeWidth}
-                aria-label={`Size: ${strokeWidth}`}
+                aria-label={t('accessibility.sizeSlider', { size: strokeWidth })}
               />
             </div>
           </div>

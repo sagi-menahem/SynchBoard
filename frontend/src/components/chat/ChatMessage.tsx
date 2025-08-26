@@ -1,6 +1,7 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
+import { useTranslation } from 'react-i18next';
 import { getUserColor, isSafeUrl, sanitizeUserContent, type UserColorMap } from 'utils';
 import { formatDetailedTimestamp } from 'utils/DateUtils';
 
@@ -23,6 +24,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   userColorMap, 
   shouldAnimate = true, 
 }) => {
+  const { t } = useTranslation();
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;
@@ -74,7 +76,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           {messageStatus === 'failed' && (
             <span 
               className={styles.failureIcon} 
-              title="Failed to send - message will be retried when connection is restored"
+              title={t('chat.message.failedToSendTooltip')}
             >
               ❗
             </span>

@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 
 import styles from './HeaderToolbar.module.css';
 
@@ -24,6 +26,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
   onSubmit,
   onCancel,
 }) => {
+  const { t } = useTranslation();
   const [text, setText] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -70,7 +73,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         onKeyDown={handleKeyDown}
         onBlur={handleSubmit}
         className={styles.textInput}
-        placeholder="Type text..."
+        placeholder={t('textInput.placeholder')}
         dir="auto"
         style={{
           color,

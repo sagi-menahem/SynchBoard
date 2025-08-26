@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { createErrorHandler } from 'utils';
 import logger from 'utils/logger';
@@ -12,6 +13,7 @@ interface ErrorHandlerOptions {
 }
 
 export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { showToast = true, redirectOnError, logLevel = 'error' } = options;
 
@@ -23,7 +25,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
       toast.error(
         context 
           ? `${context}: ${error.message}`
-          : error.message || 'An unexpected error occurred',
+          : error.message || t('errorHandler.unexpectedError'),
       );
     }
 

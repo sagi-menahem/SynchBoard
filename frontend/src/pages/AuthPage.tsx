@@ -57,7 +57,7 @@ const AuthPage: React.FC = () => {
         <GuestLanguageSwitcher />
       </div>
       
-      {isProcessing && <LoadingOverlay message="Signing you in..." />}
+      {isProcessing && <LoadingOverlay message={t('auth.signingInMessage')} />}
       
       {!isProcessing && (
         <section className={styles.authSection}>

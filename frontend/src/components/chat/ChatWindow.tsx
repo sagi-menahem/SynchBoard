@@ -88,11 +88,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     const trimmedContent = content.trim();
     
     if (!trimmedContent) {
-      throw new Error('Message content cannot be empty');
+      throw new Error(t('chat.emptyMessage'));
     }
 
     if (trimmedContent.length > 5000) {
-      throw new Error('Message is too long (maximum 5000 characters)');
+      throw new Error(t('chat.messageTooLong'));
     }
 
     const instanceId = crypto.randomUUID();
@@ -195,7 +195,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         <div className={styles.searchContainer}>
           <input
             type="text"
-            placeholder="Search messages..."
+            placeholder={t('chat.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
