@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 64px; /* Account for fixed toolbar with breathing room */
+    padding-top: 40px; /* Exact toolbar height - no overlap */
     min-height: 100vh;
     width: 100%;
     max-width: 1200px;
@@ -109,7 +109,7 @@
     .pageContent {
         padding-left: 16px;
         padding-right: 16px;
-        padding-top: 64px;
+        padding-top: 40px;
     }
     
     .quickSettingsModal {
@@ -126,7 +126,7 @@
     .pageContent {
         padding-left: 12px;
         padding-right: 12px;
-        padding-top: 60px;
+        padding-top: 40px; /* Desktop-only - no mobile */
     }
     
     .sectionTitle {
@@ -154,6 +154,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    max-width: min(350px, 30vw); /* Aggressive width limit */
+    overflow: hidden;
+    flex-shrink: 1;
 }
 
 .boardTitle {
@@ -164,7 +167,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 300px;
+    max-width: min(250px, 25vw); /* Much more aggressive limit */
+    flex-shrink: 1; /* Allow shrinking */
 }
 
 .editButton {
@@ -180,6 +184,7 @@
     transition: all 0.2s ease;
     min-width: 24px;
     min-height: 24px;
+    flex-shrink: 0; /* Don't shrink edit button */
 }
 
 .editButton:hover {

@@ -20,8 +20,14 @@
     overflow: hidden;
 }
 
-/* Add padding for regular pages, but not for board pages */
-.mainContent > *:not([data-board-page]) {
+/* Add padding for regular pages, but not for board pages or pages with toolbars */
+.mainContent > *:not([data-board-page]):not([data-has-toolbar]) {
     padding: 2rem;
     width: 100%;
+}
+
+/* Pages with toolbars handle their own spacing */
+.mainContent > [data-has-toolbar] {
+    width: 100%;
+    padding: 0; /* Let page handle its own padding */
 }

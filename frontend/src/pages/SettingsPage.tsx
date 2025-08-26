@@ -69,7 +69,7 @@ const SettingsPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent}>
+        <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.loading}>{t('settingsPage.loading')}</div>
         </div>
       </>
@@ -80,7 +80,7 @@ const SettingsPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent}>
+        <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.loadError}>{t('settingsPage.loadError')}</div>
         </div>
       </>
@@ -90,7 +90,7 @@ const SettingsPage: React.FC = () => {
   return (
     <>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent}>
+      <div className={styles.pageContent} data-has-toolbar>
 
       <section className={styles.section}>
         <h2 className={styles.sectionHeader}>{t('settingsPage.pictureSectionHeader')}</h2>

@@ -94,7 +94,7 @@ const BoardListPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent}>
+        <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.loading}>{t('boardListPage.loading')}</div>
         </div>
       </>
@@ -104,7 +104,7 @@ const BoardListPage: React.FC = () => {
   return (
     <>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent}>
+      <div className={styles.pageContent} data-has-toolbar>
         {boards.length > 0 ? (
           <div className={`${styles.boardList} ${styles[viewMode]}`}>
             {boards.map((board, index) => (
