@@ -12,7 +12,7 @@ import {
   MemberContextMenu,
   MemberList,
 } from 'components/board/details';
-import { UniversalToolbar } from 'components/common';
+import { LoadingOverlay, UniversalToolbar } from 'components/common';
 import { useBoardDetailsPage } from 'hooks/board/details';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
@@ -112,7 +112,7 @@ const BoardDetailsPage: React.FC = () => {
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
-          <div className={styles.loading}>{t('boardDetailsPage.loading')}</div>
+          <LoadingOverlay message={t('boardDetailsPage.loading')} />
         </div>
       </>
     );

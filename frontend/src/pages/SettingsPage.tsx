@@ -6,7 +6,7 @@ import { ArrowRight, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { ConfirmationDialog, UniversalToolbar } from 'components/common';
+import { ConfirmationDialog, LoadingOverlay, UniversalToolbar } from 'components/common';
 import {
   BoardAppearanceSection,
   ChangePasswordForm,
@@ -70,7 +70,7 @@ const SettingsPage: React.FC = () => {
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
-          <div className={styles.loading}>{t('settingsPage.loading')}</div>
+          <LoadingOverlay message={t('settingsPage.loading')} />
         </div>
       </>
     );

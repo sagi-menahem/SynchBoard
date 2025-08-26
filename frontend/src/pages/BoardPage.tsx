@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { BoardWorkspace, CanvasToolSection } from 'components/board/workspace';
-import { UniversalToolbar } from 'components/common';
+import { LoadingOverlay, UniversalToolbar } from 'components/common';
 import { useBoardContext, useToolbarState } from 'hooks/board';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
@@ -123,7 +123,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       <>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent}>
-          <div className={styles.loading}>{t('boardPage.loading')}</div>
+          <LoadingOverlay message={t('boardPage.loading')} />
         </div>
       </>
     );
