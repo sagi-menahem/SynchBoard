@@ -187,7 +187,7 @@
     },
     "boardListPage": {
         "heading": "הלוחות שלי",
-        "createNewBoardButton": "+ צור לוח חדש",
+        "createNewBoardButton": "צור לוח חדש",
         "loading": "טוען את הלוחות שלך...",
         "fetchError": "טעינת הלוחות נכשלה. אנא נסה שוב מאוחר יותר.",
         "noDescription": "אין תיאור.",
@@ -202,7 +202,7 @@
         "loading": "טוען פרטי לוח...",
         "notFound": "הלוח לא נמצא או שאין לך גישה אליו.",
         "noDescription": "אין תיאור.",
-        "inviteButton": "+ הזמן חבר",
+        "inviteButton": "הזמן חבר",
         "membersHeader": "חברים",
         "adminBadge": "מנהל",
         "boardPicture": "תמונת הלוח",

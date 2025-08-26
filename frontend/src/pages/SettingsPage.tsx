@@ -2,7 +2,7 @@ import { APP_ROUTES } from 'constants';
 
 import React, { useMemo } from 'react';
 
-import { ArrowLeft, LogOut } from 'lucide-react';
+import { ArrowRight, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ const SettingsPage: React.FC = () => {
       },
       {
         type: 'button',
-        icon: ArrowLeft,
+        icon: ArrowRight,
         label: t('settingsPage.backToBoards'),
         onClick: () => navigate(APP_ROUTES.BOARD_LIST),
       },

@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px); /* Banner + toolbar + gap */
+    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px); /* Banner + toolbar + reduced gap */
     min-height: 100vh;
     width: 100%;
     max-width: 1200px;
@@ -40,7 +40,7 @@
 .boardList {
     display: grid;
     gap: 1.5rem;
-    padding: 1.5rem 0;
+    padding: 0.5rem 0; /* Reduced from 1.5rem to minimize space from toolbar */
 }
 
 .boardList.grid {
