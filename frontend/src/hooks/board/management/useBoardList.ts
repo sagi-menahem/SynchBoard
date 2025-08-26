@@ -26,9 +26,9 @@ export const useBoardList = () => {
   const [boardToLeave, setBoardToLeave] = useState<Board | null>(null);
   const { userEmail } = useAuth();
 
-  // New state for search and view functionality
+  // New state for search functionality
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const viewMode: ViewMode = 'list'; // Always use list view
 
   // Filter boards based on search query
   const filteredBoards = useMemo(() => {
@@ -50,10 +50,6 @@ export const useBoardList = () => {
     setSearchQuery('');
   }, []);
 
-  // View mode functionality
-  const handleViewModeChange = useCallback((mode: ViewMode) => {
-    setViewMode(mode);
-  }, []);
 
   const fetchBoards = useCallback(() => {
     if (!boards.length) {
@@ -161,12 +157,11 @@ export const useBoardList = () => {
     closeModal,
     handleConfirmLeave,
     handleLeaveClick,
-    // New search functionality
+    // Search functionality
     searchQuery,
     handleSearch,
     handleClearSearch,
-    // New view mode functionality
+    // View mode (always list)
     viewMode,
-    handleViewModeChange,
   };
 };
