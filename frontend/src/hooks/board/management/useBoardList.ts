@@ -55,12 +55,23 @@ export const useBoardList = () => {
     if (!boards.length) {
       setIsLoading(true);
     }
+    
+    const startTime = Date.now();
+    const minDelay = 250; // 300ms minimum delay
+    
     BoardService.getBoards()
       .then((userBoards) => {
         setBoards(userBoards);
       })
       .catch((err) => logger.error(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        const elapsed = Date.now() - startTime;
+        const remainingDelay = Math.max(0, minDelay - elapsed);
+        
+        setTimeout(() => {
+          setIsLoading(false);
+        }, remainingDelay);
+      });
   }, [boards.length]);
 
   useEffect(() => {
