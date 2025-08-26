@@ -13,8 +13,8 @@
   padding: 8px 12px;
   gap: 8px;
   transition: all 0.2s ease;
-  min-width: 200px;
-  max-width: 300px;
+  min-width: 180px;
+  max-width: 280px;
 }
 
 .searchContainer:focus-within {
@@ -61,23 +61,4 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .searchContainer {
-    min-width: 160px;
-    max-width: 200px;
-    padding: 6px 10px;
-  }
-  
-  .searchInput {
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .searchContainer {
-    min-width: 120px;
-    max-width: 150px;
-    padding: 6px 8px;
-  }
-}
+/* Desktop-only: No mobile responsive code needed */

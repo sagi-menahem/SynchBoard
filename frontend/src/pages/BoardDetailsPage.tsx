@@ -128,7 +128,7 @@ const BoardDetailsPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent}>
+        <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.loading}>{t('boardDetailsPage.loading')}</div>
         </div>
       </>
@@ -139,7 +139,7 @@ const BoardDetailsPage: React.FC = () => {
     return (
       <>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent}>
+        <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.notFound}>{t('boardDetailsPage.notFound')}</div>
         </div>
       </>
@@ -149,7 +149,7 @@ const BoardDetailsPage: React.FC = () => {
   return (
     <>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent}>
+      <div className={styles.pageContent} data-has-toolbar>
         <BoardDetailsHeader
           boardDetails={boardDetails}
           currentUserIsAdmin={currentUserIsAdmin}

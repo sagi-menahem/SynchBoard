@@ -1,12 +1,12 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 64px; /* Account for fixed toolbar with breathing room */
+    padding-top: 40px; /* Exact match to UniversalToolbar height: 40px */
     height: 100vh;
     display: flex;
     flex-direction: column;
     width: 100%;
     position: relative;
-    overflow: hidden !important; /* Force override parent overflow */
+    overflow: auto; /* Allow normal scrolling behavior */
     box-sizing: border-box;
 }
 

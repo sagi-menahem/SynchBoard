@@ -117,6 +117,9 @@ function App() {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
   const { i18n } = useTranslation();
   
+  // Fixed toolbar height for desktop-only application
+  const toolbarHeight = 40;
+  
   // Initialize global language synchronization
   useLanguageSync();
   
@@ -142,10 +145,13 @@ function App() {
       <BrowserRouter>
         <ConnectionStatusBanner onHeightChange={handleBannerHeightChange} />
         <div style={{ 
-          paddingTop: `${bannerHeight}px`, 
+          paddingTop: `${bannerHeight}px`,
+          '--banner-height': `${bannerHeight}px`,
+          '--toolbar-height': `${toolbarHeight}px`,
+          '--content-offset': `${bannerHeight + toolbarHeight + 16}px`,
           transition: 'padding-top 0.3s ease-in-out',
           minHeight: '100vh',
-        }}>
+        } as React.CSSProperties}>
           <Toaster
             position="top-center"
             toastOptions={{

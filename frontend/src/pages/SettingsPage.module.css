@@ -1,6 +1,6 @@
 /* Page Layout */
 .pageContent {
-    padding-top: 64px; /* Account for fixed toolbar with breathing room */
+    padding-top: 40px; /* Exact toolbar height - no overlap */
     min-height: 100vh;
     width: 100%;
     max-width: 600px;
@@ -175,7 +175,7 @@
     .pageContent {
         padding-left: 16px;
         padding-right: 16px;
-        padding-top: 64px;
+        padding-top: 40px;
         max-width: 100%;
     }
 }
@@ -184,7 +184,7 @@
     .pageContent {
         padding-left: 12px;
         padding-right: 12px;
-        padding-top: 60px;
+        padding-top: 40px; /* Desktop-only - no mobile */
     }
     
     .section {

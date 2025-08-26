@@ -3,6 +3,8 @@
   display: flex;
   gap: 16px;
   align-items: stretch;
+  flex-wrap: nowrap; /* Prevent wrapping to maintain single row */
+  overflow: visible; /* Ensure all content is visible */
 }
 
 .toolGroup {
@@ -125,18 +127,4 @@
   justify-content: center;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .canvasToolSection {
-    gap: 12px;
-  }
-  
-  .toolGroup {
-    padding: 0 8px;
-    gap: 6px;
-  }
-  
-  .strokeControl {
-    min-width: 100px;
-  }
-}
+/* Mobile CSS removed - desktop-only application */
