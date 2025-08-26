@@ -141,6 +141,7 @@ const BoardDetailsPage: React.FC = () => {
           currentUserIsAdmin={currentUserIsAdmin}
           onSetPictureModalOpen={setPictureModalOpen}
           onSetEditingField={setEditingField}
+          onDeletePicture={promptPictureDelete}
         />
 
         <CanvasSettingsSection
