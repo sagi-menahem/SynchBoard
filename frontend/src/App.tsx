@@ -7,6 +7,8 @@ import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { Logger } from 'utils';
 
+import { useLanguageSync } from 'hooks/common';
+
 import { AuthLoadingOverlay } from 'components/auth';
 import { ConnectionStatusBanner } from 'components/common';
 import { BoardErrorBoundary, PageErrorBoundary } from 'components/errorBoundary';
@@ -112,6 +114,9 @@ function AppRoutes() {
 
 function App() {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
+  
+  // Initialize global language synchronization
+  useLanguageSync();
   
   useEffect(() => {
     logger.info('[App] App component mounted', {

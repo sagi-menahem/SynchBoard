@@ -25,6 +25,7 @@ export interface UserProfile {
     dateOfBirth: string | null;
     profilePictureUrl: string | null;
     boardBackgroundSetting: string | null;
+    preferredLanguage?: string | null;
 }
 
 export interface UpdateUserProfileRequest {
@@ -42,6 +43,10 @@ export interface ChangePasswordRequest {
 
 export interface UserPreferences {
     boardBackgroundSetting?: string | null;
+}
+
+export interface LanguagePreferences {
+    preferredLanguage: 'en' | 'he';
 }
 
 export interface ToolPreferences {

@@ -12,7 +12,7 @@ import {
   LoginForm,
   RegistrationForm,
 } from 'components/auth';
-import { Button } from 'components/common';
+import { Button, GuestLanguageSwitcher } from 'components/common';
 import { useAuth } from 'hooks/auth';
 import { useOAuthCallback } from 'hooks/auth/useOAuthCallback';
 
@@ -52,6 +52,10 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.languageSwitcherWrapper}>
+        <GuestLanguageSwitcher />
+      </div>
+      
       <h1>{t('authPage.pageTitle')}</h1>
       
       <AuthLoadingOverlay isVisible={isProcessing} />
