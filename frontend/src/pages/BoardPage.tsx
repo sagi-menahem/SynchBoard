@@ -3,7 +3,7 @@ import { APP_ROUTES } from 'constants';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import { BoardProvider, useCanvasPreferences } from 'context';
-import { ArrowRight, Settings } from 'lucide-react';
+import { ArrowRight, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -101,8 +101,34 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       ],
       rightSection: [
         {
+          type: 'custom',
+          content: (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              paddingRight: '16px',
+              position: 'relative',
+            }}>
+              <div style={{
+                width: '1px',
+                height: '32px',
+                background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent)',
+              }} />
+              <span style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: 'rgba(255, 255, 255, 0.9)',
+                letterSpacing: '0.02em',
+              }}>
+                {boardName || 'Untitled Board'}
+              </span>
+            </div>
+          ),
+        },
+        {
           type: 'button',
-          icon: Settings,
+          icon: Info,
           label: t('boardDetailsPage.boardDetailsButton') || 'Board Details',
           onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
         },
