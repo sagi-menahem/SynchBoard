@@ -126,6 +126,19 @@
   display: none;
 }
 
+.toolbarButton.iconOnlyButton {
+  padding: 8px;
+  min-width: 36px;
+  min-height: 36px;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.toolbarButton.iconOnlyButton .buttonLabel {
+  display: none;
+}
+
 .buttonLabel {
   font-size: 14px;
   font-weight: 500;

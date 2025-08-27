@@ -64,8 +64,9 @@ const SettingsPage: React.FC = () => {
         {
           type: 'button',
           icon: ArrowRight,
-          label: t('settingsPage.backToBoards'),
+          label: '',
           onClick: () => navigate(APP_ROUTES.BOARD_LIST),
+          className: 'iconOnlyButton',
         },
       ],
     }),
