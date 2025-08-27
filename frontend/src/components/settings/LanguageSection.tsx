@@ -3,24 +3,25 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
+import { useLanguageSync } from 'hooks/common';
 import styles from 'pages/SettingsPage.module.css';
-import * as userService from 'services/userService';
 import type { LanguagePreferences } from 'types/UserTypes';
 
 const LanguageSection: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { loadUserLanguage, updateLanguagePreference, isLanguageLoaded } = useLanguageSync();
   const [languagePrefs, setLanguagePrefs] = useState<LanguagePreferences>({ preferredLanguage: 'en' });
   const [isLoading, setIsLoading] = useState(true);
 
   const currentLanguage = languagePrefs.preferredLanguage || i18n.language || 'en';
 
   useEffect(() => {
-    const loadLanguagePreferences = async () => {
+    const initializeLanguagePrefs = async () => {
       try {
-        const prefs = await userService.getLanguagePreferences();
-        setLanguagePrefs(prefs);
-        if (prefs.preferredLanguage && i18n.language !== prefs.preferredLanguage) {
-          i18n.changeLanguage(prefs.preferredLanguage);
+        // Use the centralized language loader to prevent race conditions
+        const prefs = await loadUserLanguage();
+        if (prefs) {
+          setLanguagePrefs(prefs);
         }
       } catch (error) {
         console.error('Failed to load language preferences:', error);
@@ -29,14 +30,23 @@ const LanguageSection: React.FC = () => {
       }
     };
 
-    loadLanguagePreferences();
-  }, [i18n]);
+    // Only load if language sync hasn't already loaded the preferences
+    if (!isLanguageLoaded) {
+      initializeLanguagePrefs();
+    } else {
+      // If already loaded, get current language from i18n
+      setLanguagePrefs({ preferredLanguage: i18n.language as 'en' | 'he' });
+      setIsLoading(false);
+    }
+  }, [loadUserLanguage, isLanguageLoaded, i18n.language]);
 
   const handleLanguageChange = async (language: 'en' | 'he') => {
     try {
-      i18n.changeLanguage(language);
-      const updatedPrefs = await userService.updateLanguagePreferences({ preferredLanguage: language });
-      setLanguagePrefs(updatedPrefs);
+      // Use the centralized update method to prevent race conditions
+      const updatedPrefs = await updateLanguagePreference(language);
+      if (updatedPrefs) {
+        setLanguagePrefs(updatedPrefs);
+      }
       toast.success(t('success.preferences.update'));
     } catch (error) {
       console.error('Failed to update language preference:', error);

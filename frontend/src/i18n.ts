@@ -12,21 +12,21 @@ const resources = {
   },
 };
 
-// Initialize with guest language from localStorage or default to 'en'
+// Initialize with consistent language from localStorage or default to 'en'
 const getInitialLanguage = (): string => {
-  // Check for guest language preference first
+  // Priority 1: Check for guest language preference (used for non-authenticated users)
   const guestLanguage = localStorage.getItem('guest-language');
   if (guestLanguage && ['en', 'he'].includes(guestLanguage)) {
     return guestLanguage;
   }
   
-  // Fall back to i18next stored language
+  // Priority 2: Fall back to i18next stored language (authenticated users)
   const storedLanguage = localStorage.getItem('i18nextLng');
   if (storedLanguage && ['en', 'he'].includes(storedLanguage)) {
     return storedLanguage;
   }
   
-  // Default to English
+  // Priority 3: Default to English
   return 'en';
 };
 

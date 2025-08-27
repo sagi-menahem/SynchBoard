@@ -68,10 +68,6 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
         <>
             {/* Board Picture Section */}
             <div className={styles.section}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>{t('boardDetailsPage.boardPicture')}</h2>
-                </div>
-                
                 <div className={styles.imageContainer}>
                     <img
                         src={imageSource}

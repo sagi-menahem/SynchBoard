@@ -15,17 +15,31 @@
     margin-bottom: 1.5rem;
 }
 
+/* RTL override for section headers */
+[dir="rtl"] .sectionHeader {
+    text-align: right;
+    direction: rtl;
+}
+
 .sectionTitle {
     color: rgba(255, 255, 255, 0.9);
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
+    text-align: start;
+}
+
+/* RTL override for section title */
+[dir="rtl"] .sectionTitle {
+    text-align: right;
+    direction: rtl;
 }
 
 .editButton {
     font-size: 0.9rem !important;
     padding: 0.25rem 0.75rem !important;
 }
+
 
 /* Board Image Section */
 .imageContainer {
