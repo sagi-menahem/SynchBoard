@@ -103,7 +103,7 @@
             "pixels": "פיקסלים"
         },
         "placeholder": {
-            "name": "לדוגמה, תכנון פרויקט לרבעון 3",
+            "name": "מה השם של הלוח?",
             "description": "על מה הלוח הזה?",
             "inviteEmails": "הזן כתובת אימייל",
             "width": "רוחב",
@@ -365,7 +365,7 @@
             "backgroundColor": "צבע רקע",
             "size": "גודל קנבס",
             "width": "רוחב",
-            "height": "גובה", 
+            "height": "גובה",
             "pixels": "פיקסלים",
             "edit": "עריכת הגדרות",
             "applyChanges": "החל שינויים",
@@ -525,5 +525,15 @@
     },
     "errorHandler": {
         "unexpectedError": "אירעה שגיאה בלתי צפויה"
+    },
+    "backgroundColors": {
+        "default": "ברירת מחדל",
+        "midnightBlue": "כחול לילה",
+        "warmEmber": "גחל חם",
+        "forestGreen": "ירוק יער",
+        "deepPurple": "סגול עמוק",
+        "oceanTeal": "טילקיז אוקיאני",
+        "crimsonRed": "אדום כרמיל",
+        "goldenBrown": "חום זהוב"
     }
 }

@@ -99,24 +99,186 @@ body {
   text-align: right;
 }
 
-/* RTL adjustments for settings pages */
-[dir="rtl"] .pageContent {
+
+
+/* Board description content RTL fix - using CSS module targeting */
+[dir="rtl"] [class*="descriptionContent"] {
+  text-align: right !important;
+}
+
+[dir="rtl"] [class*="description"]:not([class*="cardDescription"]) {
+  text-align: right !important;
+}
+
+/* Board Description Page header fixes - higher specificity */
+[dir="rtl"] [data-has-toolbar] [class*="section"] [class*="sectionHeader"] h2,
+[dir="rtl"] [class*="section"] [class*="sectionTitle"] {
+  text-align: right !important;
+}
+
+/* RTL adjustments for settings pages - using CSS module targeting */
+[dir="rtl"] [class*="pageContent"] {
   direction: rtl;
   text-align: right;
 }
 
-[dir="rtl"] .section {
+[dir="rtl"] [class*="section"] {
   direction: rtl;
   text-align: right;
 }
 
-[dir="rtl"] .sectionHeader {
+
+[dir="rtl"] [class*="field"] {
+  direction: rtl;
   text-align: right;
 }
 
-[dir="rtl"] .field {
-  direction: rtl;
+[dir="rtl"] [class*="field"] label {
   text-align: right;
+}
+
+[dir="rtl"] [class*="field"] p {
+  text-align: right;
+}
+
+[dir="rtl"] [class*="editButton"] {
+  order: -1;
+}
+
+/* Profile edit form RTL fixes */
+[dir="rtl"] [class*="formField"] {
+  text-align: right;
+}
+
+[dir="rtl"] [class*="formField"] input,
+[dir="rtl"] [class*="formField"] textarea,
+[dir="rtl"] [class*="formField"] select {
+  text-align: right;
+}
+
+[dir="rtl"] [class*="formActions"] {
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
+
+/* Board appearance section RTL */
+[dir="rtl"] [class*="colorSwatchContainer"] {
+  direction: rtl;
+}
+
+/* Danger zone section RTL */
+[dir="rtl"] [class*="dangerText"] {
+  text-align: right;
+}
+
+[dir="rtl"] [class*="deleteButton"] {
+  align-self: flex-start;
+}
+
+/* Language section RTL */
+[dir="rtl"] [class*="radioGroup"] {
+  direction: rtl;
+  justify-content: flex-start;
+}
+
+[dir="rtl"] [class*="radioLabel"] {
+  flex-direction: row-reverse;
+}
+
+/* Color picker and slider RTL fixes */
+[dir="rtl"] .label {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+[dir="rtl"] .popover {
+  left: auto;
+  right: 0;
+}
+
+
+[dir="rtl"] .dropdownContent {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .dropdownItem {
+  text-align: right;
+}
+
+/* Chat message RTL fixes */
+[dir="rtl"] .otherMessage .messageHeader {
+  text-align: right;
+}
+
+[dir="rtl"] .myMessage .messageHeader {
+  text-align: left;
+}
+
+[dir="rtl"] .otherMessage .timestampContainer {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .myMessage .timestampContainer {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .myMessage .messageText {
+  text-align: left;
+}
+
+[dir="rtl"] .otherMessage .messageText {
+  text-align: right;
+}
+
+[dir="rtl"] .failureIcon {
+  right: auto;
+  left: 6px;
+}
+
+[dir="rtl"] .dateSeparator::before { 
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .dateSeparator::after { 
+  left: 0; 
+  right: auto;
+}
+
+/* Utility class RTL fixes */
+[dir="rtl"] .flexEnd,
+[dir="rtl"] .buttonGroup {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .buttonGroupStart {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .textLeft {
+  text-align: right;
+}
+
+[dir="rtl"] .textRight {
+  text-align: left;
+}
+
+/* Directional icon RTL fixes */
+[dir="rtl"] .icon-chevron-left,
+[dir="rtl"] .icon-chevron-right,
+[dir="rtl"] .icon-arrow-left,
+[dir="rtl"] .icon-arrow-right {
+  transform: scaleX(-1);
+}
+
+/* Icons that should NOT be flipped */
+[dir="rtl"] .icon-settings,
+[dir="rtl"] .icon-close,
+[dir="rtl"] .icon-add,
+[dir="rtl"] .icon-plus,
+[dir="rtl"] .icon-x {
+  transform: none;
 }
 
 /* RTL adjustments for navigation */
