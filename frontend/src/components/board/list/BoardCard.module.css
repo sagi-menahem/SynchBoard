@@ -184,7 +184,9 @@
 }
 
 .adminLabel {
-    color: #4ade80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* View-Specific Layout Adjustments */

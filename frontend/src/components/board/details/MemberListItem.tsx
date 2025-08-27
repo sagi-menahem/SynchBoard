@@ -1,6 +1,7 @@
 import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
+import { Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { API_BASE_URL } from 'constants/ApiConstants';
@@ -28,7 +29,11 @@ const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onCo
             {member.email}
           </div>
         </div>
-        {member.isAdmin && <span className={styles.adminBadge}>{t('boardDetailsPage.adminBadge')}</span>}
+        {member.isAdmin && (
+          <div className={styles.adminBadge} title={t('boardDetailsPage.adminBadge')}>
+            <Crown size={20} />
+          </div>
+        )}
       </li>
     </div>
   );

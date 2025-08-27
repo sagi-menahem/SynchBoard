@@ -3,6 +3,7 @@ import { API_BASE_URL, APP_ROUTES } from 'constants';
 import React from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
+import { Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import type { Board, ViewMode } from 'types';
@@ -58,7 +59,11 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
             {/* Empty space for future expansion */}
           </div>
           <div className={styles.centerSection}>
-            {board.isAdmin && <span className={styles.adminLabel}>{t('boardListPage.adminLabel')}</span>}
+            {board.isAdmin && (
+              <div className={styles.adminLabel} title={t('boardListPage.adminLabel')}>
+                <Crown size={18} />
+              </div>
+            )}
           </div>
           <div className={styles.rightSection}>
             <RelativeTimestamp
