@@ -72,15 +72,30 @@ apiClient.interceptors.response.use(
       error.response?.status === 500 && 
       error.message?.includes?.('User not found');
 
-    if ((error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) || 
-        (isUserNotFoundError && !isLoginAttempt)) {
-      if (error.response?.status === 401 || !isBoardRequest || isUserNotFoundError) {
-        const reason = isUserNotFoundError ? 'user not found in database' : `${error.response?.status} response`;
+    // Check for OAuth redirect scenario (CORS error when redirected to Google OAuth)
+    // This happens when the backend returns a 302 redirect to OAuth instead of 401
+    const isOAuthRedirectError = !error.response && 
+      (error.message?.includes?.('CORS') || 
+       error.message?.includes?.('blocked by CORS policy') ||
+       error.code === 'ERR_NETWORK') &&
+      localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN); // Only if we had a token
+
+    // Check for session timeout scenarios
+    const isSessionTimeout = (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) || 
+      (isUserNotFoundError && !isLoginAttempt) ||
+      (isOAuthRedirectError && !isLoginAttempt);
+
+    if (isSessionTimeout) {
+      if (error.response?.status === 401 || !isBoardRequest || isUserNotFoundError || isOAuthRedirectError) {
+        const reason = isUserNotFoundError ? 'user not found in database' : 
+                      isOAuthRedirectError ? 'OAuth redirect (expired session)' :
+                      `${error.response?.status} response`;
         logger.warn(`[API] Session invalidated due to ${reason}`, {
           currentPath: window.location.pathname,
           clearingToken: true,
           timestamp: new Date().toISOString(),
           isUserNotFoundError,
+          isOAuthRedirectError,
         });
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 

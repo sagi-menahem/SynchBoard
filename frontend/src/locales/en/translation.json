@@ -326,7 +326,7 @@
         "password.sameAsOld": "New password cannot be the same as the old one.",
         "unexpected": "An unexpected error occurred. Please try again.",
         "auth.badCredentials": "Incorrect username or password.",
-        "sessionExpired": "Your session has expired. Please log in again.",
+        "sessionExpired": "Your login session has expired. Please sign in again to continue.",
         "gender.invalid": "Please select a valid gender (male or female).",
         "dateOfBirth.invalid": "Please enter a valid date of birth.",
         "componentError": "{{context}} encountered an error"
