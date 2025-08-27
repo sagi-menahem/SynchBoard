@@ -97,9 +97,6 @@ const SettingsPage: React.FC = () => {
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
         <section className={styles.section}>
-          <h2 className={styles.sectionHeader}>
-            {t('settingsPage.pictureSectionHeader')}
-          </h2>
           <ProfilePictureManager
             user={user}
             onUpload={handlePictureUpload}

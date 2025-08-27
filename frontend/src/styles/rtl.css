@@ -116,6 +116,7 @@ body {
   text-align: right !important;
 }
 
+
 /* RTL adjustments for settings pages - using CSS module targeting */
 [dir="rtl"] [class*="pageContent"] {
   direction: rtl;
@@ -126,6 +127,13 @@ body {
   direction: rtl;
   text-align: right;
 }
+
+/* Fix section headers - reverse flex direction for proper RTL layout */
+[dir="rtl"] [class*="sectionHeader"] {
+  flex-direction: row-reverse !important;
+}
+
+
 
 
 [dir="rtl"] [class*="field"] {

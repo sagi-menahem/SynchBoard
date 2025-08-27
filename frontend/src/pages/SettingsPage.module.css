@@ -35,6 +35,13 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 0;
+    text-align: start;
+}
+
+/* RTL override for section headers */
+[dir="rtl"] .sectionHeader {
+    text-align: right;
+    direction: rtl;
 }
 
 .sectionTitle {
@@ -42,12 +49,20 @@
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
+    text-align: start;
+}
+
+/* RTL override for section title */
+[dir="rtl"] .sectionTitle {
+    text-align: right;
+    direction: rtl;
 }
 
 .editButton {
     font-size: 0.9rem !important;
     padding: 0.25rem 0.75rem !important;
 }
+
 
 .field {
     margin-bottom: 1rem;
