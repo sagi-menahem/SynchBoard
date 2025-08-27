@@ -150,7 +150,7 @@
             "tools": "Tools",
             "history": "History",
             "export": "Export",
-            "BackToBoards": "Back to Boards",
+            "BackToBoards": "Boards",
             "layout": "Layout"
         },
         "expand": "Expand Toolbar",
@@ -210,6 +210,8 @@
         "noDescription": "No description.",
         "adminLabel": " (Admin)",
         "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
+        "emptyStateTitle": "No boards yet",
+        "emptyStateMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
         "noSearchResults": "No boards found matching \"{{query}}\".",
         "setting": "Setting"
     },

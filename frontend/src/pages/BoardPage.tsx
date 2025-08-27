@@ -129,7 +129,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         {
           type: 'button',
           icon: Info,
-          label: t('boardDetailsPage.boardDetailsButton') || 'Board Details',
+          label: t('boardDetailsPage.boardDetailsButton'),
           onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
         },
         {

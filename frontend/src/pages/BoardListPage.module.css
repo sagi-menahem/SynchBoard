@@ -25,7 +25,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 3rem 2rem;
+    padding: 4rem 2rem;
     text-align: center;
 }
 
@@ -35,6 +35,51 @@
     margin: 0;
     max-width: 400px;
     line-height: 1.5;
+}
+
+.emptyStateCard {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    max-width: 420px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.emptyStateCard:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.emptyStateIcon {
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyStateContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.emptyStateTitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.emptyStateMessage {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
 }
 
 /* Board List - Grid View (Default) */
