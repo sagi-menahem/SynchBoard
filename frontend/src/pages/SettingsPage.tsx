@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   ConfirmationDialog,
-  LoadingOverlay,
+  PageLoader,
+  PageTransition,
   UniversalToolbar,
 } from 'components/common';
 import {
@@ -75,26 +76,26 @@ const SettingsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <>
+      <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <LoadingOverlay message={t('settingsPage.loading')} />
-      </>
+        <PageLoader message={t('settingsPage.loading')} />
+      </PageTransition>
     );
   }
 
   if (!user) {
     return (
-      <>
+      <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.loadError}>{t('settingsPage.loadError')}</div>
         </div>
-      </>
+      </PageTransition>
     );
   }
 
   return (
-    <>
+    <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
         <section className={styles.section}>
@@ -141,7 +142,7 @@ const SettingsPage: React.FC = () => {
           message={t('settingsPage.deleteAccountConfirmText')}
         />
       </div>
-    </>
+    </PageTransition>
   );
 };
 

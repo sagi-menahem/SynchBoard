@@ -12,7 +12,7 @@ import {
   LoginForm,
   RegistrationForm,
 } from 'components/auth';
-import { Button, GuestLanguageSwitcher, LoadingOverlay } from 'components/common';
+import { Button, GuestLanguageSwitcher, PageLoader, PageTransition } from 'components/common';
 import { useAuth } from 'hooks/auth';
 import { useOAuthCallback } from 'hooks/auth/useOAuthCallback';
 
@@ -51,16 +51,17 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.pageContent}>
-      
-      <div className={styles.languageSwitcherCorner}>
-        <GuestLanguageSwitcher />
-      </div>
-      
-      {isProcessing && <LoadingOverlay message={t('auth.signingInMessage')} />}
-      
-      {!isProcessing && (
-        <section className={styles.authSection}>
+    <PageTransition>
+      <div className={styles.pageContent}>
+        
+        <div className={styles.languageSwitcherCorner}>
+          <GuestLanguageSwitcher />
+        </div>
+        
+        {isProcessing && <PageLoader message={t('auth.signingInMessage')} />}
+        
+        {!isProcessing && (
+          <section className={styles.authSection}>
           <div className={styles.sectionHeader}>
             <h1 className={styles.pageTitle}>
               <Users size={20} />
@@ -124,7 +125,8 @@ const AuthPage: React.FC = () => {
         onSuccess={handleEmailVerificationSuccess}
       />
 
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

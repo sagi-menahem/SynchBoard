@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { motion } from 'framer-motion';
+
+import { PageLoader } from '../common';
+
 interface AuthLoadingOverlayProps {
   isVisible: boolean;
 }
@@ -12,41 +16,25 @@ export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisibl
   if (!shouldShow) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundColor: '#2f2f2f',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 9999,
-    }}>
-      <div style={{
-        width: '40px',
-        height: '40px',
-        border: '4px solid #444',
-        borderTop: '4px solid #3b82f6',
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite',
-        marginBottom: '16px',
-      }} />
-      <p style={{ 
-        fontSize: '16px', 
-        color: '#ccc',
-        margin: 0, 
-      }}>
-        Signing you in...
-      </p>
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(47, 47, 47, 0.95)',
+        zIndex: 9999,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <PageLoader message="Signing you in..." />
+    </motion.div>
   );
 };

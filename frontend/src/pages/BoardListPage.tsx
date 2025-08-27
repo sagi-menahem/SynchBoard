@@ -11,8 +11,9 @@ import {
   ConfirmationDialog,
   ContextMenu,
   ContextMenuItem,
-  LoadingOverlay,
   Modal,
+  PageLoader,
+  PageTransition,
   UniversalToolbar,
 } from 'components/common';
 import { useBoardList } from 'hooks/board/management';
@@ -88,15 +89,15 @@ const BoardListPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <>
+      <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <LoadingOverlay message={t('boardListPage.loading')} />
-      </>
+        <PageLoader message={t('boardListPage.loading')} />
+      </PageTransition>
     );
   }
 
   return (
-    <>
+    <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
         {boards.length > 0 ? (
@@ -162,7 +163,7 @@ const BoardListPage: React.FC = () => {
         />
       )}
       </div>
-    </>
+    </PageTransition>
   );
 };
 

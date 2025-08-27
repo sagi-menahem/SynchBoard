@@ -1,4 +1,4 @@
-import { APP_ROUTES } from 'constants';
+import { APP_ROUTES, LOCAL_STORAGE_KEYS } from 'constants';
 
 import { useEffect, useState } from 'react';
 
@@ -21,18 +21,34 @@ export const useOAuthCallback = () => {
     const hasParams = new URLSearchParams(window.location.search).has('token') || 
                      new URLSearchParams(window.location.search).has('code');
     
+    const shouldProcess = isCallback && hasParams;
+    
+    // Set oauth_loading immediately if we're on callback with params
+    // This ensures App.tsx shows loading from the very start
+    if (shouldProcess) {
+      sessionStorage.setItem('oauth_loading', 'true');
+    }
+    
     logger.info('[useOAuthCallback] Initial state', {
       isCallback,
       hasParams,
       pathname: window.location.pathname,
       search: window.location.search,
-      isProcessing: isCallback && hasParams,
+      isProcessing: shouldProcess,
+      oauthLoadingSet: shouldProcess,
     });
     
-    return isCallback && hasParams;
+    return shouldProcess;
   });
 
   useEffect(() => {
+    // Use sessionStorage to prevent duplicate processing across component remounts
+    const processedKey = 'oauth_callback_processed';
+    if (sessionStorage.getItem(processedKey) === 'true') {
+      logger.debug('[useOAuthCallback] Already processed, skipping');
+      return;
+    }
+
     logger.info('[useOAuthCallback] useEffect running', {
       pathname: window.location.pathname,
       search: window.location.search,
@@ -52,19 +68,22 @@ export const useOAuthCallback = () => {
       return;
     }
 
+    // Mark as processed immediately
+    sessionStorage.setItem(processedKey, 'true');
+
     const handleOAuthCallback = async () => {
       logger.info('[useOAuthCallback] Starting OAuth callback processing');
-      sessionStorage.setItem('oauth_loading', 'true');
 
       try {
         const error = oauthService.extractErrorFromCallback();
         if (error) {
           logger.error('[useOAuthCallback] OAuth error extracted from callback:', error);
           toast.error(error);
-          window.history.replaceState({}, document.title, window.location.pathname);
+          window.history.replaceState({}, document.title, '/auth');
           navigate(APP_ROUTES.AUTH, { replace: true });
           setIsProcessing(false);
           sessionStorage.removeItem('oauth_loading');
+          sessionStorage.removeItem('oauth_callback_processed');
           return;
         }
 
@@ -78,45 +97,46 @@ export const useOAuthCallback = () => {
         if (!token) {
           logger.error('[useOAuthCallback] No token found in OAuth callback');
           toast.error(t('oauth.error.noToken', 'Authentication failed. Please try again.'));
-          window.history.replaceState({}, document.title, window.location.pathname);
+          window.history.replaceState({}, document.title, '/auth');
           navigate(APP_ROUTES.AUTH, { replace: true });
           setIsProcessing(false);
           sessionStorage.removeItem('oauth_loading');
+          sessionStorage.removeItem('oauth_callback_processed');
           return;
         }
 
         logger.info('[useOAuthCallback] Calling authLogin with extracted token');
         authLogin(token);
         
+        // Show success toast
+        if (!sessionStorage.getItem('oauth_success_shown')) {
+          toast.success(t('oauth.success', 'Successfully logged in with Google!'));
+          sessionStorage.setItem('oauth_success_shown', 'true');
+        }
+        
+        // Clear OAuth loading state immediately to allow navigation
+        logger.info('[useOAuthCallback] Clearing OAuth loading state and navigating to board list');
+        sessionStorage.removeItem('oauth_loading');
+        setIsProcessing(false);
+        
+        // Navigate to board list
+        window.history.replaceState({}, document.title, '/auth');
+        navigate(APP_ROUTES.BOARD_LIST, { replace: true });
+        
+        // Clean up other OAuth state after a brief delay
         setTimeout(() => {
-          logger.info('[useOAuthCallback] Post-login navigation starting');
-          
-          if (!sessionStorage.getItem('oauth_success_shown')) {
-            toast.success(t('oauth.success', 'Successfully logged in with Google!'));
-            sessionStorage.setItem('oauth_success_shown', 'true');
-          }
-          window.history.replaceState({}, document.title, window.location.pathname);
-          
-          logger.info('[useOAuthCallback] Navigating to board list');
-          navigate(APP_ROUTES.BOARD_LIST, { replace: true });
-          
-          setTimeout(() => {
-            logger.debug('[useOAuthCallback] Clearing processing state');
-            setIsProcessing(false);
-            sessionStorage.removeItem('oauth_loading');
-            setTimeout(() => {
-              sessionStorage.removeItem('oauth_success_shown');
-            }, 500);
-          }, 1200);
-        }, 100);
+          sessionStorage.removeItem('oauth_success_shown');
+          sessionStorage.removeItem('oauth_callback_processed');
+        }, 1000);
 
       } catch (error) {
         logger.error('[useOAuthCallback] Error processing OAuth callback', error);
         toast.error(t('oauth.error.processing', 'Authentication failed. Please try again.'));
-        window.history.replaceState({}, document.title, window.location.pathname);
+        window.history.replaceState({}, document.title, '/auth');
         navigate(APP_ROUTES.AUTH, { replace: true });
         setIsProcessing(false);
         sessionStorage.removeItem('oauth_loading');
+        sessionStorage.removeItem('oauth_callback_processed');
       }
     };
 

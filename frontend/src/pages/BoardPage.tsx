@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { BoardWorkspace, CanvasToolSection } from 'components/board/workspace';
-import { LoadingOverlay, UniversalToolbar } from 'components/common';
+import { PageLoader, PageTransition, UniversalToolbar } from 'components/common';
 import { useBoardContext, useToolbarState } from 'hooks/board';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
@@ -163,15 +163,15 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   if (isLoading) {
     return (
-      <>
+      <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <LoadingOverlay message={t('boardPage.loading')} />
-      </>
+        <PageLoader message={t('boardPage.loading')} />
+      </PageTransition>
     );
   }
 
   return (
-    <>
+    <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} ref={pageRef} data-board-page>
         <div className={styles.boardWorkspaceArea}>
@@ -193,7 +193,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           />
         </div>
       </div>
-    </>
+    </PageTransition>
   );
 };
 
