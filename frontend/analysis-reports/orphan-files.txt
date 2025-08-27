@@ -1,0 +1,23 @@
+- Finding files
+Processed 227 files (1.9s) (86 warnings)
+
+App.tsx
+components/board/workspace/LineToolsGroup.tsx
+components/common/ErrorDisplay.tsx
+components/index.ts
+components/routing/RootRedirect.tsx
+context/index.ts
+hooks/auth/useOAuthCallback.ts
+hooks/common/useWebSocketHandler.ts
+hooks/index.ts
+i18n.ts
+main.tsx
+pages/index.ts
+services/index.ts
+services/oauthService.ts
+types/index.ts
+utils/canvas/cursorUtils.ts
+utils/canvas/recolorLogic.ts
+utils/index.ts
+vite-env.d.ts
+
