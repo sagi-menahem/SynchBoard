@@ -15,7 +15,7 @@ export const usePasswordManager = () => {
         loading: t('loading.password.update'),
         success: t('success.password.update'),
         error: t('errors.password.update'),
-      }
+      },
     );
   };
 

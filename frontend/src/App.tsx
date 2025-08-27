@@ -15,7 +15,6 @@ import ProtectedRoute from 'components/routing/ProtectedRoute';
 import RootRedirect from 'components/routing/RootRedirect';
 import { useAuth } from 'hooks/auth';
 import { useLanguageSync } from 'hooks/common';
-
 // Pre-load auth-critical pages to avoid loading flashes during OAuth
 import AuthPage from 'pages/AuthPage';
 import BoardListPage from 'pages/BoardListPage';

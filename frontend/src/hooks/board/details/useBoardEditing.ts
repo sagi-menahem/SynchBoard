@@ -37,7 +37,7 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
             loading: t('loading.board.nameUpdate'),
             success: t('success.board.nameUpdate'),
             error: t('errors.board.nameUpdate'),
-          }
+          },
         );
       } catch (error) {
         // Optimistic update will automatically rollback on error
@@ -61,7 +61,7 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
             loading: t('loading.board.descriptionUpdate'),
             success: t('success.board.descriptionUpdate'),
             error: t('errors.board.descriptionUpdate'),
-          }
+          },
         );
       } catch (error) {
         // Optimistic update will automatically rollback on error

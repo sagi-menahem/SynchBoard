@@ -21,7 +21,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
           loading: t('loading.member.promote'),
           success: t('promoteSuccess', { userName: member.firstName }),
           error: t('errors.member.promote'),
-        }
+        },
       );
     },
     [boardId, t],
@@ -35,7 +35,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
           loading: t('loading.member.remove'),
           success: t('removeSuccess', { userName: member.firstName }),
           error: t('errors.member.remove'),
-        }
+        },
       );
     },
     [boardId, t],
@@ -49,7 +49,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
           loading: t('loading.member.invite'),
           success: t('inviteMemberForm.inviteSuccess', { email }),
           error: t('errors.member.invite'),
-        }
+        },
       );
       return newMember;
     },

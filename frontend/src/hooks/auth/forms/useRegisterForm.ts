@@ -49,7 +49,7 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
           loading: t('loading.auth.register'),
           success: (msg) => msg || t('registerForm.registrationSuccess'),
           error: t('errors.auth.register'),
-        }
+        },
       );
       logger.info('Registration successful for user:', email);
       onRegistrationSuccess(email);

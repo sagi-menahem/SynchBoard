@@ -23,7 +23,7 @@ export const useAccountManager = () => {
         loading: t('loading.account.delete'),
         success: t('settingsPage.accountDeleteSuccess'),
         error: t('errors.account.delete'),
-      }
+      },
     );
   };
 
