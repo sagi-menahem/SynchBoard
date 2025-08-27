@@ -1,0 +1,16 @@
+STEP 2 SUMMARY - BUNDLE SIZE ANALYSIS
+======================================
+
+TOTAL BUNDLE SIZE: ~950KB uncompressed, ~235KB gzipped
+
+LARGEST CHUNKS:
+- index-Bcj8o4Br.js: 351.96 KB (113.89 KB gzipped)
+- ui-vendor-B-37wG8l.js: 124.50 KB (41.60 KB gzipped)
+- BoardPage-k2m11yOq.js: 82.64 KB (29.06 KB gzipped)
+- websocket-vendor-CIrHH3Kk.js: 66.91 KB (21.20 KB gzipped)
+- i18n-vendor-1Af9YGnR.js: 46.02 KB (15.02 KB gzipped)
+
+CODE SPLITTING: Good - separate chunks for different pages and vendors
+OPTIMIZATION OPPORTUNITIES:
+- Main index chunk is large - could benefit from further splitting
+- UI vendor chunk contains many UI components
