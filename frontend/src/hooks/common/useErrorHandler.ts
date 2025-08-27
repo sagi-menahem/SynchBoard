@@ -32,7 +32,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
     if (redirectOnError) {
       navigate(redirectOnError);
     }
-  }, [navigate, showToast, redirectOnError, logLevel]);
+  }, [navigate, showToast, redirectOnError, logLevel, t]);
 
   const handleAsyncError = useCallback(async <T>(
     asyncFn: () => Promise<T>,

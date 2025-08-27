@@ -14,7 +14,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
       exit={{ opacity: 0, y: -10 }}
       transition={{ 
         duration: 0.2,
-        ease: 'easeOut'
+        ease: 'easeOut',
       }}
     >
       {children}

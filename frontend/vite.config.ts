@@ -19,4 +19,30 @@ export default defineConfig({
   define: {
     global: 'globalThis',
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React ecosystem
+          'react-vendor': ['react', 'react-dom'],
+          'react-router': ['react-router-dom'],
+          
+          // UI and Animation libraries
+          'ui-vendor': ['framer-motion', 'react-hot-toast'],
+          
+          // WebSocket and communication
+          'websocket-vendor': ['@stomp/stompjs', 'sockjs-client'],
+          
+          // Internationalization
+          'i18n-vendor': ['i18next', 'react-i18next'],
+          
+          // HTTP and utilities
+          'utils-vendor': ['axios', 'jwt-decode'],
+          
+          // Icons
+          'icons-vendor': ['lucide-react'],
+        },
+      },
+    },
+  },
 });

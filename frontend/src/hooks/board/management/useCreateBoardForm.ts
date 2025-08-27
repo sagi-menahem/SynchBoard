@@ -75,7 +75,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
           loading: t('loading.board.create'),
           success: (board) => t('createBoardSuccess', { boardName: board.name }),
           error: t('errors.board.create'),
-        }
+        },
       );
       onBoardCreated(newBoard);
       

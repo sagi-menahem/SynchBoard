@@ -1,4 +1,4 @@
-import { APP_ROUTES, LOCAL_STORAGE_KEYS } from 'constants';
+import { APP_ROUTES } from 'constants';
 
 import { useEffect, useState } from 'react';
 

@@ -57,7 +57,7 @@ export const useLoginForm = () => {
             }
             return errorMessage;
           },
-        }
+        },
       );
       
       const token = (response as { token: string }).token;

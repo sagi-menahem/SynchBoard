@@ -15,7 +15,7 @@ export const useProfilePictureManager = (onSuccess?: (updatedUser: UserProfile) 
         loading: t('loading.picture.upload'),
         success: t('success.picture.update'),
         error: t('errors.picture.upload'),
-      }
+      },
     );
     onSuccess?.(updatedUser);
     return updatedUser;
@@ -28,7 +28,7 @@ export const useProfilePictureManager = (onSuccess?: (updatedUser: UserProfile) 
         loading: t('loading.picture.delete'),
         success: t('success.picture.delete'),
         error: t('errors.picture.delete'),
-      }
+      },
     );
     onSuccess?.(updatedUser);
     return updatedUser;

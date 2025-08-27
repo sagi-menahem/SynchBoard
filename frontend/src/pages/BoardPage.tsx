@@ -155,7 +155,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       handleRedo,
       isRedoAvailable,
       canvasConfig,
-      t,
       navigate,
       boardId,
     ],

@@ -130,7 +130,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       Logger.error('Failed to send chat message:', error);
       throw error;
     }
-  }, [userEmail, stableUserInfo, boardId, addOptimisticMessage]);
+  }, [userEmail, stableUserInfo, boardId, addOptimisticMessage, t]);
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return optimisticMessages.map((msg): EnhancedChatMessage => {
