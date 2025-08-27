@@ -91,8 +91,9 @@ const BoardDetailsPage: React.FC = () => {
       {
         type: 'button',
         icon: ArrowRight,
-        label: t('boardDetailsPage.backToBoardButton'),
+        label: '',
         onClick: () => navigate(`/board/${numericBoardId}`),
+        className: 'iconOnlyButton',
       },
     ],
   }), [

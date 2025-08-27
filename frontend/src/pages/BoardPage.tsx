@@ -106,8 +106,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '16px',
-              paddingRight: '16px',
+              gap: '8px',
+              paddingRight: '8px',
               position: 'relative',
             }}>
               <div style={{
@@ -129,14 +129,16 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         {
           type: 'button',
           icon: Info,
-          label: t('boardDetailsPage.boardDetailsButton'),
+          label: '',
           onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
+          className: 'iconOnlyButton',
         },
         {
           type: 'button',
           icon: ArrowRight,
-          label: t('toolbar.label.BackToBoards'),
+          label: '',
           onClick: () => navigate(APP_ROUTES.BOARD_LIST),
+          className: 'iconOnlyButton',
         },
       ],
     }),
