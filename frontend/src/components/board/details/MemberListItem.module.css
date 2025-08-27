@@ -27,11 +27,8 @@
 }
 
 .adminBadge {
-    background-color: #4ade80;
-    color: #111;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-inline-start: auto;
 }
