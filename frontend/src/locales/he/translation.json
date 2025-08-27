@@ -150,7 +150,7 @@
             "tools": "כלים",
             "history": "היסטוריה",
             "export": "ייצוא",
-            "BackToBoards": "בחזרה ללוחות",
+            "BackToBoards": "לוחות",
             "layout": "פריסה"
         },
         "expand": "הרחב סרגל כלים",
@@ -205,6 +205,8 @@
         "noDescription": "אין תיאור.",
         "adminLabel": " (מנהל)",
         "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!",
+        "emptyStateTitle": "עדיין אין לוחות",
+        "emptyStateMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!",
         "noSearchResults": "לא נמצאו לוחות התואמים ל-\"{{query}}\".",
         "setting": "הגדרות"
     },

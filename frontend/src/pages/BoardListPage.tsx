@@ -2,7 +2,7 @@ import { APP_ROUTES } from 'constants';
 
 import React, { useMemo } from 'react';
 
-import { Plus, Settings } from 'lucide-react';
+import { LayoutDashboard, Plus, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -118,7 +118,19 @@ const BoardListPage: React.FC = () => {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <p>{t('boardListPage.noBoardsMessage')}</p>
+            <div className={styles.emptyStateCard}>
+              <div className={styles.emptyStateIcon}>
+                <LayoutDashboard size={48} />
+              </div>
+              <div className={styles.emptyStateContent}>
+                <h3 className={styles.emptyStateTitle}>
+                  {t('boardListPage.emptyStateTitle')}
+                </h3>
+                <p className={styles.emptyStateMessage}>
+                  {t('boardListPage.emptyStateMessage')}
+                </p>
+              </div>
+            </div>
           </div>
         )}
 
