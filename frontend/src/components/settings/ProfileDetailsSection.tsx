@@ -30,15 +30,17 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionHeader}>
-        {t('settingsPage.profileSectionHeader')}
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>
+          {t('settingsPage.profileSectionHeader')}
+        </h2>
         {!isEditing && (
           <Button onClick={startEditing} variant="secondary" className={styles.editButton}>
             <PencilLine size={16} />
             {t('settingsPage.buttons.edit')}
           </Button>
         )}
-      </h2>
+      </div>
 
       {!isEditing ? (
         <ProfileDisplayView user={user} />

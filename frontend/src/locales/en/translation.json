@@ -103,7 +103,7 @@
             "pixels": "pixels"
         },
         "placeholder": {
-            "name": "e.g., Q3 Project Planning",
+            "name": "What is the name of the board?",
             "description": "What is this board about?",
             "inviteEmails": "Enter email address",
             "width": "Width",
@@ -125,7 +125,7 @@
         "errorCheckingUser": "Error checking if user exists. Please try again.",
         "canvasSize": {
             "landscape": "Landscape",
-            "portrait": "Portrait", 
+            "portrait": "Portrait",
             "customGroup": "Custom Size",
             "mediumLandscape": "Medium",
             "largeLandscape": "Large",
@@ -162,7 +162,7 @@
             "rectangle": "Rectangle",
             "circle": "Circle",
             "triangle": "Triangle",
-            "pentagon": "Pentagon", 
+            "pentagon": "Pentagon",
             "hexagon": "Hexagon",
             "star": "Star",
             "line": "Line",
@@ -370,7 +370,7 @@
             "backgroundColor": "Background Color",
             "size": "Canvas Size",
             "width": "Width",
-            "height": "Height", 
+            "height": "Height",
             "pixels": "pixels",
             "edit": "Edit Settings",
             "applyChanges": "Apply Changes",
@@ -530,5 +530,15 @@
     },
     "errorHandler": {
         "unexpectedError": "An unexpected error occurred"
+    },
+    "backgroundColors": {
+        "default": "Default",
+        "midnightBlue": "Midnight Blue",
+        "warmEmber": "Warm Ember",
+        "forestGreen": "Forest Green",
+        "deepPurple": "Deep Purple",
+        "oceanTeal": "Ocean Teal",
+        "crimsonRed": "Crimson Red",
+        "goldenBrown": "Golden Brown"
     }
 }

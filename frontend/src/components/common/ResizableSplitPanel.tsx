@@ -37,7 +37,13 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
-      const mouseX = e.clientX - containerRect.left;
+      let mouseX = e.clientX - containerRect.left;
+      
+      // Adjust for RTL: flip the mouse position calculation
+      const isRTL = document.documentElement.dir === 'rtl';
+      if (isRTL) {
+        mouseX = containerWidth - mouseX;
+      }
 
       const newSplitRatio = (mouseX / containerWidth) * 100;
       const minLeftRatio = (minLeftWidth / containerWidth) * 100;

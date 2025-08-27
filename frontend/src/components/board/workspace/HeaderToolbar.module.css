@@ -51,7 +51,7 @@
 .toolGroup:not(:last-child)::after {
   content: '';
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   top: 50%;
   transform: translateY(-50%);
   height: 32px;
