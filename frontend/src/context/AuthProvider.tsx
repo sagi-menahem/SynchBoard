@@ -105,6 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     logger.info('[AuthProvider] User login - setting new token', {
       tokenLength: newToken?.length,
       tokenPreview: newToken ? `${newToken.substring(0, 20)}...` : null,
+      isOAuthFlow: sessionStorage.getItem('oauth_loading') === 'true',
     });
     setToken(newToken);
     localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);

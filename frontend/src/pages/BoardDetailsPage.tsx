@@ -12,7 +12,7 @@ import {
   MemberContextMenu,
   MemberList,
 } from 'components/board/details';
-import { LoadingOverlay, UniversalToolbar } from 'components/common';
+import { PageLoader, PageTransition, UniversalToolbar } from 'components/common';
 import { useBoardDetailsPage } from 'hooks/board/details';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
@@ -110,26 +110,26 @@ const BoardDetailsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <>
+      <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <LoadingOverlay message={t('boardDetailsPage.loading')} />
-      </>
+        <PageLoader message={t('boardDetailsPage.loading')} />
+      </PageTransition>
     );
   }
 
   if (!boardDetails) {
     return (
-      <>
+      <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
           <div className={styles.notFound}>{t('boardDetailsPage.notFound')}</div>
         </div>
-      </>
+      </PageTransition>
     );
   }
 
   return (
-    <>
+    <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
         <BoardDetailsHeader
@@ -207,7 +207,7 @@ const BoardDetailsPage: React.FC = () => {
           </div>
         </div>
       )}
-    </>
+    </PageTransition>
   );
 };
 

@@ -8,38 +8,29 @@ import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { Logger } from 'utils';
 
-import { AuthLoadingOverlay } from 'components/auth';
-import { ConnectionStatusBanner } from 'components/common';
+import { ConnectionStatusBanner, PageLoader, PageTransition } from 'components/common';
 import { ErrorBoundary } from 'components/errorBoundary';
 import { Layout } from 'components/layout';
 import ProtectedRoute from 'components/routing/ProtectedRoute';
 import RootRedirect from 'components/routing/RootRedirect';
+import { useAuth } from 'hooks/auth';
 import { useLanguageSync } from 'hooks/common';
 
-// Lazy load pages for code splitting
-const AuthPage = lazy(() => import('pages/AuthPage'));
+// Pre-load auth-critical pages to avoid loading flashes during OAuth
+import AuthPage from 'pages/AuthPage';
+import BoardListPage from 'pages/BoardListPage';
+
+// Lazy load other pages for code splitting
 const BoardDetailsPage = lazy(() => import('pages/BoardDetailsPage'));
-const BoardListPage = lazy(() => import('pages/BoardListPage'));
 const BoardPage = lazy(() => import('pages/BoardPage'));
 const SettingsPage = lazy(() => import('pages/SettingsPage'));
 
 const logger = Logger;
 
-// Simple loading component for lazy routes
-const PageLoader = () => {
+// Unified loading component for lazy routes
+const LazyPageLoader = () => {
   const { t } = useTranslation();
-  return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '50vh',
-      color: '#ccc',
-      fontSize: '1rem',
-    }}>
-      {t('common.loading')}
-    </div>
-  );
+  return <PageLoader message={t('common.loading')} />;
 };
 
 function AppRoutes() {
@@ -66,9 +57,7 @@ function AppRoutes() {
         path="/auth" 
         element={
           <ErrorBoundary>
-            <Suspense fallback={<PageLoader />}>
-              <AuthPage />
-            </Suspense>
+            <AuthPage />
           </ErrorBoundary>
         } 
       />
@@ -76,9 +65,7 @@ function AppRoutes() {
         path={APP_ROUTES.AUTH_CALLBACK} 
         element={
           <ErrorBoundary>
-            <Suspense fallback={<PageLoader />}>
-              <AuthPage />
-            </Suspense>
+            <AuthPage />
           </ErrorBoundary>
         } 
       />
@@ -86,9 +73,7 @@ function AppRoutes() {
         path={APP_ROUTES.AUTH_ERROR} 
         element={
           <ErrorBoundary>
-            <Suspense fallback={<PageLoader />}>
-              <AuthPage />
-            </Suspense>
+            <AuthPage />
           </ErrorBoundary>
         } 
       />
@@ -100,9 +85,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<PageLoader />}>
-                <BoardListPage />
-              </Suspense>
+              <BoardListPage />
             </ErrorBoundary>
           </ProtectedRoute>
         } 
@@ -112,7 +95,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<PageLoader />}>
+              <Suspense fallback={<LazyPageLoader />}>
                 <BoardPage />
               </Suspense>
             </ErrorBoundary>
@@ -124,7 +107,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<PageLoader />}>
+              <Suspense fallback={<LazyPageLoader />}>
                 <BoardDetailsPage />
               </Suspense>
             </ErrorBoundary>
@@ -136,7 +119,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<PageLoader />}>
+              <Suspense fallback={<LazyPageLoader />}>
                 <SettingsPage />
               </Suspense>
             </ErrorBoundary>
@@ -160,7 +143,8 @@ function AppRoutes() {
 
 function App() {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+  const { isInitializing } = useAuth();
   
   // Fixed toolbar height for desktop-only application
   const toolbarHeight = 72;
@@ -184,6 +168,27 @@ function App() {
   const handleBannerHeightChange = (height: number) => {
     setBannerHeight(height);
   };
+
+  // Global OAuth loading state - single loader for entire OAuth flow
+  const isOAuthProcessing = sessionStorage.getItem('oauth_loading') === 'true';
+  
+  // Show unified loading screen during OAuth flow
+  if (isOAuthProcessing) {
+    return (
+      <PageTransition>
+        <PageLoader message="Signing you in..." />
+      </PageTransition>
+    );
+  }
+  
+  // Show loading screen while AuthProvider is initializing (non-OAuth flows)
+  if (isInitializing) {
+    return (
+      <PageTransition>
+        <PageLoader message={t('common.loading')} />
+      </PageTransition>
+    );
+  }
 
   return (
     <ErrorBoundary>
@@ -243,8 +248,6 @@ function App() {
               },
             }}
           />
-
-          <AuthLoadingOverlay isVisible={false} />
 
           <AppRoutes />
         </div>
