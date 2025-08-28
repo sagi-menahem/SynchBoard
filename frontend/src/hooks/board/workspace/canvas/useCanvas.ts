@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
-
 import { CANVAS_CONFIG } from 'constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { CanvasConfig } from 'types/BoardTypes';
 import type { Tool } from 'types/CommonTypes';
 
-import { useCanvasCore } from './useCanvasCore';
 import { useCanvasInteractions } from './useCanvasInteractions';
-import { useCanvasRendering } from './useCanvasRendering';
+import { useCanvasState } from './useCanvasState';
 
 interface UseCanvasProps {
   instanceId: string;
@@ -30,32 +27,39 @@ export const useCanvas = ({
   canvasConfig,
   onTextInputRequest,
 }: UseCanvasProps) => {
-  const { dimensions, refs, drawingState, utils } = useCanvasCore();
-  const { canvasRef, containerRef, contextRef } = refs;
-
   const finalCanvasConfig = canvasConfig || {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
     width: CANVAS_CONFIG.DEFAULT_WIDTH,
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,
   };
 
-  useEffect(() => {
-    utils.setCanvasDimensions(finalCanvasConfig.width, finalCanvasConfig.height);
-  }, [finalCanvasConfig.width, finalCanvasConfig.height, utils]);
-
-  useEffect(() => {
-    if (dimensions.width > 0 && dimensions.height > 0 && canvasRef.current && !contextRef.current) {
-      contextRef.current = utils.setupCanvasContext(canvasRef.current);
-    }
-  }, [dimensions, canvasRef, contextRef, utils]);
-
-  useCanvasRendering({
+  // Single consolidated hook call - no more orchestration
+  const {
     canvasRef,
+    containerRef,
     contextRef,
-    objects,
     dimensions,
-    replayDrawAction: utils.replayDrawAction,
+    isDrawing,
+    setIsDrawing,
+    startPoint,
+    currentPath,
+    resetDrawingState,
+    getMouseCoordinates,
+    isShapeSizeValid,
+    isRadiusValid,
+  } = useCanvasState({
+    objects,
+    canvasConfig: finalCanvasConfig,
   });
+
+  // Simplified drawing state object
+  const drawingState = {
+    isDrawing,
+    setIsDrawing,
+    startPoint,
+    currentPath,
+    resetDrawingState,
+  };
 
   const { handleMouseDown } = useCanvasInteractions({
     canvasRef,
@@ -66,10 +70,9 @@ export const useCanvas = ({
     onDraw,
     senderId,
     drawingState,
-    getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) =>
-      utils.getMouseCoordinates(event, canvas),
-    isShapeSizeValid: utils.isShapeSizeValid,
-    isRadiusValid: utils.isRadiusValid,
+    getMouseCoordinates,
+    isShapeSizeValid,
+    isRadiusValid,
     onTextInputRequest,
   });
 

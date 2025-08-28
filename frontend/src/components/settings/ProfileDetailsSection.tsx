@@ -6,7 +6,7 @@ import logger from 'utils/logger';
 
 import { Button } from 'components/common';
 import { ProfileDisplayView, ProfileEditForm } from 'components/settings';
-import { useProfileEditing } from 'hooks/settings/profile';
+import { useUserProfile } from 'hooks/settings/profile';
 import styles from 'pages/SettingsPage.module.css';
 import type { UpdateUserProfileRequest, UserProfile } from 'types/UserTypes';
 
@@ -17,7 +17,7 @@ interface ProfileDetailsSectionProps {
 
 const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onUpdateProfile }) => {
   const { t } = useTranslation();
-  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useProfileEditing(user);
+  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useUserProfile();
 
   const onSave = async () => {
     try {

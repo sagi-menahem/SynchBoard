@@ -9,7 +9,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { BoardWorkspace, CanvasToolSection } from 'components/board/workspace';
 import { PageLoader, PageTransition, UniversalToolbar } from 'components/common';
-import { useBoardContext, useToolbarState } from 'hooks/board';
+import { useToolPreferences } from 'context/ToolPreferencesContext';
+import { useBoardContext } from 'hooks/board';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
 import styles from './BoardPage.module.css';
@@ -38,16 +39,18 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   } = useBoardContext();
 
   const {
-    tool,
-    setTool,
-    strokeColor,
-    setStrokeColor,
-    strokeWidth,
-    setStrokeWidth,
-  } = useToolbarState();
+    preferences,
+    updateTool,
+    updateStrokeColor,
+    updateStrokeWidth,
+  } = useToolPreferences();
+  
+  const tool = preferences.defaultTool;
+  const strokeColor = preferences.defaultStrokeColor;  
+  const strokeWidth = preferences.defaultStrokeWidth;
 
   const handleColorPick = (color: string) => {
-    setStrokeColor(color);
+    updateStrokeColor(color);
   };
 
   const { preferences: canvasPreferences, updateSplitRatio } =
@@ -77,11 +80,11 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             <CanvasToolSection
               boardName={boardName || 'Board'}
               strokeColor={strokeColor}
-              setStrokeColor={setStrokeColor}
+              setStrokeColor={updateStrokeColor}
               strokeWidth={strokeWidth}
-              setStrokeWidth={setStrokeWidth}
+              setStrokeWidth={updateStrokeWidth}
               tool={tool}
-              setTool={setTool}
+              setTool={updateTool}
               onUndo={handleUndo}
               isUndoAvailable={isUndoAvailable}
               onRedo={handleRedo}
@@ -137,11 +140,11 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     [
       boardName,
       strokeColor,
-      setStrokeColor,
+      updateStrokeColor,
       strokeWidth,
-      setStrokeWidth,
+      updateStrokeWidth,
       tool,
-      setTool,
+      updateTool,
       handleUndo,
       isUndoAvailable,
       handleRedo,

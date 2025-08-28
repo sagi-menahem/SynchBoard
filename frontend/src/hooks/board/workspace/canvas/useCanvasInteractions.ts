@@ -9,6 +9,7 @@ import {
   type ArrowPayload,
   type CirclePayload,
   type LinePayload,
+  type Point,
   type PolygonPayload,
   type RectanglePayload,
   type SendBoardActionRequest,
@@ -17,7 +18,13 @@ import {
 } from 'types/BoardObjectTypes';
 import type { Tool } from 'types/CommonTypes';
 
-import type { DrawingState } from './useCanvasCore';
+export interface DrawingState {
+  isDrawing: boolean;
+  setIsDrawing: (drawing: boolean) => void;
+  startPoint: React.RefObject<Point | null>;
+  currentPath: React.RefObject<Point[]>;
+  resetDrawingState: () => void;
+}
 
 interface UseCanvasInteractionsProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;

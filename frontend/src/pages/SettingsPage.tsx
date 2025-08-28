@@ -1,10 +1,11 @@
 import { APP_ROUTES } from 'constants';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { ArrowRight, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import logger from 'utils/logger';
 
 import {
   ConfirmationDialog,
@@ -21,7 +22,8 @@ import {
   ProfilePictureManager,
 } from 'components/settings';
 import { useAuth } from 'hooks/auth';
-import { useSettingsPage } from 'hooks/settings';
+import { useAccountManager, usePasswordManager } from 'hooks/settings';
+import { useUserProfile } from 'hooks/settings/profile';
 import type { ToolbarConfig } from 'types/ToolbarTypes';
 
 import styles from './SettingsPage.module.css';
@@ -30,19 +32,48 @@ const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const {
-    user,
-    isLoading,
-    isPicDeleteConfirmOpen,
-    setPicDeleteConfirmOpen,
-    isAccountDeleteConfirmOpen,
-    setAccountDeleteConfirmOpen,
-    handleUpdateProfile,
-    handleChangePassword,
-    handlePictureUpload,
+  
+  // Local modal states
+  const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
+  const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
+
+  // Consolidated profile hook - no more coordination needed
+  const { 
+    user, 
+    isLoading, 
+    handleUpdateProfile, 
+    handlePictureUpload, 
     handlePictureDelete,
-    handleDeleteAccount,
-  } = useSettingsPage();
+  } = useUserProfile();
+  
+  const { handleChangePassword } = usePasswordManager();
+  const { handleDeleteAccount } = useAccountManager();
+
+  // Simplified handler functions with cleanup
+  const handlePictureUploadWithCleanup = async (file: File) => {
+    try {
+      await handlePictureUpload(file);
+    } catch (error) {
+      logger.error('Picture upload failed:', error);
+      throw error;
+    }
+  };
+
+  const handlePictureDeleteWithCleanup = async () => {
+    try {
+      await handlePictureDelete();
+    } finally {
+      setPicDeleteConfirmOpen(false);
+    }
+  };
+
+  const handleDeleteAccountWithCleanup = async () => {
+    try {
+      await handleDeleteAccount();
+    } finally {
+      setAccountDeleteConfirmOpen(false);
+    }
+  };
 
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
@@ -100,7 +131,7 @@ const SettingsPage: React.FC = () => {
         <section className={styles.section}>
           <ProfilePictureManager
             user={user}
-            onUpload={handlePictureUpload}
+            onUpload={handlePictureUploadWithCleanup}
             onDelete={() => setPicDeleteConfirmOpen(true)}
           />
         </section>
@@ -128,7 +159,7 @@ const SettingsPage: React.FC = () => {
         <ConfirmationDialog
           isOpen={isPicDeleteConfirmOpen}
           onClose={() => setPicDeleteConfirmOpen(false)}
-          onConfirm={handlePictureDelete}
+          onConfirm={handlePictureDeleteWithCleanup}
           title={t('settingsPage.deletePictureConfirmTitle')}
           message={t('settingsPage.deletePictureConfirmText')}
         />
@@ -136,7 +167,7 @@ const SettingsPage: React.FC = () => {
         <ConfirmationDialog
           isOpen={isAccountDeleteConfirmOpen}
           onClose={() => setAccountDeleteConfirmOpen(false)}
-          onConfirm={handleDeleteAccount}
+          onConfirm={handleDeleteAccountWithCleanup}
           title={t('settingsPage.deleteAccountConfirmTitle')}
           message={t('settingsPage.deleteAccountConfirmText')}
         />
