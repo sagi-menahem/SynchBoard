@@ -17,12 +17,15 @@ export const useUserProfileManager = () => {
     setIsLoading(true);
     
     const startTime = Date.now();
-    const minDelay = 200; // 200ms minimum delay
+    const minDelay = 200;
     
     userService
       .getUserProfile()
       .then((userData) => setUser(userData))
-      .catch((error) => logger.error('Failed to fetch user profile:', error))
+      .catch((error) => {
+        logger.error('Failed to fetch user profile:', error);
+        toast.error(t('errors.profile.fetch'));
+      })
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
@@ -31,7 +34,7 @@ export const useUserProfileManager = () => {
           setIsLoading(false);
         }, remainingDelay);
       });
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchUser();

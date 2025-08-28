@@ -1,8 +1,6 @@
 package io.github.sagimenahem.synchboard.service;
 
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.sendgrid.Method;
@@ -16,7 +14,6 @@ import com.sendgrid.helpers.mail.objects.Email;
 @Service
 public class EmailService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     @Value("${sendgrid.api-key}")
     private String sendGridApiKey;
@@ -68,16 +65,12 @@ public class EmailService {
             Response response = sg.api(request);
 
             if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-                logger.info("Email sent successfully to: {} with subject: {}", toEmail, subject);
                 return true;
             } else {
-                logger.error("Failed to send email. Status code: {}, Response: {}",
-                        response.getStatusCode(), response.getBody());
                 return false;
             }
 
         } catch (IOException ex) {
-            logger.error("Error sending email to {}: {}", toEmail, ex.getMessage(), ex);
             return false;
         }
     }

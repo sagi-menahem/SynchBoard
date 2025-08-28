@@ -15,7 +15,6 @@ import type { Board } from 'types/BoardTypes';
 import type { ViewMode } from 'types/ToolbarTypes';
 import type { UserUpdateDTO } from 'types/WebSocketTypes';
 
-
 export const useBoardList = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -27,11 +26,8 @@ export const useBoardList = () => {
   const [boardToLeave, setBoardToLeave] = useState<Board | null>(null);
   const { userEmail } = useAuth();
 
-  // New state for search functionality
   const [searchQuery, setSearchQuery] = useState('');
-  const viewMode: ViewMode = 'list'; // Always use list view
-
-  // Filter boards based on search query
+  const viewMode: ViewMode = 'list';
   const filteredBoards = useMemo(() => {
     if (!searchQuery.trim()) {
       return boards;
@@ -42,7 +38,6 @@ export const useBoardList = () => {
     );
   }, [boards, searchQuery]);
 
-  // Search functionality
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
   }, []);
@@ -51,20 +46,22 @@ export const useBoardList = () => {
     setSearchQuery('');
   }, []);
 
-
   const fetchBoards = useCallback(() => {
     if (!boards.length) {
       setIsLoading(true);
     }
     
     const startTime = Date.now();
-    const minDelay = 200; // 200ms minimum delay
+    const minDelay = 200;
     
     BoardService.getBoards()
       .then((userBoards) => {
         setBoards(userBoards);
       })
-      .catch((err) => logger.error(err))
+      .catch((err) => {
+        logger.error(err);
+        toast.error(t('errors.board.fetch'));
+      })
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
@@ -73,7 +70,7 @@ export const useBoardList = () => {
           setIsLoading(false);
         }, remainingDelay);
       });
-  }, [boards.length]);
+  }, [boards.length, t]);
 
   useEffect(() => {
     fetchBoards();
@@ -93,10 +90,13 @@ export const useBoardList = () => {
 
     BoardService.leaveBoard(boardToLeave.id)
       .then(() => {
-        toast.success(t('leaveBoard.success', { boardName: boardToLeave.name }));
+        toast.success(t('success.board.leave', { boardName: boardToLeave.name }));
         fetchBoards();
       })
-      .catch((error) => logger.error('Failed to leave board:', error))
+      .catch((error) => {
+        logger.error('Failed to leave board:', error);
+        toast.error(t('errors.board.leave'));
+      })
       .finally(() => {
         setLeaveConfirmOpen(false);
         setBoardToLeave(null);
@@ -123,11 +123,10 @@ export const useBoardList = () => {
             canvasBackgroundColor: updatedBoard.canvasBackgroundColor,
             canvasWidth: updatedBoard.canvasWidth,
             canvasHeight: updatedBoard.canvasHeight,
-            lastModifiedDate: new Date().toISOString(), // Set to current time for immediate sorting
+            lastModifiedDate: new Date().toISOString(),
           } : board,
         );
         
-        // Sort by lastModifiedDate DESC to maintain order
         return updatedBoards.sort((a, b) => 
           new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime(),
         );
@@ -140,13 +139,9 @@ export const useBoardList = () => {
 
   const handleUserUpdate = useCallback(
     (message: UserUpdateDTO) => {
-      logger.debug(`[useBoardList] Received user update: ${message.updateType}`);
-      
       if (message.updateType === 'BOARD_DETAILS_CHANGED' && message.boardId) {
-        logger.debug(`[useBoardList] Board ${message.boardId} details changed. Updating specific board.`);
         updateSpecificBoard(message.boardId);
       } else {
-        logger.debug(`[useBoardList] ${message.updateType} received. Refetching board list.`);
         fetchBoards();
       }
     },
@@ -169,11 +164,9 @@ export const useBoardList = () => {
     closeModal,
     handleConfirmLeave,
     handleLeaveClick,
-    // Search functionality
     searchQuery,
     handleSearch,
     handleClearSearch,
-    // View mode (always list)
     viewMode,
   };
 };

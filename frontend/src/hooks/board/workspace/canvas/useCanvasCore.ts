@@ -46,7 +46,6 @@ export const useCanvasCore = () => {
     currentPath.current = [];
   }, []);
 
-  // For fixed-size canvas, we set dimensions based on canvas config
   const setCanvasDimensions = useCallback((width: number, height: number) => {
     setDimensions({ width, height });
   }, []);

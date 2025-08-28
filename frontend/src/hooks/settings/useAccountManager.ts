@@ -21,7 +21,7 @@ export const useAccountManager = () => {
       }),
       {
         loading: t('loading.account.delete'),
-        success: t('settingsPage.accountDeleteSuccess'),
+        success: t('success.account.delete'),
         error: t('errors.account.delete'),
       },
     );

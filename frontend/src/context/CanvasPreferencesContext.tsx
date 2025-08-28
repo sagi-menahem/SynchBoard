@@ -89,7 +89,6 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
 
   const refreshPreferences = useCallback(async () => {
     if (!isAuthenticated) {
-      logger.debug('[CanvasPreferences] User not authenticated, skipping preferences load');
       return;
     }
     
@@ -129,7 +128,6 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
       if (message.updateType === 'CANVAS_SETTINGS_CHANGED') {
-        logger.debug('[CanvasPreferences] Canvas settings changed via WebSocket. Refreshing preferences...');
         refreshPreferences();
       }
     },

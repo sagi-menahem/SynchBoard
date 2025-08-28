@@ -16,7 +16,6 @@ import { useWebSocketHandler } from 'hooks/common/useWebSocketHandler';
 import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'types/BoardObjectTypes';
 import type { BoardUpdateDTO, UserUpdateDTO } from 'types/WebSocketTypes';
 
-
 export const useBoardWorkspace = (boardId: number) => {
   const navigate = useNavigate();
   const sessionInstanceId = useRef(Date.now().toString());
@@ -37,7 +36,6 @@ export const useBoardWorkspace = (boardId: number) => {
     fetchInitialData,
   } = useBoardDataManager(boardId);
 
-  // Optimistic updates for drawing objects
   const [optimisticObjects, addOptimisticObject] = useOptimistic(
     baseObjects,
     (state, newObject: ActionPayload) => [...state, newObject],
@@ -65,12 +63,10 @@ export const useBoardWorkspace = (boardId: number) => {
         ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
         : obj;
     }));
-    logger.debug(`Drawing confirmed: ${instanceId}`);
   }, [setBaseObjects]);
 
   const handleCommitChatTransaction = useCallback((instanceId: string) => {
     // Chat transactions are handled by their own hook
-    logger.debug(`Chat transaction committed via unified handler: ${instanceId}`);
   }, []);
 
   useWebSocketHandler({
@@ -120,7 +116,6 @@ export const useBoardWorkspace = (boardId: number) => {
       try {
         WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionRequest);
         incrementUndo();
-        logger.debug(`Drawing action sent: ${instanceId}`);
       } catch (error) {
         logger.error('Failed to send drawing action:', error);
         toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
@@ -140,13 +135,9 @@ export const useBoardWorkspace = (boardId: number) => {
 
   const handleUserUpdate = useCallback(
     (message: UserUpdateDTO) => {
-      logger.debug(`[useBoardWorkspace] Received user update: ${message.updateType}.`);
-            
       if (message.updateType === 'BOARD_LIST_CHANGED') {
-        logger.debug('[useBoardWorkspace] Board list changed. Navigating to board list...');
         navigate(APP_ROUTES.BOARD_LIST);
       } else if (message.updateType === 'BOARD_DETAILS_CHANGED') {
-        logger.debug('[useBoardWorkspace] Board details changed. Staying on current page.');
       }
     },
     [navigate],
@@ -156,10 +147,7 @@ export const useBoardWorkspace = (boardId: number) => {
 
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {
-      logger.debug(`[useBoardWorkspace] Received board update: ${message.updateType}`);
-      
       if (message.updateType === 'CANVAS_UPDATED') {
-        logger.debug('[useBoardWorkspace] Canvas settings updated. Refreshing board details...');
         // Refresh board details to get updated canvas settings
         fetchInitialData();
       }

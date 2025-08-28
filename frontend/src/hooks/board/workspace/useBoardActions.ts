@@ -14,7 +14,6 @@ export const useBoardActions = (boardId: number) => {
 
   const handleUndo = useCallback(() => {
     if (undoCount === 0) {
-      logger.info('[useBoardActions] Undo attempted but nothing to undo');
       toast.error(t('boardSync.nothingToUndo'));
       return;
     }
@@ -26,12 +25,12 @@ export const useBoardActions = (boardId: number) => {
       })
       .catch((error) => {
         logger.error('[useBoardActions] Failed to undo action:', error);
+        toast.error(t('errors.board.action.undo'));
       });
   }, [boardId, undoCount, t]);
 
   const handleRedo = useCallback(() => {
     if (redoCount === 0) {
-      logger.info('[useBoardActions] Redo attempted but nothing to redo');
       toast.error(t('boardSync.nothingToRedo'));
       return;
     }
@@ -43,6 +42,7 @@ export const useBoardActions = (boardId: number) => {
       })
       .catch((error) => {
         logger.error('[useBoardActions] Failed to redo action:', error);
+        toast.error(t('errors.board.action.redo'));
       });
   }, [boardId, redoCount, t]);
 

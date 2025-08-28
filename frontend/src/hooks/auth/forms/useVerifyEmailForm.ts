@@ -36,12 +36,16 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
       email, 
       verificationCode,
     };
-    logger.debug('Email verification form submission for user:', email);
 
     try {
-      const response = await authService.verifyEmail(verifyData);
-      logger.info('Email verification successful for user:', email);
-      toast.success(t('verifyEmail.success', 'Email verified successfully!'));
+      const response = await toast.promise(
+        authService.verifyEmail(verifyData),
+        {
+          loading: t('loading.auth.verifyEmail'),
+          success: t('success.auth.verifyEmail'),
+          error: t('errors.auth.verifyEmail'),
+        },
+      );
       onVerificationSuccess(response.token);
       
       return {
@@ -71,14 +75,18 @@ export const useResendVerificationCode = (email: string) => {
 
   const resendVerificationCode = async (): Promise<{ success: boolean; error?: string }> => {
     try {
-      const message = await authService.resendVerificationCode({ email });
-      logger.info('Verification code resent for user:', email);
-      toast.success(message || t('verifyEmail.resend.success', 'Verification code sent successfully!'));
+      await toast.promise(
+        authService.resendVerificationCode({ email }),
+        {
+          loading: t('loading.auth.resendVerification'),
+          success: (msg) => msg || t('success.auth.resendVerification'),
+          error: t('errors.auth.resendVerification'),
+        },
+      );
       return { success: true };
     } catch (err: unknown) {
       logger.error('Resend verification code failed for user:', err, { email });
       const error = err instanceof Error ? err.message : t('verifyEmail.resend.error', 'Failed to resend verification code');
-      toast.error(error);
       return { success: false, error };
     }
   };

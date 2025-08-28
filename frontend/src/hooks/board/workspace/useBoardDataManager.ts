@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import logger from 'utils/logger';
 
 import * as boardService from 'services/boardService';
@@ -10,6 +12,7 @@ import type { ChatMessageResponse } from 'types/MessageTypes';
 
 
 export const useBoardDataManager = (boardId: number) => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [boardName, setBoardName] = useState<string | null>(null);
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
@@ -41,6 +44,8 @@ export const useBoardDataManager = (boardId: number) => {
         logger.error('Failed to fetch initial board data:', error);
         if (error instanceof AxiosError && error.response?.status === 403) {
           setAccessLost(true);
+        } else {
+          toast.error(t('errors.board.workspace'));
         }
       })
       .finally(() => {
@@ -51,7 +56,7 @@ export const useBoardDataManager = (boardId: number) => {
           setIsLoading(false);
         }, remainingDelay);
       });
-  }, [boardId]);
+  }, [boardId, t]);
 
   useEffect(() => {
     if (isNaN(boardId) || boardId === 0) {

@@ -37,11 +37,6 @@ function AppRoutes() {
   
   useEffect(() => {
     if (import.meta.env.DEV) {
-      logger.debug('[App] Route changed', {
-        pathname: location.pathname,
-        search: location.search,
-        hash: location.hash,
-      });
     }
   }, [location]);
 
@@ -152,11 +147,6 @@ function App() {
   useLanguageSync();
   
   useEffect(() => {
-    logger.info('[App] App component mounted', {
-      tokenInLocalStorage: !!localStorage.getItem('AUTH_TOKEN'),
-      initialPath: window.location.pathname,
-      timestamp: new Date().toISOString(),
-    });
   }, []);
 
   // RTL Support: Update document direction when language changes

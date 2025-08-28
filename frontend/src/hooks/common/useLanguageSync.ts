@@ -9,7 +9,6 @@ import type { LanguagePreferences } from 'types/UserTypes';
 
 const GUEST_LANGUAGE_KEY = 'guest-language';
 
-// Global state to prevent race conditions between components
 let isLoadingLanguagePrefs = false;
 let languagePrefsCache: LanguagePreferences | null = null;
 let languagePrefsPromise: Promise<LanguagePreferences> | null = null;
@@ -22,28 +21,22 @@ export const useLanguageSync = () => {
   const loadUserLanguage = useCallback(async (): Promise<LanguagePreferences | null> => {
     if (!token) return null;
 
-    // Return cached result if available
     if (languagePrefsCache) {
       return languagePrefsCache;
     }
 
-    // If already loading, wait for existing promise
     if (isLoadingLanguagePrefs && languagePrefsPromise) {
       return await languagePrefsPromise;
     }
-
-    // Set loading state and create new promise
     isLoadingLanguagePrefs = true;
     languagePrefsPromise = userService.getLanguagePreferences();
 
     try {
       const languagePrefs = await languagePrefsPromise;
       
-      // Cache the result
       languagePrefsCache = languagePrefs;
       
       if (languagePrefs.preferredLanguage && i18n.language !== languagePrefs.preferredLanguage) {
-        logger.debug(`Loading user language preference: ${languagePrefs.preferredLanguage}`);
         await i18n.changeLanguage(languagePrefs.preferredLanguage);
       }
       
@@ -60,12 +53,10 @@ export const useLanguageSync = () => {
   const switchToGuestLanguage = useCallback(() => {
     const guestLanguage = localStorage.getItem(GUEST_LANGUAGE_KEY) || 'en';
     if (i18n.language !== guestLanguage) {
-      logger.debug(`Switching to guest language: ${guestLanguage}`);
       i18n.changeLanguage(guestLanguage);
     }
   }, [i18n]);
 
-  // Clear cache when user logs out
   useEffect(() => {
     if (!token) {
       languagePrefsCache = null;
@@ -96,15 +87,12 @@ export const useLanguageSync = () => {
     if (!token) return;
 
     try {
-      // Clear cache before updating
       languagePrefsCache = null;
       
       const updatedPrefs = await userService.updateLanguagePreferences({ preferredLanguage: language });
       
-      // Update cache with new value
       languagePrefsCache = updatedPrefs;
       
-      // Change language immediately
       if (i18n.language !== language) {
         await i18n.changeLanguage(language);
       }

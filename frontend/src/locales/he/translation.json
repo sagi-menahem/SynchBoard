@@ -1,7 +1,4 @@
 {
-    "createBoardSuccess": "הלוח '{{boardName}}' נוצר בהצלחה!",
-    "promoteSuccess": "{{userName}} קודם לתפקיד מנהל.",
-    "removeSuccess": "{{userName}} הוסר מהלוח.",
     "common": {
         "_comment": "Shared text used across multiple components",
         "language": "שפה:",
@@ -308,35 +305,152 @@
         }
     },
     "errors": {
-        "user.notFound": "המשתמש לא נמצא.",
-        "board.notFound": "הלוח לא נמצא.",
-        "email.inUse": "כתובת האימייל הזו כבר בשימוש.",
-        "user.alreadyMember": "המשתמש הזה כבר חבר בלוח.",
-        "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח.",
-        "auth.notAdmin": "אין לך הרשאות ניהול לביצוע פעולה זו.",
-        "auth.notMember": "אינך חבר בלוח זה.",
-        "board.cannotRemoveSelf": "אינך יכול להסיר את עצמך דרך פעולה זו.",
-        "user.alreadyAdmin": "המשתמש הזה הוא כבר מנהל.",
-        "password.incorrect": "הסיסמה הנוכחית שהזנת שגויה.",
-        "password.sameAsOld": "הסיסמה החדשה אינה יכולה להיות זהה לישנה.",
-        "unexpected": "אירעה שגיאה לא צפויה. אנא נסה שנית.",
-        "auth.badCredentials": "שם המשתמש או הסיסמה שהזנת אינם נכונים.",
-        "sessionExpired": "תוקף ההתחברות שלך פג. אנא התחבר מחדש כדי להמשיך.",
-        "gender.invalid": "יש לבחור מגדר תקין (זכר או נקבה).",
-        "dateOfBirth.invalid": "יש להזין תאריך לידה תקין.",
-        "componentError": "{{context}} נתקל בשגיאה"
+        "auth": {
+            "login": "ההתחברות נכשלה, אנא בדוק את פרטיך ונסה שנית.",
+            "register": "ההרשמה נכשלה. אנא נסה שנית במועד מאוחר יותר.",
+            "forgotPassword": "נכשל בשליחת קוד איפוס סיסמה",
+            "verifyEmail": "אימות האימייל נכשל",
+            "resendVerification": "נכשל בשליחה מחדש של קוד האימות",
+            "badCredentials": "שם המשתמש או הסיסמה שהזנת אינם נכונים.",
+            "sessionExpired": "תוקף ההתחברות שלך פג. אנא התחבר מחדש כדי להמשיך.",
+            "notAdmin": "אין לך הרשאות ניהול לביצוע פעולה זו.",
+            "notMember": "אינך חבר בלוח זה."
+        },
+        "profile": {
+            "update": "עדכון הפרופיל נכשל.",
+            "fetch": "נכשל בטעינת פרופיל המשתמש. אנא נסה שנית."
+        },
+        "picture": {
+            "upload": "העלאת התמונה נכשלה.",
+            "delete": "מחיקת התמונה נכשלה."
+        },
+        "password": {
+            "update": "עדכון הסיסמה נכשל. אנא בדוק את הסיסמה הנוכחית שלך.",
+            "incorrect": "הסיסמה הנוכחית שהזנת שגויה.",
+            "sameAsOld": "הסיסמה החדשה אינה יכולה להיות זהה לישנה."
+        },
+        "account": {
+            "delete": "מחיקת החשבון נכשלה."
+        },
+        "board": {
+            "create": "יצירת הלוח נכשלה. אנא נסה שנית.",
+            "nameUpdate": "עדכון שם הלוח נכשל. אנא נסה שנית.",
+            "descriptionUpdate": "עדכון תיאור הלוח נכשל. אנא נסה שנית.",
+            "fetch": "נכשל בטעינת הלוחות. אנא בדוק את החיבור ונסה שנית.",
+            "leave": "נכשל ביציאה מהלוח. אנא נסה שנית.",
+            "details": "נכשל בטעינת פרטי הלוח. אנא בדוק את החיבור ונסה שנית.",
+            "workspace": "נכשל בטעינת סביבת העבודה של הלוח. אנא בדוק את החיבור ונסה שנית.",
+            "notFound": "הלוח לא נמצא.",
+            "cannotRemoveSelf": "אינך יכול להסיר את עצמך דרך פעולה זו.",
+            "action": {
+                "undo": "נכשל בביטול הפעולה. אנא נסה שנית.",
+                "redo": "נכשל בביצוע הפעולה מחדש. אנא נסה שנית."
+            }
+        },
+        "member": {
+            "promote": "קידום החבר נכשל. אנא נסה שנית.",
+            "remove": "הסרת החבר נכשלה. אנא נסה שנית.",
+            "invite": "שליחת ההזמנה נכשלה. אנא נסה שנית."
+        },
+        "user": {
+            "notFound": "המשתמש לא נמצא.",
+            "alreadyMember": "המשתמש הזה כבר חבר בלוח.",
+            "alreadyAdmin": "המשתמש הזה הוא כבר מנהל.",
+            "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח."
+        },
+        "preferences": {
+            "fetch": "נכשל בטעינת העדפות המשתמש. אנא בדוק את החיבור ונסה שנית.",
+            "update": "נכשל בעדכון העדפות. אנא נסה שנית."
+        },
+        "email": {
+            "inUse": "כתובת האימייל הזו כבר בשימוש."
+        },
+        "validation": {
+            "gender": "יש לבחור מגדר תקין (זכר או נקבה).",
+            "dateOfBirth": "יש להזין תאריך לידה תקין."
+        },
+        "common": {
+            "unexpected": "אירעה שגיאה לא צפויה. אנא נסה שנית.",
+            "componentError": "{{context}} נתקל בשגיאה"
+        }
+    },
+    "loading": {
+        "auth": {
+            "login": "מתחבר...",
+            "register": "רושם...",
+            "forgotPassword": "שולח קוד איפוס סיסמה...",
+            "verifyEmail": "מאמת אימייל...",
+            "resendVerification": "שולח קוד אימות..."
+        },
+        "profile": {
+            "update": "מעדכן פרופיל...",
+            "fetch": "טוען פרופיל..."
+        },
+        "picture": {
+            "upload": "מעלה תמונה...",
+            "delete": "מוחק תמונה..."
+        },
+        "password": {
+            "update": "מעדכן סיסמה..."
+        },
+        "account": {
+            "delete": "מוחק חשבון..."
+        },
+        "board": {
+            "create": "יוצר לוח...",
+            "nameUpdate": "מעדכן שם לוח...",
+            "descriptionUpdate": "מעדכן תיאור לוח...",
+            "fetch": "טוען לוחות...",
+            "leave": "עוזב לוח..."
+        },
+        "member": {
+            "promote": "מקדם חבר...",
+            "remove": "מסיר חבר...",
+            "invite": "שולח הזמנה..."
+        },
+        "preferences": {
+            "update": "מעדכן העדפות...",
+            "fetch": "טוען העדפות..."
+        }
     },
     "success": {
-        "profile.update": "הפרופיל עודכן בהצלחה!",
-        "password.update": "הסיסמה עודכנה בהצלחה!",
-        "picture.update": "תמונת הפרופיל עודכנה!",
-        "picture.delete": "תמונת הפרופיל נמחקה.",
-        "board.nameUpdate": "שם הלוח עודכן בהצלחה!",
-        "board.descriptionUpdate": "תיאור הלוח עודכן בהצלחה!",
-        "board.pictureUpdate": "תמונת הלוח עודכנה בהצלחה!",
-        "board.pictureDelete": "תמונת הלוח נמחקה.",
-        "board.canvasSettingsUpdate": "הגדרות הקנבס עודכנו בהצלחה!",
-        "preferences.update": "העדפות עודכנו בהצלחה!"
+        "auth": {
+            "login": "התחברת בהצלחה! ברוך שובך.",
+            "register": "ההרשמה הושלמה, אתה יכול להתחבר עכשיו.",
+            "forgotPassword": "קוד איפוס סיסמה נשלח לאימייל שלך!",
+            "verifyEmail": "האימייל אומת בהצלחה!",
+            "resendVerification": "קוד האימות נשלח בהצלחה!"
+        },
+        "profile": {
+            "update": "הפרופיל עודכן בהצלחה!"
+        },
+        "picture": {
+            "update": "תמונת הפרופיל עודכנה!",
+            "delete": "תמונת הפרופיל נמחקה."
+        },
+        "password": {
+            "update": "הסיסמה עודכנה בהצלחה!"
+        },
+        "account": {
+            "delete": "החשבון שלך נמחק."
+        },
+        "board": {
+            "create": "הלוח '{{boardName}}' נוצר בהצלחה!",
+            "nameUpdate": "שם הלוח עודכן בהצלחה!",
+            "descriptionUpdate": "תיאור הלוח עודכן בהצלחה!",
+            "pictureUpdate": "תמונת הלוח עודכנה בהצלחה!",
+            "pictureDelete": "תמונת הלוח נמחקה.",
+            "canvasSettingsUpdate": "הגדרות הקנבס עודכנו בהצלחה!",
+            "leave": "עזבת בהצלחה את הלוח '{{boardName}}'."
+        },
+        "member": {
+            "promote": "{{userName}} קודם לתפקיד מנהל.",
+            "remove": "{{userName}} הוסר מהלוח.",
+            "invite": "הזמנה נשלחה אל {{email}}!"
+        },
+        "preferences": {
+            "update": "העדפות עודכנו בהצלחה!"
+        }
     },
     "canvasSize": {
         "presets": {

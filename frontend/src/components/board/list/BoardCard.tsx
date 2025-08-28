@@ -56,7 +56,6 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
         </div>
         <div className={styles.cardFooter}>
           <div className={styles.leftSection}>
-            {/* Empty space for future expansion */}
           </div>
           <div className={styles.centerSection}>
             {board.isAdmin && (

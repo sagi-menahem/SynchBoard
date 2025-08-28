@@ -50,7 +50,7 @@ const LanguageSection: React.FC = () => {
       toast.success(t('success.preferences.update'));
     } catch (error) {
       console.error('Failed to update language preference:', error);
-      toast.error(t('errors.unexpected'));
+      toast.error(t('errors.common.unexpected'));
       // Revert i18n language on error
       i18n.changeLanguage(currentLanguage);
     }

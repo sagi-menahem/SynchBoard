@@ -16,15 +16,6 @@ export const useAuth = () => {
     throw error;
   }
 
-  if (import.meta.env.DEV && import.meta.env.VITE_DEBUG_AUTH === 'true') {
-    logger.debug('[useAuth] Hook called', {
-      hasContext: !!context,
-      hasToken: !!context?.token,
-      userEmail: context?.userEmail,
-      tokenLength: context?.token?.length,
-      caller: new Error().stack?.split('\n')[2]?.trim(),
-    });
-  }
 
   return context;
 };

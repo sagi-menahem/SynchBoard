@@ -141,7 +141,6 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
         defaultStrokeColor: state.preferences.defaultStrokeColor,
         defaultStrokeWidth: state.preferences.defaultStrokeWidth,
       });
-      logger.debug('Tool preference updated successfully');
     } catch (error) {
       logger.error('Failed to update tool preference:', error);
       dispatch({ type: 'UPDATE_TOOL', payload: previousTool });
@@ -161,7 +160,6 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
         defaultStrokeColor: color,
         defaultStrokeWidth: state.preferences.defaultStrokeWidth,
       });
-      logger.debug('Stroke color preference updated successfully');
     } catch (error) {
       logger.error('Failed to update stroke color preference:', error);
       dispatch({ type: 'UPDATE_STROKE_COLOR', payload: previousColor });
@@ -181,7 +179,6 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
         defaultStrokeColor: state.preferences.defaultStrokeColor,
         defaultStrokeWidth: width,
       });
-      logger.debug('Stroke width preference updated successfully');
     } catch (error) {
       logger.error('Failed to update stroke width preference:', error);
       dispatch({ type: 'UPDATE_STROKE_WIDTH', payload: previousWidth });

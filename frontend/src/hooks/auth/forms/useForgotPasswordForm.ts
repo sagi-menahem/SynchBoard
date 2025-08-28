@@ -37,12 +37,16 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     }
 
     const forgotPasswordData: ForgotPasswordRequest = { email };
-    logger.debug('Forgot password form submission for user:', email);
 
     try {
-      const message = await authService.forgotPassword(forgotPasswordData);
-      logger.info('Forgot password request successful for user:', email);
-      toast.success(message || t('forgotPassword.success', 'Password reset code sent to your email!'));
+      await toast.promise(
+        authService.forgotPassword(forgotPasswordData),
+        {
+          loading: t('loading.auth.forgotPassword'),
+          success: (msg) => msg || t('success.auth.forgotPassword'),
+          error: t('errors.auth.forgotPassword'),
+        },
+      );
       onForgotPasswordSuccess(email);
       
       return {

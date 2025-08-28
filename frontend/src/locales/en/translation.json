@@ -1,7 +1,4 @@
 {
-    "createBoardSuccess": "Board '{{boardName}}' created successfully!",
-    "promoteSuccess": "{{userName}} has been promoted to admin.",
-    "removeSuccess": "{{userName}} has been removed from the board.",
     "common": {
         "_comment": "Shared text used across multiple components",
         "language": "Language:",
@@ -313,35 +310,152 @@
         }
     },
     "errors": {
-        "user.notFound": "User not found.",
-        "board.notFound": "Board not found.",
-        "email.inUse": "This email address is already in use.",
-        "user.alreadyMember": "This user is already a member of the board.",
-        "cannotInviteSelf": "You cannot invite yourself to the board.",
-        "auth.notAdmin": "You do not have admin privileges for this action.",
-        "auth.notMember": "You are not a member of this board.",
-        "board.cannotRemoveSelf": "You cannot remove yourself via this action.",
-        "user.alreadyAdmin": "This user is already an admin.",
-        "password.incorrect": "The current password you entered is incorrect.",
-        "password.sameAsOld": "New password cannot be the same as the old one.",
-        "unexpected": "An unexpected error occurred. Please try again.",
-        "auth.badCredentials": "Incorrect username or password.",
-        "sessionExpired": "Your login session has expired. Please sign in again to continue.",
-        "gender.invalid": "Please select a valid gender (male or female).",
-        "dateOfBirth.invalid": "Please enter a valid date of birth.",
-        "componentError": "{{context}} encountered an error"
+        "auth": {
+            "login": "Login failed, please check your details and try again.",
+            "register": "Registration failed. Please try again later.",
+            "forgotPassword": "Failed to send password reset code",
+            "verifyEmail": "Email verification failed",
+            "resendVerification": "Failed to resend verification code",
+            "badCredentials": "Incorrect username or password.",
+            "sessionExpired": "Your login session has expired. Please sign in again to continue.",
+            "notAdmin": "You do not have admin privileges for this action.",
+            "notMember": "You are not a member of this board."
+        },
+        "profile": {
+            "update": "Failed to update profile.",
+            "fetch": "Failed to load user profile. Please try again."
+        },
+        "picture": {
+            "upload": "Failed to upload picture.",
+            "delete": "Failed to delete picture."
+        },
+        "password": {
+            "update": "Failed to update password. Please check your current password.",
+            "incorrect": "The current password you entered is incorrect.",
+            "sameAsOld": "New password cannot be the same as the old one."
+        },
+        "account": {
+            "delete": "Failed to delete your account."
+        },
+        "board": {
+            "create": "Failed to create board. Please try again.",
+            "nameUpdate": "Failed to update board name. Please try again.",
+            "descriptionUpdate": "Failed to update board description. Please try again.",
+            "fetch": "Failed to load boards. Please check your connection and try again.",
+            "leave": "Failed to leave board. Please try again.",
+            "details": "Failed to load board details. Please check your connection and try again.",
+            "workspace": "Failed to load board workspace. Please check your connection and try again.",
+            "notFound": "Board not found.",
+            "cannotRemoveSelf": "You cannot remove yourself via this action.",
+            "action": {
+                "undo": "Failed to undo action. Please try again.",
+                "redo": "Failed to redo action. Please try again."
+            }
+        },
+        "member": {
+            "promote": "Failed to promote member. Please try again.",
+            "remove": "Failed to remove member. Please try again.",
+            "invite": "Failed to send invitation. Please try again."
+        },
+        "user": {
+            "notFound": "User not found.",
+            "alreadyMember": "This user is already a member of the board.",
+            "alreadyAdmin": "This user is already an admin.",
+            "cannotInviteSelf": "You cannot invite yourself to the board."
+        },
+        "preferences": {
+            "fetch": "Failed to load user preferences. Please check your connection and try again.",
+            "update": "Failed to update preferences. Please try again."
+        },
+        "email": {
+            "inUse": "This email address is already in use."
+        },
+        "validation": {
+            "gender": "Please select a valid gender (male or female).",
+            "dateOfBirth": "Please enter a valid date of birth."
+        },
+        "common": {
+            "unexpected": "An unexpected error occurred. Please try again.",
+            "componentError": "{{context}} encountered an error"
+        }
+    },
+    "loading": {
+        "auth": {
+            "login": "Logging in...",
+            "register": "Registering...",
+            "forgotPassword": "Sending password reset code...",
+            "verifyEmail": "Verifying email...",
+            "resendVerification": "Sending verification code..."
+        },
+        "profile": {
+            "update": "Updating profile...",
+            "fetch": "Loading profile..."
+        },
+        "picture": {
+            "upload": "Uploading picture...",
+            "delete": "Deleting picture..."
+        },
+        "password": {
+            "update": "Updating password..."
+        },
+        "account": {
+            "delete": "Deleting account..."
+        },
+        "board": {
+            "create": "Creating board...",
+            "nameUpdate": "Updating board name...",
+            "descriptionUpdate": "Updating board description...",
+            "fetch": "Loading boards...",
+            "leave": "Leaving board..."
+        },
+        "member": {
+            "promote": "Promoting member...",
+            "remove": "Removing member...",
+            "invite": "Sending invitation..."
+        },
+        "preferences": {
+            "update": "Updating preferences...",
+            "fetch": "Loading preferences..."
+        }
     },
     "success": {
-        "profile.update": "Profile updated successfully!",
-        "password.update": "Password updated successfully!",
-        "picture.update": "Profile picture updated!",
-        "picture.delete": "Profile picture deleted.",
-        "board.nameUpdate": "Board name updated successfully!",
-        "board.descriptionUpdate": "Board description updated successfully!",
-        "board.pictureUpdate": "Board picture updated successfully!",
-        "board.pictureDelete": "Board picture deleted.",
-        "board.canvasSettingsUpdate": "Canvas settings updated successfully!",
-        "preferences.update": "Preferences updated successfully!"
+        "auth": {
+            "login": "Login successful! Welcome back.",
+            "register": "Registration Successful! You can now log in.",
+            "forgotPassword": "Password reset code sent to your email!",
+            "verifyEmail": "Email verified successfully!",
+            "resendVerification": "Verification code sent successfully!"
+        },
+        "profile": {
+            "update": "Profile updated successfully!"
+        },
+        "picture": {
+            "update": "Profile picture updated!",
+            "delete": "Profile picture deleted."
+        },
+        "password": {
+            "update": "Password updated successfully!"
+        },
+        "account": {
+            "delete": "Your account has been deleted."
+        },
+        "board": {
+            "create": "Board '{{boardName}}' created successfully!",
+            "nameUpdate": "Board name updated successfully!",
+            "descriptionUpdate": "Board description updated successfully!",
+            "pictureUpdate": "Board picture updated successfully!",
+            "pictureDelete": "Board picture deleted.",
+            "canvasSettingsUpdate": "Canvas settings updated successfully!",
+            "leave": "You have successfully left '{{boardName}}'."
+        },
+        "member": {
+            "promote": "{{userName}} has been promoted to admin.",
+            "remove": "{{userName}} has been removed from the board.",
+            "invite": "Invitation sent to {{email}}!"
+        },
+        "preferences": {
+            "update": "Preferences updated successfully!"
+        }
     },
     "canvasSize": {
         "presets": {
