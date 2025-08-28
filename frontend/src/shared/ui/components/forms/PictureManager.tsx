@@ -4,8 +4,8 @@ import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
 import { APP_CONFIG } from 'shared/constants/AppConstants';
-import { Button } from 'shared/ui';
 
+import Button from './Button';
 import styles from './PictureManager.module.css';
 
 interface PictureManagerProps {
@@ -53,11 +53,13 @@ const PictureManager: React.FC<PictureManagerProps> = ({
 
   return (
     <div className={`${styles.container} ${className}`}>
-      <img
-        src={imageSource}
-        alt={altText}
-        className={`${styles.image} ${imageClassName}`}
-      />
+      <div className={styles.imageContainer}>
+        <img
+          src={imageSource}
+          alt={altText}
+          className={`${styles.image} ${imageClassName}`}
+        />
+      </div>
       
       <input
         type="file"
@@ -78,7 +80,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
         {showDeleteButton && onDelete && imageUrl && (
           <Button 
             onClick={onDelete} 
-            variant="secondary"
+            variant="destructive"
           >
             {deleteButtonText || t('common:pictureManager.deleteButton')}
           </Button>

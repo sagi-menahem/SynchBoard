@@ -1,12 +1,11 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
-import { PencilLine, Save, Trash2, Upload, X } from 'lucide-react';
+import { PencilLine, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { API_BASE_URL, APP_CONFIG } from 'shared/constants';
-import { Button } from 'shared/ui';
+import { Button, PictureManager } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.css';
 
@@ -31,11 +30,6 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [descriptionValue, setDescriptionValue] = useState(boardDetails.description || '');
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const imageSource = boardDetails.pictureUrl
-        ? `${API_BASE_URL.replace('/api', '')}${boardDetails.pictureUrl}`
-        : defaultBoardImage;
 
     const handleCancelDescriptionEdit = () => {
         setDescriptionValue(boardDetails.description || '');
@@ -52,54 +46,21 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
         }
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            onPictureUpload(file);
-        }
-    };
-
-    const triggerFileInput = () => {
-        fileInputRef.current?.click();
-    };
 
     return (
         <>
             <div className={styles.section}>
-                <div className={styles.imageContainer}>
-                    <img
-                        src={imageSource}
-                        alt={boardDetails.name}
-                        className={styles.boardImage}
-                    />
-                </div>
-                
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    style={{ display: 'none' }}
-                    accept={APP_CONFIG.ALLOWED_IMAGE_TYPES}
+                <PictureManager
+                    imageUrl={boardDetails.pictureUrl}
+                    defaultImage={defaultBoardImage}
+                    altText={boardDetails.name}
+                    onUpload={onPictureUpload}
+                    onDelete={currentUserIsAdmin ? onDeletePicture : undefined}
+                    showDeleteButton={currentUserIsAdmin}
+                    uploadButtonText={t('board:detailsPage.changePicture')}
+                    deleteButtonText={t('board:detailsPage.deletePicture')}
+                    className={styles.pictureManager}
                 />
-                
-                {currentUserIsAdmin && (
-                    <div className={styles.buttonGroup}>
-                        <Button 
-                            onClick={triggerFileInput}
-                            variant="secondary"
-                        >
-                            <Upload size={16} />
-                            {t('board:detailsPage.changePicture')}
-                        </Button>
-                        <Button 
-                            onClick={onDeletePicture}
-                            variant="destructive"
-                        >
-                            <Trash2 size={16} />
-                            {t('board:detailsPage.deletePicture')}
-                        </Button>
-                    </div>
-                )}
             </div>
 
             <div className={styles.section}>

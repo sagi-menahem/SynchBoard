@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { useLanguageSync } from 'shared/hooks';
 import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.css';

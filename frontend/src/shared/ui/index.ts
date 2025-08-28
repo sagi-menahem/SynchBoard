@@ -1,30 +1,33 @@
 // Shared UI Components Barrel Exports
 
-// Common Components
-export { default as Button } from './Button';
-export { default as Modal } from './Modal';
-export { default as Input } from './Input';
-export { default as PasswordInput } from './PasswordInput';
-export { default as ColorPicker } from './ColorPicker';
-export { ContextMenu } from './ContextMenu';
-export { ContextMenuItem } from './ContextMenuItem';
-export { ContextMenuSeparator } from './ContextMenuSeparator';
-export { default as LoadingOverlay } from './LoadingOverlay';
-export { default as PageLoader } from './PageLoader';
-export { default as PageTransition } from './PageTransition';
-export { default as PictureManager } from './PictureManager';
-export { Slider } from './Slider';
-export { default as SearchBar } from './SearchBar';
-export { default as ViewToggle } from './ViewToggle';
-export { default as UniversalToolbar } from './UniversalToolbar';
-export { default as ResizableSplitPanel } from './ResizableSplitPanel';
-export { ConnectionStatusBanner } from './ConnectionStatusBanner';
-export { default as MemberActivityIndicator } from './MemberActivityIndicator';
-export { default as RelativeTimestamp } from './RelativeTimestamp';
-export { default as GuestLanguageSwitcher } from './GuestLanguageSwitcher';
-export { default as ConfirmationDialog } from './ConfirmationDialog';
-export { default as ErrorDisplay } from './ErrorDisplay';
-export { default as BaseAuthModal } from './BaseAuthModal';
+// Form Components
+export { default as Button } from './components/forms/Button';
+export { default as Input } from './components/forms/Input';
+export { default as PasswordInput } from './components/forms/PasswordInput';
+export { default as PictureManager } from './components/forms/PictureManager';
+export { Slider } from './components/forms/Slider';
+
+// Display Components
+export { default as ErrorDisplay } from './components/display/ErrorDisplay';
+export { default as LoadingOverlay } from './components/display/LoadingOverlay';
+export { default as PageLoader } from './components/display/PageLoader';
+export { default as RelativeTimestamp } from './components/display/RelativeTimestamp';
+
+// Navigation Components
+export { default as PageTransition } from './components/navigation/PageTransition';
+export { default as SearchBar } from './components/navigation/SearchBar';
+export { default as ViewToggle } from './components/navigation/ViewToggle';
+
+// Overlay Components
+export { default as ColorPicker } from './components/overlays/ColorPicker';
+export { default as ConfirmationDialog } from './components/overlays/ConfirmationDialog';
+export { ContextMenu } from './components/overlays/ContextMenu';
+export { ContextMenuItem } from './components/overlays/ContextMenuItem';
+export { ContextMenuSeparator } from './components/overlays/ContextMenuSeparator';
+export { default as Modal } from './components/overlays/Modal';
+
+// Advanced Components
+export { default as UniversalToolbar } from './components/advanced/UniversalToolbar';
 
 // Layout Components
 export { default as Layout } from './layout/Layout';

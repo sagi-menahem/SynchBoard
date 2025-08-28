@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { BaseAuthModal } from 'features/auth/ui';
+import styles from 'features/auth/ui/CommonForm.module.css';
 import { Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { BaseAuthModal, Input } from 'shared/ui';
-import styles from 'shared/ui/CommonForm.module.css';
+import { Input } from 'shared/ui';
 
 import { useForgotPasswordForm } from '../hooks/forms';
 

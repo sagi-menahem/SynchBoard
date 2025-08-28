@@ -3,7 +3,8 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import Button from './Button';
+import Button from '../forms/Button';
+
 import styles from './ConfirmationDialog.module.css';
 import Modal from './Modal';
 

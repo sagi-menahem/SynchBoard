@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { useTranslation } from 'react-i18next';
 import { PRESET_COLORS } from 'shared/constants/ColorConstants';
-import { useClickOutside } from 'shared/hooks/useClickOutside';
+import { useClickOutside } from 'shared/hooks';
 
 import styles from './ColorPicker.module.css';
 

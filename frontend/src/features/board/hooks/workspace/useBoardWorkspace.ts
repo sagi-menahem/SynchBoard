@@ -5,14 +5,14 @@ import { useAuth } from 'features/auth/hooks';
 import { useBoardActions } from 'features/board/hooks/workspace/useBoardActions';
 import { useBoardDataManager } from 'features/board/hooks/workspace/useBoardDataManager';
 import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
+import { useSocket, useSocketSubscription } from 'features/websocket/hooks/useSocket';
+import { useWebSocketHandler } from 'features/websocket/hooks/useWebSocketHandler';
 import WebSocketService from 'features/websocket/services/websocketService';
 import type { BoardUpdateDTO, UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'shared/constants';
-import { useSocket, useSocketSubscription } from 'shared/hooks/useSocket';
-import { useWebSocketHandler } from 'shared/hooks/useWebSocketHandler';
 import logger from 'shared/utils/logger';
 
 export const useBoardWorkspace = (boardId: number) => {

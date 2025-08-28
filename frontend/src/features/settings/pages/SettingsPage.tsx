@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
+import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { ArrowRight, LogOut } from 'lucide-react';
@@ -10,6 +11,7 @@ import {
   ConfirmationDialog,
   PageLoader,
   PageTransition,
+  PictureManager,
   UniversalToolbar,
 } from 'shared/ui';
 import logger from 'shared/utils/logger';
@@ -20,7 +22,6 @@ import {
   DangerZoneSection,
   LanguageSection,
   ProfileDetailsSection,
-  ProfilePictureManager,
 } from '../components';
 import { useAccountManager, usePasswordManager } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
@@ -129,10 +130,14 @@ const SettingsPage: React.FC = () => {
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
         <section className={styles.section}>
-          <ProfilePictureManager
-            user={user}
+          <PictureManager
+            imageUrl={user.profilePictureUrl}
+            defaultImage={defaultUserImage}
+            altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
             onUpload={handlePictureUploadWithCleanup}
             onDelete={() => setPicDeleteConfirmOpen(true)}
+            uploadButtonText={t('settings:page.changePicture')}
+            deleteButtonText={t('settings:page.deletePicture')}
           />
         </section>
 

@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react';
 
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
+import { ResizableSplitPanel } from 'features/board/ui';
 import { ChatWindow } from 'features/chat/components';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import type { Tool } from 'shared/types/CommonTypes';
-import { ResizableSplitPanel } from 'shared/ui';
 
 import styles from './BoardWorkspace.module.css';
 

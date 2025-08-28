@@ -3,11 +3,11 @@ import React, { startTransition, useCallback, useEffect, useMemo, useOptimistic,
 import { useAuth } from 'features/auth/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
+import { usePreferences } from 'features/settings/hooks';
+import { useSocket } from 'features/websocket/hooks/useSocket';
 import WebSocketService from 'features/websocket/services/websocketService';
 import { useTranslation } from 'react-i18next';
 import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';
-import { usePreferences } from 'shared/hooks';
-import { useSocket } from 'shared/hooks/useSocket';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
 import logger from 'shared/utils/logger';

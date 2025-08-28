@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { useTranslation } from 'react-i18next';
-import { useConnectionStatus } from 'shared/hooks/useConnectionStatus';
 import { Button, Input } from 'shared/ui';
 
 

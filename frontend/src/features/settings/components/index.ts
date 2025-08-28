@@ -5,4 +5,3 @@ export { default as LanguageSection } from './LanguageSection';
 export { default as ProfileDetailsSection } from './ProfileDetailsSection';
 export { default as ProfileDisplayView } from './ProfileDisplayView';
 export { default as ProfileEditForm } from './ProfileEditForm';
-export { default as ProfilePictureManager } from './ProfilePictureManager';

@@ -8,7 +8,6 @@ export { default as LanguageSection } from './components/LanguageSection';
 export { default as DangerZoneSection } from './components/DangerZoneSection';
 export { default as ProfileDisplayView } from './components/ProfileDisplayView';
 export { default as ProfileEditForm } from './components/ProfileEditForm';
-export { default as ProfilePictureManager } from './components/ProfilePictureManager';
 
 // Hooks
 export { useAccountManager } from './hooks/useAccountManager';
