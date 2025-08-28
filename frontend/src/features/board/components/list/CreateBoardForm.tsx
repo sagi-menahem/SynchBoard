@@ -77,7 +77,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>
           <Plus size={20} />
-          {t('board:createBoardForm.heading')}
+          {t('board:createForm.heading')}
         </h3>
       </div>
 
@@ -96,13 +96,13 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label htmlFor="board-name">
           <Pencil size={14} />
-          {t('board:createBoardForm.label.boardName')}
+          {t('board:createForm.label.boardName')}
         </label>
         <Input
           id="board-name"
           name="name"
           type="text"
-          placeholder={t('board:createBoardForm.placeholder.name')}
+          placeholder={t('board:createForm.placeholder.name')}
           required
           disabled={isPending}
         />
@@ -111,12 +111,12 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label htmlFor="board-description">
           <FileText size={14} />
-          {t('board:createBoardForm.label.description')}
+          {t('board:createForm.label.description')}
         </label>
         <textarea
           id="board-description"
           name="description"
-          placeholder={t('board:createBoardForm.placeholder.description')}
+          placeholder={t('board:createForm.placeholder.description')}
           rows={3}
           className={styles.description}
           disabled={isPending}
@@ -126,14 +126,14 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>
           <Users size={14} />
-          {t('board:createBoardForm.label.inviteMembers')}
+          {t('board:createForm.label.inviteMembers')}
         </label>
         <MemberInviteInput onMembersChange={setInviteEmails} disabled={isPending} />
       </div>
 
       <div className={styles.field}>
         <div className={utilStyles.settingRow}>
-          <span className={utilStyles.settingLabel}>{t('board:createBoardForm.label.canvasBackground')}:</span>
+          <span className={utilStyles.settingLabel}>{t('board:createForm.label.canvasBackground')}:</span>
           <ColorPicker
             color={canvasBackgroundColor}
             onChange={setCanvasBackgroundColor}
@@ -151,7 +151,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>
           <Monitor size={14} />
-          {t('board:createBoardForm.label.canvasSize')}
+          {t('board:createForm.label.canvasSize')}
         </label>
         <div className={styles.canvasSizeOptions}>
           {/* Canvas Size Presets */}
@@ -210,7 +210,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
               min={CANVAS_CONFIG.MIN_WIDTH}
               max={CANVAS_CONFIG.MAX_WIDTH}
               disabled={isPending}
-              placeholder={t('board:createBoardForm.placeholder.width')}
+              placeholder={t('board:createForm.placeholder.width')}
             />
             <span>×</span>
             <Input
@@ -220,9 +220,9 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
               min={CANVAS_CONFIG.MIN_HEIGHT}
               max={CANVAS_CONFIG.MAX_HEIGHT}
               disabled={isPending}
-              placeholder={t('board:createBoardForm.placeholder.height')}
+              placeholder={t('board:createForm.placeholder.height')}
             />
-            <span>{t('board:createBoardForm.label.pixels')}</span>
+            <span>{t('board:createForm.label.pixels')}</span>
           </div>
         )}
       </div>
@@ -232,7 +232,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           {t('common:button.cancel')}
         </Button>
         <Button type="submit" disabled={isPending} variant="primary">
-          {isPending ? t('common:button.creating') : t('board:createBoardForm.button.createBoard')}
+          {isPending ? t('common:button.creating') : t('board:createForm.button.createBoard')}
         </Button>
       </div>
       </form>

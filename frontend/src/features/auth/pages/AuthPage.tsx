@@ -67,7 +67,7 @@ const AuthPage: React.FC = () => {
           <div className={styles.sectionHeader}>
             <h1 className={styles.pageTitle}>
               <Users size={20} />
-              {t('auth:page.pageTitle')}
+              {t('auth:authPage.pageTitle')}
             </h1>
           </div>
           
@@ -82,10 +82,10 @@ const AuthPage: React.FC = () => {
                 </div>
                 <LoginForm onForgotPassword={() => setShowForgotPassword(true)} />
                 <div className={styles.authActions}>
-                  <span className={styles.toggleText}>{t('auth:page.promptToRegister')}</span>
+                  <span className={styles.toggleText}>{t('auth:authPage.promptToRegister')}</span>
                   <Button variant="secondary" onClick={toggleAuthMode}>
                     <UserPlus size={16} />
-                    {t('auth:page.switchToRegisterButton')}
+                    {t('auth:authPage.switchToRegisterButton')}
                   </Button>
                 </div>
               </>
@@ -99,10 +99,10 @@ const AuthPage: React.FC = () => {
                 </div>
                 <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
                 <div className={styles.authActions}>
-                  <span className={styles.toggleText}>{t('auth:page.promptToLogin')}</span>
+                  <span className={styles.toggleText}>{t('auth:authPage.promptToLogin')}</span>
                   <Button variant="secondary" onClick={toggleAuthMode}>
                     <LogIn size={16} />
-                    {t('auth:page.switchToLoginButton')}
+                    {t('auth:authPage.switchToLoginButton')}
                   </Button>
                 </div>
               </>

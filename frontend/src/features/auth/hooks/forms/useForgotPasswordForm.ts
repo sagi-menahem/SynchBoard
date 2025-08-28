@@ -17,7 +17,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
       }
 
       if (!validateEmail(email)) {
-        return { error: t('forgotPassword.validation.emailInvalid') };
+        return { error: t('auth:forgotPassword.validation.emailInvalid') };
       }
 
       return { email };
@@ -25,7 +25,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     serviceCall: authService.forgotPassword,
     toastMessages: {
       loading: t('loading.auth.forgotPassword'),
-      success: (msg) => msg || t('success.auth.forgotPassword'),
+      success: (msg) => (typeof msg === 'string' ? msg : t('success.auth.forgotPassword')),
       error: t('errors.auth.forgotPassword'),
     },
     onSuccess: (_, requestData) => {

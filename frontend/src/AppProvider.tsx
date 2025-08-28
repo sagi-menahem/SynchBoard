@@ -1,9 +1,7 @@
 import React, { type ReactNode } from 'react';
 
 import { AuthProvider } from 'features/auth/AuthProvider';
-import { CanvasPreferencesProvider } from 'features/board/CanvasPreferencesContext';
-import { ToolPreferencesProvider } from 'features/board/ToolPreferencesContext';
-import { PreferencesProvider } from 'features/settings/PreferencesProvider';
+import { UserPreferencesProvider } from 'features/settings/UserPreferencesProvider';
 import { WebSocketProvider } from 'features/websocket/WebSocketProvider';
 
 interface AppProviderProps {
@@ -14,11 +12,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <AuthProvider>
       <WebSocketProvider>
-        <PreferencesProvider>
-          <CanvasPreferencesProvider>
-            <ToolPreferencesProvider>{children}</ToolPreferencesProvider>
-          </CanvasPreferencesProvider>
-        </PreferencesProvider>
+        <UserPreferencesProvider>
+          {children}
+        </UserPreferencesProvider>
       </WebSocketProvider>
     </AuthProvider>
   );

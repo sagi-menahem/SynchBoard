@@ -34,7 +34,7 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
     serviceCall: authService.register,
     toastMessages: {
       loading: t('loading.auth.register'),
-      success: (msg) => msg || t('success.auth.register'),
+      success: (msg) => (typeof msg === 'string' ? msg : t('success.auth.register')),
       error: t('errors.auth.register'),
     },
     onSuccess: (_, requestData) => {

@@ -2,8 +2,8 @@ import { toast } from 'react-hot-toast';
 
 interface FlexibleToastMessages {
   loading: string;
-  success: string | ((response?: any) => string);
-  error: string | ((error?: any) => string);
+  success: string | ((response?: unknown) => string);
+  error: string | ((error?: unknown) => string);
 }
 
 /**

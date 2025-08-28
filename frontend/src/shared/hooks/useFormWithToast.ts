@@ -3,7 +3,7 @@ import { useActionState } from 'react';
 import logger from 'shared/utils/logger';
 import { toastPromise } from 'shared/utils/toastUtils';
 
-export interface FormState<T = any> {
+export interface FormState<T = unknown> {
   success: boolean;
   error?: string;
   data?: T;
@@ -11,8 +11,8 @@ export interface FormState<T = any> {
 
 export interface ToastMessages {
   loading: string;
-  success: string | ((response?: any) => string);
-  error: string | ((error?: any) => string);
+  success: string | ((response?: unknown) => string);
+  error: string | ((error?: unknown) => string);
 }
 
 export interface UseFormWithToastOptions<TRequest extends object, TResponse> {
@@ -20,14 +20,14 @@ export interface UseFormWithToastOptions<TRequest extends object, TResponse> {
   serviceCall: (data: TRequest) => Promise<TResponse>;
   toastMessages: ToastMessages;
   onSuccess?: (response: TResponse, requestData: TRequest) => void;
-  contextInfo?: Record<string, any>;
+  contextInfo?: Record<string, unknown>;
   logContext?: string;
 }
 
 /**
  * Generic form hook that standardizes form handling with toast notifications
  */
-export const useFormWithToast = <TRequest extends object, TResponse = any>(
+export const useFormWithToast = <TRequest extends object, TResponse = unknown>(
   options: UseFormWithToastOptions<TRequest, TResponse>,
 ) => {
   const {

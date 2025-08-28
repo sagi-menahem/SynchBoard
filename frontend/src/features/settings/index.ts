@@ -15,8 +15,8 @@ export { usePasswordManager } from './hooks/usePasswordManager';
 export { useUserProfile } from './hooks/profile/useUserProfile';
 
 // Context
-export { PreferencesProvider } from './PreferencesProvider';
-export { PreferencesContext } from './PreferencesContext';
+export { UserPreferencesProvider } from './UserPreferencesProvider';
+export { UserPreferencesContext } from './UserPreferencesContext';
 
 // Pages
 export { default as SettingsPage } from './pages/SettingsPage';
