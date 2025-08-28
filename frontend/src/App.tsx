@@ -1,25 +1,23 @@
-import { APP_ROUTES } from 'constants';
-
 import { lazy, Suspense, useEffect, useState } from 'react';
 
-import { updateDocumentDirection } from 'i18n';
+import { useAuth } from 'features/auth/hooks';
+import AuthPage from 'features/auth/pages/AuthPage';
+import BoardListPage from 'features/board/pages/BoardListPage';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { APP_ROUTES } from 'shared/constants/RoutesConstants';
+import { useLanguageSync } from 'shared/hooks';
+import { updateDocumentDirection } from 'shared/lib/i18n';
+import { ConnectionStatusBanner, PageLoader, PageTransition } from 'shared/ui';
+import { ErrorBoundary } from 'shared/ui/errorBoundary';
+import { Layout } from 'shared/ui/layout';
+import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
+import RootRedirect from 'shared/ui/routing/RootRedirect';
 
-import { ConnectionStatusBanner, PageLoader, PageTransition } from 'components/common';
-import { ErrorBoundary } from 'components/errorBoundary';
-import { Layout } from 'components/layout';
-import ProtectedRoute from 'components/routing/ProtectedRoute';
-import RootRedirect from 'components/routing/RootRedirect';
-import { useAuth } from 'hooks/auth';
-import { useLanguageSync } from 'hooks/common';
-import AuthPage from 'pages/AuthPage';
-import BoardListPage from 'pages/BoardListPage';
-
-const BoardDetailsPage = lazy(() => import('pages/BoardDetailsPage'));
-const BoardPage = lazy(() => import('pages/BoardPage'));
-const SettingsPage = lazy(() => import('pages/SettingsPage'));
+const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
+const BoardPage = lazy(() => import('features/board/pages/BoardPage'));
+const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
 
 
 const LazyPageLoader = () => {

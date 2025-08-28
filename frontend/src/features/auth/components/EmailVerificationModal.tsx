@@ -1,0 +1,134 @@
+import React, { useEffect, useState } from 'react';
+
+import { Hash, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Button, Input, Modal } from 'shared/ui';
+import styles from 'shared/ui/CommonForm.module.css';
+
+import { useResendVerificationCode, useVerifyEmailForm } from '../hooks/forms';
+
+interface EmailVerificationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  email: string;
+  onSuccess: (token: string) => void;
+}
+
+const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
+  isOpen,
+  onClose,
+  email,
+  onSuccess,
+}) => {
+  const { t } = useTranslation();
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  const { state, submitAction, isPending } = useVerifyEmailForm(email, onSuccess);
+  const { resendVerificationCode } = useResendVerificationCode(email);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (resendCooldown > 0) {
+      timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
+
+  const handleResendCode = async () => {
+    if (resendCooldown > 0) return;
+    
+    const result = await resendVerificationCode();
+    if (result.success) {
+      setResendCooldown(60);
+    }
+  };
+
+  const resendActions = (
+    <div className={styles.additionalActions} style={{ paddingTop: '1rem', borderTop: '1px solid #444' }}>
+      <p style={{ color: '#ccc', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+        {t('verifyEmail.didNotReceive', 'Didn\'t receive the code?')}
+      </p>
+      <Button 
+        variant="secondary" 
+        onClick={handleResendCode}
+        disabled={resendCooldown > 0}
+        style={{ fontSize: '0.875rem' }}
+      >
+        {resendCooldown > 0 
+          ? t('verifyEmail.resend.cooldown', 'Resend in {{seconds}}s', { seconds: resendCooldown })
+          : t('verifyEmail.resend.button', 'Resend Code')
+        }
+      </Button>
+    </div>
+  );
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className={styles.modalContainer} style={{ maxWidth: '400px' }}>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>
+            <Mail size={20} />
+            {t('verifyEmail.heading', 'Check Your Email')}
+          </h2>
+        </div>
+        
+        <p className={styles.modalDescription}>
+          {t('verifyEmail.description', 'Enter the 6-digit code sent to')} <strong style={{ color: '#fff' }}>{email}</strong>
+        </p>
+
+        <form action={submitAction} className={styles.form}>
+          {state.error && (
+            <div className={styles.error} role="alert">
+              {state.error}
+            </div>
+          )}
+
+          <div className={styles.field}>
+            <label htmlFor="verification-code">
+              <Hash size={14} />
+              {t('verifyEmail.label.code', 'Verification Code')}
+              <span className={styles.required}> *</span>
+            </label>
+            <Input
+              id="verification-code"
+              name="verificationCode"
+              type="text"
+              required
+              disabled={isPending}
+              maxLength={6}
+              pattern="[0-9]{6}"
+              placeholder={t('verifyEmail.placeholder.code', '123456')}
+              autoComplete="one-time-code"
+              style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}
+            />
+            <small style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
+              {t('verifyEmail.hint.code', 'Enter the 6-digit code from your email')}
+            </small>
+          </div>
+
+          <div className={styles.buttonGroup}>
+            <Button 
+              type="button" 
+              onClick={onClose} 
+              disabled={isPending} 
+              variant="secondary"
+            >
+              {t('common.button.cancel', 'Cancel')}
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={isPending} 
+              variant="primary"
+            >
+              {isPending ? t('common.button.verifying', 'Verifying...') : t('verifyEmail.button', 'Verify Email')}
+            </Button>
+          </div>
+        </form>
+
+        {resendActions}
+      </div>
+    </Modal>
+  );
+};
+
+export default EmailVerificationModal;
