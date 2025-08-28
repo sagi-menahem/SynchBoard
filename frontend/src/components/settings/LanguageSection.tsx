@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import logger from 'utils/logger';
 
 import { useLanguageSync } from 'hooks/common';
 import styles from 'pages/SettingsPage.module.css';
@@ -18,23 +19,20 @@ const LanguageSection: React.FC = () => {
   useEffect(() => {
     const initializeLanguagePrefs = async () => {
       try {
-        // Use the centralized language loader to prevent race conditions
         const prefs = await loadUserLanguage();
         if (prefs) {
           setLanguagePrefs(prefs);
         }
       } catch (error) {
-        console.error('Failed to load language preferences:', error);
+        logger.error('Failed to load language preferences:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    // Only load if language sync hasn't already loaded the preferences
     if (!isLanguageLoaded) {
       initializeLanguagePrefs();
     } else {
-      // If already loaded, get current language from i18n
       setLanguagePrefs({ preferredLanguage: i18n.language as 'en' | 'he' });
       setIsLoading(false);
     }
@@ -42,16 +40,14 @@ const LanguageSection: React.FC = () => {
 
   const handleLanguageChange = async (language: 'en' | 'he') => {
     try {
-      // Use the centralized update method to prevent race conditions
       const updatedPrefs = await updateLanguagePreference(language);
       if (updatedPrefs) {
         setLanguagePrefs(updatedPrefs);
       }
       toast.success(t('success.preferences.update'));
     } catch (error) {
-      console.error('Failed to update language preference:', error);
+      logger.error('Failed to update language preference:', error);
       toast.error(t('errors.common.unexpected'));
-      // Revert i18n language on error
       i18n.changeLanguage(currentLanguage);
     }
   };
