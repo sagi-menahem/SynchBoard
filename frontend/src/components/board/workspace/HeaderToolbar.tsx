@@ -108,7 +108,7 @@ export const HeaderToolbar: React.FC<HeaderToolbarProps> = ({
           <span className={styles.toolLabel}>{t('toolbar.label.color')}</span>
         </div>
 
-        {tool !== TOOLS.COLOR_PICKER && tool !== TOOLS.RECOLOR && tool !== TOOLS.DOWNLOAD && (
+        {tool !== TOOLS.DOWNLOAD && (
           <div className={styles.toolGroup}>
             <div className={styles.toolControls}>
               <div className={styles.strokeControl}>

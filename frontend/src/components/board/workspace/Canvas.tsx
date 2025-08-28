@@ -77,7 +77,11 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         
         if (data[3] === 0) {
           const backgroundColor = canvasConfig.backgroundColor || '#FFFFFF';
-          props.onColorPick?.(backgroundColor);
+          // Ensure color is in 6-character hex format
+          const normalizedColor = backgroundColor.length === 4 ? 
+            '#' + backgroundColor.slice(1).split('').map(c => c + c).join('') :
+            backgroundColor;
+          props.onColorPick?.(normalizedColor);
         } else {
           const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
           props.onColorPick?.(hex);
