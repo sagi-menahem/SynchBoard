@@ -67,25 +67,20 @@ export const useWebSocketHandler = ({
       const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
       
       if (action.type === ActionType.OBJECT_ADD) {
-        logger.debug(`Processing drawing OBJECT_ADD for instanceId: ${action.instanceId}`);
         setObjects((prev) => [...prev, actionPayload]);
       } else if (action.type === ActionType.OBJECT_UPDATE) {
-        logger.debug(`Processing drawing OBJECT_UPDATE for instanceId: ${action.instanceId}`);
         setObjects((prev) => prev.map((obj) => 
           obj.instanceId === action.instanceId ? actionPayload : obj,
         ));
       } else if (action.type === ActionType.OBJECT_DELETE) {
-        logger.debug(`Processing drawing OBJECT_DELETE for instanceId: ${action.instanceId}`);
         setObjects((prev) => prev.filter((obj) => obj.instanceId !== action.instanceId));
       }
     }
 
-    logger.debug(`Server confirmed drawing ${action.type}: ${action.instanceId}`);
     commitDrawingTransaction(action.instanceId);
   }, [sessionInstanceId, setObjects, commitDrawingTransaction]);
 
   const handleChatMessage = useCallback((chatMessage: ChatMessageResponse) => {
-    logger.debug(`Processing CHAT message with instanceId: ${chatMessage.instanceId}`);
     
     setMessages((prevMessages) => {
       const messageIndex = prevMessages.findIndex((msg) => {
@@ -99,17 +94,14 @@ export const useWebSocketHandler = ({
       });
 
       if (messageIndex !== -1) {
-        logger.debug(`Match found for chat instanceId: ${chatMessage.instanceId}. Replacing pending message at index ${messageIndex}.`);
         const newMessages = [...prevMessages];
         newMessages[messageIndex] = chatMessage;
         return newMessages;
       } else {
-        logger.debug(`No pending chat message found for instanceId: ${chatMessage.instanceId}. Appending new message.`);
         return [...prevMessages, chatMessage];
       }
     });
 
-    logger.debug(`Server confirmed chat message: ${chatMessage.instanceId}`);
     if (chatMessage.instanceId) {
       commitChatTransaction(chatMessage.instanceId);
     }
@@ -132,9 +124,6 @@ export const useWebSocketHandler = ({
           payload?: object;
         };
 
-        logger.debug(
-          `Received transactional message. Type: ${transactionalMessage.type}, InstanceId: ${transactionalMessage.instanceId}`,
-        );
 
         if (transactionalMessage.type === ActionType.OBJECT_ADD || 
             transactionalMessage.type === ActionType.OBJECT_UPDATE ||

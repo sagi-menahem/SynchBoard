@@ -64,7 +64,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   }, [onHeightChange]);
 
   useEffect(() => {
-    // Don't show banner if user is not authenticated
     if (!token || !shouldShowBanner) {
       if (onHeightChange) {
         onHeightChange(0);
@@ -103,7 +102,6 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   }, [token, shouldShowBanner, onHeightChange]);
 
 
-  // Only show banner for authenticated users
   if (!token || !shouldShowBanner) {
     return null;
   }

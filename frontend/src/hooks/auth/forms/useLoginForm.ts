@@ -11,7 +11,6 @@ import { Logger } from 'utils';
 
 import { useAuth } from 'hooks/auth/useAuth';
 
-
 const logger = Logger;
 
 interface LoginState {
@@ -37,14 +36,13 @@ export const useLoginForm = () => {
     }
 
     const credentials: LoginRequest = { email, password };
-    logger.debug('Login form submission for user:', email);
 
     try {
       const response = await toast.promise(
         AuthService.login(credentials),
         {
           loading: t('loading.auth.login'),
-          success: t('loginForm.loginSuccess'),
+          success: t('success.auth.login'),
           error: (err) => {
             let errorMessage = t('loginForm.error.unknown', 'Login failed');
             if (err && typeof err === 'object' && 'response' in err) {
@@ -61,7 +59,6 @@ export const useLoginForm = () => {
       );
       
       const token = (response as { token: string }).token;
-      logger.info('Login successful for user:', email);
       
       login(token);
       navigate(APP_ROUTES.BOARD_LIST);

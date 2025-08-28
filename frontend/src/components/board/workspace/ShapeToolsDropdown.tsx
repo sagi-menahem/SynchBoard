@@ -53,7 +53,6 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
     setIsOpen(false);
   }, [onToolSelect]);
 
-  // Find the current shape tool or default to rectangle
   const currentShapeTool = shapeTools.find((shape) => shape.tool === currentTool) || shapeTools[0];
   const isShapeToolActive = shapeTools.some((shape) => shape.tool === currentTool);
 

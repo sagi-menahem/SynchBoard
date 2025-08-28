@@ -54,7 +54,7 @@ const BoardDetailsPage: React.FC = () => {
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
   // Calculate online members (mock data - you may have real data from WebSocket)
-  // const onlineMemberCount = boardDetails?.members?.length || 0; // TODO: implement real online status
+  // const onlineMemberCount = boardDetails?.members?.length || 0;
   // const totalMemberCount = boardDetails?.members?.length || 0;
 
   // Toolbar configuration

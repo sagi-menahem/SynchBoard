@@ -53,21 +53,17 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,
   };
 
-  // Canvas at 100% zoom (1:1 scale)
   const canvasWidth = canvasConfig.width;
   const canvasHeight = canvasConfig.height;
-  const padding = 40; // 20px padding on each side
+  const padding = 40;
 
-  // Always show striped background for visual reference
   const hideBackground = false;
 
-  // Container sizing for 100% zoom behavior
   const canvasContainerStyle = {
     minWidth: `${canvasWidth + padding}px`,
     minHeight: `${canvasHeight + padding}px`,
   };
 
-  // Handle canvas click for color picker and fill tool
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (props.tool === TOOLS.COLOR_PICKER && canvasRef.current) {
       const canvas = canvasRef.current;
@@ -79,13 +75,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         const imageData = ctx.getImageData(x, y, 1, 1);
         const data = imageData.data;
         
-        // Check if the pixel is transparent (indicating we're clicking on the background)
         if (data[3] === 0) {
-          // Return the canvas background color instead of black
           const backgroundColor = canvasConfig.backgroundColor || '#FFFFFF';
           props.onColorPick?.(backgroundColor);
         } else {
-          // Return the actual pixel color
           const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
           props.onColorPick?.(hex);
         }
@@ -98,7 +91,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
       
-      // Use the recolor logic system
       const recolorAction = processRecolorClick(
         { x: clickX, y: clickY },
         props.objects,
@@ -109,10 +101,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       );
       
       if (recolorAction.shouldPerformAction && recolorAction.action) {
-        console.debug('Recolor action:', recolorAction.reason);
         props.onDraw(recolorAction.action);
-      } else {
-        console.debug('No recolor action:', recolorAction.reason);
       }
       
       e.preventDefault();
@@ -146,7 +135,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     setTextInput(null);
   };
 
-  // Handle mouse move for recolor tool cursor feedback
   const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (props.tool !== TOOLS.RECOLOR || !canvasRef.current) return;
 

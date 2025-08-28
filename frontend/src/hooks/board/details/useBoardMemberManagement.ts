@@ -19,7 +19,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
         boardService.promoteMember(boardId, member.email),
         {
           loading: t('loading.member.promote'),
-          success: t('promoteSuccess', { userName: member.firstName }),
+          success: t('success.member.promote', { userName: member.firstName }),
           error: t('errors.member.promote'),
         },
       );
@@ -33,7 +33,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
         boardService.removeMember(boardId, member.email),
         {
           loading: t('loading.member.remove'),
-          success: t('removeSuccess', { userName: member.firstName }),
+          success: t('success.member.remove', { userName: member.firstName }),
           error: t('errors.member.remove'),
         },
       );
@@ -47,7 +47,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
         boardService.inviteMember(boardId, email),
         {
           loading: t('loading.member.invite'),
-          success: t('inviteMemberForm.inviteSuccess', { email }),
+          success: t('success.member.invite', { email }),
           error: t('errors.member.invite'),
         },
       );

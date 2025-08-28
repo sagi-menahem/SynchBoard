@@ -26,7 +26,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const canvasWidth = formData.get('canvasWidth') as string;
     const canvasHeight = formData.get('canvasHeight') as string;
 
-    // Validation
     if (!name) {
       return {
         success: false,
@@ -42,7 +41,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       };
     }
 
-    // Create FormData for multipart submission
     const submitFormData = new FormData();
     submitFormData.append('name', name);
     submitFormData.append('description', description);
@@ -57,7 +55,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       }
     });
     
-    // Add canvas settings
     if (canvasBackgroundColor) {
       submitFormData.append('canvasBackgroundColor', canvasBackgroundColor);
     }
@@ -73,7 +70,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
         createBoard(submitFormData),
         {
           loading: t('loading.board.create'),
-          success: (board) => t('createBoardSuccess', { boardName: board.name }),
+          success: (board) => t('success.board.create', { boardName: board.name }),
           error: t('errors.board.create'),
         },
       );

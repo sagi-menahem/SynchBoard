@@ -12,8 +12,6 @@ import {
 import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
 import { WEBSOCKET_URL } from '../constants/ApiConstants';
 
-
-
 class WebSocketService {
   private stompClient: Client | null = null;
   private readonly messageSchemas = new Map<string, MessageValidationSchema>();
@@ -102,7 +100,6 @@ class WebSocketService {
       return;
     }
     
-    logger.info('Connection lost - attempting to reconnect...');
     this.connectionState = 'disconnected';
     
     if (this.currentToken && this.onConnectedCallback) {
@@ -113,7 +110,6 @@ class WebSocketService {
   }
 
   private attemptReconnection(): void {
-    // Prevent excessive reconnection attempts
     if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
       logger.warn(`Max reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection.`);
       this.resetReconnectionState();
@@ -127,8 +123,6 @@ class WebSocketService {
       30000,
     );
     this.reconnectionAttempts++;
-
-    logger.info(`Attempting reconnection ${this.reconnectionAttempts}/${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS} in ${delay}ms`);
 
     this.reconnectionTimer = setTimeout(() => {
       if (this.currentToken && 
@@ -154,7 +148,6 @@ class WebSocketService {
   }
 
   public connect(token: string, onConnectedCallback: () => void) {
-    // Prevent duplicate connections
     if (this.connectionState === 'connecting' || 
         (this.stompClient?.active && this.connectionState === 'connected')) {
       if (this.connectionState === 'connected') {
@@ -171,7 +164,6 @@ class WebSocketService {
   private connectInternal(token: string, onConnectedCallback: () => void): void {
     this.connectionState = 'connecting';
 
-    // Clean up existing client and timers if any
     if (this.stompClient) {
       this.stompClient.deactivate();
       this.stompClient = null;
@@ -181,7 +173,6 @@ class WebSocketService {
       this.connectionTimeout = null;
     }
 
-    // Set connection timeout
     this.connectionTimeout = setTimeout(() => {
       logger.warn('WebSocket connection timeout - forcing disconnect');
       this.handleDisconnection();
@@ -196,11 +187,9 @@ class WebSocketService {
       heartbeatIncoming: 30000, // 30 seconds - expect heartbeat from server
       heartbeatOutgoing: 30000, // 30 seconds - send heartbeat to server
       onConnect: async () => {
-        logger.info('Connected to server');
         this.connectionState = 'connected';
         this.resetReconnectionState();
         
-        // Clear connection timeout
         if (this.connectionTimeout) {
           clearTimeout(this.connectionTimeout);
           this.connectionTimeout = null;
@@ -235,7 +224,6 @@ class WebSocketService {
           return;
         }
         
-        logger.info(`Connection closed (${event.code}${event.reason ? ': ' + event.reason : ''})`);
         
         if (this.rollbackCallbacks.size > 0) {
           this.rollbackCallbacks.forEach((callback) => {
@@ -273,7 +261,6 @@ class WebSocketService {
     this.connectionState = 'disconnected';
     this.pendingSubscriptions = [];
     
-    // Reset disconnect flag after a brief delay
     setTimeout(() => {
       this.isIntentionalDisconnect = false;
     }, 100);

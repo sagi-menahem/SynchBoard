@@ -40,18 +40,16 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       ...(phoneNumber && { phoneNumber }),
       ...(dateOfBirth && { dateOfBirth }),
     };
-    logger.debug('Registration form submission for user:', email);
 
     try {
       await toast.promise(
         authService.register(registerData),
         {
           loading: t('loading.auth.register'),
-          success: (msg) => msg || t('registerForm.registrationSuccess'),
+          success: (msg) => msg || t('success.auth.register'),
           error: t('errors.auth.register'),
         },
       );
-      logger.info('Registration successful for user:', email);
       onRegistrationSuccess(email);
       
       return {

@@ -39,7 +39,6 @@ export const useBoardDetailsPage = (boardId: number) => {
 
   const handleInviteSuccess = useCallback(
     (newMember: Member) => {
-      logger.debug('New member invited:', newMember);
       setInviteModalOpen(false);
     },
     [],
@@ -67,7 +66,7 @@ export const useBoardDetailsPage = (boardId: number) => {
     if (!boardDetails) return;
     try {
       await boardService.leaveBoard(boardId);
-      toast.success(t('leaveBoard.success', { boardName: boardDetails.name }));
+      toast.success(t('success.board.leave', { boardName: boardDetails.name }));
       navigate(APP_ROUTES.BOARD_LIST);
     } catch (error) {
       logger.error('Failed to leave board:', error);

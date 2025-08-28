@@ -66,7 +66,6 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
     return (
         <>
-            {/* Board Picture Section */}
             <div className={styles.section}>
                 <div className={styles.imageContainer}>
                     <img
@@ -104,7 +103,6 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                 )}
             </div>
 
-            {/* Board Description Section */}
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>{t('boardDetailsPage.boardDescription')}</h2>

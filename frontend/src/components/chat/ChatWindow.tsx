@@ -54,7 +54,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
   useEffect(() => {
     const timeoutId = setTimeout(scrollToBottom, 100);
-    // Track if message count changed (new messages received)
     if (messages.length !== previousMessageCount) {
       setPreviousMessageCount(messages.length);
     }
@@ -219,7 +218,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       
       <div className={styles.messageList} ref={messagesContainerRef}>
         {filteredMessages.map((message, index) => {
-          // Check if this message is genuinely new (not just a timestamp update)
           const isNewMessage = index >= previousMessageCount;
           
           return (

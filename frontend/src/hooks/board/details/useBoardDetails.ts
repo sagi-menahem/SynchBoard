@@ -3,6 +3,8 @@ import { APP_ROUTES, WEBSOCKET_TOPICS } from 'constants';
 import { useCallback, useEffect, useState } from 'react';
 
 import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { BoardService } from 'services';
 import type { BoardDetails, BoardUpdateDTO } from 'types';
@@ -10,11 +12,10 @@ import { Logger } from 'utils';
 
 import { useSocketSubscription } from 'hooks/common/useSocket';
 
-
 const logger = Logger;
 
-
 export const useBoardDetails = (boardId: number | undefined) => {
+  const { t } = useTranslation();
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
     setIsLoading(true);
     
     const startTime = Date.now();
-    const minDelay = 200; // 200ms minimum delay
+    const minDelay = 200;
 
     BoardService.getBoardDetails(boardId)
       .then((data: unknown) => {
@@ -38,6 +39,8 @@ export const useBoardDetails = (boardId: number | undefined) => {
         logger.error('Failed to fetch board details:', error);
         if (error instanceof AxiosError && error.response?.status === 403) {
           navigate(APP_ROUTES.BOARD_LIST);
+        } else {
+          toast.error(t('errors.board.details'));
         }
         setBoardDetails(null);
       })
@@ -49,7 +52,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
           setIsLoading(false);
         }, remainingDelay);
       });
-  }, [boardId, navigate]);
+  }, [boardId, navigate, t]);
 
   useEffect(() => {
     fetchDetails();
@@ -57,8 +60,6 @@ export const useBoardDetails = (boardId: number | undefined) => {
 
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {
-      logger.debug(`[useBoardDetails] Received board update of type: ${message.updateType}. Refetching details.`);
-            
       if (!boardId || isNaN(boardId)) {
         return;
       }

@@ -39,7 +39,6 @@ export const useCanvas = ({
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,
   };
 
-  // Set canvas dimensions based on canvas config
   useEffect(() => {
     utils.setCanvasDimensions(finalCanvasConfig.width, finalCanvasConfig.height);
   }, [finalCanvasConfig.width, finalCanvasConfig.height, utils]);

@@ -33,8 +33,12 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
       })
       .catch((error) => {
         logger.error('Failed to fetch user preferences', error);
+        // Only show error toast if preferences are actively being used by user
+        if (document.location.pathname.includes('/settings')) {
+          toast.error(t('errors.preferences.fetch'));
+        }
       });
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (token) {
@@ -56,6 +60,7 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
       .catch((error) => {
         logger.error('Failed to save preferences', error);
         setPreferences(oldPrefs);
+        toast.error(t('errors.preferences.update'));
         throw error;
       });
   };

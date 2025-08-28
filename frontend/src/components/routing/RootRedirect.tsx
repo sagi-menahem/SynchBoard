@@ -12,11 +12,6 @@ const RootRedirect: React.FC = () => {
   
   useEffect(() => {
     if (!isInitializing) {
-      logger.info('[RootRedirect] Checking auth status for root route', {
-        hasToken: !!token,
-        tokenLength: token?.length,
-        redirectingTo: token ? '/boards' : '/auth',
-      });
     }
   }, [token, isInitializing]);
   
@@ -36,11 +31,8 @@ const RootRedirect: React.FC = () => {
   }
   
   if (token) {
-    logger.debug('[RootRedirect] User authenticated, redirecting to boards');
     return <Navigate to="/boards" replace />;
   }
-  
-  logger.debug('[RootRedirect] User not authenticated, redirecting to auth');
   return <Navigate to="/auth" replace />;
 };
 

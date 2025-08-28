@@ -18,10 +18,6 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-  logger.info('[AuthProvider] Initializing - localStorage token exists:', !!storedToken, {
-    tokenLength: storedToken?.length,
-    tokenPreview: storedToken ? `${storedToken.substring(0, 20)}...` : null,
-  });
   
   const [token, setToken] = useState<string | null>(storedToken);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -53,10 +49,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Validate user exists in database
           try {
             await getUserProfile();
-            logger.info('[AuthProvider] Authentication state initialized and user validated', { 
-              userEmail: decodedToken.sub,
-              expiresAt: decodedToken.exp ? new Date(decodedToken.exp * 1000).toISOString() : 'no expiry',
-            });
             
             if (decodedToken.exp) {
               const expiryTime = decodedToken.exp * 1000;
@@ -102,21 +94,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [token]);
 
   const login = (newToken: string) => {
-    logger.info('[AuthProvider] User login - setting new token', {
-      tokenLength: newToken?.length,
-      tokenPreview: newToken ? `${newToken.substring(0, 20)}...` : null,
-      isOAuthFlow: sessionStorage.getItem('oauth_loading') === 'true',
-    });
     setToken(newToken);
     localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
-    logger.info('[AuthProvider] Token saved to localStorage');
   };
 
   const logout = () => {
-    logger.info('[AuthProvider] User logout - clearing token');
     setToken(null);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    logger.info('[AuthProvider] Token removed from localStorage');
   };
 
   const value = {

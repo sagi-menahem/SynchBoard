@@ -14,12 +14,6 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { token } = useAuth();
   
-  logger.info('[ProtectedRoute] Checking authentication', {
-    tokenExists: !!token,
-    tokenLength: token?.length,
-    currentPath: window.location.pathname,
-    localStorageToken: !!localStorage.getItem('AUTH_TOKEN'),
-  });
 
   if (!token) {
     logger.warn('[ProtectedRoute] SECURITY: No token found - redirecting to login', {
@@ -30,8 +24,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to={APP_ROUTES.AUTH} replace />;
   }
 
-  logger.debug('[ProtectedRoute] Authentication valid, rendering protected content');
-  return <>{children}</>;
+  return <>{children};</>;
 };
 
 export default ProtectedRoute;

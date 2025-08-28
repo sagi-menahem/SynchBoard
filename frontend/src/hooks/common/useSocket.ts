@@ -17,7 +17,6 @@ export const useWebSocket = () => {
   return context;
 };
 
-// Alias for useWebSocket to match component import
 export const useSocket = useWebSocket;
 
 export const useSocketSubscription = <T>(
@@ -45,10 +44,7 @@ export const useSocketSubscription = <T>(
 
     const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
       if (WebSocketService.isConnected()) {
-        logger.debug(`useSocketSubscription: Subscribing to ${topic}`);
         subscription = WebSocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
-      } else {
-        logger.debug(`useSocketSubscription: WebSocket not ready for ${topic}, will retry when connected`);
       }
     }, 100);
 
@@ -56,7 +52,6 @@ export const useSocketSubscription = <T>(
       clearTimeout(timeoutId);
       if (subscription) {
         try {
-          logger.debug(`useSocketSubscription: Unsubscribing from ${topic}`);
           subscription.unsubscribe();
         } catch (error) {
           logger.warn(`Failed to unsubscribe from ${topic}:`, error);

@@ -39,7 +39,6 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const containerWidth = containerRect.width;
       let mouseX = e.clientX - containerRect.left;
       
-      // Adjust for RTL: flip the mouse position calculation
       const isRTL = document.documentElement.dir === 'rtl';
       if (isRTL) {
         mouseX = containerWidth - mouseX;
