@@ -7,9 +7,9 @@ import { createErrorHandler } from 'utils';
 import logger from 'utils/logger';
 
 interface ErrorHandlerOptions {
-    showToast?: boolean;
-    redirectOnError?: string;
-    logLevel?: 'error' | 'warn' | 'info';
+  showToast?: boolean;
+  redirectOnError?: string;
+  logLevel?: 'error' | 'warn' | 'info';
 }
 
 export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
@@ -23,7 +23,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
 
     if (showToast) {
       toast.error(
-        context 
+        context
           ? `${context}: ${error.message}`
           : error.message || t('errorHandler.unexpectedError'),
       );

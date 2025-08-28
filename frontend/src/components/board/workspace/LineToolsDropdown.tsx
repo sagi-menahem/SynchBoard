@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { ArrowRight, ChevronDown, Minus, MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

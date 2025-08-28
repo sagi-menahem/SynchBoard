@@ -63,7 +63,7 @@
     .overlay {
         padding: 1rem 0.5rem;
     }
-    
+
     .content {
         min-width: 280px;
         max-width: calc(100vw - 1rem);
@@ -71,7 +71,7 @@
         padding: 1.5rem;
         margin: 1rem auto;
     }
-    
+
     .closeButton {
         margin-block: -0.75rem 0.5rem;
         margin-inline: 0.5rem -0.75rem;
@@ -79,13 +79,12 @@
     }
 }
 
-/* Very small screens */
 @media (max-width: 480px) {
     .overlay {
         padding: 0.5rem;
         align-items: stretch;
     }
-    
+
     .content {
         min-width: auto;
         max-width: 100%;

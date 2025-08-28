@@ -7,6 +7,6 @@ export const createErrorHandler = (context: string) => (error: Error) => {
     timestamp: new Date().toISOString(),
     context,
   });
-    
+
   toast.error(i18n.t('errors.common.componentError', { context }));
 };

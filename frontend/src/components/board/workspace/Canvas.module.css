@@ -7,7 +7,7 @@
     display: flex;
 }
 
-.scrollContainer > * {
+.scrollContainer>* {
     direction: ltr;
 }
 
@@ -19,16 +19,13 @@
     width: 100%;
     height: 100%;
     position: relative;
-    /* Dynamic striped background pattern - matches chat */
     background: var(--canvas-container-bg, #1a1a1a);
-    background-image: 
-        repeating-linear-gradient(
-            -45deg,
+    background-image:
+        repeating-linear-gradient(-45deg,
             transparent,
             transparent 10px,
             var(--canvas-pattern-color, rgba(255, 255, 255, 0.02)) 10px,
-            var(--canvas-pattern-color, rgba(255, 255, 255, 0.02)) 20px
-        );
+            var(--canvas-pattern-color, rgba(255, 255, 255, 0.02)) 20px);
 }
 
 .canvasContainer.hideBackground {
@@ -39,8 +36,7 @@
 .canvasWrapper {
     display: inline-block;
     transform-origin: center center;
-    /* Enhanced shadow for clear canvas boundaries */
-    box-shadow: 
+    box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.4),
         0 8px 24px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
@@ -50,7 +46,6 @@
 .canvas {
     display: block;
     cursor: crosshair;
-    /* Ensure canvas doesn't inherit rounded corners */
     border-radius: 2px;
 }
 
@@ -114,10 +109,11 @@
 }
 
 @keyframes spin {
-    0% { 
-        transform: rotate(0deg); 
+    0% {
+        transform: rotate(0deg);
     }
-    100% { 
-        transform: rotate(360deg); 
+
+    100% {
+        transform: rotate(360deg);
     }
 }

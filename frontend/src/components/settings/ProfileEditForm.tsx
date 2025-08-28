@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { X, Save } from 'lucide-react';
+import { Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';

@@ -9,11 +9,11 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   } else {
     date = timestamp;
   }
-  
+
   if (!date || isNaN(date.getTime())) {
     return i18n.t('dates.invalidDate');
   }
-  
+
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
@@ -38,19 +38,19 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   }
 
   if (date.getFullYear() === now.getFullYear()) {
-    return date.toLocaleDateString([], { 
-      month: 'short', 
+    return date.toLocaleDateString([], {
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit', 
-      minute: '2-digit', 
+      hour: '2-digit',
+      minute: '2-digit',
     });
   }
-  return date.toLocaleDateString([], { 
+  return date.toLocaleDateString([], {
     year: 'numeric',
-    month: 'short', 
+    month: 'short',
     day: 'numeric',
-    hour: '2-digit', 
-    minute: '2-digit', 
+    hour: '2-digit',
+    minute: '2-digit',
   });
 };
 
@@ -63,11 +63,11 @@ export const formatDetailedTimestamp = (timestamp: number | Date | string): stri
   } else {
     date = timestamp;
   }
-  
+
   if (!date || isNaN(date.getTime())) {
     return i18n.t('dates.invalidDate');
   }
-  
+
   return date.toLocaleString();
 };
 
@@ -80,34 +80,34 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   } else {
     date = timestamp;
   }
-  
+
   if (!date || isNaN(date.getTime())) {
     return i18n.t('dates.invalidDate');
   }
-  
+
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
-  
+
   if (messageDate.getTime() === today.getTime()) {
     return i18n.t('dates.today');
   }
-  
+
   if (messageDate.getTime() === yesterday.getTime()) {
     return i18n.t('dates.yesterday');
   }
-  
+
   if (date.getFullYear() === now.getFullYear()) {
-    return date.toLocaleDateString([], { 
-      month: 'long', 
-      day: 'numeric', 
+    return date.toLocaleDateString([], {
+      month: 'long',
+      day: 'numeric',
     });
   }
-  return date.toLocaleDateString([], { 
+  return date.toLocaleDateString([], {
     year: 'numeric',
-    month: 'long', 
-    day: 'numeric', 
+    month: 'long',
+    day: 'numeric',
   });
 };

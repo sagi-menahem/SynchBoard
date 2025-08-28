@@ -18,9 +18,9 @@ export const sanitizeString = (input: unknown): string => {
   if (input === null || input === undefined) {
     return '';
   }
-  
+
   const stringContent = String(input);
-  
+
   if (!stringContent || typeof stringContent !== 'string') {
     return '';
   }
@@ -89,19 +89,19 @@ export const isSafeUrl = (url: string): boolean => {
 
 export const isPrototypePollutionAttempt = (obj: Record<string, unknown>): boolean => {
   const dangerousKeys = ['__proto__', 'prototype'];
-  
+
   for (const key of dangerousKeys) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       return true;
     }
   }
-  
+
   if (Object.prototype.hasOwnProperty.call(obj, 'constructor')) {
     const constructor = obj['constructor'];
-    if (constructor && 
-        typeof constructor === 'object' && 
-        typeof constructor !== 'function' && 
-        Object.prototype.hasOwnProperty.call(constructor as Record<string, unknown>, 'prototype')) {
+    if (constructor &&
+      typeof constructor === 'object' &&
+      typeof constructor !== 'function' &&
+      Object.prototype.hasOwnProperty.call(constructor as Record<string, unknown>, 'prototype')) {
       return true;
     }
   }

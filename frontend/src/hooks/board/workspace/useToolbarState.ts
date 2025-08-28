@@ -4,13 +4,13 @@ import { useToolPreferences } from 'context/ToolPreferencesContext';
 import type { Tool } from 'types/CommonTypes';
 
 export const useToolbarState = () => {
-  const { 
+  const {
     preferences,
     isLoading,
     error,
     updateTool,
     updateStrokeColor,
-    updateStrokeWidth, 
+    updateStrokeWidth,
   } = useToolPreferences();
 
   const setTool = useCallback((newTool: Tool) => {

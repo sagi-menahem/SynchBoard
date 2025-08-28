@@ -15,18 +15,18 @@ export const useOAuthCallback = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
-  
+
   const [isProcessing, setIsProcessing] = useState(() => {
     const isCallback = window.location.pathname === '/auth/callback';
-    const hasParams = new URLSearchParams(window.location.search).has('token') || 
-                     new URLSearchParams(window.location.search).has('code');
-    
+    const hasParams = new URLSearchParams(window.location.search).has('token') ||
+      new URLSearchParams(window.location.search).has('code');
+
     const shouldProcess = isCallback && hasParams;
-    
+
     if (shouldProcess) {
       sessionStorage.setItem('oauth_loading', 'true');
     }
-    
+
     return shouldProcess;
   });
 
@@ -35,7 +35,7 @@ export const useOAuthCallback = () => {
     if (sessionStorage.getItem(processedKey) === 'true') {
       return;
     }
-    
+
     if (window.location.pathname !== '/auth/callback') {
       return;
     }
@@ -63,7 +63,7 @@ export const useOAuthCallback = () => {
         }
 
         const token = oauthService.extractTokenFromCallback();
-        
+
         if (!token) {
           logger.error('[useOAuthCallback] No token found in OAuth callback');
           toast.error(t('oauth.error.noToken', 'Authentication failed. Please try again.'));
@@ -76,17 +76,17 @@ export const useOAuthCallback = () => {
         }
 
         authLogin(token);
-        
+
         if (!sessionStorage.getItem('oauth_success_shown')) {
           toast.success(t('oauth.success', 'Successfully logged in with Google!'));
           sessionStorage.setItem('oauth_success_shown', 'true');
         }
         sessionStorage.removeItem('oauth_loading');
         setIsProcessing(false);
-        
+
         window.history.replaceState({}, document.title, '/auth');
         navigate(APP_ROUTES.BOARD_LIST, { replace: true });
-        
+
         setTimeout(() => {
           sessionStorage.removeItem('oauth_success_shown');
           sessionStorage.removeItem('oauth_callback_processed');

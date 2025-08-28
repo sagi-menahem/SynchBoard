@@ -50,14 +50,8 @@ const BoardDetailsPage: React.FC = () => {
     handleCanvasSettingsUpdate,
   } = useBoardDetailsPage(numericBoardId);
 
-  // State for quick canvas settings modal
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
-  // Calculate online members (mock data - you may have real data from WebSocket)
-  // const onlineMemberCount = boardDetails?.members?.length || 0;
-  // const totalMemberCount = boardDetails?.members?.length || 0;
-
-  // Toolbar configuration
   const toolbarConfig: ToolbarConfig = useMemo(() => ({
     pageType: 'board-details',
     leftSection: [
@@ -186,7 +180,6 @@ const BoardDetailsPage: React.FC = () => {
       />
 
 
-      {/* Quick Canvas Settings Modal */}
       {isQuickSettingsOpen && (
         <div className={styles.quickSettingsModal}>
           <div className={styles.quickSettingsContent}>

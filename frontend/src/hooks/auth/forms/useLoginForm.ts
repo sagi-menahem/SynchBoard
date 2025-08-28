@@ -57,19 +57,19 @@ export const useLoginForm = () => {
           },
         },
       );
-      
+
       const token = (response as { token: string }).token;
-      
+
       login(token);
       navigate(APP_ROUTES.BOARD_LIST);
-      
+
       return {
         success: true,
         data: { token },
       };
     } catch (err: unknown) {
       logger.error('Login failed for user:', err, { email });
-      
+
       return {
         success: false,
       };

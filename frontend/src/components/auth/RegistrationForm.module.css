@@ -1,11 +1,9 @@
-/* Form Styling - Match Settings page patterns */
 .form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* Form Fields */
 .field {
     margin-bottom: 1rem;
 }
@@ -20,12 +18,10 @@
     font-size: 0.875rem;
 }
 
-/* Center text in inputs */
 .field input {
     text-align: center;
 }
 
-/* Specific styling for date inputs */
 .field input[type="date"] {
     text-align: center;
 }
@@ -35,7 +31,6 @@
     font-weight: bold;
 }
 
-/* Radio Group */
 .radioGroup {
     display: flex;
     gap: 1rem;
@@ -56,7 +51,6 @@
     accent-color: #3b82f6;
 }
 
-/* Error Styling */
 .error {
     background-color: rgba(220, 38, 38, 0.1);
     border: 1px solid rgba(220, 38, 38, 0.3);
@@ -67,7 +61,6 @@
     margin-bottom: 1rem;
 }
 
-/* Submit Button */
 .submitButton {
     margin-top: 0.5rem;
     width: 50%;
@@ -75,12 +68,11 @@
     justify-content: center;
 }
 
-/* Responsive */
 @media (max-width: 640px) {
     .form {
         gap: 1rem;
     }
-    
+
     .radioGroup {
         flex-direction: column;
         gap: 0.5rem;

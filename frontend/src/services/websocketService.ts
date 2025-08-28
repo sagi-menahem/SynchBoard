@@ -3,10 +3,10 @@ import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import logger from 'utils/logger';
 import {
-    type MessageValidationSchema,
-    sanitizeObject,
-    validateBoardMessage,
-    validateMessage,
+  type MessageValidationSchema,
+  sanitizeObject,
+  validateBoardMessage,
+  validateMessage,
 } from 'utils/SecurityUtils';
 
 import { AUTH_HEADER_CONFIG, WEBSOCKET_CONFIG } from '../constants';
@@ -17,11 +17,11 @@ class WebSocketService {
   private readonly messageSchemas = new Map<string, MessageValidationSchema>();
   private connectionState: 'disconnected' | 'connecting' | 'connected' = 'disconnected';
   private pendingSubscriptions: {
-        topic: string;
-        callback: (message: unknown) => void;
-        schemaKey?: string;
-    }[] = [];
-    
+    topic: string;
+    callback: (message: unknown) => void;
+    schemaKey?: string;
+  }[] = [];
+
   private reconnectionAttempts = 0;
   private reconnectionTimer: ReturnType<typeof setTimeout> | null = null;
   private connectionTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -54,7 +54,7 @@ class WebSocketService {
 
   private validateMessageWithSchema(data: unknown, schemaKey?: string): boolean {
     const dataObj = data as Record<string, unknown>;
-        
+
     if (schemaKey && this.messageSchemas.has(schemaKey)) {
       const schema = this.messageSchemas.get(schemaKey);
       if (!schema) {
@@ -99,9 +99,9 @@ class WebSocketService {
     if (this.connectionState === 'disconnected') {
       return;
     }
-    
+
     this.connectionState = 'disconnected';
-    
+
     if (this.currentToken && this.onConnectedCallback) {
       this.attemptReconnection();
     } else {
@@ -125,9 +125,9 @@ class WebSocketService {
     this.reconnectionAttempts++;
 
     this.reconnectionTimer = setTimeout(() => {
-      if (this.currentToken && 
-          this.onConnectedCallback && 
-          this.connectionState === 'disconnected') {
+      if (this.currentToken &&
+        this.onConnectedCallback &&
+        this.connectionState === 'disconnected') {
         this.connectInternal(this.currentToken, this.onConnectedCallback);
       } else {
         this.resetReconnectionState();
@@ -148,8 +148,8 @@ class WebSocketService {
   }
 
   public connect(token: string, onConnectedCallback: () => void) {
-    if (this.connectionState === 'connecting' || 
-        (this.stompClient?.active && this.connectionState === 'connected')) {
+    if (this.connectionState === 'connecting' ||
+      (this.stompClient?.active && this.connectionState === 'connected')) {
       if (this.connectionState === 'connected') {
         onConnectedCallback();
       }
@@ -184,19 +184,19 @@ class WebSocketService {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
       reconnectDelay: 0,
-      heartbeatIncoming: 30000, // 30 seconds - expect heartbeat from server
-      heartbeatOutgoing: 30000, // 30 seconds - send heartbeat to server
+      heartbeatIncoming: 30000,
+      heartbeatOutgoing: 30000,
       onConnect: async () => {
         this.connectionState = 'connected';
         this.resetReconnectionState();
-        
+
         if (this.connectionTimeout) {
           clearTimeout(this.connectionTimeout);
           this.connectionTimeout = null;
         }
-        
+
         this.processPendingSubscriptions();
-        
+
         if (this.queueProcessorCallback) {
           try {
             await this.queueProcessorCallback();
@@ -204,7 +204,7 @@ class WebSocketService {
             logger.error('Error processing offline queue after reconnection:', error);
           }
         }
-        
+
         onConnectedCallback();
       },
       onDisconnect: () => {
@@ -215,7 +215,7 @@ class WebSocketService {
       onStompError: (frame) => {
         const errorMessage = frame.headers['message'] || 'Unknown broker error';
         logger.warn(`Server error: ${errorMessage}`);
-        
+
         this.handleDisconnection();
       },
       onWebSocketClose: (_event) => {
@@ -223,8 +223,8 @@ class WebSocketService {
           this.isIntentionalDisconnect = false;
           return;
         }
-        
-        
+
+
         if (this.rollbackCallbacks.size > 0) {
           this.rollbackCallbacks.forEach((callback) => {
             try {
@@ -234,7 +234,7 @@ class WebSocketService {
             }
           });
         }
-        
+
         this.handleDisconnection();
       },
     });
@@ -247,9 +247,9 @@ class WebSocketService {
     this.rollbackCallbacks.clear();
     this.queueProcessorCallback = null;
     this.resetReconnectionState();
-    
+
     this.isIntentionalDisconnect = true;
-        
+
     if (this.stompClient?.active) {
       try {
         this.stompClient.deactivate();
@@ -260,7 +260,7 @@ class WebSocketService {
     }
     this.connectionState = 'disconnected';
     this.pendingSubscriptions = [];
-    
+
     setTimeout(() => {
       this.isIntentionalDisconnect = false;
     }, 100);
@@ -300,7 +300,7 @@ class WebSocketService {
     try {
       const subscription = this.stompClient.subscribe(topic, (message: IMessage) => {
         const validatedMessage = this.parseAndValidateMessage<T>(message.body, schemaKey);
-        
+
         if (validatedMessage !== null) {
           onMessageReceived(validatedMessage);
         } else {
@@ -324,7 +324,7 @@ class WebSocketService {
 
     const sanitizedBody = sanitizeObject(body);
     const messageBody = JSON.stringify(sanitizedBody);
-    
+
     if (messageBody.length > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
       const error = new Error(`Cannot send message: size ${messageBody.length} exceeds limit ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`);
       logger.error(error.message);
@@ -352,7 +352,7 @@ class WebSocketService {
 
   public registerRollbackCallback(callback: () => void): () => void {
     this.rollbackCallbacks.add(callback);
-    
+
     return () => {
       this.rollbackCallbacks.delete(callback);
     };
@@ -360,7 +360,7 @@ class WebSocketService {
 
   public registerQueueProcessor(callback: () => Promise<void>): () => void {
     this.queueProcessorCallback = callback;
-    
+
     return () => {
       this.queueProcessorCallback = null;
     };

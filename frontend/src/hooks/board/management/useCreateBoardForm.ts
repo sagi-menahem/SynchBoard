@@ -44,17 +44,17 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const submitFormData = new FormData();
     submitFormData.append('name', name);
     submitFormData.append('description', description);
-    
+
     if (picture && picture.size > 0) {
       submitFormData.append('picture', picture);
     }
-    
+
     inviteEmails.forEach((email) => {
       if (email.trim()) {
         submitFormData.append('inviteEmails', email.trim());
       }
     });
-    
+
     if (canvasBackgroundColor) {
       submitFormData.append('canvasBackgroundColor', canvasBackgroundColor);
     }
@@ -75,7 +75,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
         },
       );
       onBoardCreated(newBoard);
-      
+
       return {
         success: true,
         data: newBoard,

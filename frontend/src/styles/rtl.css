@@ -244,13 +244,13 @@ body {
   left: 6px;
 }
 
-[dir="rtl"] .dateSeparator::before { 
+[dir="rtl"] .dateSeparator::before {
   right: 0;
   left: auto;
 }
 
-[dir="rtl"] .dateSeparator::after { 
-  left: 0; 
+[dir="rtl"] .dateSeparator::after {
+  left: 0;
   right: auto;
 }
 
@@ -375,6 +375,7 @@ body {
   from {
     opacity: 0.8;
   }
+
   to {
     opacity: 1;
   }
@@ -396,15 +397,15 @@ body {
     padding: 0 12px;
     direction: rtl;
   }
-  
+
   [dir="rtl"] .pageContent {
     padding-left: 16px;
     padding-right: 16px;
     direction: rtl;
   }
-  
+
   /* Hide edit buttons on small screens */
-  [dir="rtl"] .toolbarTitle + button {
+  [dir="rtl"] .toolbarTitle+button {
     display: none;
   }
 }
@@ -414,15 +415,15 @@ body {
     padding: 0 8px;
     direction: rtl;
   }
-  
+
   [dir="rtl"] .pageContent {
     padding-left: 12px;
     padding-right: 12px;
     direction: rtl;
   }
-  
+
   /* Hide edit buttons on very small screens */
-  [dir="rtl"] .toolbarTitle + button {
+  [dir="rtl"] .toolbarTitle+button {
     display: none;
   }
 }

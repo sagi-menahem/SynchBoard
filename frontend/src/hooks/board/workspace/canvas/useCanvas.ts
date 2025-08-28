@@ -10,14 +10,14 @@ import { useCanvasInteractions } from './useCanvasInteractions';
 import { useCanvasRendering } from './useCanvasRendering';
 
 interface UseCanvasProps {
-    instanceId: string;
-    tool: Tool;
-    strokeColor: string;
-    strokeWidth: number;
-    objects: ActionPayload[];
-    onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
-    canvasConfig?: CanvasConfig;
-    onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
+  instanceId: string;
+  tool: Tool;
+  strokeColor: string;
+  strokeWidth: number;
+  objects: ActionPayload[];
+  onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+  canvasConfig?: CanvasConfig;
+  onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
 }
 
 export const useCanvas = ({
@@ -66,7 +66,7 @@ export const useCanvas = ({
     onDraw,
     senderId,
     drawingState,
-    getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => 
+    getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) =>
       utils.getMouseCoordinates(event, canvas),
     isShapeSizeValid: utils.isShapeSizeValid,
     isRadiusValid: utils.isRadiusValid,

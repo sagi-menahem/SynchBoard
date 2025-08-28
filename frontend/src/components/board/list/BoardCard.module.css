@@ -1,4 +1,3 @@
-/* Base Board Card Styles */
 .boardCard {
     background-color: #2f2f2f;
     border: 1px solid #444;
@@ -15,7 +14,6 @@
     overflow: hidden;
 }
 
-/* Grid View (Default) */
 .boardCard.grid {
     display: flex;
     flex-direction: column;
@@ -23,30 +21,25 @@
     aspect-ratio: 1.2;
 }
 
-/* List View */
 .boardCard.list {
     display: flex;
     align-items: center;
     gap: 1rem;
     height: auto;
-    /* Removed margin-bottom to prevent double spacing */
 }
 
-/* Hover States */
 .boardCard:hover {
     background-color: #3a3a3a;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Image Styling */
 .boardCardImage {
     object-fit: cover;
     flex-shrink: 0;
     border-radius: 8px;
 }
 
-/* Grid view image */
 .boardCard.grid .boardCardImage {
     width: 100%;
     height: 120px;
@@ -54,27 +47,23 @@
     margin: -1rem -1rem 1rem -1rem;
 }
 
-/* List view image */
 .boardCard.list .boardCardImage {
     width: 60px;
     height: 60px;
     border-radius: 50%;
 }
 
-/* Content Container */
 .boardCardContent {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-/* Grid view content */
 .boardCard.grid .boardCardContent {
     height: 100%;
     justify-content: space-between;
 }
 
-/* List view content */
 .boardCard.list .boardCardContent {
     min-height: 60px;
     justify-content: center;
@@ -160,7 +149,6 @@
 
 .leftSection {
     flex: 1;
-    /* Empty space for future expansion */
 }
 
 .centerSection {
@@ -189,7 +177,6 @@
     justify-content: center;
 }
 
-/* View-Specific Layout Adjustments */
 .boardCard.grid .cardHeader h2 {
     font-size: 1.1rem;
     line-height: 1.3;
@@ -207,6 +194,7 @@
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -216,6 +204,7 @@
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -229,30 +218,29 @@
     margin-top: 0;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .boardCard.grid {
         height: 240px;
     }
-    
+
     .boardCard.grid .boardCardImage {
         height: 100px;
     }
-    
+
     .boardCard.list {
         gap: 0.75rem;
         padding: 0.75rem;
     }
-    
+
     .boardCard.list .boardCardImage {
         width: 50px;
         height: 50px;
     }
-    
+
     .boardCard.list .cardHeader h2 {
         font-size: 0.9rem;
     }
-    
+
     .boardCard.list .description {
         font-size: 0.8rem;
     }
@@ -262,25 +250,25 @@
     .boardCard.grid {
         height: 220px;
     }
-    
+
     .boardCard.grid .boardCardImage {
         height: 80px;
     }
-    
+
     .boardCard.list {
         gap: 0.5rem;
         padding: 0.5rem;
     }
-    
+
     .boardCard.list .boardCardImage {
         width: 45px;
         height: 45px;
     }
-    
+
     .cardHeader h2 {
         font-size: 0.9rem;
     }
-    
+
     .colorName,
     .canvasResolution,
     .lastModified {

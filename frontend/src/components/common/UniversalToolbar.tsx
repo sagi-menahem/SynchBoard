@@ -1,14 +1,14 @@
 import React from 'react';
 
-import type { 
-  UniversalToolbarProps, 
-  ToolbarItem,
+import type {
   ButtonToolbarItem,
-  TitleToolbarItem,
-  SearchToolbarItem,
-  ViewToggleToolbarItem,
-  MemberActivityToolbarItem,
   CustomToolbarItem,
+  MemberActivityToolbarItem,
+  SearchToolbarItem,
+  TitleToolbarItem,
+  ToolbarItem,
+  UniversalToolbarProps,
+  ViewToggleToolbarItem,
 } from 'types/ToolbarTypes';
 
 import { MemberActivityIndicator } from './MemberActivityIndicator';

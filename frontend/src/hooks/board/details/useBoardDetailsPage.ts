@@ -34,8 +34,8 @@ export const useBoardDetailsPage = (boardId: number) => {
   const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const { contextMenu, handlePromote: memberPromote, handleRemove: memberRemove, handleRightClick } = 
-        useBoardMemberManagement(boardId, currentUserIsAdmin);
+  const { contextMenu, handlePromote: memberPromote, handleRemove: memberRemove, handleRightClick } =
+    useBoardMemberManagement(boardId, currentUserIsAdmin);
 
   const handleInviteSuccess = useCallback(
     (_newMember: Member) => {
@@ -85,7 +85,6 @@ export const useBoardDetailsPage = (boardId: number) => {
         logger.error('Picture upload error:', error);
         throw error;
       } finally {
-        // Picture uploaded successfully
       }
     },
     [boardId, t],

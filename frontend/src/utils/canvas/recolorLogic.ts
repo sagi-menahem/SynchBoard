@@ -13,12 +13,9 @@ import { detectObjectHit, type HitResult } from './hitDetection';
 export interface RecolorAction {
   shouldPerformAction: boolean;
   action?: Omit<SendBoardActionRequest, 'boardId'>;
-  reason?: string; // For debugging/logging
+  reason?: string;
 }
 
-/**
- * Main recolor logic that determines what action to take based on the click
- */
 export const processRecolorClick = (
   clickPoint: Point,
   objects: ActionPayload[],
@@ -27,47 +24,38 @@ export const processRecolorClick = (
   newColor: string,
   instanceId: string,
 ): RecolorAction => {
-  // Detect what was clicked
   const hitResult: HitResult = detectObjectHit(clickPoint, objects, canvasWidth, canvasHeight);
-  
+
   if (!hitResult.hit || !hitResult.object || !hitResult.hitType) {
     return {
       shouldPerformAction: false,
       reason: 'No object hit - clicking on empty area',
     };
   }
-  
+
   const { object, hitType } = hitResult;
-  
-  // Decision matrix based on object type and hit type
+
   if (hitType === 'fill') {
-    // Clicked inside a closed shape - set fill color
     return createFillColorAction(object, newColor, instanceId);
   } else if (hitType === 'stroke') {
-    // Clicked on the border of a closed shape - set stroke color
     return createStrokeColorAction(object, newColor, instanceId);
   } else if (hitType === 'object') {
-    // Clicked on a line, arrow, text, or brush stroke - recolor the entire object
     return createObjectColorAction(object, newColor, instanceId);
   }
-  
+
   return {
     shouldPerformAction: false,
     reason: `Unknown hit type: ${hitType}`,
   };
 };
 
-/**
- * Create an action to set the fill color of a closed shape
- */
 const createFillColorAction = (
   object: ActionPayload,
   newColor: string,
   instanceId: string,
 ): RecolorAction => {
   const updatedPayload = { ...object };
-  
-  // Add fillColor to the object based on its type
+
   if (object.tool === 'square' || object.tool === 'rectangle') {
     (updatedPayload as RectanglePayload).fillColor = newColor;
   } else if (object.tool === 'circle') {
@@ -82,7 +70,7 @@ const createFillColorAction = (
       reason: `Cannot set fill color on object type: ${object.tool}`,
     };
   }
-  
+
   return {
     shouldPerformAction: true,
     action: {
@@ -95,9 +83,6 @@ const createFillColorAction = (
   };
 };
 
-/**
- * Create an action to set the stroke color of a closed shape
- */
 const createStrokeColorAction = (
   object: ActionPayload,
   newColor: string,
@@ -105,7 +90,7 @@ const createStrokeColorAction = (
 ): RecolorAction => {
   const updatedPayload = { ...object };
   (updatedPayload as ActionPayload & { color: string }).color = newColor;
-  
+
   return {
     shouldPerformAction: true,
     action: {
@@ -118,9 +103,6 @@ const createStrokeColorAction = (
   };
 };
 
-/**
- * Create an action to recolor an entire object (line, arrow, text, brush stroke)
- */
 const createObjectColorAction = (
   object: ActionPayload,
   newColor: string,
@@ -128,7 +110,7 @@ const createObjectColorAction = (
 ): RecolorAction => {
   const updatedPayload = { ...object };
   (updatedPayload as ActionPayload & { color: string }).color = newColor;
-  
+
   return {
     shouldPerformAction: true,
     action: {
@@ -141,9 +123,6 @@ const createObjectColorAction = (
   };
 };
 
-/**
- * Utility function to get a human-readable description of what will be recolored
- */
 export const getRecolorDescription = (
   clickPoint: Point,
   objects: ActionPayload[],
@@ -151,14 +130,14 @@ export const getRecolorDescription = (
   canvasHeight: number,
 ): string => {
   const hitResult = detectObjectHit(clickPoint, objects, canvasWidth, canvasHeight);
-  
+
   if (!hitResult.hit || !hitResult.object || !hitResult.hitType) {
     return 'No object to recolor';
   }
-  
+
   const { object, hitType } = hitResult;
   const toolName = object.tool.charAt(0).toUpperCase() + object.tool.slice(1);
-  
+
   if (hitType === 'fill') {
     return `Fill ${toolName.toLowerCase()}`;
   } else if (hitType === 'stroke') {

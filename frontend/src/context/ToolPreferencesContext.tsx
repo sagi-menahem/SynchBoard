@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useCallback, useReducer, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 
 import logger from 'utils/logger';
 
@@ -102,7 +102,6 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
   const { token } = useAuth();
   const isAuthenticated = !!token;
 
-  // Load tool preferences when user is authenticated
   useEffect(() => {
     if (!isAuthenticated) {
       return;

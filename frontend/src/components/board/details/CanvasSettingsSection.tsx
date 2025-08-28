@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Settings2, X, Save } from 'lucide-react';
+import { Save, Settings2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getColorName } from 'utils/ColorUtils';
 

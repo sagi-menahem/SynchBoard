@@ -42,10 +42,10 @@ export const useBoardWorkspace = (boardId: number) => {
   );
 
   const { isUndoAvailable, isRedoAvailable, handleUndo, handleRedo, resetCounts, incrementUndo } =
-        useBoardActions(boardId);
+    useBoardActions(boardId);
 
   const [hasInitialized, setHasInitialized] = useState(false);
-    
+
   useEffect(() => {
     if (!isLoading && baseObjects.length > 0 && !hasInitialized) {
       resetCounts(baseObjects.length);
@@ -53,13 +53,12 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, baseObjects.length, resetCounts, hasInitialized]);
 
-  const {} = useSocket();
-  
+  const { } = useSocket();
+
   const handleCommitDrawingTransaction = useCallback((instanceId: string) => {
-    // Update drawing transaction status to confirmed in base objects
     setBaseObjects((prev) => prev.map((obj) => {
       const enhancedObj = obj as EnhancedActionPayload;
-      return enhancedObj.instanceId === instanceId 
+      return enhancedObj.instanceId === instanceId
         ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
         : obj;
     }));

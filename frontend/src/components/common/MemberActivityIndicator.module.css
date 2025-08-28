@@ -66,29 +66,30 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(1.1);
   }
 }
 
-/* Focus states for accessibility */
 .activityIndicator.clickable:focus-visible {
   outline: 2px solid rgba(59, 130, 246, 0.5);
   outline-offset: 2px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .activityIndicator {
     padding: 6px 10px;
     font-size: 13px;
   }
-  
+
   .onlineIndicator {
     width: 5px;
     height: 5px;

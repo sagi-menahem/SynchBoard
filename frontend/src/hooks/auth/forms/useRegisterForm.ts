@@ -31,10 +31,10 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       };
     }
 
-    const registerData: RegisterRequest = { 
-      email, 
-      password, 
-      firstName, 
+    const registerData: RegisterRequest = {
+      email,
+      password,
+      firstName,
       gender,
       ...(lastName && { lastName }),
       ...(phoneNumber && { phoneNumber }),
@@ -51,7 +51,7 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
         },
       );
       onRegistrationSuccess(email);
-      
+
       return {
         success: true,
       };

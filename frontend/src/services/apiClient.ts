@@ -23,7 +23,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
-        
+
     if (!isPublicEndpoint) {
       const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
       if (token) {
@@ -53,29 +53,29 @@ apiClient.interceptors.response.use(
       hasToken: !!localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN),
       errorData: error.response?.data,
     });
-        
+
     const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
     const isBoardRequest = error.config?.url?.includes('/boards/');
     const responseData = error.response?.data as { message?: string } | undefined;
-    const isUserNotFoundError = error.response?.status === 500 && 
+    const isUserNotFoundError = error.response?.status === 500 &&
       responseData?.message?.includes?.('User not found') ||
-      error.response?.status === 500 && 
+      error.response?.status === 500 &&
       error.message?.includes?.('User not found');
-    const isOAuthRedirectError = !error.response && 
-      (error.message?.includes?.('CORS') || 
-       error.message?.includes?.('blocked by CORS policy') ||
-       error.code === 'ERR_NETWORK') &&
+    const isOAuthRedirectError = !error.response &&
+      (error.message?.includes?.('CORS') ||
+        error.message?.includes?.('blocked by CORS policy') ||
+        error.code === 'ERR_NETWORK') &&
       localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    const isSessionTimeout = (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) || 
+    const isSessionTimeout = (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) ||
       (isUserNotFoundError && !isLoginAttempt) ||
       (isOAuthRedirectError && !isLoginAttempt);
 
     if (isSessionTimeout) {
       if (error.response?.status === 401 || !isBoardRequest || isUserNotFoundError || isOAuthRedirectError) {
-        const reason = isUserNotFoundError ? 'user not found in database' : 
-                      isOAuthRedirectError ? 'OAuth redirect (expired session)' :
-                      `${error.response?.status} response`;
+        const reason = isUserNotFoundError ? 'user not found in database' :
+          isOAuthRedirectError ? 'OAuth redirect (expired session)' :
+            `${error.response?.status} response`;
         logger.warn(`[API] Session invalidated due to ${reason}`, {
           currentPath: window.location.pathname,
           clearingToken: true,

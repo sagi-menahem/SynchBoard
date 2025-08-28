@@ -2,7 +2,7 @@ import { APP_ROUTES } from 'constants';
 
 import React, { useState } from 'react';
 
-import { Users, LogIn, UserPlus } from 'lucide-react';
+import { LogIn, UserPlus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 

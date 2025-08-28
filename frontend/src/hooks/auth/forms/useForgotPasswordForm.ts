@@ -16,7 +16,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
   const { t } = useTranslation();
 
   const forgotPasswordAction = async (
-    _previousState: ForgotPasswordState, 
+    _previousState: ForgotPasswordState,
     formData: FormData,
   ): Promise<ForgotPasswordState> => {
     const email = formData.get('email') as string;
@@ -48,7 +48,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
         },
       );
       onForgotPasswordSuccess(email);
-      
+
       return {
         success: true,
       };

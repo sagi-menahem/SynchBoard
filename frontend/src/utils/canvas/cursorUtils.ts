@@ -2,9 +2,6 @@ import type { ActionPayload, Point } from 'types/BoardObjectTypes';
 
 import { detectObjectHit } from './hitDetection';
 
-/**
- * Get the appropriate cursor for the recolor tool based on what's under the mouse
- */
 export const getRecolorCursor = (
   mousePosition: Point,
   objects: ActionPayload[],
@@ -12,18 +9,18 @@ export const getRecolorCursor = (
   canvasHeight: number,
 ): string => {
   const hitResult = detectObjectHit(mousePosition, objects, canvasWidth, canvasHeight);
-  
+
   if (!hitResult.hit || !hitResult.hitType) {
-    return 'not-allowed'; // No object to recolor
+    return 'not-allowed';
   }
-  
+
   switch (hitResult.hitType) {
     case 'fill':
-      return 'pointer'; // Can fill the shape
+      return 'pointer';
     case 'stroke':
-      return 'pointer'; // Can recolor the border
+      return 'pointer';
     case 'object':
-      return 'pointer'; // Can recolor the object
+      return 'pointer';
     default:
       return 'not-allowed';
   }

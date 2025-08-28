@@ -13,7 +13,7 @@
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  height: 28px; /* Match swatch height */
+  height: 28px;
 }
 
 .swatch {
@@ -67,7 +67,6 @@
   padding: 12px;
 }
 
-/* Position popover on the right if there's not enough space below */
 @media (max-height: 500px) {
   .popover {
     top: 0;
@@ -80,6 +79,7 @@
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -92,7 +92,6 @@
   gap: 12px;
 }
 
-/* Style the react-colorful picker */
 .colorfulWrapper :global(.react-colorful) {
   width: 200px;
   height: 150px;

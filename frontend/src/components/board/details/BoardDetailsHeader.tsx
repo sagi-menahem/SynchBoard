@@ -3,7 +3,7 @@ import { API_BASE_URL, APP_CONFIG } from 'constants';
 import React, { useRef, useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
-import { Upload, Trash2, PencilLine, X, Save } from 'lucide-react';
+import { PencilLine, Save, Trash2, Upload, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/Button';

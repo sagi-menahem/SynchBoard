@@ -44,17 +44,14 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     
     const formData = new FormData(event.currentTarget);
     
-    // Add image if selected
     if (selectedImage) {
       formData.append('picture', selectedImage);
     }
     
-    // Add invite emails
     inviteEmails.forEach((email) => {
       formData.append('inviteEmails', email);
     });
 
-    // Add canvas settings
     formData.append('canvasBackgroundColor', canvasBackgroundColor);
     
     let width, height;
@@ -184,7 +181,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
             })}
           </div>
           
-          {/* Custom Option */}
           <div className={styles.sizeGroup}>
             <label className={styles.radioOption}>
               <input

@@ -2,8 +2,8 @@ import { useAuth } from 'hooks/auth/useAuth';
 import type { BoardDetails } from 'types/BoardTypes';
 
 interface BoardPermissions {
-    currentUserIsAdmin: boolean;
-    userEmail: string | null;
+  currentUserIsAdmin: boolean;
+  userEmail: string | null;
 }
 
 export const useBoardPermissions = (boardDetails: BoardDetails | null): BoardPermissions => {

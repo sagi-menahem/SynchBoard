@@ -12,7 +12,7 @@ interface BoardEditState {
 
 export const useBoardEditing = (boardId: number, initialName?: string, initialDescription?: string) => {
   const { t } = useTranslation();
-  
+
   const [baseState] = useState<BoardEditState>({
     name: initialName,
     description: initialDescription,
@@ -26,10 +26,9 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
   const handleUpdateName = useCallback(
     async (newName: string) => {
       if (!boardId) return;
-      
-      // Optimistic update
+
       setOptimisticState({ name: newName });
-      
+
       try {
         await toast.promise(
           boardService.updateBoardName(boardId, newName),
@@ -40,7 +39,6 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
           },
         );
       } catch (error) {
-        // Optimistic update will automatically rollback on error
         throw error;
       }
     },
@@ -50,10 +48,9 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
   const handleUpdateDescription = useCallback(
     async (newDescription: string) => {
       if (!boardId) return;
-      
-      // Optimistic update
+
       setOptimisticState({ description: newDescription });
-      
+
       try {
         await toast.promise(
           boardService.updateBoardDescription(boardId, newDescription),
@@ -64,7 +61,6 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
           },
         );
       } catch (error) {
-        // Optimistic update will automatically rollback on error
         throw error;
       }
     },

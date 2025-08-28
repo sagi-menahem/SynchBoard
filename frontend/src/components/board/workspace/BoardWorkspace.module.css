@@ -1,9 +1,9 @@
 .mainContent {
     height: 100%;
     width: 100%;
-    margin: 0; /* Explicit margin reset */
+    margin: 0;
     padding: 0 1rem;
     box-sizing: border-box;
-    display: flex; /* Ensure proper flex behavior */
+    display: flex;
     flex-direction: column;
 }
