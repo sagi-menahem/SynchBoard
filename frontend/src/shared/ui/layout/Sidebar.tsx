@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import styles from './Sidebar.module.css';
 
 const Sidebar: React.FC = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['board']);
 
   return (
     <aside className={styles.aside}>
-      <p>{t('common:sidebar.title')}</p>
-      <p>{t('common:sidebar.onlineUsers')}</p>
+      <p>{t('board:sidebar.title')}</p>
+      <p>{t('board:sidebar.onlineUsers')}</p>
     </aside>
   );
 };

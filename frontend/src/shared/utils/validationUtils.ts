@@ -20,11 +20,11 @@ export const isEmpty = (value: string | null | undefined): boolean => {
 /**
  * Validate required fields
  */
-export const validateRequired = (fields: Record<string, any>): string[] => {
+export const validateRequired = (fields: Record<string, unknown>): string[] => {
   const errors: string[] = [];
   
   Object.entries(fields).forEach(([fieldName, value]) => {
-    if (isEmpty(value)) {
+    if (isEmpty(value as string | null | undefined)) {
       errors.push(fieldName);
     }
   });

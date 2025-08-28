@@ -3,7 +3,7 @@ import React, { startTransition, useCallback, useEffect, useMemo, useOptimistic,
 import { useAuth } from 'features/auth/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import { usePreferences } from 'features/settings/hooks';
+import { usePreferences } from 'features/settings/UserPreferencesProvider';
 import { useSocket } from 'features/websocket/hooks/useSocket';
 import WebSocketService from 'features/websocket/services/websocketService';
 import { useTranslation } from 'react-i18next';

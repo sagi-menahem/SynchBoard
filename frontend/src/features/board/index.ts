@@ -35,8 +35,6 @@ export { useBoardContext } from './hooks/context/useBoardContext';
 // Context
 export { BoardProvider } from './BoardProvider';
 export { BoardContext } from './BoardContext';
-export { CanvasPreferencesProvider } from './CanvasPreferencesContext';
-export { ToolPreferencesProvider } from './ToolPreferencesContext';
 
 // Pages
 export { default as BoardPage } from './pages/BoardPage';

@@ -2,9 +2,8 @@
 import React, { useMemo, useRef } from 'react';
 
 import { BoardProvider } from 'features/board';
-import { useCanvasPreferences } from 'features/board/CanvasPreferencesContext';
-import { useToolPreferences } from 'features/board/ToolPreferencesContext';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
+import { useCanvasPreferences, useToolPreferences } from 'features/settings/UserPreferencesProvider';
 import { ArrowRight, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';

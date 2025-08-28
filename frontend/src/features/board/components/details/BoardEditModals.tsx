@@ -37,8 +37,8 @@ const BoardEditModals: React.FC<BoardEditModalsProps> = ({
 
             <Modal isOpen={editingField === 'name'} onClose={onCloseEdit}>
                 <EditFieldForm
-                    title={t('board:editBoardNameForm.title')}
-                    label={t('board:editBoardNameForm.label')}
+                    title={t('board:editNameForm.title')}
+                    label={t('board:editNameForm.label')}
                     initialValue={boardName}
                     onSave={onUpdateName}
                     onClose={onCloseEdit}
