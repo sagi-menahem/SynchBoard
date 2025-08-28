@@ -4,7 +4,6 @@ import type {
   LoginRequest,
   RegisterRequest,
   ResendVerificationRequest,
-  ResetPasswordRequest,
   VerifyEmailRequest,
 } from 'features/settings/types/UserTypes';
 import { API_BASE_URL, API_ENDPOINTS } from 'shared/constants/ApiConstants';
@@ -35,10 +34,6 @@ export const forgotPassword = async (data: ForgotPasswordRequest): Promise<strin
   return response.data;
 };
 
-export const resetPassword = async (data: ResetPasswordRequest): Promise<string> => {
-  const response = await apiClient.post<string>(API_ENDPOINTS.RESET_PASSWORD, data);
-  return response.data;
-};
 
 // OAuth Service Functions
 export const redirectToGoogle = (): void => {

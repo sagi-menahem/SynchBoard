@@ -16,17 +16,3 @@ export const toastPromise = async <T>(
   return await toast.promise(promise, messages);
 };
 
-/**
- * Utility for auth-related operations with common loading message
- */
-export const toastAuthPromise = async <T>(
-  promise: Promise<T>,
-  successMessage: string,
-  errorMessage: string,
-): Promise<T> => {
-  return toastPromise(promise, {
-    loading: 'Processing...',
-    success: successMessage,
-    error: errorMessage,
-  });
-};

@@ -61,8 +61,6 @@ export const WEBSOCKET_TOPICS = {
   USER: (userEmail: string) => `/topic/user/${userEmail}` as const,
 } as const;
 
-export type WebSocketDestination = typeof WEBSOCKET_DESTINATIONS[keyof typeof WEBSOCKET_DESTINATIONS];
-export type WebSocketTopicFactory = typeof WEBSOCKET_TOPICS[keyof typeof WEBSOCKET_TOPICS];
 
 export const AUTH_HEADER_CONFIG = {
   HEADER_NAME: 'Authorization',

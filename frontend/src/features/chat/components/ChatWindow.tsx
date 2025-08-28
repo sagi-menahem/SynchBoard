@@ -4,7 +4,6 @@ import { useAuth } from 'features/auth/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { usePreferences } from 'features/settings/UserPreferencesProvider';
-import { useSocket } from 'features/websocket/hooks/useSocket';
 import WebSocketService from 'features/websocket/services/websocketService';
 import { useTranslation } from 'react-i18next';
 import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';
@@ -26,7 +25,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
-  const {} = useSocket();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
