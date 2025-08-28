@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import { ArrowRight, ChevronDown, Minus, MoreHorizontal } from 'lucide-react';
+import { ArrowRight, Minus, MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
+import { ToolDropdown } from 'shared/ui';
 
 import styles from './CanvasToolSection.module.css';
 
@@ -16,65 +17,23 @@ const LINE_TOOLS = [
   { value: TOOLS.LINE, icon: Minus, labelKey: 'line' },
   { value: TOOLS.DOTTED_LINE, icon: MoreHorizontal, labelKey: 'dottedLine' },
   { value: TOOLS.ARROW, icon: ArrowRight, labelKey: 'arrow' },
-] as const;
+];
 
 export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
   currentTool,
   onToolSelect,
 }) => {
   const { t } = useTranslation(['board', 'common']);
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }
-  }, [isOpen]);
-
-  const handleToolClick = (tool: Tool) => {
-    onToolSelect(tool);
-    setIsOpen(false);
-  };
-
-  const currentLineTool = LINE_TOOLS.find((tool) => tool.value === currentTool) || LINE_TOOLS[0];
-  const isLineToolActive = LINE_TOOLS.some((tool) => tool.value === currentTool);
 
   return (
-    <div className={styles.shapeDropdown} ref={dropdownRef}>
-      <button
-        className={`${styles.dropdownButton} ${isLineToolActive ? styles.active : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
-        title={t('board:toolbar.tool.lines')}
-      >
-        <currentLineTool.icon size={20} />
-        <ChevronDown size={14} />
-      </button>
-      
-      {isOpen && (
-        <div className={styles.dropdownContent}>
-          {LINE_TOOLS.map(({ value, icon: Icon, labelKey }) => (
-            <button
-              key={value}
-              className={`${styles.dropdownItem} ${value === currentTool ? styles.active : ''}`}
-              onClick={() => handleToolClick(value)}
-              title={t(`board:toolbar.tool.${value}`)}
-            >
-              <Icon size={20} />
-              <span>{t(`board:toolbar.tool.${labelKey}`)}</span>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+    <ToolDropdown
+      currentTool={currentTool}
+      onToolSelect={onToolSelect}
+      toolItems={LINE_TOOLS}
+      buttonTitle={t('board:toolbar.tool.lines')}
+      styles={styles}
+      iconSize={20}
+      chevronSize={14}
+    />
   );
 };

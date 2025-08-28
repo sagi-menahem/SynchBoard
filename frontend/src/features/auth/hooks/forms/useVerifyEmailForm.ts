@@ -1,73 +1,43 @@
-import { useActionState } from 'react';
-
 import type { VerifyEmailRequest } from 'features/settings/types/UserTypes';
-import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useFormWithToast } from 'shared/hooks/useFormWithToast';
 import logger from 'shared/utils/logger';
+import { toastPromise } from 'shared/utils/toastUtils';
 
 import * as authService from '../../services/authService';
-
-interface VerifyEmailState {
-  success: boolean;
-  error?: string;
-}
 
 export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token: string) => void) => {
   const { t } = useTranslation(['auth', 'common']);
 
-  const verifyEmailAction = async (_previousState: VerifyEmailState, formData: FormData): Promise<VerifyEmailState> => {
-    const verificationCode = formData.get('verificationCode') as string;
+  return useFormWithToast<VerifyEmailRequest, { token: string }>({
+    validateFormData: (formData: FormData) => {
+      const verificationCode = formData.get('verificationCode') as string;
 
-    if (!verificationCode || verificationCode.length !== 6) {
+      if (!verificationCode || verificationCode.length !== 6) {
+        return { error: t('verifyEmail.validation.codeRequired') };
+      }
+
+      if (!/^\d{6}$/.test(verificationCode)) {
+        return { error: t('verifyEmail.validation.codeFormat') };
+      }
+
       return {
-        success: false,
-        error: t('verifyEmail.validation.codeRequired'),
+        email,
+        verificationCode,
       };
-    }
-
-    if (!/^\d{6}$/.test(verificationCode)) {
-      return {
-        success: false,
-        error: t('verifyEmail.validation.codeFormat'),
-      };
-    }
-
-    const verifyData: VerifyEmailRequest = {
-      email,
-      verificationCode,
-    };
-
-    try {
-      const response = await toast.promise(
-        authService.verifyEmail(verifyData),
-        {
-          loading: t('loading.auth.verifyEmail'),
-          success: t('success.auth.verifyEmail'),
-          error: t('errors.auth.verifyEmail'),
-        },
-      );
+    },
+    serviceCall: authService.verifyEmail,
+    toastMessages: {
+      loading: t('loading.auth.verifyEmail'),
+      success: t('success.auth.verifyEmail'),
+      error: t('errors.auth.verifyEmail'),
+    },
+    onSuccess: (response) => {
       onVerificationSuccess(response.token);
-
-      return {
-        success: true,
-      };
-    } catch (err: unknown) {
-      logger.error('Email verification failed for user:', err, { email });
-      return {
-        success: false,
-      };
-    }
-  };
-
-  const [state, submitAction, isPending] = useActionState(verifyEmailAction, {
-    success: false,
+    },
+    contextInfo: { email },
+    logContext: 'Email verification',
   });
-
-  return {
-    state,
-    submitAction,
-    isPending,
-  };
 };
 
 export const useResendVerificationCode = (email: string) => {
@@ -75,11 +45,11 @@ export const useResendVerificationCode = (email: string) => {
 
   const resendVerificationCode = async (): Promise<{ success: boolean; error?: string }> => {
     try {
-      await toast.promise(
+      await toastPromise(
         authService.resendVerificationCode({ email }),
         {
           loading: t('loading.auth.resendVerification'),
-          success: (msg) => msg || t('success.auth.resendVerification'),
+          success: t('success.auth.resendVerification'),
           error: t('errors.auth.resendVerification'),
         },
       );
