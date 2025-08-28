@@ -20,7 +20,7 @@ import {
 import styles from './AuthPage.module.css';
 
 const AuthPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
   const [isLoginView, setIsLoginView] = useState(true);
@@ -59,14 +59,14 @@ const AuthPage: React.FC = () => {
           <GuestLanguageSwitcher />
         </div>
         
-        {isProcessing && <PageLoader message={t('auth.signingInMessage')} />}
+        {isProcessing && <PageLoader message={t('auth:signingInMessage')} />}
         
         {!isProcessing && (
           <section className={styles.authSection}>
           <div className={styles.sectionHeader}>
             <h1 className={styles.pageTitle}>
               <Users size={20} />
-              {t('authPage.pageTitle')}
+              {t('auth:page.pageTitle')}
             </h1>
           </div>
           
@@ -76,15 +76,15 @@ const AuthPage: React.FC = () => {
                 <div className={styles.formHeader}>
                   <h2 className={styles.formTitle}>
                     <LogIn size={18} />
-                    {t('loginForm.heading')}
+                    {t('auth:loginForm.heading')}
                   </h2>
                 </div>
                 <LoginForm onForgotPassword={() => setShowForgotPassword(true)} />
                 <div className={styles.authActions}>
-                  <span className={styles.toggleText}>{t('authPage.promptToRegister')}</span>
+                  <span className={styles.toggleText}>{t('auth:page.promptToRegister')}</span>
                   <Button variant="secondary" onClick={toggleAuthMode}>
                     <UserPlus size={16} />
-                    {t('authPage.switchToRegisterButton')}
+                    {t('auth:page.switchToRegisterButton')}
                   </Button>
                 </div>
               </>
@@ -93,15 +93,15 @@ const AuthPage: React.FC = () => {
                 <div className={styles.formHeader}>
                   <h2 className={styles.formTitle}>
                     <UserPlus size={18} />
-                    {t('registerForm.heading')}
+                    {t('auth:registerForm.heading')}
                   </h2>
                 </div>
                 <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
                 <div className={styles.authActions}>
-                  <span className={styles.toggleText}>{t('authPage.promptToLogin')}</span>
+                  <span className={styles.toggleText}>{t('auth:page.promptToLogin')}</span>
                   <Button variant="secondary" onClick={toggleAuthMode}>
                     <LogIn size={16} />
-                    {t('authPage.switchToLoginButton')}
+                    {t('auth:page.switchToLoginButton')}
                   </Button>
                 </div>
               </>

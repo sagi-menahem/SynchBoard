@@ -26,7 +26,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [text, setText] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -73,7 +73,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         onKeyDown={handleKeyDown}
         onBlur={handleSubmit}
         className={styles.textInput}
-        placeholder={t('textInput.placeholder')}
+        placeholder={t('board:textInput.placeholder')}
         dir="auto"
         style={{
           color,

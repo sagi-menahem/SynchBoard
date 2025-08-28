@@ -13,7 +13,7 @@ interface VerifyEmailState {
 }
 
 export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token: string) => void) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
 
   const verifyEmailAction = async (_previousState: VerifyEmailState, formData: FormData): Promise<VerifyEmailState> => {
     const verificationCode = formData.get('verificationCode') as string;
@@ -21,14 +21,14 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
     if (!verificationCode || verificationCode.length !== 6) {
       return {
         success: false,
-        error: t('verifyEmail.validation.codeRequired', 'Please enter the 6-digit verification code'),
+        error: t('verifyEmail.validation.codeRequired'),
       };
     }
 
     if (!/^\d{6}$/.test(verificationCode)) {
       return {
         success: false,
-        error: t('verifyEmail.validation.codeFormat', 'Verification code must be exactly 6 digits'),
+        error: t('verifyEmail.validation.codeFormat'),
       };
     }
 
@@ -71,7 +71,7 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
 };
 
 export const useResendVerificationCode = (email: string) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
 
   const resendVerificationCode = async (): Promise<{ success: boolean; error?: string }> => {
     try {
@@ -86,7 +86,7 @@ export const useResendVerificationCode = (email: string) => {
       return { success: true };
     } catch (err: unknown) {
       logger.error('Resend verification code failed for user:', err, { email });
-      const error = err instanceof Error ? err.message : t('verifyEmail.resend.error', 'Failed to resend verification code');
+      const error = err instanceof Error ? err.message : t('verifyEmail.resend.error');
       return { success: false, error };
     }
   };

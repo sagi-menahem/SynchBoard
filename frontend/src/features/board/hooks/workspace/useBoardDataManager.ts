@@ -11,7 +11,7 @@ import logger from 'shared/utils/logger';
 
 
 export const useBoardDataManager = (boardId: number) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [isLoading, setIsLoading] = useState(true);
   const [boardName, setBoardName] = useState<string | null>(null);
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
@@ -44,7 +44,7 @@ export const useBoardDataManager = (boardId: number) => {
         if (error instanceof AxiosError && error.response?.status === 403) {
           setAccessLost(true);
         } else {
-          toast.error(t('errors.board.workspace'));
+          toast.error(t('board:errors.workspace'));
         }
       })
       .finally(() => {

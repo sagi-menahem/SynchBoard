@@ -18,7 +18,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   onClose,
   onSuccess,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const { state, submitAction, isPending } = useForgotPasswordForm(onSuccess);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,18 +31,18 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     <BaseAuthModal
       isOpen={isOpen}
       onClose={onClose}
-      title={t('forgotPassword.heading', 'Reset Your Password')}
-      description={t('forgotPassword.description', 'Enter your email to receive a reset code')}
+      title={t('auth:forgotPassword.heading')}
+      description={t('auth:forgotPassword.description')}
       onSubmit={handleSubmit}
       isPending={isPending}
       error={state.error}
-      submitButtonText={isPending ? t('common.button.sending', 'Sending...') : t('forgotPassword.button', 'Send Reset Code')}
-      cancelButtonText={t('common.button.cancel', 'Cancel')}
+      submitButtonText={isPending ? t('common:button.sending') : t('auth:forgotPassword.button')}
+      cancelButtonText={t('common:button.cancel')}
     >
       <div className={styles.field}>
         <label htmlFor="forgot-email">
           <Mail size={14} />
-          {t('common.form.label.email', 'Email Address')}
+          {t('common:form.label.email')}
           <span className={styles.required}> *</span>
         </label>
         <Input
@@ -51,7 +51,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
           type="email"
           required
           disabled={isPending}
-          placeholder={t('forgotPassword.placeholder.email', 'Enter your email address')}
+          placeholder={t('auth:forgotPassword.placeholder.email')}
           autoComplete="email"
         />
       </div>

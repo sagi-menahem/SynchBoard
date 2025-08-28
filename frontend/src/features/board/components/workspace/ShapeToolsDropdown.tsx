@@ -36,7 +36,7 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
   currentTool,
   onToolSelect,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +59,7 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
       <button
         className={`${styles.dropdownButton} ${isShapeToolActive ? styles.active : ''}`}
         onClick={handleToggle}
-        title={t('toolbar.shapeTools')}
+        title={t('board:toolbar.shapeTools')}
       >
         <currentShapeTool.icon size={16} />
         <ChevronDown size={12} />
@@ -71,10 +71,10 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
             key={tool}
             className={`${styles.dropdownItem} ${currentTool === tool ? styles.active : ''}`}
             onClick={() => handleToolSelect(tool as Tool)}
-            title={t(`toolbar.tool.${labelKey}`)}
+            title={t(`board:toolbar.tool.${labelKey}`)}
           >
             <Icon size={16} />
-            <span>{t(`toolbar.tool.${labelKey}`)}</span>
+            <span>{t(`board:toolbar.tool.${labelKey}`)}</span>
           </button>
         ))}
       </div>

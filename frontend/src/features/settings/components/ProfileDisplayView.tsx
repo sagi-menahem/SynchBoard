@@ -11,29 +11,29 @@ interface ProfileDisplayViewProps {
 }
 
 const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['settings', 'common']);
 
     return (
         <>
             <div className={styles.field}>
-                <label>{t('settingsPage.firstNameLabel')}</label>
+                <label>{t('settings:page.firstNameLabel')}</label>
                 <p>{user.firstName}</p>
             </div>
             <div className={styles.field}>
-                <label>{t('settingsPage.lastNameLabel')}</label>
-                <p>{user.lastName || t('settingsPage.notProvided')}</p>
+                <label>{t('settings:page.lastNameLabel')}</label>
+                <p>{user.lastName || t('settings:page.notProvided')}</p>
             </div>
             <div className={styles.field}>
-                <label>{t('settingsPage.genderLabel')}</label>
-                <p>{user.gender ? t(`common.form.option.${user.gender}`) : t('settingsPage.notProvided')}</p>
+                <label>{t('settings:page.genderLabel')}</label>
+                <p>{user.gender ? t(`common:form.option.${user.gender}`) : t('settings:page.notProvided')}</p>
             </div>
             <div className={styles.field}>
-                <label>{t('settingsPage.dateOfBirthLabel')}</label>
-                <p>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('settingsPage.notProvided')}</p>
+                <label>{t('settings:page.dateOfBirthLabel')}</label>
+                <p>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('settings:page.notProvided')}</p>
             </div>
             <div className={styles.field}>
-                <label>{t('settingsPage.phoneNumberLabel')}</label>
-                <p>{user.phoneNumber || t('settingsPage.notProvided')}</p>
+                <label>{t('settings:page.phoneNumberLabel')}</label>
+                <p>{user.phoneNumber || t('settings:page.notProvided')}</p>
             </div>
         </>
     );

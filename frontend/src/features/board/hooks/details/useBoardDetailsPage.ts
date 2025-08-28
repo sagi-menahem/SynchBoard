@@ -18,7 +18,7 @@ import {
 } from '.';
 
 export const useBoardDetailsPage = (boardId: number) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const { boardDetails, isLoading } = useBoardDetails(boardId);
   const { handleUpdateName, handleUpdateDescription, optimisticState } = useBoardEditing(
@@ -66,7 +66,7 @@ export const useBoardDetailsPage = (boardId: number) => {
     if (!boardDetails) return;
     try {
       await boardService.leaveBoard(boardId);
-      toast.success(t('success.board.leave', { boardName: boardDetails.name }));
+      toast.success(t('board:success.leave', { boardName: boardDetails.name }));
       navigate(APP_ROUTES.BOARD_LIST);
     } catch (error) {
       logger.error('Failed to leave board:', error);
@@ -80,7 +80,7 @@ export const useBoardDetailsPage = (boardId: number) => {
     async (file: File) => {
       try {
         await boardService.uploadBoardPicture(boardId, file);
-        toast.success(t('success.board.pictureUpdate'));
+        toast.success(t('board:success.pictureUpdate'));
       } catch (error) {
         logger.error('Picture upload error:', error);
         throw error;
@@ -97,7 +97,7 @@ export const useBoardDetailsPage = (boardId: number) => {
   const handleConfirmDeletePicture = useCallback(async () => {
     try {
       await boardService.deleteBoardPicture(boardId);
-      toast.success(t('success.board.pictureDelete'));
+      toast.success(t('board:success.pictureDelete'));
     } catch (error) {
       logger.error('Picture delete error:', error);
       throw error;
@@ -110,7 +110,7 @@ export const useBoardDetailsPage = (boardId: number) => {
     async (settings: UpdateCanvasSettingsRequest) => {
       try {
         await boardService.updateCanvasSettings(boardId, settings);
-        toast.success(t('success.board.canvasSettingsUpdate'));
+        toast.success(t('board:success.canvasSettingsUpdate'));
       } catch (error) {
         logger.error('Canvas settings update error:', error);
         throw error;

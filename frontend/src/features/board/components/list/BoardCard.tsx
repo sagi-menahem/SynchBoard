@@ -20,12 +20,12 @@ interface BoardCardProps {
 }
 
 const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
 
   const imageSource = board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage;
   
   const colorName = getColorName(board.canvasBackgroundColor);
-  const colorDisplayName = colorName ? t(`colors.${colorName}`) : board.canvasBackgroundColor;
+  const colorDisplayName = colorName ? t(`common:colors.${colorName}`) : board.canvasBackgroundColor;
   const canvasResolution = formatCanvasResolution(board.canvasWidth, board.canvasHeight, t);
 
   return (
@@ -49,7 +49,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
           </div>
         </div>
         <div className={styles.cardBody}>
-          <p className={styles.description}>{board.description || t('boardListPage.noDescription')}</p>
+          <p className={styles.description}>{board.description || t('board:listPage.noDescription')}</p>
           <div className={styles.resolutionInfo}>
             <span className={styles.canvasResolution}>{canvasResolution}</span>
           </div>
@@ -59,7 +59,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
           </div>
           <div className={styles.centerSection}>
             {board.isAdmin && (
-              <div className={styles.adminLabel} title={t('boardListPage.adminLabel')}>
+              <div className={styles.adminLabel} title={t('board:listPage.adminLabel')}>
                 <Crown size={18} />
               </div>
             )}

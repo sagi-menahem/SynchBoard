@@ -29,7 +29,7 @@ import { useUserProfile } from '../hooks/profile';
 import styles from './SettingsPage.module.css';
 
 const SettingsPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
   
@@ -81,14 +81,14 @@ const SettingsPage: React.FC = () => {
       leftSection: [
         {
           type: 'title',
-          content: t('settingsPage.heading'),
+          content: t('settings:page.heading'),
         },
       ],
       rightSection: [
         {
           type: 'button',
           icon: LogOut,
-          label: t('settingsPage.logoutButton'),
+          label: t('settings:page.logoutButton'),
           onClick: logout,
           variant: 'destructive',
         },
@@ -108,7 +108,7 @@ const SettingsPage: React.FC = () => {
     return (
       <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <PageLoader message={t('settingsPage.loading')} />
+        <PageLoader message={t('settings:page.loading')} />
       </PageTransition>
     );
   }
@@ -118,7 +118,7 @@ const SettingsPage: React.FC = () => {
       <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
         <div className={styles.pageContent} data-has-toolbar>
-          <div className={styles.loadError}>{t('settingsPage.loadError')}</div>
+          <div className={styles.loadError}>{t('settings:page.loadError')}</div>
         </div>
       </PageTransition>
     );
@@ -145,7 +145,7 @@ const SettingsPage: React.FC = () => {
 
         <section className={styles.section}>
           <h2 className={styles.sectionHeader}>
-            {t('settingsPage.passwordSectionHeader')}
+            {t('settings:page.passwordSectionHeader')}
           </h2>
           <ChangePasswordForm onSubmit={handleChangePassword} />
         </section>
@@ -160,16 +160,16 @@ const SettingsPage: React.FC = () => {
           isOpen={isPicDeleteConfirmOpen}
           onClose={() => setPicDeleteConfirmOpen(false)}
           onConfirm={handlePictureDeleteWithCleanup}
-          title={t('settingsPage.deletePictureConfirmTitle')}
-          message={t('settingsPage.deletePictureConfirmText')}
+          title={t('settings:page.deletePictureConfirmTitle')}
+          message={t('settings:page.deletePictureConfirmText')}
         />
 
         <ConfirmationDialog
           isOpen={isAccountDeleteConfirmOpen}
           onClose={() => setAccountDeleteConfirmOpen(false)}
           onConfirm={handleDeleteAccountWithCleanup}
-          title={t('settingsPage.deleteAccountConfirmTitle')}
-          message={t('settingsPage.deleteAccountConfirmText')}
+          title={t('settings:page.deleteAccountConfirmTitle')}
+          message={t('settings:page.deleteAccountConfirmText')}
         />
       </div>
     </PageTransition>

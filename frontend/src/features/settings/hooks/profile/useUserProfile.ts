@@ -8,7 +8,7 @@ import logger from 'shared/utils/logger';
 
 
 export const useUserProfile = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   
   // Data state (from useUserProfileManager)
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -43,7 +43,7 @@ export const useUserProfile = () => {
       })
       .catch((error: unknown) => {
         logger.error('Failed to fetch user profile:', error);
-        toast.error(t('errors.profile.fetch'));
+        toast.error(t('settings:errors.profile.fetch'));
       })
       .finally(() => {
         const elapsed = Date.now() - startTime;
@@ -65,9 +65,9 @@ export const useUserProfile = () => {
       });
 
       await toast.promise(promise, {
-        loading: t('loading.profile.update'),
-        success: t('success.profile.update'),
-        error: t('errors.profile.update'),
+        loading: t('settings:loading.profile.update'),
+        success: t('settings:success.profile.update'),
+        error: t('settings:errors.profile.update'),
       });
     },
     [t],
@@ -78,9 +78,9 @@ export const useUserProfile = () => {
     const updatedUser = await toast.promise(
       userService.uploadProfilePicture(file),
       {
-        loading: t('loading.picture.upload'),
-        success: t('success.picture.update'),
-        error: t('errors.picture.upload'),
+        loading: t('settings:loading.picture.upload'),
+        success: t('settings:success.picture.update'),
+        error: t('settings:errors.picture.upload'),
       },
     );
     setUser(updatedUser as UserProfile); // Direct state update, no refetch needed
@@ -91,9 +91,9 @@ export const useUserProfile = () => {
     const updatedUser = await toast.promise(
       userService.deleteProfilePicture(),
       {
-        loading: t('loading.picture.delete'),
-        success: t('success.picture.delete'),
-        error: t('errors.picture.delete'),
+        loading: t('settings:loading.picture.delete'),
+        success: t('settings:success.picture.delete'),
+        error: t('settings:errors.picture.delete'),
       },
     );
     setUser(updatedUser as UserProfile); // Direct state update, no refetch needed

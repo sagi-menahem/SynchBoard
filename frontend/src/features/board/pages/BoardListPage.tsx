@@ -23,7 +23,7 @@ import { useBoardList } from '../hooks/management';
 import styles from './BoardListPage.module.css';
 
 const BoardListPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const {
     boards,
@@ -50,12 +50,12 @@ const BoardListPage: React.FC = () => {
     leftSection: [
       {
         type: 'title',
-        content: t('boardListPage.heading'),
+        content: t('board:listPage.heading'),
       },
       {
         type: 'button',
         icon: Plus,
-        label: t('boardListPage.createNewBoardButton'),
+        label: t('board:listPage.createNewBoardButton'),
         onClick: openModal,
         primary: true,
       },
@@ -63,7 +63,7 @@ const BoardListPage: React.FC = () => {
     centerSection: [
       {
         type: 'search',
-        placeholder: t('toolbar.search.boardName'),
+        placeholder: t('board:toolbar.search.boardName'),
         value: searchQuery,
         onSearch: handleSearch,
         onClear: handleClearSearch,
@@ -73,7 +73,7 @@ const BoardListPage: React.FC = () => {
       {
         type: 'button',
         icon: Settings,
-        label: t('boardListPage.setting'),
+        label: t('board:listPage.setting'),
         onClick: () => navigate(APP_ROUTES.SETTINGS),
       },
     ],
@@ -91,7 +91,7 @@ const BoardListPage: React.FC = () => {
     return (
       <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <PageLoader message={t('boardListPage.loading')} />
+        <PageLoader message={t('board:listPage.loading')} />
       </PageTransition>
     );
   }
@@ -115,7 +115,7 @@ const BoardListPage: React.FC = () => {
           </div>
         ) : searchQuery ? (
           <div className={styles.emptyState}>
-            <p>{t('boardListPage.noSearchResults', { query: searchQuery })}</p>
+            <p>{t('board:listPage.noSearchResults', { query: searchQuery })}</p>
           </div>
         ) : (
           <div className={styles.emptyState}>
@@ -125,10 +125,10 @@ const BoardListPage: React.FC = () => {
               </div>
               <div className={styles.emptyStateContent}>
                 <h3 className={styles.emptyStateTitle}>
-                  {t('boardListPage.emptyStateTitle')}
+                  {t('board:listPage.emptyStateTitle')}
                 </h3>
                 <p className={styles.emptyStateMessage}>
-                  {t('boardListPage.emptyStateMessage')}
+                  {t('board:listPage.emptyStateMessage')}
                 </p>
               </div>
             </div>
@@ -146,7 +146,7 @@ const BoardListPage: React.FC = () => {
           onClose={contextMenu.closeMenu}
         >
           <ContextMenuItem onClick={handleLeaveClick} destructive>
-            {t('leaveBoard.button')}
+            {t('board:leaveBoard.button')}
           </ContextMenuItem>
         </ContextMenu>
       )}
@@ -158,8 +158,8 @@ const BoardListPage: React.FC = () => {
             setLeaveConfirmOpen(false);
           }}
           onConfirm={handleConfirmLeave}
-          title={t('leaveBoard.confirmTitle')}
-          message={t('leaveBoard.confirmText', { boardName: boardToLeave.name })}
+          title={t('board:leaveBoard.confirmTitle')}
+          message={t('board:leaveBoard.confirmText', { boardName: boardToLeave.name })}
         />
       )}
       </div>

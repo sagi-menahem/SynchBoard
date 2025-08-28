@@ -8,7 +8,7 @@ import { APP_ROUTES } from 'shared/constants';
 
 
 export const useAccountManager = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -19,9 +19,9 @@ export const useAccountManager = () => {
         navigate(APP_ROUTES.AUTH);
       }),
       {
-        loading: t('loading.account.delete'),
-        success: t('success.account.delete'),
-        error: t('errors.account.delete'),
+        loading: t('settings:loading.account.delete'),
+        success: t('settings:success.account.delete'),
+        error: t('settings:errors.account.delete'),
       },
     );
   };

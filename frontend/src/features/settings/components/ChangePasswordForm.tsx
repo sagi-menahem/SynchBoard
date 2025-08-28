@@ -16,7 +16,7 @@ interface ChangePasswordFormProps {
 }
 
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,13 +28,13 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
 
     if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
       logger.warn('[ChangePasswordForm] Password validation failed - too short');
-      toast.error(t('settingsPage.passwordTooShort'));
+      toast.error(t('settings:page.passwordTooShort'));
       return;
     }
 
     if (newPassword !== confirmPassword) {
       logger.warn('[ChangePasswordForm] Password validation failed - passwords do not match');
-      toast.error(t('settingsPage.passwordsDoNotMatch'));
+      toast.error(t('settings:page.passwordsDoNotMatch'));
       return;
     }
 
@@ -53,7 +53,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
   return (
     <form onSubmit={handlePasswordFormSubmit}>
       <div className={styles.field}>
-        <label htmlFor="currentPassword">{t('settingsPage.currentPasswordLabel')}</label>
+        <label htmlFor="currentPassword">{t('settings:page.currentPasswordLabel')}</label>
         <PasswordInput
           id="currentPassword"
           value={currentPassword}
@@ -65,7 +65,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         />
       </div>
       <div className={styles.field}>
-        <label htmlFor="newPassword">{t('settingsPage.newPasswordLabel')}</label>
+        <label htmlFor="newPassword">{t('settings:page.newPasswordLabel')}</label>
         <PasswordInput
           id="newPassword"
           value={newPassword}
@@ -77,7 +77,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         />
       </div>
       <div className={styles.field}>
-        <label htmlFor="confirmPassword">{t('settingsPage.confirmPasswordLabel')}</label>
+        <label htmlFor="confirmPassword">{t('settings:page.confirmPasswordLabel')}</label>
         <PasswordInput
           id="confirmPassword"
           value={confirmPassword}
@@ -90,7 +90,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
       </div>
       <Button type="submit" disabled={isSubmitting}>
         <Save size={16} />
-        {isSubmitting ? t('common.button.saving') : t('settingsPage.buttons.save')}
+        {isSubmitting ? t('common:button.saving') : t('settings:page.buttons.save')}
       </Button>
     </form>
   );

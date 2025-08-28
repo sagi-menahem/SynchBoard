@@ -18,7 +18,7 @@ export const MemberActivityIndicator: React.FC<MemberActivityIndicatorProps> = (
   onClick,
   className,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   const Component = onClick ? 'button' : 'div';
 
@@ -27,7 +27,7 @@ export const MemberActivityIndicator: React.FC<MemberActivityIndicatorProps> = (
       className={`${styles.activityIndicator} ${onClick ? styles.clickable : ''} ${className || ''}`}
       onClick={onClick}
       type={onClick ? 'button' : undefined}
-      title={t('toolbar.activity.membersOnline', { count: onlineCount })}
+      title={t('common:toolbar.activity.membersOnline', { count: onlineCount })}
     >
       <Users size={16} className={styles.icon} />
       <span className={styles.counts}>

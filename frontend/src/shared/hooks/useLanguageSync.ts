@@ -14,7 +14,7 @@ let languagePrefsCache: LanguagePreferences | null = null;
 let languagePrefsPromise: Promise<LanguagePreferences> | null = null;
 
 export const useLanguageSync = () => {
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation(['common']);
   const { token, isInitializing: authLoading } = useAuth();
   const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
 

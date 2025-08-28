@@ -13,7 +13,7 @@ interface RegisterState {
 }
 
 export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
 
   const registerAction = async (_previousState: RegisterState, formData: FormData): Promise<RegisterState> => {
     const email = formData.get('email') as string;
@@ -27,7 +27,7 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
     if (!email || !password || !firstName || !gender) {
       return {
         success: false,
-        error: t('registerForm.validation.required', 'All required fields must be filled'),
+        error: t('auth:registerForm.validation.required'),
       };
     }
 

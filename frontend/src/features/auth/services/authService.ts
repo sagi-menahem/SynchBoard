@@ -7,7 +7,7 @@ import type {
   ResetPasswordRequest,
   VerifyEmailRequest,
 } from 'features/settings/types/UserTypes';
-import { API_ENDPOINTS } from 'shared/constants/ApiConstants';
+import { API_BASE_URL, API_ENDPOINTS } from 'shared/constants/ApiConstants';
 import apiClient from 'shared/lib/apiClient';
 
 export const register = async (userData: RegisterRequest): Promise<string> => {
@@ -38,4 +38,23 @@ export const forgotPassword = async (data: ForgotPasswordRequest): Promise<strin
 export const resetPassword = async (data: ResetPasswordRequest): Promise<string> => {
   const response = await apiClient.post<string>(API_ENDPOINTS.RESET_PASSWORD, data);
   return response.data;
+};
+
+// OAuth Service Functions
+export const redirectToGoogle = (): void => {
+  window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
+};
+
+export const extractTokenFromCallback = (): string | null => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('token');
+};
+
+export const extractErrorFromCallback = (): string | null => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('message');
+};
+
+export const isOAuthCallback = (): boolean => {
+  return window.location.pathname === '/auth/callback' || window.location.pathname === '/auth/error';
 };

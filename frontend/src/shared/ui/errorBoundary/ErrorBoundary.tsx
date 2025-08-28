@@ -82,7 +82,7 @@ export class ErrorBoundary extends Component<Props, State> {
               margin: '0 0 1rem 0',
               lineHeight: '1.2',
             }}>
-              {i18n.t('errorBoundary.title')}
+              {i18n.t('common:errorBoundary.title')}
             </h1>
             
             <p style={{
@@ -91,7 +91,7 @@ export class ErrorBoundary extends Component<Props, State> {
               lineHeight: '1.6',
               margin: '0 0 2rem 0',
             }}>
-              {i18n.t('errorBoundary.message')}
+              {i18n.t('common:errorBoundary.message')}
             </p>
             
             <div style={{
@@ -130,7 +130,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                {i18n.t('errorBoundary.tryAgain')}
+                {i18n.t('common:errorBoundary.tryAgain')}
               </button>
             </div>
           </div>

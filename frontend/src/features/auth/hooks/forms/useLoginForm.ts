@@ -18,7 +18,7 @@ interface LoginState {
 }
 
 export const useLoginForm = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export const useLoginForm = () => {
     if (!email || !password) {
       return {
         success: false,
-        error: t('loginForm.validation.required', 'Email and password are required'),
+        error: t('loginForm.validation.required'),
       };
     }
 
@@ -42,7 +42,7 @@ export const useLoginForm = () => {
           loading: t('loading.auth.login'),
           success: t('success.auth.login'),
           error: (err) => {
-            let errorMessage = t('loginForm.error.unknown', 'Login failed');
+            let errorMessage = t('loginForm.error.unknown');
             if (err && typeof err === 'object' && 'response' in err) {
               const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
               if (axiosError.response?.data?.message) {

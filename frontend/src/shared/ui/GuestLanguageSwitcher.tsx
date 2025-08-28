@@ -10,7 +10,7 @@ interface GuestLanguageSwitcherProps {
 }
 
 const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({ className }) => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['common']);
   const { setGuestLanguage } = useLanguageSync();
 
   const currentLanguage = i18n.language as 'en' | 'he';
@@ -21,7 +21,7 @@ const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({ className
 
   return (
     <div className={`${styles.languageSwitcher} ${className || ''}`}>
-      <span className={styles.label}>{t('common.language')}</span>
+      <span className={styles.label}>{t('common:language')}</span>
       <div className={styles.buttonGroup}>
         <button
           className={`${styles.languageButton} ${currentLanguage === 'en' ? styles.active : ''}`}

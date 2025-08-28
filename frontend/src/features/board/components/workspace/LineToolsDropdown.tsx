@@ -22,7 +22,7 @@ export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
   currentTool,
   onToolSelect,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +54,7 @@ export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
       <button
         className={`${styles.dropdownButton} ${isLineToolActive ? styles.active : ''}`}
         onClick={() => setIsOpen(!isOpen)}
-        title={t('toolbar.tool.lines')}
+        title={t('board:toolbar.tool.lines')}
       >
         <currentLineTool.icon size={20} />
         <ChevronDown size={14} />
@@ -67,10 +67,10 @@ export const LineToolsDropdown: React.FC<LineToolsDropdownProps> = ({
               key={value}
               className={`${styles.dropdownItem} ${value === currentTool ? styles.active : ''}`}
               onClick={() => handleToolClick(value)}
-              title={t(`toolbar.tool.${value}`)}
+              title={t(`board:toolbar.tool.${value}`)}
             >
               <Icon size={20} />
-              <span>{t(`toolbar.tool.${labelKey}`)}</span>
+              <span>{t(`board:toolbar.tool.${labelKey}`)}</span>
             </button>
           ))}
         </div>

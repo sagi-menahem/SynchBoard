@@ -17,7 +17,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
   onSendMessage, 
   placeholder, 
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['chat', 'common']);
   const { shouldBlockFunctionality } = useConnectionStatus();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -62,7 +62,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
           type="text"
           value={message}
           onChange={handleInputChange}
-          placeholder={placeholder || t('chatWindow.placeholder', 'Type a message...')}
+          placeholder={placeholder || t('chat:window.placeholder')}
           disabled={isSending}
           className={isSending ? styles.inputDisabled : ''}
         />
@@ -72,7 +72,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
         disabled={!message.trim() || shouldBlockFunctionality || isSending}
         className={isSending ? styles.buttonSending : ''}
       >
-        {isSending ? t('chat.sending', 'Sending...') : t('common.button.send', 'Send')}
+        {isSending ? t('chat:sending') : t('common:button.send')}
       </Button>
     </form>
   );

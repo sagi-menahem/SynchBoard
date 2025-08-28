@@ -13,7 +13,7 @@ interface ForgotPasswordState {
 }
 
 export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) => void) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
 
   const forgotPasswordAction = async (
     _previousState: ForgotPasswordState,
@@ -24,7 +24,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     if (!email) {
       return {
         success: false,
-        error: t('forgotPassword.validation.emailRequired', 'Email is required'),
+        error: t('auth:forgotPassword.validation.emailRequired'),
       };
     }
 
@@ -32,7 +32,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     if (!emailRegex.test(email)) {
       return {
         success: false,
-        error: t('forgotPassword.validation.emailInvalid', 'Please enter a valid email address'),
+        error: t('forgotPassword.validation.emailInvalid'),
       };
     }
 

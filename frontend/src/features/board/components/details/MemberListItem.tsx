@@ -14,7 +14,7 @@ interface MemberListItemProps {
 }
 
 const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onContextMenu }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const imageSource = member.profilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${member.profilePictureUrl}`
     : defaultUserImage;
@@ -22,14 +22,14 @@ const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onCo
   return (
     <div onContextMenu={(e) => onContextMenu(e, member)}>
       <li className={styles.memberItem}>
-        <img src={imageSource} alt={member.email} className={styles.memberAvatar} />
+        <img src={imageSource} alt={t('common:accessibility.memberAvatar', { email: member.email })} className={styles.memberAvatar} />
         <div>
           <div className={styles.memberName}>
             {member.email}
           </div>
         </div>
         {member.isAdmin && (
-          <div className={styles.adminBadge} title={t('boardDetailsPage.adminBadge')}>
+          <div className={styles.adminBadge} title={t('board:detailsPage.adminBadge')}>
             <Crown size={20} />
           </div>
         )}

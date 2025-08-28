@@ -17,7 +17,7 @@ interface ProfileDetailsSectionProps {
 }
 
 const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onUpdateProfile }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useUserProfile();
 
   const onSave = async () => {
@@ -33,12 +33,12 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
     <section className={styles.section}>
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>
-          {t('settingsPage.profileSectionHeader')}
+          {t('settings:page.profileSectionHeader')}
         </h2>
         {!isEditing && (
           <Button onClick={startEditing} variant="secondary" className={styles.editButton}>
             <PencilLine size={16} />
-            {t('settingsPage.buttons.edit')}
+            {t('settings:page.buttons.edit')}
           </Button>
         )}
       </div>

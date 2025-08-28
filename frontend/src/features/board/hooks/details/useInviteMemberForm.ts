@@ -9,7 +9,7 @@ import logger from 'shared/utils/logger';
 
 
 export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember: Member) => void) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -19,7 +19,7 @@ export const useInviteMemberForm = (boardId: number, onInviteSuccess: (newMember
     event.preventDefault();
     if (!email.trim()) {
       logger.warn('[useInviteMemberForm] Email validation failed - empty email');
-      toast.error(t('inviteMemberForm.emailRequiredError'));
+      toast.error(t('board:inviteMemberForm.emailRequiredError'));
       return;
     }
     setIsSubmitting(true);

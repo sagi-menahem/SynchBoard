@@ -7,14 +7,14 @@ import { usePreferences } from 'shared/hooks';
 import styles from '../pages/SettingsPage.module.css';
 
 const BoardAppearanceSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const { preferences, updatePreferences } = usePreferences();
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionHeader}>{t('settingsPage.boardAppearanceHeader')}</h2>
+      <h2 className={styles.sectionHeader}>{t('settings:page.boardAppearanceHeader')}</h2>
       <div className={styles.field}>
-        <label>{t('settingsPage.boardBackgroundColorLabel')}</label>
+        <label>{t('settings:page.boardBackgroundColorLabel')}</label>
         <div className={styles.colorSwatchContainer}>
           {CHAT_BACKGROUND_OPTIONS.map((option) => (
             <button

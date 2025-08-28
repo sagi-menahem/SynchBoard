@@ -20,7 +20,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onClear,
   className,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [inputValue, setInputValue] = useState(value);
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
@@ -65,7 +65,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             type="button"
             onClick={handleClear}
             className={styles.clearButton}
-            title={t('toolbar.search.clear')}
+            title={t('board:toolbar.search.clear')}
           >
             <X size={16} />
           </button>

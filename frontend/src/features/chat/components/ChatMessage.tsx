@@ -25,7 +25,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   userColorMap, 
   shouldAnimate = true, 
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['chat', 'common']);
   const profileUrl = message.senderProfilePictureUrl
     ? `${API_BASE_URL.replace('/api', '')}${message.senderProfilePictureUrl}`
     : defaultUserImage;
@@ -51,7 +51,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   return (
     <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass} ${!shouldAnimate ? styles.noAnimation : ''}`}>
       {!isOwnMessage && (
-        <img src={imageSource} alt={senderEmail} className={styles.avatar} />
+        <img src={imageSource} alt={t('common:accessibility.userAvatar', { email: senderEmail })} className={styles.avatar} />
       )}
       
       <div className={styles.messageBubble}>
@@ -77,7 +77,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           {messageStatus === 'failed' && (
             <span 
               className={styles.failureIcon} 
-              title={t('chat.message.failedToSendTooltip')}
+              title={t('chat:message.failedToSendTooltip')}
             >
               ❗
             </span>

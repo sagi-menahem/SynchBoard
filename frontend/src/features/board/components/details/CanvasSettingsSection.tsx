@@ -22,7 +22,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   isAdmin,
   onUpdateSettings,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   
   const getTranslationKey = (sizeKey: string): string => {
     const keyMap: Record<string, string> = {
@@ -85,10 +85,10 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   if (!isAdmin) {
     return (
       <div className={styles.section}>
-        <h4 className={styles.sectionTitle}>{t('boardDetails.canvasSettings.title')}</h4>
+        <h4 className={styles.sectionTitle}>{t('board:details.canvasSettings.title')}</h4>
         <div className={styles.readOnlySettings}>
           <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('boardDetails.canvasSettings.backgroundColor')}:</span>
+            <span className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}:</span>
             <div 
               className={styles.colorPreview} 
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
@@ -97,14 +97,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <span className={styles.settingValue}>
               {(() => {
                 const colorName = getColorName(boardDetails.canvasBackgroundColor);
-                return colorName ? t(`colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+                return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
               })()}
             </span>
           </div>
           <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('boardDetails.canvasSettings.size')}:</span>
+            <span className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</span>
             <span className={styles.settingValue}>
-              {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('boardDetails.canvasSettings.pixels')}
+              {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
             </span>
           </div>
         </div>
@@ -115,11 +115,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   return (
     <div className={styles.section}>
       <div className={styles.sectionHeader}>
-        <h4 className={styles.sectionTitle}>{t('boardDetails.canvasSettings.title')}</h4>
+        <h4 className={styles.sectionTitle}>{t('board:details.canvasSettings.title')}</h4>
         {!isEditing && (
           <Button onClick={() => setIsEditing(true)} variant="secondary" className={styles.editButton}>
             <Settings2 size={16} />
-            {t('boardDetails.canvasSettings.edit')}
+            {t('board:details.canvasSettings.edit')}
           </Button>
         )}
       </div>
@@ -128,7 +128,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         <div className={styles.editForm}>
           <div className={styles.formField}>
             <div className={utilStyles.settingRow}>
-              <span className={utilStyles.settingLabel}>{t('boardDetails.canvasSettings.backgroundColor')}:</span>
+              <span className={utilStyles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}:</span>
               <ColorPicker
                 color={backgroundColor}
                 onChange={setBackgroundColor}
@@ -137,14 +137,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               <span className={utilStyles.settingValue}>
                 {(() => {
                   const colorName = getColorName(backgroundColor);
-                  return colorName ? t(`colors.${colorName}`) : backgroundColor;
+                  return colorName ? t(`common:colors.${colorName}`) : backgroundColor;
                 })()}
               </span>
             </div>
           </div>
 
           <div className={styles.formField}>
-            <label className={styles.fieldLabel}>{t('boardDetails.canvasSettings.size')}</label>
+            <label className={styles.fieldLabel}>{t('board:details.canvasSettings.size')}</label>
             <div className={styles.sizeOptions}>
               {/* Canvas Size Presets */}
               <div className={styles.sizeGroup}>
@@ -158,11 +158,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                         checked={canvasSize === size}
                         onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                         disabled={isUpdating}
-                        aria-label={`${t(`canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
+                        aria-label={`${t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
                       />
                       <div className={styles.presetLabel}>
                         <span className={styles.presetName}>
-                          {t(`canvasSize.presets.${getTranslationKey(size)}.label`)}
+                          {t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)}
                         </span>
                         <span className={styles.presetInfo}>
                           ({preset.ratio}) - {preset.width}×{preset.height}
@@ -182,11 +182,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                     checked={canvasSize === 'custom'}
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isUpdating}
-                    aria-label={`${t('canvasSize.custom.label')}`}
+                    aria-label={`${t('board:canvasSize.custom.label')}`}
                   />
                   <div className={styles.presetLabel}>
                     <span className={styles.presetName}>
-                      {t('canvasSize.custom.label')}
+                      {t('board:canvasSize.custom.label')}
                     </span>
                     <span className={styles.presetInfo}>
                     </span>
@@ -203,7 +203,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                   min={CANVAS_CONFIG.MIN_WIDTH}
                   max={CANVAS_CONFIG.MAX_WIDTH}
                   disabled={isUpdating}
-                  placeholder={t('boardDetails.canvasSettings.width')}
+                  placeholder={t('board:details.canvasSettings.width')}
                 />
                 <span>×</span>
                 <Input
@@ -213,9 +213,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                   min={CANVAS_CONFIG.MIN_HEIGHT}
                   max={CANVAS_CONFIG.MAX_HEIGHT}
                   disabled={isUpdating}
-                  placeholder={t('boardDetails.canvasSettings.height')}
+                  placeholder={t('board:details.canvasSettings.height')}
                 />
-                <span>{t('boardDetails.canvasSettings.pixels')}</span>
+                <span>{t('board:details.canvasSettings.pixels')}</span>
               </div>
             )}
           </div>
@@ -228,7 +228,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               className={styles.cancelButton}
             >
               <X size={16} />
-              {t('common.button.cancel')}
+              {t('common:button.cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
@@ -237,14 +237,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               className={styles.saveButton}
             >
               <Save size={16} />
-              {isUpdating ? t('common.button.saving') : t('boardDetails.canvasSettings.applyChanges')}
+              {isUpdating ? t('common:button.saving') : t('board:details.canvasSettings.applyChanges')}
             </Button>
           </div>
         </div>
       ) : (
         <div className={styles.readOnlySettings}>
           <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('boardDetails.canvasSettings.backgroundColor')}:</span>
+            <span className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}:</span>
             <div 
               className={styles.colorPreview} 
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
@@ -253,14 +253,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <span className={styles.settingValue}>
               {(() => {
                 const colorName = getColorName(boardDetails.canvasBackgroundColor);
-                return colorName ? t(`colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+                return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
               })()}
             </span>
           </div>
           <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('boardDetails.canvasSettings.size')}:</span>
+            <span className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</span>
             <span className={styles.settingValue}>
-              {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('boardDetails.canvasSettings.pixels')}
+              {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
             </span>
           </div>
         </div>

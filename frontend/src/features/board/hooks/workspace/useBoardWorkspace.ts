@@ -19,7 +19,7 @@ export const useBoardWorkspace = (boardId: number) => {
   const navigate = useNavigate();
   const sessionInstanceId = useRef(Date.now().toString());
   const { userEmail } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
 
   const {
     isLoading,
@@ -95,7 +95,7 @@ export const useBoardWorkspace = (boardId: number) => {
         logger.error(
           `Drawing too large: ${messageSize} bytes exceeds limit of ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE} bytes`,
         );
-        toast.error(t('errors.drawingTooLarge', 'Drawing is too large to be saved.'));
+        toast.error(t('board:errors.drawingTooLarge'));
         return;
       }
 
@@ -116,7 +116,7 @@ export const useBoardWorkspace = (boardId: number) => {
         incrementUndo();
       } catch (error) {
         logger.error('Failed to send drawing action:', error);
-        toast.error(t('errors.drawingFailed', 'Failed to save drawing. Please try again.'));
+        toast.error(t('board:errors.drawingFailed'));
         // No need to manually remove optimistic update - useOptimistic handles rollback
         throw error; // Re-throw to trigger automatic rollback
       }

@@ -22,7 +22,7 @@ interface BoardPageContentProps {
 }
 
 const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +80,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           type: 'custom',
           content: (
             <CanvasToolSection
-              boardName={boardName || 'Board'}
+              boardName={boardName || t('board:fallbacks.untitled')}
               strokeColor={strokeColor}
               setStrokeColor={updateStrokeColor}
               strokeWidth={strokeWidth}
@@ -118,7 +118,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
                 color: 'rgba(255, 255, 255, 0.9)',
                 letterSpacing: '0.02em',
               }}>
-                {boardName || 'Untitled Board'}
+                {boardName || t('board:fallbacks.untitled')}
               </span>
             </div>
           ),
@@ -154,6 +154,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       canvasConfig,
       navigate,
       boardId,
+      t,
     ],
   );
 
@@ -161,7 +162,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     return (
       <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <PageLoader message={t('boardPage.loading')} />
+        <PageLoader message={t('board:page.loading')} />
       </PageTransition>
     );
   }
@@ -194,14 +195,14 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 };
 
 const BoardPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const { boardId } = useParams<{ boardId: string }>();
   const numericBoardId = parseInt(boardId || '0', 10);
 
   if (!numericBoardId) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        {t('boardPage.loading')}
+        {t('board:page.loading')}
       </div>
     );
   }

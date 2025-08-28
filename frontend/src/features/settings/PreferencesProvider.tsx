@@ -19,7 +19,7 @@ const defaultPreferences: UserPreferences = {
 };
 
 export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ children }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const { token } = useAuth();
   const [preferences, setPreferences] = useState<UserPreferences>(defaultPreferences);
 
@@ -34,7 +34,7 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
       .catch((error) => {
         logger.error('Failed to fetch user preferences', error);
         if (document.location.pathname.includes('/settings')) {
-          toast.error(t('errors.preferences.fetch'));
+          toast.error(t('settings:errors.preferences.fetch'));
         }
       });
   }, [t]);
@@ -54,12 +54,12 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
     return userService
       .updateUserPreferences(newPrefs)
       .then(() => {
-        toast.success(t('success.preferences.update'));
+        toast.success(t('settings:success.preferences.update'));
       })
       .catch((error) => {
         logger.error('Failed to save preferences', error);
         setPreferences(oldPrefs);
-        toast.error(t('errors.preferences.update'));
+        toast.error(t('settings:errors.preferences.update'));
         throw error;
       });
   };

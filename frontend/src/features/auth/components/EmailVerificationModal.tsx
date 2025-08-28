@@ -20,7 +20,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   email,
   onSuccess,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const [resendCooldown, setResendCooldown] = useState(0);
 
   const { state, submitAction, isPending } = useVerifyEmailForm(email, onSuccess);
@@ -46,7 +46,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   const resendActions = (
     <div className={styles.additionalActions} style={{ paddingTop: '1rem', borderTop: '1px solid #444' }}>
       <p style={{ color: '#ccc', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
-        {t('verifyEmail.didNotReceive', 'Didn\'t receive the code?')}
+        {t('auth:verifyEmail.didNotReceive')}
       </p>
       <Button 
         variant="secondary" 
@@ -55,8 +55,8 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
         style={{ fontSize: '0.875rem' }}
       >
         {resendCooldown > 0 
-          ? t('verifyEmail.resend.cooldown', 'Resend in {{seconds}}s', { seconds: resendCooldown })
-          : t('verifyEmail.resend.button', 'Resend Code')
+          ? t('auth:verifyEmail.resend.cooldown', { seconds: resendCooldown })
+          : t('auth:verifyEmail.resend.button')
         }
       </Button>
     </div>
@@ -68,12 +68,12 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>
             <Mail size={20} />
-            {t('verifyEmail.heading', 'Check Your Email')}
+            {t('auth:verifyEmail.heading')}
           </h2>
         </div>
         
         <p className={styles.modalDescription}>
-          {t('verifyEmail.description', 'Enter the 6-digit code sent to')} <strong style={{ color: '#fff' }}>{email}</strong>
+          {t('auth:verifyEmail.description')} <strong style={{ color: '#fff' }}>{email}</strong>
         </p>
 
         <form action={submitAction} className={styles.form}>
@@ -86,7 +86,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
           <div className={styles.field}>
             <label htmlFor="verification-code">
               <Hash size={14} />
-              {t('verifyEmail.label.code', 'Verification Code')}
+              {t('auth:verifyEmail.label.code')}
               <span className={styles.required}> *</span>
             </label>
             <Input
@@ -97,12 +97,12 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
               disabled={isPending}
               maxLength={6}
               pattern="[0-9]{6}"
-              placeholder={t('verifyEmail.placeholder.code', '123456')}
+              placeholder={t('auth:verifyEmail.placeholder.code')}
               autoComplete="one-time-code"
               style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}
             />
             <small style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
-              {t('verifyEmail.hint.code', 'Enter the 6-digit code from your email')}
+              {t('auth:verifyEmail.hint.code')}
             </small>
           </div>
 
@@ -113,14 +113,14 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
               disabled={isPending} 
               variant="secondary"
             >
-              {t('common.button.cancel', 'Cancel')}
+              {t('common:button.cancel')}
             </Button>
             <Button 
               type="submit" 
               disabled={isPending} 
               variant="primary"
             >
-              {isPending ? t('common.button.verifying', 'Verifying...') : t('verifyEmail.button', 'Verify Email')}
+              {isPending ? t('common:button.verifying') : t('auth:verifyEmail.button')}
             </Button>
           </div>
         </form>

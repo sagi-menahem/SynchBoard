@@ -6,15 +6,15 @@ import { useTranslation } from 'react-i18next';
 
 
 export const usePasswordManager = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
 
   const handleChangePassword = async (data: ChangePasswordRequest) => {
     await toast.promise(
       UserService.changePassword(data),
       {
-        loading: t('loading.password.update'),
-        success: t('success.password.update'),
-        error: t('errors.password.update'),
+        loading: t('settings:loading.password.update'),
+        success: t('settings:success.password.update'),
+        error: t('settings:errors.password.update'),
       },
     );
   };

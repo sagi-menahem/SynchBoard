@@ -33,7 +33,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
   uploadButtonText,
   deleteButtonText,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const imageSource = imageUrl 
@@ -72,7 +72,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
           onClick={triggerFileInput} 
           variant="secondary"
         >
-          {uploadButtonText || t('pictureManager.changeButton')}
+          {uploadButtonText || t('common:pictureManager.changeButton')}
         </Button>
         
         {showDeleteButton && onDelete && imageUrl && (
@@ -80,7 +80,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
             onClick={onDelete} 
             variant="secondary"
           >
-            {deleteButtonText || t('pictureManager.deleteButton')}
+            {deleteButtonText || t('common:pictureManager.deleteButton')}
           </Button>
         )}
       </div>

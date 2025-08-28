@@ -8,13 +8,13 @@ import logger from 'shared/utils/logger';
 
 
 export const useBoardActions = (boardId: number) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [undoCount, setUndoCount] = useState(0);
   const [redoCount, setRedoCount] = useState(0);
 
   const handleUndo = useCallback(() => {
     if (undoCount === 0) {
-      toast.error(t('boardSync.nothingToUndo'));
+      toast.error(t('board:boardSync.nothingToUndo'));
       return;
     }
     boardService
@@ -25,13 +25,13 @@ export const useBoardActions = (boardId: number) => {
       })
       .catch((error) => {
         logger.error('[useBoardActions] Failed to undo action:', error);
-        toast.error(t('errors.board.action.undo'));
+        toast.error(t('board:errors.action.undo'));
       });
   }, [boardId, undoCount, t]);
 
   const handleRedo = useCallback(() => {
     if (redoCount === 0) {
-      toast.error(t('boardSync.nothingToRedo'));
+      toast.error(t('board:boardSync.nothingToRedo'));
       return;
     }
     boardService
@@ -42,7 +42,7 @@ export const useBoardActions = (boardId: number) => {
       })
       .catch((error) => {
         logger.error('[useBoardActions] Failed to redo action:', error);
-        toast.error(t('errors.board.action.redo'));
+        toast.error(t('board:errors.action.redo'));
       });
   }, [boardId, redoCount, t]);
 
