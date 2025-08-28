@@ -1,11 +1,11 @@
 .universalToolbar {
   position: fixed;
-  top: var(--banner-height, 0px); /* Position below banner */
+  top: var(--banner-height, 0px);
   left: 0;
   right: 0;
-  width: 100vw; /* Explicitly set full viewport width */
-  height: 72px; /* Increased to 72px for optimal canvas tool icon fit */
-  box-sizing: border-box; /* Include padding in width calculation */
+  width: 100vw;
+  height: 72px;
+  box-sizing: border-box;
   background: linear-gradient(to bottom, rgba(40, 40, 40, 0.98), rgba(35, 35, 35, 0.98));
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -16,7 +16,7 @@
   padding: 0 24px;
   z-index: 50;
   user-select: none;
-  overflow: visible; /* Ensure toolbar content is not clipped */
+  overflow: visible;
 }
 
 .toolbarSection {
@@ -28,8 +28,8 @@
 .leftSection {
   flex: 1 1 0;
   justify-content: flex-start;
-  min-width: 0; /* Allow shrinking */
-  overflow: visible; /* Allow content to be visible - remove hidden constraint */
+  min-width: 0;
+  overflow: visible;
 }
 
 .centerSection {
@@ -41,10 +41,9 @@
 .rightSection {
   flex: 1 1 0;
   justify-content: flex-end;
-  min-width: min-content; /* Take only space needed for buttons */
+  min-width: min-content;
 }
 
-/* Title Styles */
 .toolbarTitle {
   color: rgba(255, 255, 255, 0.9);
   font-size: 18px;
@@ -57,7 +56,6 @@
   max-width: 300px;
 }
 
-/* Button Styles */
 .toolbarButton {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -144,15 +142,13 @@
   font-weight: 500;
 }
 
-/* Custom Item Styles */
 .customItem {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Section Separators */
-.toolbarSection > *:not(:last-child)::after {
+.toolbarSection>*:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -8px;
@@ -164,14 +160,12 @@
   pointer-events: none;
 }
 
-.toolbarSection > *:last-child::after {
+.toolbarSection>*:last-child::after {
   display: none;
 }
 
-.toolbarSection > .customItem::after,
-.toolbarSection > *:has(.searchInput)::after,
-.toolbarSection > *:has(.viewToggle)::after {
+.toolbarSection>.customItem::after,
+.toolbarSection>*:has(.searchInput)::after,
+.toolbarSection>*:has(.viewToggle)::after {
   display: none;
 }
-
-/* Mobile CSS removed - desktop-only application */

@@ -1,11 +1,11 @@
 import type { LogLevel } from 'types/CommonTypes';
 
 interface LogEntry {
-    level: LogLevel;
-    message: string;
-    timestamp: string;
-    data?: unknown;
-    stack?: string;
+  level: LogLevel;
+  message: string;
+  timestamp: string;
+  data?: unknown;
+  stack?: string;
 }
 
 class Logger {
@@ -40,7 +40,7 @@ class Logger {
 
   error(message: string, error?: Error | unknown, ...data: unknown[]): void {
     const errorMessage = `[ERROR] ${message}`;
-        
+
     if (error instanceof Error) {
       console.error(errorMessage, error, ...data);
     } else if (error) {
@@ -151,11 +151,11 @@ class Logger {
         userAgent: navigator.userAgent,
         url: window.location.href,
       });
-            
+
       if (errors.length > 50) {
         errors.shift();
       }
-            
+
       sessionStorage.setItem('app_errors', JSON.stringify(errors));
     } catch { }
   }

@@ -20,14 +20,12 @@
   align-items: center;
 }
 
-/* Variant for profile pictures (circular) */
 .image.profile {
   border-radius: 50%;
   width: 100px;
   height: 100px;
 }
 
-/* Variant for board pictures (rectangular with more rounded corners) */
 .image.board {
   width: 150px;
   height: 100px;

@@ -32,8 +32,8 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
       };
     }
 
-    const verifyData: VerifyEmailRequest = { 
-      email, 
+    const verifyData: VerifyEmailRequest = {
+      email,
       verificationCode,
     };
 
@@ -47,7 +47,7 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
         },
       );
       onVerificationSuccess(response.token);
-      
+
       return {
         success: true,
       };

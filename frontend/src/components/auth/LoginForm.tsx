@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { LogIn, Mail, Lock } from 'lucide-react';
+import { Lock, LogIn, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Input, PasswordInput } from 'components/common';

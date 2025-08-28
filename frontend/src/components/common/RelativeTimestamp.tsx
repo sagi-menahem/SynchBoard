@@ -12,10 +12,8 @@ const RelativeTimestamp: React.FC<RelativeTimestampProps> = ({ timestamp, classN
   const [displayTime, setDisplayTime] = useState(() => formatSmartTimestamp(timestamp));
 
   useEffect(() => {
-    // Update immediately when timestamp prop changes
     setDisplayTime(formatSmartTimestamp(timestamp));
     
-    // Set up interval to update every 55 seconds
     const interval = setInterval(() => {
       setDisplayTime(formatSmartTimestamp(timestamp));
     }, 55000);

@@ -60,27 +60,27 @@ export const CANVAS_CONFIG = {
     PRESERVE_ENDPOINTS: true,
   } satisfies PointOptimizationConfig,
   CANVAS_SIZE_PRESETS: {
-    WIDESCREEN: { 
-      width: 1920, 
-      height: 1080, 
+    WIDESCREEN: {
+      width: 1920,
+      height: 1080,
       ratio: '16:9',
       key: 'widescreen',
     },
-    SQUARE: { 
-      width: 1200, 
-      height: 1200, 
+    SQUARE: {
+      width: 1200,
+      height: 1200,
       ratio: '1:1',
       key: 'square',
     },
-    PORTRAIT: { 
-      width: 1080, 
-      height: 1920, 
+    PORTRAIT: {
+      width: 1080,
+      height: 1920,
       ratio: '9:16',
       key: 'portrait',
     },
-    DOCUMENT: { 
-      width: 1240, 
-      height: 1754, 
+    DOCUMENT: {
+      width: 1240,
+      height: 1754,
       ratio: 'A4',
       key: 'document',
     },

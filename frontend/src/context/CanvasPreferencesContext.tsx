@@ -1,6 +1,6 @@
 import { WEBSOCKET_TOPICS } from 'constants';
 
-import React, { createContext, useContext, useCallback, useReducer, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 
 import logger from 'utils/logger';
 
@@ -98,7 +98,7 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
       
       const preferences: CanvasUserPreferences = {
         canvasChatSplitRatio: canvasPrefs.canvasChatSplitRatio,
-        layoutMode: 'balanced', // Default layout mode, not stored in backend yet
+        layoutMode: 'balanced',
       };
       
       dispatch({ type: 'LOAD_SUCCESS', payload: preferences });
@@ -115,14 +115,13 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
       await userService.updateCanvasPreferences({ canvasChatSplitRatio: splitRatio });
     } catch (error) {
       logger.error('Failed to update split ratio:', error);
-      await refreshPreferences(); // Revert on error
+      await refreshPreferences();
       throw error;
     }
   }, [refreshPreferences]);
 
   const updateLayoutMode = useCallback(async (layoutMode: LayoutMode) => {
     dispatch({ type: 'UPDATE_LAYOUT_MODE', payload: layoutMode });
-    // Layout mode is stored locally only for now
   }, []);
 
   const handleCanvasSettingsUpdate = useCallback(

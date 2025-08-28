@@ -44,7 +44,6 @@ const SettingsPage: React.FC = () => {
     handleDeleteAccount,
   } = useSettingsPage();
 
-  // Toolbar configuration
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'settings',

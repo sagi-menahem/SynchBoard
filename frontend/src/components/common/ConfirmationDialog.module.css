@@ -39,13 +39,12 @@
     margin-top: 0.5rem;
 }
 
-/* Responsive */
 @media (max-width: 640px) {
     .buttonGroup {
         flex-direction: column-reverse;
         gap: 0.5rem;
     }
-    
+
     .buttonGroup button {
         width: 100%;
     }

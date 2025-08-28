@@ -1,13 +1,13 @@
 import { API_ENDPOINTS } from 'constants';
 
-import type { 
-  AuthResponse, 
-  LoginRequest, 
-  RegisterRequest,
-  VerifyEmailRequest,
-  ResendVerificationRequest,
+import type {
+  AuthResponse,
   ForgotPasswordRequest,
+  LoginRequest,
+  RegisterRequest,
+  ResendVerificationRequest,
   ResetPasswordRequest,
+  VerifyEmailRequest,
 } from 'types/UserTypes';
 
 import apiClient from './apiClient';

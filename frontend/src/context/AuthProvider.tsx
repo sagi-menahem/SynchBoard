@@ -46,7 +46,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             return;
           }
 
-          // Validate user exists in database
           try {
             await getUserProfile();
             

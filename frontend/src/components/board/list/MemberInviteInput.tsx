@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import type { KeyboardEvent } from 'react';
+import React, { useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,6 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
       return;
     }
 
-    // Check for self-invitation
     if (userEmail && trimmedEmail === userEmail.toLowerCase()) {
       toast.error(t('createBoardForm.cannotInviteSelf'));
       return;

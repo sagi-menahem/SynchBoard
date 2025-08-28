@@ -36,7 +36,7 @@ export const useWebSocketHandler = ({
 
   const handleBoardUpdate = useCallback((update: BoardUpdateDTO) => {
     if (update.sourceUserEmail === userEmail || !userEmail) return;
-    
+
     if (update.updateType === 'MEMBERS_UPDATED') {
       boardService.getBoardMessages(boardId).then(setMessages);
       boardService
@@ -59,17 +59,17 @@ export const useWebSocketHandler = ({
 
   const handleDrawingMessage = useCallback((action: BoardActionResponse) => {
     const isOwnDrawingAction = action.sender === sessionInstanceId && (
-      action.type === ActionType.OBJECT_ADD || 
+      action.type === ActionType.OBJECT_ADD ||
       action.type === ActionType.OBJECT_UPDATE
     );
-    
+
     if (!isOwnDrawingAction) {
       const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
-      
+
       if (action.type === ActionType.OBJECT_ADD) {
         setObjects((prev) => [...prev, actionPayload]);
       } else if (action.type === ActionType.OBJECT_UPDATE) {
-        setObjects((prev) => prev.map((obj) => 
+        setObjects((prev) => prev.map((obj) =>
           obj.instanceId === action.instanceId ? actionPayload : obj,
         ));
       } else if (action.type === ActionType.OBJECT_DELETE) {
@@ -81,16 +81,16 @@ export const useWebSocketHandler = ({
   }, [sessionInstanceId, setObjects, commitDrawingTransaction]);
 
   const handleChatMessage = useCallback((chatMessage: ChatMessageResponse) => {
-    
+
     setMessages((prevMessages) => {
       const messageIndex = prevMessages.findIndex((msg) => {
         const pendingMsg = msg as ChatMessageResponse & {
           transactionId?: string;
           instanceId?: string;
         };
-        
-        return pendingMsg.transactionId === chatMessage.instanceId || 
-               pendingMsg.instanceId === chatMessage.instanceId;
+
+        return pendingMsg.transactionId === chatMessage.instanceId ||
+          pendingMsg.instanceId === chatMessage.instanceId;
       });
 
       if (messageIndex !== -1) {
@@ -125,9 +125,9 @@ export const useWebSocketHandler = ({
         };
 
 
-        if (transactionalMessage.type === ActionType.OBJECT_ADD || 
-            transactionalMessage.type === ActionType.OBJECT_UPDATE ||
-            transactionalMessage.type === ActionType.OBJECT_DELETE) {
+        if (transactionalMessage.type === ActionType.OBJECT_ADD ||
+          transactionalMessage.type === ActionType.OBJECT_UPDATE ||
+          transactionalMessage.type === ActionType.OBJECT_DELETE) {
           handleDrawingMessage(transactionalMessage as BoardActionResponse);
         } else if (transactionalMessage.type === 'CHAT') {
           handleChatMessage(transactionalMessage as ChatMessageResponse);
@@ -143,8 +143,8 @@ export const useWebSocketHandler = ({
   );
 
   useSocketSubscription(
-    boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', 
-    onMessageReceived, 
+    boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '',
+    onMessageReceived,
     'board-websocket',
   );
 

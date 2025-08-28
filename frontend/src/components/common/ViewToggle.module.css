@@ -46,7 +46,6 @@
   display: none;
 }
 
-/* Focus states for accessibility */
 .toggleButton:focus-visible {
   outline: 2px solid rgba(59, 130, 246, 0.5);
   outline-offset: -2px;

@@ -1,12 +1,11 @@
-/* Page Layout */
 .pageContent {
     position: relative;
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px); /* Banner + toolbar + gap */
+    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
     height: 100vh;
     display: flex;
     flex-direction: column;
     width: 100%;
-    overflow: auto; /* Allow normal scrolling behavior */
+    overflow: auto;
     box-sizing: border-box;
 }
 
@@ -21,10 +20,10 @@
 
 .boardWorkspaceArea {
     flex: 1;
-    height: 0; /* Allow flex-grow to work */
+    height: 0;
     overflow: hidden;
     width: 100%;
-    margin: 0; /* Explicit margin reset */
-    padding: 0; /* Explicit padding reset */
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }

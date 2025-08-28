@@ -33,7 +33,6 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
       })
       .catch((error) => {
         logger.error('Failed to fetch user preferences', error);
-        // Only show error toast if preferences are actively being used by user
         if (document.location.pathname.includes('/settings')) {
           toast.error(t('errors.preferences.fetch'));
         }

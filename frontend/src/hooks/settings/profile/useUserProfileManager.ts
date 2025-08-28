@@ -15,10 +15,10 @@ export const useUserProfileManager = () => {
 
   const fetchUser = useCallback(() => {
     setIsLoading(true);
-    
+
     const startTime = Date.now();
     const minDelay = 200;
-    
+
     userService
       .getUserProfile()
       .then((userData) => setUser(userData))
@@ -29,7 +29,7 @@ export const useUserProfileManager = () => {
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
-        
+
         setTimeout(() => {
           setIsLoading(false);
         }, remainingDelay);

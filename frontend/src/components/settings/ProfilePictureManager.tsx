@@ -3,7 +3,7 @@ import { API_BASE_URL, APP_CONFIG } from 'constants';
 import React, { useRef } from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
-import { Upload, Trash2 } from 'lucide-react';
+import { Trash2, Upload } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from 'components/common';

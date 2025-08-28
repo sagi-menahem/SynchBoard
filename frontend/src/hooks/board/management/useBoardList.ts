@@ -32,7 +32,7 @@ export const useBoardList = () => {
     if (!searchQuery.trim()) {
       return boards;
     }
-    
+
     return boards.filter((board) =>
       board.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
@@ -50,10 +50,10 @@ export const useBoardList = () => {
     if (!boards.length) {
       setIsLoading(true);
     }
-    
+
     const startTime = Date.now();
     const minDelay = 200;
-    
+
     BoardService.getBoards()
       .then((userBoards) => {
         setBoards(userBoards);
@@ -65,7 +65,7 @@ export const useBoardList = () => {
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
-        
+
         setTimeout(() => {
           setIsLoading(false);
         }, remainingDelay);
@@ -117,7 +117,7 @@ export const useBoardList = () => {
     try {
       const updatedBoard = await BoardService.getBoardDetails(boardId);
       setBoards((prevBoards) => {
-        const updatedBoards = prevBoards.map((board) => 
+        const updatedBoards = prevBoards.map((board) =>
           board.id === boardId ? {
             ...board,
             canvasBackgroundColor: updatedBoard.canvasBackgroundColor,
@@ -126,8 +126,8 @@ export const useBoardList = () => {
             lastModifiedDate: new Date().toISOString(),
           } : board,
         );
-        
-        return updatedBoards.sort((a, b) => 
+
+        return updatedBoards.sort((a, b) =>
           new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime(),
         );
       });

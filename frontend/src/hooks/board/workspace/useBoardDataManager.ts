@@ -22,10 +22,10 @@ export const useBoardDataManager = (boardId: number) => {
 
   const fetchInitialData = useCallback(() => {
     setIsLoading(true);
-    
+
     const startTime = Date.now();
-    const minDelay = 200; // 200ms minimum delay
-    
+    const minDelay = 200;
+
     Promise.all([
       boardService.getBoardDetails(boardId),
       boardService.getBoardObjects(boardId),
@@ -51,7 +51,7 @@ export const useBoardDataManager = (boardId: number) => {
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
-        
+
         setTimeout(() => {
           setIsLoading(false);
         }, remainingDelay);

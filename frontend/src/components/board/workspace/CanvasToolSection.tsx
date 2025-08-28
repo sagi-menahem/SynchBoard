@@ -60,7 +60,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Create a temporary canvas to draw the background + content
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
@@ -68,15 +67,12 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
     
     if (!tempCtx) return;
 
-    // Fill background color
     const backgroundColor = canvasConfig?.backgroundColor || '#FFFFFF';
     tempCtx.fillStyle = backgroundColor;
     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
     
-    // Draw the existing canvas content on top of the background
     tempCtx.drawImage(canvas, 0, 0);
     
-    // Create download link using the temporary canvas
     const link = document.createElement('a');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
     link.download = `${boardName}-${timestamp}.png`;
@@ -94,7 +90,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
 
   return (
     <div className={styles.canvasToolSection}>
-      {/* Color Control */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <div className={styles.colorPickerWrapper}>
@@ -107,7 +102,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <span className={styles.toolLabel}>{t('toolbar.label.color')}</span>
       </div>
 
-      {/* Size Control */}
       {tool !== TOOLS.COLOR_PICKER && tool !== TOOLS.RECOLOR && tool !== TOOLS.DOWNLOAD && (
         <div className={styles.toolGroup}>
           <div className={styles.toolControls}>
@@ -125,7 +119,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         </div>
       )}
 
-      {/* Basic Tools */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <button
@@ -146,7 +139,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <span className={styles.toolLabel}>{t('toolbar.label.draw')}</span>
       </div>
 
-      {/* Shape Tools */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <ShapeToolsDropdown
@@ -157,7 +149,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <span className={styles.toolLabel}>{t('toolbar.label.shapes')}</span>
       </div>
 
-      {/* Line Tools */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <LineToolsDropdown
@@ -168,7 +159,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <span className={styles.toolLabel}>{t('toolbar.label.lines')}</span>
       </div>
 
-      {/* Special Tools */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <button
@@ -196,7 +186,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <span className={styles.toolLabel}>{t('toolbar.label.tools')}</span>
       </div>
 
-      {/* History */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <button
@@ -219,7 +208,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <span className={styles.toolLabel}>{t('toolbar.label.history')}</span>
       </div>
 
-      {/* Actions */}
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
           <button

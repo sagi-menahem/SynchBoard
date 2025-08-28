@@ -43,7 +43,7 @@ export const getUserColor = (userEmail: string, colorMap: UserColorMap): string 
   if (existingColor) {
     return existingColor;
   }
-  
+
   const newColor = generateRandomColor();
   colorMap.set(userEmail, newColor);
   return newColor;
@@ -53,31 +53,26 @@ export const createUserColorMap = (): UserColorMap => {
   return new Map<string, string>();
 };
 
-// Helper function to convert hex to RGB
 const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
-  // Handle both 3-digit and 6-digit hex
   const result = /^#?([a-f\d]{1,2})([a-f\d]{1,2})([a-f\d]{1,2})$/i.exec(hex);
   if (!result) return null;
-  
+
   let r, g, b;
   if (hex.length === 4) {
-    // 3-digit hex
     r = parseInt(result[1] + result[1], 16);
     g = parseInt(result[2] + result[2], 16);
     b = parseInt(result[3] + result[3], 16);
   } else {
-    // 6-digit hex
     r = parseInt(result[1], 16);
     g = parseInt(result[2], 16);
     b = parseInt(result[3], 16);
   }
-  
+
   return { r, g, b };
 };
 
-// Helper function to calculate color distance
 const getColorDistance = (
-  color1: { r: number; g: number; b: number }, 
+  color1: { r: number; g: number; b: number },
   color2: { r: number; g: number; b: number },
 ): number => {
   return Math.sqrt(
@@ -89,7 +84,6 @@ const getColorDistance = (
 
 export const getColorName = (hexColor: string): string | null => {
   const colorMap: Record<string, string> = {
-    // Preset colors from ColorPicker component
     '#FFFFFF': 'white',
     '#000000': 'black',
     '#F44336': 'red',
@@ -126,36 +120,33 @@ export const getColorName = (hexColor: string): string | null => {
     '#6D4C41': 'brownOrange',
     '#757575': 'charcoal',
     '#546E7A': 'charcoal',
-    
-    // Additional common colors
+
     '#222222': 'almostBlack',
     '#222': 'almostBlack',
   };
 
   const upperHex = hexColor.toUpperCase();
-  
-  // Try exact match first
+
   if (colorMap[upperHex]) {
     return colorMap[upperHex];
   }
-  
-  // If no exact match, find the closest color
+
   const inputRgb = hexToRgb(hexColor);
   if (!inputRgb) return null;
-  
+
   let closestColor = null;
   let minDistance = Infinity;
-  
+
   for (const [hex, colorName] of Object.entries(colorMap)) {
     const rgb = hexToRgb(hex);
     if (!rgb) continue;
-    
+
     const distance = getColorDistance(inputRgb, rgb);
     if (distance < minDistance) {
       minDistance = distance;
       closestColor = colorName;
     }
   }
-  
+
   return closestColor;
 };

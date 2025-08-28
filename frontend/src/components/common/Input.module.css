@@ -11,15 +11,13 @@
     font-family: inherit;
 }
 
-/* Date input specific styles for RTL support */
 .input[type="date"] {
     text-align: center;
-    direction: ltr; /* Keep date format consistent */
+    direction: ltr;
     unicode-bidi: embed;
     position: relative;
 }
 
-/* Webkit browsers (Chrome, Safari, Edge) date picker icon positioning */
 .input[type="date"]::-webkit-calendar-picker-indicator {
     position: absolute;
     inset-inline-end: 10px;
@@ -32,7 +30,6 @@
     opacity: 1;
 }
 
-/* Firefox date picker icon positioning */
 .input[type="date"]::-moz-calendar-picker-indicator {
     position: absolute;
     inset-inline-end: 10px;

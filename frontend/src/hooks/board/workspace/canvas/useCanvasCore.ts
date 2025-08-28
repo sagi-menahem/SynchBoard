@@ -3,10 +3,10 @@ import { useCallback, useRef, useState } from 'react';
 import {
   drawCirclePayload,
   drawLinePayload,
-  drawRectanglePayload,
-  drawTrianglePayload,
   drawPolygonPayload,
+  drawRectanglePayload,
   drawTextPayload,
+  drawTrianglePayload,
   getMouseCoordinates,
   isRadiusValid,
   isShapeSizeValid,
@@ -17,23 +17,23 @@ import {
 import type { Point } from 'types/BoardObjectTypes';
 
 export interface DrawingState {
-    isDrawing: boolean;
-    setIsDrawing: (drawing: boolean) => void;
-    startPoint: React.RefObject<Point | null>;
-    currentPath: React.RefObject<Point[]>;
-    resetDrawingState: () => void;
+  isDrawing: boolean;
+  setIsDrawing: (drawing: boolean) => void;
+  startPoint: React.RefObject<Point | null>;
+  currentPath: React.RefObject<Point[]>;
+  resetDrawingState: () => void;
 }
 
 interface CanvasRefs {
-    canvasRef: React.RefObject<HTMLCanvasElement | null>;
-    containerRef: React.RefObject<HTMLDivElement | null>;
-    contextRef: React.RefObject<CanvasRenderingContext2D | null>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  contextRef: React.RefObject<CanvasRenderingContext2D | null>;
 }
 
 export const useCanvasCore = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
-    
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);

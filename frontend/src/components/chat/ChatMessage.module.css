@@ -1,6 +1,3 @@
-/* Modern Bubble Chat Layout - WhatsApp/Telegram Style */
-
-/* Base message container - Flexbox layout */
 .messageContainer {
   width: 100%;
   padding: 4px 16px;
@@ -9,24 +6,20 @@
   animation: messageSlideIn 0.3s ease-out;
 }
 
-/* Disable animation for timestamp-only updates */
 .messageContainer.noAnimation {
   animation: none;
 }
 
-/* My messages - no avatar, full width bubble */
 .myMessage {
   display: flex;
 }
 
-/* Others' messages - avatar outside, bubble takes remaining width */
 .otherMessage {
   display: flex;
   gap: 8px;
   align-items: flex-start;
 }
 
-/* Message bubble - Takes remaining width after avatar */
 .messageBubble {
   padding: 12px;
   border-radius: 8px;
@@ -37,17 +30,15 @@
   overflow-wrap: break-word;
 }
 
-/* My messages - full width bubble */
 .myMessage .messageBubble {
   width: 100%;
 }
 
-/* Others' messages - bubble takes remaining width */
 .otherMessage .messageBubble {
-  flex: 1; /* Takes remaining width after avatar */
+  flex: 1;
+  /* Takes remaining width after avatar */
 }
 
-/* Blue gradient matching app's primary button color */
 .myMessage .messageBubble {
   background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
   color: #ffffff;
@@ -58,7 +49,6 @@
   color: #e0e0e0;
 }
 
-/* Avatar styling - 24px, OUTSIDE bubble for others only */
 .avatar {
   width: 24px;
   height: 24px;
@@ -69,12 +59,10 @@
   align-self: flex-start;
 }
 
-/* Message header - sender name only */
 .messageHeader {
   margin-bottom: 4px;
 }
 
-/* Header alignment based on message type */
 .otherMessage .messageHeader {
   text-align: left;
 }
@@ -83,73 +71,64 @@
   text-align: right;
 }
 
-/* Make sender name MORE distinct */
 .senderName {
-  color: rgba(255, 255, 255, 0.75);  /* 75% opacity - more noticeable */
-  font-size: 1rem;  /* Keep larger size */
-  font-weight: 600;  /* Keep semi-bold */
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
 }
 
-/* Message body - Clean structure */
 .messageBody {
   position: relative;
 }
 
-/* Timestamp container - OPPOSITE CORNER POSITIONING */
 .timestampContainer {
   margin-top: 4px;
   display: flex;
   width: 100%;
 }
 
-/* Others' messages: Name LEFT → Timestamp RIGHT */
 .otherMessage .timestampContainer {
-  justify-content: flex-end; /* Push timestamp to RIGHT */
+  justify-content: flex-end;
 }
 
-/* My messages: Name RIGHT → Timestamp LEFT */
 .myMessage .timestampContainer {
-  justify-content: flex-start; /* Push timestamp to LEFT */
+  justify-content: flex-start;
 }
 
-/* Message text - full brightness for primary focus */
 .messageText {
   line-height: 1.4;
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  font-size: 0.95rem;  /* Current size or slightly smaller than name */
+  font-size: 0.95rem;
   font-weight: 400;
   margin-bottom: 2px;
   max-width: 100%;
   white-space: pre-wrap;
 }
 
-/* Text alignment and brightness based on message type */
 .myMessage .messageText {
-  color: rgba(255, 255, 255, 1);  /* 100% opacity - brightest */
+  color: rgba(255, 255, 255, 1);
   text-align: right;
 }
 
 .otherMessage .messageText {
-  color: rgba(255, 255, 255, 1);  /* 100% opacity - brightest */
+  color: rgba(255, 255, 255, 1);
   text-align: left;
 }
 
-/* Timestamp - even more subtle for clear hierarchy */
 .timestamp {
-  color: rgba(255, 255, 255, 0.5);  /* 50% opacity - even more subtle */
-  font-size: 0.75rem;  /* Keep small */
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
   white-space: nowrap;
   display: inline-block;
 }
 
-/* Status-based styling */
 .sending,
 .queued,
 .processing {
@@ -174,17 +153,22 @@
   opacity: 1;
 }
 
-/* Pulse animation for processing messages */
 .processing {
   animation: subtlePulse 2s infinite ease-in-out;
 }
 
 @keyframes subtlePulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
-/* Failure icon styling */
 .failureIcon {
   position: absolute;
   bottom: 2px;
@@ -200,26 +184,24 @@
   color: #ff6b6b !important;
 }
 
-/* Message entry animation */
 @keyframes messageSlideIn {
   from {
     opacity: 0;
     transform: translateY(20px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-/* Hover effects */
 .messageBubble:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: all 0.2s ease;
 }
 
-/* Focus and accessibility */
 .messageContainer:focus-within {
   outline: 2px solid #667eea;
   outline-offset: 2px;
@@ -227,42 +209,39 @@
 }
 
 
-/* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
   .otherMessage .messageBubble {
     background: #333333 !important;
   }
-  
+
   .avatar {
     border-color: rgba(255, 255, 255, 0.2);
   }
 }
 
-/* High contrast mode */
 @media (prefers-contrast: high) {
   .messageBubble {
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
-  
+
   .myMessage .messageBubble {
     background: #0066cc !important;
   }
-  
+
   .messageText {
     font-weight: 500;
   }
 }
 
-/* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .messageContainer {
     animation: none;
   }
-  
+
   .processing {
     animation: none;
   }
-  
+
   .messageBubble:hover {
     transform: none;
   }

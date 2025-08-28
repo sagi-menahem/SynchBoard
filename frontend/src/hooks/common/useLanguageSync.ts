@@ -33,13 +33,13 @@ export const useLanguageSync = () => {
 
     try {
       const languagePrefs = await languagePrefsPromise;
-      
+
       languagePrefsCache = languagePrefs;
-      
+
       if (languagePrefs.preferredLanguage && i18n.language !== languagePrefs.preferredLanguage) {
         await i18n.changeLanguage(languagePrefs.preferredLanguage);
       }
-      
+
       return languagePrefs;
     } catch (error) {
       logger.error('Failed to load user language preferences:', error);
@@ -88,15 +88,15 @@ export const useLanguageSync = () => {
 
     try {
       languagePrefsCache = null;
-      
+
       const updatedPrefs = await userService.updateLanguagePreferences({ preferredLanguage: language });
-      
+
       languagePrefsCache = updatedPrefs;
-      
+
       if (i18n.language !== language) {
         await i18n.changeLanguage(language);
       }
-      
+
       return updatedPrefs;
     } catch (error) {
       logger.error('Failed to update language preference:', error);

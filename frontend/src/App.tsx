@@ -14,17 +14,14 @@ import ProtectedRoute from 'components/routing/ProtectedRoute';
 import RootRedirect from 'components/routing/RootRedirect';
 import { useAuth } from 'hooks/auth';
 import { useLanguageSync } from 'hooks/common';
-// Pre-load auth-critical pages to avoid loading flashes during OAuth
 import AuthPage from 'pages/AuthPage';
 import BoardListPage from 'pages/BoardListPage';
 
-// Lazy load other pages for code splitting
 const BoardDetailsPage = lazy(() => import('pages/BoardDetailsPage'));
 const BoardPage = lazy(() => import('pages/BoardPage'));
 const SettingsPage = lazy(() => import('pages/SettingsPage'));
 
 
-// Unified loading component for lazy routes
 const LazyPageLoader = () => {
   const { t } = useTranslation();
   return <PageLoader message={t('common.loading')} />;
@@ -71,7 +68,6 @@ function AppRoutes() {
       />
       
 
-      {/* Pages with toolbar - rendered OUTSIDE Layout */}
       <Route 
         path={APP_ROUTES.BOARD_LIST} 
         element={
@@ -119,7 +115,6 @@ function AppRoutes() {
         } 
       />
       
-      {/* Fallback route for pages that need Layout (currently none) */}
       <Route
         element={
           <ProtectedRoute>
@@ -127,7 +122,6 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        {/* Reserved for future pages that don't need toolbar */}
       </Route>
     </Routes>
   );
@@ -138,17 +132,14 @@ function App() {
   const { i18n, t } = useTranslation();
   const { isInitializing } = useAuth();
   
-  // Fixed toolbar height for desktop-only application
   const toolbarHeight = 72;
   
-  // Initialize global language synchronization
   useLanguageSync();
   
   useEffect(() => {
     // Application initialization effect
   }, []);
 
-  // RTL Support: Update document direction when language changes
   useEffect(() => {
     updateDocumentDirection(i18n.language);
   }, [i18n.language]);
@@ -157,10 +148,8 @@ function App() {
     setBannerHeight(height);
   };
 
-  // Global OAuth loading state - single loader for entire OAuth flow
   const isOAuthProcessing = sessionStorage.getItem('oauth_loading') === 'true';
   
-  // Show unified loading screen during OAuth flow
   if (isOAuthProcessing) {
     return (
       <PageTransition>
@@ -169,7 +158,6 @@ function App() {
     );
   }
   
-  // Show loading screen while AuthProvider is initializing (non-OAuth flows)
   if (isInitializing) {
     return (
       <PageTransition>

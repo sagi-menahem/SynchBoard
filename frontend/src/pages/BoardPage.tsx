@@ -63,7 +63,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     [updateSplitRatio],
   );
 
-  // Memoized canvas config to prevent unnecessary re-renders
   const canvasConfig = useMemo(() => {
     return boardDetails
       ? {
@@ -74,7 +73,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       : undefined;
   }, [boardDetails]);
 
-  // Toolbar configuration
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'canvas',

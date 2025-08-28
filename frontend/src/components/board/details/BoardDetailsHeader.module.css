@@ -1,5 +1,3 @@
-/* Two-Section Design matching Profile Picture style */
-
 .section {
     background-color: #2f2f2f;
     border: 1px solid #444;
@@ -15,7 +13,6 @@
     margin-bottom: 1.5rem;
 }
 
-/* RTL override for section headers */
 [dir="rtl"] .sectionHeader {
     text-align: right;
     direction: rtl;
@@ -29,7 +26,6 @@
     text-align: start;
 }
 
-/* RTL override for section title */
 [dir="rtl"] .sectionTitle {
     text-align: right;
     direction: rtl;
@@ -41,7 +37,6 @@
 }
 
 
-/* Board Image Section */
 .imageContainer {
     display: flex;
     justify-content: center;
@@ -62,7 +57,6 @@
 }
 
 
-/* Board Description Section */
 .descriptionContent {
     padding: 0;
 }
@@ -76,7 +70,6 @@
     letter-spacing: 0.01em;
 }
 
-/* Inline editing styles */
 .editForm {
     display: flex;
     flex-direction: column;
@@ -132,5 +125,3 @@
     background-color: #2a2a2a;
     cursor: not-allowed;
 }
-
-/* Desktop-only design - no mobile responsive code needed */

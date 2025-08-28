@@ -267,7 +267,6 @@
   justify-content: center;
 }
 
-/* Text input overlay for text tool */
 .textInputOverlay {
   position: absolute;
   background-color: #2f2f2f;
@@ -290,7 +289,6 @@
   scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
 
-/* Custom scrollbar for WebKit browsers */
 .textInput::-webkit-scrollbar {
   width: 6px;
 }
@@ -308,5 +306,3 @@
 .textInput::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
-
-/* Mobile CSS removed - desktop-only application */

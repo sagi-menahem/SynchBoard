@@ -1,10 +1,9 @@
-/* Canvas Tool Section */
 .canvasToolSection {
   display: flex;
   gap: 16px;
   align-items: stretch;
-  flex-wrap: nowrap; /* Prevent wrapping to maintain single row */
-  overflow: visible; /* Ensure all content is visible */
+  flex-wrap: nowrap;
+  overflow: visible;
 }
 
 .toolGroup {
@@ -126,5 +125,3 @@
   align-items: center;
   justify-content: center;
 }
-
-/* Mobile CSS removed - desktop-only application */
