@@ -19,7 +19,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
 
   return (
     <form action={submitAction} className={styles.form}>
-      {state.error && (
+      {state.error !== undefined && state.error !== '' && (
         <div className={styles.error} role="alert">
           {state.error}
         </div>
@@ -35,7 +35,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           id="register-email"
           name="email"
           type="email"
-          required={true}
+          required
           disabled={isPending}
         />
       </div>
@@ -49,7 +49,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <PasswordInput
           id="register-password"
           name="password"
-          required={true}
+          required
           disabled={isPending}
           autoComplete="new-password"
         />
@@ -65,7 +65,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           id="register-firstName"
           name="firstName"
           type="text"
-          required={true}
+          required
           disabled={isPending}
         />
       </div>
@@ -79,7 +79,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           id="register-lastName"
           name="lastName"
           type="text"
-          required={false}
           disabled={isPending}
         />
       </div>
@@ -123,7 +122,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           id="register-dateOfBirth"
           name="dateOfBirth"
           type="date"
-          required={false}
           disabled={isPending}
         />
       </div>
@@ -137,7 +135,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           id="register-phoneNumber"
           name="phoneNumber"
           type="tel"
-          required={false}
           disabled={isPending}
         />
       </div>

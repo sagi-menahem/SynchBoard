@@ -52,11 +52,11 @@ export const useOAuthCallback = () => {
 
       try {
         const error = extractErrorFromCallback();
-        if (error) {
+        if (error !== null && error !== '') {
           logger.error('[useOAuthCallback] OAuth error extracted from callback:', error);
           toast.error(error);
-          window.history.replaceState({}, document.title, '/auth');
-          navigate(APP_ROUTES.AUTH, { replace: true });
+          void window.history.replaceState({}, document.title, '/auth');
+          void navigate(APP_ROUTES.AUTH, { replace: true });
           setIsProcessing(false);
           sessionStorage.removeItem('oauth_loading');
           sessionStorage.removeItem('oauth_callback_processed');
@@ -65,28 +65,28 @@ export const useOAuthCallback = () => {
 
         const token = extractTokenFromCallback();
 
-        if (!token) {
+        if (token === null || token === '') {
           logger.error('[useOAuthCallback] No token found in OAuth callback');
           toast.error(t('auth:oauth.error.noToken'));
-          window.history.replaceState({}, document.title, '/auth');
-          navigate(APP_ROUTES.AUTH, { replace: true });
+          void window.history.replaceState({}, document.title, '/auth');
+          void navigate(APP_ROUTES.AUTH, { replace: true });
           setIsProcessing(false);
           sessionStorage.removeItem('oauth_loading');
           sessionStorage.removeItem('oauth_callback_processed');
           return;
         }
 
-        authLogin(token);
+        authLogin(token!);
 
-        if (!sessionStorage.getItem('oauth_success_shown')) {
+        if (sessionStorage.getItem('oauth_success_shown') === null) {
           toast.success(t('auth:oauth.success'));
           sessionStorage.setItem('oauth_success_shown', 'true');
         }
         sessionStorage.removeItem('oauth_loading');
         setIsProcessing(false);
 
-        window.history.replaceState({}, document.title, '/auth');
-        navigate(APP_ROUTES.BOARD_LIST, { replace: true });
+        void window.history.replaceState({}, document.title, '/auth');
+        void navigate(APP_ROUTES.BOARD_LIST, { replace: true });
 
         setTimeout(() => {
           sessionStorage.removeItem('oauth_success_shown');
@@ -96,15 +96,15 @@ export const useOAuthCallback = () => {
       } catch (error) {
         logger.error('[useOAuthCallback] Error processing OAuth callback', error);
         toast.error(t('auth:oauth.error.processing'));
-        window.history.replaceState({}, document.title, '/auth');
-        navigate(APP_ROUTES.AUTH, { replace: true });
+        void window.history.replaceState({}, document.title, '/auth');
+        void navigate(APP_ROUTES.AUTH, { replace: true });
         setIsProcessing(false);
         sessionStorage.removeItem('oauth_loading');
         sessionStorage.removeItem('oauth_callback_processed');
       }
     };
 
-    handleOAuthCallback();
+    void handleOAuthCallback();
   }, [authLogin, navigate, t]);
 
   return { isProcessing };

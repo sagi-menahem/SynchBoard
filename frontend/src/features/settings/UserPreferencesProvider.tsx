@@ -153,7 +153,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
       ]);
 
       const preferences: Partial<UserPreferences> = {
-        boardBackgroundSetting: profile.boardBackgroundSetting || defaultPreferences.boardBackgroundSetting,
+        boardBackgroundSetting: profile.boardBackgroundSetting ?? defaultPreferences.boardBackgroundSetting,
         canvasChatSplitRatio: canvasPrefs.canvasChatSplitRatio,
         layoutMode: 'balanced', // Layout mode is client-side only for now
         defaultTool: toolPrefs.defaultTool,
@@ -286,7 +286,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
   // Tool preferences specific methods
   const updateTool = useCallback(
     async (tool: Tool) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const previousTool = state.preferences.defaultTool;
       dispatch({ type: 'UPDATE_TOOL', payload: tool });
@@ -308,7 +308,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
 
   const updateStrokeColor = useCallback(
     async (color: string) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const previousColor = state.preferences.defaultStrokeColor;
       dispatch({ type: 'UPDATE_STROKE_COLOR', payload: color });
@@ -330,7 +330,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
 
   const updateStrokeWidth = useCallback(
     async (width: number) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const previousWidth = state.preferences.defaultStrokeWidth;
       dispatch({ type: 'UPDATE_STROKE_WIDTH', payload: width });
@@ -358,7 +358,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
       if (message.updateType === 'CANVAS_SETTINGS_CHANGED') {
-        refreshPreferences();
+        void refreshPreferences();
       }
     },
     [refreshPreferences],
@@ -373,7 +373,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
   // Load preferences on mount and auth change
   useEffect(() => {
     if (isAuthenticated) {
-      refreshPreferences();
+      void refreshPreferences();
     } else {
       dispatch({ type: 'UPDATE_PREFERENCES', payload: defaultPreferences });
     }

@@ -45,11 +45,11 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
     setIsOpen(false);
   };
 
-  const currentToolItem = toolItems.find((item) => item.value === currentTool) || toolItems[0];
+  const currentToolItem = toolItems.find((item) => item.value === currentTool) ?? toolItems[0];
   const isToolActive = toolItems.some((item) => item.value === currentTool);
 
   return (
-    <div className={`${styles.shapeDropdown || styles.dropdown} ${className}`} ref={dropdownRef}>
+    <div className={`${styles.shapeDropdown ?? styles.dropdown} ${className}`} ref={dropdownRef}>
       <button
         className={`${styles.dropdownButton} ${isToolActive ? styles.active : ''}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -59,7 +59,7 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
         <ChevronDown size={chevronSize} />
       </button>
       
-      <div className={`${styles.dropdownContent} ${!isOpen && styles.hidden ? styles.hidden : isOpen ? '' : styles.hidden || 'hidden'}`}>
+      <div className={`${styles.dropdownContent} ${isOpen ? '' : styles.hidden ?? 'hidden'}`}>
         {toolItems.map(({ value, icon: Icon, labelKey }) => (
           <button
             key={value}

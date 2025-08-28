@@ -31,7 +31,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       'PORTRAIT': 'portrait',
       'DOCUMENT': 'document',
     };
-    return keyMap[sizeKey] || sizeKey.toLowerCase();
+    return keyMap[sizeKey] ?? sizeKey.toLowerCase();
   };
   const [isEditing, setIsEditing] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -65,7 +65,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         width = customWidth;
         height = customHeight;
       } else {
-        const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS];
+        const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize];
         width = preset.width;
         height = preset.height;
       }
@@ -188,8 +188,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                     <span className={styles.presetName}>
                       {t('board:canvasSize.custom.label')}
                     </span>
-                    <span className={styles.presetInfo}>
-                    </span>
+                    <span className={styles.presetInfo} />
                   </div>
                 </label>
               </div>
@@ -199,7 +198,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                 <Input
                   type="number"
                   value={customWidth}
-                  onChange={(e) => setCustomWidth(parseInt(e.target.value) || boardDetails.canvasWidth)}
+                  onChange={(e) => setCustomWidth(parseInt(e.target.value) ?? boardDetails.canvasWidth)}
                   min={CANVAS_CONFIG.MIN_WIDTH}
                   max={CANVAS_CONFIG.MAX_WIDTH}
                   disabled={isUpdating}
@@ -209,7 +208,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                 <Input
                   type="number"
                   value={customHeight}
-                  onChange={(e) => setCustomHeight(parseInt(e.target.value) || boardDetails.canvasHeight)}
+                  onChange={(e) => setCustomHeight(parseInt(e.target.value) ?? boardDetails.canvasHeight)}
                   min={CANVAS_CONFIG.MIN_HEIGHT}
                   max={CANVAS_CONFIG.MAX_HEIGHT}
                   disabled={isUpdating}

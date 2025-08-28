@@ -49,7 +49,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className={`${styles.searchForm} ${className || ''}`}>
+    <form onSubmit={handleSubmit} className={`${styles.searchForm} ${className ?? ''}`}>
       <div className={styles.searchContainer}>
         <Search size={16} className={styles.searchIcon} />
         <input

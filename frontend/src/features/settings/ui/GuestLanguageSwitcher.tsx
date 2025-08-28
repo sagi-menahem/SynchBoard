@@ -20,7 +20,7 @@ const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({ className
   };
 
   return (
-    <div className={`${styles.languageSwitcher} ${className || ''}`}>
+    <div className={`${styles.languageSwitcher} ${className ?? ''}`}>
       <span className={styles.label}>{t('common:language')}</span>
       <div className={styles.buttonGroup}>
         <button

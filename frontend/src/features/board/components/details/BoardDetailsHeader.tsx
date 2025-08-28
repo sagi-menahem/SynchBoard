@@ -29,10 +29,10 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
-    const [descriptionValue, setDescriptionValue] = useState(boardDetails.description || '');
+    const [descriptionValue, setDescriptionValue] = useState(boardDetails.description ?? '');
 
     const handleCancelDescriptionEdit = () => {
-        setDescriptionValue(boardDetails.description || '');
+        setDescriptionValue(boardDetails.description ?? '');
         setIsEditingDescription(false);
     };
 
@@ -114,7 +114,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                 ) : (
                     <div className={styles.descriptionContent}>
                         <p className={styles.description}>
-                            {boardDetails.description || t('board:detailsPage.noDescription')}
+                            {boardDetails.description ?? t('board:detailsPage.noDescription')}
                         </p>
                     </div>
                 )}

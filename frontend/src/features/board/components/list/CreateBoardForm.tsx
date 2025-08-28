@@ -29,7 +29,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       'PORTRAIT': 'portrait',
       'DOCUMENT': 'document',
     };
-    return keyMap[sizeKey] || sizeKey.toLowerCase();
+    return keyMap[sizeKey] ?? sizeKey.toLowerCase();
   };
   const { state, submitAction, isPending } = useCreateBoardForm(onBoardCreated);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -59,7 +59,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       width = customWidth;
       height = customHeight;
     } else {
-      const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS];
+      const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize];
       width = preset.width;
       height = preset.height;
     }
@@ -195,8 +195,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                 <span className={styles.presetName}>
                   {t('board:canvasSize.custom.label')}
                 </span>
-                <span className={styles.presetInfo}>
-                </span>
+                <span className={styles.presetInfo} />
               </div>
             </label>
           </div>
@@ -206,7 +205,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
             <Input
               type="number"
               value={customWidth}
-              onChange={(e) => setCustomWidth(parseInt(e.target.value) || CANVAS_CONFIG.DEFAULT_WIDTH)}
+              onChange={(e) => setCustomWidth(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_WIDTH)}
               min={CANVAS_CONFIG.MIN_WIDTH}
               max={CANVAS_CONFIG.MAX_WIDTH}
               disabled={isPending}
@@ -216,7 +215,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
             <Input
               type="number"
               value={customHeight}
-              onChange={(e) => setCustomHeight(parseInt(e.target.value) || CANVAS_CONFIG.DEFAULT_HEIGHT)}
+              onChange={(e) => setCustomHeight(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_HEIGHT)}
               min={CANVAS_CONFIG.MIN_HEIGHT}
               max={CANVAS_CONFIG.MAX_HEIGHT}
               disabled={isPending}

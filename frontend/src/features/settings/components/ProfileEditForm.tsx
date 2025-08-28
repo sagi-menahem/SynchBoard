@@ -28,7 +28,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
             </div>
             <div className={styles.field}>
                 <label htmlFor="lastName">{t('settings:page.lastNameLabel')}</label>
-                <Input id="lastName" name="lastName" value={formData.lastName || ''} onChange={onInputChange} />
+                <Input id="lastName" name="lastName" value={formData.lastName !== null ? formData.lastName : ''} onChange={onInputChange} />
             </div>
             <div className={styles.field}>
                 <label htmlFor="gender">
@@ -66,14 +66,14 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
                     id="dateOfBirth" 
                     name="dateOfBirth" 
                     type="date" 
-                    value={formData.dateOfBirth || ''} 
+                    value={formData.dateOfBirth !== null ? formData.dateOfBirth : ''} 
                     onChange={onInputChange}
                     className={styles.dateInput}
                 />
             </div>
             <div className={styles.field}>
                 <label htmlFor="phoneNumber">{t('settings:page.phoneNumberLabel')}</label>
-                <Input id="phoneNumber" name="phoneNumber" value={formData.phoneNumber || ''} onChange={onInputChange} />
+                <Input id="phoneNumber" name="phoneNumber" value={formData.phoneNumber !== null ? formData.phoneNumber : ''} onChange={onInputChange} />
             </div>
             <div className={styles.buttonGroup}>
                 <Button onClick={onCancel} variant="secondary">

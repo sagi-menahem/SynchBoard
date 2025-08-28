@@ -46,7 +46,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       </label>
       <InputComponent
         id={id}
-        name={name || id}
+        name={name ?? id}
         type={type === 'password' ? undefined : type}
         required={required}
         disabled={disabled}

@@ -127,15 +127,16 @@ export const useBoardWorkspace = (boardId: number) => {
   useEffect(() => {
     if (accessLost) {
       logger.warn('[useBoardWorkspace] accessLost is true. Navigating to board list...');
-      navigate(APP_ROUTES.BOARD_LIST);
+      void navigate(APP_ROUTES.BOARD_LIST);
     }
   }, [accessLost, navigate]);
 
   const handleUserUpdate = useCallback(
     (message: UserUpdateDTO) => {
       if (message.updateType === 'BOARD_LIST_CHANGED') {
-        navigate(APP_ROUTES.BOARD_LIST);
+        void navigate(APP_ROUTES.BOARD_LIST);
       } else if (message.updateType === 'BOARD_DETAILS_CHANGED') {
+        // Board details changed - handled by other hooks
       }
     },
     [navigate],

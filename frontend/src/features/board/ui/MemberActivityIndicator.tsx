@@ -24,7 +24,7 @@ export const MemberActivityIndicator: React.FC<MemberActivityIndicatorProps> = (
 
   return (
     <Component
-      className={`${styles.activityIndicator} ${onClick ? styles.clickable : ''} ${className || ''}`}
+      className={`${styles.activityIndicator} ${onClick ? styles.clickable : ''} ${className ?? ''}`}
       onClick={onClick}
       type={onClick ? 'button' : undefined}
       title={t('common:toolbar.activity.membersOnline', { count: onlineCount })}

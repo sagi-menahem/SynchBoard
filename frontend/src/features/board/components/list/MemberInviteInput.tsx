@@ -1,5 +1,4 @@
-import type { KeyboardEvent } from 'react';
-import React, { useState } from 'react';
+import React, { useState, type KeyboardEvent } from 'react';
 
 import { useAuth } from 'features/auth/hooks/useAuth';
 import { checkUserExists } from 'features/settings/services/userService';
@@ -27,7 +26,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
   const addEmail = async (email: string) => {
     const trimmedEmail = email.trim().toLowerCase();
     
-    if (!trimmedEmail) return;
+    if (!trimmedEmail) {return;}
     
     if (!validateEmail(trimmedEmail)) {
       toast.error(t('board:createForm.invalidEmail'));
@@ -70,12 +69,12 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
   const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' || event.key === ',') {
       event.preventDefault();
-      addEmail(inputValue);
+      void addEmail(inputValue);
     }
   };
 
   const handleAddClick = () => {
-    addEmail(inputValue);
+    void addEmail(inputValue);
   };
 
   return (

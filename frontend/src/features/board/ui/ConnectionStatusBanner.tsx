@@ -15,7 +15,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
   const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!bannerRef.current) return;
+    if (!bannerRef.current) {return;}
 
     const measureAndNotify = () => {
       if (bannerRef.current) {
@@ -38,7 +38,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
 
     const resizeObserver = new ResizeObserver((entries) => {
       const height = entries[0].contentRect.height;
-      const borderBoxHeight = entries[0].borderBoxSize?.[0]?.blockSize || height;
+      const borderBoxHeight = entries[0].borderBoxSize?.[0]?.blockSize ?? height;
       
       const finalHeight = Math.max(height, borderBoxHeight);
       
@@ -71,7 +71,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
       document.documentElement.style.setProperty('--banner-height', '0px');
     } else {
       const measureWithRetry = (attempt = 1, maxAttempts = 5) => {
-        if (!bannerRef.current) return;
+        if (!bannerRef.current) {return;}
         
         const rect = bannerRef.current.getBoundingClientRect();
         const computedStyle = window.getComputedStyle(bannerRef.current);

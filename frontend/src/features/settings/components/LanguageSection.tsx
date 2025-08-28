@@ -15,7 +15,7 @@ const LanguageSection: React.FC = () => {
   const [languagePrefs, setLanguagePrefs] = useState<LanguagePreferences>({ preferredLanguage: 'en' });
   const [isLoading, setIsLoading] = useState(true);
 
-  const currentLanguage = languagePrefs.preferredLanguage || i18n.language || 'en';
+  const currentLanguage = languagePrefs.preferredLanguage ?? i18n.language ?? 'en';
 
   useEffect(() => {
     const initializeLanguagePrefs = async () => {
@@ -32,7 +32,7 @@ const LanguageSection: React.FC = () => {
     };
 
     if (!isLanguageLoaded) {
-      initializeLanguagePrefs();
+      void initializeLanguagePrefs();
     } else {
       setLanguagePrefs({ preferredLanguage: i18n.language as 'en' | 'he' });
       setIsLoading(false);
@@ -49,7 +49,7 @@ const LanguageSection: React.FC = () => {
     } catch (error) {
       logger.error('Failed to update language preference:', error);
       toast.error(t('common:errors.common.unexpected'));
-      i18n.changeLanguage(currentLanguage);
+      void i18n.changeLanguage(currentLanguage);
     }
   };
 

@@ -138,7 +138,7 @@ class Logger {
 
   private reportToExternalService(message: string, error?: Error | unknown, data?: unknown[]): void {
     try {
-      const errors = JSON.parse(sessionStorage.getItem('app_errors') || '[]');
+      const errors = JSON.parse(sessionStorage.getItem('app_errors') ?? '[]') as unknown[];
       errors.push({
         message,
         error: error instanceof Error ? {
@@ -153,11 +153,13 @@ class Logger {
       });
 
       if (errors.length > 50) {
-        errors.shift();
+        (errors).shift();
       }
 
       sessionStorage.setItem('app_errors', JSON.stringify(errors));
-    } catch { }
+    } catch {
+      // Silently fail - error reporting should not break the application
+    }
   }
 }
 

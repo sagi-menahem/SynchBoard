@@ -18,8 +18,8 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
   const { t } = useTranslation(['board', 'common']);
 
   const createBoardAction = async (_previousState: CreateBoardState, formData: FormData): Promise<CreateBoardState> => {
-    const name = (formData.get('name') as string)?.trim() || '';
-    const description = (formData.get('description') as string)?.trim() || '';
+    const name = (formData.get('name') as string)?.trim() ?? '';
+    const description = (formData.get('description') as string)?.trim() ?? '';
     const picture = formData.get('picture') as File;
     const inviteEmails = formData.getAll('inviteEmails') as string[];
     const canvasBackgroundColor = formData.get('canvasBackgroundColor') as string;

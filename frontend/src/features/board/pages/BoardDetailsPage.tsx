@@ -23,7 +23,7 @@ const BoardDetailsPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const { boardId } = useParams<{ boardId: string }>();
-  const numericBoardId = parseInt(boardId || '0', 10);
+  const numericBoardId = parseInt(boardId ?? '0', 10);
 
   const {
     isLoading,
@@ -58,7 +58,7 @@ const BoardDetailsPage: React.FC = () => {
     leftSection: [
       {
         type: 'title',
-        content: boardDetails?.name || t('common:loading'),
+        content: boardDetails?.name ?? t('common:loading'),
       },
       ...(boardDetails && currentUserIsAdmin ? [{
         type: 'button' as const,

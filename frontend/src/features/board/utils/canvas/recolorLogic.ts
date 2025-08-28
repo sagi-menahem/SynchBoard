@@ -26,7 +26,7 @@ export const processRecolorClick = (
 ): RecolorAction => {
   const hitResult: HitResult = detectObjectHit(clickPoint, objects, canvasWidth, canvasHeight);
 
-  if (!hitResult.hit || !hitResult.object || !hitResult.hitType) {
+  if (hitResult.hit !== true || !hitResult.object || !hitResult.hitType) {
     return {
       shouldPerformAction: false,
       reason: 'No object hit - clicking on empty area',
@@ -131,7 +131,7 @@ export const getRecolorDescription = (
 ): string => {
   const hitResult = detectObjectHit(clickPoint, objects, canvasWidth, canvasHeight);
 
-  if (!hitResult.hit || !hitResult.object || !hitResult.hitType) {
+  if (hitResult.hit !== true || !hitResult.object || !hitResult.hitType) {
     return 'No object to recolor';
   }
 

@@ -54,19 +54,19 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
 
   const handleDownload = useCallback(() => {
     const canvas = document.querySelector('canvas') as HTMLCanvasElement;
-    if (!canvas) return;
+    if (!canvas) {return;}
     
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) {return;}
 
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
     const tempCtx = tempCanvas.getContext('2d');
     
-    if (!tempCtx) return;
+    if (!tempCtx) {return;}
 
-    const backgroundColor = canvasConfig?.backgroundColor || '#FFFFFF';
+    const backgroundColor = canvasConfig?.backgroundColor ?? '#FFFFFF';
     tempCtx.fillStyle = backgroundColor;
     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
     

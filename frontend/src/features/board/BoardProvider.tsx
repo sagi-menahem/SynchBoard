@@ -16,7 +16,7 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children 
 
   const boardData = useBoardWorkspace(boardId);
 
-  if (isNaN(boardId) || boardId === 0) {
+  if (isNaN(boardId) ?? boardId === 0) {
     return <div>{t('board:provider.invalidIdError')}</div>;
   }
 

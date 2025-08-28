@@ -23,18 +23,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const expiryWarningTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (expiryWarningTimeoutRef.current) {
+    if (expiryWarningTimeoutRef.current !== null) {
       clearTimeout(expiryWarningTimeoutRef.current);
       expiryWarningTimeoutRef.current = null;
     }
 
     const validateAuth = async () => {
-      if (token) {
+      if (token !== null && token !== '') {
         try {
           const decodedToken: { sub: string, exp?: number } = jwtDecode(token);
           setUserEmail(decodedToken.sub);
           
-          const isExpired = decodedToken.exp ? decodedToken.exp * 1000 < Date.now() : false;
+          const isExpired = decodedToken.exp !== undefined ? decodedToken.exp * 1000 < Date.now() : false;
           
           if (isExpired) {
             logger.warn('[AuthProvider] Token is expired, clearing auth state');
@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           try {
             await getUserProfile();
             
-            if (decodedToken.exp) {
+            if (decodedToken.exp !== undefined) {
               const expiryTime = decodedToken.exp * 1000;
               const warningTime = expiryTime - (5 * 60 * 1000);
               const timeUntilWarning = warningTime - Date.now();
@@ -81,10 +81,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsInitializing(false);
     };
 
-    validateAuth();
+    void validateAuth();
     
     return () => {
-      if (expiryWarningTimeoutRef.current) {
+      if (expiryWarningTimeoutRef.current !== null) {
         clearTimeout(expiryWarningTimeoutRef.current);
       }
     };

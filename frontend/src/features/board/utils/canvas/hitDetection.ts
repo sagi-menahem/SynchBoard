@@ -1,14 +1,6 @@
 import type {
   ActionPayload,
-  ArrowPayload,
-  CirclePayload,
-  LinePayload,
   Point,
-  PolygonPayload,
-  RectanglePayload,
-  StraightLinePayload,
-  TextBoxPayload,
-  TrianglePayload,
 } from 'features/board/types/BoardObjectTypes';
 
 export interface HitResult {
@@ -103,7 +95,7 @@ export const isPointInTriangle = (
   const p3y = y3 * canvasHeight;
 
   const denominator = (p2y - p3y) * (p1x - p3x) + (p3x - p2x) * (p1y - p3y);
-  if (Math.abs(denominator) < 1e-10) return false; // Degenerate triangle
+  if (Math.abs(denominator) < 1e-10) {return false;} // Degenerate triangle
 
   const a = ((p2y - p3y) * (point.x - p3x) + (p3x - p2x) * (point.y - p3y)) / denominator;
   const b = ((p3y - p1y) * (point.x - p3x) + (p1x - p3x) * (point.y - p3y)) / denominator;
@@ -206,7 +198,7 @@ export const distanceToLineSegment = (
   const dot = A * C + B * D;
   const lenSq = C * C + D * D;
 
-  if (lenSq === 0) return Math.sqrt(A * A + B * B);
+  if (lenSq === 0) {return Math.sqrt(A * A + B * B);}
 
   let param = dot / lenSq;
   param = Math.max(0, Math.min(1, param));
@@ -254,10 +246,10 @@ export const detectObjectHit = (
     const obj = objects[i];
 
     if (obj.tool === 'square' || obj.tool === 'rectangle') {
-      const rect = obj as RectanglePayload;
+      const rect = obj;
 
-      if (isPointInRectangle(clickPoint, rect.x, rect.y, rect.width, rect.height, canvasWidth, canvasHeight)) {
-        if (isPointOnRectangleBorder(
+      if ('x' in rect && 'y' in rect && 'width' in rect && 'height' in rect && isPointInRectangle(clickPoint, rect.x, rect.y, rect.width, rect.height, canvasWidth, canvasHeight)) {
+        if ('strokeWidth' in rect && isPointOnRectangleBorder(
           clickPoint, rect.x, rect.y, rect.width, rect.height, rect.strokeWidth, canvasWidth, canvasHeight,
         )) {
           return { hit: true, object: obj, hitType: 'stroke' };
@@ -265,10 +257,10 @@ export const detectObjectHit = (
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'circle') {
-      const circle = obj as CirclePayload;
+      const circle = obj;
 
-      if (isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)) {
-        if (isPointOnCircleBorder(
+      if ('x' in circle && 'y' in circle && 'radius' in circle && isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)) {
+        if ('strokeWidth' in circle && isPointOnCircleBorder(
           clickPoint, circle.x, circle.y, circle.radius, circle.strokeWidth, canvasWidth, canvasHeight,
         )) {
           return { hit: true, object: obj, hitType: 'stroke' };
@@ -276,9 +268,9 @@ export const detectObjectHit = (
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'triangle') {
-      const triangle = obj as TrianglePayload;
+      const triangle = obj;
 
-      if (isPointInTriangle(
+      if ('x1' in triangle && 'y1' in triangle && 'x2' in triangle && 'y2' in triangle && 'x3' in triangle && 'y3' in triangle && isPointInTriangle(
         clickPoint,
         triangle.x1,
         triangle.y1,
@@ -289,7 +281,7 @@ export const detectObjectHit = (
         canvasWidth,
         canvasHeight,
       )) {
-        if (isPointOnTriangleBorder(
+        if ('strokeWidth' in triangle && isPointOnTriangleBorder(
           clickPoint,
           triangle.x1,
           triangle.y1,
@@ -306,45 +298,46 @@ export const detectObjectHit = (
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'pentagon' || obj.tool === 'hexagon') {
-      const polygon = obj as PolygonPayload;
+      const polygon = obj;
 
-      if (isPointInPolygon(
+      if ('x' in polygon && 'y' in polygon && 'radius' in polygon && 'sides' in polygon && isPointInPolygon(
         clickPoint, polygon.x, polygon.y, polygon.radius, polygon.sides, canvasWidth, canvasHeight,
       )) {
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'star') {
-      const star = obj as PolygonPayload;
+      const star = obj;
 
-      if (isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)) {
+      if ('x' in star && 'y' in star && 'radius' in star && isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)) {
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'line' || obj.tool === 'dottedLine') {
-      const line = obj as StraightLinePayload;
+      const line = obj;
 
-      if (isPointOnLine(
+      if ('x1' in line && 'y1' in line && 'x2' in line && 'y2' in line && 'strokeWidth' in line && isPointOnLine(
         clickPoint, line.x1, line.y1, line.x2, line.y2, line.strokeWidth, canvasWidth, canvasHeight,
       )) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'arrow') {
-      const arrow = obj as ArrowPayload;
+      const arrow = obj;
 
-      if (isPointOnLine(
+      if ('x1' in arrow && 'y1' in arrow && 'x2' in arrow && 'y2' in arrow && 'strokeWidth' in arrow && isPointOnLine(
         clickPoint, arrow.x1, arrow.y1, arrow.x2, arrow.y2, arrow.strokeWidth, canvasWidth, canvasHeight,
       )) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'text') {
-      const textBox = obj as TextBoxPayload;
+      const textBox = obj;
 
-      if (isPointInTextBox(
+      if ('x' in textBox && 'y' in textBox && 'width' in textBox && 'height' in textBox && isPointInTextBox(
         clickPoint, textBox.x, textBox.y, textBox.width, textBox.height, canvasWidth, canvasHeight,
       )) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'brush' || obj.tool === 'eraser') {
-      const line = obj as LinePayload;
+      if ('points' in obj && 'lineWidth' in obj) {
+      const line = obj as { points: { x: number; y: number }[]; lineWidth: number };
 
       for (let j = 0; j < line.points.length - 1; j++) {
         const p1 = line.points[j];
@@ -352,6 +345,7 @@ export const detectObjectHit = (
         if (isPointOnLine(clickPoint, p1.x, p1.y, p2.x, p2.y, line.lineWidth, canvasWidth, canvasHeight)) {
           return { hit: true, object: obj, hitType: 'object' };
         }
+      }
       }
     }
   }

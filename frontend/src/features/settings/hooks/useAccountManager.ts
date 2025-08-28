@@ -16,7 +16,7 @@ export const useAccountManager = () => {
     await toast.promise(
       userService.deleteAccount().then(() => {
         logout();
-        navigate(APP_ROUTES.AUTH);
+        void navigate(APP_ROUTES.AUTH);
       }),
       {
         loading: t('settings:loading.account.delete'),

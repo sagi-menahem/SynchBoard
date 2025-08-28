@@ -27,7 +27,7 @@ export const useCanvas = ({
   canvasConfig,
   onTextInputRequest,
 }: UseCanvasProps) => {
-  const finalCanvasConfig = canvasConfig || {
+  const finalCanvasConfig = canvasConfig ?? {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
     width: CANVAS_CONFIG.DEFAULT_WIDTH,
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,

@@ -9,9 +9,11 @@ interface AuthLoadingOverlayProps {
 
 export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisible }) => {
   const globalLoading = sessionStorage.getItem('oauth_loading') === 'true';
-  const shouldShow = isVisible || globalLoading;
+  const shouldShow = isVisible ?? globalLoading;
   
-  if (!shouldShow) return null;
+  if (!shouldShow) {
+    return null;
+  }
 
   return (
     <motion.div

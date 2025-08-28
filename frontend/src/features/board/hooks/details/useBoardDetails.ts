@@ -32,14 +32,14 @@ export const useBoardDetails = (boardId: number | undefined) => {
     const startTime = Date.now();
     const minDelay = 200;
 
-    boardService.getBoardDetails(boardId)
+    void boardService.getBoardDetails(boardId)
       .then((data: unknown) => {
         setBoardDetails(data as BoardDetails);
       })
       .catch((error: unknown) => {
         logger.error('Failed to fetch board details:', error);
         if (error instanceof AxiosError && error.response?.status === 403) {
-          navigate(APP_ROUTES.BOARD_LIST);
+          void navigate(APP_ROUTES.BOARD_LIST);
         } else {
           toast.error(t('board:errors.details'));
         }
@@ -65,7 +65,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
         return;
       }
 
-      boardService.getBoardDetails(boardId)
+      void boardService.getBoardDetails(boardId)
         .then((data: unknown) => {
           setBoardDetails(data as BoardDetails);
         })
@@ -73,7 +73,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
           logger.error('Failed to refetch board details after WebSocket update:', error);
           if (message.updateType === 'MEMBERS_UPDATED' && 
                         error instanceof AxiosError && error.response?.status === 403) {
-            navigate(APP_ROUTES.BOARD_LIST);
+            void navigate(APP_ROUTES.BOARD_LIST);
           }
         });
     },

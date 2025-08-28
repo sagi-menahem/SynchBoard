@@ -91,8 +91,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         className={`${styles.swatch} ${disabled ? styles.disabled : ''}`}
         onClick={handleSwatchClick}
         disabled={disabled}
-        aria-label={label || t('common:chooseColor')}
-        style={{ backgroundColor: color || '#FFFFFF' }}
+        aria-label={label ?? t('common:chooseColor')}
+        style={{ backgroundColor: color ?? '#FFFFFF' }}
       >
         <div className={styles.swatchInner} />
       </button>

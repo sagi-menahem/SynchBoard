@@ -65,14 +65,14 @@ export const useCanvasInteractions = ({
       const canvas = canvasRef.current;
       const ctx = contextRef.current;
 
-      if (!canvas || !ctx || isDrawing) return;
+      if (!canvas || !ctx || isDrawing) {return;}
 
       if (shouldBlockFunctionality) {
         return;
       }
 
-      const coords = getMouseCoordinates(event.nativeEvent, canvas);
-      if (!coords) return;
+      const coords = getMouseCoordinates(event.nativeEvent, canvas!);
+      if (!coords) {return;}
 
       resetDrawingState();
       setIsDrawing(true);
@@ -83,11 +83,11 @@ export const useCanvasInteractions = ({
       ctx.lineJoin = 'round';
 
       // Capture current canvas state for preview
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas!.width, canvas!.height);
       originalImageData.current = imageData;
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-        currentPath.current = [{ x: coords.x / canvas.width, y: coords.y / canvas.height }];
+        currentPath.current = [{ x: coords.x / canvas!.width, y: coords.y / canvas!.height }];
         ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
         ctx.beginPath();
         ctx.moveTo(coords.x, coords.y);
@@ -122,13 +122,13 @@ export const useCanvasInteractions = ({
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
 
-    if (!canvas || !ctx) return;
+    if (!canvas || !ctx) {return;}
 
     const handleMouseMove = (event: MouseEvent) => {
-      if (!isDrawing || !originalImageData.current) return;
+      if (!isDrawing || !originalImageData.current) {return;}
 
-      const coords = getMouseCoordinates(event, canvas);
-      if (!coords) return;
+      const coords = getMouseCoordinates(event, canvas!);
+      if (!coords) {return;}
 
       ctx.putImageData(originalImageData.current, 0, 0);
 
@@ -141,14 +141,14 @@ export const useCanvasInteractions = ({
       ctx.globalAlpha = 0.8;
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-        currentPath.current.push({ x: coords.x / canvas.width, y: coords.y / canvas.height });
+        currentPath.current.push({ x: coords.x / canvas!.width, y: coords.y / canvas!.height });
         ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
 
         if (currentPath.current.length > 1) {
           ctx.beginPath();
-          ctx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
+          ctx.moveTo(currentPath.current[0].x * canvas!.width, currentPath.current[0].y * canvas!.height);
           for (let i = 1; i < currentPath.current.length; i++) {
-            ctx.lineTo(currentPath.current[i].x * canvas.width, currentPath.current[i].y * canvas.height);
+            ctx.lineTo(currentPath.current[i].x * canvas!.width, currentPath.current[i].y * canvas!.height);
           }
           ctx.stroke();
         }
@@ -300,10 +300,10 @@ export const useCanvasInteractions = ({
     };
 
     const handleMouseUp = (event: MouseEvent) => {
-      if (!isDrawing || !originalImageData.current) return;
+      if (!isDrawing || !originalImageData.current) {return;}
       setIsDrawing(false);
-      const coords = getMouseCoordinates(event, canvas);
-      if (!canvas || !ctx || !coords) return;
+      const coords = getMouseCoordinates(event, canvas!);
+      if (!canvas || !ctx || !coords) {return;}
 
       ctx.putImageData(originalImageData.current, 0, 0);
       originalImageData.current = null;
@@ -312,7 +312,7 @@ export const useCanvasInteractions = ({
         const optimizedPoints = optimizeDrawingPoints([...currentPath.current]);
 
         const payload: Omit<LinePayload, 'instanceId'> = {
-          tool,
+          tool: tool as 'brush' | 'eraser',
           points: optimizedPoints,
           color: strokeColor,
           lineWidth: strokeWidth,
@@ -326,10 +326,10 @@ export const useCanvasInteractions = ({
         const squareX = width < 0 ? startPoint.current.x - size : startPoint.current.x;
         const squareY = height < 0 ? startPoint.current.y - size : startPoint.current.y;
 
-        const normalizedX = squareX / canvas.width;
-        const normalizedY = squareY / canvas.height;
-        const normalizedWidth = size / canvas.width;
-        const normalizedHeight = size / canvas.height;
+        const normalizedX = squareX / canvas!.width;
+        const normalizedY = squareY / canvas!.height;
+        const normalizedWidth = size / canvas!.width;
+        const normalizedHeight = size / canvas!.height;
 
         if (isShapeSizeValid(normalizedWidth, normalizedHeight)) {
           const payload: Omit<RectanglePayload, 'instanceId'> = {
@@ -344,10 +344,10 @@ export const useCanvasInteractions = ({
           onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         }
       } else if (tool === TOOLS.RECTANGLE && startPoint.current) {
-        const rectX = Math.min(startPoint.current.x, coords.x) / canvas.width;
-        const rectY = Math.min(startPoint.current.y, coords.y) / canvas.height;
-        const rectWidth = Math.abs(coords.x - startPoint.current.x) / canvas.width;
-        const rectHeight = Math.abs(coords.y - startPoint.current.y) / canvas.height;
+        const rectX = Math.min(startPoint.current.x, coords.x) / canvas!.width;
+        const rectY = Math.min(startPoint.current.y, coords.y) / canvas!.height;
+        const rectWidth = Math.abs(coords.x - startPoint.current.x) / canvas!.width;
+        const rectHeight = Math.abs(coords.y - startPoint.current.y) / canvas!.height;
         if (isShapeSizeValid(rectWidth, rectHeight)) {
           const payload: Omit<RectanglePayload, 'instanceId'> = {
             tool,
@@ -364,12 +364,12 @@ export const useCanvasInteractions = ({
         const radius =
           Math.sqrt(
             Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
-          ) / canvas.width;
+          ) / canvas!.width;
         if (isRadiusValid(radius)) {
           const payload: Omit<CirclePayload, 'instanceId'> = {
             tool,
-            x: startPoint.current.x / canvas.width,
-            y: startPoint.current.y / canvas.height,
+            x: startPoint.current.x / canvas!.width,
+            y: startPoint.current.y / canvas!.height,
             radius,
             color: strokeColor,
             strokeWidth,
@@ -377,17 +377,17 @@ export const useCanvasInteractions = ({
           onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         }
       } else if (tool === TOOLS.TRIANGLE && startPoint.current) {
-        const width = Math.abs(coords.x - startPoint.current.x) / canvas.width;
-        const height = Math.abs(coords.y - startPoint.current.y) / canvas.height;
+        const width = Math.abs(coords.x - startPoint.current.x) / canvas!.width;
+        const height = Math.abs(coords.y - startPoint.current.y) / canvas!.height;
         if (isShapeSizeValid(width, height)) {
           const payload: Omit<TrianglePayload, 'instanceId'> = {
             tool,
-            x1: (startPoint.current.x + (coords.x - startPoint.current.x) / 2) / canvas.width,
-            y1: startPoint.current.y / canvas.height,
-            x2: startPoint.current.x / canvas.width,
-            y2: coords.y / canvas.height,
-            x3: coords.x / canvas.width,
-            y3: coords.y / canvas.height,
+            x1: (startPoint.current.x + (coords.x - startPoint.current.x) / 2) / canvas!.width,
+            y1: startPoint.current.y / canvas!.height,
+            x2: startPoint.current.x / canvas!.width,
+            y2: coords.y / canvas!.height,
+            x3: coords.x / canvas!.width,
+            y3: coords.y / canvas!.height,
             color: strokeColor,
             strokeWidth,
           };
@@ -397,13 +397,13 @@ export const useCanvasInteractions = ({
         const pixelRadius = Math.sqrt(
           Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
         );
-        const normalizedRadius = pixelRadius / Math.min(canvas.width, canvas.height);
+        const normalizedRadius = pixelRadius / Math.min(canvas!.width, canvas!.height);
         if (isRadiusValid(normalizedRadius)) {
           const sides = tool === TOOLS.PENTAGON ? 5 : 6;
           const payload: Omit<PolygonPayload, 'instanceId'> = {
-            tool,
-            x: startPoint.current.x / canvas.width,
-            y: startPoint.current.y / canvas.height,
+            tool: tool as 'pentagon' | 'hexagon' | 'star',
+            x: startPoint.current.x / canvas!.width,
+            y: startPoint.current.y / canvas!.height,
             radius: normalizedRadius,
             sides,
             color: strokeColor,
@@ -415,12 +415,12 @@ export const useCanvasInteractions = ({
         const pixelRadius = Math.sqrt(
           Math.pow(coords.x - startPoint.current.x, 2) + Math.pow(coords.y - startPoint.current.y, 2),
         );
-        const normalizedRadius = pixelRadius / Math.min(canvas.width, canvas.height);
+        const normalizedRadius = pixelRadius / Math.min(canvas!.width, canvas!.height);
         if (isRadiusValid(normalizedRadius)) {
           const payload: Omit<PolygonPayload, 'instanceId'> = {
             tool: TOOLS.STAR,
-            x: startPoint.current.x / canvas.width,
-            y: startPoint.current.y / canvas.height,
+            x: startPoint.current.x / canvas!.width,
+            y: startPoint.current.y / canvas!.height,
             radius: normalizedRadius,
             sides: 5,
             color: strokeColor,
@@ -430,11 +430,11 @@ export const useCanvasInteractions = ({
         }
       } else if ((tool === TOOLS.LINE || tool === TOOLS.DOTTED_LINE) && startPoint.current) {
         const payload: Omit<StraightLinePayload, 'instanceId'> = {
-          tool,
-          x1: startPoint.current.x / canvas.width,
-          y1: startPoint.current.y / canvas.height,
-          x2: coords.x / canvas.width,
-          y2: coords.y / canvas.height,
+          tool: tool as 'line' | 'dottedLine',
+          x1: startPoint.current.x / canvas!.width,
+          y1: startPoint.current.y / canvas!.height,
+          x2: coords.x / canvas!.width,
+          y2: coords.y / canvas!.height,
           color: strokeColor,
           strokeWidth,
           dashPattern: tool === TOOLS.DOTTED_LINE ? [strokeWidth * 2, strokeWidth * 2] : undefined,
@@ -443,17 +443,17 @@ export const useCanvasInteractions = ({
       } else if (tool === TOOLS.ARROW && startPoint.current) {
         const payload: Omit<ArrowPayload, 'instanceId'> = {
           tool,
-          x1: startPoint.current.x / canvas.width,
-          y1: startPoint.current.y / canvas.height,
-          x2: coords.x / canvas.width,
-          y2: coords.y / canvas.height,
+          x1: startPoint.current.x / canvas!.width,
+          y1: startPoint.current.y / canvas!.height,
+          x2: coords.x / canvas!.width,
+          y2: coords.y / canvas!.height,
           color: strokeColor,
           strokeWidth,
         };
         onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
       } else if (tool === TOOLS.TEXT && startPoint.current) {
-        const rectWidth = Math.abs(coords.x - startPoint.current.x) / canvas.width;
-        const rectHeight = Math.abs(coords.y - startPoint.current.y) / canvas.height;
+        const rectWidth = Math.abs(coords.x - startPoint.current.x) / canvas!.width;
+        const rectHeight = Math.abs(coords.y - startPoint.current.y) / canvas!.height;
 
         const minSize = 0.02; // 2% of canvas dimension
         if (isShapeSizeValid(rectWidth, rectHeight) && rectWidth >= minSize && rectHeight >= minSize) {
