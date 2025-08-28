@@ -2,10 +2,12 @@
 
 // Form Components
 export { default as Button } from './components/forms/Button';
+export { FormField } from './components/forms/FormField';
 export { default as Input } from './components/forms/Input';
 export { default as PasswordInput } from './components/forms/PasswordInput';
 export { default as PictureManager } from './components/forms/PictureManager';
 export { Slider } from './components/forms/Slider';
+export { ToolDropdown } from './components/forms/ToolDropdown';
 
 // Display Components
 export { default as ErrorDisplay } from './components/display/ErrorDisplay';

@@ -3,9 +3,9 @@ import { useCallback } from 'react';
 import { useAuth } from 'features/auth/hooks/useAuth';
 import * as boardService from 'features/board/services/boardService';
 import type { Member } from 'features/board/types/BoardTypes';
-import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useContextMenu } from 'shared/hooks';
+import { toastPromise } from 'shared/utils/toastUtils';
 
 
 export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: boolean) => {
@@ -15,7 +15,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
 
   const handlePromote = useCallback(
     async (member: Member) => {
-      await toast.promise(
+      await toastPromise(
         boardService.promoteMember(boardId, member.email),
         {
           loading: t('board:loading.member.promote'),
@@ -29,7 +29,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
 
   const handleRemove = useCallback(
     async (member: Member) => {
-      await toast.promise(
+      await toastPromise(
         boardService.removeMember(boardId, member.email),
         {
           loading: t('board:loading.member.remove'),
@@ -43,7 +43,7 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
 
   const handleInvite = useCallback(
     async (email: string) => {
-      const newMember = await toast.promise(
+      const newMember = await toastPromise(
         boardService.inviteMember(boardId, email),
         {
           loading: t('board:loading.member.invite'),

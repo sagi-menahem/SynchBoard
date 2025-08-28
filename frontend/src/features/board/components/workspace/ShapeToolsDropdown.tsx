@@ -1,9 +1,8 @@
 
-import React, { useCallback, useRef, useState } from 'react';
+import React from 'react';
 
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import {
-  ChevronDown,
   Circle,
   Hexagon,
   Pentagon,
@@ -12,8 +11,8 @@ import {
   Triangle,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useClickOutside } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
+import { ToolDropdown } from 'shared/ui';
 
 import styles from './CanvasToolSection.module.css';
 
@@ -23,13 +22,13 @@ interface ShapeToolsDropdownProps {
 }
 
 const shapeTools = [
-  { tool: TOOLS.SQUARE, icon: Square, labelKey: 'square' },
-  { tool: TOOLS.RECTANGLE, icon: Square, labelKey: 'rectangle' },
-  { tool: TOOLS.CIRCLE, icon: Circle, labelKey: 'circle' },
-  { tool: TOOLS.TRIANGLE, icon: Triangle, labelKey: 'triangle' },
-  { tool: TOOLS.STAR, icon: Star, labelKey: 'star' },
-  { tool: TOOLS.PENTAGON, icon: Pentagon, labelKey: 'pentagon' },
-  { tool: TOOLS.HEXAGON, icon: Hexagon, labelKey: 'hexagon' },
+  { value: TOOLS.SQUARE, icon: Square, labelKey: 'square' },
+  { value: TOOLS.RECTANGLE, icon: Square, labelKey: 'rectangle' },
+  { value: TOOLS.CIRCLE, icon: Circle, labelKey: 'circle' },
+  { value: TOOLS.TRIANGLE, icon: Triangle, labelKey: 'triangle' },
+  { value: TOOLS.STAR, icon: Star, labelKey: 'star' },
+  { value: TOOLS.PENTAGON, icon: Pentagon, labelKey: 'pentagon' },
+  { value: TOOLS.HEXAGON, icon: Hexagon, labelKey: 'hexagon' },
 ];
 
 export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
@@ -37,47 +36,16 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
   onToolSelect,
 }) => {
   const { t } = useTranslation(['board', 'common']);
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useClickOutside(dropdownRef, () => setIsOpen(false));
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleToolSelect = useCallback((tool: Tool) => {
-    onToolSelect(tool);
-    setIsOpen(false);
-  }, [onToolSelect]);
-
-  const currentShapeTool = shapeTools.find((shape) => shape.tool === currentTool) || shapeTools[0];
-  const isShapeToolActive = shapeTools.some((shape) => shape.tool === currentTool);
 
   return (
-    <div className={styles.shapeDropdown} ref={dropdownRef}>
-      <button
-        className={`${styles.dropdownButton} ${isShapeToolActive ? styles.active : ''}`}
-        onClick={handleToggle}
-        title={t('board:toolbar.shapeTools')}
-      >
-        <currentShapeTool.icon size={16} />
-        <ChevronDown size={12} />
-      </button>
-      
-      <div className={`${styles.dropdownContent} ${isOpen ? '' : styles.hidden}`}>
-        {shapeTools.map(({ tool, icon: Icon, labelKey }) => (
-          <button
-            key={tool}
-            className={`${styles.dropdownItem} ${currentTool === tool ? styles.active : ''}`}
-            onClick={() => handleToolSelect(tool as Tool)}
-            title={t(`board:toolbar.tool.${labelKey}`)}
-          >
-            <Icon size={16} />
-            <span>{t(`board:toolbar.tool.${labelKey}`)}</span>
-          </button>
-        ))}
-      </div>
-    </div>
+    <ToolDropdown
+      currentTool={currentTool}
+      onToolSelect={onToolSelect}
+      toolItems={shapeTools}
+      buttonTitle={t('board:toolbar.shapeTools')}
+      styles={styles}
+      iconSize={16}
+      chevronSize={12}
+    />
   );
 };

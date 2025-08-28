@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 import logger from 'shared/utils/logger';
+import { validateEmail } from 'shared/utils/validationUtils';
 
 
 import styles from './MemberInviteInput.module.css';
@@ -22,17 +23,13 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
   const [inputValue, setInputValue] = useState('');
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
 
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email.trim());
-  };
 
   const addEmail = async (email: string) => {
     const trimmedEmail = email.trim().toLowerCase();
     
     if (!trimmedEmail) return;
     
-    if (!isValidEmail(trimmedEmail)) {
+    if (!validateEmail(trimmedEmail)) {
       toast.error(t('board:createBoardForm.invalidEmail'));
       return;
     }
@@ -95,7 +92,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
         <Button
           type="button"
           onClick={handleAddClick}
-          disabled={disabled || !inputValue.trim() || !isValidEmail(inputValue)}
+          disabled={disabled || !inputValue.trim() || !validateEmail(inputValue)}
           variant="secondary"
           className={styles.addButton}
         >
