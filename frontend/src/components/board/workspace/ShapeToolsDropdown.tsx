@@ -44,9 +44,9 @@ export const ShapeToolsDropdown: React.FC<ShapeToolsDropdownProps> = ({
 
   useClickOutside(dropdownRef, () => setIsOpen(false));
 
-  const handleToggle = useCallback(() => {
+  const handleToggle = () => {
     setIsOpen(!isOpen);
-  }, [isOpen]);
+  };
 
   const handleToolSelect = useCallback((tool: Tool) => {
     onToolSelect(tool);

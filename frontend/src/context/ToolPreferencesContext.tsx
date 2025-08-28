@@ -185,9 +185,9 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
     }
   }, [isAuthenticated, state.preferences]);
 
-  const resetError = useCallback(() => {
+  const resetError = () => {
     dispatch({ type: 'RESET_ERROR' });
-  }, []);
+  };
 
   const value: ToolPreferencesContextType = {
     preferences: state.preferences,
