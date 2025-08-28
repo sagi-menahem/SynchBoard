@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { TOOLS } from 'constants/BoardConstants';
 import type { Tool } from 'types/CommonTypes';
 
-import styles from './HeaderToolbar.module.css';
+import styles from './CanvasToolSection.module.css';
 
 interface LineToolsDropdownProps {
   currentTool: Tool;

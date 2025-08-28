@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useClickOutside } from 'hooks/common';
 import type { Tool } from 'types/CommonTypes';
 
-import styles from './HeaderToolbar.module.css';
+import styles from './CanvasToolSection.module.css';
 
 interface ShapeToolsDropdownProps {
   currentTool: Tool;
