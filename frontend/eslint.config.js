@@ -66,6 +66,7 @@ export default [
       'semi': ['error', 'always'],
       'quotes': ['error', 'single', { avoidEscape: true }],
       'object-curly-spacing': ['error', 'always'],
+      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
     },
     settings: {
       react: { version: 'detect' },

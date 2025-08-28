@@ -218,7 +218,7 @@ class WebSocketService {
         
         this.handleDisconnection();
       },
-      onWebSocketClose: (event) => {
+      onWebSocketClose: (_event) => {
         if (this.isIntentionalDisconnect) {
           this.isIntentionalDisconnect = false;
           return;

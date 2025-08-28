@@ -38,7 +38,7 @@ export const useBoardDetailsPage = (boardId: number) => {
         useBoardMemberManagement(boardId, currentUserIsAdmin);
 
   const handleInviteSuccess = useCallback(
-    (newMember: Member) => {
+    (_newMember: Member) => {
       setInviteModalOpen(false);
     },
     [],
