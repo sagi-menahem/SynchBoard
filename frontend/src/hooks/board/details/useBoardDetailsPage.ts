@@ -90,9 +90,9 @@ export const useBoardDetailsPage = (boardId: number) => {
     [boardId, t],
   );
 
-  const promptPictureDelete = useCallback(() => {
+  const promptPictureDelete = () => {
     setDeleteConfirmOpen(true);
-  }, []);
+  };
 
   const handleConfirmDeletePicture = useCallback(async () => {
     try {

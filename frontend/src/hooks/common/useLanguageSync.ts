@@ -76,12 +76,12 @@ export const useLanguageSync = () => {
     }
   }, [token, authLoading, loadUserLanguage, switchToGuestLanguage]);
 
-  const setGuestLanguage = useCallback((language: 'en' | 'he') => {
+  const setGuestLanguage = (language: 'en' | 'he') => {
     localStorage.setItem(GUEST_LANGUAGE_KEY, language);
     if (!token) {
       i18n.changeLanguage(language);
     }
-  }, [i18n, token]);
+  };
 
   const updateLanguagePreference = useCallback(async (language: 'en' | 'he') => {
     if (!token) return;

@@ -175,15 +175,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     }
   }, [sendChatMessage, boardId]);
 
-  const shouldShowDateSeparator = useCallback(
-    (currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
-      if (!prevMsg) return true;
-      const currentDate = new Date(currentMsg.timestamp).toDateString();
-      const prevDate = new Date(prevMsg.timestamp).toDateString();
-      return currentDate !== prevDate;
-    },
-    [],
-  );
+  const shouldShowDateSeparator = (currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
+    if (!prevMsg) return true;
+    const currentDate = new Date(currentMsg.timestamp).toDateString();
+    const prevDate = new Date(prevMsg.timestamp).toDateString();
+    return currentDate !== prevDate;
+  };
 
   return (
     <div

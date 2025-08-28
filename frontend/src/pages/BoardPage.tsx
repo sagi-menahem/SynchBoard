@@ -1,6 +1,6 @@
 import { APP_ROUTES } from 'constants';
 
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 import { BoardProvider, useCanvasPreferences } from 'context';
 import { ArrowRight, Info } from 'lucide-react';
@@ -46,22 +46,16 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     setStrokeWidth,
   } = useToolbarState();
 
-  const handleColorPick = useCallback(
-    (color: string) => {
-      setStrokeColor(color);
-    },
-    [setStrokeColor],
-  );
+  const handleColorPick = (color: string) => {
+    setStrokeColor(color);
+  };
 
   const { preferences: canvasPreferences, updateSplitRatio } =
     useCanvasPreferences();
 
-  const handleSplitRatioChange = useCallback(
-    (newRatio: number) => {
-      updateSplitRatio(newRatio);
-    },
-    [updateSplitRatio],
-  );
+  const handleSplitRatioChange = (newRatio: number) => {
+    updateSplitRatio(newRatio);
+  };
 
   const canvasConfig = useMemo(() => {
     return boardDetails
