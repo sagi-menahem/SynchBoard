@@ -5,8 +5,8 @@ import type { Board } from 'features/board/types/BoardTypes';
 import { FileText, Monitor, Pencil, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, ColorPicker, Input } from 'shared/ui';
-import styles from 'shared/ui/CommonForm.module.css';
-import utilStyles from 'shared/ui/utils.module.css';
+import styles from 'shared/ui/styles/CommonForm.module.css';
+import utilStyles from 'shared/ui/styles/utils.module.css';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 import { useCreateBoardForm } from '../../hooks/management';

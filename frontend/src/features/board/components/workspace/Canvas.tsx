@@ -6,9 +6,9 @@ import type { ActionPayload, SendBoardActionRequest, TextBoxPayload } from 'feat
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { getRecolorCursor } from 'features/board/utils/canvas/cursorUtils';
 import { processRecolorClick } from 'features/board/utils/canvas/recolorLogic';
+import { usePreferences } from 'features/settings/hooks';
+import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { useTranslation } from 'react-i18next';
-import { usePreferences } from 'shared/hooks';
-import { useConnectionStatus } from 'shared/hooks/useConnectionStatus';
 import type { Tool } from 'shared/types/CommonTypes';
 
 

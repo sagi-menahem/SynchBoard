@@ -5,7 +5,7 @@ import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/t
 import { Save, Settings2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, ColorPicker, Input } from 'shared/ui';
-import utilStyles from 'shared/ui/utils.module.css';
+import utilStyles from 'shared/ui/styles/utils.module.css';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 

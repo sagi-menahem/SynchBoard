@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useLanguageSync } from 'features/settings/hooks';
 import { useTranslation } from 'react-i18next';
-import { useLanguageSync } from 'shared/hooks';
 
 import styles from './GuestLanguageSwitcher.module.css';
 

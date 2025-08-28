@@ -1,0 +1,288 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    width: 100%;
+    min-width: 400px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #ccc;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.field input {
+    text-align: center;
+}
+
+.imageField {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.description {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    resize: vertical;
+}
+
+.buttonGroup {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+
+.required {
+    color: #f87171;
+    font-weight: bold;
+}
+
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.25rem 0;
+}
+
+.radioLabel input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: #3b82f6;
+    cursor: pointer;
+}
+
+.radioLabel:hover {
+    color: #e5e5e5;
+}
+
+.dateInput {
+    width: 100%;
+    padding: 12px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.dateInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.dateInput::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+.submitButton {
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+    background-color: #6b7280;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.canvasSizeOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.sizeGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background: rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.groupLabel {
+    color: #bbb;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.25rem;
+}
+
+.radioOption {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+}
+
+.radioOption input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #3b82f6;
+    cursor: pointer;
+}
+
+.radioOption:hover {
+    color: #e5e5e5;
+}
+
+.customSizeInputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: rgba(42, 42, 42, 0.8);
+    color: #ccc;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.customSizeInputs input {
+    width: 90px;
+    min-width: 80px;
+    flex-shrink: 1;
+}
+
+.customSizeInputs span {
+    white-space: nowrap;
+}
+
+
+.modalContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modalHeader {
+    margin-bottom: 0.5rem;
+}
+
+.modalTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modalDescription {
+    color: #ccc;
+    line-height: 1.5;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.additionalActions {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.error {
+    background-color: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #f87171;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .form {
+        min-width: 300px;
+        max-width: 90vw;
+    }
+
+    .customSizeInputs {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .customSizeInputs input {
+        width: 100%;
+        max-width: 150px;
+    }
+
+    .buttonGroup {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+
+    .buttonGroup button {
+        width: 100%;
+    }
+}

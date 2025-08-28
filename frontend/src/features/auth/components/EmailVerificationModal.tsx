@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Hash, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Modal } from 'shared/ui';
-import styles from 'shared/ui/CommonForm.module.css';
+import styles from 'shared/ui/styles/CommonForm.module.css';
 
 import { useResendVerificationCode, useVerifyEmailForm } from '../hooks/forms';
 

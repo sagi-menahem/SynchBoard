@@ -10,11 +10,12 @@ import type {
   UniversalToolbarProps,
   ViewToggleToolbarItem,
 } from 'features/board/types/ToolbarTypes';
+import { MemberActivityIndicator } from 'features/board/ui';
 
-import { MemberActivityIndicator } from './MemberActivityIndicator';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '../navigation/SearchBar';
+import { ViewToggle } from '../navigation/ViewToggle';
+
 import styles from './UniversalToolbar.module.css';
-import { ViewToggle } from './ViewToggle';
 
 const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
   const {

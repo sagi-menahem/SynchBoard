@@ -7,8 +7,9 @@ import { ActionType, type ActionPayload, type BoardActionResponse } from 'featur
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import type { BoardUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
-import { useSocketSubscription } from 'shared/hooks/useSocket';
 import logger from 'shared/utils/logger';
+
+import { useSocketSubscription } from './useSocket';
 
 interface WebSocketHandlerProps {
   boardId: number;

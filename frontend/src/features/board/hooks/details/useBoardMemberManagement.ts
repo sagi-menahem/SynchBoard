@@ -5,7 +5,7 @@ import * as boardService from 'features/board/services/boardService';
 import type { Member } from 'features/board/types/BoardTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { useContextMenu } from 'shared/hooks/useContextMenu';
+import { useContextMenu } from 'shared/hooks';
 
 
 export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: boolean) => {

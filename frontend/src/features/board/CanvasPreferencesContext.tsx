@@ -4,9 +4,9 @@ import React, { createContext, useCallback, useContext, useEffect, useReducer } 
 
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
+import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
-import { useSocketSubscription } from 'shared/hooks/useSocket';
 import logger from 'shared/utils/logger';
 
 import type { LayoutMode } from './components/workspace/BoardWorkspace';

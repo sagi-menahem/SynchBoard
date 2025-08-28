@@ -15,7 +15,7 @@ import {
   type TrianglePayload,
 } from 'features/board/types/BoardObjectTypes';
 import { optimizeDrawingPoints } from 'features/board/utils/CanvasUtils';
-import { useConnectionStatus } from 'shared/hooks/useConnectionStatus';
+import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import type { Tool } from 'shared/types/CommonTypes';
 
 

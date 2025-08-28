@@ -4,12 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import * as boardService from 'features/board/services/boardService';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
+import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { BoardUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES, WEBSOCKET_TOPICS } from 'shared/constants';
-import { useSocketSubscription } from 'shared/hooks/useSocket';
 import logger from 'shared/utils/logger';
 
 

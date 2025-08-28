@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { usePreferences } from 'features/settings/hooks';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
-import { usePreferences } from 'shared/hooks';
 
 import styles from '../pages/SettingsPage.module.css';
 
