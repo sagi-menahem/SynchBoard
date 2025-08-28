@@ -5,7 +5,7 @@ import { useAuth } from 'features/auth/hooks';
 import { useBoardActions } from 'features/board/hooks/workspace/useBoardActions';
 import { useBoardDataManager } from 'features/board/hooks/workspace/useBoardDataManager';
 import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
-import { useSocket, useSocketSubscription } from 'features/websocket/hooks/useSocket';
+import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import { useWebSocketHandler } from 'features/websocket/hooks/useWebSocketHandler';
 import WebSocketService from 'features/websocket/services/websocketService';
 import type { BoardUpdateDTO, UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
@@ -52,7 +52,6 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, baseObjects.length, resetCounts, hasInitialized]);
 
-  const { } = useSocket();
 
   const handleCommitDrawingTransaction = useCallback((instanceId: string) => {
     setBaseObjects((prev) => prev.map((obj) => {

@@ -2,7 +2,6 @@
 
 // Context
 export { WebSocketProvider } from './WebSocketProvider';
-export { WebSocketContext } from './WebSocketContext';
 
 // Services
 export * as WebSocketService from './services/websocketService';

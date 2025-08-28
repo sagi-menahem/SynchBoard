@@ -1,10 +1,3 @@
-export const COLORS = {
-  PRIMARY_LINK: '#8186ff',
-
-
-  CANVAS_BACKGROUND: '#222',
-} as const;
-
 export const CHAT_BACKGROUND_OPTIONS = [
   { nameKey: 'backgroundColors.default', color: '#282828' },
   { nameKey: 'backgroundColors.midnightBlue', color: '#2a2d35' },

@@ -2,7 +2,6 @@
 
 // Components
 export { default as ChatWindow } from './components/ChatWindow';
-export { default as ChatInput } from './components/ChatInput';
 export { default as ChatMessage } from './components/ChatMessage';
 
 // Types - Re-export for convenience
