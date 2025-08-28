@@ -6,7 +6,6 @@ import { updateDocumentDirection } from 'i18n';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { Logger } from 'utils';
 
 import { ConnectionStatusBanner, PageLoader, PageTransition } from 'components/common';
 import { ErrorBoundary } from 'components/errorBoundary';
@@ -24,7 +23,6 @@ const BoardDetailsPage = lazy(() => import('pages/BoardDetailsPage'));
 const BoardPage = lazy(() => import('pages/BoardPage'));
 const SettingsPage = lazy(() => import('pages/SettingsPage'));
 
-const logger = Logger;
 
 // Unified loading component for lazy routes
 const LazyPageLoader = () => {
@@ -147,6 +145,7 @@ function App() {
   useLanguageSync();
   
   useEffect(() => {
+    // Application initialization effect
   }, []);
 
   // RTL Support: Update document direction when language changes

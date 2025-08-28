@@ -65,7 +65,7 @@ export const useBoardWorkspace = (boardId: number) => {
     }));
   }, [setBaseObjects]);
 
-  const handleCommitChatTransaction = useCallback((instanceId: string) => {
+  const handleCommitChatTransaction = useCallback((_instanceId: string) => {
     // Chat transactions are handled by their own hook
   }, []);
 

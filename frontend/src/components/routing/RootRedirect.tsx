@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { Navigate } from 'react-router-dom';
-import { Logger } from 'utils';
 
 import { useAuth } from 'hooks/auth';
 
-const logger = Logger;
 
 const RootRedirect: React.FC = () => {
   const { token, isInitializing } = useAuth();
