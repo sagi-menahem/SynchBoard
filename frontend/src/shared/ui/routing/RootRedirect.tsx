@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 
 
 
 const RootRedirect: React.FC = () => {
+  const { t } = useTranslation(['common']);
   const { token, isInitializing } = useAuth();
   
   useEffect(() => {
@@ -23,7 +25,7 @@ const RootRedirect: React.FC = () => {
         fontSize: '1.2rem',
         color: '#666',
       }}>
-        Loading...
+        {t('common:loading')}
       </div>
     );
   }

@@ -1,0 +1,12 @@
+{
+  "searchPlaceholder": "Search messages...",
+  "emptyMessage": "Message content cannot be empty",
+  "messageTooLong": "Message is too long (maximum 5000 characters)",
+  "sending": "Sending...",
+  "window": {
+    "placeholder": "Type a message..."
+  },
+  "message": {
+    "failedToSendTooltip": "Failed to send - message will be retried when connection is restored"
+  }
+}

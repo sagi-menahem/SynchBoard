@@ -17,7 +17,7 @@ interface MemberInviteInputProps {
 }
 
 const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, disabled = false }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();
   const [inputValue, setInputValue] = useState('');
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
@@ -33,24 +33,24 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
     if (!trimmedEmail) return;
     
     if (!isValidEmail(trimmedEmail)) {
-      toast.error(t('createBoardForm.invalidEmail'));
+      toast.error(t('board:createBoardForm.invalidEmail'));
       return;
     }
 
     if (userEmail && trimmedEmail === userEmail.toLowerCase()) {
-      toast.error(t('createBoardForm.cannotInviteSelf'));
+      toast.error(t('board:createBoardForm.cannotInviteSelf'));
       return;
     }
     
     if (inviteEmails.includes(trimmedEmail)) {
-      toast.error(t('createBoardForm.emailAlreadyAdded'));
+      toast.error(t('board:createBoardForm.emailAlreadyAdded'));
       return;
     }
 
     try {
       const userExists = await checkUserExists(trimmedEmail);
       if (!userExists) {
-        toast.error(t('createBoardForm.userNotFound', { email: trimmedEmail }));
+        toast.error(t('board:createBoardForm.userNotFound', { email: trimmedEmail }));
         return;
       }
 
@@ -60,7 +60,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
       setInputValue('');
     } catch (error) {
       logger.error('Error checking user existence:', error);
-      toast.error(t('createBoardForm.errorCheckingUser'));
+      toast.error(t('board:createBoardForm.errorCheckingUser'));
     }
   };
 
@@ -89,7 +89,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder={t('createBoardForm.placeholder.inviteEmails')}
+          placeholder={t('board:createBoardForm.placeholder.inviteEmails')}
           disabled={disabled}
         />
         <Button
@@ -99,7 +99,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
           variant="secondary"
           className={styles.addButton}
         >
-          {t('createBoardForm.addMember')}
+          {t('board:createBoardForm.addMember')}
         </Button>
       </div>
       
@@ -113,7 +113,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
                   type="button"
                   onClick={() => removeEmail(email)}
                   className={styles.removeTag}
-                  aria-label={t('createBoardForm.removeMember', { email })}
+                  aria-label={t('board:createBoardForm.removeMember', { email })}
                 >
                   ×
                 </button>
@@ -125,7 +125,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
       
       {inviteEmails.length > 0 && (
         <p className={styles.helpText}>
-          {t('createBoardForm.inviteCount', { count: inviteEmails.length })}
+          {t('board:createBoardForm.inviteCount', { count: inviteEmails.length })}
         </p>
       )}
     </div>

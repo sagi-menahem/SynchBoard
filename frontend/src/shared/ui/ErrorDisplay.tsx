@@ -23,39 +23,39 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   error,
   showTechnicalDetails = false,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const [showDetails, setShowDetails] = useState(showTechnicalDetails);
 
   const getErrorConfig = () => {
     switch (errorType) {
       case 'page':
         return {
-          title: title || t('errorDisplay.pageUnavailable'),
-          message: message || t('errorDisplay.pageUnavailableMessage'),
+          title: title || t('common:errorDisplay.pageUnavailable'),
+          message: message || t('common:errorDisplay.pageUnavailableMessage'),
           icon: '🚫',
           showRetry: true,
           showGoBack: true,
         };
       case 'board':
         return {
-          title: title || t('errorDisplay.boardLoadingError'),
-          message: message || t('errorDisplay.boardLoadingErrorMessage'),
+          title: title || t('common:errorDisplay.boardLoadingError'),
+          message: message || t('common:errorDisplay.boardLoadingErrorMessage'),
           icon: '📋',
           showRetry: true,
           showGoBack: true,
         };
       case 'component':
         return {
-          title: title || t('errorDisplay.featureUnavailable'),
-          message: message || t('errorDisplay.featureUnavailableMessage'),
+          title: title || t('common:errorDisplay.featureUnavailable'),
+          message: message || t('common:errorDisplay.featureUnavailableMessage'),
           icon: '⚠️',
           showRetry: true,
           showGoBack: false,
         };
       default:
         return {
-          title: title || t('errorDisplay.somethingWentWrong'),
-          message: message || t('errorDisplay.unexpectedError'),
+          title: title || t('common:errorDisplay.somethingWentWrong'),
+          message: message || t('common:errorDisplay.unexpectedError'),
           icon: '❌',
           showRetry: true,
           showGoBack: false,
@@ -87,7 +87,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     <div className={containerClass}>
       <div className={styles.content}>
         <div className={styles.iconContainer}>
-          <span className={styles.icon} role="img" aria-label={t('errorDisplay.errorAriaLabel')}>
+          <span className={styles.icon} role="img" aria-label={t('common:errorDisplay.errorAriaLabel')}>
             {config.icon}
           </span>
         </div>
@@ -106,7 +106,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               className={`${styles.button} ${styles.buttonPrimary}`}
               onClick={handleRetry}
             >
-              {t('errorDisplay.tryAgain')}
+              {t('common:errorDisplay.tryAgain')}
             </button>
           )}
           
@@ -115,7 +115,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               className={`${styles.button} ${styles.buttonSecondary}`}
               onClick={handleGoBack}
             >
-              {t('errorDisplay.goBack')}
+              {t('common:errorDisplay.goBack')}
             </button>
           )}
         </div>
@@ -127,20 +127,20 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
               onClick={() => setShowDetails(!showDetails)}
               aria-expanded={showDetails}
             >
-              {showDetails ? '▼' : '▶'} {t('errorDisplay.technicalDetails')}
+              {showDetails ? '▼' : '▶'} {t('common:errorDisplay.technicalDetails')}
             </button>
             
             {showDetails && (
               <div className={styles.detailsContent}>
                 <div className={styles.errorInfo}>
-                  <p><strong>{t('errorDisplay.error')}</strong> {error.message}</p>
-                  <p><strong>{t('errorDisplay.time')}</strong> {new Date().toLocaleString()}</p>
-                  <p><strong>{t('errorDisplay.location')}</strong> {window.location.href}</p>
+                  <p><strong>{t('common:errorDisplay.error')}</strong> {error.message}</p>
+                  <p><strong>{t('common:errorDisplay.time')}</strong> {new Date().toLocaleString()}</p>
+                  <p><strong>{t('common:errorDisplay.location')}</strong> {window.location.href}</p>
                 </div>
                 
                 {error.stack && (
                   <details className={styles.stackTrace}>
-                    <summary>{t('errorDisplay.stackTrace')}</summary>
+                    <summary>{t('common:errorDisplay.stackTrace')}</summary>
                     <pre className={styles.stackContent}>
                       <code>{error.stack}</code>
                     </pre>
@@ -152,7 +152,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
         )}
 
         <div className={styles.helpText}>
-          {t('errorDisplay.helpText')}
+          {t('common:errorDisplay.helpText')}
         </div>
       </div>
     </div>

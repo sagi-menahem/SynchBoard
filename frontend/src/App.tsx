@@ -21,8 +21,8 @@ const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
 
 
 const LazyPageLoader = () => {
-  const { t } = useTranslation();
-  return <PageLoader message={t('common.loading')} />;
+  const { t } = useTranslation(['common']);
+  return <PageLoader message={t('common:loading')} />;
 };
 
 function AppRoutes() {
@@ -127,7 +127,7 @@ function AppRoutes() {
 
 function App() {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
-  const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation(['common', 'auth']);
   const { isInitializing } = useAuth();
   
   const toolbarHeight = 72;
@@ -151,7 +151,7 @@ function App() {
   if (isOAuthProcessing) {
     return (
       <PageTransition>
-        <PageLoader message="Signing you in..." />
+        <PageLoader message={t('auth:signingInMessage')} />
       </PageTransition>
     );
   }
@@ -159,7 +159,7 @@ function App() {
   if (isInitializing) {
     return (
       <PageTransition>
-        <PageLoader message={t('common.loading')} />
+        <PageLoader message={t('common:loading')} />
       </PageTransition>
     );
   }

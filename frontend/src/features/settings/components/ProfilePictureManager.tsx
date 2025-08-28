@@ -17,7 +17,7 @@ interface ProfilePictureManagerProps {
 }
 
 const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onUpload, onDelete }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const imageSource = user.profilePictureUrl
@@ -40,7 +40,7 @@ const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onU
       <div className={styles.imageContainer}>
         <img
           src={imageSource}
-          alt={t('settingsPage.profilePictureAlt', { userName: user.firstName })}
+          alt={t('settings:page.profilePictureAlt', { userName: user.firstName })}
           className={styles.profileImage}
         />
       </div>
@@ -59,14 +59,14 @@ const ProfilePictureManager: React.FC<ProfilePictureManagerProps> = ({ user, onU
           variant="secondary"
         >
           <Upload size={16} />
-          {t('settingsPage.changePicture')}
+          {t('settings:page.changePicture')}
         </Button>
         <Button 
           onClick={onDelete}
           variant="destructive"
         >
           <Trash2 size={16} />
-          {t('settingsPage.deletePicture')}
+          {t('settings:page.deletePicture')}
         </Button>
       </div>
     </>

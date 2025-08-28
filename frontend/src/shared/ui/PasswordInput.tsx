@@ -67,7 +67,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   showPassword: externalShowPassword,
   onToggleVisibility,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const [internalShowPassword, setInternalShowPassword] = useState(false);
 
   const showPassword = externalShowPassword !== undefined ? externalShowPassword : internalShowPassword;
@@ -107,8 +107,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
         disabled={disabled}
         aria-label={
           showPassword 
-            ? t('common.form.hidePassword', 'Hide password') 
-            : t('common.form.showPassword', 'Show password')
+            ? t('common:form.hidePassword') 
+            : t('common:form.showPassword')
         }
         tabIndex={0}
       >

@@ -27,7 +27,7 @@ const BoardEditModals: React.FC<BoardEditModalsProps> = ({
     onInviteSuccess,
     onUpdateName,
 }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['board', 'common']);
 
     return (
         <>
@@ -37,8 +37,8 @@ const BoardEditModals: React.FC<BoardEditModalsProps> = ({
 
             <Modal isOpen={editingField === 'name'} onClose={onCloseEdit}>
                 <EditFieldForm
-                    title={t('editBoardNameForm.title')}
-                    label={t('editBoardNameForm.label')}
+                    title={t('board:editBoardNameForm.title')}
+                    label={t('board:editBoardNameForm.label')}
                     initialValue={boardName}
                     onSave={onUpdateName}
                     onClose={onCloseEdit}

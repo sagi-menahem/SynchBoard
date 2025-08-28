@@ -22,7 +22,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   className = '',
   label,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const [showPicker, setShowPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
@@ -91,7 +91,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         className={`${styles.swatch} ${disabled ? styles.disabled : ''}`}
         onClick={handleSwatchClick}
         disabled={disabled}
-        aria-label={label || t('common.chooseColor')}
+        aria-label={label || t('common:chooseColor')}
         style={{ backgroundColor: color || '#FFFFFF' }}
       >
         <div className={styles.swatchInner} />

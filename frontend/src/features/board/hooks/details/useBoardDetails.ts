@@ -16,7 +16,7 @@ import logger from 'shared/utils/logger';
 // Logger is now imported directly
 
 export const useBoardDetails = (boardId: number | undefined) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export const useBoardDetails = (boardId: number | undefined) => {
         if (error instanceof AxiosError && error.response?.status === 403) {
           navigate(APP_ROUTES.BOARD_LIST);
         } else {
-          toast.error(t('errors.board.details'));
+          toast.error(t('board:errors.details'));
         }
         setBoardDetails(null);
       })

@@ -16,7 +16,7 @@ interface ConfirmationDialogProps {
 }
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose, onConfirm, title, message }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   const handleConfirm = () => {
     onConfirm();
@@ -33,10 +33,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose
         <p className={styles.message}>{message}</p>
         <div className={styles.buttonGroup}>
           <Button variant="secondary" onClick={onClose}>
-            {t('common.button.cancel')}
+            {t('common:button.cancel')}
           </Button>
           <Button variant="destructive" onClick={handleConfirm}>
-            {t('common.button.confirm')}
+            {t('common:button.confirm')}
           </Button>
         </div>
       </div>

@@ -13,7 +13,7 @@ interface RegistrationFormProps {
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const { state, submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
 
 
@@ -28,7 +28,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-email">
           <Mail size={14} />
-          {t('common.form.label.email')}
+          {t('common:form.label.email')}
           <span className={styles.required}> *</span>
         </label>
         <Input
@@ -43,7 +43,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-password">
           <Lock size={14} />
-          {t('common.form.label.password')}
+          {t('common:form.label.password')}
           <span className={styles.required}> *</span>
         </label>
         <PasswordInput
@@ -58,7 +58,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-firstName">
           <User size={14} />
-          {t('common.form.label.firstName')}
+          {t('common:form.label.firstName')}
           <span className={styles.required}> *</span>
         </label>
         <Input
@@ -73,7 +73,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-lastName">
           <User size={14} />
-          {t('common.form.label.lastName')}
+          {t('common:form.label.lastName')}
         </label>
         <Input
           id="register-lastName"
@@ -87,7 +87,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-gender">
           <User size={14} />
-          {t('common.form.label.gender')}
+          {t('common:form.label.gender')}
           <span className={styles.required}> *</span>
         </label>
         <div className={styles.radioGroup}>
@@ -99,7 +99,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
               required
               disabled={isPending}
             />
-            {t('common.form.option.male')}
+            {t('common:form.option.male')}
           </label>
           <label className={styles.radioLabel}>
             <input
@@ -109,7 +109,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
               required
               disabled={isPending}
             />
-            {t('common.form.option.female')}
+            {t('common:form.option.female')}
           </label>
         </div>
       </div>
@@ -117,7 +117,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-dateOfBirth">
           <Calendar size={14} />
-          {t('common.form.label.dateOfBirth')}
+          {t('common:form.label.dateOfBirth')}
         </label>
         <Input
           id="register-dateOfBirth"
@@ -131,7 +131,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       <div className={styles.field}>
         <label htmlFor="register-phoneNumber">
           <Phone size={14} />
-          {t('common.form.label.phoneNumber')}
+          {t('common:form.label.phoneNumber')}
         </label>
         <Input
           id="register-phoneNumber"
@@ -144,7 +144,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
 
       <Button type="submit" variant="primary" disabled={isPending} className={styles.submitButton}>
         <UserPlus size={16} />
-        {isPending ? t('common.button.registering') : t('registerForm.button')}
+        {isPending ? t('common:button.registering') : t('auth:registerForm.button')}
       </Button>
     </form>
   );

@@ -13,7 +13,7 @@ interface InviteMemberFormProps {
 }
 
 const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSuccess }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const { email, setEmail, isSubmitting, handleSubmit } = useInviteMemberForm(boardId, onInviteSuccess);
 
   return (
@@ -21,7 +21,7 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSu
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>
           <UserPlus size={20} />
-          {t('inviteMemberForm.heading')}
+          {t('board:inviteMemberForm.heading')}
         </h3>
       </div>
       
@@ -29,14 +29,14 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSu
         <div className={styles.field}>
           <label htmlFor="member-email">
             <Mail size={14} />
-            {t('inviteMemberForm.label')}
+            {t('board:inviteMemberForm.label')}
           </label>
           <Input
             id="member-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('inviteMemberForm.placeholder')}
+            placeholder={t('board:inviteMemberForm.placeholder')}
             required
             disabled={isSubmitting}
           />
@@ -45,8 +45,8 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSu
           <Button type="submit" disabled={isSubmitting} variant="primary">
             <UserPlus size={16} />
             {isSubmitting
-              ? t('inviteMemberForm.button.sendingInvite')
-              : t('inviteMemberForm.button.sendInvite')}
+              ? t('board:inviteMemberForm.button.sendingInvite')
+              : t('board:inviteMemberForm.button.sendInvite')}
           </Button>
         </div>
       </form>

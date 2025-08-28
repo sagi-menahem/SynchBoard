@@ -10,7 +10,7 @@ import styles from '../pages/SettingsPage.module.css';
 
 
 const LanguageSection: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['settings', 'common']);
   const { loadUserLanguage, updateLanguagePreference, isLanguageLoaded } = useLanguageSync();
   const [languagePrefs, setLanguagePrefs] = useState<LanguagePreferences>({ preferredLanguage: 'en' });
   const [isLoading, setIsLoading] = useState(true);
@@ -45,10 +45,10 @@ const LanguageSection: React.FC = () => {
       if (updatedPrefs) {
         setLanguagePrefs(updatedPrefs);
       }
-      toast.success(t('success.preferences.update'));
+      toast.success(t('common:success.preferences.update'));
     } catch (error) {
       logger.error('Failed to update language preference:', error);
-      toast.error(t('errors.common.unexpected'));
+      toast.error(t('common:errors.common.unexpected'));
       i18n.changeLanguage(currentLanguage);
     }
   };
@@ -56,11 +56,11 @@ const LanguageSection: React.FC = () => {
   if (isLoading) {
     return (
       <section className={styles.section}>
-        <h2 className={styles.sectionHeader}>{t('settingsPage.languageHeader')}</h2>
+        <h2 className={styles.sectionHeader}>{t('settings:page.languageHeader')}</h2>
         <div className={styles.field}>
-          <label>{t('settingsPage.languageLabel')}</label>
+          <label>{t('settings:page.languageLabel')}</label>
           <div className={styles.radioGroup}>
-            <span>{t('settingsPage.loading')}</span>
+            <span>{t('settings:page.loading')}</span>
           </div>
         </div>
       </section>
@@ -69,9 +69,9 @@ const LanguageSection: React.FC = () => {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionHeader}>{t('settingsPage.languageHeader')}</h2>
+      <h2 className={styles.sectionHeader}>{t('settings:page.languageHeader')}</h2>
       <div className={styles.field}>
-        <label>{t('settingsPage.languageLabel')}</label>
+        <label>{t('settings:page.languageLabel')}</label>
         <div className={styles.radioGroup}>
           <label className={styles.radioLabel}>
             <input
@@ -81,7 +81,7 @@ const LanguageSection: React.FC = () => {
               checked={currentLanguage === 'en'}
               onChange={() => handleLanguageChange('en')}
             />
-            {t('settingsPage.language.en')}
+            {t('settings:page.language.en')}
           </label>
           <label className={styles.radioLabel}>
             <input
@@ -91,7 +91,7 @@ const LanguageSection: React.FC = () => {
               checked={currentLanguage === 'he'}
               onChange={() => handleLanguageChange('he')}
             />
-            {t('settingsPage.language.he')}
+            {t('settings:page.language.he')}
           </label>
         </div>
       </div>

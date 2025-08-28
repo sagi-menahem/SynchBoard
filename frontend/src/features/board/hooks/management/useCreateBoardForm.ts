@@ -15,7 +15,7 @@ interface CreateBoardState {
 }
 
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
 
   const createBoardAction = async (_previousState: CreateBoardState, formData: FormData): Promise<CreateBoardState> => {
     const name = (formData.get('name') as string)?.trim() || '';
@@ -29,7 +29,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     if (!name) {
       return {
         success: false,
-        error: t('createBoardForm.validation.nameRequired', 'Board name is required'),
+        error: t('board:createBoardForm.validation.nameRequired'),
       };
     }
 
@@ -37,7 +37,7 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       logger.warn('[useCreateBoardForm] Board name validation failed - too short');
       return {
         success: false,
-        error: t('createBoardForm.nameLengthError'),
+        error: t('board:createBoardForm.nameLengthError'),
       };
     }
 
@@ -69,9 +69,9 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       const newBoard = await toast.promise(
         createBoard(submitFormData),
         {
-          loading: t('loading.board.create'),
-          success: (board) => t('success.board.create', { boardName: board.name }),
-          error: t('errors.board.create'),
+          loading: t('board:loading.create'),
+          success: (board) => t('board:success.create', { boardName: board.name }),
+          error: t('board:errors.create'),
         },
       );
       onBoardCreated(newBoard);

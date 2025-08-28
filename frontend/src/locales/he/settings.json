@@ -1,0 +1,121 @@
+{
+  "page": {
+    "heading": "הגדרות חשבון",
+    "loading": "טוען את ההגדרות שלך...",
+    "loadError": "לא ניתן היה לטעון את נתוני המשתמש.",
+    "profileSectionHeader": "פרטי פרופיל",
+    "firstNameLabel": "שם פרטי",
+    "lastNameLabel": "שם משפחה",
+    "genderLabel": "מגדר",
+    "phoneNumberLabel": "מספר טלפון",
+    "dateOfBirthLabel": "תאריך לידה",
+    "notProvided": "לא סופק",
+    "updateSuccess": "הפרופיל עודכן בהצלחה!",
+    "updateError": "עדכון הפרופיל נכשל.",
+    "buttons": {
+      "edit": "עריכה",
+      "cancel": "ביטול",
+      "save": "שמור שינויים"
+    },
+    "passwordSectionHeader": "שינוי סיסמה",
+    "currentPasswordLabel": "סיסמה נוכחית",
+    "newPasswordLabel": "סיסמה חדשה",
+    "confirmPasswordLabel": "אימות סיסמה חדשה",
+    "passwordUpdateSuccess": "הסיסמה עודכנה בהצלחה!",
+    "passwordUpdateError": "עדכון הסיסמה נכשל. אנא בדוק את הסיסמה הנוכחית שלך.",
+    "passwordsDoNotMatch": "הסיסמאות החדשות אינן תואמות.",
+    "passwordTooShort": "סיסמה חדשה חייבת להכיל לפחות 8 תווים.",
+    "pictureSectionHeader": "תמונת פרופיל",
+    "profilePictureAlt": "תמונת פרופיל של {{userName}}",
+    "changePicture": "שנה תמונה",
+    "deletePicture": "מחק תמונה",
+    "deletePictureConfirmTitle": "למחוק את התמונה?",
+    "deletePictureConfirmText": "האם אתה בטוח שברצונך למחוק את תמונת הפרופיל שלך?",
+    "pictureUpdateSuccess": "תמונת הפרופיל עודכנה!",
+    "pictureDeleteSuccess": "תמונת הפרופיל הוסרה.",
+    "pictureUploadError": "העלאת התמונה נכשלה.",
+    "dangerZoneHeader": "אזור מסוכן",
+    "dangerZoneText": "פעולה זו היא קבועה ולא ניתנת לביטול.",
+    "deleteAccountButton": "מחק את החשבון שלי",
+    "deleteAccountConfirmTitle": "למחוק את החשבון?",
+    "deleteAccountConfirmText": "האם אתה בטוח לחלוטין? לא ניתן לבטל פעולה זו. כל הנתונים שלך, כולל לוחות שאתה המנהל האחרון בהם, יימחקו לצמיתות.",
+    "accountDeleteSuccess": "החשבון שלך נמחק.",
+    "accountDeleteError": "מחיקת החשבון נכשלה.",
+    "backToBoards": "חזרה לרשימת הלוחות",
+    "logoutButton": "התנתק",
+    "languageHeader": "העדפות שפה",
+    "languageLabel": "בחר שפה",
+    "language": {
+      "en": "English",
+      "he": "עברית"
+    },
+    "boardAppearanceHeader": "עיצוב הלוח",
+    "boardBackgroundColorLabel": "צבע רקע",
+    "chatFontSizeLabel": "גודל גופן",
+    "font": {
+      "small": "קטן",
+      "regular": "רגיל",
+      "large": "גדול"
+    }
+  },
+  "errors": {
+    "profile": {
+      "update": "עדכון הפרופיל נכשל.",
+      "fetch": "נכשל בטעינת פרופיל המשתמש. אנא נסה שנית."
+    },
+    "picture": {
+      "upload": "העלאת התמונה נכשלה.",
+      "delete": "מחיקת התמונה נכשלה."
+    },
+    "password": {
+      "update": "עדכון הסיסמה נכשל. אנא בדוק את הסיסמה הנוכחית שלך.",
+      "incorrect": "הסיסמה הנוכחית שהזנת שגויה.",
+      "sameAsOld": "הסיסמה החדשה אינה יכולה להיות זהה לישנה."
+    },
+    "account": {
+      "delete": "מחיקת החשבון נכשלה."
+    },
+    "preferences": {
+      "fetch": "נכשל בטעינת העדפות המשתמש. אנא בדוק את החיבור ונסה שנית.",
+      "update": "נכשל בעדכון העדפות. אנא נסה שנית."
+    }
+  },
+  "loading": {
+    "profile": {
+      "update": "מעדכן פרופיל...",
+      "fetch": "טוען פרופיל..."
+    },
+    "picture": {
+      "upload": "מעלה תמונה...",
+      "delete": "מוחק תמונה..."
+    },
+    "password": {
+      "update": "מעדכן סיסמה..."
+    },
+    "account": {
+      "delete": "מוחק חשבון..."
+    },
+    "preferences": {
+      "update": "מעדכן העדפות...",
+      "fetch": "טוען העדפות..."
+    }
+  },
+  "success": {
+    "profile": {
+      "update": "הפרופיל עודכן בהצלחה!"
+    },
+    "picture": {
+      "update": "תמונת הפרופיל עודכנה!",
+      "delete": "תמונת הפרופיל נמחקה."
+    },
+    "password": {
+      "update": "הסיסמה עודכנה בהצלחה!"
+    },
+    "account": {
+      "delete": "החשבון שלך נמחק."
+    },
+    "preferences": {
+      "update": "העדפות עודכנו בהצלחה!"
+    }
+  }
+}

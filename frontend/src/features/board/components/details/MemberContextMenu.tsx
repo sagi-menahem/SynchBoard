@@ -23,7 +23,7 @@ const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
   onPromote,
   onRemove,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
 
   if (!isOpen || !member) {
     return null;
@@ -33,11 +33,11 @@ const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
     <ContextMenu x={x} y={y} onClose={onClose}>
       {!member.isAdmin && (
         <ContextMenuItem onClick={onPromote}>
-          {t('contextMenu.promoteToAdmin', { userName: member.email })}
+          {t('board:contextMenu.promoteToAdmin', { userName: member.email })}
         </ContextMenuItem>
       )}
       <ContextMenuItem onClick={onRemove} destructive>
-        {t('contextMenu.removeFromBoard', { userName: member.email })}
+        {t('board:contextMenu.removeFromBoard', { userName: member.email })}
       </ContextMenuItem>
     </ContextMenu>
   );

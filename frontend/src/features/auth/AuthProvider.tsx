@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import { getUserProfile } from 'features/settings/services/userService';
 import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
 import logger from 'shared/utils/logger';
 
@@ -13,6 +14,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const { t } = useTranslation(['auth']);
   const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
   
   const [token, setToken] = useState<string | null>(storedToken);
@@ -52,7 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               
               if (timeUntilWarning > 0) {
                 expiryWarningTimeoutRef.current = window.setTimeout(() => {
-                  toast('Your session will expire in 5 minutes. Please save your work.', {
+                  toast(t('auth:sessionExpiry.warning'), {
                     duration: 10000,
                     id: 'session-expiry-warning',
                     icon: '⚠️',
@@ -86,7 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         clearTimeout(expiryWarningTimeoutRef.current);
       }
     };
-  }, [token]);
+  }, [token, t]);
 
   const login = (newToken: string) => {
     setToken(newToken);

@@ -20,7 +20,7 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
   currentTool,
   onToolSelect,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
 
   const handleToolClick = useCallback((tool: Tool) => {
     onToolSelect(tool);
@@ -31,14 +31,14 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
       <button
         className={`${styles.iconButton} ${currentTool === TOOLS.LINE ? styles.active : ''}`}
         onClick={() => handleToolClick(TOOLS.LINE)}
-        title={t('toolbar.tool.line')}
+        title={t('board:toolbar.tool.line')}
       >
         <Minus size={20} />
       </button>
       <button
         className={`${styles.iconButton} ${currentTool === TOOLS.DOTTED_LINE ? styles.active : ''}`}
         onClick={() => handleToolClick(TOOLS.DOTTED_LINE)}
-        title={t('toolbar.tool.dottedLine')}
+        title={t('board:toolbar.tool.dottedLine')}
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="2" y1="10" x2="5" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -49,7 +49,7 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
       <button
         className={`${styles.iconButton} ${currentTool === TOOLS.ARROW ? styles.active : ''}`}
         onClick={() => handleToolClick(TOOLS.ARROW)}
-        title={t('toolbar.tool.arrow')}
+        title={t('board:toolbar.tool.arrow')}
       >
         <ArrowRight size={20} />
       </button>

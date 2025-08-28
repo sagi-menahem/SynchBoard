@@ -9,7 +9,7 @@ import { useContextMenu } from 'shared/hooks/useContextMenu';
 
 
 export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: boolean) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();
   const contextMenu = useContextMenu<Member>();
 
@@ -18,9 +18,9 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
       await toast.promise(
         boardService.promoteMember(boardId, member.email),
         {
-          loading: t('loading.member.promote'),
-          success: t('success.member.promote', { userName: member.firstName }),
-          error: t('errors.member.promote'),
+          loading: t('board:loading.member.promote'),
+          success: t('board:success.member.promote', { userName: member.firstName }),
+          error: t('board:errors.member.promote'),
         },
       );
     },
@@ -32,9 +32,9 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
       await toast.promise(
         boardService.removeMember(boardId, member.email),
         {
-          loading: t('loading.member.remove'),
-          success: t('success.member.remove', { userName: member.firstName }),
-          error: t('errors.member.remove'),
+          loading: t('board:loading.member.remove'),
+          success: t('board:success.member.remove', { userName: member.firstName }),
+          error: t('board:errors.member.remove'),
         },
       );
     },
@@ -46,9 +46,9 @@ export const useBoardMemberManagement = (boardId: number, currentUserIsAdmin: bo
       const newMember = await toast.promise(
         boardService.inviteMember(boardId, email),
         {
-          loading: t('loading.member.invite'),
-          success: t('success.member.invite', { email }),
-          error: t('errors.member.invite'),
+          loading: t('board:loading.member.invite'),
+          success: t('board:success.member.invite', { email }),
+          error: t('board:errors.member.invite'),
         },
       );
       return newMember;

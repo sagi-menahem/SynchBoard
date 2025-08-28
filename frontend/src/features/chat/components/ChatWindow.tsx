@@ -23,7 +23,7 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['chat', 'common']);
   const { preferences } = usePreferences();
   const { userEmail } = useAuth();
   const {} = useSocket();
@@ -88,11 +88,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     const trimmedContent = content.trim();
     
     if (!trimmedContent) {
-      throw new Error(t('chat.emptyMessage'));
+      throw new Error(t('chat:emptyMessage'));
     }
 
     if (trimmedContent.length > 5000) {
-      throw new Error(t('chat.messageTooLong'));
+      throw new Error(t('chat:messageTooLong'));
     }
 
     const instanceId = crypto.randomUUID();
@@ -192,7 +192,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         <div className={styles.searchContainer}>
           <input
             type="text"
-            placeholder={t('chat.searchPlaceholder')}
+            placeholder={t('chat:searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
@@ -239,7 +239,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       
       <ChatInput 
         onSendMessage={handleSendMessage}
-        placeholder={t('chatWindow.placeholder')}
+        placeholder={t('chat:window.placeholder')}
       />
     </div>
   );

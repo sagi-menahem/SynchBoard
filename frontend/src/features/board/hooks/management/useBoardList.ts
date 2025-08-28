@@ -16,7 +16,7 @@ import logger from 'shared/utils/logger';
 
 
 export const useBoardList = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const [boards, setBoards] = useState<Board[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -60,7 +60,7 @@ export const useBoardList = () => {
       })
       .catch((err: unknown) => {
         logger.error('Failed to fetch boards:', err);
-        toast.error(t('errors.board.fetch'));
+        toast.error(t('board:errors.fetch'));
       })
       .finally(() => {
         const elapsed = Date.now() - startTime;
@@ -90,12 +90,12 @@ export const useBoardList = () => {
 
     BoardService.leaveBoard(boardToLeave.id)
       .then(() => {
-        toast.success(t('success.board.leave', { boardName: boardToLeave.name }));
+        toast.success(t('board:success.leave', { boardName: boardToLeave.name }));
         fetchBoards();
       })
       .catch((error: unknown) => {
         logger.error('Failed to leave board:', error);
-        toast.error(t('errors.board.leave'));
+        toast.error(t('board:errors.leave'));
       })
       .finally(() => {
         setLeaveConfirmOpen(false);

@@ -11,7 +11,7 @@ interface BoardImageUploadProps {
 }
 
 const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disabled = false }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(defaultBoardImage);
 
@@ -57,12 +57,12 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
         onKeyDown={handleKeyDown}
         tabIndex={disabled ? -1 : 0}
         role="button"
-        aria-label={disabled ? t('createBoardForm.boardImageAlt') : t('createBoardForm.clickToUpload')}
+        aria-label={disabled ? t('board:createBoardForm.boardImageAlt') : t('board:createBoardForm.clickToUpload')}
       >
-        <img src={previewUrl} alt={t('createBoardForm.boardImageAlt')} className={styles.previewImage} />
+        <img src={previewUrl} alt={t('board:createBoardForm.boardImageAlt')} className={styles.previewImage} />
         {!disabled && (
           <div className={styles.overlay}>
-            <span className={styles.overlayText}>{t('createBoardForm.clickToUpload')}</span>
+            <span className={styles.overlayText}>{t('board:createBoardForm.clickToUpload')}</span>
           </div>
         )}
       </div>
@@ -82,7 +82,7 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
           onClick={handleRemoveImage}
           className={styles.removeButton}
         >
-          {t('createBoardForm.removeImage')}
+          {t('board:createBoardForm.removeImage')}
         </button>
       )}
     </div>

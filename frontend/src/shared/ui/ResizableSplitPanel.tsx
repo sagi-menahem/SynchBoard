@@ -21,7 +21,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   minRightWidth = 200,
   onSplitChange,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const [splitRatio, setSplitRatio] = useState(initialSplitRatio);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -92,7 +92,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
         type="button"
         className={`${styles.divider} ${isDragging ? styles.dragging : ''}`}
         onMouseDown={handleMouseDown}
-        aria-label={t('accessibility.resizePanels')}
+        aria-label={t('common:accessibility.resizePanels')}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             handleMouseDown(e as unknown as React.MouseEvent);

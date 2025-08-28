@@ -20,7 +20,7 @@ interface CreateBoardFormProps {
 }
 
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   
   const getTranslationKey = (sizeKey: string): string => {
     const keyMap: Record<string, string> = {
@@ -77,7 +77,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>
           <Plus size={20} />
-          {t('createBoardForm.heading')}
+          {t('board:createBoardForm.heading')}
         </h3>
       </div>
 
@@ -96,13 +96,13 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label htmlFor="board-name">
           <Pencil size={14} />
-          {t('createBoardForm.label.boardName')}
+          {t('board:createBoardForm.label.boardName')}
         </label>
         <Input
           id="board-name"
           name="name"
           type="text"
-          placeholder={t('createBoardForm.placeholder.name')}
+          placeholder={t('board:createBoardForm.placeholder.name')}
           required
           disabled={isPending}
         />
@@ -111,12 +111,12 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label htmlFor="board-description">
           <FileText size={14} />
-          {t('createBoardForm.label.description')}
+          {t('board:createBoardForm.label.description')}
         </label>
         <textarea
           id="board-description"
           name="description"
-          placeholder={t('createBoardForm.placeholder.description')}
+          placeholder={t('board:createBoardForm.placeholder.description')}
           rows={3}
           className={styles.description}
           disabled={isPending}
@@ -126,14 +126,14 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>
           <Users size={14} />
-          {t('createBoardForm.label.inviteMembers')}
+          {t('board:createBoardForm.label.inviteMembers')}
         </label>
         <MemberInviteInput onMembersChange={setInviteEmails} disabled={isPending} />
       </div>
 
       <div className={styles.field}>
         <div className={utilStyles.settingRow}>
-          <span className={utilStyles.settingLabel}>{t('createBoardForm.label.canvasBackground')}:</span>
+          <span className={utilStyles.settingLabel}>{t('board:createBoardForm.label.canvasBackground')}:</span>
           <ColorPicker
             color={canvasBackgroundColor}
             onChange={setCanvasBackgroundColor}
@@ -142,7 +142,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           <span className={utilStyles.settingValue}>
             {(() => {
               const colorName = getColorName(canvasBackgroundColor);
-              return colorName ? t(`colors.${colorName}`) : canvasBackgroundColor;
+              return colorName ? t(`common:colors.${colorName}`) : canvasBackgroundColor;
             })()}
           </span>
         </div>
@@ -151,7 +151,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       <div className={styles.field}>
         <label>
           <Monitor size={14} />
-          {t('createBoardForm.label.canvasSize')}
+          {t('board:createBoardForm.label.canvasSize')}
         </label>
         <div className={styles.canvasSizeOptions}>
           {/* Canvas Size Presets */}
@@ -166,11 +166,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                     checked={canvasSize === size}
                     onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                     disabled={isPending}
-                    aria-label={`${t(`canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
+                    aria-label={`${t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
                   />
                   <div className={styles.presetLabel}>
                     <span className={styles.presetName}>
-                      {t(`canvasSize.presets.${getTranslationKey(size)}.label`)}
+                      {t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)}
                     </span>
                     <span className={styles.presetInfo}>
                       ({preset.ratio}) - {preset.width}×{preset.height}
@@ -189,11 +189,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                 checked={canvasSize === 'custom'}
                 onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
                 disabled={isPending}
-                aria-label={`${t('canvasSize.custom.label')}`}
+                aria-label={`${t('board:canvasSize.custom.label')}`}
               />
               <div className={styles.presetLabel}>
                 <span className={styles.presetName}>
-                  {t('canvasSize.custom.label')}
+                  {t('board:canvasSize.custom.label')}
                 </span>
                 <span className={styles.presetInfo}>
                 </span>
@@ -210,7 +210,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
               min={CANVAS_CONFIG.MIN_WIDTH}
               max={CANVAS_CONFIG.MAX_WIDTH}
               disabled={isPending}
-              placeholder={t('createBoardForm.placeholder.width')}
+              placeholder={t('board:createBoardForm.placeholder.width')}
             />
             <span>×</span>
             <Input
@@ -220,19 +220,19 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
               min={CANVAS_CONFIG.MIN_HEIGHT}
               max={CANVAS_CONFIG.MAX_HEIGHT}
               disabled={isPending}
-              placeholder={t('createBoardForm.placeholder.height')}
+              placeholder={t('board:createBoardForm.placeholder.height')}
             />
-            <span>{t('createBoardForm.label.pixels')}</span>
+            <span>{t('board:createBoardForm.label.pixels')}</span>
           </div>
         )}
       </div>
 
       <div className={styles.buttonGroup}>
         <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
-          {t('common.button.cancel')}
+          {t('common:button.cancel')}
         </Button>
         <Button type="submit" disabled={isPending} variant="primary">
-          {isPending ? t('common.button.creating') : t('createBoardForm.button.createBoard')}
+          {isPending ? t('common:button.creating') : t('board:createBoardForm.button.createBoard')}
         </Button>
       </div>
       </form>

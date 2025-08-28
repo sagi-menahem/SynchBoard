@@ -11,7 +11,7 @@ interface BoardEditState {
 }
 
 export const useBoardEditing = (boardId: number, initialName?: string, initialDescription?: string) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
 
   const [baseState] = useState<BoardEditState>({
     name: initialName,
@@ -33,9 +33,9 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
         await toast.promise(
           boardService.updateBoardName(boardId, newName),
           {
-            loading: t('loading.board.nameUpdate'),
-            success: t('success.board.nameUpdate'),
-            error: t('errors.board.nameUpdate'),
+            loading: t('board:loading.nameUpdate'),
+            success: t('board:success.nameUpdate'),
+            error: t('board:errors.nameUpdate'),
           },
         );
       } catch (error) {
@@ -55,9 +55,9 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
         await toast.promise(
           boardService.updateBoardDescription(boardId, newDescription),
           {
-            loading: t('loading.board.descriptionUpdate'),
-            success: t('success.board.descriptionUpdate'),
-            error: t('errors.board.descriptionUpdate'),
+            loading: t('board:loading.descriptionUpdate'),
+            success: t('board:success.descriptionUpdate'),
+            error: t('board:errors.descriptionUpdate'),
           },
         );
       } catch (error) {

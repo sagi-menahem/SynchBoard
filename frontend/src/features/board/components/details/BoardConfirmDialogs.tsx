@@ -22,7 +22,7 @@ const BoardConfirmDialogs: React.FC<BoardConfirmDialogsProps> = ({
     onConfirmLeave,
     onConfirmDelete,
 }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['board', 'common']);
 
     return (
         <>
@@ -30,16 +30,16 @@ const BoardConfirmDialogs: React.FC<BoardConfirmDialogsProps> = ({
                 isOpen={isLeaveConfirmOpen}
                 onClose={onCloseLeave}
                 onConfirm={onConfirmLeave}
-                title={t('leaveBoard.confirmTitle')}
-                message={t('leaveBoard.confirmText', { boardName })}
+                title={t('board:leaveBoard.confirmTitle')}
+                message={t('board:leaveBoard.confirmText', { boardName })}
             />
 
             <ConfirmationDialog
                 isOpen={isDeleteConfirmOpen}
                 onClose={onCloseDelete}
                 onConfirm={onConfirmDelete}
-                title={t('pictureManager.deleteButton')}
-                message={t('leaveBoard.confirmText', { boardName })}
+                title={t('common:pictureManager.deleteButton')}
+                message={t('board:leaveBoard.confirmText', { boardName })}
             />
         </>
     );

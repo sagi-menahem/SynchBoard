@@ -13,7 +13,7 @@ interface ViewToggleProps {
 }
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, className }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   
   return (
     <div className={`${styles.viewToggle} ${className || ''}`}>
@@ -21,7 +21,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, classNa
         type="button"
         className={`${styles.toggleButton} ${value === 'grid' ? styles.active : ''}`}
         onClick={() => onChange('grid')}
-        title={t('toolbar.view.grid')}
+        title={t('board:toolbar.view.grid')}
       >
         <Grid3X3 size={16} />
       </button>
@@ -29,7 +29,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, classNa
         type="button"
         className={`${styles.toggleButton} ${value === 'list' ? styles.active : ''}`}
         onClick={() => onChange('list')}
-        title={t('toolbar.view.list')}
+        title={t('board:toolbar.view.list')}
       >
         <List size={16} />
       </button>

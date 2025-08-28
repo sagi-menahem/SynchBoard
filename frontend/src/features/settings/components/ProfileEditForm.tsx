@@ -15,24 +15,24 @@ interface ProfileEditFormProps {
 }
 
 const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChange, onSave, onCancel }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['settings', 'common']);
 
     return (
         <>
             <div className={styles.field}>
                 <label htmlFor="firstName">
-                    {t('settingsPage.firstNameLabel')}
+                    {t('settings:page.firstNameLabel')}
                     <span className={styles.required}> *</span>
                 </label>
                 <Input id="firstName" name="firstName" value={formData.firstName} onChange={onInputChange} required />
             </div>
             <div className={styles.field}>
-                <label htmlFor="lastName">{t('settingsPage.lastNameLabel')}</label>
+                <label htmlFor="lastName">{t('settings:page.lastNameLabel')}</label>
                 <Input id="lastName" name="lastName" value={formData.lastName || ''} onChange={onInputChange} />
             </div>
             <div className={styles.field}>
                 <label htmlFor="gender">
-                    {t('settingsPage.genderLabel')}
+                    {t('settings:page.genderLabel')}
                     <span className={styles.required}> *</span>
                 </label>
                 <div className={styles.radioGroup}>
@@ -45,7 +45,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
                             onChange={onInputChange}
                             required
                         />
-                        {t('common.form.option.male')}
+                        {t('common:form.option.male')}
                     </label>
                     <label className={styles.radioLabel}>
                         <input
@@ -56,12 +56,12 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
                             onChange={onInputChange}
                             required
                         />
-                        {t('common.form.option.female')}
+                        {t('common:form.option.female')}
                     </label>
                 </div>
             </div>
             <div className={styles.field}>
-                <label htmlFor="dateOfBirth">{t('settingsPage.dateOfBirthLabel')}</label>
+                <label htmlFor="dateOfBirth">{t('settings:page.dateOfBirthLabel')}</label>
                 <Input 
                     id="dateOfBirth" 
                     name="dateOfBirth" 
@@ -72,17 +72,17 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
                 />
             </div>
             <div className={styles.field}>
-                <label htmlFor="phoneNumber">{t('settingsPage.phoneNumberLabel')}</label>
+                <label htmlFor="phoneNumber">{t('settings:page.phoneNumberLabel')}</label>
                 <Input id="phoneNumber" name="phoneNumber" value={formData.phoneNumber || ''} onChange={onInputChange} />
             </div>
             <div className={styles.buttonGroup}>
                 <Button onClick={onCancel} variant="secondary">
                     <X size={16} />
-                    {t('settingsPage.buttons.cancel')}
+                    {t('settings:page.buttons.cancel')}
                 </Button>
                 <Button onClick={onSave} variant="primary">
                     <Save size={16} />
-                    {t('settingsPage.buttons.save')}
+                    {t('settings:page.buttons.save')}
                 </Button>
             </div>
         </>

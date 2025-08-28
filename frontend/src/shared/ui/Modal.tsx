@@ -13,7 +13,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   if (!isOpen) {
     return null;
   }
@@ -33,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       <button
         className={styles.backdrop}
         onClick={onClose}
-        aria-label={t('accessibility.closeModal')}
+        aria-label={t('common:accessibility.closeModal')}
         tabIndex={-1}
       />
       <div

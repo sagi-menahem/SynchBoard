@@ -19,7 +19,7 @@ interface BoardDetailsHeaderProps {
 }
 
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['board', 'common']);
     const {
         boardDetails,
         currentUserIsAdmin,
@@ -89,14 +89,14 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                             variant="secondary"
                         >
                             <Upload size={16} />
-                            {t('boardDetailsPage.changePicture')}
+                            {t('board:detailsPage.changePicture')}
                         </Button>
                         <Button 
                             onClick={onDeletePicture}
                             variant="destructive"
                         >
                             <Trash2 size={16} />
-                            {t('boardDetailsPage.deletePicture')}
+                            {t('board:detailsPage.deletePicture')}
                         </Button>
                     </div>
                 )}
@@ -104,7 +104,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>{t('boardDetailsPage.boardDescription')}</h2>
+                    <h2 className={styles.sectionTitle}>{t('board:detailsPage.boardDescription')}</h2>
                     {currentUserIsAdmin && !isEditingDescription && (
                         <Button 
                             onClick={() => setIsEditingDescription(true)}
@@ -112,7 +112,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                             className={styles.editButton}
                         >
                             <PencilLine size={16} />
-                            {t('boardDetailsPage.editDescription')}
+                            {t('board:detailsPage.editDescription')}
                         </Button>
                     )}
                 </div>
@@ -123,7 +123,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                             <textarea
                                 value={descriptionValue}
                                 onChange={(e) => setDescriptionValue(e.target.value)}
-                                placeholder={t('boardDetailsPage.descriptionPlaceholder')}
+                                placeholder={t('board:detailsPage.descriptionPlaceholder')}
                                 disabled={isUpdating}
                                 rows={4}
                                 className={styles.descriptionTextarea}
@@ -137,7 +137,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                                 className={styles.cancelButton}
                             >
                                 <X size={16} />
-                                {t('common.button.cancel')}
+                                {t('common:button.cancel')}
                             </Button>
                             <Button 
                                 onClick={handleSaveDescription}
@@ -146,14 +146,14 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                                 className={styles.saveButton}
                             >
                                 <Save size={16} />
-                                {isUpdating ? t('common.button.saving') : t('common.button.save')}
+                                {isUpdating ? t('common:button.saving') : t('common:button.save')}
                             </Button>
                         </div>
                     </div>
                 ) : (
                     <div className={styles.descriptionContent}>
                         <p className={styles.description}>
-                            {boardDetails.description || t('boardDetailsPage.noDescription')}
+                            {boardDetails.description || t('board:detailsPage.noDescription')}
                         </p>
                     </div>
                 )}

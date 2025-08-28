@@ -7,13 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import logger from 'shared/utils/logger';
 
-import { oauthService } from '../services/oauthService';
+import { extractErrorFromCallback, extractTokenFromCallback } from '../services/authService';
 
 import { useAuth } from '.';
 
 
 export const useOAuthCallback = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
 
@@ -51,7 +51,7 @@ export const useOAuthCallback = () => {
     const handleOAuthCallback = async () => {
 
       try {
-        const error = oauthService.extractErrorFromCallback();
+        const error = extractErrorFromCallback();
         if (error) {
           logger.error('[useOAuthCallback] OAuth error extracted from callback:', error);
           toast.error(error);
@@ -63,11 +63,11 @@ export const useOAuthCallback = () => {
           return;
         }
 
-        const token = oauthService.extractTokenFromCallback();
+        const token = extractTokenFromCallback();
 
         if (!token) {
           logger.error('[useOAuthCallback] No token found in OAuth callback');
-          toast.error(t('oauth.error.noToken', 'Authentication failed. Please try again.'));
+          toast.error(t('auth:oauth.error.noToken'));
           window.history.replaceState({}, document.title, '/auth');
           navigate(APP_ROUTES.AUTH, { replace: true });
           setIsProcessing(false);
@@ -79,7 +79,7 @@ export const useOAuthCallback = () => {
         authLogin(token);
 
         if (!sessionStorage.getItem('oauth_success_shown')) {
-          toast.success(t('oauth.success', 'Successfully logged in with Google!'));
+          toast.success(t('auth:oauth.success'));
           sessionStorage.setItem('oauth_success_shown', 'true');
         }
         sessionStorage.removeItem('oauth_loading');
@@ -95,7 +95,7 @@ export const useOAuthCallback = () => {
 
       } catch (error) {
         logger.error('[useOAuthCallback] Error processing OAuth callback', error);
-        toast.error(t('oauth.error.processing', 'Authentication failed. Please try again.'));
+        toast.error(t('auth:oauth.error.processing'));
         window.history.replaceState({}, document.title, '/auth');
         navigate(APP_ROUTES.AUTH, { replace: true });
         setIsProcessing(false);

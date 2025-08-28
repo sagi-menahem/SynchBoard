@@ -11,15 +11,15 @@ interface DangerZoneSectionProps {
 }
 
 const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
 
   return (
     <section className={`${styles.section} ${styles.dangerZone}`}>
-      <h2 className={styles.sectionHeader}>{t('settingsPage.dangerZoneHeader')}</h2>
-      <p>{t('settingsPage.dangerZoneText')}</p>
+      <h2 className={styles.sectionHeader}>{t('settings:page.dangerZoneHeader')}</h2>
+      <p>{t('settings:page.dangerZoneText')}</p>
       <Button onClick={onDeleteAccount} variant="destructive">
         <Trash2 size={16} />
-        {t('settingsPage.deleteAccountButton')}
+        {t('settings:page.deleteAccountButton')}
       </Button>
     </section>
   );

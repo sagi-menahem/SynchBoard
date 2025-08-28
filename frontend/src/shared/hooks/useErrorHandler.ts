@@ -13,7 +13,7 @@ interface ErrorHandlerOptions {
 }
 
 export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const navigate = useNavigate();
   const { showToast = true, redirectOnError, logLevel = 'error' } = options;
 
@@ -25,7 +25,7 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
       toast.error(
         context
           ? `${context}: ${error.message}`
-          : error.message || t('errorHandler.unexpectedError'),
+          : error.message || t('common:errorHandler.unexpectedError'),
       );
     }
 

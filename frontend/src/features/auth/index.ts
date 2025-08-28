@@ -25,7 +25,6 @@ export { default as AuthPage } from './pages/AuthPage';
 
 // Services
 export * as AuthService from './services/authService';
-export * as OAuthService from './services/oauthService';
 
 // Utils
 export * from './utils/SecurityUtils';

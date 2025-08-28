@@ -24,7 +24,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
   onSave,
   onClose,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['board', 'common']);
   const [value, setValue] = useState(initialValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -79,10 +79,10 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
 
         <div className={styles.buttonGroup}>
           <Button type="button" onClick={onClose} disabled={isSubmitting} variant="secondary">
-            {t('common.button.cancel')}
+            {t('common:button.cancel')}
           </Button>
           <Button type="submit" disabled={isSubmitting} variant="primary">
-            {isSubmitting ? t('common.button.saving') : t('common.button.save')}
+            {isSubmitting ? t('common:button.saving') : t('common:button.save')}
           </Button>
         </div>
       </form>
