@@ -1,13 +1,11 @@
 import React from 'react';
 
 import App from 'App';
-import { AppProvider } from 'context';
+import { AppProvider } from 'AppProvider';
 import ReactDOM from 'react-dom/client';
-import { Logger } from 'utils';
+import logger from 'shared/utils/logger';
 
-const logger = Logger;
-
-import 'i18n';
+import 'shared/lib/i18n';
 import 'index.css';
 
 const rootElement = document.getElementById('root');
