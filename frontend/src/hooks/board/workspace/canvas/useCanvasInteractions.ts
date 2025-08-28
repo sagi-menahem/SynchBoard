@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { Logger, optimizeDrawingPoints } from 'utils';
+import { optimizeDrawingPoints } from 'utils';
 
-import { CANVAS_CONFIG, TOOLS } from 'constants/BoardConstants';
+import { TOOLS } from 'constants/BoardConstants';
 import { useConnectionStatus } from 'hooks/common/useConnectionStatus';
 import {
   ActionType,
@@ -35,7 +35,7 @@ interface UseCanvasInteractionsProps {
   onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
   senderId: string;
   drawingState: DrawingState;
-  getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => { x: number; y: number } | null;
+  getMouseCoordinates: (event: MouseEvent, canvas: HTMLCanvasElement) => Point | null;
   isShapeSizeValid: (width: number, height: number) => boolean;
   isRadiusValid: (radius: number) => boolean;
   onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
@@ -55,97 +55,99 @@ export const useCanvasInteractions = ({
   isRadiusValid,
   onTextInputRequest,
 }: UseCanvasInteractionsProps) => {
-  const { isDrawing, setIsDrawing, startPoint, currentPath } = drawingState;
+  const { isDrawing, setIsDrawing, startPoint, currentPath, resetDrawingState } = drawingState;
   const { shouldBlockFunctionality } = useConnectionStatus();
-
   const originalImageData = useRef<ImageData | null>(null);
 
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
-      let ctx = contextRef.current;
+      const ctx = contextRef.current;
 
-      if (canvas && !ctx) {
-        ctx = canvas.getContext('2d', { willReadFrequently: true });
-        if (ctx) {
-          ctx.lineCap = 'round';
-          ctx.lineJoin = 'round';
-          contextRef.current = ctx;
-        }
-      }
-
-      if (!canvas || !ctx) return;
+      if (!canvas || !ctx || isDrawing) return;
 
       if (shouldBlockFunctionality) {
         return;
       }
 
-      originalImageData.current = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const coords = getMouseCoordinates(event.nativeEvent, canvas);
+      if (!coords) return;
 
+      resetDrawingState();
       setIsDrawing(true);
-      const { offsetX, offsetY } = event.nativeEvent;
+
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = strokeWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // Capture current canvas state for preview
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      originalImageData.current = imageData;
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-        currentPath.current = [{ x: offsetX / canvas.width, y: offsetY / canvas.height }];
-      } else if (
-        tool === TOOLS.SQUARE ||
-        tool === TOOLS.RECTANGLE ||
-        tool === TOOLS.CIRCLE ||
-        tool === TOOLS.TRIANGLE ||
-        tool === TOOLS.PENTAGON ||
-        tool === TOOLS.HEXAGON ||
-        tool === TOOLS.STAR ||
-        tool === TOOLS.LINE ||
-        tool === TOOLS.DOTTED_LINE ||
-        tool === TOOLS.ARROW ||
-        tool === TOOLS.TEXT
-      ) {
-        startPoint.current = { x: offsetX, y: offsetY };
+        currentPath.current = [{ x: coords.x / canvas.width, y: coords.y / canvas.height }];
+        ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
+        ctx.beginPath();
+        ctx.moveTo(coords.x, coords.y);
+      } else if (tool === TOOLS.TEXT) {
+        startPoint.current = coords;
       } else if (tool === TOOLS.COLOR_PICKER) {
-        const imageData = ctx.getImageData(offsetX, offsetY, 1, 1);
-        const data = imageData.data;
-        const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
-        Logger.debug('Color picked:', hex);
+        // Note: COLOR_PICKER functionality is handled by Canvas component through handleCanvasClick
       } else if (tool === TOOLS.RECOLOR) {
         // Recolor logic is now handled in Canvas.tsx through handleCanvasClick
-        Logger.debug('Recolor tool mouse down at:', offsetX, offsetY);
+      } else {
+        // Shape tools
+        startPoint.current = coords;
       }
     },
-    [tool, canvasRef, contextRef, setIsDrawing, startPoint, currentPath, shouldBlockFunctionality],
+    [
+      canvasRef,
+      contextRef,
+      tool,
+      strokeWidth,
+      strokeColor,
+      isDrawing,
+      setIsDrawing,
+      startPoint,
+      currentPath,
+      resetDrawingState,
+      getMouseCoordinates,
+      shouldBlockFunctionality,
+    ],
   );
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
+
     if (!canvas || !ctx) return;
 
     const handleMouseMove = (event: MouseEvent) => {
       if (!isDrawing || !originalImageData.current) return;
+
       const coords = getMouseCoordinates(event, canvas);
       if (!coords) return;
 
       ctx.putImageData(originalImageData.current, 0, 0);
 
+      ctx.strokeStyle = strokeColor;
       ctx.lineWidth = strokeWidth;
-      ctx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
-      ctx.strokeStyle = tool === TOOLS.ERASER ? CANVAS_CONFIG.PREVIEW_ERASER_COLOR : strokeColor;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
 
       const originalAlpha = ctx.globalAlpha;
-      ctx.globalAlpha = 0.7;
+      ctx.globalAlpha = 0.8;
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
         currentPath.current.push({ x: coords.x / canvas.width, y: coords.y / canvas.height });
-        ctx.beginPath();
+        ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
+
         if (currentPath.current.length > 1) {
-          ctx.moveTo(
-            currentPath.current[0].x * canvas.width,
-            currentPath.current[0].y * canvas.height,
-          );
+          ctx.beginPath();
+          ctx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
           for (let i = 1; i < currentPath.current.length; i++) {
-            ctx.lineTo(
-              currentPath.current[i].x * canvas.width,
-              currentPath.current[i].y * canvas.height,
-            );
+            ctx.lineTo(currentPath.current[i].x * canvas.width, currentPath.current[i].y * canvas.height);
           }
           ctx.stroke();
         }
