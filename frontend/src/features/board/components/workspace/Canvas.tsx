@@ -47,7 +47,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   const { preferences } = usePreferences();
 
-  const canvasConfig = props.canvasConfig || {
+  const canvasConfig = props.canvasConfig ?? {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
     width: CANVAS_CONFIG.DEFAULT_WIDTH,
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,
@@ -76,10 +76,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
         const data = imageData.data;
         
         if (data[3] === 0) {
-          const backgroundColor = canvasConfig.backgroundColor || '#FFFFFF';
+          const backgroundColor = canvasConfig.backgroundColor ?? '#FFFFFF';
           // Ensure color is in 6-character hex format
           const normalizedColor = backgroundColor.length === 4 ? 
-            '#' + backgroundColor.slice(1).split('').map((c) => c + c).join('') :
+            `#${  backgroundColor.slice(1).split('').map((c) => c + c).join('')}` :
             backgroundColor;
           props.onColorPick?.(normalizedColor);
         } else {
@@ -115,7 +115,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   };
 
   const handleTextSubmit = (text: string) => {
-    if (textInput && canvasRef.current) {
+    if (textInput !== null && canvasRef.current !== null) {
       const canvas = canvasRef.current;
       props.onDraw({
         type: 'OBJECT_ADD',
@@ -140,7 +140,9 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   };
 
   const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (props.tool !== TOOLS.RECOLOR || !canvasRef.current) return;
+    if (props.tool !== TOOLS.RECOLOR || canvasRef.current === null) {
+      return;
+    }
 
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
@@ -167,7 +169,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       <div 
         className={canvasContainerClassName}
         style={{ 
-          backgroundColor: preferences.boardBackgroundSetting || undefined,
+          backgroundColor: preferences.boardBackgroundSetting ?? undefined,
           ...canvasContainerStyle,
         }}
       >
@@ -208,7 +210,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       {shouldShowLoading && (
         <div className={styles.loadingOverlay}>
           <div className={styles.placeholderContent}>
-            <div className={styles.placeholderSpinner}></div>
+            <div className={styles.placeholderSpinner} />
             <p className={styles.placeholderText}>{t('board:canvas.loading')}</p>
           </div>
         </div>

@@ -36,9 +36,9 @@ export const useUserProfile = () => {
         // Auto-sync editing form data
         setFormData({
           firstName: userData.firstName,
-          lastName: userData.lastName || '',
+          lastName: userData.lastName ?? '',
           gender: userData.gender,
-          phoneNumber: userData.phoneNumber || '',
+          phoneNumber: userData.phoneNumber ?? '',
         });
       })
       .catch((error: unknown) => {
@@ -83,7 +83,7 @@ export const useUserProfile = () => {
         error: t('settings:errors.picture.upload'),
       },
     );
-    setUser(updatedUser as UserProfile); // Direct state update, no refetch needed
+    setUser(updatedUser); // Direct state update, no refetch needed
     return updatedUser;
   }, [t]);
 
@@ -96,7 +96,7 @@ export const useUserProfile = () => {
         error: t('settings:errors.picture.delete'),
       },
     );
-    setUser(updatedUser as UserProfile); // Direct state update, no refetch needed
+    setUser(updatedUser); // Direct state update, no refetch needed
     return updatedUser;
   }, [t]);
 
@@ -111,9 +111,9 @@ export const useUserProfile = () => {
     if (user) {
       setFormData({
         firstName: user.firstName,
-        lastName: user.lastName || '',
+        lastName: user.lastName ?? '',
         gender: user.gender,
-        phoneNumber: user.phoneNumber || '',
+        phoneNumber: user.phoneNumber ?? '',
       });
     }
     setIsEditing(false);

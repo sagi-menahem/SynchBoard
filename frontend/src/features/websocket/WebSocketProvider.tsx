@@ -21,7 +21,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     let isEffectActive = true;
     
     const updateConnectionState = () => {
-      if (!isEffectActive) return;
+      if (!isEffectActive) {return;}
       
       const currentState = websocketService.getConnectionState();
       setConnectionState(currentState);
@@ -30,7 +30,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     const startPolling = () => {
       pollInterval = setInterval(() => {
-        if (!isEffectActive) return;
+        if (!isEffectActive) {return;}
         updateConnectionState();
       }, 3000);
     };
@@ -38,7 +38,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     if (token) {
       setConnectionState('connecting');
       websocketService.connect(token, () => {
-        if (!isEffectActive) return;
+        if (!isEffectActive) {return;}
         
         setIsSocketConnected(true);
         setConnectionState('connected');

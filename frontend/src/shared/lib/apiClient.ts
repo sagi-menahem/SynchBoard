@@ -44,7 +44,7 @@ apiClient.interceptors.response.use(
   },
   (error: AxiosError) => {
     logger.error('[API] Error Response', {
-      status: error.response?.status || 'Network Error',
+      status: error.response?.status ?? 'Network Error',
       method: error.config?.method?.toUpperCase(),
       url: error.config?.url,
       currentPath: window.location.pathname,
@@ -56,24 +56,31 @@ apiClient.interceptors.response.use(
 
     const isBoardRequest = error.config?.url?.includes('/boards/');
     const responseData = error.response?.data as { message?: string } | undefined;
-    const isUserNotFoundError = error.response?.status === 500 &&
-      responseData?.message?.includes?.('User not found') ||
-      error.response?.status === 500 &&
-      error.message?.includes?.('User not found');
+    const isUserNotFoundError = (error.response?.status === 500 &&
+      responseData?.message?.includes?.('User not found')) || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+      (error.response?.status === 500 &&
+      error.message?.includes?.('User not found'));
     const isOAuthRedirectError = !error.response &&
       (error.message?.includes?.('CORS') ||
         error.message?.includes?.('blocked by CORS policy') ||
         error.code === 'ERR_NETWORK') &&
       localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     const isSessionTimeout = (error.response && [401, 403].includes(error.response.status) && !isLoginAttempt) ||
       (isUserNotFoundError && !isLoginAttempt) ||
       (isOAuthRedirectError && !isLoginAttempt);
 
     if (isSessionTimeout) {
       if (error.response?.status === 401 || !isBoardRequest || isUserNotFoundError || isOAuthRedirectError) {
-        const reason = isUserNotFoundError ? 'user not found in database' :
-          isOAuthRedirectError ? 'OAuth redirect (expired session)' :
-            `${error.response?.status} response`;
+        const reason = (() => {
+          if (isUserNotFoundError) {
+            return 'user not found in database';
+          }
+          if (isOAuthRedirectError) {
+            return 'OAuth redirect (expired session)';
+          }
+          return `${error.response?.status} response`;
+        })();
         logger.warn(`[API] Session invalidated due to ${reason}`, {
           currentPath: window.location.pathname,
           clearingToken: true,

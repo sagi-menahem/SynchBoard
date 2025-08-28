@@ -100,40 +100,50 @@ const BoardListPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
-        {boards.length > 0 ? (
-          <div className={`${styles.boardList} ${styles[viewMode]}`}>
-            {boards.map((board, index) => (
-              <div 
-                key={board.id}
-                className={styles.boardListItem}
-                style={{ animationDelay: `${index * 0.05}s` }}
-                onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
-              >
-                <BoardCard board={board} viewMode={viewMode} />
+{(() => {
+          if (boards.length > 0) {
+            return (
+              <div className={`${styles.boardList} ${styles[viewMode]}`}>
+                {boards.map((board, index) => (
+                  <div 
+                    key={board.id}
+                    className={styles.boardListItem}
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                    onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
+                  >
+                    <BoardCard board={board} viewMode={viewMode} />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        ) : searchQuery ? (
-          <div className={styles.emptyState}>
-            <p>{t('board:listPage.noSearchResults', { query: searchQuery })}</p>
-          </div>
-        ) : (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyStateCard}>
-              <div className={styles.emptyStateIcon}>
-                <LayoutDashboard size={48} />
+            );
+          }
+          
+          if (searchQuery) {
+            return (
+              <div className={styles.emptyState}>
+                <p>{t('board:listPage.noSearchResults', { query: searchQuery })}</p>
               </div>
-              <div className={styles.emptyStateContent}>
-                <h3 className={styles.emptyStateTitle}>
-                  {t('board:listPage.emptyStateTitle')}
-                </h3>
-                <p className={styles.emptyStateMessage}>
-                  {t('board:listPage.emptyStateMessage')}
-                </p>
+            );
+          }
+          
+          return (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyStateCard}>
+                <div className={styles.emptyStateIcon}>
+                  <LayoutDashboard size={48} />
+                </div>
+                <div className={styles.emptyStateContent}>
+                  <h3 className={styles.emptyStateTitle}>
+                    {t('board:listPage.emptyStateTitle')}
+                  </h3>
+                  <p className={styles.emptyStateMessage}>
+                    {t('board:listPage.emptyStateMessage')}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />

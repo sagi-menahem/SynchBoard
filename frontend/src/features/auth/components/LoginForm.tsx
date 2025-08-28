@@ -26,7 +26,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
 
   return (
     <form action={submitAction} className={styles.form}>
-      {state.error && (
+      {state.error !== undefined && state.error !== '' && (
         <div className={styles.error} role="alert">
           {state.error}
         </div>
@@ -73,7 +73,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
 
       <GoogleLoginButton 
         onClick={handleGoogleLogin} 
-        disabled={isPending || isGoogleLoading} 
+        disabled={isPending ?? isGoogleLoading} 
       />
 
       <div className={styles.forgotPasswordSection}>

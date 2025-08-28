@@ -2,7 +2,7 @@
  * Email validation using regex pattern
  */
 export const validateEmail = (email: string): boolean => {
-  if (!email || typeof email !== 'string') {
+  if (email === null || email === '' || typeof email !== 'string') {
     return false;
   }
   
@@ -14,7 +14,7 @@ export const validateEmail = (email: string): boolean => {
  * Check if a string is empty or only whitespace
  */
 export const isEmpty = (value: string | null | undefined): boolean => {
-  return !value || value.trim().length === 0;
+  return value === null || value === undefined || value.trim().length === 0;
 };
 
 /**

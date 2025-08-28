@@ -28,7 +28,7 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
     className,
   } = item;
 
-  if (!visible) return null;
+  if (!visible) {return null;}
 
   const buttonClass = [
     styles.toolbarButton,
@@ -54,10 +54,10 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
 const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
   const { content, visible = true, className } = item;
 
-  if (!visible) return null;
+  if (!visible) {return null;}
 
   return (
-    <h1 className={`${styles.toolbarTitle} ${className || ''}`}>
+    <h1 className={`${styles.toolbarTitle} ${className ?? ''}`}>
       {content}
     </h1>
   );
@@ -66,7 +66,7 @@ const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
 const ToolbarSearch: React.FC<{ item: SearchToolbarItem }> = ({ item }) => {
   const { placeholder, value, onSearch, onClear, visible = true, className } = item;
 
-  if (!visible) return null;
+  if (!visible) {return null;}
 
   return (
     <SearchBar
@@ -82,7 +82,7 @@ const ToolbarSearch: React.FC<{ item: SearchToolbarItem }> = ({ item }) => {
 const ToolbarViewToggle: React.FC<{ item: ViewToggleToolbarItem }> = ({ item }) => {
   const { value, onChange, visible = true, className } = item;
 
-  if (!visible) return null;
+  if (!visible) {return null;}
 
   return (
     <ViewToggle
@@ -96,7 +96,7 @@ const ToolbarViewToggle: React.FC<{ item: ViewToggleToolbarItem }> = ({ item }) 
 const ToolbarMemberActivity: React.FC<{ item: MemberActivityToolbarItem }> = ({ item }) => {
   const { memberCount, onlineCount, onClick, visible = true, className } = item;
 
-  if (!visible) return null;
+  if (!visible) {return null;}
 
   return (
     <MemberActivityIndicator
@@ -111,17 +111,17 @@ const ToolbarMemberActivity: React.FC<{ item: MemberActivityToolbarItem }> = ({ 
 const ToolbarCustom: React.FC<{ item: CustomToolbarItem }> = ({ item }) => {
   const { content, visible = true, className } = item;
 
-  if (!visible) return null;
+  if (!visible) {return null;}
 
   return (
-    <div className={`${styles.customItem} ${className || ''}`}>
+    <div className={`${styles.customItem} ${className ?? ''}`}>
       {content}
     </div>
   );
 };
 
 const renderToolbarItem = (item: ToolbarItem, index: number): React.ReactNode => {
-  const key = item.key || `${item.type}-${index}`;
+  const key = item.key ?? `${item.type}-${index}`;
 
   switch (item.type) {
     case 'title':
@@ -143,7 +143,7 @@ const renderToolbarItem = (item: ToolbarItem, index: number): React.ReactNode =>
 
 const ToolbarSection: React.FC<{ items: ToolbarItem[]; className?: string }> = ({ items, className }) => {
   return (
-    <div className={`${styles.toolbarSection} ${className || ''}`}>
+    <div className={`${styles.toolbarSection} ${className ?? ''}`}>
       {items.map(renderToolbarItem)}
     </div>
   );
@@ -153,7 +153,7 @@ export const UniversalToolbar: React.FC<UniversalToolbarProps> = ({ config, clas
   const { leftSection = [], centerSection = [], rightSection = [] } = config;
 
   return (
-    <header className={`${styles.universalToolbar} ${className || ''}`}>
+    <header className={`${styles.universalToolbar} ${className ?? ''}`}>
       <ToolbarSection items={leftSection} className={styles.leftSection} />
       <ToolbarSection items={centerSection} className={styles.centerSection} />
       <ToolbarSection items={rightSection} className={styles.rightSection} />

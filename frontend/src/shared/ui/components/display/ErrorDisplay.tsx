@@ -30,32 +30,32 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     switch (errorType) {
       case 'page':
         return {
-          title: title || t('common:errorDisplay.pageUnavailable'),
-          message: message || t('common:errorDisplay.pageUnavailableMessage'),
+          title: title ?? t('common:errorDisplay.pageUnavailable'),
+          message: message ?? t('common:errorDisplay.pageUnavailableMessage'),
           icon: '🚫',
           showRetry: true,
           showGoBack: true,
         };
       case 'board':
         return {
-          title: title || t('common:errorDisplay.boardLoadingError'),
-          message: message || t('common:errorDisplay.boardLoadingErrorMessage'),
+          title: title ?? t('common:errorDisplay.boardLoadingError'),
+          message: message ?? t('common:errorDisplay.boardLoadingErrorMessage'),
           icon: '📋',
           showRetry: true,
           showGoBack: true,
         };
       case 'component':
         return {
-          title: title || t('common:errorDisplay.featureUnavailable'),
-          message: message || t('common:errorDisplay.featureUnavailableMessage'),
+          title: title ?? t('common:errorDisplay.featureUnavailable'),
+          message: message ?? t('common:errorDisplay.featureUnavailableMessage'),
           icon: '⚠️',
           showRetry: true,
           showGoBack: false,
         };
       default:
         return {
-          title: title || t('common:errorDisplay.somethingWentWrong'),
-          message: message || t('common:errorDisplay.unexpectedError'),
+          title: title ?? t('common:errorDisplay.somethingWentWrong'),
+          message: message ?? t('common:errorDisplay.unexpectedError'),
           icon: '❌',
           showRetry: true,
           showGoBack: false,

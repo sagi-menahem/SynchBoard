@@ -13,11 +13,12 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       const password = formData.get('password') as string;
       const firstName = formData.get('firstName') as string;
       const lastName = formData.get('lastName') as string;
-      const gender = formData.get('gender') as 'male' | 'female';
+      const genderValue = formData.get('gender');
+      const gender = genderValue as 'male' | 'female';
       const phoneNumber = formData.get('phoneNumber') as string;
       const dateOfBirth = formData.get('dateOfBirth') as string;
 
-      if (!email || !password || !firstName || !gender) {
+      if (email === null || email === '' || password === null || password === '' || firstName === null || firstName === '' || genderValue === null || genderValue === '') {
         return { error: t('auth:registerForm.validation.required') };
       }
 
@@ -26,9 +27,9 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
         password,
         firstName,
         gender,
-        ...(lastName && { lastName }),
-        ...(phoneNumber && { phoneNumber }),
-        ...(dateOfBirth && { dateOfBirth }),
+        ...(lastName !== null && lastName !== '' && { lastName }),
+        ...(phoneNumber !== null && phoneNumber !== '' && { phoneNumber }),
+        ...(dateOfBirth !== null && dateOfBirth !== '' && { dateOfBirth }),
       };
     },
     serviceCall: authService.register,

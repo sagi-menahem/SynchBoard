@@ -38,7 +38,7 @@ export const drawLinePayload = (
   targetCanvas: HTMLCanvasElement,
 ): void => {
   const { points, color, lineWidth } = payload;
-  if (points.length < 2) return;
+  if (points.length < 2) {return;}
 
   targetCtx.strokeStyle = color;
   targetCtx.lineWidth = lineWidth;
@@ -340,7 +340,7 @@ export const drawArrowPayload = (
 };
 
 export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | null => {
-  if (!canvas) return null;
+  if (!canvas) {return null;}
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (ctx) {
@@ -352,7 +352,7 @@ export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRend
 };
 
 const getTransactionOpacity = (payload: EnhancedActionPayload): number => {
-  if (!payload.transactionId) return 1.0;
+  if (!payload.transactionId) {return 1.0;}
 
   switch (payload.transactionStatus) {
     case 'pending' as const:
@@ -378,23 +378,23 @@ export const replayDrawAction = (
   targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 
   if (payload.tool === TOOLS.BRUSH || payload.tool === TOOLS.ERASER) {
-    drawLinePayload(payload as LinePayload, targetCtx, targetCanvas);
+    drawLinePayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.SQUARE || payload.tool === TOOLS.RECTANGLE) {
-    drawRectanglePayload(payload as RectanglePayload, targetCtx, targetCanvas);
+    drawRectanglePayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.CIRCLE) {
-    drawCirclePayload(payload as CirclePayload, targetCtx, targetCanvas);
+    drawCirclePayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.TRIANGLE) {
-    drawTrianglePayload(payload as TrianglePayload, targetCtx, targetCanvas);
+    drawTrianglePayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.PENTAGON || payload.tool === TOOLS.HEXAGON) {
-    drawPolygonPayload(payload as PolygonPayload, targetCtx, targetCanvas);
+    drawPolygonPayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.STAR) {
-    drawStarPayload(payload as PolygonPayload, targetCtx, targetCanvas);
+    drawStarPayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.LINE || payload.tool === TOOLS.DOTTED_LINE) {
-    drawStraightLinePayload(payload as StraightLinePayload, targetCtx, targetCanvas);
+    drawStraightLinePayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.ARROW) {
-    drawArrowPayload(payload as ArrowPayload, targetCtx, targetCanvas);
+    drawArrowPayload(payload, targetCtx, targetCanvas);
   } else if (payload.tool === TOOLS.TEXT) {
-    drawTextPayload(payload as TextBoxPayload, targetCtx, targetCanvas);
+    drawTextPayload(payload, targetCtx, targetCanvas);
   }
 
   targetCtx.globalAlpha = originalGlobalAlpha;

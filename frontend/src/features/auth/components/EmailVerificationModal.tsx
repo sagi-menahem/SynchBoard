@@ -35,7 +35,9 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   }, [resendCooldown]);
 
   const handleResendCode = async () => {
-    if (resendCooldown > 0) return;
+    if (resendCooldown > 0) {
+      return;
+    }
     
     const result = await resendVerificationCode();
     if (result.success) {
@@ -77,7 +79,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
         </p>
 
         <form action={submitAction} className={styles.form}>
-          {state.error && (
+          {state.error !== undefined && state.error !== '' && (
             <div className={styles.error} role="alert">
               {state.error}
             </div>

@@ -25,7 +25,7 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
 
   const handleUpdateName = useCallback(
     async (newName: string) => {
-      if (!boardId) return;
+      if (!boardId) {return;}
 
       setOptimisticState({ name: newName });
 
@@ -47,7 +47,7 @@ export const useBoardEditing = (boardId: number, initialName?: string, initialDe
 
   const handleUpdateDescription = useCallback(
     async (newDescription: string) => {
-      if (!boardId) return;
+      if (!boardId) {return;}
 
       setOptimisticState({ description: newDescription });
 

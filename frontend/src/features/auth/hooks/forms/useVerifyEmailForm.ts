@@ -13,7 +13,7 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
     validateFormData: (formData: FormData) => {
       const verificationCode = formData.get('verificationCode') as string;
 
-      if (!verificationCode || verificationCode.length !== 6) {
+      if (verificationCode === null || verificationCode === '' || verificationCode.length !== 6) {
         return { error: t('verifyEmail.validation.codeRequired') };
       }
 

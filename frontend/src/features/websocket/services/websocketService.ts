@@ -6,8 +6,7 @@ import {
   validateBoardMessage,
   validateMessage,
 } from 'features/auth/utils/SecurityUtils';
-import { WEBSOCKET_URL } from 'shared/constants/ApiConstants';
-import { AUTH_HEADER_CONFIG } from 'shared/constants/ApiConstants';
+import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'shared/constants/ApiConstants';
 import { WEBSOCKET_CONFIG } from 'shared/constants/AppConstants';
 import logger from 'shared/utils/logger';
 import SockJS from 'sockjs-client';
@@ -80,7 +79,7 @@ class WebSocketService {
         return null;
       }
 
-      const parsedData = JSON.parse(messageBody);
+      const parsedData = JSON.parse(messageBody) as unknown;
 
       if (!this.validateMessageWithSchema(parsedData, schemaKey)) {
         return null;
@@ -165,7 +164,7 @@ class WebSocketService {
     this.connectionState = 'connecting';
 
     if (this.stompClient) {
-      this.stompClient.deactivate();
+      void this.stompClient.deactivate();
       this.stompClient = null;
     }
     if (this.connectionTimeout) {
@@ -213,7 +212,7 @@ class WebSocketService {
         }
       },
       onStompError: (frame) => {
-        const errorMessage = frame.headers['message'] || 'Unknown broker error';
+        const errorMessage = frame.headers['message'] ?? 'Unknown broker error';
         logger.warn(`Server error: ${errorMessage}`);
 
         this.handleDisconnection();
@@ -252,7 +251,7 @@ class WebSocketService {
 
     if (this.stompClient?.active) {
       try {
-        this.stompClient.deactivate();
+        void this.stompClient.deactivate();
       } catch (error) {
         logger.warn('Error during WebSocket disconnect:', error);
       }

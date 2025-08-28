@@ -49,14 +49,13 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
           </div>
         </div>
         <div className={styles.cardBody}>
-          <p className={styles.description}>{board.description || t('board:listPage.noDescription')}</p>
+          <p className={styles.description}>{board.description ?? t('board:listPage.noDescription')}</p>
           <div className={styles.resolutionInfo}>
             <span className={styles.canvasResolution}>{canvasResolution}</span>
           </div>
         </div>
         <div className={styles.cardFooter}>
-          <div className={styles.leftSection}>
-          </div>
+          <div className={styles.leftSection} />
           <div className={styles.centerSection}>
             {board.isAdmin && (
               <div className={styles.adminLabel} title={t('board:listPage.adminLabel')}>

@@ -12,6 +12,7 @@ const RootRedirect: React.FC = () => {
   
   useEffect(() => {
     if (!isInitializing) {
+      // Authentication has finished loading
     }
   }, [token, isInitializing]);
   

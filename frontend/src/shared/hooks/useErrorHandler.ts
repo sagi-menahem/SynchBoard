@@ -25,12 +25,12 @@ export const useErrorHandler = (options: ErrorHandlerOptions = {}) => {
       toast.error(
         context
           ? `${context}: ${error.message}`
-          : error.message || t('common:errorHandler.unexpectedError'),
+          : error.message ?? t('common:errorHandler.unexpectedError'),
       );
     }
 
     if (redirectOnError) {
-      navigate(redirectOnError);
+      void navigate(redirectOnError);
     }
   }, [navigate, showToast, redirectOnError, logLevel, t]);
 

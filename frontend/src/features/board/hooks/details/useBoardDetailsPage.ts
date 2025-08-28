@@ -24,7 +24,7 @@ export const useBoardDetailsPage = (boardId: number) => {
   const { handleUpdateName, handleUpdateDescription, optimisticState } = useBoardEditing(
     boardId,
     boardDetails?.name,
-    boardDetails?.description || undefined,
+    boardDetails?.description ?? undefined,
   );
 
   const { currentUserIsAdmin, userEmail } = useBoardPermissions(boardDetails);
@@ -45,7 +45,7 @@ export const useBoardDetailsPage = (boardId: number) => {
   );
 
   const handlePromote = useCallback(async () => {
-    if (!contextMenu.data) return;
+    if (!contextMenu.data) {return;}
     try {
       await memberPromote(contextMenu.data);
     } finally {
@@ -54,7 +54,7 @@ export const useBoardDetailsPage = (boardId: number) => {
   }, [contextMenu, memberPromote]);
 
   const handleRemove = useCallback(async () => {
-    if (!contextMenu.data) return;
+    if (!contextMenu.data) {return;}
     try {
       await memberRemove(contextMenu.data);
     } finally {
@@ -63,11 +63,11 @@ export const useBoardDetailsPage = (boardId: number) => {
   }, [contextMenu, memberRemove]);
 
   const handleLeaveBoard = useCallback(async () => {
-    if (!boardDetails) return;
+    if (!boardDetails) {return;}
     try {
       await boardService.leaveBoard(boardId);
       toast.success(t('board:success.leave', { boardName: boardDetails.name }));
-      navigate(APP_ROUTES.BOARD_LIST);
+      void navigate(APP_ROUTES.BOARD_LIST);
     } catch (error) {
       logger.error('Failed to leave board:', error);
       throw error;
@@ -85,6 +85,7 @@ export const useBoardDetailsPage = (boardId: number) => {
         logger.error('Picture upload error:', error);
         throw error;
       } finally {
+        // Intentionally empty - cleanup handled by caller
       }
     },
     [boardId, t],

@@ -9,7 +9,7 @@ interface BoardPermissions {
 export const useBoardPermissions = (boardDetails: BoardDetails | null): BoardPermissions => {
   const { userEmail } = useAuth();
 
-  const currentUserIsAdmin = boardDetails?.members.find((member) => member.email === userEmail)?.isAdmin || false;
+  const currentUserIsAdmin = boardDetails?.members.find((member) => member.email === userEmail)?.isAdmin ?? false;
 
   return {
     currentUserIsAdmin,

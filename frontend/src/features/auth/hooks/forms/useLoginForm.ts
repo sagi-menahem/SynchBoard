@@ -18,7 +18,7 @@ export const useLoginForm = () => {
       const email = formData.get('email') as string;
       const password = formData.get('password') as string;
 
-      if (!email || !password) {
+      if (email === null || email === '' || password === null || password === '') {
         return { error: t('loginForm.validation.required') };
       }
 
@@ -30,11 +30,11 @@ export const useLoginForm = () => {
       success: t('success.auth.login'),
       error: (err) => {
         let errorMessage = t('loginForm.error.unknown');
-        if (err && typeof err === 'object' && 'response' in err) {
+        if (err !== null && err !== undefined && typeof err === 'object' && 'response' in err) {
           const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
-          if (axiosError.response?.data?.message) {
+          if (axiosError.response?.data?.message !== undefined && axiosError.response?.data?.message !== '') {
             errorMessage = axiosError.response.data.message;
-          } else if (axiosError.message) {
+          } else if (axiosError.message !== undefined && axiosError.message !== '') {
             errorMessage = axiosError.message;
           }
         }
@@ -43,7 +43,7 @@ export const useLoginForm = () => {
     },
     onSuccess: (response) => {
       login(response.token);
-      navigate(APP_ROUTES.BOARD_LIST);
+      void navigate(APP_ROUTES.BOARD_LIST);
     },
     contextInfo: { action: 'login' },
     logContext: 'Login',

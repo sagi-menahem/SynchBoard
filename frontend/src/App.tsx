@@ -31,6 +31,7 @@ function AppRoutes() {
   
   useEffect(() => {
     if (import.meta.env.DEV) {
+      console.info('Route changed to:', location.pathname);
     }
   }, [location]);
 
@@ -120,8 +121,7 @@ function AppRoutes() {
             <Layout />
           </ProtectedRoute>
         }
-      >
-      </Route>
+      />
     </Routes>
   );
 }
@@ -136,8 +136,8 @@ function App() {
   useLanguageSync();
   
   useEffect(() => {
-    // Application initialization effect
-  }, []);
+    document.documentElement.style.setProperty('--toolbar-height', `${toolbarHeight}px`);
+  }, [toolbarHeight]);
 
   useEffect(() => {
     updateDocumentDirection(i18n.language);

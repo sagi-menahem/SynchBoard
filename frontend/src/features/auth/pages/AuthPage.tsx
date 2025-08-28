@@ -45,7 +45,7 @@ const AuthPage: React.FC = () => {
   const handleEmailVerificationSuccess = (token: string) => {
     authLogin(token);
     setShowEmailVerification(false);
-    navigate(APP_ROUTES.BOARD_LIST);
+    void navigate(APP_ROUTES.BOARD_LIST);
   };
 
   const toggleAuthMode = () => {

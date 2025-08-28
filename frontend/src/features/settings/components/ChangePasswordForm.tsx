@@ -39,7 +39,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
     }
 
     setIsSubmitting(true);
-    onSubmit({ currentPassword, newPassword })
+    void onSubmit({ currentPassword, newPassword })
       .then(() => {
         setCurrentPassword('');
         setNewPassword('');

@@ -73,6 +73,7 @@ export const isSafeUrl = (url: string): boolean => {
       return false;
     }
 
+    // eslint-disable-next-line no-script-url
     if (url.toLowerCase().includes('javascript:')) {
       return false;
     }

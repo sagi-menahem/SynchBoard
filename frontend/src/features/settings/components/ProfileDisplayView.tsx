@@ -21,7 +21,7 @@ const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {
             </div>
             <div className={styles.field}>
                 <label>{t('settings:page.lastNameLabel')}</label>
-                <p>{user.lastName || t('settings:page.notProvided')}</p>
+                <p>{user.lastName ?? t('settings:page.notProvided')}</p>
             </div>
             <div className={styles.field}>
                 <label>{t('settings:page.genderLabel')}</label>
@@ -33,7 +33,7 @@ const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {
             </div>
             <div className={styles.field}>
                 <label>{t('settings:page.phoneNumberLabel')}</label>
-                <p>{user.phoneNumber || t('settings:page.notProvided')}</p>
+                <p>{user.phoneNumber ?? t('settings:page.notProvided')}</p>
             </div>
         </>
     );

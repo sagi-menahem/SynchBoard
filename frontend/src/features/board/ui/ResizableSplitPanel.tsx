@@ -33,7 +33,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (!isDragging || !containerRef.current) return;
+      if (!isDragging || !containerRef.current) {return;}
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
@@ -100,7 +100,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
         }}
       >
         <div className={styles.dividerHandle}>
-          <span></span>
+          <span />
         </div>
       </button>
       

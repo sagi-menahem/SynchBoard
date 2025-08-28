@@ -63,7 +63,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      if ((e.ctrlKey ?? e.metaKey) && e.key === 'f') {
         e.preventDefault();
         setSearchVisible(true);
       }
@@ -79,7 +79,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
 
   const stableUserInfo = useMemo(() => ({
-    userEmail: userEmail || '',
+    userEmail: userEmail ?? '',
     userFullName: '',
     userProfilePictureUrl: undefined,
   }), [userEmail]);
@@ -104,7 +104,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       boardId: boardId,
       senderEmail: userEmail,
       senderFullName: stableUserInfo.userFullName,
-      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
+      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl ?? null,
     };
 
     const optimisticMessage: ChatMessageResponse & { transactionId: string } = {
@@ -112,9 +112,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       type: 'CHAT',
       content: trimmedContent,
       timestamp: new Date().toISOString(),
-      senderEmail: userEmail || '',
+      senderEmail: userEmail ?? '',
       senderFullName: stableUserInfo.userFullName,
-      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl || null,
+      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl ?? null,
       instanceId,
       transactionId: instanceId,
     };
@@ -177,7 +177,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   }, [sendChatMessage, boardId]);
 
   const shouldShowDateSeparator = (currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
-    if (!prevMsg) return true;
+    if (!prevMsg) {return true;}
     const currentDate = new Date(currentMsg.timestamp).toDateString();
     const prevDate = new Date(prevMsg.timestamp).toDateString();
     return currentDate !== prevDate;
@@ -186,7 +186,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   return (
     <div
       className={styles.container}
-      style={{ backgroundColor: preferences.boardBackgroundSetting || undefined }}
+      style={{ backgroundColor: preferences.boardBackgroundSetting ?? undefined }}
     >
       {searchVisible && (
         <div className={styles.searchContainer}>
@@ -219,8 +219,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
           const isNewMessage = index >= previousMessageCount;
           
           return (
-            <React.Fragment key={message.transactionId || `${message.senderEmail}-${message.timestamp}-${index}`}>
-              {shouldShowDateSeparator(message, filteredMessages[index - 1] || null) && (
+            <React.Fragment key={message.transactionId ?? `${message.senderEmail}-${message.timestamp}-${index}`}>
+              {shouldShowDateSeparator(message, filteredMessages[index - 1] ?? null) && (
                 <div className={styles.dateSeparator}>
                   {formatDateSeparator(message.timestamp)}
                 </div>

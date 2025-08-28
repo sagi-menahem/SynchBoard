@@ -35,7 +35,7 @@ export const useBoardDataManager = (boardId: number) => {
         setBoardDetails(details);
         const initialObjects = objectActions
           .filter((a) => a.payload)
-          .map((a) => ({ ...(a.payload as object), instanceId: a.instanceId }) as ActionPayload);
+          .map((a) => ({ ...(a.payload), instanceId: a.instanceId }) as ActionPayload);
         setObjects(initialObjects);
         setMessages(messageHistory);
       })
@@ -58,7 +58,7 @@ export const useBoardDataManager = (boardId: number) => {
   }, [boardId, t]);
 
   useEffect(() => {
-    if (isNaN(boardId) || boardId === 0) {
+    if (isNaN(boardId) ?? boardId === 0) {
       setAccessLost(true);
       return;
     }

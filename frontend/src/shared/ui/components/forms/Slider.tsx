@@ -50,7 +50,7 @@ export const Slider: React.FC<SliderProps> = ({
             backgroundColor: 'rgba(255, 255, 255, 0.1)',
             height: 4,
           }}
-          aria-label={ariaLabel || label}
+          aria-label={ariaLabel ?? label}
         />
         <span className={styles.value}>{value}</span>
       </div>

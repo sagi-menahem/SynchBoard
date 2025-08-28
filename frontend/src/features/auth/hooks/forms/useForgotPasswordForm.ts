@@ -12,7 +12,7 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     validateFormData: (formData: FormData) => {
       const email = formData.get('email') as string;
 
-      if (!email) {
+      if (email === null || email === '') {
         return { error: t('auth:forgotPassword.validation.emailRequired') };
       }
 

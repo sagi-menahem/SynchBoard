@@ -35,10 +35,10 @@ export const useWebSocketHandler = ({
   const { userEmail } = useAuth();
 
   const handleBoardUpdate = useCallback((update: BoardUpdateDTO) => {
-    if (update.sourceUserEmail === userEmail || !userEmail) return;
+    if (update.sourceUserEmail === userEmail || !userEmail) {return;}
 
     if (update.updateType === 'MEMBERS_UPDATED') {
-      boardService.getBoardMessages(boardId).then(setMessages);
+      void boardService.getBoardMessages(boardId).then(setMessages);
       boardService
         .getBoardDetails(boardId)
         .then((details) => setBoardName(details.name))
@@ -64,7 +64,7 @@ export const useWebSocketHandler = ({
     );
 
     if (!isOwnDrawingAction) {
-      const actionPayload = { ...(action.payload as object), instanceId: action.instanceId } as ActionPayload;
+      const actionPayload = { ...(action.payload), instanceId: action.instanceId } as ActionPayload;
 
       if (action.type === ActionType.OBJECT_ADD) {
         setObjects((prev) => [...prev, actionPayload]);
@@ -109,14 +109,14 @@ export const useWebSocketHandler = ({
 
   const onMessageReceived = useCallback(
     (payload: unknown) => {
-      if (typeof payload !== 'object' || !payload) return;
+      if (typeof payload !== 'object' || !payload) {return;}
 
-      if ('updateType' in payload && 'sourceUserEmail' in payload) {
+      if ('updateType' in (payload as Record<string, unknown>) && 'sourceUserEmail' in (payload as Record<string, unknown>)) {
         handleBoardUpdate(payload as BoardUpdateDTO);
         return;
       }
 
-      if ('type' in payload && 'instanceId' in payload) {
+      if ('type' in (payload as Record<string, unknown>) && 'instanceId' in (payload as Record<string, unknown>)) {
         const transactionalMessage = payload as {
           type: string;
           instanceId: string;

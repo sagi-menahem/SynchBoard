@@ -62,7 +62,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
           type="text"
           value={message}
           onChange={handleInputChange}
-          placeholder={placeholder || t('chat:window.placeholder')}
+          placeholder={placeholder ?? t('chat:window.placeholder')}
           disabled={isSending}
           className={isSending ? styles.inputDisabled : ''}
         />

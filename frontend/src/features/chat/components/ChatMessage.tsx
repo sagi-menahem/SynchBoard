@@ -38,8 +38,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const userColor = getUserColor(senderEmail, userColorMap);
 
   const getMessageStatus = (): string => {
-    if (!message.transactionId) return 'confirmed';
-    return message.transactionStatus || 'confirmed';
+    if (!message.transactionId) {return 'confirmed';}
+    return message.transactionStatus ?? 'confirmed';
   };
 
   const messageStatus = getMessageStatus();

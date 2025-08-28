@@ -51,14 +51,14 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const strokeWidth = preferences.defaultStrokeWidth;
 
   const handleColorPick = (color: string) => {
-    updateStrokeColor(color);
+    void updateStrokeColor(color);
   };
 
   const { preferences: canvasPreferences, updateSplitRatio } =
     useCanvasPreferences();
 
   const handleSplitRatioChange = (newRatio: number) => {
-    updateSplitRatio(newRatio);
+    void updateSplitRatio(newRatio);
   };
 
   const canvasConfig = useMemo(() => {
@@ -79,7 +79,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           type: 'custom',
           content: (
             <CanvasToolSection
-              boardName={boardName || t('board:fallbacks.untitled')}
+              boardName={boardName ?? t('board:fallbacks.untitled')}
               strokeColor={strokeColor}
               setStrokeColor={updateStrokeColor}
               strokeWidth={strokeWidth}
@@ -117,7 +117,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
                 color: 'rgba(255, 255, 255, 0.9)',
                 letterSpacing: '0.02em',
               }}>
-                {boardName || t('board:fallbacks.untitled')}
+                {boardName ?? t('board:fallbacks.untitled')}
               </span>
             </div>
           ),
@@ -196,7 +196,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 const BoardPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const { boardId } = useParams<{ boardId: string }>();
-  const numericBoardId = parseInt(boardId || '0', 10);
+  const numericBoardId = parseInt(boardId ?? '0', 10);
 
   if (!numericBoardId) {
     return (

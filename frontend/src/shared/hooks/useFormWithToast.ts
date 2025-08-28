@@ -54,11 +54,13 @@ export const useFormWithToast = <TRequest extends object, TResponse = unknown>(
 
     try {
       const response = await toastPromise(
-        serviceCall(validation as TRequest),
+        serviceCall(validation),
         toastMessages,
       );
 
-      onSuccess?.(response, validation);
+      if (onSuccess !== undefined) {
+        onSuccess(response, validation);
+      }
 
       return {
         success: true,

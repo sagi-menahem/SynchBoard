@@ -70,7 +70,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   const { t } = useTranslation(['common']);
   const [internalShowPassword, setInternalShowPassword] = useState(false);
 
-  const showPassword = externalShowPassword !== undefined ? externalShowPassword : internalShowPassword;
+  const showPassword = externalShowPassword ?? internalShowPassword;
 
   const togglePasswordVisibility = () => {
     const newShowPassword = !showPassword;
@@ -82,7 +82,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
     }
   };
 
-  const combinedClassName = `${styles.passwordContainer} ${className || ''}`.trim();
+  const combinedClassName = `${styles.passwordContainer} ${className ?? ''}`.trim();
 
   return (
     <div className={combinedClassName}>

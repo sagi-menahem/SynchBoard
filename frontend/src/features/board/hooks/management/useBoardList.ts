@@ -79,7 +79,7 @@ export const useBoardList = () => {
   const handleBoardCreated = (newBoard: Board) => {
     setBoards((prevBoards) => [...prevBoards, newBoard]);
     setIsModalOpen(false);
-    navigate(APP_ROUTES.getBoardDetailRoute(newBoard.id));
+    void navigate(APP_ROUTES.getBoardDetailRoute(newBoard.id));
   };
 
   const handleConfirmLeave = useCallback(() => {
@@ -88,7 +88,7 @@ export const useBoardList = () => {
       return;
     }
 
-    BoardService.leaveBoard(boardToLeave.id)
+    void BoardService.leaveBoard(boardToLeave.id)
       .then(() => {
         toast.success(t('board:success.leave', { boardName: boardToLeave.name }));
         fetchBoards();
@@ -104,7 +104,7 @@ export const useBoardList = () => {
   }, [boardToLeave, t, fetchBoards]);
 
   const handleLeaveClick = () => {
-    if (!contextMenu.data) return;
+    if (!contextMenu.data) {return;}
     setBoardToLeave(contextMenu.data);
     setLeaveConfirmOpen(true);
     contextMenu.closeMenu();
@@ -140,7 +140,7 @@ export const useBoardList = () => {
   const handleUserUpdate = useCallback(
     (message: UserUpdateDTO) => {
       if (message.updateType === 'BOARD_DETAILS_CHANGED' && message.boardId) {
-        updateSpecificBoard(message.boardId);
+        void updateSpecificBoard(message.boardId);
       } else {
         fetchBoards();
       }

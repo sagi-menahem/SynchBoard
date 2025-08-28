@@ -19,7 +19,7 @@ export const useLanguageSync = () => {
   const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
 
   const loadUserLanguage = useCallback(async (): Promise<LanguagePreferences | null> => {
-    if (!token) return null;
+    if (!token) {return null;}
 
     if (languagePrefsCache) {
       return languagePrefsCache;
@@ -51,9 +51,9 @@ export const useLanguageSync = () => {
   }, [token, i18n]);
 
   const switchToGuestLanguage = useCallback(() => {
-    const guestLanguage = localStorage.getItem(GUEST_LANGUAGE_KEY) || 'en';
+    const guestLanguage = localStorage.getItem(GUEST_LANGUAGE_KEY) ?? 'en';
     if (i18n.language !== guestLanguage) {
-      i18n.changeLanguage(guestLanguage);
+      void i18n.changeLanguage(guestLanguage);
     }
   }, [i18n]);
 
@@ -66,10 +66,10 @@ export const useLanguageSync = () => {
   }, [token]);
 
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading) {return;}
 
     if (token) {
-      loadUserLanguage();
+      void loadUserLanguage();
     } else {
       switchToGuestLanguage();
       setIsLanguageLoaded(true);
@@ -79,12 +79,12 @@ export const useLanguageSync = () => {
   const setGuestLanguage = (language: 'en' | 'he') => {
     localStorage.setItem(GUEST_LANGUAGE_KEY, language);
     if (!token) {
-      i18n.changeLanguage(language);
+      void i18n.changeLanguage(language);
     }
   };
 
   const updateLanguagePreference = useCallback(async (language: 'en' | 'he') => {
-    if (!token) return;
+    if (!token) {return;}
 
     try {
       languagePrefsCache = null;

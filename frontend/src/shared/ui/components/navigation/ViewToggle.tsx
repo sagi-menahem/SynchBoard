@@ -16,7 +16,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, classNa
   const { t } = useTranslation(['board', 'common']);
   
   return (
-    <div className={`${styles.viewToggle} ${className || ''}`}>
+    <div className={`${styles.viewToggle} ${className ?? ''}`}>
       <button
         type="button"
         className={`${styles.toggleButton} ${value === 'grid' ? styles.active : ''}`}

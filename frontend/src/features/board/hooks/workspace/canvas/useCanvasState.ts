@@ -62,7 +62,7 @@ export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) =
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    objects.forEach((obj) => replayDrawAction(obj, ctx, canvas));
+    objects.forEach((obj) => replayDrawAction(obj, ctx, canvas!));
   }, [objects, dimensions]);
 
   // Canvas config effect
