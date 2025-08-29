@@ -15,8 +15,8 @@
     @include theme.card-base;
     @include theme.rounded-large;
     @include theme.shadow-heavy;
-    background: theme.$background-secondary;
-    border: 1px solid theme.$border-primary;
+    background: theme.$surface-elevated;
+    border: 1px solid theme.$border;
     min-width: 300px;
     max-width: 500px;
     max-height: 70vh;
@@ -31,9 +31,9 @@
     position: absolute;
     top: 1rem;
     inset-inline-end: 1rem;
-    background: theme.$background-modal-lighter;
+    background: theme.$surface-hover;
     backdrop-filter: blur(4px);
-    border: 1px solid theme.$border-secondary;
+    border: 1px solid theme.$border-strong;
     @include theme.rounded-small;
     font-size: 1rem;
     padding: 0.4em;

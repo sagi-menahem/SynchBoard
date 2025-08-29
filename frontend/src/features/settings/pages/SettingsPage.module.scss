@@ -86,7 +86,8 @@
     @include theme.rounded-circle;
     @include theme.interactive-button;
     @include theme.smooth-transition;
-    border: 2px solid transparent;
+    border: 2px solid theme.$border;
+    box-shadow: 0 0 0 1px theme.$border-light;
 }
 
 .colorSwatch:hover {
@@ -94,7 +95,8 @@
 }
 
 .colorSwatch.active {
-    border-color: theme.$accent-lavender;
+    border-color: theme.$primary;
+    box-shadow: 0 0 0 2px theme.$primary-light;
     transform: scale(1.1);
 }
 

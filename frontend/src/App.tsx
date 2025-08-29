@@ -187,38 +187,38 @@ function App() {
             toastOptions={{
               duration: 5000,
               style: {
-                background: 'linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%)',
-                color: '#fff',
-                border: '1px solid #444',
+                background: 'var(--color-surface-elevated)',
+                color: 'var(--color-text-primary)',
+                border: '1px solid var(--color-border)',
                 borderRadius: '8px',
                 padding: '12px 16px',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                boxShadow: '0 4px 12px var(--color-overlay-medium)',
               },
               success: {
                 style: {
-                  border: 'none',
+                  border: '1px solid var(--color-success)',
                 },
                 iconTheme: {
-                  primary: '#fff',
-                  secondary: '#2f2f2f',
+                  primary: 'var(--color-success)',
+                  secondary: 'var(--color-surface-elevated)',
                 },
               },
               error: {
                 style: {
-                  border: '1px solid #ef4444',
+                  border: '1px solid var(--color-error)',
                 },
                 iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
+                  primary: 'var(--color-error)',
+                  secondary: 'var(--color-surface-elevated)',
                 },
               },
               loading: {
                 style: {
-                  border: '1px solid #3b82f6',
+                  border: '1px solid var(--color-primary)',
                 },
                 iconTheme: {
-                  primary: '#3b82f6',
-                  secondary: '#fff',
+                  primary: 'var(--color-primary)',
+                  secondary: 'var(--color-surface-elevated)',
                 },
               },
             }}
