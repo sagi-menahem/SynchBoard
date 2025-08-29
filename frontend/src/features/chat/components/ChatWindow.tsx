@@ -6,6 +6,7 @@ import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { usePreferences } from 'features/settings/UserPreferencesProvider';
 import WebSocketService from 'features/websocket/services/websocketService';
 import { useTranslation } from 'react-i18next';
+import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
@@ -181,10 +182,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     return currentDate !== prevDate;
   };
 
+  const getBackgroundStyle = () => {
+    const savedColor = preferences.boardBackgroundSetting;
+    if (!savedColor) {
+      return {};
+    }
+    
+    const backgroundOption = CHAT_BACKGROUND_OPTIONS.find((option) => option.color === savedColor);
+    if (backgroundOption?.cssVar) {
+      return { backgroundColor: `var(${backgroundOption.cssVar})` };
+    }
+    
+    return { backgroundColor: savedColor };
+  };
+
   return (
     <div
       className={styles.container}
-      style={{ backgroundColor: preferences.boardBackgroundSetting ?? undefined }}
+      style={getBackgroundStyle()}
     >
       {searchVisible && (
         <div className={styles.searchContainer}>

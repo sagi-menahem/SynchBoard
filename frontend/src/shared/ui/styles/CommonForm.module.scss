@@ -17,7 +17,7 @@
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
-    color: #ccc;
+    color: var(--color-text-secondary);
     font-weight: 500;
     font-size: 0.875rem;
 }
@@ -38,13 +38,19 @@
     padding: 10px;
     margin-top: 4px;
     box-sizing: border-box;
-    background-color: #333;
-    border: 1px solid #555;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: 4px;
-    color: #fff;
+    color: var(--color-text-primary);
     font-family: inherit;
     font-size: inherit;
     resize: vertical;
+    
+    &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
 }
 
 .buttonGroup {
@@ -72,7 +78,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: #fff;
+    color: var(--color-text-primary);
     font-size: 1rem;
     padding: 0.25rem 0;
 }
@@ -80,12 +86,12 @@
 .radioLabel input[type="radio"] {
     width: 1.2rem;
     height: 1.2rem;
-    accent-color: #3b82f6;
+    accent-color: var(--color-primary);
     cursor: pointer;
 }
 
 .radioLabel:hover {
-    color: #e5e5e5;
+    color: var(--color-text-secondary);
 }
 
 .dateInput {
@@ -93,10 +99,10 @@
     padding: 12px;
     margin-top: 4px;
     box-sizing: border-box;
-    background-color: #333;
-    border: 1px solid #555;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
-    color: #fff;
+    color: var(--color-text-primary);
     font-family: inherit;
     font-size: 1rem;
     transition: border-color 0.2s ease;
@@ -104,8 +110,8 @@
 
 .dateInput:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
 .dateInput::-webkit-calendar-picker-indicator {
@@ -155,20 +161,20 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 1rem;
-    border: 1px solid #444;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: rgba(42, 42, 42, 0.6);
+    background: var(--color-surface-elevated);
     backdrop-filter: blur(4px);
 }
 
 .groupLabel {
-    color: #bbb;
+    color: var(--color-text-muted);
     font-size: 0.85rem;
     font-weight: 600;
     margin: 0 0 0.25rem 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.25rem;
 }
 
@@ -177,7 +183,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: #fff;
+    color: var(--color-text-primary);
     font-size: 0.9rem;
     padding: 0.25rem 0;
 }
@@ -185,12 +191,12 @@
 .radioOption input[type="radio"] {
     width: 1rem;
     height: 1rem;
-    accent-color: #3b82f6;
+    accent-color: var(--color-primary);
     cursor: pointer;
 }
 
 .radioOption:hover {
-    color: #e5e5e5;
+    color: var(--color-text-secondary);
 }
 
 .customSizeInputs {
@@ -199,10 +205,10 @@
     gap: 0.5rem;
     margin-top: 0.5rem;
     padding: 1rem;
-    border: 1px solid #555;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: rgba(42, 42, 42, 0.8);
-    color: #ccc;
+    background: var(--color-surface-elevated);
+    color: var(--color-text-secondary);
     font-size: 0.9rem;
     flex-wrap: wrap;
 }
@@ -232,14 +238,14 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #fff;
+    color: var(--color-text-primary);
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
 }
 
 .modalDescription {
-    color: #ccc;
+    color: var(--color-text-secondary);
     line-height: 1.5;
     margin: 0;
     font-size: 0.875rem;

@@ -21,7 +21,7 @@ const BoardAppearanceSection: React.FC = () => {
               key={option.color}
               type="button"
               className={`${styles.colorSwatch} ${preferences.boardBackgroundSetting === option.color ? styles.active : ''}`}
-              style={{ backgroundColor: option.color }}
+              style={{ backgroundColor: `var(${option.cssVar})` }}
               onClick={() => updatePreferences({ ...preferences, boardBackgroundSetting: option.color })}
               title={t(option.nameKey)}
               aria-label={t(option.nameKey)}

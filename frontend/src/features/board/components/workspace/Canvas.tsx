@@ -9,6 +9,7 @@ import { processRecolorClick } from 'features/board/utils/canvas/recolorLogic';
 import { usePreferences } from 'features/settings/UserPreferencesProvider';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { useTranslation } from 'react-i18next';
+import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import type { Tool } from 'shared/types/CommonTypes';
 
 
@@ -159,6 +160,20 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     setRecolorCursor(cursor);
   }, [props.tool, props.objects, canvasRef]);
 
+  const getBackgroundStyle = () => {
+    const savedColor = preferences.boardBackgroundSetting;
+    if (!savedColor) {
+      return {};
+    }
+    
+    const backgroundOption = CHAT_BACKGROUND_OPTIONS.find((option) => option.color === savedColor);
+    if (backgroundOption?.cssVar) {
+      return { backgroundColor: `var(${backgroundOption.cssVar})` };
+    }
+    
+    return { backgroundColor: savedColor };
+  };
+
   const shouldShowLoading = props.isLoading ?? false;
   const containerClassName = `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`;
   const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
@@ -169,7 +184,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       <div 
         className={canvasContainerClassName}
         style={{ 
-          backgroundColor: preferences.boardBackgroundSetting ?? undefined,
+          ...getBackgroundStyle(),
           ...canvasContainerStyle,
         }}
       >

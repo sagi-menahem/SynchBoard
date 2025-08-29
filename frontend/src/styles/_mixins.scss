@@ -305,7 +305,7 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: #fff;
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   padding: 0.25rem 0;
 }
@@ -313,7 +313,7 @@
 @mixin radio-input {
   width: 1rem;
   height: 1rem;
-  accent-color: #3b82f6;
+  accent-color: var(--color-primary);
   cursor: pointer;
 }
 
