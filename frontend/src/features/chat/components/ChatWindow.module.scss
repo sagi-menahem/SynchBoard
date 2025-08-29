@@ -8,8 +8,8 @@
     repeating-linear-gradient(45deg,
       transparent,
       transparent 10px,
-      theme.$overlay-white-02 10px,
-      theme.$overlay-white-02 20px);
+      theme.$overlay-light 10px,
+      theme.$overlay-light 20px);
   color: theme.$text-primary;
   @include theme.rounded-large;
   @include theme.shadow-medium;

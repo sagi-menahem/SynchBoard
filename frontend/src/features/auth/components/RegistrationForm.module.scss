@@ -34,14 +34,12 @@
 
 .radioLabel {
     @include theme.radio-option;
-    color: theme.$text-muted;
     font-size: 0.875rem;
 }
 
 .radioLabel input[type="radio"] {
     @include theme.radio-input;
     margin: 0;
-    accent-color: theme.$primary;
 }
 
 .error {
