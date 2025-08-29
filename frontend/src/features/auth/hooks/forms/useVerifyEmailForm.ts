@@ -14,11 +14,11 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
       const verificationCode = formData.get('verificationCode') as string;
 
       if (verificationCode === null || verificationCode === '' || verificationCode.length !== 6) {
-        return { error: t('verifyEmail.validation.codeRequired') };
+        return { error: t('auth:verifyEmail.validation.codeRequired') };
       }
 
       if (!/^\d{6}$/.test(verificationCode)) {
-        return { error: t('verifyEmail.validation.codeFormat') };
+        return { error: t('auth:verifyEmail.validation.codeFormat') };
       }
 
       return {
@@ -28,9 +28,9 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
     },
     serviceCall: authService.verifyEmail,
     toastMessages: {
-      loading: t('loading.auth.verifyEmail'),
-      success: t('success.auth.verifyEmail'),
-      error: t('errors.auth.verifyEmail'),
+      loading: t('auth:loading.verifyEmail'),
+      success: t('auth:success.verifyEmail'),
+      error: t('auth:errors.verifyEmail'),
     },
     onSuccess: (response) => {
       onVerificationSuccess(response.token);
@@ -48,15 +48,15 @@ export const useResendVerificationCode = (email: string) => {
       await toastPromise(
         authService.resendVerificationCode({ email }),
         {
-          loading: t('loading.auth.resendVerification'),
-          success: t('success.auth.resendVerification'),
-          error: t('errors.auth.resendVerification'),
+          loading: t('auth:loading.resendVerification'),
+          success: t('auth:success.resendVerification'),
+          error: t('auth:errors.resendVerification'),
         },
       );
       return { success: true };
     } catch (err: unknown) {
       logger.error('Resend verification code failed for user:', err, { email });
-      const error = err instanceof Error ? err.message : t('verifyEmail.resend.error');
+      const error = err instanceof Error ? err.message : t('auth:verifyEmail.resend.error');
       return { success: false, error };
     }
   };
