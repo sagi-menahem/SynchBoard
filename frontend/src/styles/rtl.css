@@ -128,9 +128,28 @@ body {
   text-align: right;
 }
 
-/* Fix section headers - reverse flex direction for proper RTL layout */
-[dir="rtl"] [class*="sectionHeader"] {
+/* Fix section headers - different behavior for div vs h2 headers */
+
+/* Container headers (div) with multiple items - keep space-between for title + button */
+[dir="rtl"] div[class*="sectionHeader"] {
   flex-direction: row-reverse !important;
+  text-align: right !important;
+  direction: rtl !important;
+  justify-content: space-between !important;
+}
+
+/* Single element headers (h2) - need special alignment */
+[dir="rtl"] h2[class*="sectionHeader"] {
+  text-align: right !important;
+  direction: rtl !important;
+  /* Since these are not flex containers, we don't need flex properties */
+}
+
+/* Ensure section titles within headers are right-aligned */
+[dir="rtl"] [class*="sectionHeader"] h2,
+[dir="rtl"] [class*="sectionTitle"] {
+  text-align: right !important;
+  direction: rtl !important;
 }
 
 
