@@ -103,7 +103,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                             <Button 
                                 onClick={handleSaveDescription}
                                 disabled={isUpdating}
-                                variant="primary"
+                                variant="secondary"
                             >
                                 <Save size={16} />
                                 {isUpdating ? t('common:button.saving') : t('common:button.save')}
