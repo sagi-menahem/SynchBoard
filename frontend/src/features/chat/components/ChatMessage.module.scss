@@ -42,8 +42,8 @@
 }
 
 .myMessage .messageBubble {
-  background: theme.$primary-light;
-  color: theme.$text-primary;
+  background: theme.$primary;
+  color: #ffffff;
 }
 
 .otherMessage .messageBubble {
@@ -113,7 +113,7 @@
 }
 
 .myMessage .messageText {
-  color: theme.$text-primary;
+  color: #ffffff;
   text-align: right;
 }
 
