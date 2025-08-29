@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, PictureManager } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.scss';
+import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 
 interface BoardDetailsHeaderProps {
     boardDetails: BoardDetails;
@@ -49,7 +50,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
     return (
         <>
-            <div className={styles.section}>
+            <section className={settingsStyles.section}>
                 <PictureManager
                     imageUrl={boardDetails.pictureUrl}
                     defaultImage={defaultBoardImage}
@@ -61,16 +62,16 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                     deleteButtonText={t('board:detailsPage.deletePicture')}
                     className={styles.pictureManager}
                 />
-            </div>
+            </section>
 
-            <div className={styles.section}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>{t('board:detailsPage.boardDescription')}</h2>
+            <section className={settingsStyles.section}>
+                <div className={settingsStyles.sectionHeader}>
+                    <h2 className={settingsStyles.sectionTitle}>{t('board:detailsPage.boardDescription')}</h2>
                     {currentUserIsAdmin && !isEditingDescription && (
                         <Button 
                             onClick={() => setIsEditingDescription(true)}
                             variant="secondary"
-                            className={styles.editButton}
+                            className={settingsStyles.editButton}
                         >
                             <PencilLine size={16} />
                             {t('board:detailsPage.editDescription')}
@@ -80,7 +81,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                 
                 {isEditingDescription ? (
                     <div className={styles.editForm}>
-                        <div className={styles.formField}>
+                        <div className={settingsStyles.field}>
                             <textarea
                                 value={descriptionValue}
                                 onChange={(e) => setDescriptionValue(e.target.value)}
@@ -90,12 +91,11 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                                 className={styles.descriptionTextarea}
                             />
                         </div>
-                        <div className={styles.formActions}>
+                        <div className={settingsStyles.buttonGroup}>
                             <Button 
                                 onClick={handleCancelDescriptionEdit}
                                 disabled={isUpdating}
                                 variant="secondary"
-                                className={styles.cancelButton}
                             >
                                 <X size={16} />
                                 {t('common:button.cancel')}
@@ -104,7 +104,6 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                                 onClick={handleSaveDescription}
                                 disabled={isUpdating}
                                 variant="primary"
-                                className={styles.saveButton}
                             >
                                 <Save size={16} />
                                 {isUpdating ? t('common:button.saving') : t('common:button.save')}
@@ -112,13 +111,13 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                         </div>
                     </div>
                 ) : (
-                    <div className={styles.descriptionContent}>
-                        <p className={styles.description}>
+                    <div className={settingsStyles.field}>
+                        <p>
                             {boardDetails.description ?? t('board:detailsPage.noDescription')}
                         </p>
                     </div>
                 )}
-            </div>
+            </section>
         </>
     );
 };
