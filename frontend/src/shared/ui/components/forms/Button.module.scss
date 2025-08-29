@@ -30,23 +30,25 @@
     }
 }
 
-// DESTRUCTIVE BUTTON - Strong red for dangerous actions (Delete, Logout, etc.)
+// DESTRUCTIVE BUTTON - Elegant refined design for dangerous actions
 .destructive {
-    background-color: theme.$error;
-    color: #ffffff;
-    border-color: theme.$error;
-    font-weight: 600;
+    background: var(--destructive-button-background);
+    border: 1px solid var(--destructive-button-border);
+    color: var(--destructive-button-text);
+    font-weight: 500;
+    box-shadow: var(--destructive-button-shadow);
     
     &:hover:not(:disabled) {
-        background-color: #be185d;
-        border-color: #be185d;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px theme.$error-light;
+        background: var(--destructive-button-hover-background);
+        border-color: var(--destructive-button-hover-border);
+        color: var(--destructive-button-hover-text);
+        transform: translateY(-0.5px);
+        box-shadow: var(--destructive-button-hover-shadow);
     }
     
     &:active:not(:disabled) {
         transform: translateY(0);
-        box-shadow: 0 2px 8px theme.$error-light;
+        box-shadow: var(--destructive-button-shadow);
     }
 }
 

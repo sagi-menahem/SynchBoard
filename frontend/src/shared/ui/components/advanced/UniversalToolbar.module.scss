@@ -8,15 +8,17 @@
   width: 100vw;
   height: 72px;
   box-sizing: border-box;
-  background: theme.$surface;
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid theme.$border-light;
-  @include theme.shadow-light;
+  background: var(--toolbar-background);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--toolbar-border);
+  box-shadow: var(--toolbar-shadow);
   @include theme.flex-between;
   padding: 0 24px;
   z-index: 50;
   user-select: none;
   overflow: visible;
+  @include theme.smooth-transition;
 }
 
 .toolbarSection {
@@ -118,36 +120,39 @@
 }
 
 .toolbarButton.destructive {
-  background-color: theme.$error;
-  color: #ffffff;
-  border-color: theme.$error;
-  font-weight: 600;
+  background: var(--destructive-button-background);
+  border: 1px solid var(--destructive-button-border);
+  color: var(--destructive-button-text);
+  font-weight: 500;
+  box-shadow: var(--destructive-button-shadow);
 }
 
 .toolbarButton.destructive:hover:not(.disabled) {
-  background-color: #be185d;
-  border-color: #be185d;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px theme.$error-light;
+  background: var(--destructive-button-hover-background);
+  border-color: var(--destructive-button-hover-border);
+  color: var(--destructive-button-hover-text);
+  transform: translateY(-0.5px);
+  box-shadow: var(--destructive-button-hover-shadow);
 }
 
 .toolbarButton.navigation {
-  background: theme.$tool-button-bg;
-  border: 1px solid theme.$tool-button-border;
-  color: theme.$tool-button-text;
+  background: var(--nav-button-background);
+  border: 1px solid var(--nav-button-border);
+  color: var(--nav-button-text);
   padding: 4px 10px;
   @include theme.rounded-small;
   font-size: 14px;
   font-weight: 500;
+  box-shadow: var(--nav-button-shadow);
   @include theme.button-transition;
 }
 
 .toolbarButton.navigation:hover:not(.disabled) {
-  background: theme.$tool-button-hover-bg;
-  border-color: theme.$tool-button-hover-border;
-  color: theme.$text-primary;
-  transform: translateY(-1px);
-  @include theme.shadow-light;
+  background: var(--nav-button-hover-background);
+  border-color: var(--nav-button-hover-border);
+  color: var(--nav-button-hover-text);
+  transform: translateY(-0.5px);
+  box-shadow: var(--nav-button-hover-shadow);
 }
 
 .toolbarButton.navigation:active:not(.disabled) {

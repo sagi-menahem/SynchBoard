@@ -109,12 +109,12 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               <div style={{
                 width: '1px',
                 height: '32px',
-                background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent)',
+                background: 'linear-gradient(to bottom, transparent, var(--color-border-light), transparent)',
               }} />
               <span style={{
                 fontSize: '16px',
                 fontWeight: '600',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: 'var(--color-text-primary)',
                 letterSpacing: '0.02em',
               }}>
                 {boardName ?? t('board:fallbacks.untitled')}
