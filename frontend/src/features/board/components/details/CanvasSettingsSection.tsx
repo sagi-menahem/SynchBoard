@@ -8,8 +8,8 @@ import { Button, ColorPicker, Input, RadioGroup } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
 
-
 import styles from './CanvasSettingsSection.module.scss';
+import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 
 interface CanvasSettingsSectionProps {
   boardDetails: BoardDetails;
@@ -84,40 +84,44 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
 
   if (!isAdmin) {
     return (
-      <div className={styles.section}>
-        <h4 className={styles.sectionTitle}>{t('board:details.canvasSettings.title')}</h4>
-        <div className={styles.readOnlySettings}>
-          <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}:</span>
+      <section className={settingsStyles.section}>
+        <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
+        <div className={settingsStyles.field}>
+          <label className={settingsStyles.field} style={{ marginBottom: '0.5rem' }}>
+            {t('board:details.canvasSettings.backgroundColor')}:
+          </label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div 
               className={styles.colorPreview} 
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
               title={boardDetails.canvasBackgroundColor}
             />
-            <span className={styles.settingValue}>
+            <span>
               {(() => {
                 const colorName = getColorName(boardDetails.canvasBackgroundColor);
                 return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
               })()}
             </span>
           </div>
-          <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</span>
-            <span className={styles.settingValue}>
-              {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
-            </span>
-          </div>
         </div>
-      </div>
+        <div className={settingsStyles.field}>
+          <label style={{ marginBottom: '0.5rem' }}>
+            {t('board:details.canvasSettings.size')}:
+          </label>
+          <p>
+            {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
+          </p>
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h4 className={styles.sectionTitle}>{t('board:details.canvasSettings.title')}</h4>
+    <section className={settingsStyles.section}>
+      <div className={settingsStyles.sectionHeader}>
+        <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
         {!isEditing && (
-          <Button onClick={() => setIsEditing(true)} variant="secondary" className={styles.editButton}>
+          <Button onClick={() => setIsEditing(true)} variant="secondary" className={settingsStyles.editButton}>
             <Settings2 size={16} />
             {t('board:details.canvasSettings.edit')}
           </Button>
@@ -125,16 +129,16 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       </div>
 
       {isEditing ? (
-        <div className={styles.editForm}>
-          <div className={styles.formField}>
-            <label className={styles.fieldLabel}>{t('board:details.canvasSettings.backgroundColor')}</label>
-            <div className={utilStyles.settingRow}>
+        <>
+          <div className={settingsStyles.field}>
+            <label>{t('board:details.canvasSettings.backgroundColor')}</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
               <ColorPicker
                 color={backgroundColor}
                 onChange={setBackgroundColor}
                 disabled={isUpdating}
               />
-              <span className={utilStyles.settingValue}>
+              <span>
                 {(() => {
                   const colorName = getColorName(backgroundColor);
                   return colorName ? t(`common:colors.${colorName}`) : backgroundColor;
@@ -143,9 +147,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             </div>
           </div>
 
-          <div className={styles.formField}>
-            <label className={styles.fieldLabel}>{t('board:details.canvasSettings.size')}</label>
-            <div className={styles.sizeOptions}>
+          <div className={settingsStyles.field}>
+            <label>{t('board:details.canvasSettings.size')}</label>
+            <div style={{ marginTop: '0.5rem' }}>
               <RadioGroup
                 value={canvasSize}
                 onValueChange={(value) => setCanvasSize(value as typeof canvasSize)}
@@ -210,12 +214,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             )}
           </div>
 
-          <div className={styles.formActions}>
+          <div className={settingsStyles.buttonGroup}>
             <Button 
               onClick={handleCancel} 
               disabled={isUpdating} 
               variant="secondary"
-              className={styles.cancelButton}
             >
               <X size={16} />
               {t('common:button.cancel')}
@@ -224,38 +227,43 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               onClick={handleSave} 
               disabled={isUpdating}
               variant="primary"
-              className={styles.saveButton}
             >
               <Save size={16} />
               {isUpdating ? t('common:button.saving') : t('board:details.canvasSettings.applyChanges')}
             </Button>
           </div>
-        </div>
+        </>
       ) : (
-        <div className={styles.readOnlySettings}>
-          <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}:</span>
-            <div 
-              className={styles.colorPreview} 
-              style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
-              title={boardDetails.canvasBackgroundColor}
-            />
-            <span className={styles.settingValue}>
-              {(() => {
-                const colorName = getColorName(boardDetails.canvasBackgroundColor);
-                return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
-              })()}
-            </span>
+        <>
+          <div className={settingsStyles.field}>
+            <label style={{ marginBottom: '0.5rem' }}>
+              {t('board:details.canvasSettings.backgroundColor')}:
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div 
+                className={styles.colorPreview} 
+                style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
+                title={boardDetails.canvasBackgroundColor}
+              />
+              <span>
+                {(() => {
+                  const colorName = getColorName(boardDetails.canvasBackgroundColor);
+                  return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+                })()}
+              </span>
+            </div>
           </div>
-          <div className={styles.settingRow}>
-            <span className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</span>
-            <span className={styles.settingValue}>
+          <div className={settingsStyles.field}>
+            <label style={{ marginBottom: '0.5rem' }}>
+              {t('board:details.canvasSettings.size')}:
+            </label>
+            <p>
               {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
-            </span>
+            </p>
           </div>
-        </div>
+        </>
       )}
-    </div>
+    </section>
   );
 };
 
