@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
+
 import languageStyles from './LanguageSection.module.scss';
 
 

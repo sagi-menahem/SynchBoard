@@ -49,7 +49,7 @@ export interface UserPreferencesContextType {
   updateStrokeWidth: (width: number) => Promise<void>;
   
   // Theme preferences methods
-  setTheme: (theme: Theme) => Promise<void>;
+  setTheme: (theme: Theme) => void;
   
   // Utility methods
   refreshPreferences: () => Promise<void>;

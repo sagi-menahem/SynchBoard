@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useReducer } from 'react';
+import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
@@ -34,7 +34,19 @@ type UserPreferencesAction =
   | { type: 'UPDATE_THEME'; payload: Theme }
   | { type: 'RESET_ERROR' };
 
-// Default preferences
+// Get initial theme from localStorage immediately
+const getInitialThemeForState = (): Theme => {
+  const storedTheme = localStorage.getItem('user-theme') as Theme | null;
+  if (storedTheme && (storedTheme === 'light' || storedTheme === 'dark')) {
+    return storedTheme;
+  }
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  return 'light';
+};
+
+// Default preferences with dynamic theme
 const defaultPreferences: UserPreferences = {
   boardBackgroundSetting: '#282828',
   canvasChatSplitRatio: 70,
@@ -42,7 +54,7 @@ const defaultPreferences: UserPreferences = {
   defaultTool: 'brush',
   defaultStrokeColor: '#FFFFFF',
   defaultStrokeWidth: 3,
-  theme: 'light',
+  theme: getInitialThemeForState(), // Use localStorage theme instead of hardcoded 'light'
 };
 
 // Initial state
@@ -145,6 +157,9 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
   const { t } = useTranslation(['settings', 'common']);
   const { token, userEmail } = useAuth();
   const isAuthenticated = !!token;
+  
+  // Track recent theme changes to prevent server overrides
+  const recentThemeChangeRef = useRef<{ theme: Theme; timestamp: number } | null>(null);
 
   // Load all preferences
   const refreshPreferences = useCallback(async () => {
@@ -386,34 +401,40 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
     return 'light';
   }, []);
 
-  // Apply theme to DOM
+  // Apply theme to DOM with forced reflow for reliability
   const applyThemeToDOM = useCallback((theme: Theme) => {
     document.body.setAttribute('data-theme', theme);
+    // Force style recalculation to ensure CSS is applied immediately
+    // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
+    document.body.offsetHeight;
   }, []);
 
-  // Set theme function with full logic
+  // Simple theme function with immediate DOM application
   const setTheme = useCallback(
-    async (newTheme: Theme) => {
-      // 1. Update React context state
+    (newTheme: Theme) => {
+      // Track this change to prevent server overrides
+      recentThemeChangeRef.current = {
+        theme: newTheme,
+        timestamp: Date.now(),
+      };
+      
+      // 1. Apply immediately to DOM (visual feedback first)
+      document.body.setAttribute('data-theme', newTheme);
+      
+      // 2. Update React state
       dispatch({ type: 'UPDATE_THEME', payload: newTheme });
-
-      // 2. Persist to localStorage
+      
+      // 3. Save to localStorage
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
-
-      // 3. Apply to DOM
-      applyThemeToDOM(newTheme);
-
-      // 4. If authenticated, save to backend
+      
+      // 4. Background API sync (fire-and-forget, don't block UI)
       if (isAuthenticated) {
-        try {
-          await userService.updateThemePreferences({ theme: newTheme });
-        } catch (error) {
-          logger.error('Failed to update theme preference:', error);
-          // Don't revert the UI changes on backend failure - keep the user's choice active
-        }
+        userService.updateThemePreferences({ theme: newTheme }).catch((error) => {
+          logger.error('Failed to sync theme preference to backend:', error);
+        });
       }
     },
-    [isAuthenticated, applyThemeToDOM],
+    [isAuthenticated],
   );
 
   // WebSocket subscription for canvas settings updates
@@ -443,11 +464,22 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
   useEffect(() => {
     if (isAuthenticated) {
       void refreshPreferences().then(() => {
-        // After loading user preferences, apply the theme from server if available
-        // But only if it's different from what's currently set (to avoid overriding localStorage)
-        const currentTheme = state.preferences.theme;
-        if (currentTheme && currentTheme !== getInitialTheme()) {
-          applyThemeToDOM(currentTheme);
+        // Check if there was a recent theme change that we should not override
+        const recentChange = recentThemeChangeRef.current;
+        const isRecentChange = recentChange && (Date.now() - recentChange.timestamp) < 5000; // 5 seconds
+        
+        if (isRecentChange) {
+          return;
+        }
+        
+        // Get the server theme data and apply if different from localStorage
+        const serverTheme = state.preferences.theme;
+        const initialTheme = getInitialTheme();
+        
+        // Only override localStorage if server has a different theme
+        if (serverTheme && serverTheme !== initialTheme) {
+          applyThemeToDOM(serverTheme);
+          localStorage.setItem(THEME_STORAGE_KEY, serverTheme);
         }
       });
     } else {
