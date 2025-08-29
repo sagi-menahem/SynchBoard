@@ -1,9 +1,0 @@
-@import '../../../styles/_variables';
-@import '../../../styles/_mixins';
-
-.aside {
-    background: $background-secondary;
-    padding: 1rem;
-    color: $text-primary;
-    width: 200px;
-}
