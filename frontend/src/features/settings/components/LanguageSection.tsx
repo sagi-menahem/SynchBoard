@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
+import languageStyles from './LanguageSection.module.scss';
 
 
 const LanguageSection: React.FC = () => {
@@ -45,7 +46,7 @@ const LanguageSection: React.FC = () => {
       if (updatedPrefs) {
         setLanguagePrefs(updatedPrefs);
       }
-      toast.success(t('common:success.preferences.update'));
+      toast.success(t('settings:success.preferences.update'));
     } catch (error) {
       logger.error('Failed to update language preference:', error);
       toast.error(t('common:errors.common.unexpected'));
@@ -58,9 +59,11 @@ const LanguageSection: React.FC = () => {
       <section className={styles.section}>
         <h2 className={styles.sectionHeader}>{t('settings:page.languageHeader')}</h2>
         <div className={styles.field}>
-          <label>{t('settings:page.languageLabel')}</label>
-          <div className={styles.radioGroup}>
-            <span>{t('settings:page.loading')}</span>
+          <div className={languageStyles.languageSwitcher}>
+            <span className={languageStyles.label}>{t('common:language')}</span>
+            <div className={languageStyles.buttonGroup}>
+              <span>{t('settings:page.loading')}</span>
+            </div>
           </div>
         </div>
       </section>
@@ -71,28 +74,26 @@ const LanguageSection: React.FC = () => {
     <section className={styles.section}>
       <h2 className={styles.sectionHeader}>{t('settings:page.languageHeader')}</h2>
       <div className={styles.field}>
-        <label>{t('settings:page.languageLabel')}</label>
-        <div className={styles.radioGroup}>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="language"
-              value="en"
-              checked={currentLanguage === 'en'}
-              onChange={() => handleLanguageChange('en')}
-            />
-            {t('settings:page.language.en')}
-          </label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="language"
-              value="he"
-              checked={currentLanguage === 'he'}
-              onChange={() => handleLanguageChange('he')}
-            />
-            {t('settings:page.language.he')}
-          </label>
+        <div className={languageStyles.languageSwitcher}>
+          <span className={languageStyles.label}>{t('common:language')}</span>
+          <div className={languageStyles.buttonGroup}>
+            <button
+              className={`${languageStyles.languageButton} ${currentLanguage === 'en' ? languageStyles.active : ''}`}
+              onClick={() => handleLanguageChange('en')}
+              type="button"
+              title={t('settings:page.language.en')}
+            >
+              EN
+            </button>
+            <button
+              className={`${languageStyles.languageButton} ${currentLanguage === 'he' ? languageStyles.active : ''}`}
+              onClick={() => handleLanguageChange('he')}
+              type="button"
+              title={t('settings:page.language.he')}
+            >
+              עב
+            </button>
+          </div>
         </div>
       </div>
     </section>

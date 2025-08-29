@@ -8,5 +8,5 @@ export const createErrorHandler = (context: string) => (error: Error) => {
     context,
   });
 
-  toast.error(i18n.t('errors.common.componentError', { context }));
+  toast.error(i18n.t('common:errors.common.componentError', { context }));
 };

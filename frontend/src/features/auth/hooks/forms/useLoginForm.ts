@@ -19,17 +19,17 @@ export const useLoginForm = () => {
       const password = formData.get('password') as string;
 
       if (email === null || email === '' || password === null || password === '') {
-        return { error: t('loginForm.validation.required') };
+        return { error: t('auth:loginForm.validation.required') };
       }
 
       return { email, password };
     },
     serviceCall: AuthService.login,
     toastMessages: {
-      loading: t('loading.auth.login'),
-      success: t('success.auth.login'),
+      loading: t('auth:loading.login'),
+      success: t('auth:success.login'),
       error: (err) => {
-        let errorMessage = t('loginForm.error.unknown');
+        let errorMessage = t('auth:loginForm.error.unknown');
         if (err !== null && err !== undefined && typeof err === 'object' && 'response' in err) {
           const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
           if (axiosError.response?.data?.message !== undefined && axiosError.response?.data?.message !== '') {

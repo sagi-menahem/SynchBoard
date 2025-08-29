@@ -11,7 +11,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   }
 
   if (!date || isNaN(date.getTime())) {
-    return i18n.t('dates.invalidDate');
+    return i18n.t('common:dates.invalidDate');
   }
 
   const now = new Date();
@@ -20,11 +20,11 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
   if (diffMinutes < 1) {
-    return i18n.t('dates.justNow');
+    return i18n.t('common:dates.justNow');
   }
 
   if (diffMinutes < 60) {
-    return i18n.t('dates.minutesAgo', { count: diffMinutes });
+    return i18n.t('common:dates.minutesAgo', { count: diffMinutes });
   }
 
   if (diffHours < 24 && date.getDate() === now.getDate()) {
@@ -34,7 +34,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   if (date.getDate() === yesterday.getDate() && date.getMonth() === yesterday.getMonth()) {
-    return `${i18n.t('dates.yesterday')} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    return `${i18n.t('common:dates.yesterday')} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   }
 
   if (date.getFullYear() === now.getFullYear()) {
@@ -65,7 +65,7 @@ export const formatDetailedTimestamp = (timestamp: number | Date | string): stri
   }
 
   if (!date || isNaN(date.getTime())) {
-    return i18n.t('dates.invalidDate');
+    return i18n.t('common:dates.invalidDate');
   }
 
   return date.toLocaleString();
@@ -82,7 +82,7 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   }
 
   if (!date || isNaN(date.getTime())) {
-    return i18n.t('dates.invalidDate');
+    return i18n.t('common:dates.invalidDate');
   }
 
   const now = new Date();
@@ -92,11 +92,11 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
   yesterday.setDate(yesterday.getDate() - 1);
 
   if (messageDate.getTime() === today.getTime()) {
-    return i18n.t('dates.today');
+    return i18n.t('common:dates.today');
   }
 
   if (messageDate.getTime() === yesterday.getTime()) {
-    return i18n.t('dates.yesterday');
+    return i18n.t('common:dates.yesterday');
   }
 
   if (date.getFullYear() === now.getFullYear()) {

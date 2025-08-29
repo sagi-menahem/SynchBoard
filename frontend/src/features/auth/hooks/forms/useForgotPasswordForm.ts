@@ -24,9 +24,9 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     },
     serviceCall: authService.forgotPassword,
     toastMessages: {
-      loading: t('loading.auth.forgotPassword'),
-      success: (msg) => (typeof msg === 'string' ? msg : t('success.auth.forgotPassword')),
-      error: t('errors.auth.forgotPassword'),
+      loading: t('auth:loading.forgotPassword'),
+      success: (msg) => (typeof msg === 'string' ? msg : t('auth:success.forgotPassword')),
+      error: t('auth:errors.forgotPassword'),
     },
     onSuccess: (_, requestData) => {
       onForgotPasswordSuccess(requestData.email);

@@ -90,7 +90,7 @@ apiClient.interceptors.response.use(
         });
         localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
-        toast.error(i18n.t('errors.auth.sessionExpired'), { id: 'session-expired' });
+        toast.error(i18n.t('auth:errors.sessionExpired'), { id: 'session-expired' });
 
         if (window.location.pathname !== '/auth') {
           window.location.href = '/auth';
@@ -102,7 +102,7 @@ apiClient.interceptors.response.use(
 
     if (error.response && isBackendError(error.response.data) && !isLoginAttempt) {
       const backendKey = error.response.data.message;
-      const fullKey = `errors.${backendKey}`;
+      const fullKey = `common:errors.${backendKey}`;
 
       if (i18n.exists(fullKey)) {
         toast.error(i18n.t(fullKey), { id: fullKey });
@@ -112,7 +112,7 @@ apiClient.interceptors.response.use(
     } else {
       if (!isLoginAttempt) {
         logger.error('Unexpected error without backend message', error);
-        toast.error(i18n.t('errors.common.unexpected'), { id: 'unexpected-error' });
+        toast.error(i18n.t('common:errors.common.unexpected'), { id: 'unexpected-error' });
       }
     }
 
