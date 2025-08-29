@@ -24,6 +24,8 @@ export interface BaseToolbarItem {
 export interface TitleToolbarItem extends BaseToolbarItem {
   type: 'title';
   content: string;
+  clickable?: boolean;
+  onClick?: () => void;
 }
 
 export interface ButtonToolbarItem extends BaseToolbarItem {
