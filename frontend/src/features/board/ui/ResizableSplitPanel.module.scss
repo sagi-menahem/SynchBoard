@@ -13,14 +13,14 @@
 }
 
 .leftPanel {
-  border: 2px solid var(--border-color);
+  border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
   background: theme.$background-secondary;
   flex-shrink: 0;
 }
 
 .rightPanel {
-  border: 2px solid var(--border-color);
+  border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
   background: theme.$background-secondary;
   @include theme.flex-column;

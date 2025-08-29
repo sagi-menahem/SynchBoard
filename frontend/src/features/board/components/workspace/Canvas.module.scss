@@ -7,6 +7,43 @@
     overflow: auto;
     direction: rtl;
     display: flex;
+    
+    /* Enhanced scrollbar design for light mode */
+    &::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        @include theme.rounded-medium;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25));
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        @include theme.rounded-medium;
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        
+        &:hover {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35));
+            border-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        &:active {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45));
+        }
+    }
+    
+    &::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Firefox scrollbar - enhanced */
+    scrollbar-width: auto;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
 }
 
 .scrollContainer>* {
