@@ -132,27 +132,27 @@
 }
 
 .toolbarButton.navigation {
-  background: theme.$background;
-  border: 1px solid theme.$border-strong;
-  color: theme.$text-primary;
-  box-shadow: 0 1px 2px theme.$overlay-light;
+  background: theme.$tool-button-bg;
+  border: 1px solid theme.$tool-button-border;
+  color: theme.$tool-button-text;
   padding: 4px 10px;
-  @include theme.rounded-medium;
+  @include theme.rounded-small;
   font-size: 14px;
   font-weight: 500;
+  @include theme.button-transition;
 }
 
 .toolbarButton.navigation:hover:not(.disabled) {
-  background: theme.$surface-elevated;
-  border-color: theme.$primary;
+  background: theme.$tool-button-hover-bg;
+  border-color: theme.$tool-button-hover-border;
   color: theme.$text-primary;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px theme.$overlay-medium;
+  @include theme.shadow-light;
 }
 
 .toolbarButton.navigation:active:not(.disabled) {
   transform: translateY(0px);
-  box-shadow: 0 1px 4px theme.$overlay-medium;
+  @include theme.shadow-light;
 }
 
 .toolbarButton.navigation.iconOnlyButton {
