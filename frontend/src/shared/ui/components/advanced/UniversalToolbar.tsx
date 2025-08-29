@@ -52,12 +52,26 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
 };
 
 const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
-  const { content, visible = true, className } = item;
+  const { content, visible = true, className, clickable = false, onClick } = item;
 
   if (!visible) {return null;}
 
+  const titleClass = [
+    styles.toolbarTitle,
+    clickable && styles.clickableTitle,
+    className,
+  ].filter(Boolean).join(' ');
+
+  if (clickable && onClick) {
+    return (
+      <h1 className={titleClass} onClick={onClick}>
+        {content}
+      </h1>
+    );
+  }
+
   return (
-    <h1 className={`${styles.toolbarTitle} ${className ?? ''}`}>
+    <h1 className={titleClass}>
       {content}
     </h1>
   );

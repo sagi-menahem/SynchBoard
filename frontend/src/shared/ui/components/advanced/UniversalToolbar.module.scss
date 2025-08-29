@@ -53,6 +53,25 @@
   max-width: 300px;
 }
 
+.toolbarTitle.clickableTitle {
+  cursor: pointer;
+  @include theme.smooth-transition;
+  padding: 2px 4px;
+  border-radius: 4px;
+  
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    color: theme.$primary;
+    background: theme.$surface-elevated;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
 .toolbarButton {
   background: theme.$background;
   border: 1px solid theme.$border-strong;

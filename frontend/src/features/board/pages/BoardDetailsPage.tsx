@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
-import { ArrowRight, LogOut, PencilLine, UserPlus } from 'lucide-react';
+import { ArrowRight, LogOut, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
@@ -59,15 +59,11 @@ const BoardDetailsPage: React.FC = () => {
       {
         type: 'title',
         content: boardDetails?.name ?? t('common:loading'),
+        ...(boardDetails && currentUserIsAdmin ? {
+          clickable: true,
+          onClick: () => setEditingField('name'),
+        } : {}),
       },
-      ...(boardDetails && currentUserIsAdmin ? [{
-        type: 'button' as const,
-        icon: PencilLine,
-        label: t('board:toolbar.editBoard.tooltip'),
-        onClick: () => setEditingField('name'),
-        variant: 'navigation',
-        className: 'iconOnlyButton',
-      }] : []),
       ...(currentUserIsAdmin ? [{
         type: 'button' as const,
         icon: UserPlus,
