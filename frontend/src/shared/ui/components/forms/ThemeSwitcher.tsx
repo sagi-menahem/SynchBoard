@@ -17,7 +17,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ className }) => {
   const currentTheme = preferences.theme;
 
   const handleThemeChange = (theme: 'light' | 'dark') => {
-    void setTheme(theme);
+    setTheme(theme);
   };
 
   return (

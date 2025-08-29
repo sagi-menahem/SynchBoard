@@ -8,6 +8,19 @@ import logger from 'shared/utils/logger';
 import 'shared/lib/i18n';
 import 'index.css';
 
+// Apply theme immediately from localStorage to prevent flash
+const THEME_STORAGE_KEY = 'user-theme';
+const earlyTheme = localStorage.getItem(THEME_STORAGE_KEY) as 'light' | 'dark' | null;
+
+if (earlyTheme && (earlyTheme === 'light' || earlyTheme === 'dark')) {
+  document.body.setAttribute('data-theme', earlyTheme);
+} else {
+  // Check OS preference as fallback
+  const prefersColorScheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const fallbackTheme = prefersColorScheme ? 'dark' : 'light';
+  document.body.setAttribute('data-theme', fallbackTheme);
+}
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   const error = new Error('Failed to find the root element');
