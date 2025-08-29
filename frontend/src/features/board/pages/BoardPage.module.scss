@@ -1,12 +1,14 @@
 @use '../../../styles' as theme;
 
 .pageContent {
-    position: relative;
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
-    height: 100vh;
+    position: absolute;
+    top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px));
+    left: 0;
+    right: 0;
+    bottom: 0;
     @include theme.flex-column;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     box-sizing: border-box;
 }
 
