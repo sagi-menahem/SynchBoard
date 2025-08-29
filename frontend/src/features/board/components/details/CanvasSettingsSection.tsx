@@ -226,7 +226,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <Button 
               onClick={handleSave} 
               disabled={isUpdating}
-              variant="primary"
+              variant="secondary"
             >
               <Save size={16} />
               {isUpdating ? t('common:button.saving') : t('board:details.canvasSettings.applyChanges')}
