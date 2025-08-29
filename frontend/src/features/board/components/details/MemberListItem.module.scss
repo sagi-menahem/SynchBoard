@@ -1,4 +1,4 @@
-@use '../../../../styles' as theme;
+@use '@/styles' as theme;
 
 .memberItem {
     @include theme.card-base;
