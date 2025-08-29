@@ -3,53 +3,68 @@
 .base {
     @include theme.button-base;
     @include theme.button-transition;
+    @include theme.button-disabled;
 }
 
 .base svg {
     flex-shrink: 0;
 }
 
-.base:hover {
-    border-color: theme.$primary-color;
-}
-
-.base:disabled {
-    @include theme.button-disabled;
-    background-color: theme.$border-primary;
-    border-color: transparent;
-}
-
+// PRIMARY BUTTON - Vibrant blue for main actions (Login, Save, Create, etc.)
 .primary {
-    background: linear-gradient(135deg, theme.$overlay-primary-30, theme.$overlay-primary-20);
-    color: theme.$text-primary;
-    border-color: theme.$overlay-primary-40;
-    @include theme.shadow-light;
+    background-color: theme.$primary;
+    color: #ffffff;
+    border-color: theme.$primary;
+    font-weight: 600;
+    
+    &:hover:not(:disabled) {
+        background-color: theme.$primary-hover;
+        border-color: theme.$primary-hover;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px theme.$primary-light;
+    }
+    
+    &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px theme.$primary-light;
+    }
 }
 
-.primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, theme.$overlay-primary-40, theme.$overlay-primary-30);
-    border-color: theme.$overlay-primary-60;
-    @include theme.shadow-medium;
-}
-
-.secondary {
-    background-color: theme.$secondary;
-    color: theme.$text-primary;
-}
-
-.secondary:hover:not(:disabled) {
-    background-color: theme.$secondary-hover;
-}
-
+// DESTRUCTIVE BUTTON - Red for dangerous actions (Delete, Logout, etc.)
 .destructive {
-    background: linear-gradient(135deg, theme.$overlay-danger-30, theme.$overlay-danger-20);
-    color: theme.$text-primary;
-    border-color: theme.$overlay-danger-40;
-    @include theme.shadow-light;
+    background-color: theme.$error;
+    color: #ffffff;
+    border-color: theme.$error;
+    font-weight: 600;
+    
+    &:hover:not(:disabled) {
+        background-color: #b91c1c;
+        border-color: #b91c1c;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px theme.$error-light;
+    }
+    
+    &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px theme.$error-light;
+    }
 }
 
-.destructive:hover:not(:disabled) {
-    background: linear-gradient(135deg, theme.$overlay-danger-40, theme.$overlay-danger-30);
-    border-color: theme.$overlay-danger-60;
-    @include theme.shadow-medium;
+// SECONDARY BUTTON - Subtle for supporting actions (Cancel, Change Picture, etc.)
+.secondary {
+    background-color: theme.$surface;
+    color: theme.$text-primary;
+    border-color: theme.$border-strong;
+    
+    &:hover:not(:disabled) {
+        background-color: theme.$surface-hover;
+        border-color: theme.$border-strong;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px theme.$overlay-light;
+    }
+    
+    &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 1px 4px theme.$overlay-light;
+    }
 }

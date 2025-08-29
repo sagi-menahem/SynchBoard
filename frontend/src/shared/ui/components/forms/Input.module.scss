@@ -5,10 +5,6 @@
     @include theme.input-focus;
     margin-top: 4px;
     padding: 10px;
-    @include theme.rounded-small;
-    background-color: theme.$text-dark;
-    border: 1px solid theme.$border-secondary;
-    color: theme.$text-primary;
 }
 
 .input[type="date"] {

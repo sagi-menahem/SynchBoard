@@ -67,6 +67,7 @@
 @mixin button-base {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.6em 1.2em;
   font-size: 1em;
@@ -75,7 +76,10 @@
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 8px;
-  transition: border-color 0.25s, background-color 0.25s;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+  min-height: 44px;
 }
 
 @mixin button-group {
@@ -96,6 +100,26 @@
   color: var(--color-text-primary);
   font-family: inherit;
   font-size: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  // Autofill overrides for browser compatibility
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-surface) inset !important;
+    box-shadow: 0 0 0px 1000px var(--color-surface) inset !important;
+    background-color: var(--color-surface) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  &:disabled {
+    background-color: var(--color-surface);
+    color: var(--color-text-disabled);
+    border-color: var(--color-border-light);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 @mixin input-focus {
