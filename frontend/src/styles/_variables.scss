@@ -196,7 +196,8 @@ $error-bg: $error-light;
 $error-border: $error;
 
 // Canvas Variables  
-$canvas-pattern: $border-light;
+$canvas-background: var(--color-canvas-background);
+$canvas-pattern: var(--color-canvas-pattern);
 $divider-bg: $border;
 $divider-hover: $border-strong;
 $divider-active: $primary;

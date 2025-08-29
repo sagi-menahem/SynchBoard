@@ -1,39 +1,41 @@
 @use '../../../styles' as theme;
 
-/* Match updated button system styling */
+/* Google branding guidelines - consistent across themes */
 .googleButton {
   @include theme.flex-center;
-  @include theme.button-base;
-  @include theme.rounded-large;
   @include theme.button-transition;
+  @include theme.rounded-large;
   width: 50%;
   margin: 0 auto;
   padding: 12px 16px;
-  border: 1px solid theme.$overlay-light;
-  background: theme.$overlay-light;
-  color: theme.$border-google;
+  border: 1px solid #dadce0;
+  background: #ffffff;
+  color: #1f1f1f;
   font-size: 14px;
   font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   gap: 12px;
   min-height: 44px;
+  cursor: pointer;
 }
 
 .googleButton:hover:not(:disabled) {
-  background: theme.$overlay-medium;
-  border-color: theme.$overlay-medium;
-  @include theme.button-hover-lift;
-  @include theme.shadow-light;
+  background: #f8f8f8;
+  border-color: #c6c6c6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .googleButton:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: #f1f1f1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .googleButton:disabled {
-  @include theme.button-disabled;
-  background: theme.$overlay-light;
-  transform: none;
+  background: #ffffff;
+  color: #9aa0a6;
+  border-color: #f1f3f4;
+  cursor: not-allowed;
+  opacity: 0.6;
   box-shadow: none;
 }
 

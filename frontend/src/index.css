@@ -22,9 +22,9 @@ body[data-theme='light'] {
 
     /* Dual-Theme Color System - Light Theme */
     /* Primary Colors */
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-primary-light: #dbeafe;
+    --color-primary: #0066cc;
+    --color-primary-hover: #0052a3;
+    --color-primary-light: #cce7ff;
     
     /* Secondary Colors */
     --color-secondary: #64748b;
@@ -52,13 +52,17 @@ body[data-theme='light'] {
     --color-success-light: #d1fae5;
     --color-warning: #d97706;
     --color-warning-light: #fef3c7;
-    --color-error: #dc2626;
-    --color-error-light: #fee2e2;
+    --color-error: #cc0000;
+    --color-error-light: #ffebee;
     
     /* Overlay Colors */
     --color-overlay-light: rgba(0, 0, 0, 0.05);
     --color-overlay-medium: rgba(0, 0, 0, 0.25);
     --color-overlay-strong: rgba(0, 0, 0, 0.75);
+    
+    /* Canvas Colors */
+    --color-canvas-background: #f9fafb;
+    --color-canvas-pattern: rgba(0, 0, 0, 0.03);
 
     /* Light theme defaults */
     color: var(--color-text-primary);
@@ -111,6 +115,10 @@ body[data-theme='dark'] {
     --color-overlay-light: rgba(255, 255, 255, 0.05);
     --color-overlay-medium: rgba(255, 255, 255, 0.15);
     --color-overlay-strong: rgba(0, 0, 0, 0.75);
+    
+    /* Canvas Colors */
+    --color-canvas-background: #1a1a1a;
+    --color-canvas-pattern: rgba(255, 255, 255, 0.02);
 
     /* Dark theme defaults */
     color: rgba(255, 255, 255, 0.87);
