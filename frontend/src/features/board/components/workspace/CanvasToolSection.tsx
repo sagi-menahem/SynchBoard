@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
-import { ColorPicker, Slider } from 'shared/ui';
+import { Button, ColorPicker, Slider } from 'shared/ui';
 
 import styles from './CanvasToolSection.module.scss';
 import { LineToolsDropdown } from './LineToolsDropdown';
