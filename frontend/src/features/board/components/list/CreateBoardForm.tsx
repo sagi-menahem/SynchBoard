@@ -124,20 +124,21 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label>
+        <label htmlFor="board-invite-members">
           <Users size={14} />
           {t('board:createForm.label.inviteMembers')}
         </label>
-        <MemberInviteInput onMembersChange={setInviteEmails} disabled={isPending} />
+        <MemberInviteInput id="board-invite-members" onMembersChange={setInviteEmails} disabled={isPending} />
       </div>
 
       <div className={styles.field}>
-        <label>
+        <label htmlFor="board-canvas-background">
           <Monitor size={14} />
           {t('board:createForm.label.canvasBackground')}
         </label>
         <div className={utilStyles.settingRow}>
           <ColorPicker
+            id="board-canvas-background"
             color={canvasBackgroundColor}
             onChange={setCanvasBackgroundColor}
             disabled={isPending}
@@ -152,12 +153,13 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
-        <label>
+        <label htmlFor="board-canvas-size">
           <Monitor size={14} />
           {t('board:createForm.label.canvasSize')}
         </label>
         <div className={styles.canvasSizeOptions}>
           <RadioGroup
+            id="board-canvas-size"
             value={canvasSize}
             onValueChange={(value) => setCanvasSize(value as typeof canvasSize)}
             name="canvasSize"
@@ -200,6 +202,8 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
         {canvasSize === 'custom' && (
           <div className={styles.customSizeInputs}>
             <Input
+              id="canvas-custom-width"
+              name="customWidth"
               type="number"
               value={customWidth}
               onChange={(e) => setCustomWidth(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_WIDTH)}
@@ -210,6 +214,8 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
             />
             <span>×</span>
             <Input
+              id="canvas-custom-height"
+              name="customHeight"
               type="number"
               value={customHeight}
               onChange={(e) => setCustomHeight(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_HEIGHT)}

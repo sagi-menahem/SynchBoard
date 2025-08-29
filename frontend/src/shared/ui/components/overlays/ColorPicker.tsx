@@ -13,6 +13,7 @@ interface ColorPickerProps {
   disabled?: boolean;
   className?: string;
   label?: string;
+  id?: string;
 }
 
 const ColorPicker: React.FC<ColorPickerProps> = ({ 
@@ -21,6 +22,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   disabled = false,
   className = '',
   label,
+  id,
 }) => {
   const { t } = useTranslation(['common']);
   const [showPicker, setShowPicker] = useState(false);
@@ -86,6 +88,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     <div className={`${styles.colorPickerContainer} ${className}`}>
       {label && <label className={styles.label}>{label}</label>}
       <button
+        id={id}
         ref={swatchRef}
         type="button"
         className={`${styles.swatch} ${disabled ? styles.disabled : ''}`}

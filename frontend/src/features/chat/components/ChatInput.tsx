@@ -56,8 +56,12 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
+      <label htmlFor="chat-message-input" className="sr-only">
+        {t('chat:window.placeholder')}
+      </label>
       <div className={styles.inputContainer}>
         <Input
+          id="chat-message-input"
           ref={inputRef}
           type="text"
           value={message}

@@ -31,11 +31,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
                 <Input id="lastName" name="lastName" value={formData.lastName !== null ? formData.lastName : ''} onChange={onInputChange} />
             </div>
             <div className={styles.field}>
-                <label htmlFor="gender">
+                <label htmlFor="profile-gender">
                     {t('settings:page.genderLabel')}
                     <span className={styles.required}> *</span>
                 </label>
-                <div className={styles.radioGroup}>
+                <div className={styles.radioGroup} id="profile-gender" role="radiogroup">
                     <label className={styles.radioLabel}>
                         <input
                             type="radio"

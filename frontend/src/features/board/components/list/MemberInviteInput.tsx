@@ -14,9 +14,10 @@ import styles from './MemberInviteInput.module.scss';
 interface MemberInviteInputProps {
     onMembersChange: (emails: string[]) => void;
     disabled?: boolean;
+    id?: string;
 }
 
-const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, disabled = false }) => {
+const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, disabled = false, id }) => {
   const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();
   const [inputValue, setInputValue] = useState('');
@@ -78,9 +79,13 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id={id}>
+      <label htmlFor="member-invite-email" className="sr-only">
+        {t('board:createForm.placeholder.inviteEmails')}
+      </label>
       <div className={styles.inputContainer}>
         <Input
+          id="member-invite-email"
           type="email"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

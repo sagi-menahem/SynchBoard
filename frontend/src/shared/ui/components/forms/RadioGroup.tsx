@@ -21,6 +21,7 @@ interface RadioGroupProps {
   className?: string;
   orientation?: 'vertical' | 'horizontal';
   required?: boolean;
+  id?: string;
 }
 
 const RadioGroup: React.FC<RadioGroupProps> = ({
@@ -33,9 +34,11 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   className = '',
   orientation = 'vertical',
   required = false,
+  id,
 }) => {
   return (
     <RadixRadioGroup.Root
+      id={id}
       className={`${styles.radioGroup} ${styles[orientation]} ${className}`}
       value={value}
       defaultValue={defaultValue}

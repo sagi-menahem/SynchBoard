@@ -85,12 +85,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       </div>
 
       <div className={styles.field}>
-        <label>
+        <label htmlFor="register-gender">
           <User size={14} />
           {t('common:form.label.gender')}
           <span className={styles.required}> *</span>
         </label>
         <RadioGroup
+          id="register-gender"
           value={gender}
           onValueChange={setGender}
           name="gender"
