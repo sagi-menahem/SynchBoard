@@ -57,7 +57,7 @@ const BoardListPage: React.FC = () => {
         icon: Plus,
         label: t('board:listPage.createNewBoardButton'),
         onClick: openModal,
-        primary: true,
+        variant: 'navigation',
       },
     ],
     centerSection: [
@@ -75,6 +75,7 @@ const BoardListPage: React.FC = () => {
         icon: Settings,
         label: t('board:listPage.setting'),
         onClick: () => navigate(APP_ROUTES.SETTINGS),
+        variant: 'navigation',
       },
     ],
   }), [

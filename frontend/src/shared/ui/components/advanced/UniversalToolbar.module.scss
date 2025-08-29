@@ -8,7 +8,7 @@
   width: 100vw;
   height: 72px;
   box-sizing: border-box;
-  background: theme.$surface-elevated;
+  background: theme.$surface;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid theme.$border-light;
   @include theme.shadow-light;
@@ -54,9 +54,10 @@
 }
 
 .toolbarButton {
-  background: theme.$surface;
-  border: 1px solid theme.$border;
-  color: theme.$text-muted;
+  background: theme.$background;
+  border: 1px solid theme.$border-strong;
+  color: theme.$text-primary;
+  box-shadow: 0 1px 2px theme.$overlay-light;
   @include theme.interactive-button;
   padding: 4px 10px;
   @include theme.rounded-medium;
@@ -72,11 +73,11 @@
 }
 
 .toolbarButton:hover:not(.disabled) {
-  background: theme.$surface-hover;
-  border-color: theme.$border-strong;
+  background: theme.$surface-elevated;
+  border-color: theme.$primary;
   color: theme.$text-primary;
   transform: translateY(-1px);
-  @include theme.shadow-light;
+  box-shadow: 0 2px 8px theme.$overlay-medium;
 }
 
 .toolbarButton.disabled {
@@ -98,16 +99,52 @@
 }
 
 .toolbarButton.destructive {
-  background: linear-gradient(135deg, theme.$overlay-danger-30, theme.$overlay-danger-20);
-  color: theme.$text-primary;
-  border-color: theme.$overlay-danger-40;
-  box-shadow: 0 0 8px theme.$overlay-danger-10;
+  background-color: theme.$error;
+  color: #ffffff;
+  border-color: theme.$error;
+  font-weight: 600;
 }
 
 .toolbarButton.destructive:hover:not(.disabled) {
-  background: linear-gradient(135deg, theme.$overlay-danger-40, theme.$overlay-danger-30);
-  border-color: theme.$overlay-danger-60;
-  box-shadow: 0 0 12px theme.$overlay-danger-20;
+  background-color: #be185d;
+  border-color: #be185d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px theme.$error-light;
+}
+
+.toolbarButton.navigation {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px theme.$overlay-medium;
+}
+
+.toolbarButton.navigation:hover:not(.disabled) {
+  background: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  color: #ffffff;
+}
+
+.toolbarButton.navigation:active:not(.disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.toolbarButton.navigation.iconOnlyButton {
+  padding: 8px;
+  min-width: 36px;
+  min-height: 36px;
+  @include theme.flex-center;
+  gap: 0;
+}
+
+.toolbarButton.navigation.iconOnlyButton .buttonLabel {
+  display: none;
 }
 
 .toolbarButton.icon {

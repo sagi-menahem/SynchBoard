@@ -42,8 +42,14 @@
 }
 
 .myMessage .messageBubble {
-  background: theme.$primary;
-  color: #ffffff;
+  background: theme.$primary-light;
+  color: theme.$primary;
+  
+  // Override for dark theme to use full primary
+  body[data-theme='dark'] & {
+    background: theme.$primary;
+    color: #ffffff;
+  }
 }
 
 .otherMessage .messageBubble {
@@ -113,8 +119,13 @@
 }
 
 .myMessage .messageText {
-  color: #ffffff;
+  color: theme.$primary;
   text-align: right;
+  
+  // Override for dark theme to use white text
+  body[data-theme='dark'] & {
+    color: #ffffff;
+  }
 }
 
 .otherMessage .messageText {

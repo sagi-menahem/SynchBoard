@@ -8,8 +8,8 @@
 .searchContainer {
   position: relative;
   @include theme.flex-start;
-  background: theme.$overlay-black-20;
-  border: 1px solid theme.$overlay-white-06;
+  background: theme.$surface-elevated;
+  border: 1px solid theme.$border-strong;
   @include theme.rounded-medium;
   padding: 8px 12px;
   gap: 8px;
@@ -18,9 +18,9 @@
   max-width: 400px;
 
   &:focus-within {
-    background: theme.$overlay-black-30;
-    border-color: theme.$overlay-white-15;
-    box-shadow: 0 0 8px theme.$overlay-primary-10;
+    background: theme.$surface-hover;
+    border-color: theme.$primary;
+    box-shadow: 0 0 8px theme.$primary-light;
   }
 }
 
@@ -53,8 +53,8 @@
   flex-shrink: 0;
 
   &:hover {
-    color: theme.$text-secondary;
-    background: theme.$overlay-white-10;
+    color: theme.$text-primary;
+    background: theme.$surface-hover;
   }
 }
 

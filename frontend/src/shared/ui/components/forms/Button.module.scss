@@ -38,8 +38,8 @@
     font-weight: 600;
     
     &:hover:not(:disabled) {
-        background-color: #dc2626;
-        border-color: #dc2626;
+        background-color: #be185d;
+        border-color: #be185d;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px theme.$error-light;
     }

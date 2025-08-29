@@ -34,7 +34,7 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
     styles.toolbarButton,
     styles[variant],
     disabled && styles.disabled,
-    className,
+    className && styles[className],
   ].filter(Boolean).join(' ');
 
   return (

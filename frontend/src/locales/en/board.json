@@ -18,6 +18,7 @@
   "detailsPage": {
     "backToBoardButton": "Back to Board",
     "boardDetailsButton": "Board details",
+    "boardButton": "Go to Board",
     "loading": "Loading board details...",
     "notFound": "Board not found or you do not have access.",
     "noDescription": "No description.",
@@ -35,7 +36,9 @@
     "backButton": "Back to Boards",
     "inviteButton": "Invite Member",
     "heading": "Board Workspace (ID: {{boardId}})",
-    "loading": "Loading board..."
+    "loading": "Loading board...",
+    "boardDetailsButton": "Board Details",
+    "boardListButton": "Board List"
   },
   "createForm": {
     "heading": "Create a New Board",
