@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Calendar, Lock, Mail, Phone, User, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, PasswordInput } from 'shared/ui';
+import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
 
 import { useRegisterForm } from '../hooks/forms';
 
@@ -15,6 +15,7 @@ interface RegistrationFormProps {
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
   const { t } = useTranslation(['auth', 'common']);
   const { state, submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
+  const [gender, setGender] = useState<string>('');
 
 
   return (
@@ -84,33 +85,24 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="register-gender">
+        <label>
           <User size={14} />
           {t('common:form.label.gender')}
           <span className={styles.required}> *</span>
         </label>
-        <div className={styles.radioGroup}>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              required
-              disabled={isPending}
-            />
-            {t('common:form.option.male')}
-          </label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              required
-              disabled={isPending}
-            />
-            {t('common:form.option.female')}
-          </label>
-        </div>
+        <RadioGroup
+          value={gender}
+          onValueChange={setGender}
+          name="gender"
+          required
+          disabled={isPending}
+          orientation="horizontal"
+          options={[
+            { value: 'male', label: t('common:form.option.male') },
+            { value: 'female', label: t('common:form.option.female') },
+          ]}
+        />
+        <input type="hidden" name="gender" value={gender} />
       </div>
 
       <div className={styles.field}>

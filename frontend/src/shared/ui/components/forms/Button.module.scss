@@ -30,24 +30,23 @@
     }
 }
 
-// DESTRUCTIVE BUTTON - Red for dangerous actions (Delete, Logout, etc.)
+// DESTRUCTIVE BUTTON - Strong red for dangerous actions (Delete, Logout, etc.)
 .destructive {
-    background: linear-gradient(135deg, theme.$overlay-danger-30, theme.$overlay-danger-20);
-    color: theme.$text-primary;
-    border-color: theme.$overlay-danger-40;
+    background-color: theme.$error;
+    color: #ffffff;
+    border-color: theme.$error;
     font-weight: 600;
-    box-shadow: 0 0 8px theme.$overlay-danger-10;
     
     &:hover:not(:disabled) {
-        background: linear-gradient(135deg, theme.$overlay-danger-40, theme.$overlay-danger-30);
-        border-color: theme.$overlay-danger-60;
+        background-color: #dc2626;
+        border-color: #dc2626;
         transform: translateY(-1px);
-        box-shadow: 0 0 12px theme.$overlay-danger-20;
+        box-shadow: 0 4px 12px theme.$error-light;
     }
     
     &:active:not(:disabled) {
         transform: translateY(0);
-        box-shadow: 0 0 8px theme.$overlay-danger-20;
+        box-shadow: 0 2px 8px theme.$error-light;
     }
 }
 

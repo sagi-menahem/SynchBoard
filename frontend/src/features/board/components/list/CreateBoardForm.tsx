@@ -4,7 +4,7 @@ import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';
 import { FileText, Monitor, Pencil, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, ColorPicker, Input } from 'shared/ui';
+import { Button, ColorPicker, Input, RadioGroup } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
@@ -132,8 +132,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       </div>
 
       <div className={styles.field}>
+        <label>
+          <Monitor size={14} />
+          {t('board:createForm.label.canvasBackground')}
+        </label>
         <div className={utilStyles.settingRow}>
-          <span className={utilStyles.settingLabel}>{t('board:createForm.label.canvasBackground')}:</span>
           <ColorPicker
             color={canvasBackgroundColor}
             onChange={setCanvasBackgroundColor}
@@ -154,51 +157,45 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           {t('board:createForm.label.canvasSize')}
         </label>
         <div className={styles.canvasSizeOptions}>
-          {/* Canvas Size Presets */}
-          <div className={styles.sizeGroup}>
-            {CANVAS_CONFIG.PRESET_ORDER.map((size) => {
-              const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];
-              return (
-                <label key={size} className={styles.radioOption}>
-                  <input
-                    type="radio"
-                    value={size}
-                    checked={canvasSize === size}
-                    onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
-                    disabled={isPending}
-                    aria-label={`${t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`}
-                  />
+          <RadioGroup
+            value={canvasSize}
+            onValueChange={(value) => setCanvasSize(value as typeof canvasSize)}
+            name="canvasSize"
+            disabled={isPending}
+            orientation="vertical"
+            options={[
+              ...CANVAS_CONFIG.PRESET_ORDER.map((size) => {
+                const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];
+                return {
+                  value: size,
+                  label: (
+                    <div className={styles.presetLabel}>
+                      <span className={styles.presetName}>
+                        {t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)}
+                      </span>
+                      <span className={styles.presetInfo}>
+                        ({preset.ratio}) - {preset.width}×{preset.height}
+                      </span>
+                    </div>
+                  ),
+                  ariaLabel: `${t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`,
+                };
+              }),
+              {
+                value: 'custom',
+                label: (
                   <div className={styles.presetLabel}>
                     <span className={styles.presetName}>
-                      {t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)}
+                      {t('board:canvasSize.custom.label')}
                     </span>
-                    <span className={styles.presetInfo}>
-                      ({preset.ratio}) - {preset.width}×{preset.height}
-                    </span>
+                    <span className={styles.presetInfo} />
                   </div>
-                </label>
-              );
-            })}
-          </div>
-          
-          <div className={styles.sizeGroup}>
-            <label className={styles.radioOption}>
-              <input
-                type="radio"
-                value="custom"
-                checked={canvasSize === 'custom'}
-                onChange={(e) => setCanvasSize(e.target.value as typeof canvasSize)}
-                disabled={isPending}
-                aria-label={`${t('board:canvasSize.custom.label')}`}
-              />
-              <div className={styles.presetLabel}>
-                <span className={styles.presetName}>
-                  {t('board:canvasSize.custom.label')}
-                </span>
-                <span className={styles.presetInfo} />
-              </div>
-            </label>
-          </div>
+                ),
+                ariaLabel: t('board:canvasSize.custom.label'),
+              },
+            ]}
+          />
+          <input type="hidden" name="canvasSize" value={canvasSize} />
         </div>
         {canvasSize === 'custom' && (
           <div className={styles.customSizeInputs}>
