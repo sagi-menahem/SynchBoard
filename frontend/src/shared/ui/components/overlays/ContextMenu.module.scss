@@ -1,0 +1,39 @@
+@use '../../../../styles' as theme;
+
+.menu {
+    position: absolute;
+    z-index: 1000;
+    @include theme.card-base;
+    @include theme.shadow-heavy;
+    padding: 6px;
+    min-width: 180px;
+}
+
+.item {
+    padding: 8px 12px;
+    @include theme.rounded-small;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.1s ease-in-out;
+    color: theme.$text-primary;
+
+    &:hover {
+        background-color: theme.$primary;
+        color: theme.$text-primary;
+    }
+
+    &.destructive {
+        color: theme.$error;
+
+        &:hover {
+            background-color: theme.$error;
+            color: theme.$text-primary;
+        }
+    }
+}
+
+.separator {
+    height: 1px;
+    background-color: theme.$border-primary;
+    margin: 4px 0;
+}

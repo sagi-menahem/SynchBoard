@@ -9,7 +9,7 @@ import { Button, PasswordInput } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
 
-import styles from './ChangePasswordForm.module.css';
+import styles from './ChangePasswordForm.module.scss';
 
 interface ChangePasswordFormProps {
     onSubmit: (data: ChangePasswordRequest) => Promise<void>;

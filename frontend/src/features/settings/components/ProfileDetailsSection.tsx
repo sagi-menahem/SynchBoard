@@ -9,7 +9,7 @@ import { Button } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
 
-import styles from '../pages/SettingsPage.module.css';
+import styles from '../pages/SettingsPage.module.scss';
 
 interface ProfileDetailsSectionProps {
     user: UserProfile;

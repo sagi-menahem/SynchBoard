@@ -12,7 +12,7 @@ import { API_BASE_URL, APP_ROUTES } from 'shared/constants';
 import { RelativeTimestamp } from 'shared/ui';
 import { getColorName } from 'shared/utils/ColorUtils';
 
-import styles from './BoardCard.module.css';
+import styles from './BoardCard.module.scss';
 
 interface BoardCardProps {
     board: Board;

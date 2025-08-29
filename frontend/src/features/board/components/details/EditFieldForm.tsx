@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Edit, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
-import styles from 'shared/ui/styles/CommonForm.module.css';
+import styles from 'shared/ui/styles/CommonForm.module.scss';
 import logger from 'shared/utils/logger';
 
 

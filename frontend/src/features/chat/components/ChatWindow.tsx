@@ -14,7 +14,7 @@ import logger from 'shared/utils/logger';
 
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
-import styles from './ChatWindow.module.css';
+import styles from './ChatWindow.module.scss';
 
 interface ChatWindowProps {
   boardId: number;

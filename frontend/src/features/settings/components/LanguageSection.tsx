@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
-import styles from '../pages/SettingsPage.module.css';
+import styles from '../pages/SettingsPage.module.scss';
 
 
 const LanguageSection: React.FC = () => {

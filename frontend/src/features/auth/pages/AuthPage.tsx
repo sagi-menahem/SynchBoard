@@ -18,7 +18,7 @@ import {
 } from '../components';
 
 
-import styles from './AuthPage.module.css';
+import styles from './AuthPage.module.scss';
 
 const AuthPage: React.FC = () => {
   const { t } = useTranslation(['auth', 'common']);

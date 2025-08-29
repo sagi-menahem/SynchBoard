@@ -6,7 +6,7 @@ import { Button, Input, PasswordInput } from 'shared/ui';
 
 import { useRegisterForm } from '../hooks/forms';
 
-import styles from './RegistrationForm.module.css';
+import styles from './RegistrationForm.module.scss';
 
 interface RegistrationFormProps {
     onRegistrationSuccess: (email: string) => void;

@@ -14,7 +14,7 @@ import { BoardWorkspace, CanvasToolSection } from '../components/workspace';
 import { useBoardContext } from '../hooks/context/useBoardContext';
 
 
-import styles from './BoardPage.module.css';
+import styles from './BoardPage.module.scss';
 
 interface BoardPageContentProps {
   boardId: number;

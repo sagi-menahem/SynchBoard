@@ -9,7 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 
-import styles from './CanvasToolSection.module.css';
+import styles from './CanvasToolSection.module.scss';
 
 interface LineToolsGroupProps {
   currentTool: Tool;

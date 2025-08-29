@@ -9,7 +9,7 @@ import logger from 'shared/utils/logger';
 import { validateEmail } from 'shared/utils/validationUtils';
 
 
-import styles from './MemberInviteInput.module.css';
+import styles from './MemberInviteInput.module.scss';
 
 interface MemberInviteInputProps {
     onMembersChange: (emails: string[]) => void;

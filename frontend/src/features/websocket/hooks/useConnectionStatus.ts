@@ -43,9 +43,9 @@ export const useConnectionStatus = (): ConnectionStatusState => {
   return {
     shouldShowBanner: shouldShowBanner && connectionState === 'disconnected',
     shouldBlockFunctionality: !isSocketConnected,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+     
     connectionState,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+     
     isSocketConnected,
   };
 };

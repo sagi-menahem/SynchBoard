@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 
 
-import styles from './ChatInput.module.css';
+import styles from './ChatInput.module.scss';
 
 interface ChatInputProps {
     onSendMessage: (content: string) => Promise<void>;

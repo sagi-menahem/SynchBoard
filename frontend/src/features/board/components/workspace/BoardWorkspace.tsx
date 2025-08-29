@@ -7,7 +7,7 @@ import { ChatWindow } from 'features/chat/components';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import type { Tool } from 'shared/types/CommonTypes';
 
-import styles from './BoardWorkspace.module.css';
+import styles from './BoardWorkspace.module.scss';
 
 import { Canvas } from '.';
 

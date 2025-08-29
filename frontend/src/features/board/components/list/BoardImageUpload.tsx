@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
 
-import styles from './BoardImageUpload.module.css';
+import styles from './BoardImageUpload.module.scss';
 
 interface BoardImageUploadProps {
     onImageSelect: (file: File | null) => void;

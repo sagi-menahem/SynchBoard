@@ -8,7 +8,7 @@ import { useLoginForm } from '../hooks/forms';
 import { redirectToGoogle } from '../services/authService';
 
 import GoogleLoginButton from './GoogleLoginButton';
-import styles from './LoginForm.module.css';
+import styles from './LoginForm.module.scss';
 
 interface LoginFormProps {
   onForgotPassword: () => void;

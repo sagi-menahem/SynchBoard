@@ -27,7 +27,7 @@ import { useAccountManager, usePasswordManager } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
 
 
-import styles from './SettingsPage.module.css';
+import styles from './SettingsPage.module.scss';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);

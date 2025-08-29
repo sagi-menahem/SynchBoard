@@ -1,0 +1,263 @@
+@use '../../../../styles' as theme;
+
+.boardCard {
+    @include theme.card-base;
+    background-color: theme.$background-secondary;
+    border: 1px solid theme.$border-primary;
+    @include theme.rounded-medium;
+    padding: 1rem;
+    @include theme.smooth-transition;
+    @include theme.hover-transition;
+    text-align: start;
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.boardCard.grid {
+    @include theme.flex-column;
+    height: 280px;
+    aspect-ratio: 1.2;
+}
+
+.boardCard.list {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: auto;
+}
+
+.boardCard:hover {
+    @include theme.card-hover-effect;
+    background-color: theme.$background-surface;
+    transform: translateY(-2px);
+    @include theme.shadow-medium;
+}
+
+.boardCardImage {
+    object-fit: cover;
+    flex-shrink: 0;
+    @include theme.rounded-medium;
+}
+
+.boardCard.grid .boardCardImage {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px 8px 0 0;
+    margin: -1rem -1rem 1rem -1rem;
+}
+
+.boardCard.list .boardCardImage {
+    width: 60px;
+    height: 60px;
+    @include theme.rounded-circle;
+}
+
+.boardCardContent {
+    @include theme.flex-column;
+    flex: 1;
+}
+
+.boardCard.grid .boardCardContent {
+    height: 100%;
+    justify-content: space-between;
+}
+
+.boardCard.list .boardCardContent {
+    min-height: 60px;
+    justify-content: center;
+}
+
+.cardHeader {
+    @include theme.flex-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.cardHeader h2 {
+    flex: 1;
+    margin-inline-end: 1rem;
+    margin-block: 0;
+}
+
+.metadataColumn {
+    @include theme.flex-column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.colorInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.colorName {
+    font-size: 0.75rem;
+    color: theme.$text-muted;
+    white-space: nowrap;
+    text-align: start;
+}
+
+.canvasColorBadge {
+    width: 12px;
+    height: 12px;
+    @include theme.rounded-circle;
+    border: 1px solid theme.$border-secondary;
+    flex-shrink: 0;
+}
+
+.cardBody {
+    @include theme.flex-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+}
+
+.description {
+    flex: 1;
+    margin: 0;
+    color: theme.$text-muted;
+}
+
+.resolutionInfo {
+    flex-shrink: 0;
+    text-align: start;
+}
+
+.canvasResolution {
+    font-size: 0.75rem;
+    color: theme.$text-disabled;
+    white-space: nowrap;
+    font-family: monospace;
+}
+
+.cardFooter {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    width: 100%;
+    position: relative;
+}
+
+.leftSection {
+    flex: 1;
+}
+
+.centerSection {
+    position: absolute;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    @include theme.flex-center;
+}
+
+.rightSection {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+}
+
+.lastModified {
+    font-size: 0.75rem;
+    color: theme.$text-placeholder;
+    white-space: nowrap;
+}
+
+.adminLabel {
+    @include theme.flex-center;
+}
+
+.boardCard.grid .cardHeader h2 {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+}
+
+.boardCard.list .cardHeader h2 {
+    font-size: 1rem;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.boardCard.grid .description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    @include theme.text-clamp(2);
+}
+
+.boardCard.list .description {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    @include theme.text-clamp(1);
+}
+
+.boardCard.grid .cardFooter {
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.boardCard.list .cardFooter {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .boardCard.grid {
+        height: 240px;
+    }
+
+    .boardCard.grid .boardCardImage {
+        height: 100px;
+    }
+
+    .boardCard.list {
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .boardCard.list .boardCardImage {
+        width: 50px;
+        height: 50px;
+    }
+
+    .boardCard.list .cardHeader h2 {
+        font-size: 0.9rem;
+    }
+
+    .boardCard.list .description {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .boardCard.grid {
+        height: 220px;
+    }
+
+    .boardCard.grid .boardCardImage {
+        height: 80px;
+    }
+
+    .boardCard.list {
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    .boardCard.list .boardCardImage {
+        width: 45px;
+        height: 45px;
+    }
+
+    .cardHeader h2 {
+        font-size: 0.9rem;
+    }
+
+    .colorName,
+    .canvasResolution,
+    .lastModified {
+        font-size: 0.7rem;
+    }
+}

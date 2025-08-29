@@ -1,0 +1,78 @@
+@use '../../../styles' as theme;
+
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.leftPanel,
+.rightPanel {
+  overflow: auto;
+  min-width: 200px;
+}
+
+.leftPanel {
+  border: 2px solid var(--border-color);
+  @include theme.rounded-medium;
+  background: theme.$background-secondary;
+  flex-shrink: 0;
+}
+
+.rightPanel {
+  border: 2px solid var(--border-color);
+  @include theme.rounded-medium;
+  background: theme.$background-secondary;
+  @include theme.flex-column;
+}
+
+.divider {
+  width: 12px;
+  cursor: col-resize;
+  @include theme.flex-center;
+  background: theme.$divider-bg;
+  border: none;
+  padding: 0;
+  @include theme.hover-transition;
+  position: relative;
+  margin: 0 4px;
+  height: 100%;
+}
+
+.divider:hover {
+  background: theme.$divider-hover;
+}
+
+.divider.dragging {
+  background: theme.$divider-active;
+}
+
+.dividerHandle {
+  @include theme.flex-column;
+  @include theme.flex-center;
+  gap: 3px;
+  height: 50px;
+}
+
+.dividerHandle::before,
+.dividerHandle::after,
+.dividerHandle span {
+  content: '';
+  width: 3px;
+  height: 3px;
+  background: theme.$text-placeholder;
+  @include theme.rounded-circle;
+  @include theme.hover-transition;
+}
+
+.divider:hover .dividerHandle::before,
+.divider:hover .dividerHandle::after,
+.divider:hover .dividerHandle span {
+  background: theme.$primary;
+}
+
+.divider.dragging .dividerHandle::before,
+.divider.dragging .dividerHandle::after,
+.divider.dragging .dividerHandle span {
+  background: theme.$primary;
+}

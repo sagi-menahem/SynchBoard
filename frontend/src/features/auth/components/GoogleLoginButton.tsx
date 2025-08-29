@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import styles from './GoogleLoginButton.module.css';
+import styles from './GoogleLoginButton.module.scss';
 
 interface GoogleLoginButtonProps {
   onClick: () => void;

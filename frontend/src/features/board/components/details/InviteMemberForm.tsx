@@ -5,7 +5,7 @@ import type { Member } from 'features/board/types/BoardTypes';
 import { Mail, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
-import styles from 'shared/ui/styles/CommonForm.module.css';
+import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 interface InviteMemberFormProps {
     boardId: number;

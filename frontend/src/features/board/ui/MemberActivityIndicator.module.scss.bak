@@ -1,0 +1,103 @@
+@import '../../../styles/_variables';
+@import '../../../styles/_mixins';
+
+.activityIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  @include rounded-small;
+  background: $activity-indicator-bg;
+  border: 1px solid $activity-indicator-border;
+  color: $text-secondary;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  @include smooth-transition;
+}
+
+.activityIndicator.clickable {
+  @include interactive-button;
+  cursor: pointer;
+  background: none;
+  border: 1px solid $activity-indicator-border;
+}
+
+.activityIndicator.clickable:hover {
+  background: $activity-indicator-hover;
+  border-color: $activity-indicator-hover-border;
+  color: $text-primary;
+  transform: translateY(-1px);
+}
+
+.icon {
+  color: $text-muted-light;
+  flex-shrink: 0;
+}
+
+.counts {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.onlineCount {
+  color: $success-color;
+  font-weight: 600;
+}
+
+.separator {
+  color: $text-muted-light;
+  margin: 0 2px;
+}
+
+.totalCount {
+  color: $text-secondary;
+}
+
+.onlineIndicator {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: $success-color;
+  @include rounded-circle;
+  box-shadow: 0 0 4px $success-glow;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+.activityIndicator.clickable:focus-visible {
+  outline: 2px solid $focus-outline;
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .activityIndicator {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .onlineIndicator {
+    width: 5px;
+    height: 5px;
+    top: 5px;
+    right: 5px;
+  }
+}

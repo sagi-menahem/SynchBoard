@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import Button from '../forms/Button';
 
-import styles from './Modal.module.css';
+import styles from './Modal.module.scss';
 
 interface ModalProps {
     isOpen: boolean;

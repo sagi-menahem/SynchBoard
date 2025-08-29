@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 
-import styles from './CanvasToolSection.module.css';
+import styles from './CanvasToolSection.module.scss';
 
 interface TextInputOverlayProps {
   x: number;

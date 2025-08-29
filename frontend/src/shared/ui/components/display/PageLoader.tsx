@@ -2,7 +2,7 @@ import React from 'react';
 
 import { motion } from 'framer-motion';
 
-import styles from './PageLoader.module.css';
+import styles from './PageLoader.module.scss';
 
 interface PageLoaderProps {
   message?: string;

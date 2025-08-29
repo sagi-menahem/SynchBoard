@@ -1,0 +1,22 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_mixins';
+
+.container {
+  @include flex-column-center;
+  gap: 1.5rem;
+}
+
+.imageContainer {
+  @include flex-center;
+}
+
+.image {
+  width: 168px;
+  height: 168px;
+  @include rounded-circle;
+  object-fit: cover;
+}
+
+.buttonGroup {
+  @include button-group;
+}

@@ -1,0 +1,249 @@
+@use '../../../../styles' as theme;
+
+.canvasToolSection {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  overflow: visible;
+}
+
+.toolGroup {
+  @include theme.flex-column;
+  @include theme.flex-center;
+  padding: 8px 14px;
+  position: relative;
+  min-height: 56px;
+  @include theme.rounded-medium;
+  @include theme.hover-transition;
+}
+
+.toolGroup:hover {
+  background-color: theme.$tool-hover-bg;
+}
+
+.toolGroup:hover .toolLabel {
+  color: theme.$text-secondary;
+}
+
+.toolGroup:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 32px;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, theme.$tool-separator, transparent);
+}
+
+.iconButton {
+  @include theme.interactive-button;
+  background: theme.$tool-button-bg;
+  border: 1px solid theme.$tool-button-border;
+  color: theme.$tool-button-text;
+  cursor: pointer;
+  padding: 8px;
+  @include theme.rounded-small;
+  @include theme.flex-center;
+  @include theme.button-transition;
+  min-width: 36px;
+  min-height: 36px;
+  position: relative;
+}
+
+.iconButton:hover:not(:disabled) {
+  background: theme.$tool-button-hover-bg;
+  border-color: theme.$tool-button-hover-border;
+  color: theme.$text-primary;
+  transform: translateY(-1px);
+  @include theme.shadow-light;
+}
+
+.iconButton:disabled {
+  @include theme.button-disabled;
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.iconButton.active {
+  background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
+  color: theme.$text-primary;
+  border-color: theme.$primary-border;
+  box-shadow: 0 0 12px theme.$primary-shadow;
+}
+
+.colorPickerWrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+}
+
+.colorPickerWrapper :global(.colorPickerContainer) {
+  height: 36px;
+}
+
+.colorPickerWrapper :global(.swatch) {
+  width: 36px;
+  height: 36px;
+  border: 1px solid theme.$tool-button-border;
+  @include theme.shadow-light;
+}
+
+.colorPickerWrapper :global(.swatch):hover {
+  transform: translateY(-1px);
+  @include theme.shadow-medium;
+  border-color: theme.$tool-button-hover-border;
+}
+
+.strokeControl {
+  display: inline-flex;
+  align-items: center;
+  min-width: 120px;
+  height: 36px;
+  padding: 0 8px;
+  background: theme.$tool-control-bg;
+  border: 1px solid theme.$tool-button-border;
+  @include theme.rounded-small;
+}
+
+.toolLabel {
+  font-size: 10px;
+  font-weight: 400;
+  color: theme.$tool-label-text;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 6px;
+  @include theme.smooth-transition;
+  text-shadow: 0 1px 2px theme.$text-shadow;
+}
+
+.toolControls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.shapeDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownButton {
+  @include theme.interactive-button;
+  background: theme.$tool-button-bg;
+  border: 1px solid theme.$tool-button-border;
+  color: theme.$tool-button-text;
+  cursor: pointer;
+  padding: 8px 12px;
+  @include theme.rounded-small;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  @include theme.button-transition;
+}
+
+.dropdownButton:hover {
+  background: theme.$tool-button-hover-bg;
+  border-color: theme.$tool-button-hover-border;
+  color: theme.$text-primary;
+  transform: translateY(-1px);
+  @include theme.shadow-light;
+}
+
+.dropdownButton.active {
+  background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
+  color: theme.$text-primary;
+  border-color: theme.$primary-border;
+  box-shadow: 0 0 12px theme.$primary-shadow;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: theme.$dropdown-bg;
+  backdrop-filter: blur(10px);
+  border: 1px solid theme.$tool-button-border;
+  @include theme.rounded-medium;
+  @include theme.shadow-heavy;
+  min-width: 160px;
+  z-index: 200;
+  @include theme.flex-column;
+  gap: 2px;
+  padding: 4px;
+  margin-top: 4px;
+}
+
+.dropdownContent.hidden {
+  display: none;
+}
+
+.dropdownItem {
+  @include theme.button-base;
+  background: none;
+  border: none;
+  color: theme.$text-disabled;
+  cursor: pointer;
+  padding: 8px 12px;
+  @include theme.rounded-small;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  @include theme.smooth-transition;
+  text-align: left;
+  font-size: 14px;
+}
+
+.dropdownItem:hover {
+  background-color: theme.$dropdown-item-hover;
+  color: theme.$text-primary;
+}
+
+.dropdownItem.active {
+  background-color: theme.$dropdown-item-active;
+  color: theme.$text-primary;
+}
+
+.textInputOverlay {
+  position: absolute;
+  background-color: theme.$background-secondary;
+  border: 1px solid theme.$border-primary;
+  @include theme.rounded-medium;
+  padding: 12px;
+  z-index: 100;
+  @include theme.shadow-heavy;
+  backdrop-filter: blur(10px);
+}
+
+.textInput {
+  @include theme.input-base;
+  background: none;
+  border: none;
+  color: theme.$text-primary;
+  font-family: system-ui, -apple-system, sans-serif;
+  outline: none;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: theme.$scrollbar-thumb theme.$scrollbar-track;
+}
+
+.textInput::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textInput::-webkit-scrollbar-track {
+  background: theme.$scrollbar-track;
+  @include theme.rounded-small;
+}
+
+.textInput::-webkit-scrollbar-thumb {
+  background: theme.$scrollbar-thumb;
+  @include theme.rounded-small;
+}
+
+.textInput::-webkit-scrollbar-thumb:hover {
+  background: theme.$scrollbar-thumb-hover;
+}

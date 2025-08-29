@@ -3,7 +3,7 @@ import React, { useCallback, useState, type KeyboardEvent } from 'react';
 import { Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './SearchBar.module.css';
+import styles from './SearchBar.module.scss';
 
 interface SearchBarProps {
   placeholder: string;

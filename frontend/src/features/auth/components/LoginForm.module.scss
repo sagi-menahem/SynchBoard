@@ -1,0 +1,75 @@
+@use '../../../styles' as theme;
+
+.form {
+    @include theme.form-base;
+}
+
+.field {
+    @include theme.form-field;
+}
+
+.field label {
+    @include theme.form-label;
+    color: theme.$text-muted;
+}
+
+.field input {
+    text-align: center;
+}
+
+.error {
+    @include theme.error-message;
+    color: theme.$error;
+    margin-bottom: 1rem;
+}
+
+.submitButton {
+    margin-top: 0.5rem;
+    width: 50%;
+    align-self: center;
+    justify-content: center;
+}
+
+.divider {
+    position: relative;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: theme.$border-primary;
+    transform: translateY(-50%);
+}
+
+.dividerText {
+    position: relative;
+    background: theme.$background-secondary;
+    padding: 0 1rem;
+    color: theme.$text-disabled;
+    font-size: 0.875rem;
+}
+
+.forgotPasswordSection {
+    @include theme.flex-center;
+    margin-top: 0.5rem;
+}
+
+.forgotPasswordButton {
+    font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+    .form {
+        gap: 1rem;
+    }
+
+    .divider {
+        margin: 1rem 0;
+    }
+}

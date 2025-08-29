@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import styles from './Sidebar.module.css';
+import styles from './Sidebar.module.scss';
 
 const Sidebar: React.FC = () => {
   const { t } = useTranslation(['board']);

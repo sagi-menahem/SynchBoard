@@ -5,7 +5,7 @@ import { Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 
-import styles from '../pages/SettingsPage.module.css';
+import styles from '../pages/SettingsPage.module.scss';
 
 interface ProfileEditFormProps {
     formData: UpdateUserProfileRequest;

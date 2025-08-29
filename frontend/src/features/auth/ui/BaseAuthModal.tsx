@@ -2,7 +2,7 @@ import React, { type ReactNode } from 'react';
 
 import { Button, Modal } from 'shared/ui';
 
-import styles from './CommonForm.module.css';
+import styles from './CommonForm.module.scss';
 
 interface BaseAuthModalProps {
   isOpen: boolean;

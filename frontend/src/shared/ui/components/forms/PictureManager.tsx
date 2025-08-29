@@ -6,7 +6,7 @@ import { API_BASE_URL } from 'shared/constants/ApiConstants';
 import { APP_CONFIG } from 'shared/constants/AppConstants';
 
 import Button from './Button';
-import styles from './PictureManager.module.css';
+import styles from './PictureManager.module.scss';
 
 interface PictureManagerProps {
   imageUrl?: string | null;

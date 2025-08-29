@@ -1,0 +1,263 @@
+@use '../../../../styles' as theme;
+
+.container {
+  @include theme.flex-center;
+  padding: 2rem;
+  min-height: 200px;
+  @include theme.card-base;
+  @include theme.shadow-heavy;
+  margin: 1rem;
+  color: theme.$text-primary;
+}
+
+.container--page {
+  min-height: 100vh;
+  width: 100vw;
+  @include theme.fixed-overlay;
+  margin: 0;
+  padding: 2rem;
+  border-radius: 0;
+  background: linear-gradient(135deg, theme.$background-secondary 0%, theme.$background-darker 100%);
+  border: none;
+  box-shadow: none;
+}
+
+.container--board {
+  min-height: 100vh;
+  width: 100vw;
+  @include theme.fixed-overlay;
+  margin: 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, theme.$background-secondary 0%, theme.$background-darker 100%);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.container--component {
+  min-height: 150px;
+  padding: 1.5rem;
+  background-color: theme.$background-secondary;
+  border-color: theme.$border-primary;
+}
+
+.content {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.iconContainer {
+  margin-bottom: 1.5rem;
+}
+
+.icon {
+  font-size: 4rem;
+  display: inline-block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.container--component .icon {
+  font-size: 2.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: theme.$text-primary;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.container--board .title {
+  color: theme.$text-primary;
+}
+
+.container--component .title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.message {
+  font-size: 1.125rem;
+  color: theme.$text-secondary;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.container--component .message {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  @include theme.button-group;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.button {
+  @include theme.button-base;
+  padding: 0.75rem 2rem;
+  @include theme.rounded-large;
+  font-size: 1rem;
+  font-weight: 600;
+  @include theme.smooth-transition;
+  border: 2px solid transparent;
+  min-width: 120px;
+  @include theme.flex-center;
+}
+
+.button:hover {
+  @include theme.button-hover-lift;
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.buttonPrimary {
+  background-color: theme.$primary;
+  color: theme.$text-primary;
+  border-color: theme.$primary;
+}
+
+.buttonPrimary:hover {
+  background-color: theme.$primary-hover;
+  border-color: theme.$primary-hover;
+}
+
+.container--board .buttonPrimary {
+  background-color: theme.$primary;
+  border-color: theme.$primary;
+  color: theme.$text-primary;
+}
+
+.container--board .buttonPrimary:hover {
+  background-color: theme.$primary-hover;
+  border-color: theme.$primary-hover;
+}
+
+.buttonSecondary {
+  background-color: transparent;
+  color: theme.$text-secondary;
+  border-color: theme.$border-primary;
+}
+
+.buttonSecondary:hover {
+  background-color: theme.$border-primary;
+  border-color: theme.$border-secondary;
+  color: theme.$text-primary;
+}
+
+.technicalDetails {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid theme.$border-primary;
+}
+
+.detailsToggle {
+  @include theme.interactive-button;
+  color: theme.$text-secondary;
+  font-size: 0.875rem;
+  font-weight: 500;
+  @include theme.flex-start;
+  gap: 0.5rem;
+  margin: 0 auto;
+  padding: 0.5rem;
+  @include theme.rounded-small;
+  @include theme.smooth-transition;
+}
+
+.detailsToggle:hover {
+  color: theme.$text-primary;
+  background-color: theme.$border-primary;
+}
+
+.detailsContent {
+  margin-top: 1rem;
+  text-align: left;
+  background-color: theme.$background-darker;
+  border: 1px solid theme.$border-primary;
+  @include theme.rounded-large;
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+.errorInfo p {
+  margin: 0.5rem 0;
+  color: theme.$text-secondary;
+}
+
+.errorInfo strong {
+  color: theme.$text-primary;
+}
+
+.stackTrace {
+  margin-top: 1rem;
+}
+
+.stackTrace summary {
+  cursor: pointer;
+  color: theme.$text-secondary;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+
+.stackContent {
+  background-color: theme.$background-darker;
+  color: theme.$text-primary;
+  padding: 1rem;
+  @include theme.rounded-medium;
+  overflow-x: auto;
+  font-size: 0.75rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.stackContent code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  white-space: pre;
+  line-height: 1.4;
+}
+
+.helpText {
+  font-size: 0.875rem;
+  color: theme.$text-muted;
+  margin-top: 2rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem;
+    margin: 0.5rem;
+  }
+
+  .container--page {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .button {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+  }
+
+  .icon {
+    font-size: 3rem;
+  }
+}

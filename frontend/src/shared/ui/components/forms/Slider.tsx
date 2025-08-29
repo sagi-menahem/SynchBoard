@@ -3,7 +3,7 @@ import React from 'react';
 import RcSlider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
-import styles from './Slider.module.css';
+import styles from './Slider.module.scss';
 
 interface SliderProps {
   value: number;

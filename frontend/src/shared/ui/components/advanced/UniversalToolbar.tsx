@@ -15,7 +15,7 @@ import { MemberActivityIndicator } from 'features/board/ui';
 import { SearchBar } from '../navigation/SearchBar';
 import { ViewToggle } from '../navigation/ViewToggle';
 
-import styles from './UniversalToolbar.module.css';
+import styles from './UniversalToolbar.module.scss';
 
 const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
   const {
