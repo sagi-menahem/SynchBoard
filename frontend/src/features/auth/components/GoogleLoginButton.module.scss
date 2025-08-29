@@ -1,0 +1,49 @@
+@use '../../../styles' as theme;
+
+/* Match updated button system styling */
+.googleButton {
+  @include theme.flex-center;
+  @include theme.button-base;
+  @include theme.rounded-large;
+  @include theme.button-transition;
+  width: 50%;
+  margin: 0 auto;
+  padding: 12px 16px;
+  border: 1px solid theme.$overlay-light;
+  background: theme.$overlay-light;
+  color: theme.$border-google;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 12px;
+  min-height: 44px;
+}
+
+.googleButton:hover:not(:disabled) {
+  background: theme.$overlay-medium;
+  border-color: theme.$overlay-medium;
+  @include theme.button-hover-lift;
+  @include theme.shadow-light;
+}
+
+.googleButton:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.googleButton:disabled {
+  @include theme.button-disabled;
+  background: theme.$overlay-light;
+  transform: none;
+  box-shadow: none;
+}
+
+.googleIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.buttonText {
+  font-family: inherit;
+  font-weight: 500;
+}

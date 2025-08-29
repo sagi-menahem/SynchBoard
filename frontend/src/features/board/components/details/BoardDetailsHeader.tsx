@@ -7,7 +7,7 @@ import { PencilLine, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, PictureManager } from 'shared/ui';
 
-import styles from './BoardDetailsHeader.module.css';
+import styles from './BoardDetailsHeader.module.scss';
 
 interface BoardDetailsHeaderProps {
     boardDetails: BoardDetails;

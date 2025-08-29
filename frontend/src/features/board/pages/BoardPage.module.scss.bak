@@ -1,0 +1,29 @@
+@import '../../../styles/_variables';
+@import '../../../styles/_mixins';
+
+.pageContent {
+    position: relative;
+    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
+    height: 100vh;
+    @include flex-column;
+    width: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.loading {
+    @include flex-center;
+    padding: 3rem;
+    color: $text-secondary;
+    font-size: 16px;
+}
+
+.boardWorkspaceArea {
+    flex: 1;
+    height: 0;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

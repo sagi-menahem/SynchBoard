@@ -17,7 +17,7 @@ import {
 import { useBoardDetailsPage } from '../hooks/details';
 
 
-import styles from './BoardDetailsPage.module.css';
+import styles from './BoardDetailsPage.module.scss';
 
 const BoardDetailsPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);

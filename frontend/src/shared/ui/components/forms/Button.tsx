@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { ButtonVariant } from 'shared/types/CommonTypes';
 
-import styles from './Button.module.css';
+import styles from './Button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;

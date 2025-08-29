@@ -1,0 +1,61 @@
+@use '../../../../styles' as theme;
+
+.searchForm {
+  margin: 0;
+  padding: 0;
+}
+
+.searchContainer {
+  position: relative;
+  @include theme.flex-start;
+  background: theme.$overlay-black-20;
+  border: 1px solid theme.$overlay-white-06;
+  @include theme.rounded-medium;
+  padding: 8px 12px;
+  gap: 8px;
+  @include theme.smooth-transition;
+  min-width: 300px;
+  max-width: 400px;
+
+  &:focus-within {
+    background: theme.$overlay-black-30;
+    border-color: theme.$overlay-white-15;
+    box-shadow: 0 0 8px theme.$overlay-primary-10;
+  }
+}
+
+.searchIcon {
+  color: theme.$text-muted;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  background: none;
+  border: none;
+  color: theme.$text-primary;
+  font-size: 14px;
+  outline: none;
+  flex: 1;
+  min-width: 0;
+
+  &::placeholder {
+    color: theme.$text-placeholder;
+  }
+}
+
+.clearButton {
+  @include theme.interactive-button;
+  color: theme.$text-muted;
+  padding: 2px;
+  @include theme.rounded-small;
+  @include theme.flex-center;
+  @include theme.smooth-transition;
+  flex-shrink: 0;
+
+  &:hover {
+    color: theme.$text-secondary;
+    background: theme.$overlay-white-10;
+  }
+}
+
+/* Desktop-only: No mobile responsive code needed */

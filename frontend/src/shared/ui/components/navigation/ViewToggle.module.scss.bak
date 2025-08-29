@@ -1,0 +1,51 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_mixins';
+
+.viewToggle {
+  display: flex;
+  background: $overlay-white-08;
+  border: 1px solid $overlay-white-12;
+  @include rounded-medium;
+  overflow: hidden;
+}
+
+.toggleButton {
+  @include interactive-button;
+  color: $text-muted;
+  padding: 8px 12px;
+  @include flex-center;
+  @include smooth-transition;
+  position: relative;
+  min-width: 40px;
+  height: 36px;
+
+  &:hover {
+    background: $overlay-white-08;
+    color: $text-secondary;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $overlay-primary-20, $overlay-primary-15);
+    color: $text-primary;
+    box-shadow: 0 0 8px $overlay-primary-10;
+  }
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 1px;
+    background: $overlay-white-10;
+  }
+
+  &.active:not(:last-child)::after {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $overlay-primary-50;
+    outline-offset: -2px;
+  }
+}

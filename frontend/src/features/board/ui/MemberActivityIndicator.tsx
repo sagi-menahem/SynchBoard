@@ -3,7 +3,7 @@ import React from 'react';
 import { Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './MemberActivityIndicator.module.css';
+import styles from './MemberActivityIndicator.module.scss';
 
 interface MemberActivityIndicatorProps {
   memberCount: number;

@@ -1,0 +1,62 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_mixins';
+
+.searchForm {
+  margin: 0;
+  padding: 0;
+}
+
+.searchContainer {
+  position: relative;
+  @include flex-start;
+  background: $overlay-black-20;
+  border: 1px solid $overlay-white-06;
+  @include rounded-medium;
+  padding: 8px 12px;
+  gap: 8px;
+  @include smooth-transition;
+  min-width: 300px;
+  max-width: 400px;
+
+  &:focus-within {
+    background: $overlay-black-30;
+    border-color: $overlay-white-15;
+    box-shadow: 0 0 8px $overlay-primary-10;
+  }
+}
+
+.searchIcon {
+  color: $text-muted;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  background: none;
+  border: none;
+  color: $text-primary;
+  font-size: 14px;
+  outline: none;
+  flex: 1;
+  min-width: 0;
+
+  &::placeholder {
+    color: $text-placeholder;
+  }
+}
+
+.clearButton {
+  @include interactive-button;
+  color: $text-muted;
+  padding: 2px;
+  @include rounded-small;
+  @include flex-center;
+  @include smooth-transition;
+  flex-shrink: 0;
+
+  &:hover {
+    color: $text-secondary;
+    background: $overlay-white-10;
+  }
+}
+
+/* Desktop-only: No mobile responsive code needed */

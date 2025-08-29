@@ -1,0 +1,28 @@
+@use '../../../../styles' as theme;
+
+.pageLoader {
+  @include theme.flex-column-center;
+  min-height: 200px;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  @include theme.spinner-base;
+  border: 3px solid theme.$overlay-white-10;
+  border-top: 3px solid theme.$text-secondary;
+  margin-bottom: 1rem;
+}
+
+.message {
+  color: theme.$text-secondary;
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

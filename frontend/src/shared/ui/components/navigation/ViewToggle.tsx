@@ -4,7 +4,7 @@ import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { Grid3X3, List } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './ViewToggle.module.css';
+import styles from './ViewToggle.module.scss';
 
 interface ViewToggleProps {
   value: ViewMode;

@@ -1,9 +1,10 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 
 
-import { WebSocketContext } from '../WebSocketContext';
 import WebSocketService from 'features/websocket/services/websocketService';
 import logger from 'shared/utils/logger';
+
+import { WebSocketContext } from '../WebSocketContext';
 
 export const useWebSocket = () => {
   const context = useContext(WebSocketContext);

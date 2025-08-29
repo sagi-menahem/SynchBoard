@@ -4,7 +4,7 @@ import { usePreferences } from 'features/settings/UserPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 
-import styles from '../pages/SettingsPage.module.css';
+import styles from '../pages/SettingsPage.module.scss';
 
 const BoardAppearanceSection: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);

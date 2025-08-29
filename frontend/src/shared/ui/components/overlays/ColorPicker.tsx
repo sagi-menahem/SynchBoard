@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { PRESET_COLORS } from 'shared/constants/ColorConstants';
 import { useClickOutside } from 'shared/hooks';
 
-import styles from './ColorPicker.module.css';
+import styles from './ColorPicker.module.scss';
 
 interface ColorPickerProps {
   color: string;

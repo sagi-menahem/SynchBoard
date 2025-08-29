@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ToolDropdown } from 'shared/ui';
 
-import styles from './CanvasToolSection.module.css';
+import styles from './CanvasToolSection.module.scss';
 
 interface ShapeToolsDropdownProps {
   currentTool: Tool;

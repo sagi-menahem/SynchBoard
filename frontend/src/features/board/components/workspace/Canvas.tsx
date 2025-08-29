@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 
 
-import styles from './Canvas.module.css';
+import styles from './Canvas.module.scss';
 import TextInputOverlay from './TextInputOverlay';
 
 interface CanvasProps {

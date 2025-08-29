@@ -1,0 +1,125 @@
+@use '../../../../styles' as theme;
+
+.section {
+    @include theme.card-base;
+    background-color: theme.$background-secondary;
+    border: 1px solid theme.$border-primary;
+    @include theme.rounded-medium;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.sectionHeader {
+    @include theme.flex-between;
+    margin-bottom: 1.5rem;
+}
+
+[dir="rtl"] .sectionHeader {
+    text-align: right;
+    direction: rtl;
+}
+
+.sectionTitle {
+    color: theme.$text-primary;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: start;
+}
+
+[dir="rtl"] .sectionTitle {
+    text-align: right;
+    direction: rtl;
+}
+
+.editButton {
+    @include theme.button-base;
+    font-size: 0.9rem !important;
+    padding: 0.25rem 0.75rem !important;
+}
+
+.imageContainer {
+    @include theme.flex-center;
+    margin-bottom: 1.5rem;
+}
+
+.boardImage {
+    width: 168px;
+    height: 168px;
+    @include theme.rounded-circle;
+    object-fit: cover;
+}
+
+.buttonGroup {
+    @include theme.flex-center;
+    gap: 0.75rem;
+}
+
+.descriptionContent {
+    padding: 0;
+}
+
+.description {
+    color: theme.$text-secondary;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.editForm {
+    @include theme.flex-column;
+    gap: 1.25rem;
+}
+
+.formField {
+    @include theme.form-field;
+}
+
+.formActions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: end;
+    padding-top: 0.5rem;
+    border-top: 1px solid theme.$border-primary;
+}
+
+.cancelButton,
+.saveButton {
+    @include theme.button-base;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.descriptionTextarea {
+    @include theme.input-base;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: theme.$background-surface;
+    border: 1px solid theme.$border-secondary;
+    @include theme.rounded-small;
+    color: theme.$text-primary;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.descriptionTextarea:focus {
+    @include theme.input-focus;
+    outline: none;
+    border-color: theme.$primary;
+    box-shadow: 0 0 0 2px theme.$primary-light;
+}
+
+.descriptionTextarea::placeholder {
+    color: theme.$text-placeholder;
+}
+
+.descriptionTextarea:disabled {
+    background-color: theme.$background-tertiary;
+    cursor: not-allowed;
+}

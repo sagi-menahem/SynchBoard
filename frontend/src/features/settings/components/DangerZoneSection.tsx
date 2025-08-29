@@ -4,7 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 
-import styles from '../pages/SettingsPage.module.css';
+import styles from '../pages/SettingsPage.module.scss';
 
 interface DangerZoneSectionProps {
     onDeleteAccount: () => void;

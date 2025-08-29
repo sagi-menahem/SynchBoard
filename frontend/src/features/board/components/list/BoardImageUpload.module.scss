@@ -1,0 +1,71 @@
+@use '../../../../styles' as theme;
+
+.container {
+    @include theme.flex-column;
+    @include theme.flex-center;
+    gap: 0.5rem;
+}
+
+.imageContainer {
+    position: relative;
+    cursor: pointer;
+    @include theme.hover-transition;
+}
+
+.imageContainer:hover {
+    transform: scale(1.02);
+}
+
+.previewImage {
+    width: 80px;
+    height: 80px;
+    @include theme.rounded-circle;
+    object-fit: cover;
+    border: 2px solid theme.$border-primary;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: theme.$overlay-dark;
+    @include theme.flex-center;
+    @include theme.rounded-circle;
+    opacity: 0;
+    @include theme.hover-transition;
+}
+
+.imageContainer:hover .overlay {
+    opacity: 1;
+}
+
+.overlayText {
+    color: theme.$text-primary;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 0.25rem;
+    font-weight: 500;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.removeButton {
+    @include theme.button-base;
+    background: linear-gradient(135deg, theme.$error-color 0%, theme.$error-dark 100%);
+    color: theme.$text-primary;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    @include theme.rounded-small;
+    font-size: 0.8rem;
+    cursor: pointer;
+    @include theme.button-transition;
+}
+
+.removeButton:hover {
+    background: linear-gradient(135deg, theme.$error-dark 0%, theme.$error-darker 100%);
+    transform: translateY(-1px);
+}

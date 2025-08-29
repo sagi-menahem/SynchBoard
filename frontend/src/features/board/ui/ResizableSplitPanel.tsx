@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import styles from './ResizableSplitPanel.module.css';
+import styles from './ResizableSplitPanel.module.scss';
 
 interface ResizableSplitPanelProps {
   leftChild: React.ReactNode;

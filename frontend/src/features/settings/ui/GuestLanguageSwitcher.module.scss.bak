@@ -1,0 +1,57 @@
+@import '../../../styles/_variables';
+@import '../../../styles/_mixins';
+
+.languageSwitcher {
+  @include flex-start;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  color: $text-muted;
+  font-weight: 500;
+}
+
+.buttonGroup {
+  display: flex;
+  background: $overlay-light;
+  border: 1px solid $border-light;
+  @include rounded-medium;
+  overflow: hidden;
+}
+
+.languageButton {
+  @include interactive-button;
+  @include button-transition;
+  color: $text-secondary;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  min-width: 40px;
+  position: relative;
+}
+
+.languageButton:hover {
+  background: $overlay-light;
+  color: $text-primary;
+}
+
+.languageButton.active {
+  background: $overlay-primary-20;
+  color: $text-primary;
+  @include shadow-light;
+}
+
+.languageButton:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: $border-light;
+}
+
+.languageButton.active:not(:last-child)::after {
+  display: none;
+}

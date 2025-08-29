@@ -1,0 +1,37 @@
+@import '../../../../styles/_variables';
+@import '../../../../styles/_mixins';
+
+.loadingOverlay {
+    @include fixed-overlay;
+    background-color: $background-darker;
+    @include flex-center;
+}
+
+.loadingContent {
+    @include flex-column-center;
+    gap: 16px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    @include spinner-base;
+    border: 3px solid $border-primary;
+    border-top: 3px solid $primary;
+}
+
+.loadingText {
+    color: $text-secondary;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
+}

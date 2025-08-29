@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Input.module.css';
+import styles from './Input.module.scss';
 
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, style, ...props }, ref) => {

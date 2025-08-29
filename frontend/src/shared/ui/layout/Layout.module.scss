@@ -1,0 +1,29 @@
+@use '../../../styles' as theme;
+
+.container {
+    @include theme.flex-column;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mainContent {
+    flex: 1;
+    @include theme.flex-center;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    &:has([data-board-page]) {
+        overflow: hidden;
+    }
+
+    & > *:not([data-board-page]):not([data-has-toolbar]) {
+        padding: 2rem;
+        width: 100%;
+    }
+
+    & > [data-has-toolbar] {
+        width: 100%;
+        padding: 0;
+    }
+}

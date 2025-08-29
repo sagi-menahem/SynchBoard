@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useAuth } from 'features/auth/hooks';
 import { useConnectionStatus } from 'features/websocket/hooks';
 
-import styles from './ConnectionStatusBanner.module.css';
+import styles from './ConnectionStatusBanner.module.scss';
 
 interface ConnectionStatusBannerProps {
   onHeightChange?: (height: number) => void;

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import Button from '../forms/Button';
 
-import styles from './ConfirmationDialog.module.css';
+import styles from './ConfirmationDialog.module.scss';
 import Modal from './Modal';
 
 interface ConfirmationDialogProps {

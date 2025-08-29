@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ColorPicker, Slider } from 'shared/ui';
 
-import styles from './CanvasToolSection.module.css';
+import styles from './CanvasToolSection.module.scss';
 import { LineToolsDropdown } from './LineToolsDropdown';
 import { ShapeToolsDropdown } from './ShapeToolsDropdown';
 

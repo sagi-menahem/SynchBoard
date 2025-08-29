@@ -1,0 +1,346 @@
+// SCSS Mixins - Reusable CSS Patterns
+// This file contains reusable mixins for common CSS patterns found across components
+
+// ===== FLEXBOX LAYOUT PATTERNS =====
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin flex-end {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+@mixin flex-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+// ===== BUTTON/INTERACTIVE PATTERNS =====
+
+@mixin interactive-button {
+  cursor: pointer;
+  transition: all 0.25s;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+@mixin button-hover-lift {
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@mixin button-disabled {
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+  }
+}
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+@mixin button-group {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+// ===== INPUT FIELD PATTERNS =====
+
+@mixin input-base {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+@mixin input-focus {
+  &:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+@mixin textarea-base {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.9);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+// ===== CARD/SECTION PATTERNS =====
+
+@mixin card-base {
+  background-color: #2f2f2f;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+@mixin card-hover-effect {
+  transition: background-color 0.2s, transform 0.3s ease-out, box-shadow 0.2s ease;
+  
+  &:hover {
+    background-color: #3a3a3a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@mixin section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+// ===== FORM PATTERNS =====
+
+@mixin form-base {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@mixin form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@mixin form-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+@mixin form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: end;
+  padding-top: 0.5rem;
+  border-top: 1px solid #444;
+}
+
+// ===== ERROR/STATUS PATTERNS =====
+
+@mixin error-message {
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  color: #f87171;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+@mixin success-message {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+// ===== BORDER RADIUS PATTERNS =====
+
+@mixin rounded-small {
+  border-radius: 4px;
+}
+
+@mixin rounded-medium {
+  border-radius: 6px;
+}
+
+@mixin rounded-large {
+  border-radius: 8px;
+}
+
+@mixin rounded-circle {
+  border-radius: 50%;
+}
+
+// ===== POSITION/OVERLAY PATTERNS =====
+
+@mixin overlay-full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+@mixin fixed-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+@mixin modal-backdrop {
+  @include fixed-overlay;
+  @include flex-center;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0 1rem;
+  overflow-y: auto;
+}
+
+// ===== TRANSITION PATTERNS =====
+
+@mixin smooth-transition {
+  transition: all 0.2s ease;
+}
+
+@mixin button-transition {
+  transition: all 0.25s;
+}
+
+@mixin hover-transition {
+  transition: background-color 0.2s, transform 0.3s ease-out, box-shadow 0.2s ease;
+}
+
+// ===== BOX SHADOW PATTERNS =====
+
+@mixin shadow-light {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@mixin shadow-medium {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@mixin shadow-heavy {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+@mixin focus-shadow {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+// ===== RADIO BUTTON PATTERNS =====
+
+@mixin radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 0.25rem 0;
+}
+
+@mixin radio-input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+// ===== TEXT PATTERNS =====
+
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ===== LOADING/SPINNER PATTERNS =====
+
+@mixin spinner-base {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ===== UTILITY PATTERNS =====
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@mixin clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

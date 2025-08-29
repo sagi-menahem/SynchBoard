@@ -1,0 +1,69 @@
+@use '../../../styles' as theme;
+
+.form {
+    @include theme.form-base;
+}
+
+.field {
+    @include theme.form-field;
+}
+
+.field label {
+    @include theme.form-label;
+    color: theme.$text-muted;
+}
+
+.field input {
+    text-align: center;
+}
+
+.field input[type="date"] {
+    text-align: center;
+}
+
+.required {
+    color: theme.$error;
+    font-weight: bold;
+}
+
+.radioGroup {
+    @include theme.flex-start;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.radioLabel {
+    @include theme.radio-option;
+    color: theme.$text-muted;
+    font-size: 0.875rem;
+}
+
+.radioLabel input[type="radio"] {
+    @include theme.radio-input;
+    margin: 0;
+    accent-color: theme.$primary;
+}
+
+.error {
+    @include theme.error-message;
+    color: theme.$error;
+    margin-bottom: 1rem;
+}
+
+.submitButton {
+    margin-top: 0.5rem;
+    width: 50%;
+    align-self: center;
+    justify-content: center;
+}
+
+@media (max-width: 640px) {
+    .form {
+        gap: 1rem;
+    }
+
+    .radioGroup {
+        @include theme.flex-column;
+        gap: 0.5rem;
+    }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './LoadingOverlay.module.css';
+import styles from './LoadingOverlay.module.scss';
 
 interface LoadingOverlayProps {
     message: string;

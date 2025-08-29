@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import styles from './ContextMenu.module.css';
+import styles from './ContextMenu.module.scss';
 
 interface ContextMenuProps {
     x: number;

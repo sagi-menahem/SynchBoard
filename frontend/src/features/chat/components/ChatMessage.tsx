@@ -10,7 +10,7 @@ import { getUserColor, type UserColorMap } from 'shared/utils';
 import { formatDetailedTimestamp } from 'shared/utils/DateUtils';
 
 
-import styles from './ChatMessage.module.css';
+import styles from './ChatMessage.module.scss';
 
 interface ChatMessageProps {
   message: EnhancedChatMessage;

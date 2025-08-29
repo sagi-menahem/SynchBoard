@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BaseAuthModal } from 'features/auth/ui';
-import styles from 'features/auth/ui/CommonForm.module.css';
+import styles from 'features/auth/ui/CommonForm.module.scss';
 import { Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from 'shared/ui';

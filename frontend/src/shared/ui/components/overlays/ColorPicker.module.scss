@@ -1,0 +1,140 @@
+@use '../../../../styles' as theme;
+
+.colorPickerContainer {
+  position: relative;
+  @include theme.flex-start;
+}
+
+.label {
+  @include theme.flex-start;
+  margin-right: 8px;
+  color: theme.$text-muted;
+  font-size: 11px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  height: 28px;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  @include theme.rounded-small;
+  border: 1px solid theme.$overlay-white-20;
+  @include theme.interactive-button;
+  background-clip: border-box;
+  @include theme.smooth-transition;
+  position: relative;
+  overflow: hidden;
+  @include theme.shadow-light;
+
+  &:hover:not(.disabled) {
+    border-color: theme.$overlay-primary-60;
+    transform: translateY(-1px);
+    @include theme.shadow-medium;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: theme.$primary;
+    box-shadow: 0 0 0 2px theme.$overlay-primary-30;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.swatchInner {
+  width: 100%;
+  height: 100%;
+  @include theme.rounded-small;
+  background: inherit;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  @include theme.card-base;
+  @include theme.shadow-heavy;
+  animation: popoverIn 0.2s ease-out;
+  padding: 12px;
+}
+
+@media (max-height: 500px) {
+  .popover {
+    top: 0;
+    left: calc(100% + 8px);
+  }
+}
+
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.colorfulWrapper {
+  @include theme.flex-column;
+  gap: 12px;
+}
+
+.colorfulWrapper :global(.react-colorful) {
+  width: 200px;
+  height: 150px;
+}
+
+.colorfulWrapper :global(.react-colorful__saturation) {
+  @include theme.rounded-small;
+  border-radius: 4px 4px 0 0;
+  border-bottom: none;
+}
+
+.colorfulWrapper :global(.react-colorful__hue) {
+  height: 20px;
+  border-radius: 0 0 4px 4px;
+}
+
+.colorfulWrapper :global(.react-colorful__pointer) {
+  width: 16px;
+  height: 16px;
+  border: 2px solid theme.$text-primary;
+  @include theme.shadow-light;
+}
+
+.presetColors {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.presetColor {
+  width: 24px;
+  height: 24px;
+  border: 1px solid theme.$border-primary;
+  @include theme.rounded-small;
+  @include theme.interactive-button;
+  @include theme.smooth-transition;
+
+  &:hover {
+    border-color: theme.$primary;
+    transform: scale(1.1);
+    @include theme.shadow-light;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: theme.$primary;
+    box-shadow: 0 0 0 2px theme.$overlay-primary-30;
+  }
+}

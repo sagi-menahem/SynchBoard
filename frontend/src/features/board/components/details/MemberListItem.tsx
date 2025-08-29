@@ -6,7 +6,7 @@ import { Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
 
-import styles from './MemberListItem.module.css';
+import styles from './MemberListItem.module.scss';
 
 interface MemberListItemProps {
     member: Member;

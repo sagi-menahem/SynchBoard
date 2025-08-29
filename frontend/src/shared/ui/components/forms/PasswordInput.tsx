@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import styles from './PasswordInput.module.css';
+import styles from './PasswordInput.module.scss';
 
 interface PasswordInputProps {
   id: string;

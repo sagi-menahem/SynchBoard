@@ -20,7 +20,7 @@ import { BoardCard, CreateBoardForm } from '../components/list';
 import { useBoardList } from '../hooks/management';
 
 
-import styles from './BoardListPage.module.css';
+import styles from './BoardListPage.module.scss';
 
 const BoardListPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
