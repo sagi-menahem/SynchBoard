@@ -72,7 +72,7 @@ const BoardDetailsPage: React.FC = () => {
         icon: UserPlus,
         label: t('board:detailsPage.inviteButton'),
         onClick: () => setInviteModalOpen(true),
-        primary: true,
+        variant: 'navigation',
       }] : []),
     ],
     rightSection: [
