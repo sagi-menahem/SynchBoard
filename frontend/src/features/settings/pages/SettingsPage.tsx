@@ -97,8 +97,9 @@ const SettingsPage: React.FC = () => {
         {
           type: 'button',
           icon: ArrowRight,
-          label: '',
+          label: t('settings:page.boardListButton'),
           onClick: () => navigate(APP_ROUTES.BOARD_LIST),
+          variant: 'navigation',
           className: 'iconOnlyButton',
         },
       ],

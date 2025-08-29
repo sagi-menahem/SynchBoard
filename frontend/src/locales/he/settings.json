@@ -43,6 +43,7 @@
     "accountDeleteError": "מחיקת החשבון נכשלה.",
     "backToBoards": "חזרה לרשימת הלוחות",
     "logoutButton": "התנתק",
+    "boardListButton": "רשימת לוחות",
     "languageHeader": "העדפות שפה",
     "languageLabel": "בחר שפה",
     "language": {

@@ -18,6 +18,7 @@
   "detailsPage": {
     "backToBoardButton": "חזרה ללוח",
     "boardDetailsButton": "פרטי הלוח",
+    "boardButton": "עבור ללוח",
     "loading": "טוען פרטי לוח...",
     "notFound": "הלוח לא נמצא או שאין לך גישה אליו.",
     "noDescription": "אין תיאור.",
@@ -35,7 +36,9 @@
     "backButton": "חזרה ללוחות",
     "inviteButton": "הזמן חבר",
     "heading": "סביבת עבודה בלוח (מזהה: {{boardId}})",
-    "loading": "טוען לוח..."
+    "loading": "טוען לוח...",
+    "boardDetailsButton": "פרטי לוח",
+    "boardListButton": "רשימת לוחות"
   },
   "createForm": {
     "heading": "צור לוח חדש",

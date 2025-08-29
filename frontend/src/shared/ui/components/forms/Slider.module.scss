@@ -20,51 +20,71 @@
 .sliderWrapper {
   @include theme.flex-start;
   gap: 12px;
+  align-items: center;
 }
 
-.slider {
-  flex: 1;
-  min-width: 80px;
+.sliderRoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 80px;
+  height: 20px;
+  
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
-.slider .rc-slider-rail {
-  background-color: theme.$overlay-white-08 !important;
-  height: 3px !important;
+.sliderTrack {
+  background-color: theme.$border-light;
+  position: relative;
+  flex-grow: 1;
+  height: 3px;
   border-radius: 1.5px;
+  @include theme.smooth-transition;
 }
 
-.slider .rc-slider-track {
-  background-color: theme.$primary !important;
-  height: 3px !important;
+.sliderRange {
+  position: absolute;
+  background-color: theme.$primary;
   border-radius: 1.5px;
+  height: 100%;
+  @include theme.smooth-transition;
 }
 
-.slider .rc-slider-handle {
-  border: 2px solid theme.$primary !important;
-  background-color: theme.$text-primary !important;
-  width: 14px !important;
-  height: 14px !important;
-  margin-top: -5.5px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-  opacity: 1 !important;
-}
-
-.slider .rc-slider-handle:hover {
-  border-color: theme.$primary-hover !important;
-  background-color: theme.$text-primary !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
-}
-
-.slider .rc-slider-handle:focus {
-  border-color: theme.$primary-hover !important;
-  background-color: theme.$text-primary !important;
-  box-shadow: 0 0 0 3px theme.$overlay-primary-20 !important;
-}
-
-.slider .rc-slider-handle-dragging {
-  border-color: theme.$primary-hover !important;
-  background-color: theme.$text-primary !important;
-  box-shadow: 0 0 0 4px theme.$overlay-primary-25 !important;
+.sliderThumb {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background-color: theme.$surface-elevated;
+  border: 2px solid theme.$primary;
+  border-radius: 50%;
+  cursor: pointer;
+  @include theme.smooth-transition;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 3px theme.$primary-light;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px theme.$primary-light;
+  }
+  
+  &[data-state="dragging"] {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px theme.$primary-light;
+  }
+  
+  .sliderRoot[data-disabled] & {
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .value {

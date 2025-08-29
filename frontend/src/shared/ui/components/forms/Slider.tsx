@@ -1,8 +1,7 @@
 import React from 'react';
 
-import RcSlider from 'rc-slider';
+import * as RadixSlider from '@radix-ui/react-slider';
 
-import 'rc-slider/assets/index.css';
 import styles from './Slider.module.scss';
 
 interface SliderProps {
@@ -13,6 +12,8 @@ interface SliderProps {
   label?: string;
   className?: string;
   'aria-label'?: string;
+  disabled?: boolean;
+  step?: number;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -23,35 +24,32 @@ export const Slider: React.FC<SliderProps> = ({
   label,
   className = '',
   'aria-label': ariaLabel,
+  disabled = false,
+  step = 1,
 }) => {
+  const handleValueChange = (values: number[]) => {
+    onChange(values[0]);
+  };
+
   return (
     <div className={`${styles.sliderContainer} ${className}`}>
       {label && <label className={styles.label}>{label}</label>}
       <div className={styles.sliderWrapper}>
-        <RcSlider
-          value={value}
+        <RadixSlider.Root
+          className={styles.sliderRoot}
+          value={[value]}
+          onValueChange={handleValueChange}
           min={min}
           max={max}
-          onChange={(val) => onChange(Array.isArray(val) ? val[0] : val)}
-          className={styles.slider}
-          handleStyle={{
-            borderColor: '#3b82f6',
-            backgroundColor: '#3b82f6',
-            boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.2)',
-            width: 16,
-            height: 16,
-            marginTop: -6,
-          }}
-          trackStyle={{
-            backgroundColor: '#3b82f6',
-            height: 4,
-          }}
-          railStyle={{
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            height: 4,
-          }}
+          step={step}
+          disabled={disabled}
           aria-label={ariaLabel ?? label}
-        />
+        >
+          <RadixSlider.Track className={styles.sliderTrack}>
+            <RadixSlider.Range className={styles.sliderRange} />
+          </RadixSlider.Track>
+          <RadixSlider.Thumb className={styles.sliderThumb} />
+        </RadixSlider.Root>
         <span className={styles.value}>{value}</span>
       </div>
     </div>

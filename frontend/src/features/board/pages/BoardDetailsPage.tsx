@@ -86,8 +86,9 @@ const BoardDetailsPage: React.FC = () => {
       {
         type: 'button',
         icon: ArrowRight,
-        label: '',
+        label: t('board:detailsPage.boardButton'),
         onClick: () => navigate(`/board/${numericBoardId}`),
+        variant: 'navigation',
         className: 'iconOnlyButton',
       },
     ],

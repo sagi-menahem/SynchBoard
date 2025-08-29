@@ -43,6 +43,7 @@
     "accountDeleteError": "Failed to delete your account.",
     "backToBoards": "Back to Boards",
     "logoutButton": "Logout",
+    "boardListButton": "Board List",
     "languageHeader": "Language Preferences",
     "languageLabel": "Select Language",
     "language": {
