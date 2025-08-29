@@ -1,4 +1,4 @@
-@use '../../../../styles' as theme;
+@use '@/styles' as theme;
 
 .themeSwitcher {
   @include theme.flex-start;

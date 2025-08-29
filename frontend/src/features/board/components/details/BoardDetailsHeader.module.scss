@@ -1,4 +1,4 @@
-@use '../../../../styles' as theme;
+@use '@/styles' as theme;
 
 .section {
     @include theme.card-base;
