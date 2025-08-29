@@ -43,13 +43,13 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: theme.$border-primary;
+    background: theme.$border;
     transform: translateY(-50%);
 }
 
 .dividerText {
     position: relative;
-    background: theme.$background-secondary;
+    background: theme.$surface-elevated;
     padding: 0 1rem;
     color: theme.$text-disabled;
     font-size: 0.875rem;
