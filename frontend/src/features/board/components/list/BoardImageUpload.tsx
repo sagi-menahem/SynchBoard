@@ -68,6 +68,8 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
       </div>
       
       <input
+        id="board-image-upload"
+        name="boardImage"
         ref={fileInputRef}
         type="file"
         accept="image/*"

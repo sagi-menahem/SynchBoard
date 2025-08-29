@@ -204,6 +204,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       {searchVisible && (
         <div className={styles.searchContainer}>
           <input
+            id="chat-search-input"
+            name="chatSearch"
             type="text"
             placeholder={t('chat:searchPlaceholder')}
             value={searchTerm}
