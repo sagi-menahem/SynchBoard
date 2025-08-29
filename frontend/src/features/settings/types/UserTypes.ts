@@ -55,6 +55,10 @@ export interface ToolPreferences {
     defaultStrokeWidth: number;
 }
 
+export interface ThemePreferences {
+    theme: 'light' | 'dark';
+}
+
 export interface VerifyEmailRequest {
     email: string;
     verificationCode: string;

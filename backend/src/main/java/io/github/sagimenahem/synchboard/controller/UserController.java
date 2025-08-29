@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ChangePasswordRequest;
 import io.github.sagimenahem.synchboard.dto.user.LanguagePreferencesDTO;
+import io.github.sagimenahem.synchboard.dto.user.ThemePreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
@@ -180,6 +181,29 @@ public class UserController {
 
         LanguagePreferencesDTO updatedPreferences =
                 userService.updateLanguagePreferences(userEmail, languagePreferencesDTO);
+        log.info(USER_PREFERENCES_UPDATED, userEmail);
+        return ResponseEntity.ok(updatedPreferences);
+    }
+
+    @GetMapping(API_USER_THEME_PREFERENCES)
+    public ResponseEntity<ThemePreferencesDTO> getThemePreferences(Authentication authentication) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_THEME_PREFERENCES, userEmail);
+
+        ThemePreferencesDTO themePreferences = userService.getThemePreferences(userEmail);
+        log.debug(USER_PREFERENCES_FETCHED, userEmail);
+        return ResponseEntity.ok(themePreferences);
+    }
+
+    @PutMapping(API_USER_THEME_PREFERENCES)
+    public ResponseEntity<ThemePreferencesDTO> updateThemePreferences(Authentication authentication,
+            @Valid @RequestBody ThemePreferencesDTO themePreferencesDTO) {
+        String userEmail = authentication.getName();
+        log.debug(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_THEME_PREFERENCES,
+                userEmail);
+
+        ThemePreferencesDTO updatedPreferences =
+                userService.updateThemePreferences(userEmail, themePreferencesDTO);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
         return ResponseEntity.ok(updatedPreferences);
     }

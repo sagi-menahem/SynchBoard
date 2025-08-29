@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import { Button, PageLoader, PageTransition } from 'shared/ui';
+import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
 
 import {
   EmailVerificationModal,
@@ -56,8 +57,9 @@ const AuthPage: React.FC = () => {
     <PageTransition>
       <div className={styles.pageContent}>
         
-        <div className={styles.languageSwitcherCorner}>
+        <div className={styles.switchersCorner}>
           <GuestLanguageSwitcher />
+          <ThemeSwitcher />
         </div>
         
         {isProcessing && <PageLoader message={t('auth:signingInMessage')} />}

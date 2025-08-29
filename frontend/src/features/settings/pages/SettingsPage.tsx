@@ -22,6 +22,7 @@ import {
   DangerZoneSection,
   LanguageSection,
   ProfileDetailsSection,
+  ThemeSection,
 } from '../components';
 import { useAccountManager, usePasswordManager } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
@@ -147,6 +148,8 @@ const SettingsPage: React.FC = () => {
         />
 
         <LanguageSection />
+
+        <ThemeSection />
 
         <section className={styles.section}>
           <h2 className={styles.sectionHeader}>

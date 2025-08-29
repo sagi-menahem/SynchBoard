@@ -1,6 +1,9 @@
 {
   "loading": "טוען...",
   "language": "שפה:",
+  "theme": "ערכת עיצוב:",
+  "lightTheme": "ערכת עיצוב בהירה",
+  "darkTheme": "ערכת עיצוב כהה",
   "chooseColor": "בחר צבע",
   "form": {
     "label": {

@@ -3,6 +3,7 @@ import { createContext } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 export type LayoutMode = 'focus-canvas' | 'balanced' | 'focus-chat';
+export type Theme = 'light' | 'dark';
 
 // Unified preferences interface combining all three contexts
 export interface UserPreferences {
@@ -17,6 +18,9 @@ export interface UserPreferences {
   defaultTool: Tool;
   defaultStrokeColor: string;
   defaultStrokeWidth: number;
+  
+  // Theme preferences
+  theme: Theme;
 }
 
 export interface UserPreferencesState {
@@ -43,6 +47,9 @@ export interface UserPreferencesContextType {
   updateTool: (tool: Tool) => Promise<void>;
   updateStrokeColor: (color: string) => Promise<void>;
   updateStrokeWidth: (width: number) => Promise<void>;
+  
+  // Theme preferences methods
+  setTheme: (theme: Theme) => Promise<void>;
   
   // Utility methods
   refreshPreferences: () => Promise<void>;

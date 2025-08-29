@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.LanguagePreferencesDTO;
+import io.github.sagimenahem.synchboard.dto.user.ThemePreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
 import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
 import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
@@ -301,6 +302,41 @@ public class UserService {
         
         return LanguagePreferencesDTO.builder()
                 .preferredLanguage(user.getPreferredLanguage())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ThemePreferencesDTO getThemePreferences(String userEmail) {
+        log.debug("Fetching theme preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        return ThemePreferencesDTO.builder()
+                .theme(user.getThemePreference())
+                .build();
+    }
+
+    @Transactional
+    public ThemePreferencesDTO updateThemePreferences(String userEmail, ThemePreferencesDTO preferences) {
+        log.debug("Updating theme preferences for user: {}", userEmail);
+        
+        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, userEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
+        });
+        
+        if (preferences.getTheme() != null) {
+            user.setThemePreference(preferences.getTheme());
+        }
+        
+        userRepository.save(user);
+        log.info("Theme preferences updated for user: {}", userEmail);
+        
+        return ThemePreferencesDTO.builder()
+                .theme(user.getThemePreference())
                 .build();
     }
 }
