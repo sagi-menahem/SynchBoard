@@ -73,6 +73,7 @@
   box-shadow: 0 0 12px theme.$primary-shadow;
 }
 
+
 .colorPickerWrapper {
   display: inline-flex;
   align-items: center;
@@ -126,6 +127,11 @@
   justify-content: center;
 }
 
+.toolButton {
+  min-width: 36px;
+  min-height: 36px;
+}
+
 .shapeDropdown {
   position: relative;
   display: inline-block;
@@ -159,6 +165,7 @@
   border-color: theme.$primary-border;
   box-shadow: 0 0 12px theme.$primary-shadow;
 }
+
 
 .dropdownContent {
   position: absolute;
