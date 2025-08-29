@@ -37,8 +37,8 @@
 }
 
 [dir="rtl"] .sectionHeader {
-    text-align: right;
-    direction: rtl;
+    text-align: right !important;
+    direction: rtl !important;
 }
 
 .sectionTitle {
@@ -50,8 +50,8 @@
 }
 
 [dir="rtl"] .sectionTitle {
-    text-align: right;
-    direction: rtl;
+    text-align: right !important;
+    direction: rtl !important;
 }
 
 .editButton {

@@ -28,12 +28,9 @@
 }
 
 .closeButton {
-    position: sticky;
-    top: 0;
-    inset-inline-end: 0;
-    float: inline-end;
-    margin-block: -1rem 0.5rem;
-    margin-inline: 0.5rem -1rem;
+    position: absolute;
+    top: 1rem;
+    inset-inline-end: 1rem;
     background: theme.$background-modal-lighter;
     backdrop-filter: blur(4px);
     border: 1px solid theme.$border-secondary;
@@ -61,8 +58,8 @@
     }
 
     .closeButton {
-        margin-block: -0.75rem 0.5rem;
-        margin-inline: 0.5rem -0.75rem;
+        top: 0.75rem;
+        inset-inline-end: 0.75rem;
         font-size: 1rem;
     }
 }
