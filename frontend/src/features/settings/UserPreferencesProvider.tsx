@@ -12,6 +12,7 @@ import logger from 'shared/utils/logger';
 
 import {
   type LayoutMode,
+  type Theme,
   type UserPreferences,
   type UserPreferencesContextType,
   type UserPreferencesState,
@@ -30,6 +31,7 @@ type UserPreferencesAction =
   | { type: 'UPDATE_STROKE_COLOR'; payload: string }
   | { type: 'UPDATE_STROKE_WIDTH'; payload: number }
   | { type: 'UPDATE_BOARD_BACKGROUND'; payload: string }
+  | { type: 'UPDATE_THEME'; payload: Theme }
   | { type: 'RESET_ERROR' };
 
 // Default preferences
@@ -40,6 +42,7 @@ const defaultPreferences: UserPreferences = {
   defaultTool: 'brush',
   defaultStrokeColor: '#FFFFFF',
   defaultStrokeWidth: 3,
+  theme: 'light',
 };
 
 // Initial state
@@ -118,6 +121,13 @@ const userPreferencesReducer = (
         error: null,
       };
       
+    case 'UPDATE_THEME':
+      return {
+        ...state,
+        preferences: { ...state.preferences, theme: action.payload },
+        error: null,
+      };
+      
     case 'RESET_ERROR':
       return { ...state, error: null };
       
@@ -146,10 +156,11 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
     
     try {
       // Load all preferences in parallel
-      const [profile, canvasPrefs, toolPrefs] = await Promise.all([
+      const [profile, canvasPrefs, toolPrefs, themePrefs] = await Promise.all([
         userService.getUserProfile(),
         userService.getCanvasPreferences(),
         userService.getToolPreferences(),
+        userService.getThemePreferences(),
       ]);
 
       const preferences: Partial<UserPreferences> = {
@@ -159,6 +170,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
         defaultTool: toolPrefs.defaultTool,
         defaultStrokeColor: toolPrefs.defaultStrokeColor,
         defaultStrokeWidth: toolPrefs.defaultStrokeWidth,
+        theme: themePrefs.theme,
       };
 
       dispatch({ type: 'LOAD_SUCCESS', payload: preferences });
@@ -354,6 +366,56 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
     dispatch({ type: 'RESET_ERROR' });
   }, []);
 
+  // Theme management constants
+  const THEME_STORAGE_KEY = 'user-theme';
+
+  // Initial theme detection logic
+  const getInitialTheme = useCallback((): Theme => {
+    // First, check localStorage
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+    if (storedTheme && (storedTheme === 'light' || storedTheme === 'dark')) {
+      return storedTheme;
+    }
+
+    // If no stored preference, check OS/browser preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+
+    // Default to light theme
+    return 'light';
+  }, []);
+
+  // Apply theme to DOM
+  const applyThemeToDOM = useCallback((theme: Theme) => {
+    document.body.setAttribute('data-theme', theme);
+  }, []);
+
+  // Set theme function with full logic
+  const setTheme = useCallback(
+    async (newTheme: Theme) => {
+      // 1. Update React context state
+      dispatch({ type: 'UPDATE_THEME', payload: newTheme });
+
+      // 2. Persist to localStorage
+      localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+
+      // 3. Apply to DOM
+      applyThemeToDOM(newTheme);
+
+      // 4. If authenticated, save to backend
+      if (isAuthenticated) {
+        try {
+          await userService.updateThemePreferences({ theme: newTheme });
+        } catch (error) {
+          logger.error('Failed to update theme preference:', error);
+          // Don't revert the UI changes on backend failure - keep the user's choice active
+        }
+      }
+    },
+    [isAuthenticated, applyThemeToDOM],
+  );
+
   // WebSocket subscription for canvas settings updates
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
@@ -370,14 +432,32 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
     'user',
   );
 
+  // Initialize theme on mount
+  useEffect(() => {
+    const initialTheme = getInitialTheme();
+    applyThemeToDOM(initialTheme);
+    dispatch({ type: 'UPDATE_THEME', payload: initialTheme });
+  }, [getInitialTheme, applyThemeToDOM]);
+
   // Load preferences on mount and auth change
   useEffect(() => {
     if (isAuthenticated) {
-      void refreshPreferences();
+      void refreshPreferences().then(() => {
+        // After loading user preferences, apply the theme from server if available
+        // But only if it's different from what's currently set (to avoid overriding localStorage)
+        const currentTheme = state.preferences.theme;
+        if (currentTheme && currentTheme !== getInitialTheme()) {
+          applyThemeToDOM(currentTheme);
+        }
+      });
     } else {
-      dispatch({ type: 'UPDATE_PREFERENCES', payload: defaultPreferences });
+      // For guests, use the initial theme detection
+      const initialTheme = getInitialTheme();
+      const guestPreferences = { ...defaultPreferences, theme: initialTheme };
+      dispatch({ type: 'UPDATE_PREFERENCES', payload: guestPreferences });
+      applyThemeToDOM(initialTheme);
     }
-  }, [isAuthenticated, refreshPreferences]);
+  }, [isAuthenticated, refreshPreferences, getInitialTheme, applyThemeToDOM, state.preferences.theme]);
 
   const value: UserPreferencesContextType = {
     preferences: state.preferences,
@@ -390,6 +470,7 @@ export const UserPreferencesProvider: React.FC<UserPreferencesProviderProps> = (
     updateTool,
     updateStrokeColor,
     updateStrokeWidth,
+    setTheme,
     refreshPreferences,
     resetError,
   };

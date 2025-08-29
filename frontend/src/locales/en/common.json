@@ -1,6 +1,9 @@
 {
   "loading": "Loading...",
   "language": "Language:",
+  "theme": "Theme:",
+  "lightTheme": "Light theme",
+  "darkTheme": "Dark theme",
   "chooseColor": "Choose color",
   "form": {
     "label": {

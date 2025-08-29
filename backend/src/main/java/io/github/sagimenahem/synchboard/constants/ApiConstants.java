@@ -47,6 +47,7 @@ public final class ApiConstants {
     public static final String API_USER_CANVAS_PREFERENCES = "/canvas-preferences";
     public static final String API_USER_TOOL_PREFERENCES = "/tool-preferences";
     public static final String API_USER_LANGUAGE_PREFERENCES = "/language-preferences";
+    public static final String API_USER_THEME_PREFERENCES = "/theme-preferences";
     public static final String API_USER_EXISTS = "/exists/{email}";
 
     public static final String AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE = "Hello, authenticated user!";

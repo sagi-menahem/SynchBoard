@@ -11,11 +11,13 @@
     box-sizing: border-box;
 }
 
-.languageSwitcherCorner {
+.switchersCorner {
     position: fixed;
     top: 24px;
     right: 24px;
     z-index: 1000;
+    @include theme.flex-end;
+    gap: 16px;
 }
 
 .sectionHeader {
@@ -86,9 +88,10 @@
         padding-top: 2rem;
     }
 
-    .languageSwitcherCorner {
+    .switchersCorner {
         top: 16px;
         right: 16px;
+        gap: 12px;
     }
 
     .authSection {

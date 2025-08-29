@@ -80,6 +80,10 @@ public class User implements UserDetails {
     @Builder.Default
     private String preferredLanguage = "en";
 
+    @Column(name = "theme_preference", length = 10, nullable = false)
+    @Builder.Default
+    private String themePreference = "light";
+
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
@@ -109,6 +113,9 @@ public class User implements UserDetails {
         }
         if (this.preferredLanguage == null) {
             this.preferredLanguage = "en";
+        }
+        if (this.themePreference == null) {
+            this.themePreference = "light";
         }
     }
 

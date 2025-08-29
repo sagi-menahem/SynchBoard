@@ -1,0 +1,55 @@
+@use '../../../../styles' as theme;
+
+.themeSwitcher {
+  @include theme.flex-start;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  color: theme.$text-muted;
+  font-weight: 500;
+}
+
+.buttonGroup {
+  display: flex;
+  background: theme.$overlay-light;
+  border: 1px solid theme.$border-light;
+  @include theme.rounded-medium;
+  overflow: hidden;
+}
+
+.themeButton {
+  @include theme.interactive-button;
+  @include theme.button-transition;
+  @include theme.flex-center;
+  color: theme.$text-secondary;
+  padding: 6px 8px;
+  min-width: 30px;
+  position: relative;
+}
+
+.themeButton:hover {
+  background: theme.$overlay-light;
+  color: theme.$text-primary;
+}
+
+.themeButton.active {
+  background: theme.$overlay-primary-20;
+  color: theme.$text-primary;
+  @include theme.shadow-light;
+}
+
+.themeButton:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: theme.$border-light;
+}
+
+.themeButton.active:not(:last-child)::after {
+  display: none;
+}

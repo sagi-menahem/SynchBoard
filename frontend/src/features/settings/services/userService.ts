@@ -1,6 +1,6 @@
 
 import type { CanvasPreferences } from 'features/board/types/BoardTypes';
-import type { ChangePasswordRequest, LanguagePreferences, ToolPreferences, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'features/settings/types/UserTypes';
+import type { ChangePasswordRequest, LanguagePreferences, ThemePreferences, ToolPreferences, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'features/settings/types/UserTypes';
 import { API_ENDPOINTS } from 'shared/constants';
 import apiClient from 'shared/lib/apiClient';
 
@@ -73,5 +73,15 @@ export const getLanguagePreferences = async (): Promise<LanguagePreferences> => 
 
 export const updateLanguagePreferences = async (preferences: LanguagePreferences): Promise<LanguagePreferences> => {
   const response = await apiClient.put<LanguagePreferences>(API_ENDPOINTS.UPDATE_LANGUAGE_PREFERENCES, preferences);
+  return response.data;
+};
+
+export const getThemePreferences = async (): Promise<ThemePreferences> => {
+  const response = await apiClient.get<ThemePreferences>(API_ENDPOINTS.GET_THEME_PREFERENCES);
+  return response.data;
+};
+
+export const updateThemePreferences = async (preferences: ThemePreferences): Promise<ThemePreferences> => {
+  const response = await apiClient.put<ThemePreferences>(API_ENDPOINTS.UPDATE_THEME_PREFERENCES, preferences);
   return response.data;
 };

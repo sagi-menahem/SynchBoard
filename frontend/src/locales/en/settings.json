@@ -49,6 +49,7 @@
       "en": "English",
       "he": "עברית"
     },
+    "themeHeader": "Theme Preferences",
     "boardAppearanceHeader": "Board Appearance",
     "boardBackgroundColorLabel": "Background Color",
     "chatFontSizeLabel": "Font Size",
