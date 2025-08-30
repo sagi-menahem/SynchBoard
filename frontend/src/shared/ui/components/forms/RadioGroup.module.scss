@@ -24,7 +24,7 @@
   &:hover {
     .radioButton {
       border-color: theme.$primary;
-      box-shadow: 0 0 0 theme.$border-width-thick theme.$primary-light;
+      box-shadow: theme.$shadow-focus-outline theme.$primary-light;
     }
     
     .radioLabel {
@@ -51,7 +51,7 @@
   &:focus {
     outline: none;
     border-color: theme.$primary;
-    box-shadow: 0 0 0 3px theme.$primary-light; /* Standard focus ring */
+    box-shadow: theme.$shadow-focus-ring theme.$primary-light; /* Standard focus ring */
   }
   
   &[data-state="checked"] {

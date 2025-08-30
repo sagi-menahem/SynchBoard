@@ -111,7 +111,7 @@
     @include theme.input-focus;
     outline: none;
     border-color: theme.$primary;
-    box-shadow: 0 0 0 2px theme.$primary-light;
+    box-shadow: theme.$shadow-focus-outline theme.$primary-light;
 }
 
 .descriptionTextarea::placeholder {

@@ -2,7 +2,7 @@
 
 .themeSwitcher {
   @include theme.flex-start;
-  gap: 8px;
+  gap: theme.$spacing-2;
 }
 
 .label {
@@ -24,7 +24,7 @@
   @include theme.button-transition;
   @include theme.flex-center;
   color: theme.$text-secondary;
-  padding: 6px 8px;
+  padding: theme.$spacing-1-5 theme.$spacing-2;
   min-width: 30px;
   position: relative;
 }

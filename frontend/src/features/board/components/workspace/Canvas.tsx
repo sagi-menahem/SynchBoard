@@ -1,15 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'features/board/constants/BoardConstants';
 import { useCanvas } from 'features/board/hooks/workspace/canvas/useCanvas';
-import type { ActionPayload, SendBoardActionRequest, TextBoxPayload } from 'features/board/types/BoardObjectTypes';
+import { useCanvasInteractions } from 'features/board/hooks/workspace/canvas/useCanvasInteractions';
+import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
-import { getRecolorCursor } from 'features/board/utils/canvas/cursorUtils';
-import { processRecolorClick } from 'features/board/utils/canvas/recolorLogic';
-import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { useTranslation } from 'react-i18next';
-import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import type { Tool } from 'shared/types/CommonTypes';
 
 
@@ -31,22 +28,32 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
-  const [textInput, setTextInput] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
-  const [recolorCursor, setRecolorCursor] = useState<string>('crosshair');
-  
-  const handleTextInputRequest = useCallback(
-    (x: number, y: number, width: number, height: number) => {
-      setTextInput({ x, y, width, height });
-    },
-    [],
-  );
-  
-  const { canvasRef, containerRef, handleMouseDown } = useCanvas({
-    ...props,
-    onTextInputRequest: handleTextInputRequest,
-  });
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
-  const { preferences } = usePreferences();
+  
+  const { canvasRef, containerRef, handleMouseDown } = useCanvas(props);
+  
+  const {
+    textInput,
+    recolorCursor,
+    handleCanvasClick,
+    handleCanvasMouseMove,
+    handleTextSubmit,
+    handleTextCancel,
+    getBackgroundStyle,
+  } = useCanvasInteractions({
+    tool: props.tool,
+    strokeColor: props.strokeColor,
+    fontSize: props.fontSize,
+    instanceId: props.instanceId,
+    objects: props.objects,
+    canvasRef,
+    onDraw: props.onDraw,
+    onColorPick: props.onColorPick,
+    canvasBackgroundColor: props.canvasConfig?.backgroundColor,
+    handleMouseDown,
+  });
+  
+  // Update useCanvas with the text input handler - for now we'll work with the existing pattern
 
   const canvasConfig = props.canvasConfig ?? {
     backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
@@ -65,114 +72,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     minHeight: `${canvasHeight + padding}px`,
   };
 
-  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (props.tool === TOOLS.COLOR_PICKER && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const imageData = ctx.getImageData(x, y, 1, 1);
-        const data = imageData.data;
-        
-        if (data[3] === 0) {
-          const backgroundColor = canvasConfig.backgroundColor ?? '#FFFFFF';
-          // Ensure color is in 6-character hex format
-          const normalizedColor = backgroundColor.length === 4 ? 
-            `#${  backgroundColor.slice(1).split('').map((c) => c + c).join('')}` :
-            backgroundColor;
-          props.onColorPick?.(normalizedColor);
-        } else {
-          const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
-          props.onColorPick?.(hex);
-        }
-      }
-      e.preventDefault();
-      return;
-    } else if (props.tool === TOOLS.RECOLOR && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const rect = canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-      
-      const recolorAction = processRecolorClick(
-        { x: clickX, y: clickY },
-        props.objects,
-        canvas.width,
-        canvas.height,
-        props.strokeColor,
-        props.instanceId,
-      );
-      
-      if (recolorAction.shouldPerformAction && recolorAction.action) {
-        props.onDraw(recolorAction.action);
-      }
-      
-      e.preventDefault();
-      return;
-    }
-    handleMouseDown(e);
-  };
-
-  const handleTextSubmit = (text: string) => {
-    if (textInput !== null && canvasRef.current !== null) {
-      const canvas = canvasRef.current;
-      props.onDraw({
-        type: 'OBJECT_ADD',
-        payload: {
-          tool: TOOLS.TEXT,
-          x: textInput.x / canvas.width,
-          y: textInput.y / canvas.height,
-          width: textInput.width / canvas.width,
-          height: textInput.height / canvas.height,
-          text,
-          fontSize: props.fontSize,
-          color: props.strokeColor,
-        } as Omit<TextBoxPayload, 'instanceId'>,
-        sender: props.instanceId,
-      });
-    }
-    setTextInput(null);
-  };
-
-  const handleTextCancel = () => {
-    setTextInput(null);
-  };
-
-  const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (props.tool !== TOOLS.RECOLOR || canvasRef.current === null) {
-      return;
-    }
-
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const cursor = getRecolorCursor(
-      { x: mouseX, y: mouseY },
-      props.objects,
-      canvas.width,
-      canvas.height,
-    );
-
-    setRecolorCursor(cursor);
-  }, [props.tool, props.objects, canvasRef]);
-
-  const getBackgroundStyle = () => {
-    const savedColor = preferences.boardBackgroundSetting;
-    if (!savedColor) {
-      return {};
-    }
-    
-    const backgroundOption = CHAT_BACKGROUND_OPTIONS.find((option) => option.color === savedColor);
-    if (backgroundOption?.cssVar) {
-      return { backgroundColor: `var(${backgroundOption.cssVar})` };
-    }
-    
-    return { backgroundColor: savedColor };
-  };
 
   const shouldShowLoading = props.isLoading ?? false;
   const containerClassName = `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`;

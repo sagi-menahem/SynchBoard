@@ -3,8 +3,8 @@
 .activityIndicator {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: theme.$spacing-2;
+  padding: theme.$spacing-2 theme.$spacing-3;
   @include theme.rounded-small;
   background: theme.$activity-indicator-bg;
   border: 1px solid theme.$activity-indicator-border;
@@ -37,7 +37,7 @@
 .counts {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: theme.$spacing-0-5;
   font-variant-numeric: tabular-nums;
   font-weight: 500;
 }
@@ -64,7 +64,7 @@
   height: 6px;
   background: theme.$success-color;
   @include theme.rounded-circle;
-  box-shadow: 0 0 4px theme.$success-glow;
+  box-shadow: theme.$shadow-glow-sm theme.$success-glow;
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -89,7 +89,7 @@
 
 @media (max-width: 768px) {
   .activityIndicator {
-    padding: 6px 10px;
+    padding: theme.$spacing-1-5 theme.$spacing-2-5;
     font-size: 13px;
   }
 

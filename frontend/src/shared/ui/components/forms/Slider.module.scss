@@ -11,7 +11,7 @@
   font-weight: 300;
   color: theme.$text-muted;
   margin: 0;
-  margin-right: 12px;
+  margin-right: theme.$spacing-3;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
@@ -19,7 +19,7 @@
 
 .sliderWrapper {
   @include theme.flex-start;
-  gap: 12px;
+  gap: theme.$spacing-3;
   align-items: center;
 }
 
@@ -43,14 +43,14 @@
   position: relative;
   flex-grow: 1;
   height: 3px;
-  border-radius: 1.5px;
+  border-radius: theme.$border-radius-xs;
   @include theme.smooth-transition;
 }
 
 .sliderRange {
   position: absolute;
   background-color: theme.$primary;
-  border-radius: 1.5px;
+  border-radius: theme.$border-radius-xs;
   height: 100%;
   @include theme.smooth-transition;
 }
@@ -67,17 +67,17 @@
   
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 0 3px theme.$primary-light;
+    box-shadow: theme.$shadow-focus-ring theme.$primary-light;
   }
   
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px theme.$primary-light;
+    box-shadow: theme.$shadow-focus-ring theme.$primary-light;
   }
   
   &[data-state="dragging"] {
     transform: scale(1.15);
-    box-shadow: 0 0 0 4px theme.$primary-light;
+    box-shadow: theme.$shadow-focus-ring-lg theme.$primary-light;
   }
   
   .sliderRoot[data-disabled] & {

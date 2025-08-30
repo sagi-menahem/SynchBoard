@@ -70,7 +70,7 @@
 
 .dateInput {
     @include theme.input-base;
-    padding: 12px;
+    padding: theme.$spacing-3;
     margin-top: 4px;
     background-color: theme.$background-secondary;
     border: 1px solid theme.$border-primary;
@@ -102,7 +102,7 @@
     background-color: theme.$primary;
     color: theme.$text-primary;
     @include theme.rounded-medium;
-    padding: 12px 24px;
+    padding: theme.$spacing-3 theme.$spacing-6;
     font-size: 1rem;
     font-weight: 500;
     @include theme.smooth-transition;

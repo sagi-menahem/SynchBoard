@@ -95,7 +95,7 @@
 
     &.active {
         border-color: theme.$color-primary;
-        box-shadow: 0 0 0 theme.$border-width-thick theme.$color-primary-light;
+        box-shadow: theme.$shadow-focus-outline theme.$color-primary-light;
     }
 }
 
@@ -113,7 +113,7 @@
 
 .dangerZone {
     border-color: theme.$overlay-danger-40;
-    box-shadow: 0 0 8px theme.$overlay-danger-10;
+    box-shadow: theme.$shadow-glow-md theme.$overlay-danger-10;
 }
 
 .required {

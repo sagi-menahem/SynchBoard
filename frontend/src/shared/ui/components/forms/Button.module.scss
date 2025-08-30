@@ -78,7 +78,7 @@
     color: var(--btn-icon-text);
     cursor: pointer;
     padding: theme.$spacing-2;
-    @include theme.rounded-small;
+    @include theme.rounded-medium;
     @include theme.flex-center;
     @include theme.button-transition;
     min-width: 36px; /* Custom canvas tool size */
@@ -103,7 +103,7 @@
         background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
         color: theme.$text-primary;
         border-color: theme.$primary-border;
-        box-shadow: 0 0 12px theme.$primary-shadow;
+        box-shadow: theme.$shadow-glow-lg theme.$primary-shadow;
     }
 }
 

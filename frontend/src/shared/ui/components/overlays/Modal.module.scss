@@ -14,7 +14,7 @@
 
 .content {
     @include theme.card-base;
-    @include theme.rounded-large;
+    @include theme.rounded-medium;
     @include theme.shadow-heavy;
     background: theme.$surface-elevated;
     border: tokens.$border-width solid theme.$border;

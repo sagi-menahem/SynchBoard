@@ -51,7 +51,7 @@
     background: theme.$overlay-modal;
     backdrop-filter: blur(4px);
     @include theme.flex-center;
-    z-index: 100;
+    z-index: theme.$z-index-toolbar;
     padding: 2rem;
 }
 

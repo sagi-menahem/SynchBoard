@@ -7,7 +7,7 @@ import { ConnectionStatusBanner } from 'features/board/ui';
 import { useLanguageSync } from 'features/settings/hooks';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import { updateDocumentDirection } from 'shared/lib/i18n';
 import { PageLoader, PageTransition } from 'shared/ui';
@@ -27,14 +27,6 @@ const LazyPageLoader = () => {
 };
 
 function AppRoutes() {
-  const location = useLocation();
-  
-  useEffect(() => {
-    // if (import.meta.env.DEV) {
-    //   console.info('Route changed to:', location.pathname);
-    // }
-  }, [location]);
-
   return (
     <Routes>
       <Route 

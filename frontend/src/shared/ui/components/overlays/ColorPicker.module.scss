@@ -37,7 +37,7 @@
   &:focus {
     outline: none;
     border-color: theme.$primary;
-    box-shadow: 0 0 0 2px theme.$overlay-primary-30;
+    box-shadow: theme.$shadow-focus-outline theme.$overlay-primary-30;
   }
 
   &.disabled {
@@ -57,11 +57,11 @@
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  z-index: 1000;
+  z-index: theme.$z-index-popover;
   @include theme.card-base;
   @include theme.shadow-heavy;
   animation: popoverIn 0.2s ease-out;
-  padding: 12px;
+  padding: theme.$spacing-3;
 }
 
 @media (max-height: 500px) {
@@ -85,7 +85,7 @@
 
 .colorfulWrapper {
   @include theme.flex-column;
-  gap: 12px;
+  gap: theme.$spacing-3;
 }
 
 .colorfulWrapper :global(.react-colorful) {
@@ -95,13 +95,13 @@
 
 .colorfulWrapper :global(.react-colorful__saturation) {
   @include theme.rounded-small;
-  border-radius: 4px 4px 0 0;
+  border-radius: theme.$border-radius-sm theme.$border-radius-sm 0 0;
   border-bottom: none;
 }
 
 .colorfulWrapper :global(.react-colorful__hue) {
   height: 20px;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
 }
 
 .colorfulWrapper :global(.react-colorful__pointer) {
@@ -114,7 +114,7 @@
 .presetColors {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
+  gap: theme.$spacing-1;
   margin-top: 8px;
 }
 
@@ -135,6 +135,6 @@
   &:focus {
     outline: none;
     border-color: theme.$primary;
-    box-shadow: 0 0 0 2px theme.$overlay-primary-30;
+    box-shadow: theme.$shadow-focus-outline theme.$overlay-primary-30;
   }
 }

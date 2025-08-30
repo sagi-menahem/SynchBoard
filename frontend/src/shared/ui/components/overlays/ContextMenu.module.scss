@@ -2,19 +2,19 @@
 
 .menu {
     position: absolute;
-    z-index: 1000;
+    z-index: theme.$z-index-popover;
     @include theme.card-base;
     @include theme.shadow-heavy;
-    padding: 6px;
+    padding: theme.$spacing-1-5;
     min-width: 180px;
 }
 
 .item {
-    padding: 8px 12px;
+    padding: theme.$spacing-2 theme.$spacing-3;
     @include theme.rounded-small;
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.1s ease-in-out;
+    transition: background-color theme.$transition-instant ease-in-out;
     color: theme.$text-primary;
 
     &:hover {
@@ -35,5 +35,5 @@
 .separator {
     height: 1px;
     background-color: theme.$border-primary;
-    margin: 4px 0;
+    margin: theme.$spacing-1 0;
 }
