@@ -64,9 +64,14 @@ const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
 
   if (clickable && onClick) {
     return (
-      <h1 className={titleClass} onClick={onClick}>
+      <button 
+        className={`${titleClass} ${styles.titleButton}`} 
+        onClick={onClick}
+        type="button"
+        aria-label={`Edit ${content}`}
+      >
         {content}
-      </h1>
+      </button>
     );
   }
 

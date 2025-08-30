@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useInviteMemberForm } from 'features/board/hooks/details/useInviteMemberForm';
+import type { UseBoardMemberActionsReturn } from 'features/board/hooks/details/useBoardMemberActions';
 import type { Member } from 'features/board/types/BoardTypes';
 import { Mail, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -8,13 +8,13 @@ import { Button, Input } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 interface InviteMemberFormProps {
-    boardId: number;
+    inviteForm: UseBoardMemberActionsReturn['inviteForm'];
     onInviteSuccess: (newMember: Member) => void;
 }
 
-const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSuccess }) => {
+const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ inviteForm, onInviteSuccess }) => {
   const { t } = useTranslation(['board', 'common']);
-  const { email, setEmail, isSubmitting, handleSubmit } = useInviteMemberForm(boardId, onInviteSuccess);
+  const { email, setEmail, isSubmitting, handleSubmit } = inviteForm;
 
   return (
     <div className={styles.modalContainer}>
@@ -25,7 +25,7 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ boardId, onInviteSu
         </h3>
       </div>
       
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={(e) => handleSubmit(e, onInviteSuccess)} className={styles.form}>
         <div className={styles.field}>
           <label htmlFor="member-email">
             <Mail size={14} />

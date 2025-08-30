@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
+import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { Save, Settings2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, ColorPicker, Input, RadioGroup } from 'shared/ui';
-import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './CanvasSettingsSection.module.scss';
-import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 
 interface CanvasSettingsSectionProps {
   boardDetails: BoardDetails;
