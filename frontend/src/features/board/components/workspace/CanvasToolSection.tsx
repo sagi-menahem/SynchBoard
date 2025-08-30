@@ -123,7 +123,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <div className={styles.toolControls}>
           <Button
             variant="icon"
-            className={`${styles.iconButton} ${tool === TOOLS.BRUSH ? styles.active : ''}`}
+            className={tool === TOOLS.BRUSH ? 'active' : ''}
             onClick={() => handleToolClick(TOOLS.BRUSH)}
             title={t('board:toolbar.tool.brush')}
           >
@@ -131,7 +131,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
           </Button>
           <Button
             variant="icon"
-            className={`${styles.iconButton} ${tool === TOOLS.ERASER ? styles.active : ''}`}
+            className={tool === TOOLS.ERASER ? 'active' : ''}
             onClick={() => handleToolClick(TOOLS.ERASER)}
             title={t('board:toolbar.tool.eraser')}
           >
@@ -165,7 +165,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <div className={styles.toolControls}>
           <Button
             variant="icon"
-            className={`${styles.iconButton} ${tool === TOOLS.TEXT ? styles.active : ''}`}
+            className={tool === TOOLS.TEXT ? 'active' : ''}
             onClick={() => handleToolClick(TOOLS.TEXT)}
             title={t('board:toolbar.tool.text')}
           >
@@ -173,7 +173,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
           </Button>
           <Button
             variant="icon"
-            className={`${styles.iconButton} ${tool === TOOLS.COLOR_PICKER ? styles.active : ''}`}
+            className={tool === TOOLS.COLOR_PICKER ? 'active' : ''}
             onClick={() => handleToolClick(TOOLS.COLOR_PICKER)}
             title={t('board:toolbar.tool.colorPicker')}
           >
@@ -181,7 +181,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
           </Button>
           <Button
             variant="icon"
-            className={`${styles.iconButton} ${tool === TOOLS.RECOLOR ? styles.active : ''}`}
+            className={tool === TOOLS.RECOLOR ? 'active' : ''}
             onClick={() => handleToolClick(TOOLS.RECOLOR)}
             title={t('board:toolbar.tool.recolor')}
           >
@@ -195,7 +195,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <div className={styles.toolControls}>
           <Button
             variant="icon"
-            className={styles.iconButton}
             onClick={onUndo}
             disabled={!isUndoAvailable}
             title={t('board:toolbar.tool.undo')}
@@ -204,7 +203,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
           </Button>
           <Button
             variant="icon"
-            className={styles.iconButton}
             onClick={onRedo}
             disabled={!isRedoAvailable}
             title={t('board:toolbar.tool.redo')}
@@ -219,7 +217,6 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
         <div className={styles.toolControls}>
           <Button
             variant="icon"
-            className={styles.iconButton}
             onClick={handleDownload}
             title={t('board:toolbar.tool.download')}
           >

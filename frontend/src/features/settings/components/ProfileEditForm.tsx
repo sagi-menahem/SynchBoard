@@ -80,7 +80,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ formData, onInputChan
                     <X size={16} />
                     {t('settings:page.buttons.cancel')}
                 </Button>
-                <Button onClick={onSave} variant="secondary">
+                <Button onClick={onSave} variant="primary">
                     <Save size={16} />
                     {t('settings:page.buttons.save')}
                 </Button>

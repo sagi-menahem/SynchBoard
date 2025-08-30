@@ -70,7 +70,7 @@ const BoardDetailsPage: React.FC = () => {
         icon: UserPlus,
         label: t('board:detailsPage.inviteButton'),
         onClick: () => setInviteModalOpen(true),
-        variant: 'navigation' as const,
+        variant: 'cta' as const,
       }] : []),
     ],
     rightSection: [
@@ -79,7 +79,7 @@ const BoardDetailsPage: React.FC = () => {
         icon: LogOut,
         label: t('board:leaveBoard.button'),
         onClick: () => setLeaveConfirmOpen(true),
-        variant: 'destructive' as const,
+        variant: 'warning' as const,
       },
       {
         type: 'button',

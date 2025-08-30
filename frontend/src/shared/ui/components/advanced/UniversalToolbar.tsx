@@ -13,7 +13,6 @@ import type {
 import { MemberActivityIndicator } from 'features/board/ui';
 
 import Button from '../forms/Button';
-
 import { SearchBar } from '../navigation/SearchBar';
 import { ViewToggle } from '../navigation/ViewToggle';
 
@@ -32,23 +31,23 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
 
   if (!visible) {return null;}
 
-  const buttonClass = [
-    styles[variant],
-    disabled && styles.disabled,
-    className && styles[className],
-  ].filter(Boolean).join(' ');
+  // Check if this is an icon-only button (navigation or has iconOnlyButton class)
+  const isIconOnly = variant === 'navigation' || variant === 'icon' || className === 'iconOnlyButton';
+
+  // Use icon variant for icon-only buttons
+  const buttonVariant = isIconOnly ? 'icon' : variant;
 
   return (
     <Button
-      variant={variant as any}
-      className={buttonClass}
+      variant={buttonVariant}
       onClick={onClick}
       disabled={disabled}
       type="button"
       title={label}
+      aria-label={label}
     >
       {Icon && <Icon size={20} />}
-      <span className={styles.buttonLabel}>{label}</span>
+      {!isIconOnly && <span className={styles.buttonLabel}>{label}</span>}
     </Button>
   );
 };

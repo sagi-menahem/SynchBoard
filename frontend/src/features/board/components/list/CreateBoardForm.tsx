@@ -233,7 +233,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
         <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
           {t('common:button.cancel')}
         </Button>
-        <Button type="submit" disabled={isPending} variant="primary">
+        <Button type="submit" disabled={isPending} variant="cta">
           {isPending ? t('common:button.creating') : t('board:createForm.button.createBoard')}
         </Button>
       </div>

@@ -5,7 +5,6 @@ import { Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from './Button';
-
 import styles from './ThemeSwitcher.module.scss';
 
 interface ThemeSwitcherProps {

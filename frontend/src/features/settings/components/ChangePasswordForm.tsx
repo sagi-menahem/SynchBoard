@@ -88,7 +88,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
           onToggleVisibility={setShowPasswords}
         />
       </div>
-      <Button type="submit" disabled={isSubmitting} variant="secondary">
+      <Button type="submit" disabled={isSubmitting} variant="primary">
         <Save size={16} />
         {isSubmitting ? t('common:button.saving') : t('settings:page.buttons.save')}
       </Button>

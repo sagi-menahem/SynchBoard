@@ -91,7 +91,7 @@ const SettingsPage: React.FC = () => {
           icon: LogOut,
           label: t('settings:page.logoutButton'),
           onClick: logout,
-          variant: 'destructive',
+          variant: 'warning',
         },
         {
           type: 'button',

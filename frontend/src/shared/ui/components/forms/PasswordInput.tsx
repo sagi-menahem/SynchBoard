@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import Button from './Button';
 
+import Button from './Button';
 import styles from './PasswordInput.module.scss';
 
 interface PasswordInputProps {

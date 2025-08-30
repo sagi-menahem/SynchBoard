@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 import i18n from 'i18next';
 import logger from 'shared/utils/logger';
+
 import Button from '../components/forms/Button';
 
 interface Props {
