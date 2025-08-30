@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
+import { useCanvasSettings } from 'features/board/hooks/useCanvasSettings';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
 import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { Save, Settings2, X } from 'lucide-react';
@@ -23,63 +24,30 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
 }) => {
   const { t } = useTranslation(['board', 'common']);
   
-  const getTranslationKey = (sizeKey: string): string => {
-    const keyMap: Record<string, string> = {
-      'WIDESCREEN': 'widescreen',
-      'SQUARE': 'square',
-      'PORTRAIT': 'portrait',
-      'DOCUMENT': 'document',
-    };
-    return keyMap[sizeKey] ?? sizeKey.toLowerCase();
-  };
-  const [isEditing, setIsEditing] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
-  
-  const [backgroundColor, setBackgroundColor] = useState(boardDetails.canvasBackgroundColor);
-  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'>(() => {
-    // Determine current size preset or custom
-    const presets = CANVAS_CONFIG.CANVAS_SIZE_PRESETS;
-    for (const [key, preset] of Object.entries(presets)) {
-      if (boardDetails.canvasWidth === preset.width && boardDetails.canvasHeight === preset.height) {
-        return key as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS;
-      }
-    }
-    return 'custom';
+  const {
+    isEditing,
+    isUpdating,
+    backgroundColor,
+    canvasSize,
+    customWidth,
+    customHeight,
+    handleStartEditing,
+    handleCancel,
+    handleSave,
+    setBackgroundColor,
+    handleCanvasSizeChange,
+    handleCustomWidthChange,
+    handleCustomHeightChange,
+    presetOptions,
+  } = useCanvasSettings({ 
+    boardDetails, 
+    onUpdateSettings, 
+    styles: {
+      presetLabel: styles.presetLabel,
+      presetName: styles.presetName,
+      presetInfo: styles.presetInfo,
+    },
   });
-  const [customWidth, setCustomWidth] = useState(boardDetails.canvasWidth);
-  const [customHeight, setCustomHeight] = useState(boardDetails.canvasHeight);
-
-  const handleCancel = () => {
-    setBackgroundColor(boardDetails.canvasBackgroundColor);
-    setCustomWidth(boardDetails.canvasWidth);
-    setCustomHeight(boardDetails.canvasHeight);
-    setIsEditing(false);
-  };
-
-  const handleSave = async () => {
-    setIsUpdating(true);
-    try {
-      let width, height;
-      if (canvasSize === 'custom') {
-        width = customWidth;
-        height = customHeight;
-      } else {
-        const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[canvasSize];
-        width = preset.width;
-        height = preset.height;
-      }
-
-      await onUpdateSettings({
-        canvasBackgroundColor: backgroundColor,
-        canvasWidth: width,
-        canvasHeight: height,
-      });
-      
-      setIsEditing(false);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
 
   if (!isAdmin) {
     return (
@@ -120,7 +88,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       <div className={settingsStyles.sectionHeader}>
         <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
         {!isEditing && (
-          <Button onClick={() => setIsEditing(true)} variant="secondary" className={settingsStyles.editButton}>
+          <Button onClick={handleStartEditing} variant="secondary" className={settingsStyles.editButton}>
             <Settings2 size={16} />
             {t('board:details.canvasSettings.edit')}
           </Button>
@@ -151,40 +119,10 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <div style={{ marginTop: '0.5rem' }}>
               <RadioGroup
                 value={canvasSize}
-                onValueChange={(value) => setCanvasSize(value as typeof canvasSize)}
+                onValueChange={handleCanvasSizeChange}
                 disabled={isUpdating}
                 orientation="vertical"
-                options={[
-                  ...CANVAS_CONFIG.PRESET_ORDER.map((size) => {
-                    const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];
-                    return {
-                      value: size,
-                      label: (
-                        <div className={styles.presetLabel}>
-                          <span className={styles.presetName}>
-                            {t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)}
-                          </span>
-                          <span className={styles.presetInfo}>
-                            ({preset.ratio}) - {preset.width}×{preset.height}
-                          </span>
-                        </div>
-                      ),
-                      ariaLabel: `${t(`board:canvasSize.presets.${getTranslationKey(size)}.label`)} (${preset.ratio}) - ${preset.width}×${preset.height}`,
-                    };
-                  }),
-                  {
-                    value: 'custom',
-                    label: (
-                      <div className={styles.presetLabel}>
-                        <span className={styles.presetName}>
-                          {t('board:canvasSize.custom.label')}
-                        </span>
-                        <span className={styles.presetInfo} />
-                      </div>
-                    ),
-                    ariaLabel: t('board:canvasSize.custom.label'),
-                  },
-                ]}
+                options={presetOptions}
               />
             </div>
             {canvasSize === 'custom' && (
@@ -192,7 +130,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                 <Input
                   type="number"
                   value={customWidth}
-                  onChange={(e) => setCustomWidth(parseInt(e.target.value) ?? boardDetails.canvasWidth)}
+                  onChange={(e) => handleCustomWidthChange(e.target.value)}
                   min={CANVAS_CONFIG.MIN_WIDTH}
                   max={CANVAS_CONFIG.MAX_WIDTH}
                   disabled={isUpdating}
@@ -202,7 +140,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                 <Input
                   type="number"
                   value={customHeight}
-                  onChange={(e) => setCustomHeight(parseInt(e.target.value) ?? boardDetails.canvasHeight)}
+                  onChange={(e) => handleCustomHeightChange(e.target.value)}
                   min={CANVAS_CONFIG.MIN_HEIGHT}
                   max={CANVAS_CONFIG.MAX_HEIGHT}
                   disabled={isUpdating}
