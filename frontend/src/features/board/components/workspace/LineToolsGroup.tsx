@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
+import Button from 'shared/ui/components/forms/Button';
 
 import styles from './CanvasToolSection.module.scss';
 
@@ -28,14 +29,16 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
 
   return (
     <>
-      <button
+      <Button
+        variant="icon"
         className={`${styles.iconButton} ${currentTool === TOOLS.LINE ? styles.active : ''}`}
         onClick={() => handleToolClick(TOOLS.LINE)}
         title={t('board:toolbar.tool.line')}
       >
         <Minus size={20} />
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="icon"
         className={`${styles.iconButton} ${currentTool === TOOLS.DOTTED_LINE ? styles.active : ''}`}
         onClick={() => handleToolClick(TOOLS.DOTTED_LINE)}
         title={t('board:toolbar.tool.dottedLine')}
@@ -45,14 +48,15 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
           <line x1="8" y1="10" x2="11" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
           <line x1="14" y1="10" x2="17" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
         </svg>
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="icon"
         className={`${styles.iconButton} ${currentTool === TOOLS.ARROW ? styles.active : ''}`}
         onClick={() => handleToolClick(TOOLS.ARROW)}
         title={t('board:toolbar.tool.arrow')}
       >
         <ArrowRight size={20} />
-      </button>
+      </Button>
     </>
   );
 };

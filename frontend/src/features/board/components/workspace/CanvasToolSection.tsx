@@ -16,6 +16,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ColorPicker, Slider } from 'shared/ui';
+import Button from 'shared/ui/components/forms/Button';
 
 import styles from './CanvasToolSection.module.scss';
 import { LineToolsDropdown } from './LineToolsDropdown';
@@ -120,20 +121,22 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
 
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
-          <button
+          <Button
+            variant="icon"
             className={`${styles.iconButton} ${tool === TOOLS.BRUSH ? styles.active : ''}`}
             onClick={() => handleToolClick(TOOLS.BRUSH)}
             title={t('board:toolbar.tool.brush')}
           >
             <Brush size={20} />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="icon"
             className={`${styles.iconButton} ${tool === TOOLS.ERASER ? styles.active : ''}`}
             onClick={() => handleToolClick(TOOLS.ERASER)}
             title={t('board:toolbar.tool.eraser')}
           >
             <Eraser size={20} />
-          </button>
+          </Button>
         </div>
         <span className={styles.toolLabel}>{t('board:toolbar.label.draw')}</span>
       </div>
@@ -160,62 +163,68 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
 
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
-          <button
+          <Button
+            variant="icon"
             className={`${styles.iconButton} ${tool === TOOLS.TEXT ? styles.active : ''}`}
             onClick={() => handleToolClick(TOOLS.TEXT)}
             title={t('board:toolbar.tool.text')}
           >
             <Type size={20} />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="icon"
             className={`${styles.iconButton} ${tool === TOOLS.COLOR_PICKER ? styles.active : ''}`}
             onClick={() => handleToolClick(TOOLS.COLOR_PICKER)}
             title={t('board:toolbar.tool.colorPicker')}
           >
             <Pipette size={20} />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="icon"
             className={`${styles.iconButton} ${tool === TOOLS.RECOLOR ? styles.active : ''}`}
             onClick={() => handleToolClick(TOOLS.RECOLOR)}
             title={t('board:toolbar.tool.recolor')}
           >
             <PaintBucket size={20} />
-          </button>
+          </Button>
         </div>
         <span className={styles.toolLabel}>{t('board:toolbar.label.tools')}</span>
       </div>
 
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
-          <button
+          <Button
+            variant="icon"
             className={styles.iconButton}
             onClick={onUndo}
             disabled={!isUndoAvailable}
             title={t('board:toolbar.tool.undo')}
           >
             <Undo size={20} />
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="icon"
             className={styles.iconButton}
             onClick={onRedo}
             disabled={!isRedoAvailable}
             title={t('board:toolbar.tool.redo')}
           >
             <Redo size={20} />
-          </button>
+          </Button>
         </div>
         <span className={styles.toolLabel}>{t('board:toolbar.label.history')}</span>
       </div>
 
       <div className={styles.toolGroup}>
         <div className={styles.toolControls}>
-          <button
+          <Button
+            variant="icon"
             className={styles.iconButton}
             onClick={handleDownload}
             title={t('board:toolbar.tool.download')}
           >
             <Download size={20} />
-          </button>
+          </Button>
         </div>
         <span className={styles.toolLabel}>{t('board:toolbar.label.export')}</span>
       </div>

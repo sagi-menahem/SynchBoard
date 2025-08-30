@@ -7,6 +7,7 @@ import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
+import { Button } from 'shared/ui';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
 import logger from 'shared/utils/logger';
@@ -169,7 +170,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
           />
-          <button
+          <Button
+            variant="icon"
             onClick={() => {
               setSearchVisible(false);
               setSearchTerm('');
@@ -177,7 +179,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
             className={styles.searchCloseButton}
           >
             ✕
-          </button>
+          </Button>
           {searchTerm && (
             <div className={styles.searchResults}>
               {filteredMessages.length} results

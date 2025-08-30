@@ -4,6 +4,7 @@ import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import Button from 'shared/ui/components/forms/Button';
 import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
@@ -78,22 +79,24 @@ const LanguageSection: React.FC = () => {
         <div className={languageStyles.languageSwitcher}>
           <span className={languageStyles.label}>{t('common:language')}</span>
           <div className={languageStyles.buttonGroup}>
-            <button
+            <Button
+              variant="icon"
               className={`${languageStyles.languageButton} ${currentLanguage === 'en' ? languageStyles.active : ''}`}
               onClick={() => handleLanguageChange('en')}
               type="button"
               title={t('settings:page.language.en')}
             >
               EN
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="icon"
               className={`${languageStyles.languageButton} ${currentLanguage === 'he' ? languageStyles.active : ''}`}
               onClick={() => handleLanguageChange('he')}
               type="button"
               title={t('settings:page.language.he')}
             >
               עב
-            </button>
+            </Button>
           </div>
         </div>
       </div>

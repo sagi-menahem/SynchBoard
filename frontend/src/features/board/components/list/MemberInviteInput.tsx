@@ -86,14 +86,15 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
             <div key={email} className={styles.emailTag}>
               <span>{email}</span>
               {!disabled && (
-                <button
+                <Button
+                  variant="icon"
                   type="button"
                   onClick={() => removeEmail(email)}
                   className={styles.removeTag}
                   aria-label={t('board:createForm.removeMember', { email })}
                 >
                   ×
-                </button>
+                </Button>
               )}
             </div>
           ))}

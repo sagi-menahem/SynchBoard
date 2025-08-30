@@ -2,6 +2,8 @@ import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import Button from 'shared/ui/components/forms/Button';
+
 import styles from './ResizableSplitPanel.module.scss';
 
 interface ResizableSplitPanelProps {
@@ -88,7 +90,8 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
         {leftChild}
       </div>
       
-      <button 
+      <Button
+        variant="icon"
         type="button"
         className={`${styles.divider} ${isDragging ? styles.dragging : ''}`}
         onMouseDown={handleMouseDown}
@@ -102,7 +105,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
         <div className={styles.dividerHandle}>
           <span />
         </div>
-      </button>
+      </Button>
       
       <div 
         className={styles.rightPanel} 

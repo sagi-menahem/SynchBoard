@@ -4,7 +4,7 @@ import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { ArrowRight, LogOut, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
+import { Button, PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
 
 import {
   BoardConfirmDialogs,
@@ -191,12 +191,13 @@ const BoardDetailsPage: React.FC = () => {
                 setQuickSettingsOpen(false);
               }}
             />
-            <button 
+            <Button
+              variant="icon"
               className={styles.closeQuickSettings}
               onClick={() => setQuickSettingsOpen(false)}
             >
               ×
-            </button>
+            </Button>
           </div>
         </div>
       )}

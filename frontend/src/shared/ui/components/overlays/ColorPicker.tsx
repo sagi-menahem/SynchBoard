@@ -4,6 +4,7 @@ import { HexColorPicker } from 'react-colorful';
 import { useTranslation } from 'react-i18next';
 import { PRESET_COLORS } from 'shared/constants/ColorConstants';
 import { useClickOutside } from 'shared/hooks';
+import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ColorPicker.module.scss';
 
@@ -87,10 +88,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   return (
     <div className={`${styles.colorPickerContainer} ${className}`}>
       {label && <label className={styles.label}>{label}</label>}
-      <button
+      <Button
         id={id}
         ref={swatchRef}
         type="button"
+        variant="icon"
         className={`${styles.swatch} ${disabled ? styles.disabled : ''}`}
         onClick={handleSwatchClick}
         disabled={disabled}
@@ -98,7 +100,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         style={{ backgroundColor: color ?? '#FFFFFF' }}
       >
         <div className={styles.swatchInner} />
-      </button>
+      </Button>
       
       {showPicker && !disabled && (
         <div ref={pickerRef} className={styles.popover}>
@@ -115,9 +117,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
             </div>
             <div className={styles.presetColors}>
               {PRESET_COLORS.map((presetColor) => (
-                <button
+                <Button
                   key={presetColor}
                   type="button"
+                  variant="icon"
                   className={styles.presetColor}
                   style={{ backgroundColor: presetColor }}
                   onClick={() => handlePaletteColorClick(presetColor)}

@@ -4,6 +4,8 @@ import { useTheme } from 'features/settings/ThemeProvider';
 import { Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import Button from './Button';
+
 import styles from './ThemeSwitcher.module.scss';
 
 interface ThemeSwitcherProps {
@@ -24,22 +26,24 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ className }) => {
     <div className={`${styles.themeSwitcher} ${className ?? ''}`}>
       <span className={styles.label}>{t('common:theme')}</span>
       <div className={styles.buttonGroup}>
-        <button
+        <Button
+          variant="icon"
           className={`${styles.themeButton} ${currentTheme === 'light' ? styles.active : ''}`}
           onClick={() => handleThemeChange('light')}
           type="button"
           title={t('common:lightTheme')}
         >
           <Sun size={14} />
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="icon"
           className={`${styles.themeButton} ${currentTheme === 'dark' ? styles.active : ''}`}
           onClick={() => handleThemeChange('dark')}
           type="button"
           title={t('common:darkTheme')}
         >
           <Moon size={14} />
-        </button>
+        </Button>
       </div>
     </div>
   );

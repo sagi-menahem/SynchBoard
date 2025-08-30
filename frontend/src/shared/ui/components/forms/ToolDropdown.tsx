@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useClickOutside } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
 
+import Button from './Button';
+
 interface ToolItem {
   value: Tool;
   icon: React.ComponentType<{ size?: number }>;
@@ -50,26 +52,28 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
 
   return (
     <div className={`${styles.shapeDropdown ?? styles.dropdown} ${className}`} ref={dropdownRef}>
-      <button
+      <Button
+        variant="icon"
         className={`${styles.dropdownButton} ${isToolActive ? styles.active : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         title={buttonTitle}
       >
         <currentToolItem.icon size={iconSize} />
         <ChevronDown size={chevronSize} />
-      </button>
+      </Button>
       
       <div className={`${styles.dropdownContent} ${isOpen ? '' : styles.hidden ?? 'hidden'}`}>
         {toolItems.map(({ value, icon: Icon, labelKey }) => (
-          <button
+          <Button
             key={value}
+            variant="icon"
             className={`${styles.dropdownItem} ${value === currentTool ? styles.active : ''}`}
             onClick={() => handleToolClick(value)}
             title={t(`board:toolbar.tool.${labelKey}`)}
           >
             <Icon size={iconSize} />
             {showLabels && <span>{t(`board:toolbar.tool.${labelKey}`)}</span>}
-          </button>
+          </Button>
         ))}
       </div>
     </div>
