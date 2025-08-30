@@ -1,5 +1,6 @@
 // SCSS Mixins - Reusable CSS Patterns
 // This file contains reusable mixins for common CSS patterns found across components
+@use 'design-tokens' as theme;
 
 // ===== FLEXBOX LAYOUT PATTERNS =====
 
@@ -42,24 +43,24 @@
 
 @mixin interactive-button {
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all theme.$transition-medium;
   border: none;
   background: none;
-  padding: 0;
+  padding: theme.$spacing-0;
   font-family: inherit;
 }
 
 @mixin button-hover-lift {
   &:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: theme.$shadow-button;
   }
 }
 
 @mixin button-disabled {
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: theme.$opacity-60;
     transform: none;
   }
 }
@@ -68,23 +69,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  gap: theme.$spacing-2;
+  padding: theme.$button-padding-y theme.$button-padding-x;
+  font-size: theme.$font-size-base;
+  font-weight: theme.$font-weight-medium;
   font-family: inherit;
   cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border: theme.$border-width solid transparent;
+  border-radius: theme.$button-border-radius;
+  transition: theme.$transition-all;
   text-decoration: none;
   box-sizing: border-box;
-  min-height: 44px;
+  min-height: theme.$button-height-md;
 }
 
 @mixin button-group {
   display: flex;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
   justify-content: center;
 }
 
@@ -92,23 +93,23 @@
 
 @mixin input-base {
   width: 100%;
-  padding: 12px;
+  padding: theme.$input-padding;
   box-sizing: border-box;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border: theme.$input-border-width solid var(--color-border);
+  border-radius: theme.$input-border-radius;
   color: var(--color-text-primary);
   font-family: inherit;
   font-size: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color theme.$transition-normal ease, box-shadow theme.$transition-normal ease;
 
   // Autofill overrides for browser compatibility
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--color-text-primary) !important;
-    -webkit-box-shadow: 0 0 0px 1000px var(--color-surface) inset !important;
-    box-shadow: 0 0 0px 1000px var(--color-surface) inset !important;
+    -webkit-box-shadow: theme.$shadow-overlay-hack var(--color-surface) inset !important;
+    box-shadow: theme.$shadow-overlay-hack var(--color-surface) inset !important;
     background-color: var(--color-surface) !important;
     border-color: var(--color-border) !important;
   }
@@ -118,7 +119,7 @@
     color: var(--color-text-disabled);
     border-color: var(--color-border-light);
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: theme.$opacity-60;
   }
 }
 
@@ -126,16 +127,16 @@
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px var(--color-primary-light);
+    box-shadow: theme.$shadow-focus;
   }
 }
 
 @mixin textarea-base {
   width: 100%;
-  padding: 0.75rem;
+  padding: theme.$spacing-3;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border: theme.$border-width solid var(--color-border);
+  border-radius: theme.$border-radius-md;
   color: var(--color-text-primary);
   resize: vertical;
   font-family: inherit;
@@ -146,18 +147,18 @@
 
 @mixin card-base {
   background-color: var(--color-surface-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.5rem;
+  border: theme.$card-border-width solid var(--color-border);
+  border-radius: theme.$card-border-radius;
+  padding: theme.$card-padding;
 }
 
 @mixin card-hover-effect {
-  transition: background-color 0.2s, transform 0.3s ease-out, box-shadow 0.2s ease;
+  transition: background-color theme.$transition-normal, transform theme.$transition-slow ease-out, box-shadow theme.$transition-normal ease;
   
   &:hover {
     background-color: var(--color-surface-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--color-overlay-medium);
+    transform: translateY(theme.$transform-translate-y-sm);
+    box-shadow: theme.$shadow-card;
   }
 }
 
@@ -165,7 +166,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: theme.$spacing-6;
 }
 
 // ===== FORM PATTERNS =====
@@ -173,129 +174,129 @@
 @mixin form-base {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: theme.$spacing-6;
 }
 
 @mixin form-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: theme.$spacing-2;
+  margin-bottom: theme.$spacing-4;
 }
 
 @mixin form-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  color: #ccc;
-  font-weight: 500;
-  font-size: 0.875rem;
+  gap: theme.$spacing-2;
+  margin-bottom: theme.$spacing-2;
+  color: theme.$color-gray-300;
+  font-weight: theme.$font-weight-medium;
+  font-size: theme.$font-size-sm;
 }
 
 @mixin form-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
   justify-content: end;
-  padding-top: 0.5rem;
-  border-top: 1px solid #444;
+  padding-top: theme.$spacing-2;
+  border-top: theme.$border-width solid theme.$color-gray-700;
 }
 
 // ===== ERROR/STATUS PATTERNS =====
 
 @mixin error-message {
-  background-color: rgba(220, 38, 38, 0.1);
-  border: 1px solid rgba(220, 38, 38, 0.3);
-  color: #f87171;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  background-color: theme.$color-error-light;
+  border: theme.$border-width solid theme.$color-error;
+  color: theme.$color-error;
+  padding: theme.$spacing-3;
+  border-radius: theme.$border-radius-md;
+  font-size: theme.$font-size-sm;
 }
 
 @mixin success-message {
-  background-color: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #10b981;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  background-color: theme.$color-success-light;
+  border: theme.$border-width solid theme.$color-success;
+  color: theme.$color-success;
+  padding: theme.$spacing-3;
+  border-radius: theme.$border-radius-md;
+  font-size: theme.$font-size-sm;
 }
 
 // ===== BORDER RADIUS PATTERNS =====
 
 @mixin rounded-small {
-  border-radius: 4px;
+  border-radius: theme.$border-radius-sm;
 }
 
 @mixin rounded-medium {
-  border-radius: 6px;
+  border-radius: theme.$border-radius-md;
 }
 
 @mixin rounded-large {
-  border-radius: 8px;
+  border-radius: theme.$border-radius-lg;
 }
 
 @mixin rounded-circle {
-  border-radius: 50%;
+  border-radius: theme.$border-radius-full;
 }
 
 // ===== POSITION/OVERLAY PATTERNS =====
 
 @mixin overlay-full {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: theme.$spacing-0;
+  left: theme.$spacing-0;
+  right: theme.$spacing-0;
+  bottom: theme.$spacing-0;
 }
 
 @mixin fixed-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
+  top: theme.$spacing-0;
+  left: theme.$spacing-0;
+  right: theme.$spacing-0;
+  bottom: theme.$spacing-0;
+  z-index: theme.$z-index-tooltip;
 }
 
 @mixin modal-backdrop {
   @include fixed-overlay;
   @include flex-center;
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 0 1rem;
+  background-color: theme.$color-backdrop;
+  padding: theme.$spacing-0 theme.$spacing-4;
   overflow-y: auto;
 }
 
 // ===== TRANSITION PATTERNS =====
 
 @mixin smooth-transition {
-  transition: all 0.2s ease;
+  transition: theme.$transition-all;
 }
 
 @mixin button-transition {
-  transition: all 0.25s;
+  transition: all theme.$transition-medium;
 }
 
 @mixin hover-transition {
-  transition: background-color 0.2s, transform 0.3s ease-out, box-shadow 0.2s ease;
+  transition: background-color theme.$transition-normal, transform theme.$transition-slow ease-out, box-shadow theme.$transition-normal ease;
 }
 
 // ===== BOX SHADOW PATTERNS =====
 
 @mixin shadow-light {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: theme.$shadow-button;
 }
 
 @mixin shadow-medium {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: theme.$shadow-card;
 }
 
 @mixin shadow-heavy {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: theme.$shadow-xl;
 }
 
 @mixin focus-shadow {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: theme.$shadow-focus;
 }
 
 // ===== RADIO BUTTON PATTERNS =====
@@ -303,16 +304,16 @@
 @mixin radio-option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   cursor: pointer;
   color: var(--color-text-primary);
-  font-size: 0.9rem;
-  padding: 0.25rem 0;
+  font-size: theme.$font-size-sm-plus;
+  padding: theme.$spacing-1 0;
 }
 
 @mixin radio-input {
-  width: 1rem;
-  height: 1rem;
+  width: theme.$spacing-4;
+  height: theme.$spacing-4;
   accent-color: var(--color-primary);
   cursor: pointer;
 }
@@ -336,10 +337,10 @@
 // ===== LOADING/SPINNER PATTERNS =====
 
 @mixin spinner-base {
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-top: 2px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  border: theme.$border-width-thick solid rgba(theme.$color-white, theme.$opacity-10);
+  border-top: theme.$border-width-thick solid theme.$color-primary;
+  border-radius: theme.$border-radius-full;
+  animation: spin theme.$transition-very-slow linear infinite;
 }
 
 @keyframes spin {
@@ -351,14 +352,14 @@
 
 @mixin visually-hidden {
   position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
+  width: theme.$spacing-px !important;
+  height: theme.$spacing-px !important;
+  padding: theme.$spacing-0 !important;
+  margin: -theme.$spacing-px !important;
   overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
+  clip: rect(theme.$spacing-0, theme.$spacing-0, theme.$spacing-0, theme.$spacing-0) !important;
   white-space: nowrap !important;
-  border: 0 !important;
+  border: theme.$spacing-0 !important;
 }
 
 @mixin clearfix {
