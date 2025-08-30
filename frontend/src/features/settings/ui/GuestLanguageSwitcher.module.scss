@@ -2,7 +2,7 @@
 
 .languageSwitcher {
   @include theme.flex-start;
-  gap: 8px;
+  gap: theme.$spacing-2;
 }
 
 .label {
@@ -25,7 +25,7 @@
   color: theme.$text-secondary;
   font-size: 12px;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: theme.$spacing-1-5 theme.$spacing-3;
   min-width: 40px;
   position: relative;
 }

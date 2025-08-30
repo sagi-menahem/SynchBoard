@@ -8,7 +8,7 @@
 
 .loadingContent {
     @include theme.flex-column-center;
-    gap: 16px;
+    gap: theme.$spacing-4;
 }
 
 .spinner {

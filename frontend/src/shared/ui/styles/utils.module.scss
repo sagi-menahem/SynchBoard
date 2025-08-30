@@ -1,3 +1,5 @@
+@use '@/styles' as theme;
+
 :root {
   --bg-primary: #1a1a1a;
   --bg-secondary: #333;
@@ -168,7 +170,7 @@
 
 .section {
   background: var(--bg-tertiary);
-  border-radius: 8px;
+  border-radius: theme.$border-radius-lg;
   padding: 1.5rem;
   margin-bottom: 1rem;
   border: 1px solid var(--border-tertiary);
@@ -273,23 +275,23 @@
 }
 
 .roundedSm {
-  border-radius: 4px;
+  border-radius: theme.$border-radius-sm;
 }
 
 .roundedMd {
-  border-radius: 6px;
+  border-radius: theme.$border-radius-md;
 }
 
 .roundedLg {
-  border-radius: 8px;
+  border-radius: theme.$border-radius-lg;
 }
 
 .roundedXl {
-  border-radius: 12px;
+  border-radius: theme.$border-radius-xl;
 }
 
 .roundedFull {
-  border-radius: 9999px;
+  border-radius: theme.$border-radius-pill;
 }
 
 .bgPrimary {
@@ -339,19 +341,19 @@
 }
 
 .shadowSm {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-sm;
 }
 
 .shadowMd {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-md;
 }
 
 .shadowLg {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-lg;
 }
 
 .shadowXl {
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-xl;
 }
 
 .colorPickerWrapper {
@@ -362,31 +364,31 @@
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
+  z-index: theme.$z-index-popover;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-radius: theme.$border-radius-lg;
+  padding: theme.$spacing-3;
+  box-shadow: theme.$shadow-lg;
   margin-top: 8px;
 }
 
 .colorPreview {
   width: 24px;
   height: 24px;
-  border-radius: 4px;
+  border-radius: theme.$border-radius-sm;
   border: 1px solid var(--border-primary);
   flex-shrink: 0;
 }
 
 .clickableColorPreview {
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform theme.$transition-normal ease, box-shadow theme.$transition-normal ease;
 }
 
 .clickableColorPreview:hover {
   transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: theme.$shadow-md;
 }
 
 .clickableColorPreview.disabled {
@@ -397,7 +399,7 @@
 .presetColors {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
+  gap: theme.$spacing-1;
   margin-top: 12px;
 }
 
@@ -405,14 +407,14 @@
   width: 20px;
   height: 20px;
   border: 1px solid #444;
-  border-radius: 3px;
+  border-radius: theme.$border-radius-sm;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: transform theme.$transition-instant ease, box-shadow theme.$transition-instant ease;
 }
 
 .presetColorButton:hover {
   transform: scale(1.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: theme.$shadow-md;
 }
 
 .settingRow {

@@ -50,7 +50,7 @@
 .dividerHandle {
   @include theme.flex-column;
   @include theme.flex-center;
-  gap: 3px;
+  gap: theme.$spacing-0-5;
   height: 50px;
 }
 

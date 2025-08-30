@@ -15,7 +15,7 @@
   box-shadow: var(--toolbar-shadow);
   @include theme.flex-between;
   padding: 0 24px;
-  z-index: 50;
+  z-index: theme.$z-index-dropdown;
   user-select: none;
   overflow: visible;
   @include theme.smooth-transition;
@@ -58,8 +58,8 @@
 .toolbarTitle.clickableTitle {
   cursor: pointer;
   @include theme.smooth-transition;
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: theme.$spacing-0-5 theme.$spacing-1;
+  border-radius: theme.$border-radius-sm;
   
   &:hover {
     text-decoration: underline;
@@ -79,7 +79,7 @@
 
 .customItem {
   @include theme.flex-start;
-  gap: 8px;
+  gap: theme.$spacing-2;
 }
 
 .toolbarSection>*:not(:last-child)::after {
