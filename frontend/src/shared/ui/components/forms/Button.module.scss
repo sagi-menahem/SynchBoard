@@ -12,61 +12,85 @@
 
 // PRIMARY BUTTON - Vibrant blue for main actions (Login, Save, Create, etc.)
 .primary {
-    background-color: theme.$primary;
-    color: theme.$primary-light;
-    border-color: theme.$primary;
-    font-weight: 600;
+    background-color: theme.$color-primary;
+    color: theme.$color-white;
+    border-color: theme.$color-primary;
+    font-weight: theme.$font-weight-semibold;
 
     &:hover:not(:disabled) {
-        background-color: theme.$primary-hover;
-        border-color: theme.$primary-hover;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px theme.$primary-light;
+        background-color: theme.$color-primary-hover;
+        border-color: theme.$color-primary-hover;
+        transform: translateY(theme.$transform-translate-y-xs);
+        box-shadow: theme.$shadow-button-hover;
     }
 
     &:active:not(:disabled) {
-        transform: translateY(0);
-        box-shadow: 0 2px 8px theme.$primary-light;
+        transform: translateY(theme.$spacing-0);
+        box-shadow: theme.$shadow-button-active;
     }
 }
 
-// DESTRUCTIVE BUTTON - Elegant refined design for dangerous actions
+// DESTRUCTIVE BUTTON - Elegant refined design for dangerous actions (matches toolbar style)
 .destructive {
     background: var(--destructive-button-background);
-    border: 1px solid var(--destructive-button-border);
+    border: theme.$border-width solid var(--destructive-button-border);
     color: var(--destructive-button-text);
-    font-weight: 500;
+    font-weight: theme.$font-weight-medium;
     box-shadow: var(--destructive-button-shadow);
 
     &:hover:not(:disabled) {
         background: var(--destructive-button-hover-background);
         border-color: var(--destructive-button-hover-border);
         color: var(--destructive-button-hover-text);
-        transform: translateY(-0.5px);
+        transform: translateY(theme.$transform-translate-y-xxs);
         box-shadow: var(--destructive-button-hover-shadow);
     }
 
     &:active:not(:disabled) {
-        transform: translateY(0);
+        transform: translateY(theme.$spacing-0);
         box-shadow: var(--destructive-button-shadow);
     }
 }
 
 // SECONDARY BUTTON - Subtle for supporting actions (Cancel, Change Picture, etc.)
 .secondary {
-    background-color: theme.$surface;
-    color: theme.$text-primary;
-    border-color: theme.$border-strong;
+    background-color: theme.$color-gray-50;
+    color: theme.$color-gray-800;
+    border-color: theme.$color-gray-300;
 
     &:hover:not(:disabled) {
-        background-color: theme.$surface-hover;
-        border-color: theme.$border-strong;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px theme.$overlay-light;
+        background-color: theme.$color-gray-100;
+        border-color: theme.$color-gray-300;
+        transform: translateY(theme.$transform-translate-y-xs);
+        box-shadow: theme.$shadow-button-small;
     }
 
     &:active:not(:disabled) {
-        transform: translateY(0);
-        box-shadow: 0 1px 4px theme.$overlay-light;
+        transform: translateY(theme.$spacing-0);
+        box-shadow: theme.$shadow-button-small;
+    }
+}
+
+// ICON BUTTON - For icon-only buttons (tools, toggles, clear buttons, etc.)
+.icon {
+    background-color: transparent;
+    border-color: transparent;
+    padding: theme.$spacing-2;
+    border-radius: theme.$border-radius-full;
+    color: theme.$color-gray-600;
+    min-height: auto;
+
+    &:hover:not(:disabled) {
+        background-color: theme.$color-gray-100;
+        border-color: transparent;
+        color: theme.$color-gray-900;
+        transform: translateY(theme.$spacing-0);
+        box-shadow: theme.$shadow-none;
+    }
+
+    &:active:not(:disabled) {
+        background-color: theme.$color-gray-200;
+        transform: translateY(theme.$spacing-0);
+        box-shadow: theme.$shadow-none;
     }
 }

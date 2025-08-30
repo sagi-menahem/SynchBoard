@@ -4,6 +4,8 @@ import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { Grid3X3, List } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import Button from '../forms/Button';
+
 import styles from './ViewToggle.module.scss';
 
 interface ViewToggleProps {
@@ -17,22 +19,24 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, classNa
   
   return (
     <div className={`${styles.viewToggle} ${className ?? ''}`}>
-      <button
+      <Button
+        variant="icon"
         type="button"
         className={`${styles.toggleButton} ${value === 'grid' ? styles.active : ''}`}
         onClick={() => onChange('grid')}
         title={t('board:toolbar.view.grid')}
       >
         <Grid3X3 size={16} />
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="icon"
         type="button"
         className={`${styles.toggleButton} ${value === 'list' ? styles.active : ''}`}
         onClick={() => onChange('list')}
         title={t('board:toolbar.view.list')}
       >
         <List size={16} />
-      </button>
+      </Button>
     </div>
   );
 };

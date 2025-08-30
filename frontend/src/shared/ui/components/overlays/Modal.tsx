@@ -42,8 +42,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         role="dialog"
         aria-modal="true"
       >
-        <Button onClick={onClose} className={styles.closeButton} variant="secondary">
-          <X size={16} />
+        <Button onClick={onClose} className={styles.closeButton} variant="icon">
+          <X size={20} />
         </Button>
         {children}
       </div>

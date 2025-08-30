@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 import i18n from 'i18next';
 import logger from 'shared/utils/logger';
+import Button from '../components/forms/Button';
 
 interface Props {
   children: ReactNode;
@@ -100,38 +101,9 @@ export class ErrorBoundary extends Component<Props, State> {
               justifyContent: 'center',
               flexWrap: 'wrap',
             }}>
-              <button
-                onClick={this.handleRetry}
-                style={{
-                  padding: '0.75rem 2rem',
-                  borderRadius: '8px',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease-in-out',
-                  border: '2px solid #3b82f6',
-                  minWidth: '120px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#2563eb';
-                  e.currentTarget.style.borderColor = '#2563eb';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#3b82f6';
-                  e.currentTarget.style.borderColor = '#3b82f6';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
+              <Button onClick={this.handleRetry} variant="primary">
                 {i18n.t('common:errorBoundary.tryAgain')}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

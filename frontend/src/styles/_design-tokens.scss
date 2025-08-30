@@ -16,7 +16,8 @@ $color-primary-light: #bfdbfe;        // Light primary variant
 $color-success: #10b981;              // Success/positive feedback
 $color-success-light: #a7f3d0;        // Light success variant
 
-$color-error: #ef4444;                // Error/danger states  
+$color-error: #ef4444;                // Error/danger states
+$color-error-hover: #dc2626;          // Error hover state  
 $color-error-light: #fca5a5;          // Light error variant
 
 $color-warning: #f59e0b;              // Warning/caution states
@@ -159,6 +160,9 @@ $shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.3);
 
 // === COMPONENT SHADOWS ===
 $shadow-button: 0 2px 4px rgba(0, 0, 0, 0.2);
+$shadow-button-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-button-active: 0 2px 8px rgba(0, 0, 0, 0.15);
+$shadow-button-small: 0 1px 4px rgba(0, 0, 0, 0.15);
 $shadow-card: 0 4px 12px rgba(0, 0, 0, 0.15);
 $shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.3);
 $shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -277,6 +281,7 @@ $border-width-thick: 2px;
 
 // === TRANSFORM VALUES ===
 $transform-translate-y-xs: -1px;          // Small upward movement
+$transform-translate-y-xxs: -0.5px;       // Micro upward movement
 $transform-translate-y-sm: -2px;          // Medium upward movement
 
 // === PATTERN VALUES ===

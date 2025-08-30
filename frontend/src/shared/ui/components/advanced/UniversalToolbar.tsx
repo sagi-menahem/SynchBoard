@@ -12,6 +12,8 @@ import type {
 } from 'features/board/types/ToolbarTypes';
 import { MemberActivityIndicator } from 'features/board/ui';
 
+import Button from '../forms/Button';
+
 import { SearchBar } from '../navigation/SearchBar';
 import { ViewToggle } from '../navigation/ViewToggle';
 
@@ -31,14 +33,14 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
   if (!visible) {return null;}
 
   const buttonClass = [
-    styles.toolbarButton,
     styles[variant],
     disabled && styles.disabled,
     className && styles[className],
   ].filter(Boolean).join(' ');
 
   return (
-    <button
+    <Button
+      variant={variant as any}
       className={buttonClass}
       onClick={onClick}
       disabled={disabled}
@@ -47,7 +49,7 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
     >
       {Icon && <Icon size={20} />}
       <span className={styles.buttonLabel}>{label}</span>
-    </button>
+    </Button>
   );
 };
 
@@ -64,14 +66,15 @@ const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
 
   if (clickable && onClick) {
     return (
-      <button 
+      <Button
+        variant="icon"
         className={`${titleClass} ${styles.titleButton}`} 
         onClick={onClick}
         type="button"
         aria-label={`Edit ${content}`}
       >
         {content}
-      </button>
+      </Button>
     );
   }
 

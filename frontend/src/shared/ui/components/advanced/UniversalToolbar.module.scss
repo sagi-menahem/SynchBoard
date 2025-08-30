@@ -23,7 +23,7 @@
 
 .toolbarSection {
   @include theme.flex-start;
-  gap: 12px;
+  gap: theme.$spacing-3;
 }
 
 .leftSection {
@@ -74,125 +74,10 @@
   }
 }
 
-.toolbarButton {
-  background: theme.$background;
-  border: 1px solid theme.$border-strong;
-  color: theme.$text-primary;
-  box-shadow: 0 1px 2px theme.$overlay-light;
-  @include theme.interactive-button;
-  padding: 4px 10px;
-  @include theme.rounded-medium;
-  @include theme.flex-start;
-  gap: 8px;
-  @include theme.smooth-transition;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  white-space: nowrap;
-  min-height: 28px;
-  box-sizing: border-box;
-}
 
-.toolbarButton:hover:not(.disabled) {
-  background: theme.$surface-elevated;
-  border-color: theme.$primary;
-  color: theme.$text-primary;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px theme.$overlay-medium;
-}
+// Destructive buttons now use the global Button component styles
+// No local overrides needed - removed for consistency
 
-.toolbarButton.disabled {
-  @include theme.button-disabled;
-  opacity: 0.3;
-}
-
-.toolbarButton.primary {
-  background: linear-gradient(135deg, theme.$overlay-primary-30, theme.$overlay-primary-20);
-  color: theme.$text-primary;
-  border-color: theme.$overlay-primary-40;
-  box-shadow: 0 0 8px theme.$overlay-primary-10;
-}
-
-.toolbarButton.primary:hover:not(.disabled) {
-  background: linear-gradient(135deg, theme.$overlay-primary-40, theme.$overlay-primary-30);
-  border-color: theme.$overlay-primary-60;
-  box-shadow: 0 0 12px theme.$overlay-primary-20;
-}
-
-.toolbarButton.destructive {
-  background: var(--destructive-button-background);
-  border: 1px solid var(--destructive-button-border);
-  color: var(--destructive-button-text);
-  font-weight: 500;
-  box-shadow: var(--destructive-button-shadow);
-}
-
-.toolbarButton.destructive:hover:not(.disabled) {
-  background: var(--destructive-button-hover-background);
-  border-color: var(--destructive-button-hover-border);
-  color: var(--destructive-button-hover-text);
-  transform: translateY(-0.5px);
-  box-shadow: var(--destructive-button-hover-shadow);
-}
-
-.toolbarButton.navigation {
-  background: var(--nav-button-background);
-  border: 1px solid var(--nav-button-border);
-  color: var(--nav-button-text);
-  padding: 4px 10px;
-  @include theme.rounded-small;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: var(--nav-button-shadow);
-  @include theme.button-transition;
-}
-
-.toolbarButton.navigation:hover:not(.disabled) {
-  background: var(--nav-button-hover-background);
-  border-color: var(--nav-button-hover-border);
-  color: var(--nav-button-hover-text);
-  transform: translateY(-0.5px);
-  box-shadow: var(--nav-button-hover-shadow);
-}
-
-.toolbarButton.navigation:active:not(.disabled) {
-  transform: translateY(0px);
-  @include theme.shadow-light;
-}
-
-.toolbarButton.navigation.iconOnlyButton {
-  padding: 8px;
-  min-width: 36px;
-  min-height: 36px;
-  @include theme.flex-center;
-  gap: 0;
-}
-
-.toolbarButton.navigation.iconOnlyButton .buttonLabel {
-  display: none;
-}
-
-.toolbarButton.icon {
-  padding: 8px;
-  min-width: 36px;
-  justify-content: center;
-}
-
-.toolbarButton.icon .buttonLabel {
-  display: none;
-}
-
-.toolbarButton.iconOnlyButton {
-  padding: 8px;
-  min-width: 36px;
-  min-height: 36px;
-  @include theme.flex-center;
-  gap: 0;
-}
-
-.toolbarButton.iconOnlyButton .buttonLabel {
-  display: none;
-}
 
 .buttonLabel {
   font-size: 14px;

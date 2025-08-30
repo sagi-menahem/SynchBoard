@@ -76,28 +76,30 @@
 
 .colorSwatchContainer {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    gap: theme.$spacing-3;
+    margin-top: theme.$spacing-2;
 }
 
 .colorSwatch {
-    width: 32px;
-    height: 32px;
+    width: theme.$spacing-8;
+    height: theme.$spacing-8;
+    min-width: theme.$spacing-8;
+    min-height: theme.$spacing-8;
     @include theme.rounded-circle;
-    @include theme.interactive-button;
-    @include theme.smooth-transition;
-    border: 2px solid theme.$border;
-    box-shadow: 0 0 0 1px theme.$border-light;
-}
+    border: theme.$border-width-thick solid theme.$color-gray-300;
+    box-shadow: theme.$shadow-sm;
+    padding: theme.$spacing-0;
 
-.colorSwatch:hover {
-    transform: scale(1.1);
-}
+    &:hover:not(:disabled) {
+        transform: scale(1.1);
+        box-shadow: theme.$shadow-md;
+        border-color: theme.$color-gray-400;
+    }
 
-.colorSwatch.active {
-    border-color: theme.$primary;
-    box-shadow: 0 0 0 2px theme.$primary-light;
-    transform: scale(1.1);
+    &.active {
+        border-color: theme.$color-primary;
+        box-shadow: 0 0 0 theme.$border-width-thick theme.$color-primary-light;
+    }
 }
 
 .fontButtonGroup {

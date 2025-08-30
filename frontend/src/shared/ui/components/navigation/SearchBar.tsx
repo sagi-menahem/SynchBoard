@@ -2,6 +2,7 @@ import React, { useCallback, useState, type KeyboardEvent } from 'react';
 
 import { Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Button from '../forms/Button';
 
 import styles from './SearchBar.module.scss';
 
@@ -61,14 +62,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           className={styles.searchInput}
         />
         {inputValue && (
-          <button
+          <Button
             type="button"
+            variant="icon"
             onClick={handleClear}
             className={styles.clearButton}
             title={t('board:toolbar.search.clear')}
           >
             <X size={16} />
-          </button>
+          </Button>
         )}
       </div>
     </form>

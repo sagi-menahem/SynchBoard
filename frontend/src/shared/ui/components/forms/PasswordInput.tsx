@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import Button from './Button';
 
 import styles from './PasswordInput.module.scss';
 
@@ -99,9 +100,10 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
         className={styles.passwordInput}
         aria-describedby={`${id}-toggle`}
       />
-      <button
+      <Button
         id={`${id}-toggle`}
         type="button"
+        variant="icon"
         className={styles.toggleButton}
         onClick={togglePasswordVisibility}
         disabled={disabled}
@@ -117,7 +119,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
         ) : (
           <EyeIcon className={styles.eyeIcon} />
         )}
-      </button>
+      </Button>
     </div>
   );
 };

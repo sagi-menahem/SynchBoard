@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import { useTranslation } from 'react-i18next';
+import Button from 'shared/ui/components/forms/Button';
 
 import styles from './BoardImageUpload.module.scss';
 
@@ -79,13 +80,14 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
       />
       
       {previewUrl !== defaultBoardImage && !disabled && (
-        <button
+        <Button
           type="button"
           onClick={handleRemoveImage}
+          variant="destructive"
           className={styles.removeButton}
         >
           {t('board:createForm.removeImage')}
-        </button>
+        </Button>
       )}
     </div>
   );
