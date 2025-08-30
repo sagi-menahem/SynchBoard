@@ -10,8 +10,7 @@ export { default as ProfileDisplayView } from './components/ProfileDisplayView';
 export { default as ProfileEditForm } from './components/ProfileEditForm';
 
 // Hooks
-export { useAccountManager } from './hooks/useAccountManager';
-export { usePasswordManager } from './hooks/usePasswordManager';
+export { useAccountActions } from './hooks/useAccountActions';
 export { useUserProfile } from './hooks/profile/useUserProfile';
 
 // Providers
