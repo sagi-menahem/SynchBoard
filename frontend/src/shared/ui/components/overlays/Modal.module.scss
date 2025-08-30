@@ -1,4 +1,5 @@
 @use '@/styles' as theme;
+@use '@/styles/design-tokens' as tokens;
 
 .overlay {
     @include theme.modal-backdrop;
@@ -16,61 +17,61 @@
     @include theme.rounded-large;
     @include theme.shadow-heavy;
     background: theme.$surface-elevated;
-    border: 1px solid theme.$border;
-    min-width: 300px;
-    max-width: 500px;
+    border: tokens.$border-width solid theme.$border;
+    min-width: tokens.$modal-min-width;
+    max-width: tokens.$modal-max-width;
     max-height: 70vh;
     height: fit-content;
     position: relative;
-    z-index: 1;
+    z-index: tokens.$z-index-base;
     overflow-y: auto;
-    margin: 1.5rem auto;
+    margin: tokens.$spacing-6 auto;
 }
 
 .closeButton {
     position: absolute;
-    top: 1rem;
-    inset-inline-end: 1rem;
+    top: tokens.$spacing-4;
+    inset-inline-end: tokens.$spacing-4;
     background: theme.$surface-hover;
-    backdrop-filter: blur(4px);
-    border: 1px solid theme.$border-strong;
+    backdrop-filter: blur(tokens.$blur-sm);
+    border: tokens.$border-width solid theme.$border-strong;
     @include theme.rounded-small;
-    font-size: 1rem;
-    padding: 0.5rem;
+    font-size: tokens.$font-size-base;
+    padding: tokens.$spacing-2;
     line-height: 1;
-    z-index: 10;
+    z-index: tokens.$z-index-dropdown;
     min-width: auto;
-    width: 2rem;
-    height: 2rem;
+    width: tokens.$spacing-8;
+    height: tokens.$spacing-8;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 /* Mobile responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: tokens.$breakpoint-md) {
     .overlay {
-        padding: 1rem 0.5rem;
+        padding: tokens.$spacing-4 tokens.$spacing-2;
     }
 
     .content {
         min-width: 280px;
-        max-width: calc(100vw - 1rem);
-        max-height: calc(100vh - 2rem);
-        padding: 1.5rem;
-        margin: 1rem auto;
+        max-width: calc(100vw - tokens.$spacing-4);
+        max-height: calc(100vh - tokens.$spacing-8);
+        padding: tokens.$spacing-6;
+        margin: tokens.$spacing-4 auto;
     }
 
     .closeButton {
-        top: 0.75rem;
-        inset-inline-end: 0.75rem;
-        font-size: 1rem;
+        top: tokens.$spacing-3;
+        inset-inline-end: tokens.$spacing-3;
+        font-size: tokens.$font-size-base;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: tokens.$breakpoint-sm) {
     .overlay {
-        padding: 0.5rem;
+        padding: tokens.$spacing-2;
         align-items: stretch;
     }
 
@@ -81,7 +82,7 @@
         margin: 0;
         border-radius: 0;
         height: 100vh;
-        padding: 1rem;
-        padding-top: 3rem;
+        padding: tokens.$spacing-4;
+        padding-top: tokens.$spacing-12;
     }
 }
