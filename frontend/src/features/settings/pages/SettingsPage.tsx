@@ -24,7 +24,7 @@ import {
   ProfileDetailsSection,
   ThemeSection,
 } from '../components';
-import { useAccountManager, usePasswordManager } from '../hooks';
+import { useAccountActions } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
 
 
@@ -48,8 +48,7 @@ const SettingsPage: React.FC = () => {
     handlePictureDelete,
   } = useUserProfile();
   
-  const { handleChangePassword } = usePasswordManager();
-  const { handleDeleteAccount } = useAccountManager();
+  const { handleChangePassword, handleDeleteAccount } = useAccountActions();
 
   // Simplified handler functions with cleanup
   const handlePictureUploadWithCleanup = async (file: File) => {
