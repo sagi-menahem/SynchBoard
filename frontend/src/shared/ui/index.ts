@@ -4,6 +4,7 @@
 export { default as Button } from './components/forms/Button';
 export { default as Input } from './components/forms/Input';
 export { default as PasswordInput } from './components/forms/PasswordInput';
+export { default as Textarea } from './components/forms/Textarea';
 export { default as PictureManager } from './components/forms/PictureManager';
 export { default as RadioGroup } from './components/forms/RadioGroup';
 export type { RadioOption } from './components/forms/RadioGroup';

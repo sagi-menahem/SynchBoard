@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Edit, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from 'shared/ui';
+import { Button, Input, Textarea } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import logger from 'shared/utils/logger';
 
@@ -57,7 +57,7 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
             {label}
           </label>
           {inputType === 'textarea' ? (
-            <textarea
+            <Textarea
               id="edit-field"
               value={value}
               onChange={(e) => setValue(e.target.value)}

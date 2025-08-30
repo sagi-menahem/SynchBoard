@@ -4,7 +4,7 @@ import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';
 import { FileText, Monitor, Pencil, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, ColorPicker, Input, RadioGroup } from 'shared/ui';
+import { Button, ColorPicker, Input, RadioGroup, Textarea } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
@@ -113,7 +113,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
           <FileText size={14} />
           {t('board:createForm.label.description')}
         </label>
-        <textarea
+        <Textarea
           id="board-description"
           name="description"
           placeholder={t('board:createForm.placeholder.description')}
