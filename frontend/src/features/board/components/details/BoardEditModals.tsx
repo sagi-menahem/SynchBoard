@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { UseBoardMemberActionsReturn } from 'features/board/hooks/details/useBoardMemberActions';
 import type { Member } from 'features/board/types/BoardTypes';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'shared/ui';
@@ -9,8 +10,8 @@ import { EditFieldForm, InviteMemberForm } from '.';
 interface BoardEditModalsProps {
     isInviteModalOpen: boolean;
     editingField: 'name' | null;
-    boardId: number;
     boardName: string;
+    inviteForm: UseBoardMemberActionsReturn['inviteForm'];
     onCloseInvite: () => void;
     onCloseEdit: () => void;
     onInviteSuccess: (member: Member) => void;
@@ -20,8 +21,8 @@ interface BoardEditModalsProps {
 const BoardEditModals: React.FC<BoardEditModalsProps> = ({
     isInviteModalOpen,
     editingField,
-    boardId,
     boardName,
+    inviteForm,
     onCloseInvite,
     onCloseEdit,
     onInviteSuccess,
@@ -32,7 +33,7 @@ const BoardEditModals: React.FC<BoardEditModalsProps> = ({
     return (
         <>
             <Modal isOpen={isInviteModalOpen} onClose={onCloseInvite}>
-                <InviteMemberForm boardId={boardId} onInviteSuccess={onInviteSuccess} />
+                <InviteMemberForm inviteForm={inviteForm} onInviteSuccess={onInviteSuccess} />
             </Modal>
 
             <Modal isOpen={editingField === 'name'} onClose={onCloseEdit}>

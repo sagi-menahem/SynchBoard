@@ -10,33 +10,39 @@ import { APP_ROUTES } from 'shared/constants';
 import type { EditingField } from 'shared/types/CommonTypes';
 import logger from 'shared/utils/logger';
 
-import {
-  useBoardDetails,
-  useBoardEditing,
-  useBoardMemberManagement,
-  useBoardPermissions,
-} from '.';
+import { useBoardDetailsData } from './useBoardDetailsData';
+import { useBoardMemberActions } from './useBoardMemberActions';
 
 export const useBoardDetailsPage = (boardId: number) => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
-  const { boardDetails, isLoading } = useBoardDetails(boardId);
-  const { handleUpdateName, handleUpdateDescription, optimisticState } = useBoardEditing(
-    boardId,
-    boardDetails?.name,
-    boardDetails?.description ?? undefined,
-  );
 
-  const { currentUserIsAdmin, userEmail } = useBoardPermissions(boardDetails);
+  // Consolidated data and editing logic
+  const {
+    boardDetails,
+    isLoading,
+    permissions,
+    optimisticState,
+    handleUpdateName,
+    handleUpdateDescription,
+  } = useBoardDetailsData(boardId);
 
+  // Consolidated member actions logic
+  const {
+    handlePromoteMember,
+    handleRemoveMember,
+    handleRightClick,
+    contextMenu,
+    inviteForm,
+  } = useBoardMemberActions(boardId, permissions.currentUserIsAdmin);
+
+  // Local UI state
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [editingField, setEditingField] = useState<EditingField | null>(null);
   const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const { contextMenu, handlePromote: memberPromote, handleRemove: memberRemove, handleRightClick } =
-    useBoardMemberManagement(boardId, currentUserIsAdmin);
-
+  // Member action handlers with context menu integration
   const handleInviteSuccess = useCallback(
     (_newMember: Member) => {
       setInviteModalOpen(false);
@@ -45,25 +51,32 @@ export const useBoardDetailsPage = (boardId: number) => {
   );
 
   const handlePromote = useCallback(async () => {
-    if (!contextMenu.data) {return;}
+    if (!contextMenu.data) {
+      return;
+    }
     try {
-      await memberPromote(contextMenu.data);
+      await handlePromoteMember(contextMenu.data);
     } finally {
       contextMenu.closeMenu();
     }
-  }, [contextMenu, memberPromote]);
+  }, [contextMenu, handlePromoteMember]);
 
   const handleRemove = useCallback(async () => {
-    if (!contextMenu.data) {return;}
+    if (!contextMenu.data) {
+      return;
+    }
     try {
-      await memberRemove(contextMenu.data);
+      await handleRemoveMember(contextMenu.data);
     } finally {
       contextMenu.closeMenu();
     }
-  }, [contextMenu, memberRemove]);
+  }, [contextMenu, handleRemoveMember]);
 
+  // Board management handlers
   const handleLeaveBoard = useCallback(async () => {
-    if (!boardDetails) {return;}
+    if (!boardDetails) {
+      return;
+    }
     try {
       await boardService.leaveBoard(boardId);
       toast.success(t('board:success.leave', { boardName: boardDetails.name }));
@@ -84,8 +97,6 @@ export const useBoardDetailsPage = (boardId: number) => {
       } catch (error) {
         logger.error('Picture upload error:', error);
         throw error;
-      } finally {
-        // Intentionally empty - cleanup handled by caller
       }
     },
     [boardId, t],
@@ -121,12 +132,30 @@ export const useBoardDetailsPage = (boardId: number) => {
   );
 
   return {
+    // Board data state
     isLoading,
     boardDetails,
     optimisticBoardState: optimisticState,
-    userEmail,
-    currentUserIsAdmin,
+    
+    // User permissions
+    userEmail: permissions.userEmail,
+    currentUserIsAdmin: permissions.currentUserIsAdmin,
+    
+    // Member actions
     contextMenu,
+    handlePromote,
+    handleRemove,
+    handleRightClick,
+    
+    // Invite form
+    inviteForm,
+    handleInviteSuccess,
+    
+    // Board editing
+    handleUpdateName,
+    handleUpdateDescription,
+    
+    // UI state
     isInviteModalOpen,
     setInviteModalOpen,
     editingField,
@@ -135,12 +164,8 @@ export const useBoardDetailsPage = (boardId: number) => {
     setLeaveConfirmOpen,
     isDeleteConfirmOpen,
     setDeleteConfirmOpen,
-    handleInviteSuccess,
-    handlePromote,
-    handleRemove,
-    handleUpdateName,
-    handleUpdateDescription,
-    handleRightClick,
+    
+    // Board management
     handleLeaveBoard,
     handlePictureUpload,
     promptPictureDelete,

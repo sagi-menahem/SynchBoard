@@ -160,7 +160,7 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
 
   const updateCanvasPreferences = useCallback(
     async (newPrefs: Partial<CanvasPreferences>) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const oldPrefs = state.preferences;
       dispatch({ type: 'UPDATE_PREFERENCES', payload: newPrefs });

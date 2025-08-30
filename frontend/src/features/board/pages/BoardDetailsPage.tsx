@@ -30,6 +30,7 @@ const BoardDetailsPage: React.FC = () => {
     boardDetails,
     currentUserIsAdmin,
     contextMenu,
+    inviteForm,
     isInviteModalOpen,
     setInviteModalOpen,
     editingField,
@@ -69,7 +70,7 @@ const BoardDetailsPage: React.FC = () => {
         icon: UserPlus,
         label: t('board:detailsPage.inviteButton'),
         onClick: () => setInviteModalOpen(true),
-        variant: 'navigation',
+        variant: 'navigation' as const,
       }] : []),
     ],
     rightSection: [
@@ -78,14 +79,14 @@ const BoardDetailsPage: React.FC = () => {
         icon: LogOut,
         label: t('board:leaveBoard.button'),
         onClick: () => setLeaveConfirmOpen(true),
-        variant: 'destructive',
+        variant: 'destructive' as const,
       },
       {
         type: 'button',
         icon: ArrowRight,
         label: t('board:detailsPage.boardButton'),
         onClick: () => navigate(`/board/${numericBoardId}`),
-        variant: 'navigation',
+        variant: 'navigation' as const,
         className: 'iconOnlyButton',
       },
     ],
@@ -160,8 +161,8 @@ const BoardDetailsPage: React.FC = () => {
       <BoardEditModals
         isInviteModalOpen={isInviteModalOpen}
         editingField={editingField}
-        boardId={numericBoardId}
         boardName={boardDetails.name}
+        inviteForm={inviteForm}
         onCloseInvite={() => setInviteModalOpen(false)}
         onCloseEdit={() => setEditingField(null)}
         onInviteSuccess={handleInviteSuccess}

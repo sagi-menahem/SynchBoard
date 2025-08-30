@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
+import logger from 'shared/utils/logger';
 
 
 import ChatInput from './ChatInput';

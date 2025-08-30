@@ -18,7 +18,7 @@ export const useMemberValidation = () => {
 
   const validateMemberEmail = useCallback(async (
     email: string,
-    existingEmails: string[] = []
+    existingEmails: string[] = [],
   ): Promise<MemberValidationResult> => {
     const trimmedEmail = email.trim().toLowerCase();
     
@@ -63,12 +63,12 @@ export const useMemberValidation = () => {
 
   const validateEmailFormat = useCallback((email: string): boolean => {
     const trimmedEmail = email.trim();
-    if (!trimmedEmail) return false;
+    if (!trimmedEmail) {return false;}
     return validateEmail(trimmedEmail);
   }, []);
 
   const checkIfSelfInvite = useCallback((email: string): boolean => {
-    if (!userEmail) return false;
+    if (!userEmail) {return false;}
     return email.trim().toLowerCase() === userEmail.toLowerCase();
   }, [userEmail]);
 

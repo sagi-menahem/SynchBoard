@@ -30,9 +30,9 @@ function AppRoutes() {
   const location = useLocation();
   
   useEffect(() => {
-    if (import.meta.env.DEV) {
-      console.info('Route changed to:', location.pathname);
-    }
+    // if (import.meta.env.DEV) {
+    //   console.info('Route changed to:', location.pathname);
+    // }
   }, [location]);
 
   return (

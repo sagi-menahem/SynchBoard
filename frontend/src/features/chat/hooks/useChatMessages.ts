@@ -29,7 +29,7 @@ export const useChatMessages = () => {
     content: string,
     instanceId: string,
     userEmail: string | null,
-    userInfo: UserInfo
+    userInfo: UserInfo,
   ): ChatMessageResponse & { transactionId: string } => {
     return {
       id: -1,
@@ -48,7 +48,7 @@ export const useChatMessages = () => {
     content: string,
     boardId: number,
     userEmail: string | null,
-    userInfo: UserInfo
+    userInfo: UserInfo,
   ): { payload: ChatMessagePayload; instanceId: string } => {
     const instanceId = crypto.randomUUID();
     const payload: ChatMessagePayload = {
@@ -84,7 +84,7 @@ export const useChatMessages = () => {
     boardId: number,
     userEmail: string | null,
     userInfo: UserInfo,
-    addOptimisticMessage: (message: ChatMessageResponse & { transactionId: string }) => void
+    addOptimisticMessage: (message: ChatMessageResponse & { transactionId: string }) => void,
   ): Promise<string> => {
     // Validate message content
     const validation = validateMessage(content);

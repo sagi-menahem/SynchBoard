@@ -5,7 +5,7 @@ import type { ActionPayload, SendBoardActionRequest } from 'features/board/types
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import type { Tool } from 'shared/types/CommonTypes';
 
-import { useCanvasEvents } from './useCanvasEvents';
+import { useCanvasEvents, type CanvasEventData } from './useCanvasEvents';
 import { useCanvasPreview } from './useCanvasPreview';
 import { useCanvasState } from './useCanvasState';
 import { useDrawingTools } from './useDrawingTools';
@@ -92,17 +92,17 @@ export const useCanvas = ({
   });
 
   // Compose the event handlers
-  const handleMouseDown = useCallback((eventData: any) => {
+  const handleMouseDown = useCallback((eventData: CanvasEventData) => {
     handlePreviewStart(eventData);
     handleToolMouseDown(eventData);
   }, [handlePreviewStart, handleToolMouseDown]);
 
-  const handleMouseMove = useCallback((eventData: any) => {
+  const handleMouseMove = useCallback((eventData: CanvasEventData) => {
     handlePreviewMove(eventData);
     handleToolMouseMove(eventData);
   }, [handlePreviewMove, handleToolMouseMove]);
 
-  const handleMouseUp = useCallback((eventData: any) => {
+  const handleMouseUp = useCallback((eventData: CanvasEventData) => {
     handlePreviewEnd();
     handleToolMouseUp(eventData);
   }, [handlePreviewEnd, handleToolMouseUp]);

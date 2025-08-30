@@ -29,7 +29,7 @@ export { useDrawingTools } from './hooks/workspace/canvas/useDrawingTools';
 export { useCanvasPreview } from './hooks/workspace/canvas/useCanvasPreview';
 
 // Hooks - Details & Management
-export { useBoardDetails } from './hooks/details/useBoardDetails';
+export { useBoardDetailsData, useBoardMemberActions, useBoardDetailsPage } from './hooks/details';
 export { useBoardList } from './hooks/management/useBoardList';
 export { useCreateBoardForm } from './hooks/management/useCreateBoardForm';
 export { useBoardContext } from './hooks/context/useBoardContext';

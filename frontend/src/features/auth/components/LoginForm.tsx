@@ -4,8 +4,8 @@ import { Lock, LogIn, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput } from 'shared/ui';
 
-import { useAuth } from '../hooks/useAuth';
 import { useLoginForm } from '../hooks/forms';
+import { useAuth } from '../hooks/useAuth';
 
 import GoogleLoginButton from './GoogleLoginButton';
 import styles from './LoginForm.module.scss';

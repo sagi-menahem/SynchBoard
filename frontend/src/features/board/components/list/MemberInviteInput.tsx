@@ -24,7 +24,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
   const addEmail = async (email: string) => {
     const trimmedEmail = email.trim().toLowerCase();
     
-    if (!trimmedEmail) return;
+    if (!trimmedEmail) {return;}
 
     const validation = await validateMemberEmail(trimmedEmail, inviteEmails);
     if (!validation.isValid) {

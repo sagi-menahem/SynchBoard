@@ -1,6 +1,4 @@
-export { useBoardDetails } from './useBoardDetails';
+// Consolidated hooks
+export { useBoardDetailsData } from './useBoardDetailsData';
+export { useBoardMemberActions } from './useBoardMemberActions';
 export { useBoardDetailsPage } from './useBoardDetailsPage';
-export { useBoardEditing } from './useBoardEditing';
-export { useBoardMemberManagement } from './useBoardMemberManagement';
-export { useBoardPermissions } from './useBoardPermissions';
-export { useInviteMemberForm } from './useInviteMemberForm';

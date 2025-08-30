@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
+import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { PencilLine, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, PictureManager } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.scss';
-import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 
 interface BoardDetailsHeaderProps {
     boardDetails: BoardDetails;
