@@ -114,6 +114,9 @@
     border-color: transparent;
     font-weight: theme.$font-weight-semibold;
     box-shadow: theme.$shadow-button;
+    min-height: theme.$spacing-8; // 32px - smaller for toolbar use
+    padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - more compact
+    font-size: theme.$font-size-xs; // 12px - smaller text
 
     &:hover:not(:disabled) {
         background-color: var(--btn-cta-bg-hover);
@@ -135,6 +138,9 @@
     border-color: transparent;
     font-weight: theme.$font-weight-semibold;
     box-shadow: theme.$shadow-button;
+    min-height: theme.$spacing-8; // 32px - smaller for toolbar use
+    padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - more compact
+    font-size: theme.$font-size-xs; // 12px - smaller text
 
     &:hover:not(:disabled) {
         background-color: var(--btn-warning-bg-hover);
