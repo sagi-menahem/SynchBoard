@@ -12,12 +12,6 @@
     box-sizing: border-box;
 }
 
-.loading {
-    @include theme.flex-center;
-    padding: 3rem;
-    color: theme.$text-secondary;
-    font-size: 16px;
-}
 
 .boardWorkspaceArea {
     flex: 1;

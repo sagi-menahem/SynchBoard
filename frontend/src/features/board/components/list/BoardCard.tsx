@@ -9,7 +9,7 @@ import { Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL, APP_ROUTES } from 'shared/constants';
-import { RelativeTimestamp } from 'shared/ui';
+import { Card, RelativeTimestamp } from 'shared/ui';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './BoardCard.module.scss';
@@ -31,8 +31,13 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
   return (
     <Link 
       to={APP_ROUTES.getBoardDetailRoute(board.id)} 
-      className={`${styles.boardCard} ${styles[viewMode]}`}
+      className={styles.cardLink}
     >
+      <Card 
+        variant="elevated" 
+        hoverable={true}
+        className={`${styles.boardCard} ${styles[viewMode]}`}
+      >
       <img src={imageSource} alt={board.name} className={styles.boardCardImage} />
       <div className={styles.boardCardContent}>
         <div className={styles.cardHeader}>
@@ -71,6 +76,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
           </div>
         </div>
       </div>
+      </Card>
     </Link>
   );
 };

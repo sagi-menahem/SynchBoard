@@ -15,12 +15,6 @@
     text-align: left;
 }
 
-.loading {
-    @include theme.flex-center;
-    padding: 3rem;
-    color: theme.$text-secondary;
-    font-size: 16px;
-}
 
 .notFound {
     @include theme.flex-center;

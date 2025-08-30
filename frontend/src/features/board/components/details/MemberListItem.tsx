@@ -5,6 +5,7 @@ import type { Member } from 'features/board/types/BoardTypes';
 import { Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
+import { Card } from 'shared/ui';
 
 import styles from './MemberListItem.module.scss';
 
@@ -21,7 +22,11 @@ const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onCo
 
   return (
     <div onContextMenu={(e) => onContextMenu(e, member)}>
-      <li className={styles.memberItem}>
+      <Card 
+        variant="default" 
+        padding="sm"
+        className={styles.memberItem}
+      >
         <img src={imageSource} alt={t('common:accessibility.memberAvatar', { email: member.email })} className={styles.memberAvatar} />
         <div>
           <div className={styles.memberName}>
@@ -33,7 +38,7 @@ const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onCo
             <Crown size={20} />
           </div>
         )}
-      </li>
+      </Card>
     </div>
   );
 });

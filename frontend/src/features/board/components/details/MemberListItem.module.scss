@@ -1,11 +1,8 @@
 @use '@/styles' as theme;
 
 .memberItem {
-    @include theme.card-base;
     background-color: theme.$background-secondary;
     border: 1px solid theme.$border-primary;
-    @include theme.rounded-medium;
-    padding: 1rem;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;

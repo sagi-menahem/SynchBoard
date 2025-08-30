@@ -14,12 +14,6 @@
     box-sizing: border-box;
 }
 
-.loading {
-    @include theme.flex-center;
-    padding: 2rem;
-    color: theme.$text-secondary;
-    font-size: 16px;
-}
 
 .emptyState {
     @include theme.flex-center;
@@ -36,21 +30,9 @@
 }
 
 .emptyStateCard {
-    @include theme.card-base;
-    background: theme.$card-empty-bg;
-    border: 1px solid theme.$card-empty-border;
-    @include theme.rounded-large;
     padding: 3rem 2.5rem;
     max-width: 420px;
     position: relative;
-    @include theme.smooth-transition;
-}
-
-.emptyStateCard:hover {
-    @include theme.card-hover-effect;
-    background: theme.$card-empty-hover-bg;
-    border-color: theme.$card-empty-hover-border;
-    transform: translateY(-2px);
 }
 
 .emptyStateIcon {

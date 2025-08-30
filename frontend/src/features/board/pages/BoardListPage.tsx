@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import {
+  Card,
   ConfirmationDialog,
   ContextMenu,
   ContextMenuItem,
@@ -130,7 +131,11 @@ const BoardListPage: React.FC = () => {
           
           return (
             <div className={styles.emptyState}>
-              <div className={styles.emptyStateCard}>
+              <Card 
+                variant="empty-state" 
+                hoverable={true}
+                className={styles.emptyStateCard}
+              >
                 <div className={styles.emptyStateIcon}>
                   <LayoutDashboard size={48} />
                 </div>
@@ -142,7 +147,7 @@ const BoardListPage: React.FC = () => {
                     {t('board:listPage.emptyStateMessage')}
                   </p>
                 </div>
-              </div>
+              </Card>
             </div>
           );
         })()}
