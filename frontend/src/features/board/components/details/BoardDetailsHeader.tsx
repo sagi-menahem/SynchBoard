@@ -6,7 +6,7 @@ import type { BoardDetails } from 'features/board/types/BoardTypes';
 import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { PencilLine, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, PictureManager } from 'shared/ui';
+import { Button, PictureManager, Textarea } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.scss';
 
@@ -82,7 +82,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                 {isEditingDescription ? (
                     <div className={styles.editForm}>
                         <div className={settingsStyles.field}>
-                            <textarea
+                            <Textarea
                                 value={descriptionValue}
                                 onChange={(e) => setDescriptionValue(e.target.value)}
                                 placeholder={t('board:detailsPage.descriptionPlaceholder')}

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
+import { Textarea } from 'shared/ui';
 
 
 import styles from './CanvasToolSection.module.scss';
@@ -66,7 +67,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         fontSize: `${fontSize}px`,
       }}
     >
-      <textarea
+      <Textarea
         ref={textareaRef}
         value={text}
         onChange={(e) => setText(e.target.value)}
