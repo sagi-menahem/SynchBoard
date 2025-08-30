@@ -1,16 +1,14 @@
-import React, { startTransition, useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
+import { useChatMessages } from 'features/chat/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { usePreferences } from 'features/settings/UserPreferencesProvider';
-import WebSocketService from 'features/websocket/services/websocketService';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
-import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
-import logger from 'shared/utils/logger';
 
 
 import ChatInput from './ChatInput';
@@ -38,6 +36,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     messages,
     (state, newMessage: ChatMessageResponse) => [...state, newMessage],
   );
+
+  const { sendMessage } = useChatMessages();
 
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
@@ -84,52 +84,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   }), [userEmail]);
 
   const sendChatMessage = useCallback(async (content: string) => {
-    const trimmedContent = content.trim();
-    
-    if (!trimmedContent) {
-      throw new Error(t('chat:emptyMessage'));
-    }
-
-    if (trimmedContent.length > 5000) {
-      throw new Error(t('chat:messageTooLong'));
-    }
-
-    const instanceId = crypto.randomUUID();
-    const payload = {
-      type: 'CHAT',
-      content: trimmedContent,
-      timestamp: Date.now(),
-      instanceId,
-      boardId: boardId,
-      senderEmail: userEmail,
-      senderFullName: stableUserInfo.userFullName,
-      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl ?? null,
-    };
-
-    const optimisticMessage: ChatMessageResponse & { transactionId: string } = {
-      id: -1,
-      type: 'CHAT',
-      content: trimmedContent,
-      timestamp: new Date().toISOString(),
-      senderEmail: userEmail ?? '',
-      senderFullName: stableUserInfo.userFullName,
-      senderProfilePictureUrl: stableUserInfo.userProfilePictureUrl ?? null,
-      instanceId,
-      transactionId: instanceId,
-    };
-    
-    startTransition(() => {
-      addOptimisticMessage(optimisticMessage);
-    });
-
-    try {
-      WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
-      return instanceId;
-    } catch (error) {
-      logger.error('Failed to send chat message:', error);
-      throw error;
-    }
-  }, [userEmail, stableUserInfo, boardId, addOptimisticMessage, t]);
+    return await sendMessage(content, boardId, userEmail, stableUserInfo, addOptimisticMessage);
+  }, [sendMessage, boardId, userEmail, stableUserInfo, addOptimisticMessage]);
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return optimisticMessages.map((msg): EnhancedChatMessage => {

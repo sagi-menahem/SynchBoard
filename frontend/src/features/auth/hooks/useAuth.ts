@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import logger from 'shared/utils/logger';
 
 import { AuthContext } from '../AuthContext';
+import * as authService from '../services/authService';
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -17,5 +18,8 @@ export const useAuth = () => {
   }
 
 
-  return context;
+  return {
+    ...context,
+    redirectToGoogle: authService.redirectToGoogle,
+  };
 };
