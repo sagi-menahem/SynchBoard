@@ -187,11 +187,30 @@
 
 .modalContainer {
     @include theme.flex-column;
+    
+    // Base form modal styling (default)
     gap: 1.5rem;
+    
+    // Form variant - explicit form modal styling
+    &.form {
+        gap: 1.5rem;
+        max-width: 400px;
+    }
+    
+    // Confirmation variant - compact styling for confirmation dialogs
+    &.confirmation {
+        gap: 1rem;
+        max-width: 350px;
+    }
 }
 
 .modalHeader {
     margin-bottom: 0.5rem;
+}
+
+.warningIcon {
+    color: theme.$error;
+    flex-shrink: 0;
 }
 
 .modalTitle {
@@ -207,6 +226,14 @@
     color: theme.$text-secondary;
     line-height: 1.5;
     margin: 0;
+    font-size: 0.875rem;
+}
+
+.modalMessage {
+    color: theme.$text-secondary;
+    line-height: 1.5;
+    margin: 0;
+    white-space: pre-wrap;
     font-size: 0.875rem;
 }
 

@@ -2,10 +2,9 @@ import React from 'react';
 
 import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 import Button from '../forms/Button';
-
-import styles from './ConfirmationDialog.module.scss';
 import Modal from './Modal';
 
 interface ConfirmationDialogProps {
@@ -26,12 +25,12 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.container}>
-        <div className={styles.header}>
+      <div className={`${styles.modalContainer} ${styles.confirmation}`}>
+        <div className={styles.modalHeader}>
           <AlertTriangle size={20} className={styles.warningIcon} />
-          <h3 className={styles.title}>{title}</h3>
+          <h3 className={styles.modalTitle}>{title}</h3>
         </div>
-        <p className={styles.message}>{message}</p>
+        <p className={styles.modalMessage}>{message}</p>
         <div className={styles.buttonGroup}>
           <Button variant="secondary" onClick={onClose}>
             {t('common:button.cancel')}
