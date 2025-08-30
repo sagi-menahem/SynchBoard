@@ -13,17 +13,17 @@
 // PRIMARY BUTTON - Vibrant blue for main actions (Login, Save, Create, etc.)
 .primary {
     background-color: theme.$primary;
-    color: #ffffff;
+    color: theme.$primary-light;
     border-color: theme.$primary;
     font-weight: 600;
-    
+
     &:hover:not(:disabled) {
         background-color: theme.$primary-hover;
         border-color: theme.$primary-hover;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px theme.$primary-light;
     }
-    
+
     &:active:not(:disabled) {
         transform: translateY(0);
         box-shadow: 0 2px 8px theme.$primary-light;
@@ -37,7 +37,7 @@
     color: var(--destructive-button-text);
     font-weight: 500;
     box-shadow: var(--destructive-button-shadow);
-    
+
     &:hover:not(:disabled) {
         background: var(--destructive-button-hover-background);
         border-color: var(--destructive-button-hover-border);
@@ -45,7 +45,7 @@
         transform: translateY(-0.5px);
         box-shadow: var(--destructive-button-hover-shadow);
     }
-    
+
     &:active:not(:disabled) {
         transform: translateY(0);
         box-shadow: var(--destructive-button-shadow);
@@ -57,14 +57,14 @@
     background-color: theme.$surface;
     color: theme.$text-primary;
     border-color: theme.$border-strong;
-    
+
     &:hover:not(:disabled) {
         background-color: theme.$surface-hover;
         border-color: theme.$border-strong;
         transform: translateY(-1px);
         box-shadow: 0 2px 8px theme.$overlay-light;
     }
-    
+
     &:active:not(:disabled) {
         transform: translateY(0);
         box-shadow: 0 1px 4px theme.$overlay-light;

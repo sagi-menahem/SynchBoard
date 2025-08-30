@@ -21,32 +21,32 @@ body[data-theme='light'] {
     --border-color: #555;
 
     /* Dual-Theme Color System - Light Theme */
-    /* Primary Colors */
-    --color-primary: #0066cc;
-    --color-primary-hover: #0052a3;
-    --color-primary-light: #cce7ff;
-    
+    /* Primary Colors - Elegant Monochrome */
+    --color-primary: #1a1a1a;
+    --color-primary-hover: #000000;
+    --color-primary-light: #f5f5f5;
+
     /* Secondary Colors */
     --color-secondary: #64748b;
     --color-secondary-hover: #475569;
-    
+
     /* Surface Colors */
     --color-background: #ffffff;
     --color-surface: #f8fafc;
     --color-surface-elevated: #ffffff;
     --color-surface-hover: #f1f5f9;
-    
+
     /* Border Colors */
     --color-border: #e2e8f0;
     --color-border-strong: #cbd5e1;
     --color-border-light: #f1f5f9;
-    
+
     /* Text Colors */
     --color-text-primary: #0f172a;
     --color-text-secondary: #475569;
     --color-text-muted: #64748b;
     --color-text-disabled: #94a3b8;
-    
+
     /* Feedback Colors */
     --color-success: #059669;
     --color-success-light: #d1fae5;
@@ -54,55 +54,55 @@ body[data-theme='light'] {
     --color-warning-light: #fef3c7;
     --color-error: #e11d48;
     --color-error-light: #fdf2f8;
-    
+
     /* Overlay Colors */
     --color-overlay-light: rgba(0, 0, 0, 0.05);
     --color-overlay-medium: rgba(0, 0, 0, 0.25);
     --color-overlay-strong: rgba(0, 0, 0, 0.75);
-    
+
     /* Canvas Colors */
     --color-canvas-background: #f9fafb;
     --color-canvas-pattern: rgba(0, 0, 0, 0.03);
 
     /* Elegant Toolbar System - Light Theme */
-    --toolbar-background: linear-gradient(135deg, 
-        rgba(248, 250, 252, 0.95) 0%, 
-        rgba(241, 245, 249, 0.98) 100%);
+    --toolbar-background: linear-gradient(135deg,
+            rgba(248, 250, 252, 0.95) 0%,
+            rgba(241, 245, 249, 0.98) 100%);
     --toolbar-border: rgba(226, 232, 240, 0.6);
-    --toolbar-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 
-                      0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+    --toolbar-shadow: 0 1px 3px rgba(15, 23, 42, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset;
 
     /* Elegant Navigation Buttons - Light Theme */
-    --nav-button-background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.8) 0%, 
-        rgba(248, 250, 252, 0.9) 100%);
+    --nav-button-background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(248, 250, 252, 0.9) 100%);
     --nav-button-border: rgba(226, 232, 240, 0.6);
     --nav-button-text: #475569;
     --nav-button-shadow: 0 1px 2px rgba(15, 23, 42, 0.05),
-                         0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-    --nav-button-hover-background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.95) 0%, 
-        rgba(241, 245, 249, 1) 100%);
-    --nav-button-hover-border: #3b82f6;
-    --nav-button-hover-text: #1e40af;
-    --nav-button-hover-shadow: 0 4px 12px rgba(59, 130, 246, 0.15),
-                               0 0 0 1px rgba(255, 255, 255, 1) inset;
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    --nav-button-hover-background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.95) 0%,
+            rgba(241, 245, 249, 1) 100%);
+    --nav-button-hover-border: #1a1a1a;
+    --nav-button-hover-text: #000000;
+    --nav-button-hover-shadow: 0 4px 12px rgba(26, 26, 26, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 1) inset;
 
     /* Elegant Destructive Buttons - Light Theme */
-    --destructive-button-background: linear-gradient(135deg, 
-        rgba(254, 242, 242, 0.9) 0%, 
-        rgba(255, 237, 237, 0.95) 100%);
+    --destructive-button-background: linear-gradient(135deg,
+            rgba(254, 242, 242, 0.9) 0%,
+            rgba(255, 237, 237, 0.95) 100%);
     --destructive-button-border: rgba(252, 165, 165, 0.4);
     --destructive-button-text: #dc2626;
     --destructive-button-shadow: 0 1px 2px rgba(239, 68, 68, 0.08),
-                                 0 0 0 1px rgba(254, 226, 226, 0.8) inset;
-    --destructive-button-hover-background: linear-gradient(135deg, 
-        rgba(254, 226, 226, 0.95) 0%, 
-        rgba(252, 165, 165, 0.2) 100%);
+        0 0 0 1px rgba(254, 226, 226, 0.8) inset;
+    --destructive-button-hover-background: linear-gradient(135deg,
+            rgba(254, 226, 226, 0.95) 0%,
+            rgba(252, 165, 165, 0.2) 100%);
     --destructive-button-hover-border: #f87171;
     --destructive-button-hover-text: #b91c1c;
     --destructive-button-hover-shadow: 0 4px 12px rgba(239, 68, 68, 0.15),
-                                       0 0 0 1px rgba(254, 202, 202, 1) inset;
+        0 0 0 1px rgba(254, 202, 202, 1) inset;
 
     /* Light theme defaults */
     color: var(--color-text-primary);
@@ -117,32 +117,32 @@ body[data-theme='dark'] {
     --border-color: #555;
 
     /* Dual-Theme Color System - Dark Theme */
-    /* Primary Colors */
-    --color-primary: #3b82f6;
-    --color-primary-hover: #2563eb;
-    --color-primary-light: #1e3a8a;
-    
+    /* Primary Colors - Elegant Monochrome */
+    --color-primary: #f8f8f8;
+    --color-primary-hover: #ffffff;
+    --color-primary-light: #2a2a2a;
+
     /* Secondary Colors */
     --color-secondary: #6b7280;
     --color-secondary-hover: #9ca3af;
-    
+
     /* Surface Colors */
     --color-background: #0f0f0f;
     --color-surface: #1a1a1a;
     --color-surface-elevated: #262626;
     --color-surface-hover: #2d2d2d;
-    
+
     /* Border Colors */
     --color-border: #404040;
     --color-border-strong: #525252;
     --color-border-light: #2a2a2a;
-    
+
     /* Text Colors */
     --color-text-primary: #f1f5f9;
     --color-text-secondary: #cbd5e1;
     --color-text-muted: #9ca3af;
     --color-text-disabled: #6b7280;
-    
+
     /* Feedback Colors */
     --color-success: #10b981;
     --color-success-light: #064e3b;
@@ -150,55 +150,55 @@ body[data-theme='dark'] {
     --color-warning-light: #78350f;
     --color-error: #f43f5e;
     --color-error-light: #881337;
-    
+
     /* Overlay Colors */
     --color-overlay-light: rgba(255, 255, 255, 0.05);
     --color-overlay-medium: rgba(255, 255, 255, 0.15);
     --color-overlay-strong: rgba(0, 0, 0, 0.75);
-    
+
     /* Canvas Colors */
     --color-canvas-background: #1a1a1a;
     --color-canvas-pattern: rgba(255, 255, 255, 0.02);
 
     /* Elegant Toolbar System - Dark Theme */
-    --toolbar-background: linear-gradient(135deg, 
-        rgba(24, 24, 27, 0.95) 0%, 
-        rgba(39, 39, 42, 0.98) 100%);
+    --toolbar-background: linear-gradient(135deg,
+            rgba(24, 24, 27, 0.95) 0%,
+            rgba(39, 39, 42, 0.98) 100%);
     --toolbar-border: rgba(63, 63, 70, 0.4);
-    --toolbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 
-                      0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    --toolbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 
     /* Elegant Navigation Buttons - Dark Theme */
-    --nav-button-background: linear-gradient(135deg, 
-        rgba(39, 39, 42, 0.8) 0%, 
-        rgba(52, 52, 55, 0.9) 100%);
+    --nav-button-background: linear-gradient(135deg,
+            rgba(39, 39, 42, 0.8) 0%,
+            rgba(52, 52, 55, 0.9) 100%);
     --nav-button-border: rgba(82, 82, 91, 0.4);
     --nav-button-text: #cbd5e1;
     --nav-button-shadow: 0 1px 2px rgba(0, 0, 0, 0.2),
-                         0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-    --nav-button-hover-background: linear-gradient(135deg, 
-        rgba(52, 52, 55, 0.95) 0%, 
-        rgba(63, 63, 70, 1) 100%);
-    --nav-button-hover-border: #60a5fa;
-    --nav-button-hover-text: #93c5fd;
-    --nav-button-hover-shadow: 0 4px 12px rgba(96, 165, 250, 0.2),
-                               0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    --nav-button-hover-background: linear-gradient(135deg,
+            rgba(52, 52, 55, 0.95) 0%,
+            rgba(63, 63, 70, 1) 100%);
+    --nav-button-hover-border: #f8f8f8;
+    --nav-button-hover-text: #ffffff;
+    --nav-button-hover-shadow: 0 4px 12px rgba(248, 248, 248, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 
     /* Elegant Destructive Buttons - Dark Theme */
-    --destructive-button-background: linear-gradient(135deg, 
-        rgba(69, 26, 26, 0.6) 0%, 
-        rgba(87, 13, 13, 0.7) 100%);
+    --destructive-button-background: linear-gradient(135deg,
+            rgba(69, 26, 26, 0.6) 0%,
+            rgba(87, 13, 13, 0.7) 100%);
     --destructive-button-border: rgba(153, 27, 27, 0.4);
     --destructive-button-text: #fca5a5;
     --destructive-button-shadow: 0 1px 2px rgba(185, 28, 28, 0.2),
-                                 0 0 0 1px rgba(254, 226, 226, 0.06) inset;
-    --destructive-button-hover-background: linear-gradient(135deg, 
-        rgba(87, 13, 13, 0.8) 0%, 
-        rgba(127, 29, 29, 0.9) 100%);
+        0 0 0 1px rgba(254, 226, 226, 0.06) inset;
+    --destructive-button-hover-background: linear-gradient(135deg,
+            rgba(87, 13, 13, 0.8) 0%,
+            rgba(127, 29, 29, 0.9) 100%);
     --destructive-button-hover-border: #f87171;
     --destructive-button-hover-text: #fecaca;
     --destructive-button-hover-shadow: 0 4px 12px rgba(239, 68, 68, 0.25),
-                                       0 0 0 1px rgba(254, 226, 226, 0.1) inset;
+        0 0 0 1px rgba(254, 226, 226, 0.1) inset;
 
     /* Dark theme defaults */
     color: rgba(255, 255, 255, 0.87);
