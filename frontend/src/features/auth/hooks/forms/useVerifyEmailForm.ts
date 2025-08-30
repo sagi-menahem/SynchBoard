@@ -1,25 +1,23 @@
 import type { VerifyEmailRequest } from 'features/settings/types/UserTypes';
 import { useTranslation } from 'react-i18next';
-import { useFormWithToast } from 'shared/hooks/useFormWithToast';
 import logger from 'shared/utils/logger';
 import { toastPromise } from 'shared/utils/toastUtils';
 
 import * as authService from '../../services/authService';
 
+import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
+
 export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token: string) => void) => {
   const { t } = useTranslation(['auth', 'common']);
 
-  return useFormWithToast<VerifyEmailRequest, { token: string }>({
+  return useAuthForm<VerifyEmailRequest, { token: string }>({
+    formType: 'verifyEmail',
     validateFormData: (formData: FormData) => {
-      const verificationCode = formData.get('verificationCode') as string;
+      const verificationCode = extractFormData.verificationCode(formData);
 
-      if (verificationCode === null || verificationCode === '' || verificationCode.length !== 6) {
-        return { error: t('auth:verifyEmail.validation.codeRequired') };
-      }
-
-      if (!/^\d{6}$/.test(verificationCode)) {
-        return { error: t('auth:verifyEmail.validation.codeFormat') };
-      }
+      // Validate verification code
+      const codeError = authValidation.validateVerificationCode(verificationCode, t);
+      if (codeError) { return codeError; }
 
       return {
         email,
@@ -27,11 +25,6 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
       };
     },
     serviceCall: authService.verifyEmail,
-    toastMessages: {
-      loading: t('auth:loading.verifyEmail'),
-      success: t('auth:success.verifyEmail'),
-      error: t('auth:errors.verifyEmail'),
-    },
     onSuccess: (response) => {
       onVerificationSuccess(response.token);
     },
