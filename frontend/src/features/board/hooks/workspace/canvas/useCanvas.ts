@@ -1,10 +1,14 @@
+import { useCallback } from 'react';
+
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import type { Tool } from 'shared/types/CommonTypes';
 
-import { useCanvasInteractions } from './useCanvasInteractions';
+import { useCanvasEvents } from './useCanvasEvents';
+import { useCanvasPreview } from './useCanvasPreview';
 import { useCanvasState } from './useCanvasState';
+import { useDrawingTools } from './useDrawingTools';
 
 interface UseCanvasProps {
   instanceId: string;
@@ -33,7 +37,7 @@ export const useCanvas = ({
     height: CANVAS_CONFIG.DEFAULT_HEIGHT,
   };
 
-  // Single consolidated hook call - no more orchestration
+  // Canvas state and utilities
   const {
     canvasRef,
     containerRef,
@@ -52,34 +56,72 @@ export const useCanvas = ({
     canvasConfig: finalCanvasConfig,
   });
 
-  // Simplified drawing state object
-  const drawingState = {
+  // State objects for the three focused hooks
+  const canvasEventsState = {
     isDrawing,
     setIsDrawing,
     startPoint,
-    currentPath,
     resetDrawingState,
   };
 
-  const { handleMouseDown } = useCanvasInteractions({
+  const drawingToolsState = {
+    currentPath,
+  };
+
+  // Initialize the three focused hooks
+  const { handlePreviewStart, handlePreviewMove, handlePreviewEnd } = useCanvasPreview({
     canvasRef,
     contextRef,
     tool,
     strokeWidth,
     strokeColor,
+    currentPath,
+  });
+
+  const { handleToolMouseDown, handleToolMouseMove, handleToolMouseUp } = useDrawingTools({
+    canvasRef,
+    tool,
+    strokeWidth,
+    strokeColor,
     onDraw,
     senderId,
-    drawingState,
-    getMouseCoordinates,
+    drawingState: drawingToolsState,
     isShapeSizeValid,
     isRadiusValid,
     onTextInputRequest,
+  });
+
+  // Compose the event handlers
+  const handleMouseDown = useCallback((eventData: any) => {
+    handlePreviewStart(eventData);
+    handleToolMouseDown(eventData);
+  }, [handlePreviewStart, handleToolMouseDown]);
+
+  const handleMouseMove = useCallback((eventData: any) => {
+    handlePreviewMove(eventData);
+    handleToolMouseMove(eventData);
+  }, [handlePreviewMove, handleToolMouseMove]);
+
+  const handleMouseUp = useCallback((eventData: any) => {
+    handlePreviewEnd();
+    handleToolMouseUp(eventData);
+  }, [handlePreviewEnd, handleToolMouseUp]);
+
+  // Canvas events hook handles the actual mouse events and calls our composed handlers
+  const { handleMouseDown: canvasMouseDown } = useCanvasEvents({
+    canvasRef,
+    contextRef,
+    drawingState: canvasEventsState,
+    getMouseCoordinates,
+    onMouseDown: handleMouseDown,
+    onMouseMove: handleMouseMove,
+    onMouseUp: handleMouseUp,
   });
 
   return {
     canvasRef,
     containerRef,
     dimensions,
-    handleMouseDown,
+    handleMouseDown: canvasMouseDown,
   };
 };

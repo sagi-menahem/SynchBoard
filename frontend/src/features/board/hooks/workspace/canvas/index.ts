@@ -1,3 +1,5 @@
 export { useCanvas } from './useCanvas';
 export { useCanvasState } from './useCanvasState';
-export { useCanvasInteractions } from './useCanvasInteractions';
+export { useCanvasEvents } from './useCanvasEvents';
+export { useDrawingTools } from './useDrawingTools';
+export { useCanvasPreview } from './useCanvasPreview';

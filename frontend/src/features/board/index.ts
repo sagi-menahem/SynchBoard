@@ -24,7 +24,9 @@ export { useBoardActions } from './hooks/workspace/useBoardActions';
 export { useBoardDataManager } from './hooks/workspace/useBoardDataManager';
 export { useCanvas } from './hooks/workspace/canvas/useCanvas';
 export { useCanvasState } from './hooks/workspace/canvas/useCanvasState';
-export { useCanvasInteractions } from './hooks/workspace/canvas/useCanvasInteractions';
+export { useCanvasEvents } from './hooks/workspace/canvas/useCanvasEvents';
+export { useDrawingTools } from './hooks/workspace/canvas/useDrawingTools';
+export { useCanvasPreview } from './hooks/workspace/canvas/useCanvasPreview';
 
 // Hooks - Details & Management
 export { useBoardDetails } from './hooks/details/useBoardDetails';
