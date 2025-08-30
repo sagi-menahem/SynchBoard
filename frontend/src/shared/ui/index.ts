@@ -12,6 +12,7 @@ export { Slider } from './components/forms/Slider';
 export { ToolDropdown } from './components/forms/ToolDropdown';
 
 // Display Components
+export { default as Card } from './components/display/Card';
 export { default as LoadingOverlay } from './components/display/LoadingOverlay';
 export { default as PageLoader } from './components/display/PageLoader';
 export { default as RelativeTimestamp } from './components/display/RelativeTimestamp';

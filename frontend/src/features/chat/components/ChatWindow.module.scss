@@ -1,9 +1,10 @@
 @use '@/styles' as theme;
 
 .container {
+  @include theme.card-base;
   @include theme.flex-column;
   height: 100%;
-  background: theme.$background-primary;
+  box-shadow: theme.$shadow-card;
   background-image:
     repeating-linear-gradient(45deg,
       transparent,
@@ -11,8 +12,6 @@
       theme.$overlay-light 10px,
       theme.$overlay-light 20px);
   color: theme.$text-primary;
-  @include theme.rounded-large;
-  @include theme.shadow-medium;
   overflow: hidden;
 }
 

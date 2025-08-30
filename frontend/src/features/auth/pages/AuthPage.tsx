@@ -8,7 +8,7 @@ import { LogIn, UserPlus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
-import { Button, PageLoader, PageTransition } from 'shared/ui';
+import { Button, Card, PageLoader, PageTransition } from 'shared/ui';
 import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
 
 import {
@@ -65,7 +65,10 @@ const AuthPage: React.FC = () => {
         {isProcessing && <PageLoader message={t('auth:signingInMessage')} />}
         
         {!isProcessing && (
-          <section className={styles.authSection}>
+          <Card 
+            variant="default"
+            className={styles.authSection}
+          >
           <div className={styles.sectionHeader}>
             <h1 className={styles.pageTitle}>
               <Users size={20} />
@@ -110,7 +113,7 @@ const AuthPage: React.FC = () => {
               </>
             )}
           </div>
-        </section>
+        </Card>
       )}
 
       <ForgotPasswordModal

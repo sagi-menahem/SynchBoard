@@ -1,18 +1,19 @@
 @use '@/styles' as theme;
 
+.cardLink {
+    text-decoration: none;
+    color: inherit;
+    @include theme.smooth-transition;
+}
+
 .boardCard {
-    @include theme.card-base;
     background-color: theme.$background-secondary;
     border: 1px solid theme.$border-primary;
-    @include theme.rounded-medium;
     padding: 1rem;
-    @include theme.smooth-transition;
-    @include theme.hover-transition;
     text-align: start;
-    color: inherit;
-    text-decoration: none;
     position: relative;
     overflow: hidden;
+    height: 100%;
 }
 
 .boardCard.grid {
@@ -28,11 +29,8 @@
     height: auto;
 }
 
-.boardCard:hover {
-    @include theme.card-hover-effect;
+.cardLink:hover .boardCard {
     background-color: theme.$background-surface;
-    transform: translateY(-2px);
-    @include theme.shadow-medium;
 }
 
 .boardCardImage {
