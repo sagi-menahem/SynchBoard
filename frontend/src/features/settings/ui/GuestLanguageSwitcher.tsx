@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useLanguageSync } from 'features/settings/hooks';
 import { useTranslation } from 'react-i18next';
-
 import Button from 'shared/ui/components/forms/Button';
 
 import styles from './GuestLanguageSwitcher.module.scss';

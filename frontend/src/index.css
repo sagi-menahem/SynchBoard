@@ -104,6 +104,31 @@ body[data-theme='light'] {
     --destructive-button-hover-shadow: 0 4px 12px rgba(239, 68, 68, 0.15),
         0 0 0 1px rgba(254, 202, 202, 1) inset;
 
+    /* --- Button Palette --- */
+    --btn-primary-bg: #2563eb;
+    --btn-primary-bg-hover: #1d4ed8;
+    --btn-primary-text: #ffffff;
+
+    --btn-secondary-bg: #ffffff;
+    --btn-secondary-bg-hover: #f1f5f9;
+    --btn-secondary-text: #334155;
+    --btn-secondary-border: #cbd5e1;
+    
+    --btn-destructive-bg: #dc2626;
+    --btn-destructive-bg-hover: #b91c1c;
+    --btn-destructive-text: #ffffff;
+
+    --btn-cta-bg: #16a34a;
+    --btn-cta-bg-hover: #15803d;
+    --btn-cta-text: #ffffff;
+
+    --btn-warning-bg: #f59e0b;
+    --btn-warning-bg-hover: #d97706;
+    --btn-warning-text: #1e293b;
+
+    --btn-icon-bg-hover: #f1f5f9;
+    --btn-icon-text: #475569;
+
     /* Light theme defaults */
     color: var(--color-text-primary);
     background-color: var(--color-background);
@@ -200,6 +225,31 @@ body[data-theme='dark'] {
     --destructive-button-hover-shadow: 0 4px 12px rgba(239, 68, 68, 0.25),
         0 0 0 1px rgba(254, 226, 226, 0.1) inset;
 
+    /* --- Button Palette --- */
+    --btn-primary-bg: #3b82f6;
+    --btn-primary-bg-hover: #2563eb;
+    --btn-primary-text: #ffffff;
+
+    --btn-secondary-bg: #334155;
+    --btn-secondary-bg-hover: #475569;
+    --btn-secondary-text: #f1f5f9;
+    --btn-secondary-border: #475569;
+    
+    --btn-destructive-bg: #ef4444;
+    --btn-destructive-bg-hover: #dc2626;
+    --btn-destructive-text: #ffffff;
+
+    --btn-cta-bg: #22c55e;
+    --btn-cta-bg-hover: #16a34a;
+    --btn-cta-text: #ffffff;
+
+    --btn-warning-bg: #facc15;
+    --btn-warning-bg-hover: #eab308;
+    --btn-warning-text: #1e293b;
+
+    --btn-icon-bg-hover: #334155;
+    --btn-icon-text: #94a3b8;
+
     /* Dark theme defaults */
     color: rgba(255, 255, 255, 0.87);
     background-color: #242424;
@@ -225,22 +275,6 @@ h1 {
     line-height: 1.1;
 }
 
-button {
-    /* border-radius: 8px; */
-    /* border: 1px solid transparent; */
-    /* padding: 0.6em 1.2em; */
-    /* font-size: 1em; */
-    /* font-weight: 500; */
-    /* font-family: inherit; */
-    /* background-color: #1a1a1a; */
-    /* cursor: pointer; */
-    /* transition: border-color 0.25s; */
-}
-
-button:hover {
-    /* border-color: #646cff; */
-}
-
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
@@ -259,9 +293,5 @@ button:focus-visible {
 
     a:hover {
         color: #747bff;
-    }
-
-    button {
-        /* background-color: #f9f9f9; */
     }
 }

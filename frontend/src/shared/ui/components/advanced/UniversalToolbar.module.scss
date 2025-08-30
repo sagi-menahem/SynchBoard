@@ -75,14 +75,7 @@
 }
 
 
-// Destructive buttons now use the global Button component styles
-// No local overrides needed - removed for consistency
-
-
-.buttonLabel {
-  font-size: 14px;
-  font-weight: 500;
-}
+// All button styling handled by the Button component - no local overrides
 
 .customItem {
   @include theme.flex-start;

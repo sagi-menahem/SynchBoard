@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-
 import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ResizableSplitPanel.module.scss';

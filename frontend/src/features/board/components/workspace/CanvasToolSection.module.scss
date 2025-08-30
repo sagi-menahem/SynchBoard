@@ -37,41 +37,6 @@
   background: linear-gradient(to bottom, transparent, theme.$tool-separator, transparent);
 }
 
-.iconButton {
-  @include theme.interactive-button;
-  background: theme.$tool-button-bg;
-  border: 1px solid theme.$tool-button-border;
-  color: theme.$tool-button-text;
-  cursor: pointer;
-  padding: theme.$spacing-2;
-  @include theme.rounded-small;
-  @include theme.flex-center;
-  @include theme.button-transition;
-  min-width: 36px; /* Custom canvas tool size */
-  min-height: 36px; /* Custom canvas tool size */
-  position: relative;
-}
-
-.iconButton:hover:not(:disabled) {
-  background: theme.$tool-button-hover-bg;
-  border-color: theme.$tool-button-hover-border;
-  color: theme.$text-primary;
-  transform: translateY(-1px);
-  @include theme.shadow-light;
-}
-
-.iconButton:disabled {
-  @include theme.button-disabled;
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.iconButton.active {
-  background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
-  color: theme.$text-primary;
-  border-color: theme.$primary-border;
-  box-shadow: 0 0 12px theme.$primary-shadow;
-}
 
 
 .colorPickerWrapper {
@@ -138,33 +103,19 @@
 }
 
 .dropdownButton {
-  @include theme.interactive-button;
-  background: theme.$tool-button-bg;
-  border: 1px solid theme.$tool-button-border;
-  color: theme.$tool-button-text;
-  cursor: pointer;
-  padding: theme.$spacing-2 theme.$spacing-3;
-  @include theme.rounded-small;
   display: flex;
   align-items: center;
   gap: theme.$spacing-1-5;
-  @include theme.button-transition;
 }
 
-.dropdownButton:hover {
-  background: theme.$tool-button-hover-bg;
-  border-color: theme.$tool-button-hover-border;
-  color: theme.$text-primary;
-  transform: translateY(-1px);
-  @include theme.shadow-light;
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  font-size: theme.$font-size-sm;
 }
 
-.dropdownButton.active {
-  background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
-  color: theme.$text-primary;
-  border-color: theme.$primary-border;
-  box-shadow: 0 0 12px theme.$primary-shadow;
-}
 
 
 .dropdownContent {
@@ -188,31 +139,6 @@
   display: none;
 }
 
-.dropdownItem {
-  @include theme.button-base;
-  background: none;
-  border: none;
-  color: theme.$text-disabled;
-  cursor: pointer;
-  padding: theme.$spacing-2 theme.$spacing-3;
-  @include theme.rounded-small;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  @include theme.smooth-transition;
-  text-align: left;
-  font-size: theme.$font-size-sm;
-}
-
-.dropdownItem:hover {
-  background-color: theme.$dropdown-item-hover;
-  color: theme.$text-primary;
-}
-
-.dropdownItem.active {
-  background-color: theme.$dropdown-item-active;
-  color: theme.$text-primary;
-}
 
 .textInputOverlay {
   position: absolute;
@@ -254,3 +180,4 @@
 .textInput::-webkit-scrollbar-thumb:hover {
   background: theme.$scrollbar-thumb-hover;
 }
+

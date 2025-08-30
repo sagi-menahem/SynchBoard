@@ -12,14 +12,14 @@
 
 // PRIMARY BUTTON - Vibrant blue for main actions (Login, Save, Create, etc.)
 .primary {
-    background-color: theme.$color-primary;
-    color: theme.$color-white;
-    border-color: theme.$color-primary;
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border-color: transparent;
     font-weight: theme.$font-weight-semibold;
 
     &:hover:not(:disabled) {
-        background-color: theme.$color-primary-hover;
-        border-color: theme.$color-primary-hover;
+        background-color: var(--btn-primary-bg-hover);
+        border-color: transparent;
         transform: translateY(theme.$transform-translate-y-xs);
         box-shadow: theme.$shadow-button-hover;
     }
@@ -32,35 +32,34 @@
 
 // DESTRUCTIVE BUTTON - Elegant refined design for dangerous actions (matches toolbar style)
 .destructive {
-    background: var(--destructive-button-background);
-    border: theme.$border-width solid var(--destructive-button-border);
-    color: var(--destructive-button-text);
+    background-color: var(--btn-destructive-bg);
+    border-color: transparent;
+    color: var(--btn-destructive-text);
     font-weight: theme.$font-weight-medium;
-    box-shadow: var(--destructive-button-shadow);
+    box-shadow: theme.$shadow-button;
 
     &:hover:not(:disabled) {
-        background: var(--destructive-button-hover-background);
-        border-color: var(--destructive-button-hover-border);
-        color: var(--destructive-button-hover-text);
-        transform: translateY(theme.$transform-translate-y-xxs);
-        box-shadow: var(--destructive-button-hover-shadow);
+        background-color: var(--btn-destructive-bg-hover);
+        border-color: transparent;
+        transform: translateY(theme.$transform-translate-y-xs);
+        box-shadow: theme.$shadow-button-hover;
     }
 
     &:active:not(:disabled) {
         transform: translateY(theme.$spacing-0);
-        box-shadow: var(--destructive-button-shadow);
+        box-shadow: theme.$shadow-button-active;
     }
 }
 
 // SECONDARY BUTTON - Subtle for supporting actions (Cancel, Change Picture, etc.)
 .secondary {
-    background-color: theme.$color-gray-50;
-    color: theme.$color-gray-800;
-    border-color: theme.$color-gray-300;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    border-color: var(--btn-secondary-border);
 
     &:hover:not(:disabled) {
-        background-color: theme.$color-gray-100;
-        border-color: theme.$color-gray-300;
+        background-color: var(--btn-secondary-bg-hover);
+        border-color: var(--btn-secondary-border);
         transform: translateY(theme.$transform-translate-y-xs);
         box-shadow: theme.$shadow-button-small;
     }
@@ -73,24 +72,79 @@
 
 // ICON BUTTON - For icon-only buttons (tools, toggles, clear buttons, etc.)
 .icon {
-    background-color: transparent;
-    border-color: transparent;
+    @include theme.interactive-button;
+    background: theme.$tool-button-bg;
+    border: 1px solid theme.$tool-button-border;
+    color: var(--btn-icon-text);
+    cursor: pointer;
     padding: theme.$spacing-2;
-    border-radius: theme.$border-radius-full;
-    color: theme.$color-gray-600;
-    min-height: auto;
+    @include theme.rounded-small;
+    @include theme.flex-center;
+    @include theme.button-transition;
+    min-width: 36px; /* Custom canvas tool size */
+    min-height: 36px; /* Custom canvas tool size */
+    position: relative;
 
     &:hover:not(:disabled) {
-        background-color: theme.$color-gray-100;
+        background: var(--btn-icon-bg-hover);
+        border-color: theme.$tool-button-hover-border;
+        color: theme.$text-primary;
+        transform: translateY(-1px);
+        @include theme.shadow-light;
+    }
+
+    &:disabled {
+        @include theme.button-disabled;
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    &.active {
+        background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
+        color: theme.$text-primary;
+        border-color: theme.$primary-border;
+        box-shadow: 0 0 12px theme.$primary-shadow;
+    }
+}
+
+// CTA BUTTON - High-impact call-to-action for critical user flows (Create Board, Send Invite, etc.)
+.cta {
+    background-color: var(--btn-cta-bg);
+    color: var(--btn-cta-text);
+    border-color: transparent;
+    font-weight: theme.$font-weight-semibold;
+    box-shadow: theme.$shadow-button;
+
+    &:hover:not(:disabled) {
+        background-color: var(--btn-cta-bg-hover);
         border-color: transparent;
-        color: theme.$color-gray-900;
-        transform: translateY(theme.$spacing-0);
-        box-shadow: theme.$shadow-none;
+        transform: translateY(theme.$transform-translate-y-xs);
+        box-shadow: theme.$shadow-button-hover;
     }
 
     &:active:not(:disabled) {
-        background-color: theme.$color-gray-200;
         transform: translateY(theme.$spacing-0);
-        box-shadow: theme.$shadow-none;
+        box-shadow: theme.$shadow-button-active;
+    }
+}
+
+// WARNING BUTTON - Caution-based actions requiring user attention (Logout, Leave Board, etc.)
+.warning {
+    background-color: var(--btn-warning-bg);
+    color: var(--btn-warning-text);
+    border-color: transparent;
+    font-weight: theme.$font-weight-semibold;
+    box-shadow: theme.$shadow-button;
+
+    &:hover:not(:disabled) {
+        background-color: var(--btn-warning-bg-hover);
+        border-color: transparent;
+        transform: translateY(theme.$transform-translate-y-xs);
+        box-shadow: theme.$shadow-button-hover;
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(theme.$spacing-0);
+        box-shadow: theme.$shadow-button-active;
     }
 }

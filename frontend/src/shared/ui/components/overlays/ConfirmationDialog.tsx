@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 import Button from '../forms/Button';
+
 import Modal from './Modal';
 
 interface ConfirmationDialogProps {
@@ -25,7 +26,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={`${styles.modalContainer} ${styles.confirmation}`}>
+      <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
           <AlertTriangle size={20} className={styles.warningIcon} />
           <h3 className={styles.modalTitle}>{title}</h3>
@@ -35,7 +36,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose
           <Button variant="secondary" onClick={onClose}>
             {t('common:button.cancel')}
           </Button>
-          <Button variant="destructive" onClick={handleConfirm}>
+          <Button variant="primary" onClick={handleConfirm}>
             {t('common:button.confirm')}
           </Button>
         </div>
