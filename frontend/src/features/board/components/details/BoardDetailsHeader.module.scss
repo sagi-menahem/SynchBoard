@@ -1,7 +1,6 @@
 @use '@/styles' as theme;
 
 .section {
-    @include theme.card-base;
     background-color: theme.$background-secondary;
     border: 1px solid theme.$border-primary;
     @include theme.rounded-medium;

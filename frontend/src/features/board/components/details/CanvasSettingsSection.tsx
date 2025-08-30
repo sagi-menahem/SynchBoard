@@ -6,7 +6,7 @@ import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/t
 import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { Save, Settings2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, ColorPicker, Input, RadioGroup } from 'shared/ui';
+import { Button, Card, ColorPicker, Input, RadioGroup } from 'shared/ui';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './CanvasSettingsSection.module.scss';
@@ -51,7 +51,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
 
   if (!isAdmin) {
     return (
-      <section className={settingsStyles.section}>
+      <Card variant="default" className={settingsStyles.section}>
         <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
         <div className={settingsStyles.field}>
           <label className={settingsStyles.field} style={{ marginBottom: '0.5rem' }}>
@@ -79,12 +79,12 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
           </p>
         </div>
-      </section>
+      </Card>
     );
   }
 
   return (
-    <section className={settingsStyles.section}>
+    <Card variant="default" className={settingsStyles.section}>
       <div className={settingsStyles.sectionHeader}>
         <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
         {!isEditing && (
@@ -200,7 +200,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
         </>
       )}
-    </section>
+    </Card>
   );
 };
 

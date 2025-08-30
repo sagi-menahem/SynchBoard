@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import {
+  Card,
   ConfirmationDialog,
   PageLoader,
   PageTransition,
@@ -130,7 +131,7 @@ const SettingsPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <div className={styles.pageContent} data-has-toolbar>
-        <section className={styles.section}>
+        <Card variant="default" className={styles.section}>
           <PictureManager
             imageUrl={user.profilePictureUrl}
             defaultImage={defaultUserImage}
@@ -140,7 +141,7 @@ const SettingsPage: React.FC = () => {
             uploadButtonText={t('settings:page.changePicture')}
             deleteButtonText={t('settings:page.deletePicture')}
           />
-        </section>
+        </Card>
 
         <ProfileDetailsSection
           user={user}
@@ -151,12 +152,12 @@ const SettingsPage: React.FC = () => {
 
         <ThemeSection />
 
-        <section className={styles.section}>
+        <Card variant="default" className={styles.section}>
           <h2 className={styles.sectionHeader}>
             {t('settings:page.passwordSectionHeader')}
           </h2>
           <ChangePasswordForm onSubmit={handleChangePassword} />
-        </section>
+        </Card>
 
         <BoardAppearanceSection />
 

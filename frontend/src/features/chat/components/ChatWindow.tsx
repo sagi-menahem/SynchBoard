@@ -7,7 +7,7 @@ import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
-import { Button } from 'shared/ui';
+import { Button, Card } from 'shared/ui';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
 import logger from 'shared/utils/logger';
@@ -155,7 +155,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   };
 
   return (
-    <div
+    <Card
       className={styles.container}
       style={getBackgroundStyle()}
     >
@@ -215,7 +215,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         onSendMessage={handleSendMessage}
         placeholder={t('chat:window.placeholder')}
       />
-    </div>
+    </Card>
   );
 };
 

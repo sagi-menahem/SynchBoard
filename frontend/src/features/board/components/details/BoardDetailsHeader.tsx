@@ -6,7 +6,7 @@ import type { BoardDetails } from 'features/board/types/BoardTypes';
 import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { PencilLine, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, PictureManager, Textarea } from 'shared/ui';
+import { Button, Card, PictureManager, Textarea } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.scss';
 
@@ -50,7 +50,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
     return (
         <>
-            <section className={settingsStyles.section}>
+            <Card variant="default" className={settingsStyles.section}>
                 <PictureManager
                     imageUrl={boardDetails.pictureUrl}
                     defaultImage={defaultBoardImage}
@@ -62,9 +62,9 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                     deleteButtonText={t('board:detailsPage.deletePicture')}
                     className={styles.pictureManager}
                 />
-            </section>
+            </Card>
 
-            <section className={settingsStyles.section}>
+            <Card variant="default" className={settingsStyles.section}>
                 <div className={settingsStyles.sectionHeader}>
                     <h2 className={settingsStyles.sectionTitle}>{t('board:detailsPage.boardDescription')}</h2>
                     {currentUserIsAdmin && !isEditingDescription && (
@@ -117,7 +117,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                         </p>
                     </div>
                 )}
-            </section>
+            </Card>
         </>
     );
 };
