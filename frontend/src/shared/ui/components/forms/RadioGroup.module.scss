@@ -2,7 +2,7 @@
 
 .radioGroup {
   display: flex;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
 }
 
 .radioGroup.vertical {
@@ -17,14 +17,14 @@
 .radioItem {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   cursor: pointer;
   @include theme.smooth-transition;
   
   &:hover {
     .radioButton {
       border-color: theme.$primary;
-      box-shadow: 0 0 0 2px theme.$primary-light;
+      box-shadow: 0 0 0 theme.$border-width-thick theme.$primary-light;
     }
     
     .radioLabel {
@@ -35,10 +35,10 @@
 
 .radioButton {
   all: unset;
-  width: 1.125rem;
-  height: 1.125rem;
+  width: theme.$spacing-4-5;
+  height: theme.$spacing-4-5;
   border-radius: 50%;
-  border: 2px solid theme.$border-strong;
+  border: theme.$border-width-thick solid theme.$border-strong;
   background-color: theme.$surface;
   cursor: pointer;
   display: flex;
@@ -51,7 +51,7 @@
   &:focus {
     outline: none;
     border-color: theme.$primary;
-    box-shadow: 0 0 0 3px theme.$primary-light;
+    box-shadow: 0 0 0 3px theme.$primary-light; /* Standard focus ring */
   }
   
   &[data-state="checked"] {
@@ -61,7 +61,7 @@
   
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: theme.$opacity-50;
     border-color: theme.$border-light;
     background-color: theme.$surface-hover;
     
@@ -83,8 +83,8 @@
   &[data-state="checked"]::after {
     content: '';
     display: block;
-    width: 0.5rem;
-    height: 0.5rem;
+    width: theme.$spacing-2;
+    height: theme.$spacing-2;
     border-radius: 50%;
     background-color: theme.$primary;
     animation: radioScale 0.15s ease-out;
@@ -93,12 +93,12 @@
 
 .radioLabel {
   color: theme.$text-secondary;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
   cursor: pointer;
   @include theme.smooth-transition;
   user-select: none;
-  line-height: 1.4;
+  line-height: theme.$line-height-normal;
   
   .radioItem:has(.radioButton[data-state="checked"]) & {
     color: theme.$text-primary;
@@ -106,7 +106,7 @@
   
   .radioItem:has(.radioButton:disabled) & {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: theme.$opacity-50;
   }
 }
 
@@ -126,6 +126,6 @@
   }
   
   .radioItem {
-    padding: 0.25rem 0;
+    padding: theme.$spacing-1 0;
   }
 }
