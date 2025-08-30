@@ -1,11 +1,8 @@
 import React, { useState, type KeyboardEvent } from 'react';
 
-import { useAuth } from 'features/auth/hooks/useAuth';
-import { checkUserExists } from 'features/settings/services/userService';
-import toast from 'react-hot-toast';
+import { useMemberValidation } from 'features/board/hooks/management/useMemberValidation';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
-import logger from 'shared/utils/logger';
 import { validateEmail } from 'shared/utils/validationUtils';
 
 
@@ -19,46 +16,25 @@ interface MemberInviteInputProps {
 
 const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, disabled = false, id }) => {
   const { t } = useTranslation(['board', 'common']);
-  const { userEmail } = useAuth();
   const [inputValue, setInputValue] = useState('');
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
 
+  const { validateMemberEmail } = useMemberValidation();
 
   const addEmail = async (email: string) => {
     const trimmedEmail = email.trim().toLowerCase();
     
-    if (!trimmedEmail) {return;}
-    
-    if (!validateEmail(trimmedEmail)) {
-      toast.error(t('board:createForm.invalidEmail'));
+    if (!trimmedEmail) return;
+
+    const validation = await validateMemberEmail(trimmedEmail, inviteEmails);
+    if (!validation.isValid) {
       return;
     }
 
-    if (userEmail && trimmedEmail === userEmail.toLowerCase()) {
-      toast.error(t('board:createForm.cannotInviteSelf'));
-      return;
-    }
-    
-    if (inviteEmails.includes(trimmedEmail)) {
-      toast.error(t('board:createForm.emailAlreadyAdded'));
-      return;
-    }
-
-    try {
-      const userExists = await checkUserExists(trimmedEmail);
-      if (!userExists) {
-        toast.error(t('board:createForm.userNotFound', { email: trimmedEmail }));
-        return;
-      }
-
-      const newEmails = [...inviteEmails, trimmedEmail];
-      setInviteEmails(newEmails);
-      onMembersChange(newEmails);
-      setInputValue('');
-    } catch (error) {
-      logger.error('Error checking user existence:', error);
-      toast.error(t('board:createForm.errorCheckingUser'));
-    }
+    const newEmails = [...inviteEmails, trimmedEmail];
+    setInviteEmails(newEmails);
+    onMembersChange(newEmails);
+    setInputValue('');
   };
 
   const removeEmail = (emailToRemove: string) => {

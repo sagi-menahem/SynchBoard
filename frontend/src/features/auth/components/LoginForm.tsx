@@ -4,8 +4,8 @@ import { Lock, LogIn, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput } from 'shared/ui';
 
+import { useAuth } from '../hooks/useAuth';
 import { useLoginForm } from '../hooks/forms';
-import { redirectToGoogle } from '../services/authService';
 
 import GoogleLoginButton from './GoogleLoginButton';
 import styles from './LoginForm.module.scss';
@@ -16,6 +16,7 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
   const { t } = useTranslation(['auth', 'common']);
+  const { redirectToGoogle } = useAuth();
   const { state, submitAction, isPending } = useLoginForm();
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
