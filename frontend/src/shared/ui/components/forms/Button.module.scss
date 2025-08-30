@@ -109,18 +109,19 @@
 
 // CTA BUTTON - High-impact call-to-action for critical user flows (Create Board, Send Invite, etc.)
 .cta {
-    background-color: var(--btn-cta-bg);
-    color: var(--btn-cta-text);
-    border-color: transparent;
+    background-color: transparent;
+    color: var(--btn-cta-bg);
+    border: 1px solid var(--btn-cta-bg);
     font-weight: theme.$font-weight-semibold;
     box-shadow: theme.$shadow-button;
-    min-height: theme.$spacing-8; // 32px - smaller for toolbar use
-    padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - more compact
-    font-size: theme.$font-size-xs; // 12px - smaller text
+    min-height: 28px; // 28px - medium size for toolbar use
+    padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - balanced compact padding
+    font-size: theme.$font-size-xs; // 12px - balanced text size
 
     &:hover:not(:disabled) {
-        background-color: var(--btn-cta-bg-hover);
-        border-color: transparent;
+        background-color: var(--btn-cta-bg);
+        color: var(--btn-cta-text);
+        border-color: var(--btn-cta-bg);
         transform: translateY(theme.$transform-translate-y-xs);
         box-shadow: theme.$shadow-button-hover;
     }
@@ -133,18 +134,19 @@
 
 // WARNING BUTTON - Caution-based actions requiring user attention (Logout, Leave Board, etc.)
 .warning {
-    background-color: var(--btn-warning-bg);
-    color: var(--btn-warning-text);
-    border-color: transparent;
+    background-color: transparent;
+    color: var(--btn-warning-bg);
+    border: 1px solid var(--btn-warning-bg);
     font-weight: theme.$font-weight-semibold;
     box-shadow: theme.$shadow-button;
-    min-height: theme.$spacing-8; // 32px - smaller for toolbar use
-    padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - more compact
-    font-size: theme.$font-size-xs; // 12px - smaller text
+    min-height: 28px; // 28px - medium size for toolbar use
+    padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - balanced compact padding
+    font-size: theme.$font-size-xs; // 12px - balanced text size
 
     &:hover:not(:disabled) {
-        background-color: var(--btn-warning-bg-hover);
-        border-color: transparent;
+        background-color: var(--btn-warning-bg);
+        color: var(--btn-warning-text);
+        border-color: var(--btn-warning-bg);
         transform: translateY(theme.$transform-translate-y-xs);
         box-shadow: theme.$shadow-button-hover;
     }
