@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUserPreferences } from 'features/settings/UserPreferencesProvider';
+import { useTheme } from 'features/settings/ThemeProvider';
 import { Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -12,9 +12,9 @@ interface ThemeSwitcherProps {
 
 const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ className }) => {
   const { t } = useTranslation(['common']);
-  const { preferences, setTheme } = useUserPreferences();
+  const { theme, setTheme } = useTheme();
 
-  const currentTheme = preferences.theme;
+  const currentTheme = theme;
 
   const handleThemeChange = (theme: 'light' | 'dark') => {
     setTheme(theme);

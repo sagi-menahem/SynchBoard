@@ -4,7 +4,7 @@ import { useAuth } from 'features/auth/hooks';
 import { useChatMessages } from 'features/chat/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import { usePreferences } from 'features/settings/UserPreferencesProvider';
+import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';

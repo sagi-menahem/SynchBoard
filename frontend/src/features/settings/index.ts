@@ -14,9 +14,11 @@ export { useAccountManager } from './hooks/useAccountManager';
 export { usePasswordManager } from './hooks/usePasswordManager';
 export { useUserProfile } from './hooks/profile/useUserProfile';
 
-// Context
-export { UserPreferencesProvider } from './UserPreferencesProvider';
-export { UserPreferencesContext } from './UserPreferencesContext';
+// Providers
+export { ThemeProvider } from './ThemeProvider';
+export { ToolPreferencesProvider } from './ToolPreferencesProvider';
+export { CanvasPreferencesProvider } from './CanvasPreferencesProvider';
+export { UserBoardPreferencesProvider } from './UserBoardPreferencesProvider';
 
 // Pages
 export { default as SettingsPage } from './pages/SettingsPage';

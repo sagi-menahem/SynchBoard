@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePreferences } from 'features/settings/UserPreferencesProvider';
+import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 
