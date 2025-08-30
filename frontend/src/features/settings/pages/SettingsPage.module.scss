@@ -23,9 +23,6 @@
 }
 
 .section {
-    @include theme.card-base;
-    background-color: theme.$background-secondary;
-    border: 1px solid theme.$border-primary;
     margin-bottom: 2rem;
 }
 

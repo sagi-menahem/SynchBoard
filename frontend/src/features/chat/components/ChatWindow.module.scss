@@ -1,7 +1,6 @@
 @use '@/styles' as theme;
 
 .container {
-  @include theme.card-base;
   @include theme.flex-column;
   height: 100%;
   box-shadow: theme.$shadow-card;
