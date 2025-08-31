@@ -5,6 +5,7 @@ import defaultBoardImage from 'assets/default-board-image.png';
 import type { Board } from 'features/board/types/BoardTypes';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { formatCanvasResolution } from 'features/board/utils/CanvasUtils';
+import clsx from 'clsx';
 import { Crown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -36,7 +37,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
       <Card 
         variant="elevated" 
         hoverable
-        className={`${styles.boardCard} ${styles[viewMode]}`}
+        className={clsx(styles.boardCard, styles[viewMode])}
       >
       <img src={imageSource} alt={board.name} className={styles.boardCardImage} />
       <div className={styles.boardCardContent}>

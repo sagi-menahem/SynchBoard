@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTheme } from 'features/settings/ThemeProvider';
+import clsx from 'clsx';
 import { Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -22,12 +23,12 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ className }) => {
   };
 
   return (
-    <div className={`${styles.themeSwitcher} ${className ?? ''}`}>
+    <div className={clsx(styles.themeSwitcher, className)}>
       <span className={styles.label}>{t('common:theme')}</span>
       <div className={styles.buttonGroup}>
         <Button
           variant="icon"
-          className={`${styles.themeButton} ${currentTheme === 'light' ? styles.active : ''}`}
+          className={clsx(styles.themeButton, currentTheme === 'light' && styles.active)}
           onClick={() => handleThemeChange('light')}
           type="button"
           title={t('common:lightTheme')}
@@ -36,7 +37,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ className }) => {
         </Button>
         <Button
           variant="icon"
-          className={`${styles.themeButton} ${currentTheme === 'dark' ? styles.active : ''}`}
+          className={clsx(styles.themeButton, currentTheme === 'dark' && styles.active)}
           onClick={() => handleThemeChange('dark')}
           type="button"
           title={t('common:darkTheme')}

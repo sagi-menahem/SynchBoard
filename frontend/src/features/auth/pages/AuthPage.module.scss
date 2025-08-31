@@ -14,7 +14,7 @@
 .switchersCorner {
     position: fixed;
     top: theme.$spacing-6;
-    right: theme.$spacing-6;
+    inset-inline-end: theme.$spacing-6;
     z-index: theme.$z-index-modal;
     @include theme.flex-end;
     gap: theme.$spacing-4;
@@ -88,7 +88,7 @@
 
     .switchersCorner {
         top: theme.$spacing-4;
-        right: theme.$spacing-4;
+        inset-inline-end: theme.$spacing-4;
         gap: theme.$spacing-3;
     }
 

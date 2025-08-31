@@ -8,11 +8,11 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-inline-start: 24px;
+    padding-inline-end: 24px;
     padding-bottom: 24px;
     box-sizing: border-box;
-    text-align: left;
+    text-align: start;
 }
 
 
@@ -45,8 +45,8 @@
 .quickSettingsModal {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     bottom: 0;
     background: theme.$overlay-modal;
     backdrop-filter: blur(4px);
@@ -72,7 +72,7 @@
     @include theme.button-base;
     position: absolute;
     top: 1rem;
-    right: 1rem;
+    inset-inline-end: 1rem;
     background: theme.$overlay-light;
     border: none;
     color: theme.$text-secondary;

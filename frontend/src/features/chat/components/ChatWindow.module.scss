@@ -127,11 +127,11 @@
 }
 
 .dateSeparator::before {
-  left: 0;
+  inset-inline-start: 0;
 }
 
 .dateSeparator::after {
-  right: 0;
+  inset-inline-end: 0;
 }
 
 @media (max-width: 768px) {

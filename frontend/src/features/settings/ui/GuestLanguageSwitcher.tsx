@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useLanguageSync } from 'features/settings/hooks';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import Button from 'shared/ui/components/forms/Button';
 
@@ -21,12 +22,12 @@ const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({ className
   };
 
   return (
-    <div className={`${styles.languageSwitcher} ${className ?? ''}`}>
+    <div className={clsx(styles.languageSwitcher, className)}>
       <span className={styles.label}>{t('common:language')}</span>
       <div className={styles.buttonGroup}>
         <Button
           variant="icon"
-          className={`${styles.languageButton} ${currentLanguage === 'en' ? styles.active : ''}`}
+          className={clsx(styles.languageButton, currentLanguage === 'en' && styles.active)}
           onClick={() => handleLanguageChange('en')}
           type="button"
         >
@@ -34,7 +35,7 @@ const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({ className
         </Button>
         <Button
           variant="icon"
-          className={`${styles.languageButton} ${currentLanguage === 'he' ? styles.active : ''}`}
+          className={clsx(styles.languageButton, currentLanguage === 'he' && styles.active)}
           onClick={() => handleLanguageChange('he')}
           type="button"
         >

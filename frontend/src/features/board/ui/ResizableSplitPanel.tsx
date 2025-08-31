@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import Button from 'shared/ui/components/forms/Button';
 
@@ -92,7 +93,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       <Button
         variant="icon"
         type="button"
-        className={`${styles.divider} ${isDragging ? styles.dragging : ''}`}
+        className={clsx(styles.divider, isDragging && styles.dragging)}
         onMouseDown={handleMouseDown}
         aria-label={t('common:accessibility.resizePanels')}
         onKeyDown={(e) => {

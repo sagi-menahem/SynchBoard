@@ -1,0 +1,114 @@
+// RTL Support using CSS Logical Properties and SCSS Mixins
+// This approach is more maintainable and future-proof than manual RTL overrides
+
+// Mixin for padding with logical properties
+@mixin padding-logical($block-start: null, $inline-end: null, $block-end: null, $inline-start: null) {
+  @if $block-start { padding-block-start: $block-start; }
+  @if $inline-end { padding-inline-end: $inline-end; }
+  @if $block-end { padding-block-end: $block-end; }
+  @if $inline-start { padding-inline-start: $inline-start; }
+}
+
+// Mixin for margin with logical properties
+@mixin margin-logical($block-start: null, $inline-end: null, $block-end: null, $inline-start: null) {
+  @if $block-start { margin-block-start: $block-start; }
+  @if $inline-end { margin-inline-end: $inline-end; }
+  @if $block-end { margin-block-end: $block-end; }
+  @if $inline-start { margin-inline-start: $inline-start; }
+}
+
+// Mixin for position with logical properties
+@mixin position-logical($position, $block-start: null, $inline-end: null, $block-end: null, $inline-start: null) {
+  position: $position;
+  @if $block-start { inset-block-start: $block-start; }
+  @if $inline-end { inset-inline-end: $inline-end; }
+  @if $block-end { inset-block-end: $block-end; }
+  @if $inline-start { inset-inline-start: $inline-start; }
+}
+
+// Mixin for border with logical properties
+@mixin border-logical($width: 1px, $style: solid, $color: var(--color-border)) {
+  border-block-start: $width $style $color;
+  border-inline-end: $width $style $color;
+  border-block-end: $width $style $color;
+  border-inline-start: $width $style $color;
+}
+
+// Mixin for text alignment that respects RTL
+@mixin text-align-start() {
+  text-align: start;
+}
+
+@mixin text-align-end() {
+  text-align: end;
+}
+
+// Mixin for flex direction that respects RTL
+@mixin flex-direction-row() {
+  display: flex;
+  flex-direction: row;
+}
+
+// Mixin for icons that should flip in RTL
+@mixin rtl-flip-icon() {
+  [dir="rtl"] & {
+    transform: scaleX(-1);
+  }
+}
+
+// Mixin for icons that should NOT flip in RTL
+@mixin rtl-no-flip() {
+  [dir="rtl"] & {
+    transform: none;
+  }
+}
+
+// Legacy fallback mixin for browsers without logical property support
+@mixin rtl-value($property, $ltr-value, $rtl-value) {
+  #{$property}: $ltr-value;
+  
+  [dir="rtl"] & {
+    #{$property}: $rtl-value;
+  }
+}
+
+// Utility classes using logical properties
+.text-start {
+  text-align: start;
+}
+
+.text-end {
+  text-align: end;
+}
+
+.margin-inline-start-auto {
+  margin-inline-start: auto;
+}
+
+.margin-inline-end-auto {
+  margin-inline-end: auto;
+}
+
+.padding-inline-1 {
+  padding-inline: var(--spacing-1);
+}
+
+.padding-inline-2 {
+  padding-inline: var(--spacing-2);
+}
+
+.padding-inline-3 {
+  padding-inline: var(--spacing-3);
+}
+
+.padding-inline-4 {
+  padding-inline: var(--spacing-4);
+}
+
+.border-inline-start {
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.border-inline-end {
+  border-inline-end: 1px solid var(--color-border);
+}

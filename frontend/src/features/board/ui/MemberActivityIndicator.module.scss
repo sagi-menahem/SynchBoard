@@ -59,7 +59,7 @@
 .onlineIndicator {
   position: absolute;
   top: 6px;
-  right: 6px;
+  inset-inline-end: 6px;
   width: 6px;
   height: 6px;
   background: theme.$success-color;
@@ -97,6 +97,6 @@
     width: 5px;
     height: 5px;
     top: 5px;
-    right: 5px;
+    inset-inline-end: 5px;
   }
 }
