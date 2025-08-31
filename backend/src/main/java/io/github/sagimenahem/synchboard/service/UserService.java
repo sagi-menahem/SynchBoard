@@ -192,151 +192,131 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public CanvasPreferencesDTO getCanvasPreferences(String userEmail) {
-        log.debug("Fetching canvas preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        return CanvasPreferencesDTO.builder()
+        return getPreferences(userEmail, "canvas", user -> CanvasPreferencesDTO.builder()
                 .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
-                .build();
+                .build());
     }
 
     @Transactional
     public CanvasPreferencesDTO updateCanvasPreferences(String userEmail, CanvasPreferencesDTO preferences) {
-        log.debug("Updating canvas preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        if (preferences.getCanvasChatSplitRatio() != null) {
-            user.setCanvasChatSplitRatio(preferences.getCanvasChatSplitRatio());
-        }
-        
-        userRepository.save(user);
-        log.info("Canvas preferences updated for user: {}", userEmail);
-        
-        return CanvasPreferencesDTO.builder()
-                .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
-                .build();
+        return updatePreferences(userEmail, "canvas", preferences, 
+            (user, prefs) -> {
+                if (prefs.getCanvasChatSplitRatio() != null) {
+                    user.setCanvasChatSplitRatio(prefs.getCanvasChatSplitRatio());
+                }
+            },
+            user -> CanvasPreferencesDTO.builder()
+                    .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
+                    .build());
     }
 
     @Transactional(readOnly = true)
     public ToolPreferencesDTO getToolPreferences(String userEmail) {
-        log.debug("Fetching tool preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        return ToolPreferencesDTO.builder()
+        return getPreferences(userEmail, "tool", user -> ToolPreferencesDTO.builder()
                 .defaultTool(user.getDefaultTool())
                 .defaultStrokeColor(user.getDefaultStrokeColor())
                 .defaultStrokeWidth(user.getDefaultStrokeWidth())
-                .build();
+                .build());
     }
 
     @Transactional
     public ToolPreferencesDTO updateToolPreferences(String userEmail, ToolPreferencesDTO preferences) {
-        log.debug("Updating tool preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        if (preferences.getDefaultTool() != null) {
-            user.setDefaultTool(preferences.getDefaultTool());
-        }
-        if (preferences.getDefaultStrokeColor() != null) {
-            user.setDefaultStrokeColor(preferences.getDefaultStrokeColor());
-        }
-        if (preferences.getDefaultStrokeWidth() != null) {
-            user.setDefaultStrokeWidth(preferences.getDefaultStrokeWidth());
-        }
-        
-        userRepository.save(user);
-        log.info("Tool preferences updated for user: {}", userEmail);
-        
-        return ToolPreferencesDTO.builder()
-                .defaultTool(user.getDefaultTool())
-                .defaultStrokeColor(user.getDefaultStrokeColor())
-                .defaultStrokeWidth(user.getDefaultStrokeWidth())
-                .build();
+        return updatePreferences(userEmail, "tool", preferences,
+            (user, prefs) -> {
+                if (prefs.getDefaultTool() != null) {
+                    user.setDefaultTool(prefs.getDefaultTool());
+                }
+                if (prefs.getDefaultStrokeColor() != null) {
+                    user.setDefaultStrokeColor(prefs.getDefaultStrokeColor());
+                }
+                if (prefs.getDefaultStrokeWidth() != null) {
+                    user.setDefaultStrokeWidth(prefs.getDefaultStrokeWidth());
+                }
+            },
+            user -> ToolPreferencesDTO.builder()
+                    .defaultTool(user.getDefaultTool())
+                    .defaultStrokeColor(user.getDefaultStrokeColor())
+                    .defaultStrokeWidth(user.getDefaultStrokeWidth())
+                    .build());
     }
 
     @Transactional(readOnly = true)
     public LanguagePreferencesDTO getLanguagePreferences(String userEmail) {
-        log.debug("Fetching language preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        return LanguagePreferencesDTO.builder()
+        return getPreferences(userEmail, "language", user -> LanguagePreferencesDTO.builder()
                 .preferredLanguage(user.getPreferredLanguage())
-                .build();
+                .build());
     }
 
     @Transactional
     public LanguagePreferencesDTO updateLanguagePreferences(String userEmail, LanguagePreferencesDTO preferences) {
-        log.debug("Updating language preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        if (preferences.getPreferredLanguage() != null) {
-            user.setPreferredLanguage(preferences.getPreferredLanguage());
-        }
-        
-        userRepository.save(user);
-        log.info("Language preferences updated for user: {}", userEmail);
-        
-        return LanguagePreferencesDTO.builder()
-                .preferredLanguage(user.getPreferredLanguage())
-                .build();
+        return updatePreferences(userEmail, "language", preferences,
+            (user, prefs) -> {
+                if (prefs.getPreferredLanguage() != null) {
+                    user.setPreferredLanguage(prefs.getPreferredLanguage());
+                }
+            },
+            user -> LanguagePreferencesDTO.builder()
+                    .preferredLanguage(user.getPreferredLanguage())
+                    .build());
     }
 
     @Transactional(readOnly = true)
     public ThemePreferencesDTO getThemePreferences(String userEmail) {
-        log.debug("Fetching theme preferences for user: {}", userEmail);
-        
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
-            log.warn(USER_NOT_FOUND, userEmail);
-            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
-        });
-        
-        return ThemePreferencesDTO.builder()
+        return getPreferences(userEmail, "theme", user -> ThemePreferencesDTO.builder()
                 .theme(user.getThemePreference())
-                .build();
+                .build());
     }
 
     @Transactional
     public ThemePreferencesDTO updateThemePreferences(String userEmail, ThemePreferencesDTO preferences) {
-        log.debug("Updating theme preferences for user: {}", userEmail);
+        return updatePreferences(userEmail, "theme", preferences,
+            (user, prefs) -> {
+                if (prefs.getTheme() != null) {
+                    user.setThemePreference(prefs.getTheme());
+                }
+            },
+            user -> ThemePreferencesDTO.builder()
+                    .theme(user.getThemePreference())
+                    .build());
+    }
+
+    // Generic preference management methods
+    private <T> T getPreferences(String userEmail, String preferenceType, PreferenceMapper<T> mapper) {
+        log.debug("Fetching {} preferences for user: {}", preferenceType, userEmail);
         
-        User user = userRepository.findById(userEmail).orElseThrow(() -> {
+        User user = findUserOrThrow(userEmail);
+        return mapper.map(user);
+    }
+
+    private <T> T updatePreferences(String userEmail, String preferenceType, T preferences,
+            PreferenceUpdater<T> updater, PreferenceMapper<T> mapper) {
+        log.debug("Updating {} preferences for user: {}", preferenceType, userEmail);
+        
+        User user = findUserOrThrow(userEmail);
+        updater.update(user, preferences);
+        userRepository.save(user);
+        
+        log.info("{} preferences updated for user: {}", 
+            preferenceType.substring(0, 1).toUpperCase() + preferenceType.substring(1), 
+            userEmail);
+        
+        return mapper.map(user);
+    }
+
+    private User findUserOrThrow(String userEmail) {
+        return userRepository.findById(userEmail).orElseThrow(() -> {
             log.warn(USER_NOT_FOUND, userEmail);
             return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail);
         });
-        
-        if (preferences.getTheme() != null) {
-            user.setThemePreference(preferences.getTheme());
-        }
-        
-        userRepository.save(user);
-        log.info("Theme preferences updated for user: {}", userEmail);
-        
-        return ThemePreferencesDTO.builder()
-                .theme(user.getThemePreference())
-                .build();
+    }
+
+    @FunctionalInterface
+    private interface PreferenceUpdater<T> {
+        void update(User user, T preferences);
+    }
+
+    @FunctionalInterface
+    private interface PreferenceMapper<T> {
+        T map(User user);
     }
 }

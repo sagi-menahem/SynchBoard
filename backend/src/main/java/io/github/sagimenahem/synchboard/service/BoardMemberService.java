@@ -24,6 +24,26 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class BoardMemberService {
 
+        private static class BoardLeavingContext {
+                private final Long boardId;
+                private final String userEmail;
+                private final GroupMember leavingMember;
+                private final List<GroupMember> allMembers;
+
+                public BoardLeavingContext(Long boardId, String userEmail, 
+                                GroupMember leavingMember, List<GroupMember> allMembers) {
+                        this.boardId = boardId;
+                        this.userEmail = userEmail;
+                        this.leavingMember = leavingMember;
+                        this.allMembers = allMembers;
+                }
+
+                public Long getBoardId() { return boardId; }
+                public String getUserEmail() { return userEmail; }
+                public GroupMember getLeavingMember() { return leavingMember; }
+                public List<GroupMember> getAllMembers() { return allMembers; }
+        }
+
         private final GroupMemberRepository groupMemberRepository;
         private final GroupBoardRepository groupBoardRepository;
         private final UserRepository userRepository;
@@ -176,6 +196,21 @@ public class BoardMemberService {
         public void leaveBoard(Long boardId, String userEmail) {
                 log.info("User {} is attempting to leave board {}", userEmail, boardId);
 
+                BoardLeavingContext context = prepareBoardLeavingContext(boardId, userEmail);
+                
+                if (isLastMember(context)) {
+                        handleBoardDeletion(context);
+                        return;
+                }
+                
+                if (isLastAdminWithOtherMembers(context)) {
+                        promoteNewAdmin(context);
+                }
+                
+                removeMemberAndNotify(context);
+        }
+
+        private BoardLeavingContext prepareBoardLeavingContext(Long boardId, String userEmail) {
                 GroupMember leavingMember = groupMemberRepository
                                 .findByBoardGroupIdAndUserEmail(boardId, userEmail)
                                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -184,46 +219,54 @@ public class BoardMemberService {
                                                                 + boardId));
 
                 List<GroupMember> allMembers = groupMemberRepository.findAllByBoardGroupId(boardId);
+                return new BoardLeavingContext(boardId, userEmail, leavingMember, allMembers);
+        }
 
-                if (leavingMember.getIsAdmin()) {
-                        log.info("User {} is an admin. Checking for other admins in board {}.",
-                                        userEmail, boardId);
-                        long adminCount =
-                                        allMembers.stream().filter(GroupMember::getIsAdmin).count();
+        private boolean isLastMember(BoardLeavingContext context) {
+                return context.getAllMembers().size() == 1;
+        }
 
-                        if (adminCount <= 1) {
-                                log.warn("User {} is the last admin of board {}.", userEmail,
-                                                boardId);
-
-                                if (allMembers.size() > 1) {
-                                        log.info("Promoting a new admin for board {}.", boardId);
-                                        allMembers.stream()
-                                                        .filter(member -> !member.getUserEmail()
-                                                                        .equals(userEmail))
-                                                        .findFirst().ifPresent(memberToPromote -> {
-                                                                log.warn("Promoting user {} to admin for board {}.",
-                                                                                memberToPromote.getUserEmail(),
-                                                                                boardId);
-                                                                memberToPromote.setIsAdmin(true);
-                                                                groupMemberRepository.save(
-                                                                                memberToPromote);
-                                                        });
-                                } else {
-                                        log.warn("User {} is the last member. Deleting board {}.",
-                                                        userEmail, boardId);
-                                        deleteBoardAndAssociatedData(boardId, userEmail,
-                                                        allMembers);
-                                        return;
-                                }
-                        }
+        private boolean isLastAdminWithOtherMembers(BoardLeavingContext context) {
+                if (!context.getLeavingMember().getIsAdmin()) {
+                        return false;
                 }
+                
+                long adminCount = context.getAllMembers().stream()
+                        .filter(GroupMember::getIsAdmin)
+                        .count();
+                        
+                return adminCount <= 1 && context.getAllMembers().size() > 1;
+        }
 
-                groupMemberRepository.delete(leavingMember);
-                log.info(BOARD_MEMBER_LEFT, boardId, userEmail);
+        private void handleBoardDeletion(BoardLeavingContext context) {
+                log.warn("User {} is the last member. Deleting board {}.", 
+                        context.getUserEmail(), context.getBoardId());
+                deleteBoardAndAssociatedData(context.getBoardId(), 
+                        context.getUserEmail(), context.getAllMembers());
+        }
 
-                notificationService.broadcastBoardUpdate(boardId,
-                                BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, userEmail);
-                notificationService.broadcastUserUpdate(userEmail);
+        private void promoteNewAdmin(BoardLeavingContext context) {
+                log.info("User {} is the last admin. Promoting a new admin for board {}.", 
+                        context.getUserEmail(), context.getBoardId());
+                        
+                context.getAllMembers().stream()
+                        .filter(member -> !member.getUserEmail().equals(context.getUserEmail()))
+                        .findFirst()
+                        .ifPresent(memberToPromote -> {
+                                log.warn("Promoting user {} to admin for board {}.",
+                                        memberToPromote.getUserEmail(), context.getBoardId());
+                                memberToPromote.setIsAdmin(true);
+                                groupMemberRepository.save(memberToPromote);
+                        });
+        }
+
+        private void removeMemberAndNotify(BoardLeavingContext context) {
+                groupMemberRepository.delete(context.getLeavingMember());
+                log.info(BOARD_MEMBER_LEFT, context.getBoardId(), context.getUserEmail());
+
+                notificationService.broadcastBoardUpdate(context.getBoardId(),
+                        BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, context.getUserEmail());
+                notificationService.broadcastUserUpdate(context.getUserEmail());
         }
 
         private void deleteBoardAndAssociatedData(Long boardId, String userEmail,
