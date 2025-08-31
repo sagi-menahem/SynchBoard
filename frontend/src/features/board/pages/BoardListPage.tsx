@@ -133,7 +133,7 @@ const BoardListPage: React.FC = () => {
             <div className={styles.emptyState}>
               <Card 
                 variant="empty-state" 
-                hoverable={true}
+                hoverable
                 className={styles.emptyStateCard}
               >
                 <div className={styles.emptyStateIcon}>

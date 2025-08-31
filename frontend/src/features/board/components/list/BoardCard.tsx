@@ -35,7 +35,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
     >
       <Card 
         variant="elevated" 
-        hoverable={true}
+        hoverable
         className={`${styles.boardCard} ${styles[viewMode]}`}
       >
       <img src={imageSource} alt={board.name} className={styles.boardCardImage} />

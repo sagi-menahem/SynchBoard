@@ -121,7 +121,7 @@ export const useToolPreferencesAPI = () => {
 
   const updateTool = useCallback(
     async (tool: Tool) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const previousTool = state.preferences.defaultTool;
       dispatch({ type: 'UPDATE_TOOL', payload: tool });
@@ -144,7 +144,7 @@ export const useToolPreferencesAPI = () => {
 
   const updateStrokeColor = useCallback(
     async (color: string) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const previousColor = state.preferences.defaultStrokeColor;
       dispatch({ type: 'UPDATE_STROKE_COLOR', payload: color });
@@ -167,7 +167,7 @@ export const useToolPreferencesAPI = () => {
 
   const updateStrokeWidth = useCallback(
     async (width: number) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const previousWidth = state.preferences.defaultStrokeWidth;
       dispatch({ type: 'UPDATE_STROKE_WIDTH', payload: width });
@@ -190,7 +190,7 @@ export const useToolPreferencesAPI = () => {
 
   const updateToolPreferences = useCallback(
     async (newPrefs: Partial<ToolPreferences>) => {
-      if (!isAuthenticated) return;
+      if (!isAuthenticated) {return;}
 
       const oldPrefs = state.preferences;
       dispatch({ type: 'UPDATE_PREFERENCES', payload: newPrefs });
