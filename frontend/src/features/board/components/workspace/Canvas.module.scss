@@ -56,7 +56,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    background: transparent; // Remove old background - parent now handles it
+    background: transparent; // Transparent to allow pattern and canvas dynamic background to show
 }
 
 .canvasContainer.hideBackground {

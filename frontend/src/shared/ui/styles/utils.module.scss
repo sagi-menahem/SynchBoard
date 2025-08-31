@@ -12,8 +12,7 @@
   /* 3. This color will be inherited by the SVG's "currentColor" - high contrast */
   color: color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 20%, var(--color-text) 80%);
 
-  /* 4. Controls the pattern's visibility */
-  opacity: 0.3;
+  /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
 }
 
 .settingRow {

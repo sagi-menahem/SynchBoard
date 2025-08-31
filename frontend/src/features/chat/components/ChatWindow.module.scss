@@ -4,7 +4,7 @@
   @include theme.flex-column;
   height: 100%;
   box-shadow: theme.$shadow-card;
-  background: transparent; // Remove old background - parent now handles it
+  background: transparent; // Transparent to show pattern background
   color: theme.$text-primary;
   overflow: hidden;
 }
@@ -17,7 +17,7 @@
   @include theme.flex-column;
   gap: theme.$spacing-1;
   scroll-behavior: smooth;
-  background: transparent;
+  background: transparent; // Transparent to show pattern between messages
   max-width: 100%;
   box-sizing: border-box;
 }
