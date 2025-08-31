@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
-import { useCanvasPreferencesService } from 'hooks/useCanvasPreferencesService';
-import type { CanvasPreferences, LayoutMode } from 'services/canvasPreferencesService';
+import { useCanvasPreferencesService } from './hooks/useCanvasPreferencesService';
+import type { CanvasPreferences, LayoutMode } from './services/canvasPreferencesService';
 
 export type { CanvasPreferences, LayoutMode };
 

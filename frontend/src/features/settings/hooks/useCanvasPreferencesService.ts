@@ -5,7 +5,7 @@ import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
 
-import { CanvasPreferencesService, type CanvasPreferences, type LayoutMode } from 'services/canvasPreferencesService';
+import { CanvasPreferencesService, type CanvasPreferences, type LayoutMode } from '../services/canvasPreferencesService';
 
 export interface CanvasPreferencesState {
   preferences: CanvasPreferences;

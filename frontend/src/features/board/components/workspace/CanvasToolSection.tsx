@@ -18,7 +18,7 @@ import type { Tool } from 'shared/types/CommonTypes';
 import { ColorPicker, Slider, ToolButton, ToolGroup } from 'shared/ui';
 import Button from 'shared/ui/components/forms/Button';
 
-import { useCanvasDownload } from 'hooks/useCanvasDownload';
+import { useCanvasDownload } from '../../hooks/useCanvasDownload';
 
 import styles from './CanvasToolSection.module.scss';
 import { LineToolsDropdown } from './LineToolsDropdown';

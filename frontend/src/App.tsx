@@ -4,9 +4,9 @@ import { ConnectionStatusBanner } from 'features/board/ui';
 import { BrowserRouter } from 'react-router-dom';
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
 
-import { AppRoutes } from 'components/AppRoutes';
-import { ToasterConfig } from 'components/ToasterConfig';
-import { useAppConfiguration } from 'hooks/useAppConfiguration';
+import { AppRoutes } from 'shared/ui/routing';
+import { ToasterConfig } from 'shared/ui/components/ToasterConfig';
+import { useAppConfiguration } from 'shared/hooks/useAppConfiguration';
 
 
 function App() {
