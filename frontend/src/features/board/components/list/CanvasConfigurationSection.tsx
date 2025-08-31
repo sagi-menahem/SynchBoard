@@ -55,12 +55,14 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
           {t('board:createForm.label.canvasBackground')}
         </label>
         <div className={utilStyles.settingRow}>
-          <ColorPicker
-            id="board-canvas-background"
-            color={canvasBackgroundColor}
-            onChange={onCanvasBackgroundColorChange}
-            disabled={disabled}
-          />
+          <div className={utilStyles.colorPickerPopupWrapper}>
+            <ColorPicker
+              id="board-canvas-background"
+              color={canvasBackgroundColor}
+              onChange={onCanvasBackgroundColorChange}
+              disabled={disabled}
+            />
+          </div>
           <span className={utilStyles.settingValue}>
             {(() => {
               const colorName = getColorName(canvasBackgroundColor);
