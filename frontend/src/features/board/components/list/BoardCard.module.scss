@@ -19,7 +19,8 @@
 .boardCard.grid {
     @include theme.flex-column;
     height: 280px;
-    aspect-ratio: 1.2;
+    width: min(700px, 100vw - 48px);
+    max-width: 700px;
 }
 
 .boardCard.list {
