@@ -40,8 +40,8 @@
     content: '';
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     height: 1px;
     background: theme.$border;
     transform: translateY(-50%);

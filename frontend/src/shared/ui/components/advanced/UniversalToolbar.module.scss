@@ -3,8 +3,7 @@
 .universalToolbar {
   position: fixed;
   top: var(--banner-height, 0px);
-  left: 0;
-  right: 0;
+  inset-inline: 0;
   width: 100vw;
   height: 72px;
   box-sizing: border-box;

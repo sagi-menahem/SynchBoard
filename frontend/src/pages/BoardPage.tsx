@@ -11,8 +11,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
 
-import { BoardWorkspace, CanvasToolSection } from '../components/workspace';
-import { useBoardContext } from '../hooks/context/useBoardContext';
+import { BoardWorkspace, CanvasToolSection } from 'features/board/components/workspace';
+import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 
 
 import styles from './BoardPage.module.scss';

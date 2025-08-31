@@ -38,8 +38,7 @@ export { useBoardContext } from './hooks/context/useBoardContext';
 export { BoardProvider } from './BoardProvider';
 export { BoardContext } from './BoardContext';
 
-// Pages
-export { default as BoardPage } from './pages/BoardPage';
+// Pages  
 export { default as BoardListPage } from './pages/BoardListPage';
 export { default as BoardDetailsPage } from './pages/BoardDetailsPage';
 

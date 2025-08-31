@@ -3,8 +3,8 @@
 .banner {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   z-index: theme.$z-index-banner;
   @include theme.flex-center;
   padding: theme.$spacing-3 theme.$spacing-4;

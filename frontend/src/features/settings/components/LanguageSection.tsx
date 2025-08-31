@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
+import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import Button from 'shared/ui/components/forms/Button';
@@ -81,7 +82,7 @@ const LanguageSection: React.FC = () => {
           <div className={languageStyles.buttonGroup}>
             <Button
               variant="icon"
-              className={`${languageStyles.languageButton} ${currentLanguage === 'en' ? languageStyles.active : ''}`}
+              className={clsx(languageStyles.languageButton, currentLanguage === 'en' && languageStyles.active)}
               onClick={() => handleLanguageChange('en')}
               type="button"
               title={t('settings:page.language.en')}
@@ -90,7 +91,7 @@ const LanguageSection: React.FC = () => {
             </Button>
             <Button
               variant="icon"
-              className={`${languageStyles.languageButton} ${currentLanguage === 'he' ? languageStyles.active : ''}`}
+              className={clsx(languageStyles.languageButton, currentLanguage === 'he' && languageStyles.active)}
               onClick={() => handleLanguageChange('he')}
               type="button"
               title={t('settings:page.language.he')}

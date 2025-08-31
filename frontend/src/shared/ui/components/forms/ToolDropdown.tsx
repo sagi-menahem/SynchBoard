@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useClickOutside } from 'shared/hooks';
@@ -51,10 +52,10 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
   const isToolActive = toolItems.some((item) => item.value === currentTool);
 
   return (
-    <div className={`${styles.shapeDropdown ?? styles.dropdown} ${className}`} ref={dropdownRef}>
+    <div className={clsx(styles.shapeDropdown ?? styles.dropdown, className)} ref={dropdownRef}>
       <Button
         variant="icon"
-        className={`${styles.dropdownButton} ${isToolActive ? styles.active : ''}`}
+        className={clsx(styles.dropdownButton, isToolActive && styles.active)}
         onClick={() => setIsOpen(!isOpen)}
         title={buttonTitle}
       >
@@ -62,12 +63,12 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
         <ChevronDown size={chevronSize} />
       </Button>
       
-      <div className={`${styles.dropdownContent} ${isOpen ? '' : styles.hidden ?? 'hidden'}`}>
+      <div className={clsx(styles.dropdownContent, !isOpen && (styles.hidden ?? 'hidden'))}>
         {toolItems.map(({ value, icon: Icon, labelKey }) => (
           <Button
             key={value}
             variant="icon"
-            className={`${styles.dropdownItem} ${value === currentTool ? styles.active : ''}`}
+            className={clsx(styles.dropdownItem, value === currentTool && styles.active)}
             onClick={() => handleToolClick(value)}
             title={t(`board:toolbar.tool.${labelKey}`)}
           >

@@ -2,6 +2,7 @@
 import React, { useCallback } from 'react';
 
 import { TOOLS } from 'features/board/constants/BoardConstants';
+import clsx from 'clsx';
 import {
   ArrowRight,
   Minus,
@@ -31,7 +32,7 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
     <>
       <Button
         variant="icon"
-        className={`${styles.iconButton} ${currentTool === TOOLS.LINE ? styles.active : ''}`}
+        className={clsx(styles.iconButton, currentTool === TOOLS.LINE && styles.active)}
         onClick={() => handleToolClick(TOOLS.LINE)}
         title={t('board:toolbar.tool.line')}
       >
@@ -39,7 +40,7 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
       </Button>
       <Button
         variant="icon"
-        className={`${styles.iconButton} ${currentTool === TOOLS.DOTTED_LINE ? styles.active : ''}`}
+        className={clsx(styles.iconButton, currentTool === TOOLS.DOTTED_LINE && styles.active)}
         onClick={() => handleToolClick(TOOLS.DOTTED_LINE)}
         title={t('board:toolbar.tool.dottedLine')}
       >
@@ -51,7 +52,7 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
       </Button>
       <Button
         variant="icon"
-        className={`${styles.iconButton} ${currentTool === TOOLS.ARROW ? styles.active : ''}`}
+        className={clsx(styles.iconButton, currentTool === TOOLS.ARROW && styles.active)}
         onClick={() => handleToolClick(TOOLS.ARROW)}
         title={t('board:toolbar.tool.arrow')}
       >
