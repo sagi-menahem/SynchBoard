@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { Button, SectionCard } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
-
 import styles from '../pages/SettingsPage.module.scss';
 
 interface ProfileDetailsSectionProps {

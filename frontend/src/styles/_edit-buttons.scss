@@ -1,0 +1,56 @@
+@use './design-tokens' as theme;
+@use './mixins' as *;
+
+// Specialized edit button mixin for consistent editing actions
+// Used for: Profile edit, Board description edit, Canvas settings edit
+@mixin edit-button {
+  @include button-base;
+  
+  // Smaller size for less prominence
+  padding: theme.$spacing-2 theme.$spacing-3 !important;
+  font-size: 0.85rem !important;
+  
+  // Secondary styling with design system colors
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-color);
+  border: 1px solid var(--btn-secondary-border);
+  
+  // Interactive states
+  &:hover:not(:disabled) {
+    background: var(--btn-secondary-hover-bg);
+    color: var(--btn-secondary-hover-color);
+    border-color: var(--btn-secondary-hover-border);
+  }
+  
+  &:active:not(:disabled) {
+    background: var(--btn-secondary-active-bg);
+    color: var(--btn-secondary-active-color);
+    border-color: var(--btn-secondary-active-border);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  // Icon spacing (for PencilLine, Settings2 icons)
+  svg {
+    margin-right: theme.$spacing-1;
+    
+    [dir="rtl"] & {
+      margin-right: 0;
+      margin-left: theme.$spacing-1;
+    }
+  }
+  
+  // Ensure consistent height
+  min-height: 32px;
+  
+  // Smooth transitions
+  transition: all 0.2s ease;
+}
+
+// Edit button group class for components that need it
+.editButton {
+  @include edit-button;
+}
