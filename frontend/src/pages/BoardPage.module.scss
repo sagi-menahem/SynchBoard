@@ -2,7 +2,7 @@
 
 .pageContent {
     position: absolute;
-    top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px);
+    top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px));
     left: 0;
     right: 0;
     bottom: 0;
