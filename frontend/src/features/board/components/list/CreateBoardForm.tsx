@@ -2,7 +2,7 @@ import React, { startTransition, useState } from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';
-import { FileText, Pencil, Plus, Users } from 'lucide-react';
+import { FileText, Pencil, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Textarea } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
@@ -65,7 +65,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     <div className={styles.modalContainer}>
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>
-          <Plus size={20} />
           {t('board:createForm.heading')}
         </h3>
       </div>
