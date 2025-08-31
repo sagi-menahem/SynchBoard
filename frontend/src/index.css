@@ -18,6 +18,14 @@ body[data-theme='light'] {
     --transition-duration-fast: 0.15s;
     --transition-duration-normal: 0.2s;
     --transition-duration-slow: 0.3s;
+    --transition-slow: 0.3s;
+    --transition-ease-in-out: ease-in-out;
+    
+    /* Spacing System */
+    --spacing-0-5: 0.125rem; /* 2px */
+    --spacing-1: 0.25rem; /* 4px */
+    --spacing-2: 0.5rem; /* 8px */
+    --spacing-3: 0.75rem; /* 12px */
 
     /* Z-Index System */
     --z-index-base: 1;

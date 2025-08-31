@@ -7,11 +7,11 @@
 
 /* RTL Transition Animations */
 html {
-  transition: direction 0.3s ease-in-out;
+  transition: direction var(--transition-slow) var(--transition-ease-in-out);
 }
 
 body {
-  transition: text-align 0.3s ease-in-out;
+  transition: text-align var(--transition-slow) var(--transition-ease-in-out);
 }
 
 /* RTL-specific adjustments for common elements */
@@ -359,7 +359,7 @@ body {
 /* RTL icon adjustments */
 [dir="rtl"] .icon {
   transform: scaleX(-1);
-  transition: transform 0.3s ease-in-out;
+  transition: transform var(--transition-slow) var(--transition-ease-in-out);
 }
 
 /* Specific icons that should not be flipped in RTL */
@@ -401,7 +401,7 @@ body {
 }
 
 [dir="rtl"] * {
-  animation: rtlTransition 0.3s ease-in-out;
+  animation: rtlTransition var(--transition-slow) var(--transition-ease-in-out);
 }
 
 /* Disable animation after initial load */
@@ -413,7 +413,7 @@ body {
 /* Responsive RTL adjustments */
 @media (max-width: 768px) {
   [dir="rtl"] .universalToolbar {
-    padding: 0 12px;
+    padding: 0 var(--spacing-3);
     direction: rtl;
   }
 
@@ -431,7 +431,7 @@ body {
 
 @media (max-width: 480px) {
   [dir="rtl"] .universalToolbar {
-    padding: 0 8px;
+    padding: 0 var(--spacing-2);
     direction: rtl;
   }
 

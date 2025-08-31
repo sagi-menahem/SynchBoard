@@ -35,7 +35,7 @@
   padding: 0;
   @include theme.hover-transition;
   position: relative;
-  margin: 0 4px;
+  margin: 0 theme.$spacing-1;
   height: 100%;
 }
 
