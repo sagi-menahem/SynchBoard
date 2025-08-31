@@ -1,8 +1,9 @@
 import React from 'react';
 
 import type { Member } from 'features/board/types/BoardTypes';
+import { Crown, UserMinus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { EnhancedContextMenu, ContextMenuItem } from 'shared/ui';
+import { EnhancedContextMenu, ContextMenuItem, ContextMenuSeparator } from 'shared/ui';
 
 interface MemberContextMenuProps {
     isOpen: boolean;
@@ -32,11 +33,22 @@ const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
   return (
     <EnhancedContextMenu x={x} y={y} onClose={onClose}>
       {!member.isAdmin && (
-        <ContextMenuItem onClick={onPromote}>
-          {t('board:contextMenu.promoteToAdmin', { userName: member.email })}
-        </ContextMenuItem>
+        <>
+          <ContextMenuItem 
+            onClick={onPromote} 
+            variant="primary"
+            icon={<Crown size={16} />}
+          >
+            {t('board:contextMenu.promoteToAdmin', { userName: member.email })}
+          </ContextMenuItem>
+          <ContextMenuSeparator />
+        </>
       )}
-      <ContextMenuItem onClick={onRemove} destructive>
+      <ContextMenuItem 
+        onClick={onRemove} 
+        variant="destructive"
+        icon={<UserMinus size={16} />}
+      >
         {t('board:contextMenu.removeFromBoard', { userName: member.email })}
       </ContextMenuItem>
     </EnhancedContextMenu>
