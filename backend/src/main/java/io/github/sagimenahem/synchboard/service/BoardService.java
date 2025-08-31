@@ -18,7 +18,6 @@ import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
-import io.github.sagimenahem.synchboard.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,7 +110,7 @@ public class BoardService {
         }
 
         GroupBoard board = membersWithBoardAndUser.get(0).getGroupBoard();
-        List<MemberDTO> memberDTOs = membersWithBoardAndUser.stream().map(MemberMapper::toMemberDTO)
+        List<MemberDTO> memberDTOs = membersWithBoardAndUser.stream().map(this::toMemberDTO)
                 .collect(Collectors.toList());
 
         log.debug("Board details fetched successfully. BoardId: {}, Members: {}", boardId,
@@ -335,5 +334,15 @@ public class BoardService {
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
 
         return mapToBoardResponse(member);
+    }
+
+    private MemberDTO toMemberDTO(GroupMember membership) {
+        return MemberDTO.builder()
+            .email(membership.getUser().getEmail())
+            .firstName(membership.getUser().getFirstName())
+            .lastName(membership.getUser().getLastName())
+            .profilePictureUrl(membership.getUser().getProfilePictureUrl())
+            .isAdmin(membership.getIsAdmin())
+            .build();
     }
 }
