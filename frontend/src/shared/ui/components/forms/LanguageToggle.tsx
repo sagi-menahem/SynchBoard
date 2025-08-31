@@ -54,7 +54,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           cursor: 'pointer',
           borderRadius: '9999px',
           border: '2px solid transparent',
-          backgroundColor: isHebrew ? '#374151' : '#e5e7eb',
+          backgroundColor: isHebrew ? '#374151' : '#374151',
           padding: '0',
           transition: 'background-color 0.2s',
           outline: 'none',
@@ -73,9 +73,12 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             borderRadius: '9999px',
             backgroundColor: 'white',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            transform: isHebrew 
-              ? (isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`)
-              : 'translateX(0px)',
+            transform: (() => {
+              if (isHebrew) {
+                return isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`;
+              }
+              return 'translateX(0px)';
+            })(),
             transition: 'transform 0.2s',
             zIndex: 1,
           }}
@@ -87,25 +90,36 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           inset: '2px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingLeft: '8px',
-          paddingRight: '8px',
           zIndex: 2,
         }}>
-          <span style={{
-            fontSize: `${config.fontSize}px`,
-            fontWeight: '700',
-            color: isHebrew ? '#6b7280' : '#374151',
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-            EN
-          </span>
-          <span style={{
-            fontSize: `${config.fontSize}px`,
-            fontWeight: '700',
-            color: isHebrew ? '#6b7280' : '#6b7280',
+            <span style={{
+              fontSize: `${config.fontSize}px`,
+              fontWeight: '700',
+              color: isHebrew ? '#6b7280' : '#374151',
+            }}>
+              EN
+            </span>
+          </div>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-            HE
-          </span>
+            <span style={{
+              fontSize: `${config.fontSize}px`,
+              fontWeight: '700',
+              color: isHebrew ? '#6b7280' : '#6b7280',
+            }}>
+              HE
+            </span>
+          </div>
         </div>
       </Switch>
     </div>

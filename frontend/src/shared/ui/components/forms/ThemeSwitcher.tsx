@@ -73,9 +73,12 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             borderRadius: '9999px',
             backgroundColor: 'white',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            transform: isDark 
-              ? (isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`)
-              : 'translateX(0px)',
+            transform: (() => {
+              if (isDark) {
+                return isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`;
+              }
+              return 'translateX(0px)';
+            })(),
             transition: 'transform 0.2s',
             zIndex: 1,
           }}
