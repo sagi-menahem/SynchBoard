@@ -18,7 +18,8 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
   size = 'sm',
   showLabel = false,
 }) => {
-  const { t } = useTranslation(['common']);
+  const { t, i18n } = useTranslation(['common']);
+  const isRTL = i18n.language === 'he';
 
   // Size configurations to match ThemeSwitcher
   const sizeConfig = {
@@ -72,7 +73,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             borderRadius: '9999px',
             backgroundColor: 'white',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            transform: isHebrew ? 'translateX(0px)' : `translateX(${config.width - config.height}px)`,
+            transform: isHebrew 
+              ? (isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`)
+              : 'translateX(0px)',
             transition: 'transform 0.2s',
             zIndex: 1,
           }}
