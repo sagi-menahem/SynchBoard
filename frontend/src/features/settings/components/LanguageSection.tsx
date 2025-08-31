@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+import clsx from 'clsx';
 import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
-import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import Button from 'shared/ui/components/forms/Button';
+import { Button, SectionCard } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
@@ -59,8 +59,10 @@ const LanguageSection: React.FC = () => {
 
   if (isLoading) {
     return (
-      <section className={styles.section}>
-        <h2 className={styles.sectionHeader}>{t('settings:page.languageHeader')}</h2>
+      <SectionCard 
+        title={t('settings:page.languageHeader')}
+        variant="default"
+      >
         <div className={styles.field}>
           <div className={languageStyles.languageSwitcher}>
             <span className={languageStyles.label}>{t('common:language')}</span>
@@ -69,13 +71,15 @@ const LanguageSection: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </SectionCard>
     );
   }
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionHeader}>{t('settings:page.languageHeader')}</h2>
+    <SectionCard 
+      title={t('settings:page.languageHeader')}
+      variant="default"
+    >
       <div className={styles.field}>
         <div className={languageStyles.languageSwitcher}>
           <span className={languageStyles.label}>{t('common:language')}</span>
@@ -101,7 +105,7 @@ const LanguageSection: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
+    </SectionCard>
   );
 };
 

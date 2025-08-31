@@ -3,10 +3,9 @@ import React from 'react';
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { useCanvasSettings } from 'features/board/hooks/useCanvasSettings';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
-import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { Save, Settings2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, ColorPicker, Input, RadioGroup } from 'shared/ui';
+import { Button, ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './CanvasSettingsSection.module.scss';
@@ -51,10 +50,12 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
 
   if (!isAdmin) {
     return (
-      <Card variant="default" className={settingsStyles.section}>
-        <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
-        <div className={settingsStyles.field}>
-          <label className={settingsStyles.field} style={{ marginBottom: '0.5rem' }}>
+      <SectionCard 
+        title={t('board:details.canvasSettings.title')}
+        variant="default"
+      >
+        <div style={{ marginBottom: '1rem' }}>
+          <label style={{ marginBottom: '0.5rem', display: 'block' }}>
             {t('board:details.canvasSettings.backgroundColor')}:
           </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -71,34 +72,36 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             </span>
           </div>
         </div>
-        <div className={settingsStyles.field}>
-          <label style={{ marginBottom: '0.5rem' }}>
+        <div>
+          <label style={{ marginBottom: '0.5rem', display: 'block' }}>
             {t('board:details.canvasSettings.size')}:
           </label>
           <p>
             {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
           </p>
         </div>
-      </Card>
+      </SectionCard>
     );
   }
 
   return (
-    <Card variant="default" className={settingsStyles.section}>
-      <div className={settingsStyles.sectionHeader}>
-        <h2 className={settingsStyles.sectionTitle}>{t('board:details.canvasSettings.title')}</h2>
-        {!isEditing && (
-          <Button onClick={handleStartEditing} variant="secondary" className={settingsStyles.editButton}>
+    <SectionCard 
+      title={t('board:details.canvasSettings.title')}
+      variant="default"
+      headerActions={
+        !isEditing ? (
+          <Button onClick={handleStartEditing} variant="secondary">
             <Settings2 size={16} />
             {t('board:details.canvasSettings.edit')}
           </Button>
-        )}
-      </div>
+        ) : undefined
+      }
+    >
 
       {isEditing ? (
         <>
-          <div className={settingsStyles.field}>
-            <label>{t('board:details.canvasSettings.backgroundColor')}</label>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t('board:details.canvasSettings.backgroundColor')}</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
               <ColorPicker
                 color={backgroundColor}
@@ -114,8 +117,8 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             </div>
           </div>
 
-          <div className={settingsStyles.field}>
-            <label>{t('board:details.canvasSettings.size')}</label>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t('board:details.canvasSettings.size')}</label>
             <div style={{ marginTop: '0.5rem' }}>
               <RadioGroup
                 value={canvasSize}
@@ -151,7 +154,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             )}
           </div>
 
-          <div className={settingsStyles.buttonGroup}>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
             <Button 
               onClick={handleCancel} 
               disabled={isUpdating} 
@@ -172,8 +175,8 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         </>
       ) : (
         <>
-          <div className={settingsStyles.field}>
-            <label style={{ marginBottom: '0.5rem' }}>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ marginBottom: '0.5rem', display: 'block' }}>
               {t('board:details.canvasSettings.backgroundColor')}:
             </label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -190,8 +193,8 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               </span>
             </div>
           </div>
-          <div className={settingsStyles.field}>
-            <label style={{ marginBottom: '0.5rem' }}>
+          <div>
+            <label style={{ marginBottom: '0.5rem', display: 'block' }}>
               {t('board:details.canvasSettings.size')}:
             </label>
             <p>
@@ -200,7 +203,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
         </>
       )}
-    </Card>
+    </SectionCard>
   );
 };
 

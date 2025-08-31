@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
-import settingsStyles from 'features/settings/pages/SettingsPage.module.scss';
 import { PencilLine, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, PictureManager, Textarea } from 'shared/ui';
+import { Button, PictureManager, SectionCard, Textarea } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.scss';
 
@@ -50,7 +49,10 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
     return (
         <>
-            <Card variant="default" className={settingsStyles.section}>
+            <SectionCard 
+                title={t('board:detailsPage.changePicture')}
+                variant="default"
+            >
                 <PictureManager
                     imageUrl={boardDetails.pictureUrl}
                     defaultImage={defaultBoardImage}
@@ -62,26 +64,26 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                     deleteButtonText={t('board:detailsPage.deletePicture')}
                     className={styles.pictureManager}
                 />
-            </Card>
+            </SectionCard>
 
-            <Card variant="default" className={settingsStyles.section}>
-                <div className={settingsStyles.sectionHeader}>
-                    <h2 className={settingsStyles.sectionTitle}>{t('board:detailsPage.boardDescription')}</h2>
-                    {currentUserIsAdmin && !isEditingDescription && (
+            <SectionCard 
+                title={t('board:detailsPage.boardDescription')}
+                variant="default"
+                headerActions={
+                    currentUserIsAdmin && !isEditingDescription ? (
                         <Button 
                             onClick={() => setIsEditingDescription(true)}
                             variant="secondary"
-                            className={settingsStyles.editButton}
                         >
                             <PencilLine size={16} />
                             {t('board:detailsPage.editDescription')}
                         </Button>
-                    )}
-                </div>
-                
+                    ) : undefined
+                }
+            >
                 {isEditingDescription ? (
                     <div className={styles.editForm}>
-                        <div className={settingsStyles.field}>
+                        <div>
                             <Textarea
                                 value={descriptionValue}
                                 onChange={(e) => setDescriptionValue(e.target.value)}
@@ -91,7 +93,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                                 className={styles.descriptionTextarea}
                             />
                         </div>
-                        <div className={settingsStyles.buttonGroup}>
+                        <div className={styles.buttonGroup}>
                             <Button 
                                 onClick={handleCancelDescriptionEdit}
                                 disabled={isUpdating}
@@ -111,13 +113,26 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                         </div>
                     </div>
                 ) : (
-                    <div className={settingsStyles.field}>
-                        <p>
-                            {boardDetails.description ?? t('board:detailsPage.noDescription')}
-                        </p>
+                    <div>
+                        {boardDetails.description ? (
+                            <p className={styles.description}>
+                                {boardDetails.description}
+                            </p>
+                        ) : (
+                            <div className={styles.emptyDescription}>
+                                <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                                    {t('board:detailsPage.noDescription')}
+                                </label>
+                                {currentUserIsAdmin && (
+                                    <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                                        {t('board:detailsPage.noDescriptionHint')}
+                                    </label>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
-            </Card>
+            </SectionCard>
         </>
     );
 };

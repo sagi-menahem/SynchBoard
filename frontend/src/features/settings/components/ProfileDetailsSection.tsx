@@ -5,7 +5,7 @@ import { useUserProfile } from 'features/settings/hooks/profile/useUserProfile';
 import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/types/UserTypes';
 import { PencilLine } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'shared/ui';
+import { Button, SectionCard } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
 
@@ -30,19 +30,18 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
   };
 
   return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>
-          {t('settings:page.profileSectionHeader')}
-        </h2>
-        {!isEditing && (
+    <SectionCard 
+      title={t('settings:page.profileSectionHeader')}
+      variant="default"
+      headerActions={
+        !isEditing ? (
           <Button onClick={startEditing} variant="secondary" className={styles.editButton}>
             <PencilLine size={16} />
             {t('settings:page.buttons.edit')}
           </Button>
-        )}
-      </div>
-
+        ) : undefined
+      }
+    >
       {!isEditing ? (
         <ProfileDisplayView user={user} />
       ) : (
@@ -53,7 +52,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
           onCancel={cancelEditing}
         />
       )}
-    </section>
+    </SectionCard>
   );
 };
 

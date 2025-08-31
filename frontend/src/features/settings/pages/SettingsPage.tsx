@@ -8,11 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import {
-  Card,
   ConfirmationDialog,
   PageLoader,
   PageTransition,
   PictureManager,
+  SectionCard,
   UniversalToolbar,
 } from 'shared/ui';
 import logger from 'shared/utils/logger';
@@ -131,19 +131,20 @@ const SettingsPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <main className={styles.pageContent} data-has-toolbar>
-        <section>
-          <Card variant="default" className={styles.section}>
-            <PictureManager
-              imageUrl={user.profilePictureUrl}
-              defaultImage={defaultUserImage}
-              altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
-              onUpload={handlePictureUploadWithCleanup}
-              onDelete={() => setPicDeleteConfirmOpen(true)}
-              uploadButtonText={t('settings:page.changePicture')}
-              deleteButtonText={t('settings:page.deletePicture')}
-            />
-          </Card>
-        </section>
+        <SectionCard 
+          title={t('settings:page.changePicture')} 
+          variant="default"
+        >
+          <PictureManager
+            imageUrl={user.profilePictureUrl}
+            defaultImage={defaultUserImage}
+            altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
+            onUpload={handlePictureUploadWithCleanup}
+            onDelete={() => setPicDeleteConfirmOpen(true)}
+            uploadButtonText={t('settings:page.changePicture')}
+            deleteButtonText={t('settings:page.deletePicture')}
+          />
+        </SectionCard>
 
         <ProfileDetailsSection
           user={user}
@@ -154,12 +155,12 @@ const SettingsPage: React.FC = () => {
 
         <ThemeSection />
 
-        <Card variant="default" className={styles.section}>
-          <h2 className={styles.sectionHeader}>
-            {t('settings:page.passwordSectionHeader')}
-          </h2>
+        <SectionCard 
+          title={t('settings:page.passwordSectionHeader')} 
+          variant="default"
+        >
           <ChangePasswordForm onSubmit={handleChangePassword} />
-        </Card>
+        </SectionCard>
 
         <BoardAppearanceSection />
 

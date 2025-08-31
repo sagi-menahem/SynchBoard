@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
+import React, { createContext, useContext, useState, type ReactNode } from 'react';
+
 import { createPortal } from 'react-dom';
 
 import { EnhancedContextMenu } from './EnhancedContextMenu';
@@ -24,13 +24,17 @@ interface ContextMenuProviderProps {
   children: ReactNode;
 }
 
+const noop = (): void => {
+  // Intentionally empty - default no-op function for context menu
+};
+
 export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ children }) => {
   const [menuState, setMenuState] = useState<ContextMenuState>({
     isOpen: false,
     x: 0,
     y: 0,
     content: null,
-    onClose: () => {},
+    onClose: noop,
   });
 
   const showContextMenu = (x: number, y: number, content: ReactNode, onClose?: () => void) => {
@@ -49,7 +53,7 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
   };
 
   const hideContextMenu = () => {
-    setMenuState(prev => ({
+    setMenuState((prev) => ({
       ...prev,
       isOpen: false,
       content: null,
@@ -73,7 +77,7 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
         >
           {menuState.content}
         </EnhancedContextMenu>,
-        document.body
+        document.body,
       )}
     </ContextMenuContext.Provider>
   );

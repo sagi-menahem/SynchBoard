@@ -2,6 +2,8 @@
 import React, { useMemo, useRef } from 'react';
 
 import { BoardProvider } from 'features/board';
+import { BoardWorkspace, CanvasToolSection } from 'features/board/components/workspace';
+import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
@@ -11,8 +13,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
 
-import { BoardWorkspace, CanvasToolSection } from 'features/board/components/workspace';
-import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 
 
 import styles from './BoardPage.module.scss';

@@ -1,8 +1,8 @@
 
 import React, { useCallback } from 'react';
 
-import { TOOLS } from 'features/board/constants/BoardConstants';
 import clsx from 'clsx';
+import { TOOLS } from 'features/board/constants/BoardConstants';
 import {
   ArrowRight,
   Minus,
