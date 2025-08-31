@@ -39,7 +39,6 @@ public class BoardObjectService {
 
         @Transactional
         public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
-
                 membershipService.validateBoardAccess(userEmail, request.getBoardId());
 
                 User user = userRepository.findById(userEmail)
@@ -53,76 +52,19 @@ public class BoardObjectService {
                 try {
                         String payloadAsString = objectMapper.writeValueAsString(request.getPayload());
 
-                        if (request.getType() == ActionType.OBJECT_ADD) {
-                                BoardObject newBoardObject = BoardObject.builder().board(board)
-                                                .createdByUser(user).lastEditedByUser(user)
-                                                .objectType(request.getType().name())
-                                                .objectData(payloadAsString)
-                                                .instanceId(request.getInstanceId()).build();
-
-                                BoardObject persistedBoardObject =
-                                                boardObjectRepository.saveAndFlush(newBoardObject);
-
-                                ActionHistory historyRecord = ActionHistory.builder().board(board)
-                                                .user(user).boardObject(persistedBoardObject)
-                                                .actionType(request.getType().name())
-                                                .stateBefore(null).stateAfter(payloadAsString)
-                                                .build();
-
-                                actionHistoryRepository.save(historyRecord);
-
-                        } else if (request.getType() == ActionType.OBJECT_UPDATE) {
-                                log.debug("OBJECT_UPDATE: Searching for instanceId: {} in board: {}", 
-                                        request.getInstanceId(), board.getBoardGroupId());
-                                
-                                BoardObject existingObject = boardObjectRepository
-                                                .findByInstanceIdAndBoardAndIsActive(
-                                                                request.getInstanceId(), board, true)
-                                                .orElseThrow(() -> {
-                                                        log.error("OBJECT_UPDATE: BoardObject not found - instanceId: {}, boardId: {}", 
-                                                                request.getInstanceId(), board.getBoardGroupId());
-                                                        return new ResourceNotFoundException(
-                                                                "BoardObject not found with instanceId: " +
-                                                                                request.getInstanceId());
-                                                });
-
-                                String previousPayload = existingObject.getObjectData();
-                                existingObject.setObjectData(payloadAsString);
-                                existingObject.setLastEditedByUser(user);
-
-                                boardObjectRepository.saveAndFlush(existingObject);
-
-                                ActionHistory historyRecord = ActionHistory.builder().board(board)
-                                                .user(user).boardObject(existingObject)
-                                                .actionType(request.getType().name())
-                                                .stateBefore(previousPayload).stateAfter(payloadAsString)
-                                                .build();
-
-                                actionHistoryRepository.save(historyRecord);
-
-                        } else if (request.getType() == ActionType.OBJECT_DELETE) {
-                                BoardObject objectToDelete = boardObjectRepository
-                                                .findByInstanceIdAndBoardAndIsActive(
-                                                                request.getInstanceId(), board, true)
-                                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                                "BoardObject not found with instanceId: " +
-                                                                                request.getInstanceId()));
-
-                                String previousPayload = objectToDelete.getObjectData();
-                                objectToDelete.setActive(false);
-                                objectToDelete.setLastEditedByUser(user);
-
-                                boardObjectRepository.saveAndFlush(objectToDelete);
-
-                                ActionHistory historyRecord = ActionHistory.builder().board(board)
-                                                .user(user).boardObject(objectToDelete)
-                                                .actionType(request.getType().name())
-                                                .stateBefore(previousPayload).stateAfter(null)
-                                                .build();
-
-                                actionHistoryRepository.save(historyRecord);
+                        switch (request.getType()) {
+                                case OBJECT_ADD:
+                                        handleObjectAdd(request, board, user, payloadAsString);
+                                        break;
+                                case OBJECT_UPDATE:
+                                        handleObjectUpdate(request, board, user, payloadAsString);
+                                        break;
+                                case OBJECT_DELETE:
+                                        handleObjectDelete(request, board, user);
+                                        break;
+                                default:
+                                        throw new InvalidRequestException("Unsupported action type: " + request.getType());
                         }
-
                 } catch (JsonProcessingException e) {
                         log.error("Failed to process JSON payload for board action on board {}: {}",
                                         request.getBoardId(), e.getMessage(), e);
@@ -142,6 +84,63 @@ public class BoardObjectService {
                                 .collect(Collectors.toList());
         }
 
+        private void handleObjectAdd(BoardActionDTO.Request request, GroupBoard board, User user, String payloadAsString) {
+                BoardObject newBoardObject = BoardObject.builder().board(board)
+                                .createdByUser(user).lastEditedByUser(user)
+                                .objectType(request.getType().name())
+                                .objectData(payloadAsString)
+                                .instanceId(request.getInstanceId()).build();
+
+                BoardObject persistedBoardObject = boardObjectRepository.saveAndFlush(newBoardObject);
+                createActionHistory(board, user, persistedBoardObject, request.getType(), null, payloadAsString);
+        }
+
+        private void handleObjectUpdate(BoardActionDTO.Request request, GroupBoard board, User user, String payloadAsString) {
+                log.debug("OBJECT_UPDATE: Searching for instanceId: {} in board: {}", 
+                        request.getInstanceId(), board.getBoardGroupId());
+                
+                BoardObject existingObject = boardObjectRepository
+                                .findByInstanceIdAndBoardAndIsActive(request.getInstanceId(), board, true)
+                                .orElseThrow(() -> {
+                                        log.error("OBJECT_UPDATE: BoardObject not found - instanceId: {}, boardId: {}", 
+                                                request.getInstanceId(), board.getBoardGroupId());
+                                        return new ResourceNotFoundException(
+                                                "BoardObject not found with instanceId: " + request.getInstanceId());
+                                });
+
+                String previousPayload = existingObject.getObjectData();
+                existingObject.setObjectData(payloadAsString);
+                existingObject.setLastEditedByUser(user);
+
+                boardObjectRepository.saveAndFlush(existingObject);
+                createActionHistory(board, user, existingObject, request.getType(), previousPayload, payloadAsString);
+        }
+
+        private void handleObjectDelete(BoardActionDTO.Request request, GroupBoard board, User user) {
+                BoardObject objectToDelete = boardObjectRepository
+                                .findByInstanceIdAndBoardAndIsActive(request.getInstanceId(), board, true)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "BoardObject not found with instanceId: " + request.getInstanceId()));
+
+                String previousPayload = objectToDelete.getObjectData();
+                objectToDelete.setActive(false);
+                objectToDelete.setLastEditedByUser(user);
+
+                boardObjectRepository.saveAndFlush(objectToDelete);
+                createActionHistory(board, user, objectToDelete, request.getType(), previousPayload, null);
+        }
+
+        private void createActionHistory(GroupBoard board, User user, BoardObject boardObject, 
+                        ActionType actionType, String stateBefore, String stateAfter) {
+                ActionHistory historyRecord = ActionHistory.builder().board(board)
+                                .user(user).boardObject(boardObject)
+                                .actionType(actionType.name())
+                                .stateBefore(stateBefore).stateAfter(stateAfter)
+                                .build();
+
+                actionHistoryRepository.save(historyRecord);
+        }
+
         private BoardActionDTO.Response mapEntityToResponse(BoardObject entity) {
                 try {
                         JsonNode payload = objectMapper.readTree(entity.getObjectData());
@@ -155,17 +154,8 @@ public class BoardObjectService {
                                         .type(ActionType.valueOf(entity.getObjectType()))
                                         .payload(payload).sender(senderEmail)
                                         .instanceId(entity.getInstanceId()).build();
-                } catch (JsonProcessingException e) {
-                        log.error("Failed to parse BoardObject JSON data for object ID: {}, data: {}",
-                                        entity.getObjectId(), entity.getObjectData(), e);
-
-                        return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE)
-                                        .payload(null).sender("system-error")
-                                        .instanceId(entity.getInstanceId()).build();
-                } catch (IllegalArgumentException e) {
-                        log.error("Invalid object type '{}' for BoardObject ID: {}",
-                                        entity.getObjectType(), entity.getObjectId(), e);
-
+                } catch (JsonProcessingException | IllegalArgumentException e) {
+                        log.error("Failed to parse BoardObject data for object ID: {}", entity.getObjectId(), e);
                         return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE)
                                         .payload(null).sender("system-error")
                                         .instanceId(entity.getInstanceId()).build();

@@ -72,64 +72,16 @@ public class FileStorageService {
                 fileSize);
 
         String cleanedFilename = StringUtils.cleanPath(originalFilename);
-        if (cleanedFilename.contains("..")) {
-            log.error("Invalid path in filename: {}", cleanedFilename);
-            throw new InvalidRequestException(FileConstants.ERROR_INVALID_PATH);
-        }
-
-        if (fileSize > FileConstants.MAX_FILE_SIZE_BYTES) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename,
-                    String.format("File size %d exceeds maximum allowed size of %d bytes", fileSize,
-                            FileConstants.MAX_FILE_SIZE_BYTES));
-            throw new InvalidRequestException(String.format(FileConstants.ERROR_FILE_TOO_LARGE,
-                    FileConstants.MAX_FILE_SIZE_MB));
-        }
-
-        if (!isAllowedMimeType(contentType)) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename,
-                    String.format("MIME type not allowed. Content-Type: %s, Allowed types: %s",
-                            contentType,
-                            String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES)));
-            throw new InvalidRequestException(
-                    String.format(FileConstants.ERROR_MIME_TYPE_NOT_ALLOWED,
-                            String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES)));
-        }
-
         String fileExtension = getFileExtension(cleanedFilename);
-
-        if (!isAllowedExtension(fileExtension)) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename, String.format(
-                    "File extension not allowed. Extension: '%s', Allowed extensions: %s",
-                    fileExtension, String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS)));
-            throw new InvalidRequestException(
-                    String.format(FileConstants.ERROR_EXTENSION_NOT_ALLOWED,
-                            String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS)));
-        }
-
-        String normalizedContentType =
-                contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
-        if (!validateFileSignature(file, normalizedContentType)) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, originalFilename,
-                    String.format(
-                            "File signature validation failed. Content-Type: %s (normalized: %s)",
-                            contentType, normalizedContentType));
-            throw new InvalidRequestException(FileConstants.ERROR_FILE_SIGNATURE_MISMATCH);
-        }
-
-        if ("image/svg+xml".equals(normalizedContentType)) {
-            if (!validateSvgSecurity(file)) {
-                throw new InvalidRequestException(FileConstants.ERROR_SVG_MALICIOUS_CONTENT);
-            }
-        }
+        String normalizedContentType = contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
+        
+        validateUploadedFile(file, cleanedFilename, fileSize, normalizedContentType, fileExtension);
 
         String uniqueFilename = generateUniqueFilename(fileExtension);
 
         try (InputStream inputStream = file.getInputStream()) {
-            Path destinationFile = this.rootLocation.resolve(uniqueFilename).normalize();
-
-            if (!destinationFile.startsWith(this.rootLocation)) {
-                log.error("Security check failed - destination outside upload directory: {}",
-                        destinationFile);
+            Path destinationFile = securePathResolve(uniqueFilename, "store");
+            if (destinationFile == null) {
                 throw new InvalidRequestException(FileConstants.ERROR_STORAGE_OUTSIDE_DIRECTORY);
             }
 
@@ -151,18 +103,12 @@ public class FileStorageService {
         }
 
         String cleanedFilename = StringUtils.cleanPath(filename);
-        if (cleanedFilename.contains("..")) {
-            log.warn("Attempted to delete file with invalid path: {}", filename);
+        Path file = securePathResolve(cleanedFilename, "delete");
+        if (file == null) {
             return;
         }
 
         try {
-            Path file = rootLocation.resolve(cleanedFilename).normalize();
-
-            if (!file.startsWith(this.rootLocation)) {
-                log.warn("Attempted to delete file outside of upload directory: {}", filename);
-                return;
-            }
 
             if (Files.deleteIfExists(file)) {
                 log.info(LoggingConstants.FILE_DELETE_SUCCESS, filename, "system");
@@ -175,25 +121,8 @@ public class FileStorageService {
         }
     }
 
-    private boolean isAllowedMimeType(String mimeType) {
-        if (mimeType == null) {
-            return false;
-        }
-
-        String normalizedMimeType = normalizeMimeType(mimeType.toLowerCase());
-        return FileConstants.ALLOWED_IMAGE_MIME_TYPES.contains(normalizedMimeType);
-    }
-
     private String normalizeMimeType(String mimeType) {
-        if ("image/jpg".equals(mimeType)) {
-            return "image/jpeg";
-        }
-        return mimeType;
-    }
-
-    private boolean isAllowedExtension(String extension) {
-        return extension != null
-                && FileConstants.ALLOWED_IMAGE_EXTENSIONS.contains(extension.toLowerCase());
+        return "image/jpg".equals(mimeType) ? "image/jpeg" : mimeType;
     }
 
     private String getFileExtension(String filename) {
@@ -315,11 +244,8 @@ public class FileStorageService {
             
             // Download and store the image
             try (InputStream inputStream = connection.getInputStream()) {
-                Path destinationFile = this.rootLocation.resolve(uniqueFilename).normalize();
-                
-                if (!destinationFile.startsWith(this.rootLocation)) {
-                    log.error("Security check failed - destination outside upload directory: {}", 
-                            destinationFile);
+                Path destinationFile = securePathResolve(uniqueFilename, "download");
+                if (destinationFile == null) {
                     return null;
                 }
                 
@@ -352,5 +278,70 @@ public class FileStorageService {
             default:
                 return ".jpg"; // Default fallback
         }
+    }
+
+    private void validateUploadedFile(MultipartFile file, String cleanedFilename, long fileSize, 
+            String normalizedContentType, String fileExtension) throws InvalidRequestException {
+        
+        if (cleanedFilename.contains("..")) {
+            log.error("Invalid path in filename: {}", cleanedFilename);
+            throw new InvalidRequestException(FileConstants.ERROR_INVALID_PATH);
+        }
+
+        if (fileSize > FileConstants.MAX_FILE_SIZE_BYTES) {
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
+                    String.format("File size %d exceeds maximum allowed size", fileSize));
+            throw new InvalidRequestException(String.format(FileConstants.ERROR_FILE_TOO_LARGE,
+                    FileConstants.MAX_FILE_SIZE_MB));
+        }
+
+        if (!isValidMimeType(normalizedContentType)) {
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
+                    "MIME type not allowed: " + normalizedContentType);
+            throw new InvalidRequestException(
+                    String.format(FileConstants.ERROR_MIME_TYPE_NOT_ALLOWED,
+                            String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES)));
+        }
+
+        if (!isValidExtension(fileExtension)) {
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
+                    "File extension not allowed: " + fileExtension);
+            throw new InvalidRequestException(
+                    String.format(FileConstants.ERROR_EXTENSION_NOT_ALLOWED,
+                            String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS)));
+        }
+
+        if (!validateFileSignature(file, normalizedContentType)) {
+            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
+                    "File signature validation failed for type: " + normalizedContentType);
+            throw new InvalidRequestException(FileConstants.ERROR_FILE_SIGNATURE_MISMATCH);
+        }
+
+        if ("image/svg+xml".equals(normalizedContentType) && !validateSvgSecurity(file)) {
+            throw new InvalidRequestException(FileConstants.ERROR_SVG_MALICIOUS_CONTENT);
+        }
+    }
+
+    private boolean isValidMimeType(String mimeType) {
+        return mimeType != null && FileConstants.ALLOWED_IMAGE_MIME_TYPES.contains(mimeType);
+    }
+
+    private boolean isValidExtension(String extension) {
+        return extension != null && FileConstants.ALLOWED_IMAGE_EXTENSIONS.contains(extension.toLowerCase());
+    }
+
+    private Path securePathResolve(String filename, String operation) {
+        if (filename.contains("..")) {
+            log.warn("Attempted to {} file with invalid path: {}", operation, filename);
+            return null;
+        }
+
+        Path resolvedPath = rootLocation.resolve(filename).normalize();
+        if (!resolvedPath.startsWith(this.rootLocation)) {
+            log.warn("Attempted to {} file outside directory: {}", operation, filename);
+            return null;
+        }
+
+        return resolvedPath;
     }
 }
