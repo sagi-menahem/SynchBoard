@@ -169,6 +169,7 @@
 
 .adminLabel {
     @include theme.flex-center;
+    color: theme.$text-muted;
 }
 
 .boardCard.grid .cardHeader h2 {

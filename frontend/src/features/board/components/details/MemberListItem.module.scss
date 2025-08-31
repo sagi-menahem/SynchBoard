@@ -29,4 +29,5 @@
 .adminBadge {
     @include theme.flex-center;
     margin-inline-start: auto;
+    color: theme.$text-muted;
 }
