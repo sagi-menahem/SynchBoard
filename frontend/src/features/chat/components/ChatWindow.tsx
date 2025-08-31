@@ -39,7 +39,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   return (
     <Card
       className={styles.container}
-      style={getBackgroundStyle()}
       padding="none"
     >
       {searchVisible && (
