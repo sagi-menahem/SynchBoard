@@ -9,7 +9,7 @@ import { APP_ROUTES } from 'shared/constants';
 import {
   Card,
   ConfirmationDialog,
-  ContextMenu,
+  EnhancedContextMenu,
   ContextMenuItem,
   Modal,
   PageLoader,
@@ -155,9 +155,10 @@ const BoardListPage: React.FC = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
       </Modal>
+      </main>
 
       {contextMenu.isOpen && contextMenu.data && (
-        <ContextMenu
+        <EnhancedContextMenu
           x={contextMenu.anchorPoint.x}
           y={contextMenu.anchorPoint.y}
           onClose={contextMenu.closeMenu}
@@ -165,7 +166,7 @@ const BoardListPage: React.FC = () => {
           <ContextMenuItem onClick={handleLeaveClick} destructive>
             {t('board:leaveBoard.button')}
           </ContextMenuItem>
-        </ContextMenu>
+        </EnhancedContextMenu>
       )}
 
       {boardToLeave && (
@@ -179,7 +180,6 @@ const BoardListPage: React.FC = () => {
           message={t('board:leaveBoard.confirmText', { boardName: boardToLeave.name })}
         />
       )}
-      </main>
     </PageTransition>
   );
 };

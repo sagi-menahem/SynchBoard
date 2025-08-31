@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Member } from 'features/board/types/BoardTypes';
 import { useTranslation } from 'react-i18next';
-import { ContextMenu, ContextMenuItem } from 'shared/ui';
+import { EnhancedContextMenu, ContextMenuItem } from 'shared/ui';
 
 interface MemberContextMenuProps {
     isOpen: boolean;
@@ -30,7 +30,7 @@ const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
   }
 
   return (
-    <ContextMenu x={x} y={y} onClose={onClose}>
+    <EnhancedContextMenu x={x} y={y} onClose={onClose}>
       {!member.isAdmin && (
         <ContextMenuItem onClick={onPromote}>
           {t('board:contextMenu.promoteToAdmin', { userName: member.email })}
@@ -39,7 +39,7 @@ const MemberContextMenu: React.FC<MemberContextMenuProps> = ({
       <ContextMenuItem onClick={onRemove} destructive>
         {t('board:contextMenu.removeFromBoard', { userName: member.email })}
       </ContextMenuItem>
-    </ContextMenu>
+    </EnhancedContextMenu>
   );
 };
 
