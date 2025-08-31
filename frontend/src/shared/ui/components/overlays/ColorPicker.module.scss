@@ -60,7 +60,7 @@
   z-index: theme.$z-index-popover;
   @include theme.card-base;
   @include theme.shadow-heavy;
-  animation: popoverIn 0.2s ease-out;
+  animation: popoverIn theme.$transition-normal ease-out;
   padding: theme.$spacing-3;
 }
 

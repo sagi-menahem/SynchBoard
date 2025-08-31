@@ -5,7 +5,7 @@
   padding: theme.$spacing-1 16px;
   margin-bottom: 8px;
   box-sizing: border-box;
-  animation: messageSlideIn 0.3s ease-out;
+  animation: messageSlideIn theme.$transition-slow ease-out;
 }
 
 .messageContainer.noAnimation {
@@ -167,7 +167,7 @@
 }
 
 .processing {
-  animation: subtlePulse 2s infinite ease-in-out;
+  animation: subtlePulse theme.$transition-very-slow infinite ease-in-out;
 }
 
 @keyframes subtlePulse {

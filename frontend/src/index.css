@@ -14,6 +14,11 @@ body[data-theme='light'] {
 
     --banner-height: 0px;
 
+    /* Transition System */
+    --transition-duration-fast: 0.15s;
+    --transition-duration-normal: 0.2s;
+    --transition-duration-slow: 0.3s;
+
     /* Canvas-specific variables (legacy) */
     --canvas-container-bg: #1a1a1a;
     --canvas-pattern-color: rgba(255, 255, 255, 0.02);

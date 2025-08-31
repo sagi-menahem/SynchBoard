@@ -130,7 +130,7 @@
     border: 3px solid theme.$border-primary;
     border-top: 3px solid theme.$primary;
     @include theme.rounded-circle;
-    animation: spin 1s linear infinite;
+    animation: spin theme.$transition-very-slow linear infinite;
 }
 
 .placeholderText {

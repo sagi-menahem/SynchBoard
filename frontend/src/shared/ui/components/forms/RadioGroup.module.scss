@@ -87,7 +87,7 @@
     height: theme.$spacing-2;
     border-radius: 50%;
     background-color: theme.$primary;
-    animation: radioScale 0.15s ease-out;
+    animation: radioScale theme.$transition-fast ease-out;
   }
 }
 
