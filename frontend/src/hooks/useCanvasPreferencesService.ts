@@ -107,10 +107,10 @@ export function useCanvasPreferencesService() {
     [isAuthenticated, refreshPreferences],
   );
 
-  const updateLayoutMode = useCallback(async (layoutMode: LayoutMode) => {
+  const updateLayoutMode = async (layoutMode: LayoutMode) => {
     // Layout mode is client-side only for now
     dispatch({ type: 'UPDATE_LAYOUT_MODE', payload: layoutMode });
-  }, []);
+  };
 
   const updateCanvasPreferences = useCallback(
     async (newPrefs: Partial<CanvasPreferences>) => {
@@ -132,9 +132,9 @@ export function useCanvasPreferencesService() {
     [isAuthenticated, state.preferences],
   );
 
-  const resetError = useCallback(() => {
+  const resetError = () => {
     dispatch({ type: 'RESET_ERROR' });
-  }, []);
+  };
 
   // WebSocket subscription for canvas settings updates
   const handleCanvasSettingsUpdate = useCallback(

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import Button from 'shared/ui/components/forms/Button';
@@ -9,7 +9,7 @@ import styles from '../pages/SettingsPage.module.scss';
 
 const BoardAppearanceSection: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
-  const { preferences, updatePreferences } = usePreferences();
+  const { preferences, updatePreferences } = useUserBoardPreferences();
 
   return (
     <section className={styles.section}>
@@ -24,7 +24,7 @@ const BoardAppearanceSection: React.FC = () => {
                 variant="icon"
                 className={`${styles.colorSwatch} ${preferences.boardBackgroundSetting === option.color ? styles.active : ''}`}
                 style={{ backgroundColor: `var(${option.cssVar})` }}
-                onClick={() => updatePreferences({ ...preferences, boardBackgroundSetting: option.color })}
+                onClick={() => updatePreferences({ boardBackgroundSetting: option.color })}
                 title={t(option.nameKey)}
                 aria-label={t(option.nameKey)}
               />

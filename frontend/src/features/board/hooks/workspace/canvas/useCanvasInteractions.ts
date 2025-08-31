@@ -4,7 +4,7 @@ import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest, TextBoxPayload } from 'features/board/types/BoardObjectTypes';
 import { getRecolorCursor } from 'features/board/utils/canvas/cursorUtils';
 import { processRecolorClick } from 'features/board/utils/canvas/recolorLogic';
-import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import type { Tool } from 'shared/types/CommonTypes';
 
@@ -33,7 +33,7 @@ export const useCanvasInteractions = ({
   canvasBackgroundColor,
   handleMouseDown,
 }: UseCanvasInteractionsProps) => {
-  const { preferences } = usePreferences();
+  const { preferences } = useUserBoardPreferences();
   const [textInput, setTextInput] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
   const [recolorCursor, setRecolorCursor] = useState<string>('crosshair');
 

@@ -4,7 +4,7 @@ import { useAuth } from 'features/auth/hooks';
 import { useChatMessages } from 'features/chat/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import { usePreferences } from 'features/settings/UserBoardPreferencesProvider';
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import logger from 'shared/utils/logger';
@@ -15,7 +15,7 @@ interface UseChatWindowLogicProps {
 }
 
 export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProps) => {
-  const { preferences } = usePreferences();
+  const { preferences } = useUserBoardPreferences();
   const { userEmail } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
