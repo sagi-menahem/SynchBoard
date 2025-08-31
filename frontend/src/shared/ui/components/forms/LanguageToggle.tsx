@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { Switch } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
-import ReactSwitch from 'react-switch';
 
 interface LanguageToggleProps {
   value: 'en' | 'he';
@@ -20,11 +20,11 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
 }) => {
   const { t } = useTranslation(['common']);
 
-  // Size configurations - smaller handles to show content
+  // Size configurations to match ThemeSwitcher
   const sizeConfig = {
-    sm: { height: 24, width: 48, handleDiameter: 16, fontSize: 10 },
-    md: { height: 28, width: 56, handleDiameter: 20, fontSize: 11 },
-    lg: { height: 32, width: 64, handleDiameter: 24, fontSize: 12 },
+    sm: { height: 28, width: 56, fontSize: 11 },
+    md: { height: 32, width: 64, fontSize: 12 },
+    lg: { height: 36, width: 72, fontSize: 14 },
   };
 
   const config = sizeConfig[size];
@@ -41,50 +41,68 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           {t('common:language')}
         </span>
       )}
-      <ReactSwitch
+      <Switch
         checked={isHebrew}
         onChange={handleChange}
-        onColor="#374151"         // Same elegant dark gray as ThemeSwitcher
-        offColor="#374151"        // Same elegant light gray as ThemeSwitcher  
-        onHandleColor="rgba(255, 255, 255, 0.3)"   // Very transparent white handle
-        offHandleColor="rgba(55, 65, 81, 0.3)"     // Very transparent dark handle
-        handleDiameter={config.handleDiameter}
-        uncheckedIcon={
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '100%', 
-            width: '100%',
-            fontSize: `${config.fontSize}px`,
-            fontWeight: '700',
-            color: '#a5b4fc',
-          }}>
-            EN
-          </div>
-        }
-        checkedIcon={
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '100%', 
-            width: '100%',
-            fontSize: `${config.fontSize}px`,
-            fontWeight: '700',
-            color: '#a5b4fc',
-          }}>
-            עב
-          </div>
-        }
-        boxShadow="0 1px 3px rgba(0, 0, 0, 0.2)"
-        activeBoxShadow="0 2px 6px rgba(0, 0, 0, 0.3)"
-        height={config.height}
-        width={config.width}
-        id="language-switch"
+        style={{
+          position: 'relative',
+          display: 'inline-flex',
+          height: `${config.height}px`,
+          width: `${config.width}px`,
+          flexShrink: 0,
+          cursor: 'pointer',
+          borderRadius: '9999px',
+          border: '2px solid transparent',
+          backgroundColor: isHebrew ? '#374151' : '#e5e7eb',
+          padding: '0',
+          transition: 'background-color 0.2s',
+          outline: 'none',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        }}
         aria-labelledby={showLabel ? 'language-label' : undefined}
         aria-label={!showLabel ? t('common:language') : undefined}
-      />
+      >
+        {/* Background text */}
+        <div style={{
+          position: 'absolute',
+          inset: '2px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingLeft: '8px',
+          paddingRight: '8px',
+        }}>
+          <span style={{
+            fontSize: `${config.fontSize}px`,
+            fontWeight: '700',
+            color: isHebrew ? '#6b7280' : '#374151',
+          }}>
+            EN
+          </span>
+          <span style={{
+            fontSize: `${config.fontSize}px`,
+            fontWeight: '700',
+            color: isHebrew ? '#ffffff' : '#6b7280',
+          }}>
+            עב
+          </span>
+        </div>
+        
+        {/* Handle */}
+        <span
+          style={{
+            position: 'relative',
+            display: 'inline-block',
+            height: `${config.height - 4}px`,
+            width: `${config.height - 4}px`,
+            borderRadius: '9999px',
+            backgroundColor: 'white',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+            transform: isHebrew ? 'translateX(0px)' : `translateX(${config.width - config.height}px)`,
+            transition: 'transform 0.2s',
+          }}
+        />
+      </Switch>
     </div>
   );
 };
