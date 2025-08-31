@@ -16,20 +16,21 @@ const BoardAppearanceSection: React.FC = () => {
       <h2 className={styles.sectionHeader}>{t('settings:page.boardAppearanceHeader')}</h2>
       <div className={styles.field}>
         <label>{t('settings:page.boardBackgroundColorLabel')}</label>
-        <div className={styles.colorSwatchContainer}>
+        <ul className={styles.colorSwatchContainer}>
           {CHAT_BACKGROUND_OPTIONS.map((option) => (
-            <Button
-              key={option.color}
-              type="button"
-              variant="icon"
-              className={`${styles.colorSwatch} ${preferences.boardBackgroundSetting === option.color ? styles.active : ''}`}
-              style={{ backgroundColor: `var(${option.cssVar})` }}
-              onClick={() => updatePreferences({ ...preferences, boardBackgroundSetting: option.color })}
-              title={t(option.nameKey)}
-              aria-label={t(option.nameKey)}
-            />
+            <li key={option.color}>
+              <Button
+                type="button"
+                variant="icon"
+                className={`${styles.colorSwatch} ${preferences.boardBackgroundSetting === option.color ? styles.active : ''}`}
+                style={{ backgroundColor: `var(${option.cssVar})` }}
+                onClick={() => updatePreferences({ ...preferences, boardBackgroundSetting: option.color })}
+                title={t(option.nameKey)}
+                aria-label={t(option.nameKey)}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

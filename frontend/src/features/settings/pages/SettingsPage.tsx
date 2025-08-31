@@ -120,9 +120,9 @@ const SettingsPage: React.FC = () => {
     return (
       <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent} data-has-toolbar>
+        <main className={styles.pageContent} data-has-toolbar>
           <div className={styles.loadError}>{t('settings:page.loadError')}</div>
-        </div>
+        </main>
       </PageTransition>
     );
   }
@@ -130,18 +130,20 @@ const SettingsPage: React.FC = () => {
   return (
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent} data-has-toolbar>
-        <Card variant="default" className={styles.section}>
-          <PictureManager
-            imageUrl={user.profilePictureUrl}
-            defaultImage={defaultUserImage}
-            altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
-            onUpload={handlePictureUploadWithCleanup}
-            onDelete={() => setPicDeleteConfirmOpen(true)}
-            uploadButtonText={t('settings:page.changePicture')}
-            deleteButtonText={t('settings:page.deletePicture')}
-          />
-        </Card>
+      <main className={styles.pageContent} data-has-toolbar>
+        <section>
+          <Card variant="default" className={styles.section}>
+            <PictureManager
+              imageUrl={user.profilePictureUrl}
+              defaultImage={defaultUserImage}
+              altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
+              onUpload={handlePictureUploadWithCleanup}
+              onDelete={() => setPicDeleteConfirmOpen(true)}
+              uploadButtonText={t('settings:page.changePicture')}
+              deleteButtonText={t('settings:page.deletePicture')}
+            />
+          </Card>
+        </section>
 
         <ProfileDetailsSection
           user={user}
@@ -180,7 +182,7 @@ const SettingsPage: React.FC = () => {
           title={t('settings:page.deleteAccountConfirmTitle')}
           message={t('settings:page.deleteAccountConfirmText')}
         />
-      </div>
+      </main>
     </PageTransition>
   );
 };

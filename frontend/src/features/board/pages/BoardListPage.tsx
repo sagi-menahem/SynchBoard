@@ -102,22 +102,22 @@ const BoardListPage: React.FC = () => {
   return (
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent} data-has-toolbar>
+      <main className={styles.pageContent} data-has-toolbar>
 {(() => {
           if (boards.length > 0) {
             return (
-              <div className={`${styles.boardList} ${styles[viewMode]}`}>
+              <ul className={`${styles.boardList} ${styles[viewMode]}`}>
                 {boards.map((board, index) => (
-                  <div 
+                  <li 
                     key={board.id}
                     className={styles.boardListItem}
                     style={{ animationDelay: `${index * 50}ms` }}
                     onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
                   >
                     <BoardCard board={board} viewMode={viewMode} />
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             );
           }
           
@@ -179,7 +179,7 @@ const BoardListPage: React.FC = () => {
           message={t('board:leaveBoard.confirmText', { boardName: boardToLeave.name })}
         />
       )}
-      </div>
+      </main>
     </PageTransition>
   );
 };

@@ -172,7 +172,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   return (
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent} ref={pageRef} data-board-page>
+      <main className={styles.pageContent} ref={pageRef} data-board-page>
         <div className={styles.boardWorkspaceArea}>
           <BoardWorkspace
             boardId={boardId}
@@ -191,7 +191,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             isLoading={isLoading}
           />
         </div>
-      </div>
+      </main>
     </PageTransition>
   );
 };
