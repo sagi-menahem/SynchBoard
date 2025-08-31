@@ -27,6 +27,7 @@ export { default as ViewToggle } from './components/navigation/ViewToggle';
 export { default as ColorPicker } from './components/overlays/ColorPicker';
 export { default as ConfirmationDialog } from './components/overlays/ConfirmationDialog';
 export { ContextMenuItem } from './components/overlays/ContextMenuItem';
+export { ContextMenuSeparator } from './components/overlays/ContextMenuSeparator';
 export { EnhancedContextMenu } from './components/overlays/EnhancedContextMenu';
 export { ContextMenuProvider } from './components/overlays/ContextMenuProvider';
 export { default as Modal } from './components/overlays/Modal';

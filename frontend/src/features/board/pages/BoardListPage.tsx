@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
-import { LayoutDashboard, Plus, Settings } from 'lucide-react';
+import { LayoutDashboard, LogOut, Plus, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
@@ -163,7 +163,11 @@ const BoardListPage: React.FC = () => {
           y={contextMenu.anchorPoint.y}
           onClose={contextMenu.closeMenu}
         >
-          <ContextMenuItem onClick={handleLeaveClick} destructive>
+          <ContextMenuItem 
+            onClick={handleLeaveClick} 
+            variant="destructive"
+            icon={<LogOut size={16} />}
+          >
             {t('board:leaveBoard.button')}
           </ContextMenuItem>
         </EnhancedContextMenu>
