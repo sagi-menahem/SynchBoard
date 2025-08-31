@@ -121,11 +121,11 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
                             </p>
                         ) : (
                             <div className={styles.emptyDescription}>
-                                <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                                <label className={styles.emptyDescriptionLabel}>
                                     {t('board:detailsPage.noDescription')}
                                 </label>
                                 {currentUserIsAdmin && (
-                                    <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+                                    <label className={styles.emptyDescriptionLabel}>
                                         {t('board:detailsPage.noDescriptionHint')}
                                     </label>
                                 )}

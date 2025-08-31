@@ -39,7 +39,7 @@
   color: theme.$text-muted;
   font-weight: 500;
   min-width: 120px;
-  text-align: start;
+  text-align: start; // CSS logical property - automatically RTL aware
 }
 
 .settingValue {
@@ -142,9 +142,9 @@
 .formActions {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: end;
-  padding-top: theme.$spacing-2;
-  border-top: 1px solid theme.$border-primary;
+  justify-content: end; // CSS logical property - automatically handles RTL
+  padding-block-start: theme.$spacing-2; // Logical property for padding-top
+  border-block-start: 1px solid theme.$border-primary; // Logical property for border-top
 }
 
 .cancelButton,
@@ -158,3 +158,37 @@
   @include theme.button-group;
   margin-top: theme.$spacing-4;
 }
+
+// Settings display containers
+.settingsContainer {
+  margin-bottom: 1rem;
+}
+
+.settingsContainerLarge {
+  margin-bottom: 1.5rem;
+}
+
+.settingLabel {
+  margin-bottom: 0.5rem;
+  display: block;
+  color: theme.$text-muted;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.flexRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.flexRowWithMargin {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+
+

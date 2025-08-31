@@ -72,11 +72,11 @@
 }
 
 .otherMessage .messageHeader {
-  text-align: left;
+  text-align: start; // CSS logical property - automatically RTL aware
 }
 
 .myMessage .messageHeader {
-  text-align: right;
+  text-align: end; // CSS logical property - automatically RTL aware
 }
 
 .senderName {
@@ -98,11 +98,11 @@
 }
 
 .otherMessage .timestampContainer {
-  justify-content: flex-end;
+  justify-content: end; // CSS logical property - automatically RTL aware
 }
 
 .myMessage .timestampContainer {
-  justify-content: flex-start;
+  justify-content: start; // CSS logical property - automatically RTL aware
 }
 
 .messageText {
@@ -120,7 +120,7 @@
 
 .myMessage .messageText {
   color: theme.$primary;
-  text-align: right;
+  text-align: end; // CSS logical property - automatically RTL aware
   
   // Override for dark theme to use white text
   body[data-theme='dark'] & {
@@ -130,7 +130,7 @@
 
 .otherMessage .messageText {
   color: theme.$text-primary;
-  text-align: left;
+  text-align: start; // CSS logical property - automatically RTL aware
 }
 
 .timestamp {

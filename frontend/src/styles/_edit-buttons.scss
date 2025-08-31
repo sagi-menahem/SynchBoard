@@ -33,14 +33,9 @@
     cursor: not-allowed;
   }
   
-  // Icon spacing (for PencilLine, Settings2 icons)
+  // Icon spacing (for PencilLine, Settings2 icons) - using logical properties
   svg {
-    margin-right: theme.$spacing-1;
-    
-    [dir="rtl"] & {
-      margin-right: 0;
-      margin-left: theme.$spacing-1;
-    }
+    margin-inline-end: theme.$spacing-1; // CSS logical property - automatically RTL aware
   }
   
   // Ensure consistent height

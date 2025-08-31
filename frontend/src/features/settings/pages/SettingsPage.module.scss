@@ -2,16 +2,16 @@
 
 .pageContent {
     position: relative;
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
+    padding-block-start: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
     /* Banner + toolbar + gap */
     min-height: 100vh;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    padding-inline: 24px;
-    padding-bottom: 24px;
+    padding-inline: 24px; // Already using logical properties
+    padding-block-end: 24px;
     box-sizing: border-box;
-    text-align: start;
+    text-align: start; // CSS logical property - automatically RTL aware
 }
 
 .loading,
@@ -33,23 +33,15 @@
     text-align: start;
 }
 
-[dir="rtl"] .sectionHeader {
-    text-align: right !important;
-    direction: rtl !important;
-}
 
 .sectionTitle {
     color: theme.$text-primary;
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
-    text-align: start;
+    text-align: start; // CSS logical property - automatically RTL aware
 }
 
-[dir="rtl"] .sectionTitle {
-    text-align: right !important;
-    direction: rtl !important;
-}
 
 .editButton {
     @include theme.edit-button;
@@ -168,3 +160,4 @@
 .dateInput::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
 }
+

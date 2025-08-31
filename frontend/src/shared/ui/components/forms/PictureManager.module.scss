@@ -19,3 +19,5 @@
 .buttonGroup {
   @include theme.button-group;
 }
+
+// No RTL overrides needed - CSS logical properties handle this automatically

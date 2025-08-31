@@ -17,7 +17,7 @@
 }
 
 .field input {
-    text-align: center;
+    text-align: center; // Keep center alignment as intended
 }
 
 .imageField {
@@ -226,7 +226,7 @@
 
 .additionalActions {
     margin-top: theme.$spacing-4;
-    text-align: center;
+    text-align: center; // Keep center alignment as intended
 }
 
 .error {
@@ -260,3 +260,4 @@
         width: 100%;
     }
 }
+
