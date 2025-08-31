@@ -18,11 +18,5 @@ public final class LoggingHelper {
         logger.warn(SECURITY_PREFIX + " " + message, args);
     }
 
-    public static void logSecurityError(Logger logger, String message, Object... args) {
-        logger.error(SECURITY_PREFIX + " " + message, args);
-    }
 
-    public static void logSecurityDebug(Logger logger, String message, Object... args) {
-        logger.debug(SECURITY_PREFIX + " " + message, args);
-    }
 }

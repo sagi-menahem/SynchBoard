@@ -137,54 +137,99 @@ public class FileStorageService {
     }
 
     private boolean validateFileSignature(MultipartFile file, String declaredMimeType) {
-        if ("image/svg+xml".equals(declaredMimeType)) {
-            return true;
+        FileSignatureValidator validator = getFileSignatureValidator(declaredMimeType);
+        return validator.validate(file);
+    }
+
+    private FileSignatureValidator getFileSignatureValidator(String mimeType) {
+        switch (mimeType) {
+            case "image/svg+xml":
+                return new SvgSignatureValidator();
+            case "image/webp":
+                return new WebPSignatureValidator();
+            default:
+                return new StandardSignatureValidator(mimeType);
         }
+    }
 
-        byte[] expectedSignature = FILE_SIGNATURES.get(declaredMimeType);
-        if (expectedSignature == null) {
-            log.debug("No signature validation available for MIME type: {}", declaredMimeType);
-            return true;
+    private interface FileSignatureValidator {
+        boolean validate(MultipartFile file);
+    }
+
+    private static class SvgSignatureValidator implements FileSignatureValidator {
+        @Override
+        public boolean validate(MultipartFile file) {
+            return true; // SVG validation is handled separately in validateSvgSecurity
         }
+    }
 
-        try (InputStream is = file.getInputStream()) {
-            byte[] fileHeader = new byte[12];
-            int bytesRead = is.read(fileHeader);
+    private static class WebPSignatureValidator implements FileSignatureValidator {
+        @Override
+        public boolean validate(MultipartFile file) {
+            try (InputStream is = file.getInputStream()) {
+                byte[] fileHeader = new byte[12];
+                int bytesRead = is.read(fileHeader);
 
-            if (bytesRead < expectedSignature.length) {
-                log.debug("File too small to validate signature for MIME type: {}",
-                        declaredMimeType);
-                return false;
-            }
+                if (bytesRead < 12) {
+                    log.debug("File too small to validate WebP signature");
+                    return false;
+                }
 
-            if ("image/webp".equals(declaredMimeType)) {
-                if (bytesRead >= 12) {
-                    boolean isRiff = Arrays.equals(Arrays.copyOfRange(fileHeader, 0, 4),
-                            new byte[] {0x52, 0x49, 0x46, 0x46});
-                    if (isRiff) {
-                        boolean hasWebpMarker = Arrays.equals(Arrays.copyOfRange(fileHeader, 8, 12),
-                                new byte[] {0x57, 0x45, 0x42, 0x50});
-                        return hasWebpMarker;
-                    }
+                boolean isRiff = Arrays.equals(Arrays.copyOfRange(fileHeader, 0, 4),
+                        new byte[] {0x52, 0x49, 0x46, 0x46});
+                if (isRiff) {
+                    boolean hasWebpMarker = Arrays.equals(Arrays.copyOfRange(fileHeader, 8, 12),
+                            new byte[] {0x57, 0x45, 0x42, 0x50});
+                    return hasWebpMarker;
                 }
                 return false;
+
+            } catch (IOException e) {
+                log.error("Error validating WebP signature, rejecting file for security", e);
+                return false;
+            }
+        }
+    }
+
+    private class StandardSignatureValidator implements FileSignatureValidator {
+        private final String mimeType;
+
+        public StandardSignatureValidator(String mimeType) {
+            this.mimeType = mimeType;
+        }
+
+        @Override
+        public boolean validate(MultipartFile file) {
+            byte[] expectedSignature = FILE_SIGNATURES.get(mimeType);
+            if (expectedSignature == null) {
+                log.debug("No signature validation available for MIME type: {}", mimeType);
+                return true;
             }
 
-            byte[] actualSignature = Arrays.copyOfRange(fileHeader, 0, expectedSignature.length);
-            boolean isValid = Arrays.equals(actualSignature, expectedSignature);
+            try (InputStream is = file.getInputStream()) {
+                byte[] fileHeader = new byte[expectedSignature.length];
+                int bytesRead = is.read(fileHeader);
 
-            if (!isValid) {
-                log.debug("File signature mismatch for MIME type {}: expected {} but got {}",
-                        declaredMimeType, Arrays.toString(expectedSignature),
-                        Arrays.toString(actualSignature));
+                if (bytesRead < expectedSignature.length) {
+                    log.debug("File too small to validate signature for MIME type: {}", mimeType);
+                    return false;
+                }
+
+                boolean isValid = Arrays.equals(fileHeader, expectedSignature);
+
+                if (!isValid) {
+                    log.debug("File signature mismatch for MIME type {}: expected {} but got {}",
+                            mimeType, Arrays.toString(expectedSignature),
+                            Arrays.toString(fileHeader));
+                }
+
+                return isValid;
+
+            } catch (IOException e) {
+                log.error("Error reading file signature for MIME type: {}, rejecting file for security",
+                        mimeType, e);
+                return false;
             }
-
-            return isValid;
-
-        } catch (IOException e) {
-            log.error("Error reading file signature for MIME type: {}, rejecting file for security",
-                    declaredMimeType, e);
-            return false;
         }
     }
 

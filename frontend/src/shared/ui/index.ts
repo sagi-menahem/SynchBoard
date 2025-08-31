@@ -7,7 +7,6 @@ export { default as PasswordInput } from './components/forms/PasswordInput';
 export { default as Textarea } from './components/forms/Textarea';
 export { default as PictureManager } from './components/forms/PictureManager';
 export { default as RadioGroup } from './components/forms/RadioGroup';
-export type { RadioOption } from './components/forms/RadioGroup';
 export { Slider } from './components/forms/Slider';
 export { ToolDropdown } from './components/forms/ToolDropdown';
 export { ToolButton } from './components/forms/ToolButton';

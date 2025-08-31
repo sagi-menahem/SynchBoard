@@ -35,10 +35,6 @@ public class ActionHistoryService {
 
     @Transactional
     public BoardActionDTO.Response undoLastAction(Long boardId, String userEmail) {
-        if (!isUserMember(boardId, userEmail)) {
-            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-        }
-
         ActionHistory lastAction = actionHistoryRepository
                 .findTopByBoard_BoardGroupIdAndIsUndoneFalseOrderByTimestampDesc(boardId)
                 .orElse(null);
@@ -48,36 +44,11 @@ public class ActionHistoryService {
             return null;
         }
 
-        lastAction.setUndone(true);
-        actionHistoryRepository.save(lastAction);
-
-        BoardActionDTO.Response undoResponse = null;
-        log.info("Processing undo for action type: {} (actionId: {})", 
-                lastAction.getActionType(), lastAction.getActionId());
-        
-        if (OBJECT_ADD_ACTION.equals(lastAction.getActionType())) {
-            undoResponse = processAddAction(lastAction, true);
-        } else if (OBJECT_UPDATE_ACTION.equals(lastAction.getActionType())) {
-            undoResponse = processUpdateAction(lastAction, true);
-        } else if (OBJECT_DELETE_ACTION.equals(lastAction.getActionType())) {
-            undoResponse = processDeleteAction(lastAction, true);
-        } else {
-            log.warn("Unsupported action type for undo: {}", lastAction.getActionType());
-        }
-
-        if (undoResponse != null) {
-            broadcastToBoard(boardId, undoResponse);
-        }
-
-        return undoResponse;
+        return processUndoRedoAction(boardId, userEmail, lastAction, true, "undo");
     }
 
     @Transactional
     public BoardActionDTO.Response redoLastAction(Long boardId, String userEmail) {
-        if (!isUserMember(boardId, userEmail)) {
-            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-        }
-
         ActionHistory lastUndoneAction = actionHistoryRepository
                 .findTopByBoard_BoardGroupIdAndIsUndoneTrueOrderByTimestampDesc(boardId)
                 .orElse(null);
@@ -87,29 +58,7 @@ public class ActionHistoryService {
             return null;
         }
 
-        lastUndoneAction.setUndone(false);
-
-        BoardActionDTO.Response redoResponse = null;
-        log.info("Processing redo for action type: {} (actionId: {})", 
-                lastUndoneAction.getActionType(), lastUndoneAction.getActionId());
-        
-        if (OBJECT_ADD_ACTION.equals(lastUndoneAction.getActionType())) {
-            redoResponse = processAddAction(lastUndoneAction, false);
-        } else if (OBJECT_UPDATE_ACTION.equals(lastUndoneAction.getActionType())) {
-            redoResponse = processUpdateAction(lastUndoneAction, false);
-        } else if (OBJECT_DELETE_ACTION.equals(lastUndoneAction.getActionType())) {
-            redoResponse = processDeleteAction(lastUndoneAction, false);
-        } else {
-            log.warn("Unsupported action type for redo: {}", lastUndoneAction.getActionType());
-        }
-
-        actionHistoryRepository.save(lastUndoneAction);
-
-        if (redoResponse != null) {
-            broadcastToBoard(boardId, redoResponse);
-        }
-
-        return redoResponse;
+        return processUndoRedoAction(boardId, userEmail, lastUndoneAction, false, "redo");
     }
 
     private BoardActionDTO.Response processAddAction(ActionHistory action, boolean isUndo) {
@@ -175,6 +124,52 @@ public class ActionHistoryService {
             }
         }
         return null;
+    }
+
+    private BoardActionDTO.Response processUndoRedoAction(Long boardId, String userEmail, 
+            ActionHistory action, boolean isUndo, String operationType) {
+        if (!isUserMember(boardId, userEmail)) {
+            throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+        }
+
+        // Update action state
+        if (isUndo) {
+            action.setUndone(true);
+            actionHistoryRepository.save(action);
+        } else {
+            action.setUndone(false);
+        }
+
+        log.info("Processing {} for action type: {} (actionId: {})", 
+                operationType, action.getActionType(), action.getActionId());
+
+        BoardActionDTO.Response response = processActionByType(action, isUndo);
+
+        // Save action state for redo (undo already saved above)
+        if (!isUndo) {
+            actionHistoryRepository.save(action);
+        }
+
+        if (response != null) {
+            broadcastToBoard(boardId, response);
+        }
+
+        return response;
+    }
+
+    private BoardActionDTO.Response processActionByType(ActionHistory action, boolean isUndo) {
+        switch (action.getActionType()) {
+            case OBJECT_ADD_ACTION:
+                return processAddAction(action, isUndo);
+            case OBJECT_UPDATE_ACTION:
+                return processUpdateAction(action, isUndo);
+            case OBJECT_DELETE_ACTION:
+                return processDeleteAction(action, isUndo);
+            default:
+                log.warn("Unsupported action type for {}: {}", 
+                        isUndo ? "undo" : "redo", action.getActionType());
+                return null;
+        }
     }
 
     private boolean isUserMember(Long boardId, String userEmail) {
