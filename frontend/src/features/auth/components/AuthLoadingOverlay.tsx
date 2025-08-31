@@ -28,7 +28,7 @@ export const AuthLoadingOverlay: React.FC<AuthLoadingOverlayProps> = ({ isVisibl
         width: '100%',
         height: '100%',
         backgroundColor: 'rgba(47, 47, 47, 0.95)',
-        zIndex: 9999,
+        zIndex: 'var(--z-index-modal)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

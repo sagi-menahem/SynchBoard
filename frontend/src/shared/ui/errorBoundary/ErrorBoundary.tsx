@@ -59,7 +59,7 @@ export class ErrorBoundary extends Component<Props, State> {
           justifyContent: 'center',
           paddingTop: '20vh',
           color: '#fff',
-          zIndex: 9999,
+          zIndex: 'var(--z-index-modal)',
           padding: '2rem',
         }}>
           <div style={{
