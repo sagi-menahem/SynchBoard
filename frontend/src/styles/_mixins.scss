@@ -29,13 +29,13 @@
 
 @mixin flex-end {
   display: flex;
-  justify-content: end;
+  justify-content: end; // Already using logical property
   align-items: center;
 }
 
 @mixin flex-start {
   display: flex;
-  justify-content: flex-start;
+  justify-content: start; // CSS logical property
   align-items: center;
 }
 
@@ -86,11 +86,7 @@
 @mixin button-group {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: flex-end;
-  
-  [dir="rtl"] & {
-    justify-content: flex-start;
-  }
+  justify-content: end; // CSS logical property - automatically handles RTL
 }
 
 // ===== INPUT FIELD PATTERNS =====
@@ -201,9 +197,9 @@
 @mixin form-actions {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: end;
-  padding-top: theme.$spacing-2;
-  border-top: theme.$border-width solid theme.$color-gray-700;
+  justify-content: end; // CSS logical property - automatically handles RTL
+  padding-block-start: theme.$spacing-2; // Logical property for padding-top
+  border-block-start: theme.$border-width solid theme.$color-gray-700; // Logical property for border-top
 }
 
 // ===== ERROR/STATUS PATTERNS =====

@@ -54,11 +54,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         title={t('board:details.canvasSettings.title')}
         variant="default"
       >
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+        <div className={styles.settingsContainer}>
+          <label className={styles.settingLabel}>
             {t('board:details.canvasSettings.backgroundColor')}:
           </label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className={styles.flexRow}>
             <div 
               className={styles.colorPreview} 
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
@@ -73,7 +73,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
         </div>
         <div>
-          <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+          <label className={styles.settingLabel}>
             {t('board:details.canvasSettings.size')}:
           </label>
           <p>
@@ -100,9 +100,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
 
       {isEditing ? (
         <>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t('board:details.canvasSettings.backgroundColor')}</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+          <div className={styles.settingsContainerLarge}>
+            <label className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}</label>
+            <div className={styles.flexRowWithMargin}>
               <ColorPicker
                 color={backgroundColor}
                 onChange={setBackgroundColor}
@@ -117,8 +117,8 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             </div>
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t('board:details.canvasSettings.size')}</label>
+          <div className={styles.settingsContainerLarge}>
+            <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}</label>
             <div style={{ marginTop: '0.5rem' }}>
               <RadioGroup
                 value={canvasSize}
@@ -175,11 +175,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         </>
       ) : (
         <>
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+          <div className={styles.settingsContainer}>
+            <label className={styles.settingLabel}>
               {t('board:details.canvasSettings.backgroundColor')}:
             </label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div className={styles.flexRow}>
               <div 
                 className={styles.colorPreview} 
                 style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
@@ -194,7 +194,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             </div>
           </div>
           <div>
-            <label style={{ marginBottom: '0.5rem', display: 'block' }}>
+            <label className={styles.settingLabel}>
               {t('board:details.canvasSettings.size')}:
             </label>
             <p>
