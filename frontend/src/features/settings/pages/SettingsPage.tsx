@@ -131,6 +131,19 @@ const SettingsPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <main className={styles.pageContent} data-has-toolbar>
+        <ThemeSection />
+
+        <LanguageSection />
+
+        <BoardAppearanceSection />
+
+        <SectionCard 
+          title={t('settings:page.passwordSectionHeader')} 
+          variant="default"
+        >
+          <ChangePasswordForm onSubmit={handleChangePassword} />
+        </SectionCard>
+
         <SectionCard 
           title={t('settings:page.changePicture')} 
           variant="default"
@@ -150,19 +163,6 @@ const SettingsPage: React.FC = () => {
           user={user}
           onUpdateProfile={handleUpdateProfile}
         />
-
-        <LanguageSection />
-
-        <ThemeSection />
-
-        <SectionCard 
-          title={t('settings:page.passwordSectionHeader')} 
-          variant="default"
-        >
-          <ChangePasswordForm onSubmit={handleChangePassword} />
-        </SectionCard>
-
-        <BoardAppearanceSection />
 
         <DangerZoneSection
           onDeleteAccount={() => setAccountDeleteConfirmOpen(true)}
