@@ -13,7 +13,7 @@
     "updateSuccess": "Profile updated successfully!",
     "updateError": "Failed to update profile.",
     "buttons": {
-      "edit": "Edit",
+      "edit": "Edit Profile",
       "cancel": "Cancel",
       "save": "Save Changes"
     },

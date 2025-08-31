@@ -32,9 +32,7 @@
 }
 
 .editButton {
-    @include theme.button-base;
-    font-size: 0.9rem !important;
-    padding: theme.$spacing-1 theme.$spacing-3 !important;
+    @include theme.edit-button;
 }
 
 .imageContainer {
