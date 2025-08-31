@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { Switch } from '@headlessui/react';
 import { useTheme } from 'features/settings/ThemeProvider';
 import { Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import ReactSwitch from 'react-switch';
 
 
 interface ThemeSwitcherProps {
@@ -17,14 +17,15 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   size = 'sm',
   showLabel = false,
 }) => {
-  const { t } = useTranslation(['common']);
+  const { t, i18n } = useTranslation(['common']);
   const { theme, setTheme } = useTheme();
+  const isRTL = i18n.language === 'he';
 
   // Size configurations
   const sizeConfig = {
-    sm: { height: 24, width: 48, handleDiameter: 20, iconSize: 12 },
-    md: { height: 28, width: 56, handleDiameter: 24, iconSize: 14 },
-    lg: { height: 32, width: 64, handleDiameter: 28, iconSize: 16 },
+    sm: { height: 28, width: 56, iconSize: 14 },
+    md: { height: 32, width: 64, iconSize: 16 },
+    lg: { height: 36, width: 72, iconSize: 18 },
   };
 
   const config = sizeConfig[size];
@@ -41,32 +42,58 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {t('common:theme')}
         </span>
       )}
-      <ReactSwitch
+      <Switch
         checked={isDark}
         onChange={handleChange}
-        onColor="#374151"         // Dark theme - dark gray background
-        offColor="#e5e7eb"        // Light theme - light gray background  
-        onHandleColor="rgba(255, 255, 255, 0.3)"   // Very transparent white handle
-        offHandleColor="rgba(55, 65, 81, 0.3)"     // Very transparent dark handle
-        handleDiameter={config.handleDiameter}
-        uncheckedIcon={
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
-            <Sun size={config.iconSize} color="#f59e0b" />
-          </div>
-        }
-        checkedIcon={
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
-            <Moon size={config.iconSize} color="#a5b4fc" />
-          </div>
-        }
-        boxShadow="0 1px 3px rgba(0, 0, 0, 0.2)"
-        activeBoxShadow="0 2px 6px rgba(0, 0, 0, 0.3)"
-        height={config.height}
-        width={config.width}
-        id="theme-switch"
+        style={{
+          position: 'relative',
+          display: 'inline-flex',
+          height: `${config.height}px`,
+          width: `${config.width}px`,
+          flexShrink: 0,
+          cursor: 'pointer',
+          borderRadius: '9999px',
+          border: '2px solid transparent',
+          backgroundColor: isDark ? '#374151' : '#e5e7eb',
+          padding: '0',
+          transition: 'background-color 0.2s',
+          outline: 'none',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        }}
         aria-labelledby={showLabel ? 'theme-label' : undefined}
         aria-label={!showLabel ? t('common:theme') : undefined}
-      />
+      >
+        {/* Background icons */}
+        <div style={{
+          position: 'absolute',
+          inset: '2px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingLeft: '6px',
+          paddingRight: '6px',
+        }}>
+          <Sun size={config.iconSize} color={isDark ? '#6b7280' : '#f59e0b'} />
+          <Moon size={config.iconSize} color={isDark ? '#a5b4fc' : '#6b7280'} />
+        </div>
+        
+        {/* Handle */}
+        <span
+          style={{
+            position: 'relative',
+            display: 'inline-block',
+            height: `${config.height - 4}px`,
+            width: `${config.height - 4}px`,
+            borderRadius: '9999px',
+            backgroundColor: 'white',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+            transform: isDark 
+              ? (isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`)
+              : 'translateX(0px)',
+            transition: 'transform 0.2s',
+          }}
+        />
+      </Switch>
     </div>
   );
 };
