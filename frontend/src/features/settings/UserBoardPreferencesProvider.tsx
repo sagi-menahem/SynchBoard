@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
-import { useUserBoardPreferencesService } from 'hooks/useUserBoardPreferencesService';
-import type { UserBoardPreferences } from 'services/userPreferencesService';
+import { useUserBoardPreferencesService } from './hooks/useUserBoardPreferencesService';
+import type { UserBoardPreferences } from './services/userPreferencesService';
 
 export type { UserBoardPreferences };
 

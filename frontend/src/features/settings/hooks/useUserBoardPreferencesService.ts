@@ -4,7 +4,7 @@ import { useAuth } from 'features/auth/hooks';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { UserPreferencesService, type UserBoardPreferences } from 'services/userPreferencesService';
+import { UserPreferencesService, type UserBoardPreferences } from '../services/userPreferencesService';
 
 export interface UserBoardPreferencesState {
   preferences: UserBoardPreferences;
