@@ -18,7 +18,7 @@
 
 .notFound {
     @include theme.flex-center;
-    padding: 3rem;
+    padding: theme.$spacing-12;
     color: theme.$text-secondary;
     font-size: 16px;
 }
@@ -52,14 +52,14 @@
     backdrop-filter: blur(4px);
     @include theme.flex-center;
     z-index: theme.$z-index-toolbar;
-    padding: 2rem;
+    padding: theme.$spacing-8;
 }
 
 .quickSettingsContent {
     background: linear-gradient(to bottom, theme.$background-secondary, theme.$background-tertiary);
     border: 1px solid theme.$border-light;
     @include theme.rounded-large;
-    padding: 2rem;
+    padding: theme.$spacing-8;
     max-width: 600px;
     width: 100%;
     max-height: 80vh;

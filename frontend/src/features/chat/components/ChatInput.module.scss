@@ -2,7 +2,7 @@
 
 .form {
     @include theme.flex-start;
-    padding: 1rem;
+    padding: theme.$spacing-4;
     border-top: 1px solid theme.$border-primary;
     background-color: theme.$background-secondary;
     gap: theme.$spacing-2-5;

@@ -2,12 +2,12 @@
 
 .container {
     @include theme.flex-column;
-    gap: 0.75rem;
+    gap: theme.$spacing-3;
 }
 
 .inputContainer {
     display: flex;
-    gap: 0.5rem;
+    gap: theme.$spacing-2;
     align-items: flex-start;
 }
 
@@ -19,10 +19,10 @@
 
 .emailTags {
     @include theme.flex-column;
-    gap: 0.5rem;
+    gap: theme.$spacing-2;
     max-height: 150px;
     overflow-y: auto;
-    padding: 0.5rem;
+    padding: theme.$spacing-2;
     border: 1px solid theme.$border-primary;
     @include theme.rounded-small;
     background-color: theme.$overlay-darker;
@@ -31,7 +31,7 @@
 .emailTag {
     background-color: theme.$secondary-color;
     color: theme.$text-primary;
-    padding: 0.5rem 0.75rem;
+    padding: theme.$spacing-2 theme.$spacing-3;
     @include theme.rounded-small;
     @include theme.flex-between;
     font-size: 0.875rem;
@@ -46,7 +46,7 @@
     border: none;
     color: theme.$text-primary;
     cursor: pointer;
-    padding: 0.25rem;
+    padding: theme.$spacing-1;
     font-size: 1.2rem;
     line-height: 1;
     @include theme.rounded-circle;

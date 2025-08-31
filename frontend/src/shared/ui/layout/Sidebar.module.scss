@@ -2,7 +2,7 @@
 
 .aside {
     background: theme.$background-secondary;
-    padding: 1rem;
+    padding: theme.$spacing-4;
     color: theme.$text-primary;
     width: 200px;
 }

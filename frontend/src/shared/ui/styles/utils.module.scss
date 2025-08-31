@@ -48,42 +48,42 @@
 .buttonGroup {
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   margin-top: 1rem;
 }
 
 .buttonGroupCenter {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   margin-top: 1rem;
 }
 
 .buttonGroupStart {
   display: flex;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   margin-top: 1rem;
 }
 
 .gap-xs {
-  gap: 0.25rem;
+  gap: theme.$spacing-1;
 }
 
 .gap-sm {
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
 }
 
 .gap-md {
-  gap: 1rem;
+  gap: theme.$spacing-4;
 }
 
 .gap-lg {
-  gap: 1.5rem;
+  gap: theme.$spacing-6;
 }
 
 .gap-xl {
-  gap: 2rem;
+  gap: theme.$spacing-8;
 }
 
 .mt-xs {
@@ -127,30 +127,30 @@
 }
 
 .p-xs {
-  padding: 0.25rem;
+  padding: theme.$spacing-1;
 }
 
 .p-sm {
-  padding: 0.5rem;
+  padding: theme.$spacing-2;
 }
 
 .p-md {
-  padding: 1rem;
+  padding: theme.$spacing-4;
 }
 
 .p-lg {
-  padding: 1.5rem;
+  padding: theme.$spacing-6;
 }
 
 .p-xl {
-  padding: 2rem;
+  padding: theme.$spacing-8;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: theme.$spacing-4;
 }
 
 .containerSm {
@@ -171,7 +171,7 @@
 .section {
   background: var(--bg-tertiary);
   border-radius: theme.$border-radius-lg;
-  padding: 1.5rem;
+  padding: theme.$spacing-6;
   margin-bottom: 1rem;
   border: 1px solid var(--border-tertiary);
 }
@@ -314,7 +314,7 @@
 .fieldRow {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
 }
 
 .fieldHint {
@@ -420,7 +420,7 @@
 .settingRow {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
 }
 
 .settingLabel {

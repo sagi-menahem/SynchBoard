@@ -3,7 +3,7 @@
 .section {
   background: theme.$background-tertiary;
   @include theme.rounded-medium;
-  padding: 1.5rem;
+  padding: theme.$spacing-6;
   margin-bottom: 1rem;
   border: 1px solid theme.$border-primary;
 }
@@ -23,18 +23,18 @@
 .editButton {
   @include theme.button-base;
   font-size: 0.9rem !important;
-  padding: 0.25rem 0.75rem !important;
+  padding: theme.$spacing-1 theme.$spacing-3 !important;
 }
 
 .readOnlySettings {
   @include theme.flex-column;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
 }
 
 .settingRow {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
 }
 
 .settingLabel {
@@ -59,7 +59,7 @@
 
 .editForm {
   @include theme.flex-column;
-  gap: 1.25rem;
+  gap: theme.$spacing-5;
 }
 
 .formField {
@@ -84,13 +84,13 @@
 
 .sizeOptions {
   @include theme.flex-column;
-  gap: 1rem;
+  gap: theme.$spacing-4;
 }
 
 .sizeGroup {
   @include theme.flex-column;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  gap: theme.$spacing-2;
+  padding: theme.$spacing-3;
   border: 1px solid theme.$border-primary;
   @include theme.rounded-small;
   background: theme.$background-surface;
@@ -100,21 +100,21 @@
   color: theme.$text-light-gray;
   font-size: 0.8rem;
   font-weight: 600;
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 theme.$spacing-1 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 1px solid theme.$border-primary;
-  padding-bottom: 0.25rem;
+  padding-bottom: theme.$spacing-1;
 }
 
 .radioOption {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   cursor: pointer;
   color: theme.$text-primary;
   font-size: 0.9rem;
-  padding: 0.25rem 0;
+  padding: theme.$spacing-1 0;
 }
 
 .radioOption input[type="radio"] {
@@ -131,8 +131,8 @@
 .customSizeInputs {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: theme.$spacing-2;
+  margin-top: theme.$spacing-2;
   color: theme.$text-muted;
   font-size: 0.9rem;
 }
@@ -143,9 +143,9 @@
 
 .formActions {
   display: flex;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
   justify-content: end;
-  padding-top: 0.5rem;
+  padding-top: theme.$spacing-2;
   border-top: 1px solid theme.$border-primary;
 }
 
@@ -153,5 +153,5 @@
 .saveButton {
   @include theme.button-base;
   font-size: 0.9rem !important;
-  padding: 0.5rem 1rem !important;
+  padding: theme.$spacing-2 theme.$spacing-4 !important;
 }

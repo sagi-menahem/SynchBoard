@@ -3,7 +3,7 @@
 .pageLoader {
   @include theme.flex-column-center;
   min-height: 200px;
-  padding: 2rem;
+  padding: theme.$spacing-8;
 }
 
 .spinner {
@@ -12,7 +12,7 @@
   @include theme.spinner-base;
   border: 3px solid theme.$overlay-white-10;
   border-top: 3px solid theme.$text-secondary;
-  margin-bottom: 1rem;
+  margin-bottom: theme.$spacing-4;
 }
 
 .message {

@@ -5,14 +5,14 @@
     top: 0;
     background: var(--primary-color);
     z-index: theme.$z-index-toolbar;
-    padding: 1rem 2rem;
+    padding: theme.$spacing-4 theme.$spacing-8;
     @include theme.shadow-light;
 }
 
 .headerTitle {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: theme.$spacing-4;
 }
 
 .headerLink {

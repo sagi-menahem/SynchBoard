@@ -20,7 +20,7 @@
     }
 
     & > *:not([data-board-page]):not([data-has-toolbar]) {
-        padding: 2rem;
+        padding: theme.$spacing-8;
         width: 100%;
     }
 

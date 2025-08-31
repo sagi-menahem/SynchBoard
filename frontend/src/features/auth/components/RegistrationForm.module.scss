@@ -28,8 +28,8 @@
 
 .radioGroup {
     @include theme.flex-start;
-    gap: 1rem;
-    margin-top: 0.5rem;
+    gap: theme.$spacing-4;
+    margin-top: theme.$spacing-2;
 }
 
 .radioLabel {
@@ -45,11 +45,11 @@
 .error {
     @include theme.error-message;
     color: theme.$error;
-    margin-bottom: 1rem;
+    margin-bottom: theme.$spacing-4;
 }
 
 .submitButton {
-    margin-top: 0.5rem;
+    margin-top: theme.$spacing-2;
     width: 50%;
     align-self: center;
     justify-content: center;
@@ -57,11 +57,11 @@
 
 @media (max-width: 640px) {
     .form {
-        gap: 1rem;
+        gap: theme.$spacing-4;
     }
 
     .radioGroup {
         @include theme.flex-column;
-        gap: 0.5rem;
+        gap: theme.$spacing-2;
     }
 }

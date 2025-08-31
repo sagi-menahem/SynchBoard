@@ -20,11 +20,11 @@
 .error {
     @include theme.error-message;
     color: theme.$error;
-    margin-bottom: 1rem;
+    margin-bottom: theme.$spacing-4;
 }
 
 .submitButton {
-    margin-top: 0.5rem;
+    margin-top: theme.$spacing-2;
     width: 50%;
     align-self: center;
     justify-content: center;
@@ -32,7 +32,7 @@
 
 .divider {
     position: relative;
-    margin: 1.5rem 0;
+    margin: theme.$spacing-6 0;
     text-align: center;
 }
 
@@ -50,14 +50,14 @@
 .dividerText {
     position: relative;
     background: theme.$surface-elevated;
-    padding: 0 1rem;
+    padding: 0 theme.$spacing-4;
     color: theme.$text-disabled;
     font-size: 0.875rem;
 }
 
 .forgotPasswordSection {
     @include theme.flex-center;
-    margin-top: 0.5rem;
+    margin-top: theme.$spacing-2;
 }
 
 .forgotPasswordButton {
@@ -66,10 +66,10 @@
 
 @media (max-width: 640px) {
     .form {
-        gap: 1rem;
+        gap: theme.$spacing-4;
     }
 
     .divider {
-        margin: 1rem 0;
+        margin: theme.$spacing-4 0;
     }
 }

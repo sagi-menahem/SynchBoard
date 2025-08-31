@@ -2,7 +2,7 @@
 
 .container {
   @include theme.flex-column-center;
-  gap: 1.5rem;
+  gap: theme.$spacing-6;
 }
 
 .imageContainer {
