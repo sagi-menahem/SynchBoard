@@ -1,5 +1,28 @@
 @use '@/styles' as theme;
 
+// Modern Minimalist Dot Grid Background - unified for workspace
+.unifiedDotBackground {
+  background-color: var(--user-chosen-color, var(--color-surface));
+  background-image: 
+    radial-gradient(circle, 
+      color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 85%, 
+        var(--color-text-primary) 15%) 1px, 
+      transparent 1px);
+  background-size: 32px 32px;
+  
+  // Fallback for older browsers that don't support color-mix
+  @supports not (color: color-mix(in srgb, red 50%, blue)) {
+    background-image: 
+      radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+      
+    // Dark theme fallback
+    body[data-theme='dark'] & {
+      background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    }
+  }
+}
+
 .settingRow {
   display: flex;
   align-items: center;

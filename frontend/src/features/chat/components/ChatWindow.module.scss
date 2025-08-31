@@ -4,12 +4,7 @@
   @include theme.flex-column;
   height: 100%;
   box-shadow: theme.$shadow-card;
-  background-image:
-    repeating-linear-gradient(45deg,
-      transparent,
-      transparent 10px,
-      theme.$overlay-light 10px,
-      theme.$overlay-light 20px);
+  background: transparent; // Remove old background - parent now handles it
   color: theme.$text-primary;
   overflow: hidden;
 }

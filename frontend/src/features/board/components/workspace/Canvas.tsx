@@ -83,7 +83,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       <div 
         className={canvasContainerClassName}
         style={{ 
-          ...getBackgroundStyle(),
           ...canvasContainerStyle,
         }}
       >

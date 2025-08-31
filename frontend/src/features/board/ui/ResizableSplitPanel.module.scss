@@ -16,14 +16,14 @@
 .leftPanel {
   border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
-  background: theme.$background-secondary;
+  background: transparent; // Allow parent background to show through
   flex-shrink: 0;
 }
 
 .rightPanel {
   border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
-  background: theme.$background-secondary;
+  background: transparent; // Allow parent background to show through
   @include theme.flex-column;
 }
 

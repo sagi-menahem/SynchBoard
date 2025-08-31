@@ -1,8 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
 
 import clsx from 'clsx';
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
+import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import Button from 'shared/ui/components/forms/Button';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './ResizableSplitPanel.module.scss';
 
@@ -24,9 +27,21 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   onSplitChange,
 }) => {
   const { t } = useTranslation(['common']);
+  const { preferences } = useUserBoardPreferences();
   const [splitRatio, setSplitRatio] = useState(initialSplitRatio);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Get the user's chosen color for CSS variable
+  const getUserChosenColor = useCallback(() => {
+    const savedColor = preferences.boardBackgroundSetting;
+    if (!savedColor) {
+      return 'var(--color-surface)'; // Default fallback
+    }
+    
+    // Simply return the saved color directly - it should be a valid CSS color
+    return savedColor;
+  }, [preferences.boardBackgroundSetting]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -82,7 +97,11 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
-    <div ref={containerRef} className={styles.container}>
+    <div 
+      ref={containerRef} 
+      className={clsx(styles.container, utilStyles.unifiedDotBackground)}
+      style={{ '--user-chosen-color': getUserChosenColor() } as React.CSSProperties}
+    >
       <div 
         className={styles.leftPanel} 
         style={{ flexBasis: `${splitRatio}%` }}
