@@ -51,15 +51,7 @@
 
 .colorPickerWrapper :global(.swatch) {
   width: 36px;
-  height: 36px; /* Custom canvas tool size */
-  border: 1px solid theme.$tool-button-border;
-  @include theme.shadow-light;
-}
-
-.colorPickerWrapper :global(.swatch):hover {
-  transform: translateY(-1px);
-  @include theme.shadow-medium;
-  border-color: theme.$tool-button-hover-border;
+  height: 36px; /* Custom canvas tool size - matches other toolbar buttons */
 }
 
 .strokeControl {

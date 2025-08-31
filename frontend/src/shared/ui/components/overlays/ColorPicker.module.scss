@@ -17,28 +17,12 @@
 }
 
 .swatch {
-  width: 28px;
-  height: 28px;
-  @include theme.rounded-small;
-  border: 1px solid theme.$overlay-white-20;
-  @include theme.interactive-button;
-  background-clip: border-box;
-  @include theme.smooth-transition;
+  // Reset to standard button styling - will inherit from Button component variant="icon"
   position: relative;
-  overflow: hidden;
-  @include theme.shadow-light;
-
-  &:hover:not(.disabled) {
-    border-color: theme.$overlay-primary-60;
-    transform: translateY(-1px);
-    @include theme.shadow-medium;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: theme.$primary;
-    box-shadow: theme.$shadow-focus-outline theme.$overlay-primary-30;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; // Ensure color fill doesn't overflow button boundaries
 
   &.disabled {
     opacity: 0.5;
@@ -46,11 +30,15 @@
   }
 }
 
-.swatchInner {
+.colorFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
-  @include theme.rounded-small;
-  background: inherit;
+  border-radius: inherit; // Inherit button's border-radius
 }
 
 .popover {
