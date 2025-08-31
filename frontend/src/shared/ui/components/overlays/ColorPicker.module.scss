@@ -87,6 +87,7 @@
   grid-template-columns: repeat(6, 1fr);
   gap: theme.$spacing-1;
   margin-top: 8px;
+  justify-content: center;
 }
 
 .presetColor {
