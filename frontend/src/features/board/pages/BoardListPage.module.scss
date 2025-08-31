@@ -77,7 +77,7 @@
 }
 
 .boardListItem {
-    animation: boardStaggerIn 0.3s ease-out backwards;
+    animation: boardStaggerIn theme.$transition-slow ease-out backwards;
     @include theme.smooth-transition;
 }
 

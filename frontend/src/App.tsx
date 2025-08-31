@@ -166,7 +166,7 @@ function App() {
           '--banner-height': `${bannerHeight}px`,
           '--toolbar-height': `${toolbarHeight}px`,
           '--content-offset': `${bannerHeight + toolbarHeight + 16}px`,
-          transition: 'padding-top 0.3s ease-in-out',
+          transition: 'padding-top var(--transition-duration-slow) ease-in-out',
           minHeight: '100vh',
         } as React.CSSProperties}>
           <Toaster

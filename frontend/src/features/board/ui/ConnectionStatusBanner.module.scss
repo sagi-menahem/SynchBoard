@@ -41,7 +41,7 @@
 }
 
 .connecting .icon {
-  animation: spin 2s linear infinite;
+  animation: spin theme.$transition-very-slow linear infinite;
 }
 
 .disconnected {
@@ -51,7 +51,7 @@
 }
 
 .disconnected .icon {
-  animation: pulse 1.5s ease-in-out infinite;
+  animation: pulse theme.$transition-very-slow ease-in-out infinite;
 }
 
 @keyframes spin {

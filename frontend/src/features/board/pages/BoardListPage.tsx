@@ -111,7 +111,7 @@ const BoardListPage: React.FC = () => {
                   <div 
                     key={board.id}
                     className={styles.boardListItem}
-                    style={{ animationDelay: `${index * 0.05}s` }}
+                    style={{ animationDelay: `${index * 50}ms` }}
                     onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
                   >
                     <BoardCard board={board} viewMode={viewMode} />
