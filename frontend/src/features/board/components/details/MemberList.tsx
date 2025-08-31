@@ -13,7 +13,9 @@ const MemberList: React.FC<MemberListProps> = ({ members, onMemberContextMenu })
     return (
         <>
             {members.map((member) => (
-                <MemberListItem key={member.email} member={member} onContextMenu={onMemberContextMenu} />
+                <li key={member.email}>
+                    <MemberListItem member={member} onContextMenu={onMemberContextMenu} />
+                </li>
             ))}
         </>
     );

@@ -115,9 +115,9 @@ const BoardDetailsPage: React.FC = () => {
     return (
       <PageTransition>
         <UniversalToolbar config={toolbarConfig} />
-        <div className={styles.pageContent} data-has-toolbar>
+        <main className={styles.pageContent} data-has-toolbar>
           <div className={styles.notFound}>{t('board:detailsPage.notFound')}</div>
-        </div>
+        </main>
       </PageTransition>
     );
   }
@@ -125,7 +125,7 @@ const BoardDetailsPage: React.FC = () => {
   return (
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
-      <div className={styles.pageContent} data-has-toolbar>
+      <main className={styles.pageContent} data-has-toolbar>
         <BoardDetailsHeader
           boardDetails={boardDetails}
           currentUserIsAdmin={currentUserIsAdmin}
@@ -140,13 +140,13 @@ const BoardDetailsPage: React.FC = () => {
           onUpdateSettings={handleCanvasSettingsUpdate}
         />
 
-        <div className={styles.membersSection} data-section="members">
+        <section className={styles.membersSection} data-section="members">
           <h2 className={styles.sectionTitle}>{t('board:detailsPage.membersHeader')}</h2>
           <ul className={styles.membersListContainer}>
             <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
           </ul>
-        </div>
-      </div>
+        </section>
+      </main>
 
       <MemberContextMenu
         isOpen={contextMenu.isOpen}
