@@ -65,6 +65,8 @@
     display: grid;
     gap: theme.$spacing-6;
     padding: theme.$spacing-2 0;
+    list-style: none;
+    margin: 0;
 }
 
 .boardList.grid {
