@@ -4,7 +4,7 @@ import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { ArrowRight, LogOut, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
+import { Button, PageLoader, PageTransition, SectionCard, UniversalToolbar } from 'shared/ui';
 
 import {
   BoardConfirmDialogs,
@@ -140,12 +140,14 @@ const BoardDetailsPage: React.FC = () => {
           onUpdateSettings={handleCanvasSettingsUpdate}
         />
 
-        <section className={styles.membersSection} data-section="members">
-          <h2 className={styles.sectionTitle}>{t('board:detailsPage.membersHeader')}</h2>
+        <SectionCard 
+          title={t('board:detailsPage.membersHeader')}
+          variant="default"
+        >
           <ul className={styles.membersListContainer}>
             <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
           </ul>
-        </section>
+        </SectionCard>
       </main>
 
       <MemberContextMenu

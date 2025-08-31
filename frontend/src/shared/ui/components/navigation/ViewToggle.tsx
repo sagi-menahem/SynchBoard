@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import clsx from 'clsx';
+import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { Grid3X3, List } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

@@ -20,7 +20,7 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
   x, 
   y, 
   onClose, 
-  children 
+  children, 
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<MenuPosition>({ x, y, flipX: false, flipY: false });
@@ -28,7 +28,7 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
 
   // Calculate smart positioning with boundary detection
   useEffect(() => {
-    if (!menuRef.current) return;
+    if (!menuRef.current) {return;}
 
     const menu = menuRef.current;
     const menuRect = menu.getBoundingClientRect();

@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+
 import { useContextMenuProvider } from '../ui/components/overlays/ContextMenuProvider';
 
 export const useEnhancedContextMenu = <T>() => {
@@ -9,7 +10,7 @@ export const useEnhancedContextMenu = <T>() => {
     event: React.MouseEvent, 
     contextData: T,
     content: React.ReactNode,
-    onClose?: () => void
+    onClose?: () => void,
   ) => {
     event.preventDefault();
     
@@ -23,7 +24,7 @@ export const useEnhancedContextMenu = <T>() => {
       event.clientX,
       event.clientY,
       content,
-      handleMenuClose
+      handleMenuClose,
     );
   }, [showContextMenu]);
 

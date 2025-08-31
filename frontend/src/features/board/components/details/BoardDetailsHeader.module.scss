@@ -122,3 +122,55 @@
     background-color: theme.$background-tertiary;
     cursor: not-allowed;
 }
+
+.emptyDescription {
+    padding: theme.$spacing-6;
+    background-color: var(--color-surface-hover);
+    border: 2px dashed var(--color-border-light);
+    border-radius: theme.$border-radius-md;
+    margin: theme.$spacing-2 0;
+    @include theme.smooth-transition;
+    
+    &:hover {
+        background-color: var(--color-surface-elevated);
+        border-color: var(--color-border);
+    }
+    
+    // Style the label elements to match Canvas Settings format
+    label {
+        color: theme.$text-muted;
+        font-size: 0.875rem;
+        font-weight: normal;
+        cursor: default;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+// Regular description styling
+.description {
+    color: theme.$text-primary;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    padding: theme.$spacing-2 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+// RTL support for descriptions
+[dir="rtl"] {
+    .emptyDescription {
+        direction: rtl;
+        
+        label {
+            text-align: right;
+            direction: rtl;
+        }
+    }
+    
+    .description {
+        direction: rtl;
+        text-align: right;
+    }
+}

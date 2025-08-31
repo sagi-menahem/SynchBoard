@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useLanguageSync } from 'features/settings/hooks';
 import clsx from 'clsx';
+import { useLanguageSync } from 'features/settings/hooks';
 import { useTranslation } from 'react-i18next';
 import Button from 'shared/ui/components/forms/Button';
 

@@ -1,0 +1,238 @@
+@use '@/styles' as theme;
+
+// Base section card styling
+.sectionCard {
+    @include theme.card-base;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+// Variant: Default (standard section with subtle shadow)
+.default {
+    box-shadow: theme.$shadow-card;
+    border: 1px solid var(--color-border-light);
+}
+
+// Variant: Elevated (stronger shadow for prominence)  
+.elevated {
+    box-shadow: theme.$shadow-lg;
+    border: 1px solid var(--color-border);
+    
+    &:hover {
+        @include theme.card-hover-effect;
+        transform: translateY(-1px);
+    }
+}
+
+// Variant: Warning (orange border for cautionary sections)
+.warning {
+    box-shadow: theme.$shadow-card;
+    border: 2px solid theme.$warning;
+    background: linear-gradient(to bottom, 
+        var(--color-surface), 
+        rgba(245, 158, 11, 0.02)
+    );
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, theme.$warning, theme.$warning-light);
+        border-radius: theme.$border-radius-sm theme.$border-radius-sm 0 0;
+    }
+}
+
+// Variant: Danger (red border + glow for dangerous actions)
+.danger {
+    border: 2px solid var(--btn-destructive-bg);
+    box-shadow: theme.$shadow-glow-md var(--btn-destructive-bg);
+    background: linear-gradient(to bottom, 
+        var(--color-surface), 
+        color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent)
+    );
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--btn-destructive-bg), var(--btn-destructive-bg-hover));
+        border-radius: theme.$border-radius-sm theme.$border-radius-sm 0 0;
+    }
+}
+
+// Header styling
+.header {
+    border-bottom: 1px solid var(--color-border-light);
+    margin-bottom: theme.$spacing-6;
+    padding-bottom: theme.$spacing-4;
+}
+
+.headerContent {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: theme.$spacing-4;
+}
+
+.titleGroup {
+    flex: 1;
+    min-width: 0; // Allow text truncation if needed
+}
+
+.title {
+    @include theme.section-header;
+    margin: 0;
+    color: theme.$text-primary;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: start;
+    line-height: 1.3;
+}
+
+.subtitle {
+    margin: theme.$spacing-1 0 0;
+    color: theme.$text-secondary;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-align: start;
+}
+
+.headerActions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: theme.$spacing-2;
+}
+
+// Content area
+.content {
+    // Content inherits padding from parent section card
+}
+
+// Padding variants using design tokens
+.padding-none {
+    padding: 0;
+    
+    .header {
+        padding: theme.$spacing-6 theme.$spacing-6 theme.$spacing-4;
+        margin-bottom: 0;
+    }
+    
+    .content {
+        padding: 0 theme.$spacing-6 theme.$spacing-6;
+    }
+}
+
+.padding-sm {
+    padding: theme.$spacing-4;
+    
+    .header {
+        margin: -#{theme.$spacing-4} -#{theme.$spacing-4} theme.$spacing-4;
+        padding: theme.$spacing-4 theme.$spacing-4 theme.$spacing-3;
+    }
+}
+
+.padding-md {
+    padding: theme.$card-padding; // 24px (default)
+    
+    .header {
+        margin: -#{theme.$card-padding} -#{theme.$card-padding} theme.$spacing-6;
+        padding: theme.$card-padding theme.$card-padding theme.$spacing-4;
+    }
+}
+
+.padding-lg {
+    padding: theme.$spacing-8; // 32px
+    
+    .header {
+        margin: -#{theme.$spacing-8} -#{theme.$spacing-8} theme.$spacing-6;
+        padding: theme.$spacing-8 theme.$spacing-8 theme.$spacing-4;
+    }
+}
+
+// RTL support
+[dir="rtl"] {
+    .title,
+    .subtitle {
+        text-align: right;
+        direction: rtl;
+    }
+    
+    .headerContent {
+        flex-direction: row-reverse;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .sectionCard {
+        margin-bottom: 1.5rem;
+    }
+    
+    .headerContent {
+        flex-direction: column;
+        align-items: stretch;
+        gap: theme.$spacing-3;
+    }
+    
+    .headerActions {
+        justify-content: flex-start;
+        margin-top: theme.$spacing-2;
+    }
+    
+    .title {
+        font-size: 1.125rem;
+    }
+    
+    // Reduce padding on mobile
+    .padding-md {
+        padding: theme.$spacing-4;
+        
+        .header {
+            margin: -#{theme.$spacing-4} -#{theme.$spacing-4} theme.$spacing-4;
+            padding: theme.$spacing-4 theme.$spacing-4 theme.$spacing-3;
+        }
+    }
+    
+    .padding-lg {
+        padding: theme.$spacing-6;
+        
+        .header {
+            margin: -#{theme.$spacing-6} -#{theme.$spacing-6} theme.$spacing-4;
+            padding: theme.$spacing-6 theme.$spacing-6 theme.$spacing-3;
+        }
+    }
+}
+
+// Focus management for accessibility
+.sectionCard:focus-within {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+}
+
+// Animation support
+.sectionCard {
+    @include theme.smooth-transition;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+    .default,
+    .elevated {
+        border-width: 2px;
+    }
+    
+    .warning {
+        border-width: 3px;
+    }
+    
+    .danger {
+        border-width: 3px;
+    }
+}

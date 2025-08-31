@@ -37,6 +37,7 @@ export { default as UniversalToolbar } from './components/advanced/UniversalTool
 // Layout Components
 export { default as Layout } from './layout/Layout';
 export { default as Sidebar } from './layout/Sidebar';
+export { default as SectionCard } from './components/layout/SectionCard';
 
 // Routing Components
 export { default as ProtectedRoute } from './routing/ProtectedRoute';

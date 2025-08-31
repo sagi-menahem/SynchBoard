@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useTheme } from 'features/settings/ThemeProvider';
 import clsx from 'clsx';
+import { useTheme } from 'features/settings/ThemeProvider';
 import { Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
