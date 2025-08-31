@@ -123,12 +123,15 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     }
   }, [sendChatMessage, boardId]);
 
-  const shouldShowDateSeparator = useCallback((currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
-    if (!prevMsg) return true;
-    const currentDate = new Date(currentMsg.timestamp).toDateString();
-    const prevDate = new Date(prevMsg.timestamp).toDateString();
-    return currentDate !== prevDate;
-  }, []);
+  const shouldShowDateSeparator = useCallback(
+    (currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
+      if (!prevMsg) {return true;}
+      const currentDate = new Date(currentMsg.timestamp).toDateString();
+      const prevDate = new Date(prevMsg.timestamp).toDateString();
+      return currentDate !== prevDate;
+    },
+    [],
+  );
 
   const getBackgroundStyle = useCallback(() => {
     const savedColor = preferences.boardBackgroundSetting;
