@@ -34,15 +34,6 @@
   flex: 1;
 }
 
-.connecting {
-  background-color: theme.$warning-bg;
-  color: theme.$warning-text;
-  border-color: theme.$warning-border;
-}
-
-.connecting .icon {
-  animation: spin theme.$transition-very-slow linear infinite;
-}
 
 .disconnected {
   background-color: theme.$error-bg;

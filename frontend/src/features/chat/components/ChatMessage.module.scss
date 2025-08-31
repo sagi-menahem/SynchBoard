@@ -140,47 +140,6 @@
   display: inline-block;
 }
 
-.sending,
-.queued,
-.processing {
-  opacity: 0.7;
-}
-
-.sending .messageBubble,
-.queued .messageBubble,
-.processing .messageBubble {
-  background: theme.$overlay-primary-30 !important;
-  color: theme.$text-primary !important;
-}
-
-.failed {
-  opacity: 0.8;
-}
-
-.failed .messageBubble {
-  background: theme.$error-light !important;
-  color: theme.$text-primary !important;
-}
-
-.confirmed {
-  opacity: 1;
-}
-
-.processing {
-  animation: subtlePulse theme.$transition-very-slow infinite ease-in-out;
-}
-
-@keyframes subtlePulse {
-
-  0%,
-  100% {
-    opacity: 0.7;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-}
 
 .failureIcon {
   position: absolute;
