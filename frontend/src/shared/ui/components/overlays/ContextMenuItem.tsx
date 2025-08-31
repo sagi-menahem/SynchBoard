@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './ContextMenu.module.scss';
+import styles from './EnhancedContextMenu.module.scss';
 
 interface ContextMenuItemProps {
     onClick: () => void;

@@ -9,7 +9,7 @@ export const useContextMenu = <T>() => {
   const handleContextMenu = (event: React.MouseEvent, contextData: T) => {
     event.preventDefault();
 
-    setAnchorPoint({ x: event.pageX, y: event.pageY });
+    setAnchorPoint({ x: event.clientX, y: event.clientY });
     setData(contextData);
     setIsOpen(true);
   };

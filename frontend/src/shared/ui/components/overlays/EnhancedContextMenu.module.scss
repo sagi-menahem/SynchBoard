@@ -1,0 +1,137 @@
+@use '@/styles' as theme;
+
+.menu {
+    position: fixed;
+    z-index: theme.$z-index-popover;
+    @include theme.card-base;
+    @include theme.shadow-heavy;
+    padding: theme.$spacing-1-5;
+    min-width: 180px;
+    transform-origin: top left;
+    transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+    pointer-events: auto;
+}
+
+.hidden {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+    pointer-events: none;
+}
+
+.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+// Smart positioning classes
+.flipX {
+    transform-origin: top right;
+}
+
+.flipY {
+    transform-origin: bottom left;
+}
+
+.flipX.flipY {
+    transform-origin: bottom right;
+}
+
+// Animation variants for different flip states
+.flipX.hidden {
+    transform: scale(0.95) translate(4px, -4px);
+}
+
+.flipY.hidden {
+    transform: scale(0.95) translateY(4px);
+}
+
+.flipX.flipY.hidden {
+    transform: scale(0.95) translate(4px, 4px);
+}
+
+// Enhanced focus and hover states
+.menu:focus-within {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+}
+
+// Backdrop blur effect for better visibility
+.menu::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+[data-theme='dark'] .menu::before {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+// Animation for menu items
+.menu > * {
+    animation: slideInItem 0.15s ease-out backwards;
+}
+
+.menu > *:nth-child(1) { animation-delay: 0ms; }
+.menu > *:nth-child(2) { animation-delay: 25ms; }
+.menu > *:nth-child(3) { animation-delay: 50ms; }
+.menu > *:nth-child(4) { animation-delay: 75ms; }
+.menu > *:nth-child(5) { animation-delay: 100ms; }
+
+@keyframes slideInItem {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// Responsive adjustments for mobile
+@media (max-width: 768px) {
+    .menu {
+        min-width: 160px;
+        padding: theme.$spacing-1;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu {
+        min-width: 140px;
+        max-width: 200px;
+    }
+}
+
+// Menu item styles
+.item {
+    padding: theme.$spacing-2 theme.$spacing-3;
+    @include theme.rounded-small;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color theme.$transition-instant ease-in-out;
+    color: theme.$text-primary;
+
+    &:hover {
+        background-color: theme.$primary;
+        color: theme.$text-primary;
+    }
+
+    &.destructive {
+        color: theme.$error;
+
+        &:hover {
+            background-color: theme.$error;
+            color: theme.$text-primary;
+        }
+    }
+}
