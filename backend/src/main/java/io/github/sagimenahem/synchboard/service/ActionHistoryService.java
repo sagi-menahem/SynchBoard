@@ -56,11 +56,11 @@ public class ActionHistoryService {
                 lastAction.getActionType(), lastAction.getActionId());
         
         if (OBJECT_ADD_ACTION.equals(lastAction.getActionType())) {
-            undoResponse = handleUndoAdd(lastAction);
+            undoResponse = processAddAction(lastAction, true);
         } else if (OBJECT_UPDATE_ACTION.equals(lastAction.getActionType())) {
-            undoResponse = handleUndoUpdate(lastAction);
+            undoResponse = processUpdateAction(lastAction, true);
         } else if (OBJECT_DELETE_ACTION.equals(lastAction.getActionType())) {
-            undoResponse = handleUndoDelete(lastAction);
+            undoResponse = processDeleteAction(lastAction, true);
         } else {
             log.warn("Unsupported action type for undo: {}", lastAction.getActionType());
         }
@@ -94,11 +94,11 @@ public class ActionHistoryService {
                 lastUndoneAction.getActionType(), lastUndoneAction.getActionId());
         
         if (OBJECT_ADD_ACTION.equals(lastUndoneAction.getActionType())) {
-            redoResponse = handleRedoAdd(lastUndoneAction);
+            redoResponse = processAddAction(lastUndoneAction, false);
         } else if (OBJECT_UPDATE_ACTION.equals(lastUndoneAction.getActionType())) {
-            redoResponse = handleRedoUpdate(lastUndoneAction);
+            redoResponse = processUpdateAction(lastUndoneAction, false);
         } else if (OBJECT_DELETE_ACTION.equals(lastUndoneAction.getActionType())) {
-            redoResponse = handleRedoDelete(lastUndoneAction);
+            redoResponse = processDeleteAction(lastUndoneAction, false);
         } else {
             log.warn("Unsupported action type for redo: {}", lastUndoneAction.getActionType());
         }
@@ -112,136 +112,67 @@ public class ActionHistoryService {
         return redoResponse;
     }
 
-    private BoardActionDTO.Response handleUndoAdd(ActionHistory actionToUndo) {
-        BoardObject objectToDeactivate = actionToUndo.getBoardObject();
-        if (objectToDeactivate != null) {
-            objectToDeactivate.setActive(false);
-            boardObjectRepository.save(objectToDeactivate);
-
-            return createDeleteResponse(objectToDeactivate.getInstanceId());
+    private BoardActionDTO.Response processAddAction(ActionHistory action, boolean isUndo) {
+        BoardObject boardObject = action.getBoardObject();
+        if (boardObject == null) {
+            return null;
         }
-        return null;
+
+        if (isUndo) {
+            boardObject.setActive(false);
+            boardObjectRepository.save(boardObject);
+            return createDeleteResponse(boardObject.getInstanceId());
+        } else {
+            boardObject.setActive(true);
+            BoardObject persistedObject = boardObjectRepository.save(boardObject);
+            return parseJsonAndCreateResponse(persistedObject.getObjectData(), 
+                    BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(), "redo add");
+        }
     }
 
-    private BoardActionDTO.Response handleRedoAdd(ActionHistory actionToRedo) {
-        BoardObject objectToReactivate = actionToRedo.getBoardObject();
-        if (objectToReactivate != null) {
-            objectToReactivate.setActive(true);
-            BoardObject persistedObject = boardObjectRepository.save(objectToReactivate);
+    private BoardActionDTO.Response processUpdateAction(ActionHistory action, boolean isUndo) {
+        log.info("Handling {} update for object instanceId: {}", 
+                isUndo ? "undo" : "redo", action.getBoardObject().getInstanceId());
+        
+        BoardObject boardObject = action.getBoardObject();
+        if (boardObject == null || !boardObject.isActive()) {
+            return null;
+        }
 
-            try {
-                return createAddResponse(persistedObject);
-            } catch (JsonProcessingException e) {
-                log.error("Failed to create redo response for board object {}: {}",
-                        persistedObject.getObjectId(), e.getMessage(), e);
-                throw new InvalidRequestException(
-                        "Redo operation failed due to corrupted board data");
+        String targetState = isUndo ? action.getStateBefore() : action.getStateAfter();
+        if (targetState == null) {
+            return null;
+        }
+
+        boardObject.setObjectData(targetState);
+        boardObject.setLastEditedByUser(action.getUser());
+        BoardObject persistedObject = boardObjectRepository.save(boardObject);
+
+        return parseJsonAndCreateResponse(targetState, BoardActionDTO.ActionType.OBJECT_UPDATE, 
+                persistedObject.getInstanceId(), isUndo ? "undo update" : "redo update");
+    }
+
+    private BoardActionDTO.Response processDeleteAction(ActionHistory action, boolean isUndo) {
+        BoardObject boardObject = action.getBoardObject();
+        if (boardObject == null) {
+            return null;
+        }
+
+        if (isUndo) {
+            if (!boardObject.isActive()) {
+                boardObject.setActive(true);
+                boardObject.setLastEditedByUser(action.getUser());
+                BoardObject persistedObject = boardObjectRepository.save(boardObject);
+                return parseJsonAndCreateResponse(persistedObject.getObjectData(), 
+                        BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(), "undo delete");
             }
-        }
-        return null;
-    }
-
-    private BoardActionDTO.Response handleUndoUpdate(ActionHistory actionToUndo) {
-        log.info("Handling undo update for object instanceId: {}", 
-                actionToUndo.getBoardObject().getInstanceId());
-        BoardObject objectToRevert = actionToUndo.getBoardObject();
-        if (objectToRevert != null && objectToRevert.isActive()) {
-            try {
-                // Restore the object to its previous state
-                String previousState = actionToUndo.getStateBefore();
-                if (previousState != null) {
-                    objectToRevert.setObjectData(previousState);
-                    objectToRevert.setLastEditedByUser(actionToUndo.getUser());
-                    BoardObject persistedObject = boardObjectRepository.save(objectToRevert);
-
-                    // Create OBJECT_UPDATE response with previous state
-                    JsonNode payload = objectMapper.readTree(previousState);
-                    return BoardActionDTO.Response.builder()
-                            .type(BoardActionDTO.ActionType.OBJECT_UPDATE)
-                            .instanceId(persistedObject.getInstanceId())
-                            .payload(payload)
-                            .sender("system-undo-redo")
-                            .build();
-                }
-            } catch (JsonProcessingException e) {
-                log.error("Failed to undo update for board object {}: {}",
-                        objectToRevert.getObjectId(), e.getMessage(), e);
-                throw new InvalidRequestException(
-                        "Undo operation failed due to corrupted state data");
+        } else {
+            if (boardObject.isActive()) {
+                boardObject.setActive(false);
+                boardObject.setLastEditedByUser(action.getUser());
+                boardObjectRepository.save(boardObject);
+                return createDeleteResponse(boardObject.getInstanceId());
             }
-        }
-        return null;
-    }
-
-    private BoardActionDTO.Response handleRedoUpdate(ActionHistory actionToRedo) {
-        log.info("Handling redo update for object instanceId: {}", 
-                actionToRedo.getBoardObject().getInstanceId());
-        BoardObject objectToReapply = actionToRedo.getBoardObject();
-        if (objectToReapply != null && objectToReapply.isActive()) {
-            try {
-                // Reapply the updated state
-                String newState = actionToRedo.getStateAfter();
-                if (newState != null) {
-                    objectToReapply.setObjectData(newState);
-                    objectToReapply.setLastEditedByUser(actionToRedo.getUser());
-                    BoardObject persistedObject = boardObjectRepository.save(objectToReapply);
-
-                    // Create OBJECT_UPDATE response with new state
-                    JsonNode payload = objectMapper.readTree(newState);
-                    return BoardActionDTO.Response.builder()
-                            .type(BoardActionDTO.ActionType.OBJECT_UPDATE)
-                            .instanceId(persistedObject.getInstanceId())
-                            .payload(payload)
-                            .sender("system-undo-redo")
-                            .build();
-                }
-            } catch (JsonProcessingException e) {
-                log.error("Failed to redo update for board object {}: {}",
-                        objectToReapply.getObjectId(), e.getMessage(), e);
-                throw new InvalidRequestException(
-                        "Redo operation failed due to corrupted state data");
-            }
-        }
-        return null;
-    }
-
-    private BoardActionDTO.Response handleUndoDelete(ActionHistory actionToUndo) {
-        BoardObject objectToRestore = actionToUndo.getBoardObject();
-        if (objectToRestore != null && !objectToRestore.isActive()) {
-            // Reactivate the deleted object
-            objectToRestore.setActive(true);
-            objectToRestore.setLastEditedByUser(actionToUndo.getUser());
-            BoardObject persistedObject = boardObjectRepository.save(objectToRestore);
-
-            try {
-                // Create OBJECT_ADD response to restore the object
-                JsonNode payload = objectMapper.readTree(persistedObject.getObjectData());
-                return BoardActionDTO.Response.builder()
-                        .type(BoardActionDTO.ActionType.OBJECT_ADD)
-                        .instanceId(persistedObject.getInstanceId())
-                        .payload(payload)
-                        .sender("system-undo-redo")
-                        .build();
-            } catch (JsonProcessingException e) {
-                log.error("Failed to undo delete for board object {}: {}",
-                        persistedObject.getObjectId(), e.getMessage(), e);
-                throw new InvalidRequestException(
-                        "Undo delete operation failed due to corrupted object data");
-            }
-        }
-        return null;
-    }
-
-    private BoardActionDTO.Response handleRedoDelete(ActionHistory actionToRedo) {
-        BoardObject objectToDelete = actionToRedo.getBoardObject();
-        if (objectToDelete != null && objectToDelete.isActive()) {
-            // Deactivate the object again
-            objectToDelete.setActive(false);
-            objectToDelete.setLastEditedByUser(actionToRedo.getUser());
-            boardObjectRepository.save(objectToDelete);
-
-            // Create OBJECT_DELETE response
-            return createDeleteResponse(objectToDelete.getInstanceId());
         }
         return null;
     }
@@ -260,11 +191,20 @@ public class ActionHistoryService {
                 .instanceId(instanceId).sender("system-undo-redo").build();
     }
 
-    private BoardActionDTO.Response createAddResponse(BoardObject boardObject)
-            throws JsonProcessingException {
-        JsonNode payload = objectMapper.readTree(boardObject.getObjectData());
-        return BoardActionDTO.Response.builder().type(BoardActionDTO.ActionType.OBJECT_ADD)
-                .instanceId(boardObject.getInstanceId()).payload(payload).sender("system-undo-redo")
-                .build();
+    private BoardActionDTO.Response parseJsonAndCreateResponse(String jsonData, 
+            BoardActionDTO.ActionType actionType, String instanceId, String operation) {
+        try {
+            JsonNode payload = objectMapper.readTree(jsonData);
+            return BoardActionDTO.Response.builder()
+                    .type(actionType)
+                    .instanceId(instanceId)
+                    .payload(payload)
+                    .sender("system-undo-redo")
+                    .build();
+        } catch (JsonProcessingException e) {
+            log.error("Failed to create {} response: {}", operation, e.getMessage(), e);
+            throw new InvalidRequestException(
+                    operation + " operation failed due to corrupted data");
+        }
     }
 }

@@ -46,52 +46,20 @@ public class BoardNotificationService {
     }
 
     public void broadcastUserUpdatesToAllBoardMembers(Long boardId) {
-        List<String> memberEmails = groupMemberRepository.findEmailsByBoardId(boardId);
-        if (memberEmails.isEmpty()) {
-            log.debug("No members found for board {}", boardId);
-            return;
-        }
-
-        UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED);
-        log.info("Broadcasting user updates to {} members of board {}", memberEmails.size(),
-                boardId);
-
-        memberEmails.parallelStream().forEach(email -> {
-            String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
-            messagingTemplate.convertAndSend(destination, payload);
-        });
+        List<String> memberEmails = getBoardMemberEmails(boardId);
+        broadcastToUserList(memberEmails, UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED, 
+                "user updates to board " + boardId + " members");
     }
 
     public void broadcastUserUpdatesToUsers(List<String> userEmails) {
-        if (userEmails == null || userEmails.isEmpty()) {
-            log.debug("No user emails provided for broadcasting");
-            return;
-        }
-
-        UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED);
-        log.info("Broadcasting user updates to {} users", userEmails.size());
-
-        userEmails.parallelStream().forEach(email -> {
-            String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
-            messagingTemplate.convertAndSend(destination, payload);
-        });
+        broadcastToUserList(userEmails, UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED, 
+                "user updates to specified users");
     }
 
     public void broadcastBoardDetailsChangedToAllBoardMembers(Long boardId) {
-        List<String> memberEmails = groupMemberRepository.findEmailsByBoardId(boardId);
-        if (memberEmails.isEmpty()) {
-            log.debug("No members found for board {}", boardId);
-            return;
-        }
-
-        UserUpdateDTO payload = new UserUpdateDTO(UserUpdateDTO.UpdateType.BOARD_DETAILS_CHANGED);
-        log.info("Broadcasting board details changes to {} members of board {}",
-                memberEmails.size(), boardId);
-
-        memberEmails.parallelStream().forEach(email -> {
-            String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
-            messagingTemplate.convertAndSend(destination, payload);
-        });
+        List<String> memberEmails = getBoardMemberEmails(boardId);
+        broadcastToUserList(memberEmails, UserUpdateDTO.UpdateType.BOARD_DETAILS_CHANGED, 
+                "board details changes to board " + boardId + " members");
     }
 
     public void broadcastBoardUpdatesToMultipleBoards(List<Long> boardIds,
@@ -107,6 +75,30 @@ public class BoardNotificationService {
 
         boardIds.parallelStream().forEach(boardId -> {
             String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + boardId;
+            messagingTemplate.convertAndSend(destination, payload);
+        });
+    }
+
+    private List<String> getBoardMemberEmails(Long boardId) {
+        List<String> memberEmails = groupMemberRepository.findEmailsByBoardId(boardId);
+        if (memberEmails.isEmpty()) {
+            log.debug("No members found for board {}", boardId);
+        }
+        return memberEmails;
+    }
+
+    private void broadcastToUserList(List<String> userEmails, UserUpdateDTO.UpdateType updateType, 
+            String operation) {
+        if (userEmails == null || userEmails.isEmpty()) {
+            log.debug("No user emails provided for {}", operation);
+            return;
+        }
+
+        UserUpdateDTO payload = new UserUpdateDTO(updateType);
+        log.info("Broadcasting {} to {} users", operation, userEmails.size());
+
+        userEmails.parallelStream().forEach(email -> {
+            String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
             messagingTemplate.convertAndSend(destination, payload);
         });
     }

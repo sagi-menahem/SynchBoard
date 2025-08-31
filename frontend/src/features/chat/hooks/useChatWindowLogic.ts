@@ -69,15 +69,14 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const stableUserInfo = useMemo(() => ({
-    userEmail: userEmail ?? '',
-    userFullName: '',
-    userProfilePictureUrl: undefined,
-  }), [userEmail]);
-
-  const sendChatMessage = useCallback(async (content: string) => {
-    return await sendMessage(content, boardId, userEmail, stableUserInfo, addOptimisticMessage);
-  }, [sendMessage, boardId, userEmail, stableUserInfo, addOptimisticMessage]);
+  const sendChatMessage = async (content: string) => {
+    const userInfo = {
+      userEmail: userEmail ?? '',
+      userFullName: '',
+      userProfilePictureUrl: undefined,
+    };
+    return await sendMessage(content, boardId, userEmail, userInfo, addOptimisticMessage);
+  };
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return optimisticMessages.map((msg): EnhancedChatMessage => {
@@ -111,7 +110,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     );
   }, [allMessages, searchTerm]);
 
-  const handleSendMessage = useCallback(async (content: string) => {
+  const handleSendMessage = async (content: string) => {
     if (!boardId) {
       return;
     }
@@ -121,19 +120,21 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     } catch (error) {
       logger.error('Failed to send chat message via handler:', error);
     }
-  }, [sendChatMessage, boardId]);
+  };
 
-  const shouldShowDateSeparator = useCallback(
-    (currentMsg: EnhancedChatMessage, prevMsg: EnhancedChatMessage | null): boolean => {
-      if (!prevMsg) {return true;}
-      const currentDate = new Date(currentMsg.timestamp).toDateString();
-      const prevDate = new Date(prevMsg.timestamp).toDateString();
-      return currentDate !== prevDate;
-    },
-    [],
-  );
+  const shouldShowDateSeparator = (
+    currentMsg: EnhancedChatMessage,
+    prevMsg: EnhancedChatMessage | null,
+  ): boolean => {
+    if (!prevMsg) {
+      return true;
+    }
+    const currentDate = new Date(currentMsg.timestamp).toDateString();
+    const prevDate = new Date(prevMsg.timestamp).toDateString();
+    return currentDate !== prevDate;
+  };
 
-  const getBackgroundStyle = useCallback(() => {
+  const getBackgroundStyle = () => {
     const savedColor = preferences.boardBackgroundSetting;
     if (!savedColor) {
       return {};
@@ -145,12 +146,12 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     }
     
     return { backgroundColor: savedColor };
-  }, [preferences.boardBackgroundSetting]);
+  };
 
-  const handleSearchClose = useCallback(() => {
+  const handleSearchClose = () => {
     setSearchVisible(false);
     setSearchTerm('');
-  }, []);
+  };
 
   return {
     // Refs
