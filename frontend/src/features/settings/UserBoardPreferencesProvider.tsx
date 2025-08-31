@@ -37,16 +37,3 @@ export const useUserBoardPreferences = (): UserBoardPreferencesContextType => {
   return context;
 };
 
-// Backward compatibility hook
-export const usePreferences = () => {
-  const { preferences, updatePreferences, updatePreferencesSilent } = useUserBoardPreferences();
-  return {
-    preferences: {
-      boardBackgroundSetting: preferences.boardBackgroundSetting,
-    },
-    updatePreferences: (newPrefs: { boardBackgroundSetting?: string | null }) =>
-      updatePreferences({ boardBackgroundSetting: newPrefs.boardBackgroundSetting ?? '#282828' }),
-    updatePreferencesSilent: (newPrefs: { boardBackgroundSetting?: string | null }) =>
-      updatePreferencesSilent({ boardBackgroundSetting: newPrefs.boardBackgroundSetting ?? '#282828' }),
-  };
-};

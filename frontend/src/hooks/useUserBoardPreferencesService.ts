@@ -146,9 +146,9 @@ export function useUserBoardPreferencesService() {
     [isAuthenticated, state.preferences],
   );
 
-  const resetError = useCallback(() => {
+  const resetError = () => {
     dispatch({ type: 'RESET_ERROR' });
-  }, []);
+  };
 
   useEffect(() => {
     if (isAuthenticated) {

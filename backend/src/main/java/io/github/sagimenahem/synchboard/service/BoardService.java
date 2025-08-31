@@ -8,21 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
-import io.github.sagimenahem.synchboard.dto.board.BoardDTO;
-import io.github.sagimenahem.synchboard.dto.board.BoardDetailsDTO;
-import io.github.sagimenahem.synchboard.dto.board.CreateBoardRequest;
-import io.github.sagimenahem.synchboard.dto.board.MemberDTO;
-import io.github.sagimenahem.synchboard.dto.board.UpdateCanvasSettingsRequest;
+import io.github.sagimenahem.synchboard.dto.board.*;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
 import io.github.sagimenahem.synchboard.entity.GroupBoard;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
-import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
+import io.github.sagimenahem.synchboard.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,8 +59,7 @@ public class BoardService {
         GroupBoard newBoard = GroupBoard.builder().boardGroupName(request.getName())
                 .groupDescription(request.getDescription()).createdByUser(owner)
                 .canvasBackgroundColor(request.getCanvasBackgroundColor())
-                .canvasWidth(request.getCanvasWidth())
-                .canvasHeight(request.getCanvasHeight())
+                .canvasWidth(request.getCanvasWidth()).canvasHeight(request.getCanvasHeight())
                 .build();
 
         // Handle board picture upload if provided
@@ -116,18 +111,15 @@ public class BoardService {
         }
 
         GroupBoard board = membersWithBoardAndUser.get(0).getGroupBoard();
-        List<MemberDTO> memberDTOs = membersWithBoardAndUser.stream().map(this::mapToMemberDTO)
+        List<MemberDTO> memberDTOs = membersWithBoardAndUser.stream().map(MemberMapper::toMemberDTO)
                 .collect(Collectors.toList());
 
         log.debug("Board details fetched successfully. BoardId: {}, Members: {}", boardId,
                 memberDTOs.size());
         return BoardDetailsDTO.builder().id(board.getBoardGroupId()).name(board.getBoardGroupName())
                 .description(board.getGroupDescription()).pictureUrl(board.getGroupPictureUrl())
-                .members(memberDTOs)
-                .canvasBackgroundColor(board.getCanvasBackgroundColor())
-                .canvasWidth(board.getCanvasWidth())
-                .canvasHeight(board.getCanvasHeight())
-                .build();
+                .members(memberDTOs).canvasBackgroundColor(board.getCanvasBackgroundColor())
+                .canvasWidth(board.getCanvasWidth()).canvasHeight(board.getCanvasHeight()).build();
     }
 
     @Transactional
@@ -276,17 +268,9 @@ public class BoardService {
                 .isAdmin(membership.getIsAdmin())
                 .canvasBackgroundColor(membership.getGroupBoard().getCanvasBackgroundColor())
                 .canvasWidth(membership.getGroupBoard().getCanvasWidth())
-                .canvasHeight(membership.getGroupBoard().getCanvasHeight())
-                .build();
+                .canvasHeight(membership.getGroupBoard().getCanvasHeight()).build();
     }
 
-    private MemberDTO mapToMemberDTO(GroupMember membership) {
-        return MemberDTO.builder().email(membership.getUser().getEmail())
-                .firstName(membership.getUser().getFirstName())
-                .lastName(membership.getUser().getLastName())
-                .profilePictureUrl(membership.getUser().getProfilePictureUrl())
-                .isAdmin(membership.getIsAdmin()).build();
-    }
 
     private void inviteMembers(Long boardId, List<String> inviteEmails, String invitingUserEmail) {
         if (inviteEmails == null || inviteEmails.isEmpty()) {
@@ -302,15 +286,6 @@ public class BoardService {
                     boardMemberService.inviteMember(boardId, email.trim(), invitingUserEmail);
                     successfulInvites++;
                     log.debug("Successfully invited {} to board {}", email, boardId);
-                } catch (InvalidRequestException e) {
-                    failedInvites++;
-                    log.warn("Invalid invitation request for {} to board {}: {}", email, boardId, e.getMessage());
-                } catch (ResourceNotFoundException e) {
-                    failedInvites++;
-                    log.warn("User {} not found when inviting to board {}", email, boardId);
-                } catch (ResourceConflictException e) {
-                    failedInvites++;
-                    log.warn("User {} is already a member of board {}", email, boardId);
                 } catch (Exception e) {
                     failedInvites++;
                     log.warn("Failed to invite {} to board {}: {}", email, boardId, e.getMessage());
@@ -318,12 +293,13 @@ public class BoardService {
             }
         }
 
-        log.info("Board {} creation: {} successful invites, {} failed invites", 
-                 boardId, successfulInvites, failedInvites);
+        log.info("Board {} creation: {} successful invites, {} failed invites", boardId,
+                successfulInvites, failedInvites);
     }
 
     @Transactional
-    public BoardDTO updateCanvasSettings(Long boardId, UpdateCanvasSettingsRequest request, String userEmail) {
+    public BoardDTO updateCanvasSettings(Long boardId, UpdateCanvasSettingsRequest request,
+            String userEmail) {
         log.debug("Updating canvas settings. BoardId: {}, User: {}", boardId, userEmail);
 
         GroupMember member = groupMemberRepository
@@ -333,12 +309,13 @@ public class BoardService {
                 });
 
         if (!member.getIsAdmin()) {
-            log.warn("Non-admin user {} attempted to update canvas settings for board {}", userEmail, boardId);
+            log.warn("Non-admin user {} attempted to update canvas settings for board {}",
+                    userEmail, boardId);
             throw new AccessDeniedException("Only board administrators can update canvas settings");
         }
 
         GroupBoard boardToUpdate = member.getGroupBoard();
-        
+
         if (request.getCanvasBackgroundColor() != null) {
             boardToUpdate.setCanvasBackgroundColor(request.getCanvasBackgroundColor());
         }
@@ -353,7 +330,8 @@ public class BoardService {
 
         log.info(BOARD_UPDATED, boardId, "canvas settings", userEmail);
 
-        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.CANVAS_UPDATED, userEmail);
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.CANVAS_UPDATED,
+                userEmail);
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
 
         return mapToBoardResponse(member);

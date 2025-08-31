@@ -19,6 +19,7 @@ import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
+import io.github.sagimenahem.synchboard.service.util.LoggingHelper;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +39,11 @@ public class AuthService {
 
     @Transactional
     public void registerUser(RegisterRequest request) {
-        log.info(SECURITY_PREFIX + " Registration attempt for email: {}", request.getEmail());
+        LoggingHelper.logSecurityInfo(log, "Registration attempt for email: {}", request.getEmail());
 
         // Check if user already exists
         if (userRepository.existsById(request.getEmail())) {
-            log.warn(SECURITY_PREFIX + " Registration failed for email: {}. Reason: {}",
+            LoggingHelper.logSecurityWarn(log, "Registration failed for email: {}. Reason: {}",
                     request.getEmail(), "Email already exists");
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }
@@ -86,7 +87,7 @@ public class AuthService {
     }
 
     public AuthResponseDTO login(LoginRequest request) {
-        log.info(SECURITY_PREFIX + " Login attempt for user: {}", request.getEmail());
+        LoggingHelper.logSecurityInfo(log, "Login attempt for user: {}", request.getEmail());
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -140,47 +141,11 @@ public class AuthService {
     public AuthResponseDTO verifyEmail(String email, String verificationCode) {
         log.info(SECURITY_PREFIX + " Email verification attempt for: {}", email);
 
-        PendingRegistration pendingRegistration = pendingRegistrationRepository
-                .findByEmail(email)
-                .orElseThrow(() -> {
-                    log.warn(SECURITY_PREFIX + " Verification failed - no pending registration for email: {}", email);
-                    return new ResourceNotFoundException("No pending registration found for email: " + email);
-                });
-
-        // Check if expired
-        if (pendingRegistration.isExpired()) {
-            log.warn(SECURITY_PREFIX + " Verification code expired for email: {}", email);
-            pendingRegistrationRepository.delete(pendingRegistration);
-            throw new InvalidRequestException("Verification code has expired");
-        }
-
-        // Check if max attempts exceeded
-        if (pendingRegistration.isMaxAttemptsReached()) {
-            log.warn(SECURITY_PREFIX + " Max verification attempts exceeded for email: {}", email);
-            pendingRegistrationRepository.delete(pendingRegistration);
-            throw new InvalidRequestException("Too many verification attempts. Please register again.");
-        }
-
-        // Verify code
-        if (!pendingRegistration.getVerificationCode().equals(verificationCode)) {
-            pendingRegistration.incrementAttempts();
-            pendingRegistrationRepository.save(pendingRegistration);
-            log.warn(SECURITY_PREFIX + " Invalid verification code for email: {} (attempt: {})", 
-                    email, pendingRegistration.getAttempts());
-            throw new InvalidRequestException("Invalid verification code");
-        }
-
+        PendingRegistration pendingRegistration = findPendingRegistration(email);
+        validateVerificationAttempt(pendingRegistration, verificationCode, email);
+        
         // Create actual user account
-        User newUser = User.builder()
-                .email(pendingRegistration.getEmail())
-                .password(pendingRegistration.getHashedPassword())
-                .firstName(pendingRegistration.getFirstName())
-                .lastName(pendingRegistration.getLastName())
-                .gender(pendingRegistration.getGender())
-                .phoneNumber(pendingRegistration.getPhoneNumber())
-                .dateOfBirth(pendingRegistration.getDateOfBirth())
-                .build();
-
+        User newUser = createUserFromPendingRegistration(pendingRegistration);
         userRepository.save(newUser);
         
         // Delete pending registration
@@ -193,16 +158,54 @@ public class AuthService {
         return new AuthResponseDTO(jwtToken);
     }
 
+    private PendingRegistration findPendingRegistration(String email) {
+        return pendingRegistrationRepository
+                .findByEmail(email)
+                .orElseThrow(() -> {
+                    log.warn(SECURITY_PREFIX + " Verification failed - no pending registration for email: {}", email);
+                    return new ResourceNotFoundException("No pending registration found for email: " + email);
+                });
+    }
+
+    private void validateVerificationAttempt(PendingRegistration pendingRegistration, String verificationCode, String email) {
+        if (pendingRegistration.isExpired()) {
+            log.warn(SECURITY_PREFIX + " Verification code expired for email: {}", email);
+            pendingRegistrationRepository.delete(pendingRegistration);
+            throw new InvalidRequestException("Verification code has expired");
+        }
+
+        if (pendingRegistration.isMaxAttemptsReached()) {
+            log.warn(SECURITY_PREFIX + " Max verification attempts exceeded for email: {}", email);
+            pendingRegistrationRepository.delete(pendingRegistration);
+            throw new InvalidRequestException("Too many verification attempts. Please register again.");
+        }
+
+        if (!pendingRegistration.getVerificationCode().equals(verificationCode)) {
+            pendingRegistration.incrementAttempts();
+            pendingRegistrationRepository.save(pendingRegistration);
+            log.warn(SECURITY_PREFIX + " Invalid verification code for email: {} (attempt: {})", 
+                    email, pendingRegistration.getAttempts());
+            throw new InvalidRequestException("Invalid verification code");
+        }
+    }
+
+    private User createUserFromPendingRegistration(PendingRegistration pendingRegistration) {
+        return User.builder()
+                .email(pendingRegistration.getEmail())
+                .password(pendingRegistration.getHashedPassword())
+                .firstName(pendingRegistration.getFirstName())
+                .lastName(pendingRegistration.getLastName())
+                .gender(pendingRegistration.getGender())
+                .phoneNumber(pendingRegistration.getPhoneNumber())
+                .dateOfBirth(pendingRegistration.getDateOfBirth())
+                .build();
+    }
+
     @Transactional
     public void resendVerificationCode(String email) {
         log.info(SECURITY_PREFIX + " Resend verification code request for: {}", email);
 
-        PendingRegistration pendingRegistration = pendingRegistrationRepository
-                .findByEmail(email)
-                .orElseThrow(() -> {
-                    log.warn(SECURITY_PREFIX + " Resend failed - no pending registration for email: {}", email);
-                    return new ResourceNotFoundException("No pending registration found for email: " + email);
-                });
+        PendingRegistration pendingRegistration = findPendingRegistration(email);
 
         // Generate new code and extend expiry
         String newVerificationCode = emailService.generateVerificationCode();

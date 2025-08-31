@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useLanguageSync } from 'features/settings/hooks';
@@ -33,27 +33,27 @@ export function useAppConfiguration(): UseAppConfigurationResult {
     updateDocumentDirection(i18n.language);
   }, [i18n.language]);
 
-  const handleBannerHeightChange = useCallback((height: number) => {
+  const handleBannerHeightChange = (height: number) => {
     setBannerHeight(height);
-  }, []);
+  };
 
   const isOAuthProcessing = sessionStorage.getItem('oauth_loading') === 'true';
   
-  const renderOAuthLoading = useCallback(() => {
+  const renderOAuthLoading = () => {
     return (
       <PageTransition>
         <PageLoader message={t('auth:signingInMessage')} />
       </PageTransition>
     );
-  }, [t]);
+  };
   
-  const renderInitializingLoading = useCallback(() => {
+  const renderInitializingLoading = () => {
     return (
       <PageTransition>
         <PageLoader message={t('common:loading')} />
       </PageTransition>
     );
-  }, [t]);
+  };
 
   return {
     bannerHeight,
