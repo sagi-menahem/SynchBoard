@@ -15,9 +15,9 @@ export const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
   children, 
   destructive = false, 
   icon,
-  variant 
+  variant, 
 }) => {
-  const finalVariant = variant || (destructive ? 'destructive' : 'default');
+  const finalVariant = variant ?? (destructive ? 'destructive' : 'default');
   const itemClasses = `${styles.item} ${styles[finalVariant]}`;
 
   const handleKeyDown = (event: React.KeyboardEvent) => {

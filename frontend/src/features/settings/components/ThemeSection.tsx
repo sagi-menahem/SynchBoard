@@ -15,7 +15,7 @@ const ThemeSection: React.FC = () => {
       variant="default"
     >
       <div className={styles.field}>
-        <ThemeSwitcher />
+        <ThemeSwitcher showLabel size="md" />
       </div>
     </SectionCard>
   );
