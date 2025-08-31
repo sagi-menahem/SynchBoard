@@ -3,7 +3,7 @@
 .container {
     @include theme.flex-column;
     @include theme.flex-center;
-    gap: 0.5rem;
+    gap: theme.$spacing-2;
 }
 
 .imageContainer {
@@ -45,7 +45,7 @@
     color: theme.$text-primary;
     font-size: 0.7rem;
     text-align: center;
-    padding: 0.25rem;
+    padding: theme.$spacing-1;
     font-weight: 500;
 }
 
@@ -58,7 +58,7 @@
     background: linear-gradient(135deg, theme.$error-color 0%, theme.$error-dark 100%);
     color: theme.$text-primary;
     border: none;
-    padding: 0.25rem 0.5rem;
+    padding: theme.$spacing-1 theme.$spacing-2;
     @include theme.rounded-small;
     font-size: 0.8rem;
     cursor: pointer;

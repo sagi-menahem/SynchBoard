@@ -2,11 +2,11 @@
 
 .container {
   @include theme.flex-center;
-  padding: 2rem;
+  padding: theme.$spacing-8;
   min-height: 200px;
   @include theme.card-base;
   @include theme.shadow-heavy;
-  margin: 1rem;
+  margin: theme.$spacing-4;
   color: theme.$text-primary;
 }
 
@@ -15,7 +15,7 @@
   width: 100vw;
   @include theme.fixed-overlay;
   margin: 0;
-  padding: 2rem;
+  padding: theme.$spacing-8;
   border-radius: 0;
   background: linear-gradient(135deg, theme.$background-secondary 0%, theme.$background-darker 100%);
   border: none;
@@ -27,7 +27,7 @@
   width: 100vw;
   @include theme.fixed-overlay;
   margin: 0;
-  padding: 2rem;
+  padding: theme.$spacing-8;
   background: linear-gradient(135deg, theme.$background-secondary 0%, theme.$background-darker 100%);
   border: none;
   border-radius: 0;
@@ -36,7 +36,7 @@
 
 .container--component {
   min-height: 150px;
-  padding: 1.5rem;
+  padding: theme.$spacing-6;
   background-color: theme.$background-secondary;
   border-color: theme.$border-primary;
 }
@@ -65,7 +65,7 @@
   font-size: 1.875rem;
   font-weight: 700;
   color: theme.$text-primary;
-  margin: 0 0 1rem 0;
+  margin: 0 0 theme.$spacing-4 0;
   line-height: 1.2;
 }
 
@@ -82,7 +82,7 @@
   font-size: 1.125rem;
   color: theme.$text-secondary;
   line-height: 1.6;
-  margin: 0 0 2rem 0;
+  margin: 0 0 theme.$spacing-8 0;
 }
 
 .container--component .message {
@@ -92,14 +92,14 @@
 
 .actions {
   @include theme.button-group;
-  gap: 1rem;
+  gap: theme.$spacing-4;
   flex-wrap: wrap;
   margin-bottom: 2rem;
 }
 
 .button {
   @include theme.button-base;
-  padding: 0.75rem 2rem;
+  padding: theme.$spacing-3 theme.$spacing-8;
   @include theme.rounded-large;
   font-size: 1rem;
   font-weight: 600;
@@ -163,9 +163,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   @include theme.flex-start;
-  gap: 0.5rem;
+  gap: theme.$spacing-2;
   margin: 0 auto;
-  padding: 0.5rem;
+  padding: theme.$spacing-2;
   @include theme.rounded-small;
   @include theme.smooth-transition;
 }
@@ -181,12 +181,12 @@
   background-color: theme.$background-darker;
   border: 1px solid theme.$border-primary;
   @include theme.rounded-large;
-  padding: 1rem;
+  padding: theme.$spacing-4;
   font-size: 0.875rem;
 }
 
 .errorInfo p {
-  margin: 0.5rem 0;
+  margin: theme.$spacing-2 0;
   color: theme.$text-secondary;
 }
 
@@ -202,17 +202,17 @@
   cursor: pointer;
   color: theme.$text-secondary;
   font-weight: 500;
-  padding: 0.5rem 0;
+  padding: theme.$spacing-2 0;
 }
 
 .stackContent {
   background-color: theme.$background-darker;
   color: theme.$text-primary;
-  padding: 1rem;
+  padding: theme.$spacing-4;
   @include theme.rounded-medium;
   overflow-x: auto;
   font-size: 0.75rem;
-  margin: 0.5rem 0 0 0;
+  margin: theme.$spacing-2 0 0 0;
 }
 
 .stackContent code {
@@ -230,13 +230,13 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 1.5rem 1rem;
-    margin: 0.5rem;
+    padding: theme.$spacing-6 theme.$spacing-4;
+    margin: theme.$spacing-2;
   }
 
   .container--page {
     min-height: 100vh;
-    padding: 2rem 1rem;
+    padding: theme.$spacing-8 theme.$spacing-4;
   }
 
   .title {
@@ -249,12 +249,12 @@
 
   .actions {
     flex-direction: column;
-    gap: 0.75rem;
+    gap: theme.$spacing-3;
   }
 
   .button {
     width: 100%;
-    padding: 0.875rem 1.5rem;
+    padding: theme.$spacing-3 theme.$spacing-6;
   }
 
   .icon {

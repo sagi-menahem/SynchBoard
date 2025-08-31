@@ -21,18 +21,18 @@
 }
 
 .sectionHeader {
-    margin-bottom: 1.5rem;
+    margin-bottom: theme.$spacing-6;
 }
 
 .authSection {
     background-color: theme.$background-secondary;
     border: 1px solid theme.$border-primary;
-    margin-bottom: 2rem;
+    margin-bottom: theme.$spacing-8;
 }
 
 .pageTitle {
     @include theme.flex-start;
-    gap: 0.75rem;
+    gap: theme.$spacing-3;
     margin: 0;
     color: theme.$text-primary;
     font-size: 1.875rem;
@@ -41,16 +41,16 @@
 
 .authContainer {
     @include theme.flex-column;
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
 }
 
 .formHeader {
-    margin-bottom: 1rem;
+    margin-bottom: theme.$spacing-4;
 }
 
 .formTitle {
     @include theme.flex-start;
-    gap: 0.5rem;
+    gap: theme.$spacing-2;
     margin: 0;
     color: theme.$text-primary;
     font-size: 1.25rem;
@@ -59,9 +59,9 @@
 
 .authActions {
     @include theme.flex-column-center;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
+    gap: theme.$spacing-4;
+    margin-top: theme.$spacing-4;
+    padding-top: theme.$spacing-4;
     border-top: 1px solid theme.$border-primary;
 }
 
@@ -73,7 +73,7 @@
 
 .forgotPasswordSection {
     @include theme.flex-center;
-    margin-top: 0.5rem;
+    margin-top: theme.$spacing-2;
 }
 
 .forgotPasswordButton {
@@ -82,7 +82,7 @@
 
 @media (max-width: 640px) {
     .pageContent {
-        padding: 1rem;
+        padding: theme.$spacing-4;
         padding-top: 2rem;
     }
 
@@ -93,7 +93,7 @@
     }
 
     .authSection {
-        padding: 1rem;
+        padding: theme.$spacing-4;
     }
 
     .pageTitle {
@@ -105,6 +105,6 @@
     }
 
     .authActions {
-        gap: 0.75rem;
+        gap: theme.$spacing-3;
     }
 }

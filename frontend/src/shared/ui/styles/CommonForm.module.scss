@@ -22,7 +22,7 @@
 
 .imageField {
     @include theme.flex-center;
-    padding: 0.5rem 0;
+    padding: theme.$spacing-2 0;
 }
 
 .description {
@@ -35,7 +35,7 @@
 }
 
 .buttonGroup {
-    margin-top: 0.5rem;
+    margin-top: theme.$spacing-2;
     @include theme.button-group;
 }
 
@@ -47,8 +47,8 @@
 
 .radioGroup {
     @include theme.flex-column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    gap: theme.$spacing-2;
+    margin-top: theme.$spacing-2;
 }
 
 .radioLabel {
@@ -106,7 +106,7 @@
     font-size: 1rem;
     font-weight: 500;
     @include theme.smooth-transition;
-    margin-top: 1rem;
+    margin-top: theme.$spacing-4;
 }
 
 .submitButton:hover:not(:disabled) {
@@ -121,14 +121,14 @@
 
 .canvasSizeOptions {
     @include theme.flex-column;
-    gap: 1rem;
-    margin-top: 0.5rem;
+    gap: theme.$spacing-4;
+    margin-top: theme.$spacing-2;
 }
 
 .sizeGroup {
     @include theme.flex-column;
-    gap: 0.5rem;
-    padding: 1rem;
+    gap: theme.$spacing-2;
+    padding: theme.$spacing-4;
     border: 1px solid theme.$border-primary;
     @include theme.rounded-large;
     background: theme.$overlay-surface-60;
@@ -139,7 +139,7 @@
     color: theme.$text-muted;
     font-size: 0.85rem;
     font-weight: 600;
-    margin: 0 0 0.25rem 0;
+    margin: 0 0 theme.$spacing-1 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid theme.$border-primary;
@@ -163,9 +163,9 @@
 
 .customSizeInputs {
     @include theme.flex-start;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding: 1rem;
+    gap: theme.$spacing-2;
+    margin-top: theme.$spacing-2;
+    padding: theme.$spacing-4;
     border: 1px solid theme.$border-primary;
     @include theme.rounded-large;
     background: theme.$overlay-surface-80;
@@ -187,12 +187,12 @@
 
 .modalContainer {
     @include theme.flex-column;
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
     max-width: 400px;
 }
 
 .modalHeader {
-    margin-bottom: 0.5rem;
+    margin-bottom: theme.$spacing-2;
 }
 
 .warningIcon {
@@ -202,7 +202,7 @@
 
 .modalTitle {
     @include theme.flex-start;
-    gap: 0.75rem;
+    gap: theme.$spacing-3;
     color: theme.$text-primary;
     font-size: 1.25rem;
     font-weight: 600;
@@ -225,13 +225,13 @@
 }
 
 .additionalActions {
-    margin-top: 1rem;
+    margin-top: theme.$spacing-4;
     text-align: center;
 }
 
 .error {
     @include theme.error-message;
-    margin-bottom: 1rem;
+    margin-bottom: theme.$spacing-4;
 }
 
 @media (max-width: 768px) {
@@ -243,7 +243,7 @@
     .customSizeInputs {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.75rem;
+        gap: theme.$spacing-3;
     }
 
     .customSizeInputs input {
@@ -253,7 +253,7 @@
 
     .buttonGroup {
         flex-direction: column-reverse;
-        gap: 0.5rem;
+        gap: theme.$spacing-2;
     }
 
     .buttonGroup button {
