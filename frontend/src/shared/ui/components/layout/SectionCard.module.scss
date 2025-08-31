@@ -5,22 +5,22 @@
     background-color: theme.$background-secondary; // Match BoardCard background
     border: 1px solid theme.$border-primary; // Match BoardCard border
     border-radius: theme.$card-border-radius;
-    padding: theme.$card-padding;
+    // No padding on main container - header spans full width
     margin-bottom: 2rem;
     position: relative;
     @include theme.smooth-transition;
-    
+
     // Responsive width - 700px base that shrinks on smaller screens
     width: min(700px, 100%) !important;
     max-width: 700px;
     flex-shrink: 1;
-    
+
     // Override any child element min-width requirements to ensure card stays at 368px
     :global(.form) {
         min-width: unset !important;
         width: 100% !important;
     }
-    
+
     // Ensure all child content respects the container width
     * {
         max-width: 100%;
@@ -31,7 +31,7 @@
 // Variant: Default (standard section with subtle shadow)
 .default {
     box-shadow: theme.$shadow-card;
-    
+
     // Match BoardCard hover behavior
     &:hover {
         background-color: theme.$background-surface;
@@ -41,7 +41,7 @@
 // Variant: Elevated (stronger shadow for prominence)  
 .elevated {
     box-shadow: theme.$shadow-lg;
-    
+
     &:hover {
         background-color: theme.$background-surface;
         transform: translateY(-1px);
@@ -52,11 +52,10 @@
 .warning {
     box-shadow: theme.$shadow-card;
     border: 2px solid theme.$warning;
-    background: linear-gradient(to bottom, 
-        var(--color-surface), 
-        rgba(245, 158, 11, 0.02)
-    );
-    
+    background: linear-gradient(to bottom,
+            var(--color-surface),
+            rgba(245, 158, 11, 0.02));
+
     &::before {
         content: '';
         position: absolute;
@@ -73,11 +72,10 @@
 .danger {
     border: 2px solid var(--btn-destructive-bg);
     box-shadow: theme.$shadow-glow-md var(--btn-destructive-bg);
-    background: linear-gradient(to bottom, 
-        var(--color-surface), 
-        color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent)
-    );
-    
+    background: linear-gradient(to bottom,
+            var(--color-surface),
+            color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent));
+
     &::before {
         content: '';
         position: absolute;
@@ -90,22 +88,24 @@
     }
 }
 
-// Header styling
+// Header styling - spans full card width
 .header {
-    margin-bottom: theme.$spacing-6;
+    margin-bottom: 0;
+    padding: theme.$card-padding;
     padding-bottom: theme.$spacing-4;
+    border-bottom: 1px solid theme.$border-primary;
 }
 
 .headerContent {
     display: flex;
     align-items: flex-start;
-    justify-content: space-between; // This works naturally with logical layout
     gap: theme.$spacing-4;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .titleGroup {
-    flex: 1;
-    min-width: 0; // Allow text truncation if needed
+    min-width: 0;
 }
 
 .title {
@@ -133,50 +133,31 @@
     gap: theme.$spacing-2;
 }
 
+// Content wrapper with padding
+.contentWrapper {
+    // Base content wrapper - padding variants will be applied here
+}
+
 // Content area
 .content {
-    // Content inherits padding from parent section card
+    // Content area inside the padded wrapper
 }
 
 // Padding variants using design tokens
 .padding-none {
     padding: 0;
-    
-    .header {
-        padding: theme.$spacing-6 theme.$spacing-6 theme.$spacing-4;
-        margin-bottom: 0;
-    }
-    
-    .content {
-        padding: 0 theme.$spacing-6 theme.$spacing-6;
-    }
 }
 
 .padding-sm {
     padding: theme.$spacing-4;
-    
-    .header {
-        margin: -#{theme.$spacing-4} -#{theme.$spacing-4} theme.$spacing-4;
-        padding: theme.$spacing-4 theme.$spacing-4 theme.$spacing-3;
-    }
 }
 
 .padding-md {
     padding: theme.$card-padding; // 24px (default)
-    
-    .header {
-        margin: -#{theme.$card-padding} -#{theme.$card-padding} theme.$spacing-6;
-        padding: theme.$card-padding theme.$card-padding theme.$spacing-4;
-    }
 }
 
 .padding-lg {
     padding: theme.$spacing-8; // 32px
-    
-    .header {
-        margin: -#{theme.$spacing-8} -#{theme.$spacing-8} theme.$spacing-6;
-        padding: theme.$spacing-8 theme.$spacing-8 theme.$spacing-4;
-    }
 }
 
 // No RTL overrides needed - CSS logical properties handle this automatically
@@ -190,39 +171,29 @@
         max-width: 700px;
         flex-shrink: 1;
     }
-    
+
     .headerContent {
         flex-direction: column;
         align-items: stretch;
         gap: theme.$spacing-3;
     }
-    
+
     .headerActions {
         justify-content: flex-start;
         margin-top: theme.$spacing-2;
     }
-    
+
     .title {
         font-size: 1.125rem;
     }
-    
+
     // Reduce padding on mobile
     .padding-md {
         padding: theme.$spacing-4;
-        
-        .header {
-            margin: -#{theme.$spacing-4} -#{theme.$spacing-4} theme.$spacing-4;
-            padding: theme.$spacing-4 theme.$spacing-4 theme.$spacing-3;
-        }
     }
-    
+
     .padding-lg {
         padding: theme.$spacing-6;
-        
-        .header {
-            margin: -#{theme.$spacing-6} -#{theme.$spacing-6} theme.$spacing-4;
-            padding: theme.$spacing-6 theme.$spacing-6 theme.$spacing-3;
-        }
     }
 }
 
@@ -248,15 +219,16 @@
 
 // High contrast mode support
 @media (prefers-contrast: high) {
+
     .default,
     .elevated {
         border-width: 2px;
     }
-    
+
     .warning {
         border-width: 3px;
     }
-    
+
     .danger {
         border-width: 3px;
     }
