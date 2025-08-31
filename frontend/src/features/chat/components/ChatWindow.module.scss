@@ -18,7 +18,7 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: theme.$spacing-4;
+  padding: theme.$spacing-3; // Reduced padding - content closer to edges
   @include theme.flex-column;
   gap: theme.$spacing-1;
   scroll-behavior: smooth;
