@@ -28,8 +28,12 @@ const SectionCard = React.forwardRef<HTMLDivElement, SectionCardProps>(
     const cardClasses = [
       styles.sectionCard,
       styles[variant],
-      styles[`padding-${padding}`],
       className,
+    ].filter(Boolean).join(' ');
+
+    const contentWrapperClasses = [
+      styles.contentWrapper,
+      styles[`padding-${padding}`],
     ].filter(Boolean).join(' ');
 
     const shouldShowHeader = showHeader && (title ?? headerActions);
@@ -53,8 +57,10 @@ const SectionCard = React.forwardRef<HTMLDivElement, SectionCardProps>(
             </div>
           </header>
         )}
-        <div className={styles.content}>
-          {children}
+        <div className={contentWrapperClasses}>
+          <div className={styles.content}>
+            {children}
+          </div>
         </div>
       </section>
     );
