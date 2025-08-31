@@ -3,7 +3,7 @@ import React from 'react';
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { Monitor } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ColorPicker, Input, RadioGroup } from 'shared/ui';
+import { ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
@@ -44,7 +44,11 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
   };
 
   return (
-    <>
+    <SectionCard 
+      title={t('board:createForm.label.canvasSettings')}
+      variant="default"
+      padding="md"
+    >
       <div className={styles.field}>
         <label htmlFor="board-canvas-background">
           <Monitor size={14} />
@@ -142,7 +146,7 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
           </div>
         )}
       </div>
-    </>
+    </SectionCard>
   );
 };
 
