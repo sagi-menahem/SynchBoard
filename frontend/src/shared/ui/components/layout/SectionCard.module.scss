@@ -211,7 +211,16 @@
 }
 
 // Focus management for accessibility
-.sectionCard:focus-within {
+// Only show outline when form elements inside receive focus, not buttons
+.sectionCard input:focus,
+.sectionCard textarea:focus,
+.sectionCard select:focus {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+}
+
+// Card focus when the card itself is focused (for keyboard navigation)
+.sectionCard:focus {
     outline: 2px solid theme.$primary;
     outline-offset: 2px;
 }
