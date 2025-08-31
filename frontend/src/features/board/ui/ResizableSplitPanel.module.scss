@@ -4,6 +4,7 @@
   display: flex;
   height: 100%;
   width: 100%;
+  gap: 0; // Explicitly no gap between flex items
 }
 
 .leftPanel,
@@ -26,53 +27,122 @@
   @include theme.flex-column;
 }
 
+// Redesigned subtle divider
 .divider {
-  width: 12px;
+  position: relative;
+  width: 1px; // Physical element is only 1px wide
   cursor: col-resize;
   @include theme.flex-center;
-  background: theme.$divider-bg;
+  background: transparent; // No background - separator line will be visible
   border: none;
   padding: 0;
   @include theme.hover-transition;
-  position: relative;
-  margin: 0 theme.$spacing-1;
   height: 100%;
+  margin: 0; // No margin - separator sits flush against panels
+
+  // Larger invisible clickable area using pseudo-element
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 12px; // Larger clickable area
+    background: transparent;
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  // Focus styles for accessibility
+  &:focus-visible {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+  }
 }
 
-.divider:hover {
-  background: theme.$divider-hover;
-}
-
-.divider.dragging {
-  background: theme.$divider-active;
-}
-
-.dividerHandle {
-  @include theme.flex-column;
-  @include theme.flex-center;
-  gap: theme.$spacing-0-5;
-  height: 50px;
-}
-
-.dividerHandle::before,
-.dividerHandle::after,
-.dividerHandle span {
-  content: '';
-  width: 3px;
-  height: 3px;
-  background: theme.$text-placeholder;
-  @include theme.rounded-circle;
+// Subtle separator line - only 1px thick
+.dividerLine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border); // Subtle border color
   @include theme.hover-transition;
 }
 
-.divider:hover .dividerHandle::before,
-.divider:hover .dividerHandle::after,
-.divider:hover .dividerHandle span {
-  background: theme.$primary;
+// Visual drag handle in the center
+.dividerHandle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: theme.$spacing-2 theme.$spacing-1;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: theme.$border-radius-lg; // Rounded pill shape
+  box-shadow: theme.$shadow-sm;
+  @include theme.hover-transition;
+  z-index: 1;
+
+  // Initially subtle and small
+  opacity: 0.7;
+  transform: translate(-50%, -50%) scale(0.9);
 }
 
-.divider.dragging .dividerHandle::before,
-.divider.dragging .dividerHandle::after,
-.divider.dragging .dividerHandle span {
-  background: theme.$primary;
+// Individual dots in the handle
+.handleDot {
+  width: 2px;
+  height: 2px;
+  background: var(--color-text-muted);
+  border-radius: 50%;
+  @include theme.hover-transition;
+}
+
+// Hover states - make more prominent
+.divider:hover {
+  .dividerLine {
+    background: var(--color-primary);
+    width: 2px; // Slightly thicker on hover
+  }
+
+  .dividerHandle {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+    box-shadow: theme.$shadow-md;
+  }
+
+  .handleDot {
+    background: var(--color-primary);
+    width: 3px;
+    height: 3px;
+  }
+}
+
+// Active/dragging state - maximum prominence
+.divider.dragging {
+  .dividerLine {
+    background: var(--color-primary);
+    width: 2px;
+  }
+
+  .dividerHandle {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+    box-shadow: theme.$shadow-lg;
+  }
+
+  .handleDot {
+    background: var(--color-primary);
+    width: 3px;
+    height: 3px;
+  }
 }

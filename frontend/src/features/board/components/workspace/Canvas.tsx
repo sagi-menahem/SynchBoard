@@ -63,7 +63,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
 
   const canvasWidth = canvasConfig.width;
   const canvasHeight = canvasConfig.height;
-  const padding = 40;
+  const padding = 0; // Removed padding for edge-to-edge canvas
 
   const hideBackground = false;
 

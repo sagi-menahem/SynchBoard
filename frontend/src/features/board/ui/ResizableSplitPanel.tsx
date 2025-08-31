@@ -90,11 +90,11 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
         {leftChild}
       </div>
       
-      <Button
-        variant="icon"
-        type="button"
+      <div 
         className={clsx(styles.divider, isDragging && styles.dragging)}
         onMouseDown={handleMouseDown}
+        role="button"
+        tabIndex={0}
         aria-label={t('common:accessibility.resizePanels')}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -102,10 +102,13 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
           }
         }}
       >
+        <div className={styles.dividerLine} />
         <div className={styles.dividerHandle}>
-          <span />
+          <div className={styles.handleDot} />
+          <div className={styles.handleDot} />
+          <div className={styles.handleDot} />
         </div>
-      </Button>
+      </div>
       
       <div 
         className={styles.rightPanel} 
