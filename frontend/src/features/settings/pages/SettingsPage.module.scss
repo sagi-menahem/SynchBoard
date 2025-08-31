@@ -6,12 +6,30 @@
     /* Banner + toolbar + gap */
     min-height: 100vh;
     width: 100%;
-    max-width: 600px;
+    max-width: 1200px;
     margin: 0 auto;
     padding-inline: 24px; // Already using logical properties
     padding-block-end: 24px;
     box-sizing: border-box;
     text-align: start; // CSS logical property - automatically RTL aware
+    
+    // Center content for consistent layout
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// Responsive adjustments for mobile devices
+@media (max-width: 768px) {
+    .pageContent {
+        padding-inline: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pageContent {
+        padding-inline: 12px;
+    }
 }
 
 .loading,

@@ -1,25 +1,48 @@
 @use '@/styles' as theme;
 
-// Base section card styling
+// Base section card styling - matching BoardCard design
 .sectionCard {
-    @include theme.card-base;
+    background-color: theme.$background-secondary; // Match BoardCard background
+    border: 1px solid theme.$border-primary; // Match BoardCard border
+    border-radius: theme.$card-border-radius;
+    padding: theme.$card-padding;
     margin-bottom: 2rem;
     position: relative;
+    @include theme.smooth-transition;
+    
+    // Fixed width to match actual board cards (3 cards in 1152px with 24px gaps = 368px each)
+    width: 700px !important;
+    flex-shrink: 0;
+    
+    // Override any child element min-width requirements to ensure card stays at 368px
+    :global(.form) {
+        min-width: unset !important;
+        width: 100% !important;
+    }
+    
+    // Ensure all child content respects the container width
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 }
 
 // Variant: Default (standard section with subtle shadow)
 .default {
     box-shadow: theme.$shadow-card;
-    border: 1px solid var(--color-border-light);
+    
+    // Match BoardCard hover behavior
+    &:hover {
+        background-color: theme.$background-surface;
+    }
 }
 
 // Variant: Elevated (stronger shadow for prominence)  
 .elevated {
     box-shadow: theme.$shadow-lg;
-    border: 1px solid var(--color-border);
     
     &:hover {
-        @include theme.card-hover-effect;
+        background-color: theme.$background-surface;
         transform: translateY(-1px);
     }
 }
@@ -68,7 +91,6 @@
 
 // Header styling
 .header {
-    border-bottom: 1px solid var(--color-border-light);
     margin-bottom: theme.$spacing-6;
     padding-bottom: theme.$spacing-4;
 }
@@ -162,6 +184,9 @@
 @media (max-width: 768px) {
     .sectionCard {
         margin-bottom: 1.5rem;
+        // Allow flexible width on mobile for better usability
+        width: 100% !important;
+        flex-shrink: 1;
     }
     
     .headerContent {
