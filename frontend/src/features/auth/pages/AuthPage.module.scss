@@ -16,8 +16,9 @@
     top: theme.$spacing-6;
     inset-inline-end: theme.$spacing-6;
     z-index: theme.$z-index-modal;
-    @include theme.flex-end;
-    gap: theme.$spacing-4;
+    @include theme.flex-column;
+    align-items: flex-end; // Align to the right edge
+    gap: theme.$spacing-3; // Smaller gap for vertical stacking
 }
 
 .sectionHeader {
@@ -89,7 +90,7 @@
     .switchersCorner {
         top: theme.$spacing-4;
         inset-inline-end: theme.$spacing-4;
-        gap: theme.$spacing-3;
+        gap: theme.$spacing-2; // Even smaller gap on mobile
     }
 
     .authSection {

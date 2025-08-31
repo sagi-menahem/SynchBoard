@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import clsx from 'clsx';
 import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { Button, SectionCard } from 'shared/ui';
+import { LanguageToggle, SectionCard } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
-
-import languageStyles from './LanguageSection.module.scss';
 
 
 const LanguageSection: React.FC = () => {
@@ -20,6 +17,7 @@ const LanguageSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const currentLanguage = languagePrefs.preferredLanguage ?? i18n.language ?? 'en';
+
 
   useEffect(() => {
     const initializeLanguagePrefs = async () => {
@@ -64,12 +62,7 @@ const LanguageSection: React.FC = () => {
         variant="default"
       >
         <div className={styles.field}>
-          <div className={languageStyles.languageSwitcher}>
-            <span className={languageStyles.label}>{t('common:language')}</span>
-            <div className={languageStyles.buttonGroup}>
-              <span>{t('settings:page.loading')}</span>
-            </div>
-          </div>
+          <span>{t('settings:page.loading')}</span>
         </div>
       </SectionCard>
     );
@@ -81,29 +74,12 @@ const LanguageSection: React.FC = () => {
       variant="default"
     >
       <div className={styles.field}>
-        <div className={languageStyles.languageSwitcher}>
-          <span className={languageStyles.label}>{t('common:language')}</span>
-          <div className={languageStyles.buttonGroup}>
-            <Button
-              variant="icon"
-              className={clsx(languageStyles.languageButton, currentLanguage === 'en' && languageStyles.active)}
-              onClick={() => handleLanguageChange('en')}
-              type="button"
-              title={t('settings:page.language.en')}
-            >
-              EN
-            </Button>
-            <Button
-              variant="icon"
-              className={clsx(languageStyles.languageButton, currentLanguage === 'he' && languageStyles.active)}
-              onClick={() => handleLanguageChange('he')}
-              type="button"
-              title={t('settings:page.language.he')}
-            >
-              עב
-            </Button>
-          </div>
-        </div>
+        <LanguageToggle
+          value={currentLanguage}
+          onChange={handleLanguageChange}
+          size="md"
+          showLabel
+        />
       </div>
     </SectionCard>
   );
