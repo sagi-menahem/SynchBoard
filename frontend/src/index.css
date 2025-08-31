@@ -19,6 +19,17 @@ body[data-theme='light'] {
     --transition-duration-normal: 0.2s;
     --transition-duration-slow: 0.3s;
 
+    /* Z-Index System */
+    --z-index-base: 1;
+    --z-index-elevated: 10;
+    --z-index-dropdown: 50;
+    --z-index-toolbar: 100;
+    --z-index-overlay: 200;
+    --z-index-modal: 1000;
+    --z-index-banner: 1000;
+    --z-index-tooltip: 1000;
+    --z-index-popover: 1000;
+
     /* Canvas-specific variables (legacy) */
     --canvas-container-bg: #1a1a1a;
     --canvas-pattern-color: rgba(255, 255, 255, 0.02);
