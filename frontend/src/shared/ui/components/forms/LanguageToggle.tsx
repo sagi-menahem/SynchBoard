@@ -102,9 +102,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           <span style={{
             fontSize: `${config.fontSize}px`,
             fontWeight: '700',
-            color: isHebrew ? '#ffffff' : '#6b7280',
+            color: isHebrew ? '#6b7280' : '#6b7280',
           }}>
-            עב
+            HE
           </span>
         </div>
       </Switch>
