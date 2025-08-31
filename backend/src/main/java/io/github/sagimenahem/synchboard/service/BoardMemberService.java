@@ -15,7 +15,6 @@ import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.*;
-import io.github.sagimenahem.synchboard.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -104,7 +103,7 @@ public class BoardMemberService {
                 notificationService.broadcastBoardUpdate(boardId,
                                 BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, invitingUserEmail);
                 notificationService.broadcastUserUpdate(invitedUserEmail);
-                return MemberMapper.toMemberDTO(newMembership);
+                return toMemberDTO(newMembership);
         }
 
         @Transactional
@@ -189,7 +188,7 @@ public class BoardMemberService {
                                 BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, requestingUserEmail);
 
                 notificationService.broadcastUserDetailsChanged(emailToPromote);
-                return MemberMapper.toMemberDTO(memberToPromote);
+                return toMemberDTO(memberToPromote);
         }
 
         @Transactional
@@ -325,6 +324,16 @@ public class BoardMemberService {
                                 }
                         }
                 }
+        }
+
+        private MemberDTO toMemberDTO(GroupMember membership) {
+                return MemberDTO.builder()
+                        .email(membership.getUser().getEmail())
+                        .firstName(membership.getUser().getFirstName())
+                        .lastName(membership.getUser().getLastName())
+                        .profilePictureUrl(membership.getUser().getProfilePictureUrl())
+                        .isAdmin(membership.getIsAdmin())
+                        .build();
         }
 
 }

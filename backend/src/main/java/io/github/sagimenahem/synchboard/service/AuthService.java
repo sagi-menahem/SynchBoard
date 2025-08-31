@@ -19,7 +19,6 @@ import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
-import io.github.sagimenahem.synchboard.service.util.LoggingHelper;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class AuthService {
 
     @Transactional
     public void registerUser(RegisterRequest request) {
-        LoggingHelper.logSecurityInfo(log, "Registration attempt for email: {}", request.getEmail());
+        log.info("[SECURITY] Registration attempt for email: {}", request.getEmail());
         
         validateUserRegistration(request.getEmail());
         cleanupExistingPendingRegistration(request.getEmail());
@@ -50,7 +49,7 @@ public class AuthService {
     }
 
     public AuthResponseDTO login(LoginRequest request) {
-        LoggingHelper.logSecurityInfo(log, "Login attempt for user: {}", request.getEmail());
+        log.info("[SECURITY] Login attempt for user: {}", request.getEmail());
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -147,7 +146,7 @@ public class AuthService {
 
     private void validateUserRegistration(String email) {
         if (userRepository.existsById(email)) {
-            LoggingHelper.logSecurityWarn(log, "Registration failed for email: {}. Reason: {}",
+            log.warn("[SECURITY] Registration failed for email: {}. Reason: {}",
                     email, "Email already exists");
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }

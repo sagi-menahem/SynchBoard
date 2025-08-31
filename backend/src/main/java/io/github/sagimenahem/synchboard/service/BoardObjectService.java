@@ -21,7 +21,8 @@ import io.github.sagimenahem.synchboard.repository.ActionHistoryRepository;
 import io.github.sagimenahem.synchboard.repository.BoardObjectRepository;
 import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
-import io.github.sagimenahem.synchboard.service.security.MembershipService;
+import org.springframework.security.access.AccessDeniedException;
+import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,11 +36,11 @@ public class BoardObjectService {
         private final GroupBoardRepository groupBoardRepository;
         private final ObjectMapper objectMapper;
         private final ActionHistoryRepository actionHistoryRepository;
-        private final MembershipService membershipService;
+        private final GroupMemberRepository groupMemberRepository;
 
         @Transactional
         public void saveDrawAction(BoardActionDTO.Request request, String userEmail) {
-                membershipService.validateBoardAccess(userEmail, request.getBoardId());
+                validateBoardAccess(userEmail, request.getBoardId());
 
                 User user = userRepository.findById(userEmail)
                                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -75,7 +76,7 @@ public class BoardObjectService {
 
         @Transactional(readOnly = true)
         public List<BoardActionDTO.Response> getObjectsForBoard(Long boardId, String userEmail) {
-                membershipService.validateBoardAccess(userEmail, boardId);
+                validateBoardAccess(userEmail, boardId);
 
                 List<BoardObject> boardObjects =
                                 boardObjectRepository.findActiveByBoardWithUsers(boardId);
@@ -159,6 +160,12 @@ public class BoardObjectService {
                         return BoardActionDTO.Response.builder().type(ActionType.OBJECT_DELETE)
                                         .payload(null).sender("system-error")
                                         .instanceId(entity.getInstanceId()).build();
+                }
+        }
+
+        private void validateBoardAccess(String userEmail, Long boardId) {
+                if (!groupMemberRepository.existsByUserEmailAndBoardGroupId(userEmail, boardId)) {
+                        throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
                 }
         }
 }

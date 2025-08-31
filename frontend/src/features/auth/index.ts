@@ -6,7 +6,6 @@ export { default as RegistrationForm } from './components/RegistrationForm';
 export { default as GoogleLoginButton } from './components/GoogleLoginButton';
 export { default as ForgotPasswordModal } from './components/ForgotPasswordModal';
 export { default as EmailVerificationModal } from './components/EmailVerificationModal';
-export { AuthLoadingOverlay } from './components/AuthLoadingOverlay';
 
 // Hooks
 export { useAuth } from './hooks/useAuth';
