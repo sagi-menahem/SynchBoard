@@ -22,7 +22,7 @@
 
 .rightPanel {
   border: 1px solid theme.$border-light;
-  @include theme.rounded-medium;
+  border-radius: 0; // Square corners to match canvas style
   background: transparent; // Transparent to show pattern background
   @include theme.flex-column;
 }
