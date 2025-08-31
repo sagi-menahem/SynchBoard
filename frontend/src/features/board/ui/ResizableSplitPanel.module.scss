@@ -16,29 +16,29 @@
 .leftPanel {
   border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
-  background: transparent; // Allow parent background to show through
+  background: transparent; // Transparent to show pattern background
   flex-shrink: 0;
 }
 
 .rightPanel {
   border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
-  background: transparent; // Allow parent background to show through
+  background: transparent; // Transparent to show pattern background
   @include theme.flex-column;
 }
 
 // Redesigned subtle divider
 .divider {
   position: relative;
-  width: 1px; // Physical element is only 1px wide
+  width: 8px; // Increased width for better visibility and interaction
   cursor: col-resize;
   @include theme.flex-center;
-  background: transparent; // No background - separator line will be visible
+  background: rgba(255, 255, 255, 0.08); // Subtle background for visibility
   border: none;
   padding: 0;
   @include theme.hover-transition;
   height: 100%;
-  margin: 0; // No margin - separator sits flush against panels
+  margin: 0;
 
   // Larger invisible clickable area using pseudo-element
   &::before {
@@ -60,15 +60,17 @@
   }
 }
 
-// Subtle separator line - only 1px thick
+// More visible separator line
 .dividerLine {
   position: absolute;
-  left: 0;
+  left: 50%;
   top: 0;
   bottom: 0;
-  width: 1px;
-  background: var(--color-border); // Subtle border color
+  width: 2px;
+  background: rgba(255, 255, 255, 0.2); // Light gray for visibility
+  transform: translateX(-50%);
   @include theme.hover-transition;
+  border-radius: 1px;
 }
 
 // Visual drag handle in the center
@@ -105,9 +107,11 @@
 
 // Hover states - make more prominent
 .divider:hover {
+  background: rgba(255, 255, 255, 0.12); // Slightly more visible background
+  
   .dividerLine {
     background: var(--color-primary);
-    width: 2px; // Slightly thicker on hover
+    width: 3px; // Thicker on hover
   }
 
   .dividerHandle {
@@ -127,9 +131,11 @@
 
 // Active/dragging state - maximum prominence
 .divider.dragging {
+  background: rgba(255, 255, 255, 0.15); // Most visible when dragging
+  
   .dividerLine {
     background: var(--color-primary);
-    width: 2px;
+    width: 4px; // Thickest when dragging
   }
 
   .dividerHandle {
