@@ -154,7 +154,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             )}
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+          <div className={styles.buttonGroup}>
             <Button 
               onClick={handleCancel} 
               disabled={isUpdating} 
@@ -166,7 +166,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             <Button 
               onClick={handleSave} 
               disabled={isUpdating}
-              variant="secondary"
+              variant="primary"
             >
               <Save size={16} />
               {isUpdating ? t('common:button.saving') : t('board:details.canvasSettings.applyChanges')}
