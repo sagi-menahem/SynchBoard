@@ -7,6 +7,7 @@ import { Save, Settings2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
 import { getColorName } from 'shared/utils/ColorUtils';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './CanvasSettingsSection.module.scss';
 
@@ -103,11 +104,13 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           <div className={styles.settingsContainerLarge}>
             <label className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}</label>
             <div className={styles.flexRowWithMargin}>
-              <ColorPicker
-                color={backgroundColor}
-                onChange={setBackgroundColor}
-                disabled={isUpdating}
-              />
+              <div className={utilStyles.colorPickerPopupWrapper}>
+                <ColorPicker
+                  color={backgroundColor}
+                  onChange={setBackgroundColor}
+                  disabled={isUpdating}
+                />
+              </div>
               <span>
                 {(() => {
                   const colorName = getColorName(backgroundColor);

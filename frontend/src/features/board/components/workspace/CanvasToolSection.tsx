@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ColorPicker, Slider, ToolButton, ToolGroup } from 'shared/ui';
 import Button from 'shared/ui/components/forms/Button';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import { useCanvasDownload } from '../../hooks/useCanvasDownload';
 
@@ -67,7 +68,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
   return (
     <div className={styles.canvasToolSection}>
       <ToolGroup label={t('board:toolbar.label.color')}>
-        <div className={styles.colorPickerWrapper}>
+        <div className={`${styles.colorPickerWrapper} ${utilStyles.colorPickerPopupWrapper}`}>
           <ColorPicker
             color={strokeColor}
             onChange={setStrokeColor}

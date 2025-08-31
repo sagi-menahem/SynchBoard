@@ -25,3 +25,76 @@
   color: var(--text-primary);
   font-size: 0.9rem;
 }
+
+.colorPickerPopupWrapper {
+  /* Don't override the flex direction - let the parent container decide */
+}
+
+.colorPickerPopupWrapper :global(.popover) {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: theme.$z-index-popover;
+  @include theme.card-base;
+  @include theme.shadow-heavy;
+  background-color: theme.$surface-elevated;
+  animation: popoverIn theme.$transition-normal ease-out;
+  padding: theme.$spacing-3;
+  width: 250px !important;
+  min-width: 250px !important;
+}
+
+/* Highly specific rule to override any library defaults */
+.colorPickerPopupWrapper :global([class*="colorPickerContainer"]) :global([class*="popover"]) {
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: none !important;
+}
+
+/* Even more specific - target by attribute and class combination */
+.colorPickerPopupWrapper :global(div[class*="popover"]) {
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: none !important;
+}
+
+.colorPickerPopupWrapper :global(.react-colorful) {
+  width: 100%;
+  height: 150px;
+  margin: 0;
+  padding: 0;
+}
+
+.colorPickerPopupWrapper :global(.react-colorful__saturation) {
+  @include theme.rounded-small;
+  border-radius: theme.$border-radius-sm theme.$border-radius-sm 0 0;
+  border-bottom: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.colorPickerPopupWrapper :global(.react-colorful__hue) {
+  height: 20px;
+  border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+.colorPickerPopupWrapper :global(.react-colorful__alpha) {
+  height: 20px;
+  border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+.colorPickerPopupWrapper :global(.react-colorful__pointer) {
+  width: 16px;
+  height: 16px;
+  border: 2px solid theme.$text-primary;
+  @include theme.shadow-light;
+}
