@@ -57,24 +57,41 @@
 .toolbarTitle.clickableTitle {
   cursor: pointer;
   @include theme.smooth-transition;
-  padding: theme.$spacing-0-5 theme.$spacing-1;
-  border-radius: theme.$border-radius-sm;
-  
-  &:hover {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    text-decoration-thickness: 1px;
-    color: theme.$primary;
-    background: theme.$surface-elevated;
-  }
-  
-  &:active {
-    transform: scale(0.98);
-  }
 }
 
 
-// All button styling handled by the Button component - no local overrides
+// Title button styling overrides
+.titleButton {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: theme.$spacing-0-5 theme.$spacing-1 !important;
+    border-radius: theme.$border-radius-sm !important;
+    
+    // Remove Button component hover styles and use toolbar title hover styles
+    &:hover:not(:disabled) {
+        background: theme.$surface-elevated !important;
+        border: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        color: theme.$primary;
+    }
+    
+    &:active:not(:disabled) {
+        transform: scale(0.98) !important;
+        box-shadow: none !important;
+    }
+    
+    &:focus-visible {
+        outline: 2px solid theme.$primary !important;
+        outline-offset: 2px !important;
+        background: transparent !important;
+        border: none !important;
+    }
+}
 
 .customItem {
   @include theme.flex-start;
