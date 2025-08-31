@@ -86,7 +86,11 @@
 @mixin button-group {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: center;
+  justify-content: flex-end;
+  
+  [dir="rtl"] & {
+    justify-content: flex-start;
+  }
 }
 
 // ===== INPUT FIELD PATTERNS =====
