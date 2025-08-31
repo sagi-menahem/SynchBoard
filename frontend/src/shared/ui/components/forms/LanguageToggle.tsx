@@ -62,6 +62,22 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
         aria-labelledby={showLabel ? 'language-label' : undefined}
         aria-label={!showLabel ? t('common:language') : undefined}
       >
+        {/* Handle */}
+        <span
+          style={{
+            position: 'relative',
+            display: 'inline-block',
+            height: `${config.height - 4}px`,
+            width: `${config.height - 4}px`,
+            borderRadius: '9999px',
+            backgroundColor: 'white',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+            transform: isHebrew ? 'translateX(0px)' : `translateX(${config.width - config.height}px)`,
+            transition: 'transform 0.2s',
+            zIndex: 1,
+          }}
+        />
+        
         {/* Background text */}
         <div style={{
           position: 'absolute',
@@ -71,6 +87,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           justifyContent: 'space-between',
           paddingLeft: '8px',
           paddingRight: '8px',
+          zIndex: 2,
         }}>
           <span style={{
             fontSize: `${config.fontSize}px`,
@@ -87,21 +104,6 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             עב
           </span>
         </div>
-        
-        {/* Handle */}
-        <span
-          style={{
-            position: 'relative',
-            display: 'inline-block',
-            height: `${config.height - 4}px`,
-            width: `${config.height - 4}px`,
-            borderRadius: '9999px',
-            backgroundColor: 'white',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            transform: isHebrew ? 'translateX(0px)' : `translateX(${config.width - config.height}px)`,
-            transition: 'transform 0.2s',
-          }}
-        />
       </Switch>
     </div>
   );
