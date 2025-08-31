@@ -70,7 +70,8 @@
 }
 
 .boardList.grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px)));
+    justify-content: center;
 }
 
 .boardList.list {

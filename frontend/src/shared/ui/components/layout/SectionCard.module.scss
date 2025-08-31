@@ -10,9 +10,10 @@
     position: relative;
     @include theme.smooth-transition;
     
-    // Fixed width to match actual board cards (3 cards in 1152px with 24px gaps = 368px each)
-    width: 700px !important;
-    flex-shrink: 0;
+    // Responsive width - 700px base that shrinks on smaller screens
+    width: min(700px, 100%) !important;
+    max-width: 700px;
+    flex-shrink: 1;
     
     // Override any child element min-width requirements to ensure card stays at 368px
     :global(.form) {
@@ -184,8 +185,9 @@
 @media (max-width: 768px) {
     .sectionCard {
         margin-bottom: 1.5rem;
-        // Allow flexible width on mobile for better usability
-        width: 100% !important;
+        // Maintain responsive behavior on mobile
+        width: min(700px, 100%) !important;
+        max-width: 700px;
         flex-shrink: 1;
     }
     
