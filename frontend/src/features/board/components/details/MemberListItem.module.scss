@@ -1,7 +1,7 @@
 @use '@/styles' as theme;
 
 .memberItem {
-    background-color: theme.$background-secondary;
+    background-color: theme.$surface-elevated;
     border: 1px solid theme.$border-primary;
     margin-bottom: 1rem;
     display: flex;
