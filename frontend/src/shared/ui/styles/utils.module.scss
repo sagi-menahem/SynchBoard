@@ -5,15 +5,15 @@
   background-color: var(--user-chosen-color, var(--color-surface));
 
   /* 2. The new SVG logo pattern file */
-  background-image: url('../../../assets/LogoPattern.svg');
-  background-size: 100px 100px;
+  background-image: url('../../../assets/RandomShapes.svg');
+  background-size: 400px 400px;
   /* Controls the pattern density */
 
-  /* 3. This color will be inherited by the SVG's "currentColor" */
-  color: color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 85%, var(--color-text-muted) 15%);
+  /* 3. This color will be inherited by the SVG's "currentColor" - high contrast */
+  color: color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 20%, var(--color-text) 80%);
 
   /* 4. Controls the pattern's visibility */
-  opacity: 0.15;
+  opacity: 0.3;
 }
 
 .settingRow {
