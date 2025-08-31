@@ -63,20 +63,6 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         aria-labelledby={showLabel ? 'theme-label' : undefined}
         aria-label={!showLabel ? t('common:theme') : undefined}
       >
-        {/* Background icons */}
-        <div style={{
-          position: 'absolute',
-          inset: '2px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingLeft: '6px',
-          paddingRight: '6px',
-        }}>
-          <Sun size={config.iconSize} color={isDark ? '#6b7280' : '#f59e0b'} />
-          <Moon size={config.iconSize} color={isDark ? '#a5b4fc' : '#6b7280'} />
-        </div>
-        
         {/* Handle */}
         <span
           style={{
@@ -91,8 +77,24 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
               ? (isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`)
               : 'translateX(0px)',
             transition: 'transform 0.2s',
+            zIndex: 1,
           }}
         />
+        
+        {/* Background icons */}
+        <div style={{
+          position: 'absolute',
+          inset: '2px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingLeft: '6px',
+          paddingRight: '6px',
+          zIndex: 2,
+        }}>
+          <Sun size={config.iconSize} color={isDark ? '#6b7280' : '#f59e0b'} />
+          <Moon size={config.iconSize} color={isDark ? '#a5b4fc' : '#6b7280'} />
+        </div>
       </Switch>
     </div>
   );
