@@ -56,27 +56,22 @@
   min-width: 200px; // Ensure enough space for search bar
   max-width: 400px; // Limit maximum width
   margin: 0 auto; // Center the section itself
+
+  // Hide center section when empty (no children)
+  &:empty {
+    flex: 0 0 0;
+    min-width: 0;
+    max-width: 0;
+    margin: 0;
+  }
 }
 
 .rightSection {
   flex: 0 0 auto; // Fixed size - never shrink navigation buttons
   justify-content: end; // CSS logical property - automatically RTL aware
-  min-width: 150px; // Reserve minimum space for navigation buttons
+  // Remove min-width to allow right section to get closer to left section
 
-  // Ensure navigation buttons are always visible and accessible
-  @media (max-width: 1200px) {
-    flex: 0 0 auto; // Maintain fixed size
-    min-width: 140px; // Slightly reduce reserved space
-  }
-
-  @media (max-width: 1000px) {
-    min-width: 120px; // More compact but still protected
-  }
-
-  @media (max-width: 800px) {
-    min-width: 100px; // Minimum space for icon buttons
-  }
-
+  // Only set minimum width for very small screens to ensure buttons remain accessible
   @media (max-width: 500px) {
     min-width: 80px; // Ultra-compact but still functional
     gap: theme.$spacing-1; // Reduce gap between navigation buttons
@@ -158,4 +153,50 @@
 .toolbarSection>*:has(.searchInput)::after,
 .toolbarSection>*:has(.viewToggle)::after {
   display: none;
+}
+
+// Priority-based tool hiding for canvas toolbar
+// Hide tools in order: EXPORT → HISTORY → TOOLS → LINES → SHAPES → DRAW → SIZE → COLOR
+// Lower priority numbers hide first
+
+// EXPORT (Priority 1) - Hide first at 1280px
+@media (max-width: 935px) {
+  .leftSection :global(.toolbar-priority-1) {
+    display: none !important;
+  }
+}
+
+// HISTORY (Priority 2) - Hide at 1180px  
+@media (max-width: 870px) {
+  .leftSection :global(.toolbar-priority-2) {
+    display: none !important;
+  }
+}
+
+// TOOLS (Priority 3) - Hide at 1080px
+@media (max-width: 770px) {
+  .leftSection :global(.toolbar-priority-3) {
+    display: none !important;
+  }
+}
+
+// LINES (Priority 4) - Hide at 980px
+@media (max-width: 630px) {
+  .leftSection :global(.toolbar-priority-4) {
+    display: none !important;
+  }
+}
+
+// SHAPES (Priority 5) - Hide at 880px
+@media (max-width: 570px) {
+  .leftSection :global(.toolbar-priority-5) {
+    display: none !important;
+  }
+}
+
+// DRAW (Priority 6) - Hide at 780px
+@media (max-width: 500px) {
+  .leftSection :global(.toolbar-priority-6) {
+    display: none !important;
+  }
 }

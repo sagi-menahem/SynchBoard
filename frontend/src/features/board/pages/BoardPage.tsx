@@ -1,19 +1,43 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useCallback } from 'react';
 
 import { BoardProvider } from 'features/board';
-import { BoardWorkspace, CanvasToolSection } from 'features/board/components/workspace';
+import { BoardWorkspace } from 'features/board/components/workspace';
+import { STROKE_WIDTH_RANGE, TOOLS } from 'features/board/constants/BoardConstants';
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
-import { Info } from 'lucide-react';
+import {
+  Brush,
+  Download,
+  Eraser,
+  Info,
+  PaintBucket,
+  Pipette,
+  Redo,
+  Type,
+  Undo,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
-import { PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
+import type { Tool } from 'shared/types/CommonTypes';
+import {
+  ColorPicker,
+  PageLoader,
+  PageTransition,
+  Slider,
+  ToolButton,
+  ToolGroup,
+  UniversalToolbar,
+} from 'shared/ui';
+import Button from 'shared/ui/components/forms/Button';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
-
+import { LineToolsDropdown } from '../components/workspace/LineToolsDropdown';
+import { ShapeToolsDropdown } from '../components/workspace/ShapeToolsDropdown';
+import { useCanvasDownload } from '../hooks/useCanvasDownload';
 
 import styles from './BoardPage.module.scss';
 
@@ -72,30 +96,198 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       : undefined;
   }, [boardDetails]);
 
+  const { handleDownload } = useCanvasDownload({ 
+    boardName: boardName ?? t('board:fallbacks.untitled'), 
+    canvasConfig,
+  });
+
+  const handleToolClick = useCallback((toolName: Tool) => {
+    if (toolName === TOOLS.DOWNLOAD) {
+      void handleDownload();
+    } else {
+      void updateTool(toolName);
+    }
+  }, [handleDownload, updateTool]);
+
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'canvas',
       leftSection: [
+        // COLOR - Always visible
         {
           type: 'custom',
+          key: 'color-group',
           content: (
-            <CanvasToolSection
-              boardName={boardName ?? t('board:fallbacks.untitled')}
-              strokeColor={strokeColor}
-              setStrokeColor={updateStrokeColor}
-              strokeWidth={strokeWidth}
-              setStrokeWidth={updateStrokeWidth}
-              tool={tool}
-              setTool={updateTool}
-              onUndo={handleUndo}
-              isUndoAvailable={isUndoAvailable}
-              onRedo={handleRedo}
-              isRedoAvailable={isRedoAvailable}
-              canvasConfig={canvasConfig}
-            />
+            <ToolGroup label={t('board:toolbar.label.color')}>
+              <div className={`${utilStyles.colorPickerPopupWrapper}`}>
+                <ColorPicker
+                  color={strokeColor}
+                  onChange={updateStrokeColor}
+                />
+              </div>
+            </ToolGroup>
+          ),
+        },
+        // SIZE - Always visible (except for download tool)
+        ...(tool !== TOOLS.DOWNLOAD ? [{
+          type: 'custom' as const,
+          key: 'size-group',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.size')}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                minWidth: '120px',
+                height: '36px',
+                padding: '0 8px',
+                background: 'var(--color-surface-elevated)',
+                border: '1px solid var(--color-border-light)',
+                borderRadius: '6px',
+              }}>
+                <Slider
+                  value={strokeWidth}
+                  min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
+                  max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
+                  onChange={updateStrokeWidth}
+                  aria-label={t('common:accessibility.sizeSlider', { size: strokeWidth })}
+                />
+              </div>
+            </ToolGroup>
+          ),
+        }] : []),
+        // DRAW - Priority 6
+        {
+          type: 'custom',
+          key: 'draw-group',
+          className: 'toolbar-priority-6',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.draw')}>
+              <ToolButton
+                tool={TOOLS.BRUSH}
+                currentTool={tool}
+                onClick={handleToolClick}
+                title={t('board:toolbar.tool.brush')}
+              >
+                <Brush size={20} />
+              </ToolButton>
+              <ToolButton
+                tool={TOOLS.ERASER}
+                currentTool={tool}
+                onClick={handleToolClick}
+                title={t('board:toolbar.tool.eraser')}
+              >
+                <Eraser size={20} />
+              </ToolButton>
+            </ToolGroup>
+          ),
+        },
+        // SHAPES - Priority 5
+        {
+          type: 'custom',
+          key: 'shapes-group',
+          className: 'toolbar-priority-5',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.shapes')}>
+              <ShapeToolsDropdown
+                currentTool={tool}
+                onToolSelect={updateTool}
+              />
+            </ToolGroup>
+          ),
+        },
+        // LINES - Priority 4
+        {
+          type: 'custom',
+          key: 'lines-group',
+          className: 'toolbar-priority-4',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.lines')}>
+              <LineToolsDropdown
+                currentTool={tool}
+                onToolSelect={updateTool}
+              />
+            </ToolGroup>
+          ),
+        },
+        // TOOLS - Priority 3
+        {
+          type: 'custom',
+          key: 'tools-group',
+          className: 'toolbar-priority-3',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.tools')}>
+              <ToolButton
+                tool={TOOLS.TEXT}
+                currentTool={tool}
+                onClick={handleToolClick}
+                title={t('board:toolbar.tool.text')}
+              >
+                <Type size={20} />
+              </ToolButton>
+              <ToolButton
+                tool={TOOLS.COLOR_PICKER}
+                currentTool={tool}
+                onClick={handleToolClick}
+                title={t('board:toolbar.tool.colorPicker')}
+              >
+                <Pipette size={20} />
+              </ToolButton>
+              <ToolButton
+                tool={TOOLS.RECOLOR}
+                currentTool={tool}
+                onClick={handleToolClick}
+                title={t('board:toolbar.tool.recolor')}
+              >
+                <PaintBucket size={20} />
+              </ToolButton>
+            </ToolGroup>
+          ),
+        },
+        // HISTORY - Priority 2
+        {
+          type: 'custom',
+          key: 'history-group',
+          className: 'toolbar-priority-2',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.history')}>
+              <Button
+                variant="icon"
+                onClick={handleUndo}
+                disabled={!isUndoAvailable}
+                title={t('board:toolbar.tool.undo')}
+              >
+                <Undo size={20} />
+              </Button>
+              <Button
+                variant="icon"
+                onClick={handleRedo}
+                disabled={!isRedoAvailable}
+                title={t('board:toolbar.tool.redo')}
+              >
+                <Redo size={20} />
+              </Button>
+            </ToolGroup>
+          ),
+        },
+        // EXPORT - Priority 1 (hides first)
+        {
+          type: 'custom',
+          key: 'export-group',
+          className: 'toolbar-priority-1',
+          content: (
+            <ToolGroup label={t('board:toolbar.label.export')}>
+              <Button
+                variant="icon"
+                onClick={handleDownload}
+                title={t('board:toolbar.tool.download')}
+              >
+                <Download size={20} />
+              </Button>
+            </ToolGroup>
           ),
         },
       ],
+      centerSection: [], // Explicitly empty - no center section for board page
       rightSection: [
         {
           type: 'custom',
@@ -117,6 +309,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
                 fontWeight: '600',
                 color: 'var(--color-text-primary)',
                 letterSpacing: '0.02em',
+                whiteSpace: 'nowrap',
               }}>
                 {boardName ?? t('board:fallbacks.untitled')}
               </span>
@@ -153,7 +346,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       isUndoAvailable,
       handleRedo,
       isRedoAvailable,
-      canvasConfig,
+      handleToolClick,
+      handleDownload,
       navigate,
       boardId,
       t,
