@@ -5,7 +5,47 @@
   gap: theme.$spacing-4;
   align-items: stretch;
   flex-wrap: nowrap;
-  overflow: visible;
+  overflow: hidden; // Contain content within available space
+  
+  // Responsive: Reduce gap on smaller screens to fit more content
+  @media (max-width: 1200px) {
+    gap: theme.$spacing-3;
+  }
+  
+  @media (max-width: 1075px) {
+    gap: theme.$spacing-2;
+  }
+  
+  // Progressive tool hiding: Hide tools only when absolutely necessary
+  @media (max-width: 950px) {
+    gap: theme.$spacing-1;
+    
+    // Hide export tools first (Download button - least critical during editing)
+    > :last-child {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 850px) {
+    // Hide line tools next (Line drawing tools)
+    > :nth-last-child(2) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 750px) {
+    // Hide shape tools (Shape drawing tools)  
+    > :nth-last-child(3) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 650px) {
+    // Hide additional tools (Text, Color Picker, Recolor tools)
+    > :nth-last-child(4) {
+      display: none;
+    }
+  }
 }
 
 .toolGroup {
