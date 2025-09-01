@@ -80,7 +80,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       <div className={styles.forgotPasswordSection}>
         <Button
           type="button"
-          variant="secondary"
+          variant="link"
           onClick={onForgotPassword}
           className={styles.forgotPasswordButton}
         >
