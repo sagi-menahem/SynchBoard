@@ -76,7 +76,18 @@
     },
     "email": {
       "inUse": "This email address is already in use."
-    }
+    },
+    "password": {
+      "incorrect": "The current password you entered is incorrect.",
+      "sameAsOld": "New password cannot be the same as the old password."
+    },
+    "gender": {
+      "invalid": "Please select a valid gender (male or female)."
+    },
+    "dateOfBirth": {
+      "invalid": "Please enter a valid date of birth."
+    },
+    "cannotInviteSelf": "You cannot invite yourself to the board."
   },
   "colors": {
     "white": "White",
