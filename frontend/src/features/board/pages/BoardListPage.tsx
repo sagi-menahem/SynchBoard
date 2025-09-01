@@ -89,6 +89,14 @@ const BoardListPage: React.FC = () => {
     navigate,
   ]);
 
+  // Diagnostic logging for loading state changes
+  React.useEffect(() => {
+    console.log('📊 BOARD LIST LOADING STATE:', {
+      isLoading,
+      timestamp: new Date().toISOString(),
+      boardCount: boards.length
+    });
+  }, [isLoading, boards.length]);
 
   if (isLoading) {
     return (

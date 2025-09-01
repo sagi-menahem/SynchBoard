@@ -172,9 +172,55 @@ const ToolbarSection: React.FC<{ items: ToolbarItem[]; className?: string }> = (
 
 export const UniversalToolbar: React.FC<UniversalToolbarProps> = ({ config, className }) => {
   const { leftSection = [], centerSection = [], rightSection = [] } = config;
+  const toolbarRef = React.useRef<HTMLElement>(null);
+
+  // Track positioning changes
+  React.useEffect(() => {
+    const toolbar = toolbarRef.current;
+    if (!toolbar) return;
+
+    const rect = toolbar.getBoundingClientRect();
+    const hasVerticalScrollbar = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    const hasHorizontalScrollbar = document.documentElement.scrollWidth > document.documentElement.clientWidth;
+    
+    console.log('🔧 TOOLBAR POSITIONED:', {
+      pageType: config.pageType,
+      timestamp: new Date().toISOString(),
+      rect: {
+        left: rect.left,
+        right: rect.right, 
+        width: rect.width,
+        top: rect.top
+      },
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      scrollbars: { vertical: hasVerticalScrollbar, horizontal: hasHorizontalScrollbar },
+      documentSize: `${document.documentElement.scrollWidth}x${document.documentElement.scrollHeight}`,
+      vwWidth: window.innerWidth, // What 100vw would be
+      actualWidth: rect.width,
+      leftContent: leftSection.map(item => ({ type: item.type, content: item.type === 'title' ? item.content : 'non-title' })),
+      rightContent: rightSection.map(item => ({ type: item.type, label: item.type === 'button' ? item.label : 'non-button' }))
+    });
+
+    // Track resize events that could cause shifts
+    const handleResize = () => {
+      const newRect = toolbar.getBoundingClientRect();
+      console.log('📏 TOOLBAR RESIZED:', {
+        pageType: config.pageType,
+        oldWidth: rect.width,
+        newWidth: newRect.width,
+        oldLeft: rect.left,
+        newLeft: newRect.left,
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: new Date().toISOString()
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [config, leftSection, centerSection, rightSection]);
 
   return (
-    <header className={`${styles.universalToolbar} ${className ?? ''}`}>
+    <header ref={toolbarRef} className={`${styles.universalToolbar} ${className ?? ''}`}>
       <ToolbarSection items={leftSection} className={styles.leftSection} />
       <ToolbarSection items={centerSection} className={styles.centerSection} />
       <ToolbarSection items={rightSection} className={styles.rightSection} />
