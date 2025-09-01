@@ -19,6 +19,7 @@
 
 .emailTags {
     @include theme.flex-column;
+    @include theme.theme-scrollbar;
     gap: theme.$spacing-2;
     max-height: 150px;
     overflow-y: auto;

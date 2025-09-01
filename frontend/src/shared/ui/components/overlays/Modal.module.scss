@@ -16,6 +16,7 @@
     @include theme.card-base;
     @include theme.rounded-medium;
     @include theme.shadow-heavy;
+    @include theme.theme-scrollbar;
     background: theme.$surface-elevated;
     border: tokens.$border-width solid theme.$border;
     min-width: tokens.$modal-min-width;

@@ -1,6 +1,7 @@
 // SCSS Mixins - Reusable CSS Patterns
 // This file contains reusable mixins for common CSS patterns found across components
 @use 'design-tokens' as theme;
+@use 'variables' as vars;
 
 // ===== FLEXBOX LAYOUT PATTERNS =====
 
@@ -265,6 +266,127 @@
   background-color: theme.$color-backdrop;
   padding: theme.$spacing-0 theme.$spacing-4;
   overflow-y: auto;
+}
+
+// ===== SCROLLBAR PATTERNS =====
+
+@mixin theme-scrollbar {
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9; // More visible light theme colors
+  
+  // WebKit scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9; // Light track
+    @include rounded-small;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #94a3b8; // Visible medium gray thumb
+    @include rounded-small;
+    
+    &:hover {
+      background: #64748b; // Darker gray on hover
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #f1f5f9; // Light track
+  }
+  
+  // Dark theme overrides
+  body[data-theme='dark'] & {
+    scrollbar-color: #404040 #1a1a1a; // Dark theme colors
+    
+    &::-webkit-scrollbar-track {
+      background: #1a1a1a; // Dark track
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #404040; // Dark thumb
+      
+      &:hover {
+        background: #525252; // Lighter dark on hover
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #1a1a1a; // Dark track
+    }
+  }
+}
+
+@mixin theme-scrollbar-enhanced {
+  // Firefox scrollbar - enhanced
+  scrollbar-width: auto;
+  scrollbar-color: #94a3b8 #f1f5f9; // More visible light theme colors
+
+  // WebKit scrollbar - enhanced
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9; // Light track
+    border: 1px solid #e2e8f0; // Light border
+    @include rounded-medium;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #94a3b8; // Visible medium gray thumb
+    border: 1px solid #e2e8f0; // Light border
+    @include rounded-medium;
+    box-shadow: theme.$shadow-inset-light;
+    
+    &:hover {
+      background: #64748b; // Darker gray on hover
+      border-color: #cbd5e1;
+    }
+    
+    &:active {
+      background: #64748b;
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #f1f5f9; // Light track
+    border: 1px solid #e2e8f0; // Light border
+  }
+  
+  // Dark theme overrides
+  body[data-theme='dark'] & {
+    scrollbar-color: #404040 #1a1a1a; // Dark theme colors
+    
+    &::-webkit-scrollbar-track {
+      background: #1a1a1a; // Dark track
+      border-color: #404040; // Dark border
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #404040; // Dark thumb
+      border-color: #404040; // Dark border
+      
+      &:hover {
+        background: #525252; // Lighter dark on hover
+        border-color: #525252;
+      }
+      
+      &:active {
+        background: #525252;
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #1a1a1a; // Dark track
+      border-color: #404040; // Dark border
+    }
+  }
 }
 
 // ===== TRANSITION PATTERNS =====
