@@ -22,80 +22,45 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const [searchVisible, setSearchVisible] = useState(false);
   const [previousMessageCount, setPreviousMessageCount] = useState(0);
   const [newMessageIds, setNewMessageIds] = useState<Set<string>>(new Set());
-  
-  // 🎯 SOLUTION: Separate state management for optimistic messages
-  const [forcePendingMessages, setForcePendingMessages] = useState<Set<string>>(new Set());
-  const [optimisticMessages, setOptimisticMessages] = useState<(ChatMessageResponse & { transactionId: string })[]>([]);
-  const pendingTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  const pendingStartTimes = useRef<Map<string, number>>(new Map());
-  
-  // Minimum duration to show pending state (in milliseconds)
-  const MINIMUM_PENDING_DURATION = 750; // 750ms minimum (1.5x longer)
+  const [pendingMessageIds, setPendingMessageIds] = useState<Set<string>>(new Set());
 
   const { sendMessage } = useChatMessages();
 
   const addOptimisticMessage = useCallback((message: ChatMessageResponse & { transactionId: string }) => {
-    console.log('🔄 [OPTIMISTIC] Adding message to optimistic state:', {
+    console.log('🔄 [OPTIMISTIC] Adding message and tracking for animation and pending state:', {
       messageId: message.id,
       instanceId: message.instanceId,
       transactionId: message.transactionId,
-      isOptimistic: message.id === -1,
     });
     
     // Track this as a new message for animation
     const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
     setNewMessageIds((prev) => new Set([...prev, messageKey]));
     
-    setOptimisticMessages((prev) => [...prev, message]);
+    // Track this message as pending for 750ms
+    if (message.instanceId) {
+      setPendingMessageIds((prev) => new Set([...prev, message.instanceId!]));
+      
+      setTimeout(() => {
+        setPendingMessageIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(message.instanceId!);
+          return newSet;
+        });
+        
+        // Also clean up animation tracking after animation completes
+        setNewMessageIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(messageKey);
+          return newSet;
+        });
+      }, 750);
+    }
   }, []);
 
   const startPendingTimer = useCallback((transactionId: string) => {
-    const startTime = Date.now();
-    pendingStartTimes.current.set(transactionId, startTime);
-    
-    console.log('⏰ [TIMER] Setting pending timer for:', transactionId, 'at', startTime);
-    setForcePendingMessages((prev) => {
-      const newSet = new Set([...prev, transactionId]);
-      console.log('🔒 [TIMER] Force pending messages updated:', {
-        transactionId,
-        forcePendingCount: newSet.size,
-        forcePendingList: Array.from(newSet),
-      });
-      return newSet;
-    });
-    
-    const existingTimeout = pendingTimeouts.current.get(transactionId);
-    if (existingTimeout) {
-      clearTimeout(existingTimeout);
-    }
-    
-    const timeout = setTimeout(() => {
-      console.log('⏰ [TIMER] Timer expired for:', transactionId);
-      setForcePendingMessages((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(transactionId);
-        console.log('🔓 [TIMER] Removing from force pending (timer expired):', {
-          transactionId,
-          remainingCount: newSet.size,
-        });
-        return newSet;
-      });
-      pendingTimeouts.current.delete(transactionId);
-      pendingStartTimes.current.delete(transactionId);
-    }, 800);
-    
-    pendingTimeouts.current.set(transactionId, timeout);
-  }, []);
-
-  // Cleanup timeouts on unmount
-  useEffect(() => {
-    const timeouts = pendingTimeouts.current;
-    const startTimes = pendingStartTimes.current;
-    return () => {
-      timeouts.forEach((timeout) => clearTimeout(timeout));
-      timeouts.clear();
-      startTimes.clear();
-    };
+    // This is now just for compatibility with useChatMessages
+    console.log('⏰ [SIMPLE] Starting pending timer for:', transactionId);
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -138,113 +103,31 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   };
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
-    console.log('🗺 [MESSAGES] Processing separate message streams:', {
+    console.log('🗺 [SIMPLE] Processing messages:', {
       serverMessagesCount: messages.length,
-      optimisticMessagesCount: optimisticMessages.length,
-      forcePendingCount: forcePendingMessages.size,
+      pendingMessageIds: Array.from(pendingMessageIds),
     });
     
-    // Build a map of forced pending messages for quick lookup
-    const forcedPendingMap = new Map<string, boolean>();
-    optimisticMessages.forEach((optimistic) => {
-      if (optimistic.transactionId && forcePendingMessages.has(optimistic.transactionId) && optimistic.instanceId) {
-        forcedPendingMap.set(optimistic.instanceId, true);
-      }
-    });
-    
-    // Start with server messages, but exclude those that are still forced pending
-    const combined: ChatMessageResponse[] = messages.filter((serverMsg) => {
-      const isStillForcedPending = forcedPendingMap.has(serverMsg.instanceId ?? '');
-      if (isStillForcedPending) {
-        console.log('🚫 [MESSAGES] Excluding server message (still forced pending):', {
-          messageId: serverMsg.id,
-          instanceId: serverMsg.instanceId,
-        });
-      }
-      return !isStillForcedPending;
-    });
-    
-    // Add optimistic messages based on server confirmation and pending state
-    optimisticMessages.forEach((optimistic) => {
-      const hasServerVersion = messages.some((server) => 
-        server.instanceId === optimistic.instanceId,
-      );
-      
-      const isStillForcedPending = optimistic.transactionId && 
-        forcePendingMessages.has(optimistic.transactionId);
-      
-      // Show optimistic message if either:
-      // 1. No server version exists yet, OR
-      // 2. Server version exists but message is still forced pending
-      if (!hasServerVersion || isStillForcedPending) {
-        const reason = !hasServerVersion ? 'no server version' : 'forced pending';
-        console.log(`➕ [MESSAGES] Adding optimistic message (${reason}):`, {
-          messageId: optimistic.id,
-          instanceId: optimistic.instanceId,
-          transactionId: optimistic.transactionId,
-          hasServerVersion,
-          isStillForcedPending,
-        });
-        combined.push(optimistic);
-      } else {
-        console.log('🔄 [MESSAGES] Skipping optimistic message (server confirmed & not forced pending):', {
-          optimisticId: optimistic.id,
-          instanceId: optimistic.instanceId,
-          transactionId: optimistic.transactionId,
-          hasServerVersion,
-          isStillForcedPending,
-        });
-      }
-    });
-    
-    // Sort by timestamp to maintain chronological order
-    combined.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-    
-    console.log('🔄 [MESSAGES] Final combined messages:', {
-      totalCount: combined.length,
-      serverCount: messages.length,
-      addedOptimisticCount: combined.length - messages.length,
-    });
-    
-    return combined.map((msg, index): EnhancedChatMessage => {
+    return messages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
-      const msgWithTransaction = msg as ChatMessageResponse & { transactionId?: string };
-      const hasTransactionId = msgWithTransaction.transactionId;
       
-      if (hasTransactionId) {
-        const isForcedPending = forcePendingMessages.has(msgWithTransaction.transactionId!);
-        const isOptimistic = enhancedMsg.id === -1;
-        
-        const status = (isForcedPending || isOptimistic) ? 'pending' : 'confirmed';
-        
-        console.log('⚒️ [MESSAGES] Status for transactional message:', {
-          index,
-          messageId: enhancedMsg.id,
-          instanceId: enhancedMsg.instanceId,
-          transactionId: msgWithTransaction.transactionId,
-          isOptimistic,
-          isForcedPending,
-          calculatedStatus: status,
-        });
-        
-        return {
-          ...enhancedMsg,
-          transactionStatus: status,
-        };
-      }
+      // Simple pending check: if instanceId is in pendingMessageIds, show as pending
+      const isPending = msg.instanceId && pendingMessageIds.has(msg.instanceId);
+      const status = isPending ? 'pending' : 'confirmed';
       
-      console.log('✅ [MESSAGES] Server message (auto-confirmed):', {
-        index,
-        messageId: enhancedMsg.id,
-        hasInstanceId: !!enhancedMsg.instanceId,
+      console.log('📝 [SIMPLE] Message status:', {
+        messageId: msg.id,
+        instanceId: msg.instanceId,
+        status,
+        isPending,
       });
       
       return {
         ...enhancedMsg,
-        transactionStatus: 'confirmed',
+        transactionStatus: status,
       };
     });
-  }, [messages, optimisticMessages, forcePendingMessages]);
+  }, [messages, pendingMessageIds]);
 
   useEffect(() => {
     const timeoutId = setTimeout(scrollToBottom, 100);
@@ -304,103 +187,11 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     return { backgroundColor: savedColor };
   };
 
-  const performCleanup = useCallback((instanceId: string, reason: string) => {
-    console.log(`🧹 [CLEANUP] Performing cleanup for ${instanceId} - ${reason}`);
-    
-    // Remove from forced pending
-    setForcePendingMessages((prev) => {
-      const newSet = new Set(prev);
-      const wasRemoved = newSet.delete(instanceId);
-      console.log('🔓 [CLEANUP] Removing from force pending:', {
-        instanceId,
-        reason,
-        wasRemoved,
-        remainingCount: newSet.size,
-      });
-      return newSet;
-    });
-    
-    // Remove the optimistic message since server version now exists
-    setOptimisticMessages((prev) => {
-      const filtered = prev.filter((msg) => msg.instanceId !== instanceId);
-      const removedCount = prev.length - filtered.length;
-      
-      console.log('🗑️ [CLEANUP] Cleaning up optimistic messages:', {
-        instanceId,
-        reason,
-        removedCount,
-        remainingOptimisticCount: filtered.length,
-      });
-      
-      return filtered;
-    });
-    
-    // Remove from new message tracking after a delay to allow animation to complete
-    setTimeout(() => {
-      setNewMessageIds((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(instanceId);
-        return newSet;
-      });
-    }, 1000); // Remove after 1 second (longer than animation duration)
-    
-    // Cleanup references
-    pendingTimeouts.current.delete(instanceId);
-    pendingStartTimes.current.delete(instanceId);
-  }, []);
-
   const commitChatTransaction = useCallback((instanceId: string) => {
-    const now = Date.now();
-    const startTime = pendingStartTimes.current.get(instanceId);
-    const existingTimeout = pendingTimeouts.current.get(instanceId);
-    
-    console.log('🔄 [COMMIT] Chat transaction commit:', {
-      instanceId,
-      now,
-      startTime,
-      hasTimeout: !!existingTimeout,
-    });
-    
-    if (!startTime) {
-      console.warn('⚠️ [COMMIT] No start time found for transaction:', instanceId);
-      return;
-    }
-    
-    const elapsedTime = now - startTime;
-    const remainingTime = MINIMUM_PENDING_DURATION - elapsedTime;
-    
-    console.log('⏱️ [COMMIT] Timing analysis:', {
-      instanceId,
-      elapsedTime,
-      minimumRequired: MINIMUM_PENDING_DURATION,
-      remainingTime,
-      shouldDelay: remainingTime > 0,
-    });
-    
-    // Clear the original timeout since we're taking over
-    if (existingTimeout) {
-      clearTimeout(existingTimeout);
-      console.log('⏰ [COMMIT] Cleared original timeout for:', instanceId);
-    }
-    
-    if (remainingTime > 0) {
-      // Server responded too quickly - enforce minimum duration
-      console.log('🕐 [COMMIT] Enforcing minimum pending duration:', {
-        instanceId,
-        delayMs: remainingTime,
-      });
-      
-      const delayedTimeout = setTimeout(() => {
-        performCleanup(instanceId, 'minimum duration enforced');
-      }, remainingTime);
-      
-      pendingTimeouts.current.set(instanceId, delayedTimeout);
-    } else {
-      // Minimum duration already met - cleanup immediately
-      console.log('✅ [COMMIT] Minimum duration already met, cleaning up immediately:', instanceId);
-      performCleanup(instanceId, 'minimum duration already met');
-    }
-  }, [performCleanup]);
+    console.log('🔄 [SIMPLE] Chat transaction commit for:', instanceId);
+    // The pending state will automatically clear after 750ms via the setTimeout in addOptimisticMessage
+    // No complex timing logic needed anymore!
+  }, []);
 
   const handleSearchClose = () => {
     setSearchVisible(false);
