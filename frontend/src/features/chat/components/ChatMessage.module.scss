@@ -63,7 +63,7 @@
 
   // Dark theme - modern blue-purple gradient
   body[data-theme='dark'] & {
-    background: #0a213a;
+    background: #03041b;
     color: #ffffff;
   }
 
@@ -80,15 +80,14 @@
 
   // Dark theme - warm dark gray with subtle purple tint
   body[data-theme='dark'] & {
-    background: #374151;
+    background: #2b2a2a;
     color: #f9fafb;
-    border: 1px solid rgba(156, 163, 175, 0.2);
   }
 
   // Light theme variant - soft warm gray
   body[data-theme='light'] & {
     background: #f8fafc;
-    color: #1e293b;
+    color: #1b1b1b;
     border: 1px solid #e2e8f0;
   }
 }
