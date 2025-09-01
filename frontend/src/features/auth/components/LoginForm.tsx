@@ -77,7 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         disabled={isPending ?? isGoogleLoading} 
       />
 
-      <div className={styles.forgotPasswordSection}>
+      <div className={styles.secondaryActionsContainer}>
         <Button
           type="button"
           variant="link"
