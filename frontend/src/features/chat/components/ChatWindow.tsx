@@ -69,10 +69,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       <div className={styles.messageList} ref={messagesContainerRef}>
         {filteredMessages.map((message, index) => {
           const isNewMessage = index >= previousMessageCount;
+          const prevMessage = filteredMessages[index - 1] ?? null;
+          
+          // Message grouping logic: group consecutive messages from same user within 5 minutes
+          const isGroupedWithPrevious = prevMessage &&
+            prevMessage.senderEmail === message.senderEmail &&
+            !shouldShowDateSeparator(message, prevMessage) &&
+            (new Date(message.timestamp).getTime() - new Date(prevMessage.timestamp).getTime()) < 300000; // 5 minutes
           
           return (
             <React.Fragment key={message.transactionId ?? `${message.senderEmail}-${message.timestamp}-${index}`}>
-              {shouldShowDateSeparator(message, filteredMessages[index - 1] ?? null) && (
+              {shouldShowDateSeparator(message, prevMessage) && (
                 <div className={styles.dateSeparator}>
                   {formatDateSeparator(message.timestamp)}
                 </div>
@@ -82,6 +89,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
                 isOwnMessage={message.senderEmail === userEmail}
                 userColorMap={userColorMap}
                 shouldAnimate={isNewMessage}
+                isGrouped={isGroupedWithPrevious}
               />
             </React.Fragment>
           );
