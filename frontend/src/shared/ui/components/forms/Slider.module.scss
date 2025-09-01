@@ -7,7 +7,7 @@
 }
 
 .label {
-  font-size: 11px;
+  font-size: theme.$font-size-xs;
   font-weight: 300;
   color: theme.$text-muted;
   margin: 0;
@@ -88,7 +88,7 @@
 }
 
 .value {
-  font-size: 11px;
+  font-size: theme.$font-size-xs;
   font-weight: 400;
   color: theme.$text-secondary;
   min-width: 24px;

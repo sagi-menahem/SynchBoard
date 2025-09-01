@@ -13,7 +13,7 @@
     background: theme.$surface-elevated;
     border: 2px solid theme.$border-light;
     border-radius: 24px;
-    padding: 8px 16px;
+    padding: theme.$spacing-2 theme.$spacing-4;
     width: 100%;
     max-width: 100%;
     @include theme.smooth-transition;
@@ -44,7 +44,7 @@
     flex: 1;
     border: none;
     background: transparent;
-    padding: 10px 8px;
+    padding: theme.$spacing-2-5 theme.$spacing-2;
     font-size: 0.95rem;
     color: theme.$text-primary;
     font-family: inherit;
