@@ -10,8 +10,8 @@ import io.github.sagimenahem.synchboard.dto.auth.RegisterRequest;
 import io.github.sagimenahem.synchboard.dto.auth.ResendVerificationRequest;
 import io.github.sagimenahem.synchboard.dto.auth.ResetPasswordRequest;
 import io.github.sagimenahem.synchboard.dto.auth.VerifyEmailRequest;
-import io.github.sagimenahem.synchboard.service.AuthService;
-import io.github.sagimenahem.synchboard.service.ApiLoggingService;
+import io.github.sagimenahem.synchboard.service.auth.AuthService;
+import io.github.sagimenahem.synchboard.service.util.ApiLoggingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

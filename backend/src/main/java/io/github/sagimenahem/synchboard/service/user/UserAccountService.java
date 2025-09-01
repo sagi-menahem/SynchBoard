@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.user;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.CRITICAL_PREFIX;
@@ -14,6 +14,8 @@ import io.github.sagimenahem.synchboard.entity.GroupMember;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.*;
+import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
+import io.github.sagimenahem.synchboard.service.board.BoardMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.storage;
 
 import java.io.IOException;
 import java.io.InputStream;

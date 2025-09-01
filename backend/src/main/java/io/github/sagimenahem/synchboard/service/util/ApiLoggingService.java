@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.util;
 
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 
