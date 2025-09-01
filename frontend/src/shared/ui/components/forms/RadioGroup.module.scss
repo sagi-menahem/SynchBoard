@@ -33,6 +33,20 @@
   }
 }
 
+/* RTL support - radio button appears on the right side of text */
+[dir="rtl"] .radioItem {
+  flex-direction: row-reverse;
+}
+
+/* Ensure horizontal group also respects RTL flow */
+[dir="rtl"] .radioGroup.horizontal {
+  direction: rtl;
+}
+
+[dir="rtl"] .radioGroup.horizontal .radioItem {
+  direction: ltr; /* Keep individual items LTR for proper text rendering */
+}
+
 .radioButton {
   all: unset;
   width: theme.$spacing-4-5;
