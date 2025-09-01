@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
 
 @Slf4j
@@ -162,6 +164,21 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
         
         if (pictureUrl != null) {
+            // Delete existing profile picture before downloading new one
+            if (StringUtils.hasText(user.getProfilePictureUrl())) {
+                String existingFilename = user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
+                if (existingFilename != null && !existingFilename.isBlank()) {
+                    log.debug(SECURITY_PREFIX + " Deleting existing OAuth profile picture: {}", existingFilename);
+                    try {
+                        fileStorageService.delete(existingFilename);
+                        log.debug(SECURITY_PREFIX + " Successfully deleted existing OAuth profile picture: {}", existingFilename);
+                    } catch (Exception e) {
+                        log.warn(SECURITY_PREFIX + " Failed to delete existing OAuth profile picture: {} - {}", 
+                                existingFilename, e.getMessage());
+                    }
+                }
+            }
+            
             // Download and store profile picture locally
             String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
