@@ -65,6 +65,25 @@ $color-chat-my-message-light: #d0e2f5; // My messages in light theme - light blu
 $color-chat-other-message-dark: #2b2a2a; // Other users' messages in dark theme - warm dark gray
 $color-chat-other-message-light: #f8fafc; // Other users' messages in light theme - soft gray
 
+// === MESSAGE STATUS COLORS ===
+// Message status border colors for visual feedback - light and dark theme variants
+
+// Pending status - warm orange indicating "in progress"
+$color-status-pending-border-light: #f59e0b; // Based on $color-warning - warm orange for light theme
+$color-status-pending-border-dark: #fbbf24; // Slightly lighter orange for dark theme visibility
+
+// Confirmed status - uses subtle border for delivered messages  
+$color-status-confirmed-border-light: #e2e8f0; // Based on existing $color-border-light
+$color-status-confirmed-border-dark: #404040; // Based on existing dark theme border colors
+
+// Failed status - red indicating error state
+$color-status-failed-border-light: #f87171; // Based on $color-error-light - soft red for light theme
+$color-status-failed-border-dark: #fca5a5; // Lighter red for dark theme visibility
+
+// Failed status background colors for subtle error indication
+$color-status-failed-bg-light: rgba(254, 242, 242, 0.3); // Very subtle red background for light theme
+$color-status-failed-bg-dark: rgba(69, 26, 26, 0.2); // Very subtle red background for dark theme
+
 // === OVERLAY COLORS ===
 $color-backdrop: rgba(0, 0, 0, 0.7); // Modal backdrop overlay
 

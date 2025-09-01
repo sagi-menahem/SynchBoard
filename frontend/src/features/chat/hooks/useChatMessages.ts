@@ -1,7 +1,8 @@
-import { startTransition, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import WebSocketService from 'features/websocket/services/websocketService';
+import { flushSync } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';
 import logger from 'shared/utils/logger';
@@ -85,27 +86,37 @@ export const useChatMessages = () => {
     userEmail: string | null,
     userInfo: UserInfo,
     addOptimisticMessage: (message: ChatMessageResponse & { transactionId: string }) => void,
+    startPendingTimer?: (transactionId: string) => void,
   ): Promise<string> => {
-    // Validate message content
+    console.log('📝 [SEND] Starting message send process');
+    
     const validation = validateMessage(content);
     if (!validation.isValid) {
       throw new Error(validation.error);
     }
 
-    // Create payload and instanceId
     const { payload, instanceId } = createMessagePayload(content, boardId, userEmail, userInfo);
-
-    // Create optimistic message for immediate UI update
     const optimisticMessage = createOptimisticMessage(content, instanceId, userEmail, userInfo);
     
-    // Add optimistic message to UI
-    startTransition(() => {
+    console.log('✨ [SEND] Created optimistic message:', {
+      messageId: optimisticMessage.id,
+      transactionId: optimisticMessage.transactionId,
+      instanceId: optimisticMessage.instanceId,
+      hasTransactionId: !!optimisticMessage.transactionId,
+    });
+    
+    console.log('⏰ [SEND] Starting pending timer for:', instanceId);
+    startPendingTimer?.(instanceId);
+    
+    console.log('➕ [SEND] Adding optimistic message to UI');
+    // Force immediate render to ensure pending state is visible
+    flushSync(() => {
       addOptimisticMessage(optimisticMessage);
     });
 
-    // Send message via WebSocket
     try {
       WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
+      console.log('📤 [SEND] Message sent via WebSocket');
       return instanceId;
     } catch (error) {
       logger.error('Failed to send chat message:', error);

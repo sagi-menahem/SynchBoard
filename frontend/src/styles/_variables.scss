@@ -41,6 +41,12 @@ $overlay-light: var(--color-overlay-light);
 $overlay-medium: var(--color-overlay-medium);
 $overlay-strong: var(--color-overlay-strong);
 
+// ===== MESSAGE STATUS COLORS =====
+$status-pending-border: var(--color-status-pending-border);
+$status-confirmed-border: var(--color-status-confirmed-border);
+$status-failed-border: var(--color-status-failed-border);
+$status-failed-bg: var(--color-status-failed-bg);
+
 // ===== LEGACY ALIASES (for gradual migration) =====
 // These can be removed once all components are updated
 

@@ -34,19 +34,35 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const senderEmail = sanitizeUserContent(message.senderEmail);
   const messageContent = sanitizeUserContent(message.content);
 
-  const getMessageStatus = (): string => {
-    if (!message.transactionId) {return 'confirmed';}
-    return message.transactionStatus ?? 'confirmed';
-  };
-
-  const messageStatus = getMessageStatus();
+  const messageStatus = message.transactionStatus ?? 'confirmed';
   const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
+  
+  console.log(`🎨 [RENDER] Message render with status (${new Date().toISOString().split('T')[1]}):`, {
+    messageId: message.id,
+    instanceId: message.instanceId,
+    transactionId: message.transactionId,
+    transactionStatus: message.transactionStatus,
+    calculatedStatus: messageStatus,
+    statusClass: statusClass || 'none',
+    willShowPending: messageStatus === 'pending',
+    willShowConfirmed: messageStatus === 'confirmed',
+    cssClassApplied: !!statusClass,
+    content: `${message.content.substring(0, 10)  }...`,
+  });
 
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
   
 
+  const classNames = [
+    styles.messageContainer,
+    isOwnMessage ? styles.myMessage : styles.otherMessage,
+    statusClass,
+    !shouldAnimate && styles.noAnimation,
+    isGrouped && styles.grouped,
+  ].filter(Boolean).join(' ');
+
   return (
-    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass} ${!shouldAnimate ? styles.noAnimation : ''} ${isGrouped ? styles.grouped : ''}`}>
+    <div className={classNames}>
       {!isOwnMessage && !isGrouped && (
         <img src={imageSource} alt={t('common:accessibility.userAvatar', { email: senderEmail })} className={styles.avatar} />
       )}

@@ -256,3 +256,31 @@
     transform: none;
   }
 }
+
+// ========================================
+// MESSAGE STATUS STYLING
+// ========================================
+
+// Pending status - warm orange border only
+.pending {
+  .messageBubble {
+    border-color: theme.$status-pending-border !important;
+    @include theme.smooth-transition;
+  }
+}
+
+// Confirmed status - restore normal styling 
+.confirmed {
+  .messageBubble {
+    @include theme.smooth-transition;
+  }
+}
+
+// Failed status - red border with subtle error background
+.failed {
+  .messageBubble {
+    border-color: theme.$status-failed-border !important;
+    background-color: theme.$status-failed-bg !important;
+    @include theme.smooth-transition;
+  }
+}

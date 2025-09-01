@@ -20,6 +20,7 @@ export const useBoardWorkspace = (boardId: number) => {
   const sessionInstanceId = useRef(Date.now().toString());
   const { userEmail } = useAuth();
   const { t } = useTranslation(['board', 'common']);
+  const chatCommitHandlerRef = useRef<((instanceId: string) => void) | null>(null);
 
   const {
     isLoading,
@@ -62,8 +63,19 @@ export const useBoardWorkspace = (boardId: number) => {
     }));
   }, [setBaseObjects]);
 
-  const handleCommitChatTransaction = useCallback((_instanceId: string) => {
-    // Chat transactions are handled by their own hook
+  const handleCommitChatTransaction = useCallback((instanceId: string) => {
+    console.log('🔄 [BOARD] Received chat commit request:', instanceId);
+    if (chatCommitHandlerRef.current) {
+      console.log('🔄 [BOARD] Delegating to chat handler');
+      chatCommitHandlerRef.current(instanceId);
+    } else {
+      console.warn('⚠️ [BOARD] No chat commit handler registered');
+    }
+  }, []);
+
+  const registerChatCommitHandler = useCallback((handler: ((instanceId: string) => void) | null) => {
+    chatCommitHandlerRef.current = handler;
+    console.log('📝 [BOARD] Chat commit handler registered');
   }, []);
 
   useWebSocketHandler({
@@ -176,5 +188,6 @@ export const useBoardWorkspace = (boardId: number) => {
     handleDrawAction,
     handleUndo,
     handleRedo,
+    registerChatCommitHandler,
   };
 };
