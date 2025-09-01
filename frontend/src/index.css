@@ -87,6 +87,12 @@ body[data-theme='light'] {
     --color-canvas-background: #f9fafb;
     --color-canvas-pattern: rgba(0, 0, 0, 0.03);
 
+    /* Message Status Colors - Light Theme */
+    --color-status-pending-border: #f59e0b;
+    --color-status-confirmed-border: #e2e8f0;
+    --color-status-failed-border: #f87171;
+    --color-status-failed-bg: rgba(254, 242, 242, 0.3);
+
     /* Elegant Toolbar System - Light Theme */
     --toolbar-background: linear-gradient(135deg,
             rgba(248, 250, 252, 0.95) 0%,
@@ -207,6 +213,12 @@ body[data-theme='dark'] {
     /* Canvas Colors */
     --color-canvas-background: #1a1a1a;
     --color-canvas-pattern: rgba(255, 255, 255, 0.02);
+
+    /* Message Status Colors - Dark Theme */
+    --color-status-pending-border: #fbbf24;
+    --color-status-confirmed-border: #404040;
+    --color-status-failed-border: #fca5a5;
+    --color-status-failed-bg: rgba(69, 26, 26, 0.2);
 
     /* Elegant Toolbar System - Dark Theme */
     --toolbar-background: linear-gradient(135deg,

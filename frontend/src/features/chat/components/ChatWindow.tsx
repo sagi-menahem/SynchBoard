@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
+import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useChatWindowLogic } from 'features/chat/hooks/useChatWindowLogic';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +21,7 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { userEmail } = useAuth();
+  const { registerChatCommitHandler } = useBoardContext();
   
   const {
     messagesEndRef,
@@ -32,7 +34,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     handleSendMessage,
     handleSearchClose,
     shouldShowDateSeparator,
+    commitChatTransaction,
   } = useChatWindowLogic({ boardId, messages });
+
+  // Register the chat commit handler with the board context
+  useEffect(() => {
+    console.log('📝 [CHAT] Registering chat commit handler');
+    registerChatCommitHandler(commitChatTransaction);
+    
+    return () => {
+      console.log('📝 [CHAT] Unregistering chat commit handler');
+      registerChatCommitHandler(null);
+    };
+  }, [registerChatCommitHandler, commitChatTransaction]);
 
   return (
     <Card
