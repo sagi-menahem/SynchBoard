@@ -58,6 +58,13 @@ $color-board-dark-ocean: #2a3538;
 $color-board-dark-crimson: #3a2b2b;
 $color-board-dark-golden: #3d3429;
 
+// === CHAT BUBBLE COLORS ===
+// Message bubbles for chat component - optimized for readability and contrast
+$color-chat-my-message-dark: #03041b; // My messages in dark theme - deep navy
+$color-chat-my-message-light: #d0e2f5; // My messages in light theme - light blue
+$color-chat-other-message-dark: #2b2a2a; // Other users' messages in dark theme - warm dark gray
+$color-chat-other-message-light: #f8fafc; // Other users' messages in light theme - soft gray
+
 // === OVERLAY COLORS ===
 $color-backdrop: rgba(0, 0, 0, 0.7); // Modal backdrop overlay
 

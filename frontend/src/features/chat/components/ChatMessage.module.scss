@@ -61,15 +61,15 @@
   color: #ffffff;
   margin-inline-start: auto;
 
-  // Dark theme - modern blue-purple gradient
+  // Dark theme - deep navy from design tokens
   body[data-theme='dark'] & {
-    background: #03041b;
+    background: theme.$color-chat-my-message-dark;
     color: #ffffff;
   }
 
-  // Light theme variant with better contrast
+  // Light theme - light blue from design tokens
   body[data-theme='light'] & {
-    background: #d0e2f5;
+    background: theme.$color-chat-my-message-light;
     color: #ffffff;
   }
 }
@@ -78,15 +78,15 @@
   background: theme.$surface-elevated;
   color: theme.$text-primary;
 
-  // Dark theme - warm dark gray with subtle purple tint
+  // Dark theme - warm dark gray from design tokens
   body[data-theme='dark'] & {
-    background: #2b2a2a;
+    background: theme.$color-chat-other-message-dark;
     color: #f9fafb;
   }
 
-  // Light theme variant - soft warm gray
+  // Light theme - soft gray from design tokens
   body[data-theme='light'] & {
-    background: #f8fafc;
+    background: theme.$color-chat-other-message-light;
     color: #1b1b1b;
     border: 1px solid #e2e8f0;
   }
