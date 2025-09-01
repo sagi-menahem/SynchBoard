@@ -9,14 +9,16 @@ export const usePasswordManager = () => {
   const { t } = useTranslation(['settings', 'common']);
 
   const handleChangePassword = async (data: ChangePasswordRequest) => {
-    await toast.promise(
-      UserService.changePassword(data),
-      {
-        loading: t('settings:loading.password.update'),
-        success: t('settings:success.password.update'),
-        error: t('settings:errors.password.update'),
-      },
-    );
+    try {
+      toast.loading(t('settings:loading.password.update'));
+      await UserService.changePassword(data);
+      toast.dismiss();
+      toast.success(t('settings:success.password.update'));
+    } catch (error) {
+      toast.dismiss();
+      // Don't show generic error - specific validation errors are already shown by apiClient
+      throw error;
+    }
   };
 
   return {

@@ -137,15 +137,13 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
       setOptimisticState({ name: newName });
 
       try {
-        await toast.promise(
-          boardService.updateBoardName(boardId, newName),
-          {
-            loading: t('board:loading.nameUpdate'),
-            success: t('board:success.nameUpdate'),
-            error: t('board:errors.nameUpdate'),
-          },
-        );
+        toast.loading(t('board:loading.nameUpdate'));
+        await boardService.updateBoardName(boardId, newName);
+        toast.dismiss();
+        toast.success(t('board:success.nameUpdate'));
       } catch (error) {
+        toast.dismiss();
+        // Don't show generic error - specific validation errors are already shown by apiClient
         throw error;
       }
     },
@@ -161,15 +159,13 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
       setOptimisticState({ description: newDescription });
 
       try {
-        await toast.promise(
-          boardService.updateBoardDescription(boardId, newDescription),
-          {
-            loading: t('board:loading.descriptionUpdate'),
-            success: t('board:success.descriptionUpdate'),
-            error: t('board:errors.descriptionUpdate'),
-          },
-        );
+        toast.loading(t('board:loading.descriptionUpdate'));
+        await boardService.updateBoardDescription(boardId, newDescription);
+        toast.dismiss();
+        toast.success(t('board:success.descriptionUpdate'));
       } catch (error) {
+        toast.dismiss();
+        // Don't show generic error - specific validation errors are already shown by apiClient
         throw error;
       }
     },

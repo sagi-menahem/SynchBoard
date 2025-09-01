@@ -66,14 +66,10 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     }
 
     try {
-      const newBoard = await toast.promise(
-        createBoard(submitFormData),
-        {
-          loading: t('board:loading.create'),
-          success: (board) => t('board:success.create', { boardName: board.name }),
-          error: t('board:errors.create'),
-        },
-      );
+      toast.loading(t('board:loading.create'));
+      const newBoard = await createBoard(submitFormData);
+      toast.dismiss();
+      toast.success(t('board:success.create', { boardName: newBoard.name }));
       onBoardCreated(newBoard);
 
       return {
@@ -81,6 +77,8 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
         data: newBoard,
       };
     } catch (err: unknown) {
+      toast.dismiss();
+      // Don't show generic error - specific validation errors are already shown by apiClient
       logger.error('[useCreateBoardForm] Failed to create board:', err);
       return {
         success: false,
