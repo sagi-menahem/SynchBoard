@@ -55,9 +55,12 @@
     font-size: 0.875rem;
 }
 
-.forgotPasswordSection {
-    @include theme.flex-center;
-    margin-top: theme.$spacing-2;
+.secondaryActionsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .forgotPasswordButton {
