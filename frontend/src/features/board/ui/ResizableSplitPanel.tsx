@@ -14,6 +14,7 @@ interface ResizableSplitPanelProps {
   minLeftWidth?: number;
   minRightWidth?: number;
   onSplitChange?: (splitRatio: number) => void;
+  backgroundBlur?: string;
 }
 
 const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
@@ -23,6 +24,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   minLeftWidth = 200,
   minRightWidth = 200,
   onSplitChange,
+  backgroundBlur = '0px',
 }) => {
   const { t } = useTranslation(['common']);
   const { preferences } = useUserBoardPreferences();
@@ -99,7 +101,10 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
     <div 
       ref={containerRef} 
       className={clsx(styles.container, utilStyles.unifiedDotBackground)}
-      style={{ '--user-chosen-color': getUserChosenColor() } as React.CSSProperties}
+      style={{ 
+        '--user-chosen-color': getUserChosenColor(),
+        '--background-blur': backgroundBlur 
+      } as React.CSSProperties}
     >
       <div 
         className={styles.leftPanel} 
