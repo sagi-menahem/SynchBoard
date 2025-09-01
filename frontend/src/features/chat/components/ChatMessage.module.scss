@@ -6,6 +6,18 @@
   margin-bottom: 8px;
   box-sizing: border-box;
   animation: messageSlideIn theme.$transition-slow ease-out;
+  
+  &.grouped {
+    margin-bottom: 4px;
+    
+    .messageBubble {
+      padding: theme.$spacing-2 theme.$spacing-3;
+    }
+    
+    &.otherMessage {
+      padding-inline-start: 48px; // Align with avatar width + gap
+    }
+  }
 }
 
 .messageContainer.noAnimation {
@@ -14,17 +26,20 @@
 
 .myMessage {
   display: flex;
+  justify-content: flex-end;
 }
 
 .otherMessage {
   display: flex;
   gap: theme.$spacing-2;
   align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .messageBubble {
   padding: theme.$spacing-3;
-  @include theme.rounded-large;
+  border-radius: 20px;
+  max-width: 70%;
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
@@ -42,12 +57,19 @@
 }
 
 .myMessage .messageBubble {
-  background: theme.$primary-light;
-  color: theme.$primary;
+  background: theme.$primary;
+  color: #ffffff;
+  margin-inline-start: auto;
   
-  // Override for dark theme to use full primary
+  // Dark theme - lighter gray like send button
   body[data-theme='dark'] & {
-    background: theme.$primary;
+    background: #6b7280;
+    color: #ffffff;
+  }
+  
+  // Light theme variant with better contrast
+  body[data-theme='light'] & {
+    background: #0066cc;
     color: #ffffff;
   }
 }
@@ -55,6 +77,19 @@
 .otherMessage .messageBubble {
   background: theme.$surface-elevated;
   color: theme.$text-primary;
+  
+  // Enhanced contrast for dark theme
+  body[data-theme='dark'] & {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  
+  // Light theme variant - clean neutral gray
+  body[data-theme='light'] & {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+  }
 }
 
 .avatar {

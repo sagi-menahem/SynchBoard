@@ -40,12 +40,12 @@
   border: 1px solid rgba(0, 0, 0, 0.15);
   @include theme.rounded-medium;
   box-shadow: theme.$shadow-inset-light;
-  
+
   &:hover {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.32));
     border-color: rgba(0, 0, 0, 0.25);
   }
-  
+
   &:active {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.42));
   }
@@ -103,12 +103,29 @@
 .dateSeparator {
   text-align: center;
   margin: theme.$spacing-4 0;
-  color: theme.$text-placeholder !important;
+  color: theme.$text-secondary;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   position: relative;
-  padding: 0 theme.$spacing-5;
+  padding: 6px theme.$spacing-5;
   user-select: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+
+  // Enhanced visibility for dark theme
+  body[data-theme='dark'] & {
+    color: #a0aec0;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  // Light theme variant
+  body[data-theme='light'] & {
+    color: #4a5568;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
 }
 
 .dateSeparator::before,
@@ -116,18 +133,18 @@
   content: '';
   position: absolute;
   top: 50%;
-  width: 35%;
-  height: 1px;
-  background: theme.$border-primary;
-  opacity: 0.6;
+  width: 30%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.3;
 }
 
 .dateSeparator::before {
-  inset-inline-start: 0;
+  inset-inline-start: 8px;
 }
 
 .dateSeparator::after {
-  inset-inline-end: 0;
+  inset-inline-end: 8px;
 }
 
 @media (max-width: 768px) {

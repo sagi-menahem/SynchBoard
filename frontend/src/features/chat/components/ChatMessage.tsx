@@ -17,13 +17,15 @@ interface ChatMessageProps {
   isOwnMessage?: boolean;
   userColorMap: UserColorMap;
   shouldAnimate?: boolean;
+  isGrouped?: boolean;
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ 
   message, 
   isOwnMessage = false, 
   userColorMap, 
-  shouldAnimate = true, 
+  shouldAnimate = true,
+  isGrouped = false,
 }) => {
   const { t } = useTranslation(['chat', 'common']);
   const profileUrl = message.senderProfilePictureUrl
@@ -49,17 +51,19 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   
 
   return (
-    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass} ${!shouldAnimate ? styles.noAnimation : ''}`}>
-      {!isOwnMessage && (
+    <div className={`${styles.messageContainer} ${isOwnMessage ? styles.myMessage : styles.otherMessage} ${statusClass} ${!shouldAnimate ? styles.noAnimation : ''} ${isGrouped ? styles.grouped : ''}`}>
+      {!isOwnMessage && !isGrouped && (
         <img src={imageSource} alt={t('common:accessibility.userAvatar', { email: senderEmail })} className={styles.avatar} />
       )}
       
       <div className={styles.messageBubble}>
-        <div className={styles.messageHeader}>
-          <strong className={styles.senderName} style={{ color: userColor }}>
-            {senderEmail}
-          </strong>
-        </div>
+        {!isGrouped && (
+          <div className={styles.messageHeader}>
+            <strong className={styles.senderName} style={{ color: userColor }}>
+              {senderEmail}
+            </strong>
+          </div>
+        )}
         
         <div className={styles.messageBody}>
           <div className={styles.messageText}>
