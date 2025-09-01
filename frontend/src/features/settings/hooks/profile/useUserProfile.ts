@@ -58,17 +58,19 @@ export const useUserProfile = () => {
   // Profile update (enhanced to stop editing)
   const handleUpdateProfile = useCallback(
     async (data: UpdateUserProfileRequest) => {
-      const promise = userService.updateUserProfile(data).then((updatedUser: UserProfile) => {
+      try {
+        toast.loading(t('settings:loading.profile.update'));
+        const updatedUser = await userService.updateUserProfile(data);
         setUser(updatedUser);
         setIsEditing(false); // Auto-stop editing on success
+        toast.dismiss();
+        toast.success(t('settings:success.profile.update'));
         return updatedUser;
-      });
-
-      await toast.promise(promise, {
-        loading: t('settings:loading.profile.update'),
-        success: t('settings:success.profile.update'),
-        error: t('settings:errors.profile.update'),
-      });
+      } catch (error) {
+        toast.dismiss();
+        // Don't show generic error - specific validation errors are already shown by apiClient
+        throw error;
+      }
     },
     [t],
   );

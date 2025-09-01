@@ -12,28 +12,31 @@ export const useAccountActions = () => {
   const navigate = useNavigate();
 
   const handleChangePassword = async (data: ChangePasswordRequest) => {
-    await toast.promise(
-      userService.changePassword(data),
-      {
-        loading: t('settings:loading.password.update'),
-        success: t('settings:success.password.update'),
-        error: t('settings:errors.password.update'),
-      },
-    );
+    try {
+      toast.loading(t('settings:loading.password.update'));
+      await userService.changePassword(data);
+      toast.dismiss();
+      toast.success(t('settings:success.password.update'));
+    } catch (error) {
+      toast.dismiss();
+      // Don't show generic error - specific validation errors are already shown by apiClient
+      throw error;
+    }
   };
 
   const handleDeleteAccount = async () => {
-    await toast.promise(
-      userService.deleteAccount().then(() => {
-        logout();
-        void navigate(APP_ROUTES.AUTH);
-      }),
-      {
-        loading: t('settings:loading.account.delete'),
-        success: t('settings:success.account.delete'),
-        error: t('settings:errors.account.delete'),
-      },
-    );
+    try {
+      toast.loading(t('settings:loading.account.delete'));
+      await userService.deleteAccount();
+      logout();
+      void navigate(APP_ROUTES.AUTH);
+      toast.dismiss();
+      toast.success(t('settings:success.account.delete'));
+    } catch (error) {
+      toast.dismiss();
+      // Don't show generic error - specific validation errors are already shown by apiClient
+      throw error;
+    }
   };
 
   return {

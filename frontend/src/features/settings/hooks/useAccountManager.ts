@@ -13,17 +13,18 @@ export const useAccountManager = () => {
   const navigate = useNavigate();
 
   const handleDeleteAccount = async () => {
-    await toast.promise(
-      userService.deleteAccount().then(() => {
-        logout();
-        void navigate(APP_ROUTES.AUTH);
-      }),
-      {
-        loading: t('settings:loading.account.delete'),
-        success: t('settings:success.account.delete'),
-        error: t('settings:errors.account.delete'),
-      },
-    );
+    try {
+      toast.loading(t('settings:loading.account.delete'));
+      await userService.deleteAccount();
+      logout();
+      void navigate(APP_ROUTES.AUTH);
+      toast.dismiss();
+      toast.success(t('settings:success.account.delete'));
+    } catch (error) {
+      toast.dismiss();
+      // Don't show generic error - specific validation errors are already shown by apiClient
+      throw error;
+    }
   };
 
   return {
