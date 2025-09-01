@@ -29,12 +29,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     searchTerm,
     setSearchTerm,
     searchVisible,
-    previousMessageCount,
     filteredMessages,
     handleSendMessage,
     handleSearchClose,
     shouldShowDateSeparator,
     commitChatTransaction,
+    isMessageNew,
   } = useChatWindowLogic({ boardId, messages });
 
   // Register the chat commit handler with the board context
@@ -81,7 +81,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
       
       <div className={styles.messageList} ref={messagesContainerRef}>
         {filteredMessages.map((message, index) => {
-          const isNewMessage = index >= previousMessageCount;
+          const shouldAnimate = isMessageNew(message);
           const prevMessage = filteredMessages[index - 1] ?? null;
           
           // Message grouping logic: group consecutive messages from same user within 5 minutes
@@ -91,7 +91,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
             (new Date(message.timestamp).getTime() - new Date(prevMessage.timestamp).getTime()) < 300000; // 5 minutes
           
           return (
-            <React.Fragment key={message.transactionId ?? `${message.senderEmail}-${message.timestamp}-${index}`}>
+            <React.Fragment key={message.instanceId ?? `${message.id}-${message.timestamp}`}>
               {shouldShowDateSeparator(message, prevMessage) && (
                 <div className={styles.dateSeparator}>
                   {formatDateSeparator(message.timestamp)}
@@ -100,7 +100,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
               <ChatMessage 
                 message={message} 
                 isOwnMessage={message.senderEmail === userEmail}
-                shouldAnimate={isNewMessage}
+                shouldAnimate={shouldAnimate}
                 isGrouped={isGroupedWithPrevious}
               />
             </React.Fragment>
