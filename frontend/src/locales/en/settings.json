@@ -70,9 +70,7 @@
       "delete": "Failed to delete picture."
     },
     "password": {
-      "update": "Failed to update password. Please check your current password.",
-      "incorrect": "The current password you entered is incorrect.",
-      "sameAsOld": "New password cannot be the same as the old one."
+      "update": "Failed to update password. Please check your current password."
     },
     "account": {
       "delete": "Failed to delete your account."
