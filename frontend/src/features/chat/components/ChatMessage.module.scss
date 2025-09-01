@@ -261,10 +261,11 @@
 // MESSAGE STATUS STYLING
 // ========================================
 
-// Pending status - warm orange border only
+// Pending status - warm orange border with transparency
 .pending {
   .messageBubble {
     border-color: theme.$status-pending-border !important;
+    opacity: 0.6 !important;
     @include theme.smooth-transition;
   }
 }
@@ -272,6 +273,7 @@
 // Confirmed status - restore normal styling 
 .confirmed {
   .messageBubble {
+    opacity: 1 !important;
     @include theme.smooth-transition;
   }
 }
