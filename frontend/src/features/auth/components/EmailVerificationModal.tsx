@@ -23,7 +23,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   const { t } = useTranslation(['auth', 'common']);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  const { state, submitAction, isPending } = useVerifyEmailForm(email, onSuccess);
+  const { submitAction, isPending } = useVerifyEmailForm(email, onSuccess);
   const { resendVerificationCode } = useResendVerificationCode(email);
 
   useEffect(() => {
@@ -79,12 +79,6 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
         </p>
 
         <form action={submitAction} className={styles.form}>
-          {state.error !== undefined && state.error !== '' && (
-            <div className={styles.error} role="alert">
-              {state.error}
-            </div>
-          )}
-
           <div className={styles.field}>
             <label htmlFor="verification-code">
               <Hash size={14} />

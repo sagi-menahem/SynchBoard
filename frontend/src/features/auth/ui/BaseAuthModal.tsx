@@ -10,7 +10,6 @@ interface BaseAuthModalProps {
   description?: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   isPending: boolean;
-  error?: string | null;
   submitButtonText: string;
   cancelButtonText: string;
   children: ReactNode;
@@ -25,7 +24,6 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
   description,
   onSubmit,
   isPending,
-  error,
   submitButtonText,
   cancelButtonText,
   children,
@@ -48,12 +46,6 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
         )}
 
         <form onSubmit={onSubmit} className={styles.form}>
-          {error && (
-            <div className={styles.error} role="alert">
-              {error}
-            </div>
-          )}
-
           {children}
 
           <div className={styles.buttonGroup}>

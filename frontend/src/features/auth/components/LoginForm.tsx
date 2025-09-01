@@ -17,7 +17,7 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
   const { t } = useTranslation(['auth', 'common']);
   const { redirectToGoogle } = useAuth();
-  const { state, submitAction, isPending } = useLoginForm();
+  const { submitAction, isPending } = useLoginForm();
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleGoogleLogin = () => {
@@ -27,12 +27,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
 
   return (
     <form action={submitAction} className={styles.form}>
-      {state.error !== undefined && state.error !== '' && (
-        <div className={styles.error} role="alert">
-          {state.error}
-        </div>
-      )}
-
       <div className={styles.field}>
         <label htmlFor="login-email">
           <Mail size={14} />

@@ -20,7 +20,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   onSuccess,
 }) => {
   const { t } = useTranslation(['auth', 'common']);
-  const { state, submitAction, isPending } = useForgotPasswordForm(onSuccess);
+  const { submitAction, isPending } = useForgotPasswordForm(onSuccess);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,7 +36,6 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
       description={t('auth:forgotPassword.description')}
       onSubmit={handleSubmit}
       isPending={isPending}
-      error={state.error}
       submitButtonText={isPending ? t('common:button.sending') : t('auth:forgotPassword.button')}
       cancelButtonText={t('common:button.cancel')}
     >

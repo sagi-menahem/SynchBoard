@@ -20,7 +20,7 @@ interface CreateBoardFormProps {
 
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
   const { t } = useTranslation(['board', 'common']);
-  const { state, submitAction, isPending } = useCreateBoardForm(onBoardCreated);
+  const { submitAction, isPending } = useCreateBoardForm(onBoardCreated);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
