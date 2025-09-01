@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ChatInput.module.scss';
 
@@ -82,14 +83,15 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
           className={styles.input}
           aria-label={t('chat:window.placeholder')}
         />
-        <button 
+        <Button
           type="submit" 
+          variant="icon"
           disabled={!hasMessage || isDisabled}
           className={styles.sendButton}
           aria-label={isSending ? t('chat:sending') : t('common:button.send')}
         >
           <Send size={18} />
-        </button>
+        </Button>
       </div>
     </form>
   );
