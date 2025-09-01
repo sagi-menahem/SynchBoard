@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
 import logger from 'shared/utils/logger';
+import { applyScrollbarTheme } from 'shared/utils/scrollbarTheme';
 
 export type Theme = 'light' | 'dark';
 
@@ -38,6 +39,8 @@ const getInitialTheme = (): Theme => {
 // Apply theme to DOM with forced reflow for reliability
 const applyThemeToDOM = (theme: Theme) => {
   document.body.setAttribute('data-theme', theme);
+  // Apply scrollbar theme programmatically for immediate effect
+  applyScrollbarTheme(theme);
   // Force style recalculation to ensure CSS is applied immediately
   // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
   document.body.offsetHeight;

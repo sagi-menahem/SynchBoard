@@ -191,25 +191,6 @@
   font-family: system-ui, -apple-system, sans-serif;
   outline: none;
   overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: theme.$scrollbar-thumb theme.$scrollbar-track;
-}
-
-.textInput::-webkit-scrollbar {
-  width: theme.$spacing-1-5;
-}
-
-.textInput::-webkit-scrollbar-track {
-  background: theme.$scrollbar-track;
-  @include theme.rounded-small;
-}
-
-.textInput::-webkit-scrollbar-thumb {
-  background: theme.$scrollbar-thumb;
-  @include theme.rounded-small;
-}
-
-.textInput::-webkit-scrollbar-thumb:hover {
-  background: theme.$scrollbar-thumb-hover;
+  @include theme.theme-scrollbar;
 }
 

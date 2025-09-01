@@ -79,6 +79,7 @@
     background: linear-gradient(to bottom, theme.$background-secondary, theme.$background-tertiary);
     border: 1px solid theme.$border-light;
     @include theme.rounded-large;
+    @include theme.theme-scrollbar;
     padding: theme.$spacing-8;
     max-width: 600px;
     width: 100%;

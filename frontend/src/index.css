@@ -1,4 +1,3 @@
-
 :root,
 body[data-theme='light'] {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -19,12 +18,16 @@ body[data-theme='light'] {
     --transition-duration-slow: 0.3s;
     --transition-slow: 0.3s;
     --transition-ease-in-out: ease-in-out;
-    
+
     /* Spacing System */
-    --spacing-0-5: 0.125rem; /* 2px */
-    --spacing-1: 0.25rem; /* 4px */
-    --spacing-2: 0.5rem; /* 8px */
-    --spacing-3: 0.75rem; /* 12px */
+    --spacing-0-5: 0.125rem;
+    /* 2px */
+    --spacing-1: 0.25rem;
+    /* 4px */
+    --spacing-2: 0.5rem;
+    /* 8px */
+    --spacing-3: 0.75rem;
+    /* 12px */
 
     /* Z-Index System */
     --z-index-base: 1;
@@ -315,3 +318,218 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* ==================== SCROLLBAR THEMING SYSTEM ==================== */
+/* Universal theme-aware scrollbar styling with CSS custom properties  */
+
+/* Define scrollbar color variables */
+:root,
+body[data-theme='light'] {
+    --scrollbar-track-bg: #f1f5f9;
+    --scrollbar-thumb-bg: #94a3b8;
+    --scrollbar-thumb-hover-bg: #64748b;
+    --scrollbar-corner-bg: #f1f5f9;
+}
+
+body[data-theme='dark'] {
+    --scrollbar-track-bg: #1a1a1a;
+    --scrollbar-thumb-bg: #404040;
+    --scrollbar-thumb-hover-bg: #525252;
+    --scrollbar-corner-bg: #1a1a1a;
+}
+
+/* Universal scrollbar styling using CSS variables */
+html,
+body,
+* {
+    /* Firefox scrollbar */
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg) !important;
+}
+
+/* WebKit scrollbar styling */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg) !important;
+    border-radius: 4px !important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg) !important;
+    border-radius: 4px !important;
+    border: none !important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-bg) !important;
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg) !important;
+}
+
+/* TARGETED FIXES for SCSS Module containers */
+/* Layout mainContent SCSS module targeting */
+div[class*="Layout_mainContent"],
+div[class*="mainContent"] {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg) !important;
+}
+
+div[class*="Layout_mainContent"]::-webkit-scrollbar,
+div[class*="mainContent"]::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+div[class*="Layout_mainContent"]::-webkit-scrollbar-track,
+div[class*="mainContent"]::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg) !important;
+    border-radius: 4px !important;
+}
+
+div[class*="Layout_mainContent"]::-webkit-scrollbar-thumb,
+div[class*="mainContent"]::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg) !important;
+    border-radius: 4px !important;
+}
+
+div[class*="Layout_mainContent"]::-webkit-scrollbar-thumb:hover,
+div[class*="mainContent"]::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-bg) !important;
+}
+
+div[class*="Layout_mainContent"]::-webkit-scrollbar-corner,
+div[class*="mainContent"]::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg) !important;
+}
+
+/* Page content containers (Settings, Board Details, Board List) */
+main[class*="pageContent"],
+div[class*="pageContent"] {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg) !important;
+}
+
+main[class*="pageContent"]::-webkit-scrollbar,
+div[class*="pageContent"]::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+main[class*="pageContent"]::-webkit-scrollbar-track,
+div[class*="pageContent"]::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg) !important;
+    border-radius: 4px !important;
+}
+
+main[class*="pageContent"]::-webkit-scrollbar-thumb,
+div[class*="pageContent"]::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg) !important;
+    border-radius: 4px !important;
+}
+
+main[class*="pageContent"]::-webkit-scrollbar-thumb:hover,
+div[class*="pageContent"]::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-bg) !important;
+}
+
+main[class*="pageContent"]::-webkit-scrollbar-corner,
+div[class*="pageContent"]::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg) !important;
+}
+
+/* Board list and member list containers */
+ul[class*="boardList"],
+ul[class*="membersList"],
+div[class*="membersListContainer"] {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg) !important;
+}
+
+ul[class*="boardList"]::-webkit-scrollbar,
+ul[class*="membersList"]::-webkit-scrollbar,
+div[class*="membersListContainer"]::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+ul[class*="boardList"]::-webkit-scrollbar-track,
+ul[class*="membersList"]::-webkit-scrollbar-track,
+div[class*="membersListContainer"]::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg) !important;
+    border-radius: 4px !important;
+}
+
+ul[class*="boardList"]::-webkit-scrollbar-thumb,
+ul[class*="membersList"]::-webkit-scrollbar-thumb,
+div[class*="membersListContainer"]::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg) !important;
+    border-radius: 4px !important;
+}
+
+ul[class*="boardList"]::-webkit-scrollbar-thumb:hover,
+ul[class*="membersList"]::-webkit-scrollbar-thumb:hover,
+div[class*="membersListContainer"]::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-bg) !important;
+}
+
+ul[class*="boardList"]::-webkit-scrollbar-corner,
+ul[class*="membersList"]::-webkit-scrollbar-corner,
+div[class*="membersListContainer"]::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg) !important;
+}
+
+/* Modal and overlay content scrollbars */
+div[class*="quickSettingsContent"],
+div[class*="modal"],
+div[class*="overlay"] {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg) !important;
+}
+
+div[class*="quickSettingsContent"]::-webkit-scrollbar,
+div[class*="modal"]::-webkit-scrollbar,
+div[class*="overlay"]::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+div[class*="quickSettingsContent"]::-webkit-scrollbar-track,
+div[class*="modal"]::-webkit-scrollbar-track,
+div[class*="overlay"]::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg) !important;
+    border-radius: 4px !important;
+}
+
+div[class*="quickSettingsContent"]::-webkit-scrollbar-thumb,
+div[class*="modal"]::-webkit-scrollbar-thumb,
+div[class*="overlay"]::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg) !important;
+    border-radius: 4px !important;
+}
+
+div[class*="quickSettingsContent"]::-webkit-scrollbar-thumb:hover,
+div[class*="modal"]::-webkit-scrollbar-thumb:hover,
+div[class*="overlay"]::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover-bg) !important;
+}
+
+div[class*="quickSettingsContent"]::-webkit-scrollbar-corner,
+div[class*="modal"]::-webkit-scrollbar-corner,
+div[class*="overlay"]::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg) !important;
+}

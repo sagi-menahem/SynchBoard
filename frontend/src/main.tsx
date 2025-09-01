@@ -4,6 +4,7 @@ import App from 'App';
 import { AppProvider } from 'AppProvider';
 import ReactDOM from 'react-dom/client';
 import logger from 'shared/utils/logger';
+import { setupScrollbarThemeManager } from 'shared/utils/scrollbarTheme';
 
 import 'shared/lib/i18n';
 import 'index.css';
@@ -20,6 +21,9 @@ if (earlyTheme && (earlyTheme === 'light' || earlyTheme === 'dark')) {
   const fallbackTheme = prefersColorScheme ? 'dark' : 'light';
   document.body.setAttribute('data-theme', fallbackTheme);
 }
+
+// Initialize scrollbar theme management
+setupScrollbarThemeManager();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

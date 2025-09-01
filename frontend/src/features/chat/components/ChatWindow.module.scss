@@ -24,43 +24,9 @@
 }
 
 
-/* Enhanced scrollbar design matching canvas scrollbars */
-.messageList::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-.messageList::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  @include theme.rounded-medium;
-}
-
-.messageList::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.25));
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  @include theme.rounded-medium;
-  box-shadow: theme.$shadow-inset-light;
-  
-  &:hover {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35));
-    border-color: rgba(0, 0, 0, 0.3);
-  }
-  
-  &:active {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45));
-  }
-}
-
-.messageList::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-/* Firefox scrollbar - enhanced */
+/* Theme-aware enhanced scrollbar design */
 .messageList {
-  scrollbar-width: auto;
-  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+  @include theme.theme-scrollbar-enhanced;
 }
 
 .searchContainer {
