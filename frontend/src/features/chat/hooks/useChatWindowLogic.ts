@@ -29,7 +29,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const pendingStartTimes = useRef<Map<string, number>>(new Map());
   
   // Minimum duration to show pending state (in milliseconds)
-  const MINIMUM_PENDING_DURATION = 500; // 500ms minimum
+  const MINIMUM_PENDING_DURATION = 750; // 750ms minimum (1.5x longer)
 
   const { sendMessage } = useChatMessages();
 
