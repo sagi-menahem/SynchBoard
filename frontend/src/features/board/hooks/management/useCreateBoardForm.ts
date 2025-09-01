@@ -27,17 +27,17 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
     const canvasHeight = formData.get('canvasHeight') as string;
 
     if (!name) {
+      toast.error(t('board:createForm.validation.nameRequired'));
       return {
         success: false,
-        error: t('board:createBoardForm.validation.nameRequired'),
       };
     }
 
     if (name.length < APP_CONFIG.MIN_BOARD_NAME_LENGTH) {
       logger.warn('[useCreateBoardForm] Board name validation failed - too short');
+      toast.error(t('board:createForm.nameLengthError'));
       return {
         success: false,
-        error: t('board:createBoardForm.nameLengthError'),
       };
     }
 
