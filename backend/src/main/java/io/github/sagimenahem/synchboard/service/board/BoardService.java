@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.board;
 
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import java.util.List;
@@ -18,6 +18,7 @@ import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
+import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

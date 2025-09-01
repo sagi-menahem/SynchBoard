@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.board;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.DEFAULT_SENDER_EMAIL;
 import java.util.List;

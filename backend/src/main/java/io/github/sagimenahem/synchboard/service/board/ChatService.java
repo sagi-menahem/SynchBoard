@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.board;
 
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import java.security.Principal;

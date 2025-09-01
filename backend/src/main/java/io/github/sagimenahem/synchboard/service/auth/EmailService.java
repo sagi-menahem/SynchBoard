@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.auth;
 
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Value;

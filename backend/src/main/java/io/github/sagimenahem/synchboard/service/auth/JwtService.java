@@ -1,4 +1,4 @@
-package io.github.sagimenahem.synchboard.service;
+package io.github.sagimenahem.synchboard.service.auth;
 
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
 import java.security.Key;
