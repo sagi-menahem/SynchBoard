@@ -6,7 +6,6 @@ import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
 import { RelativeTimestamp } from 'shared/ui';
-import { getUserColor, type UserColorMap } from 'shared/utils';
 import { formatDetailedTimestamp } from 'shared/utils/DateUtils';
 
 
@@ -15,7 +14,6 @@ import styles from './ChatMessage.module.scss';
 interface ChatMessageProps {
   message: EnhancedChatMessage;
   isOwnMessage?: boolean;
-  userColorMap: UserColorMap;
   shouldAnimate?: boolean;
   isGrouped?: boolean;
 }
@@ -23,7 +21,6 @@ interface ChatMessageProps {
 const ChatMessage: React.FC<ChatMessageProps> = ({ 
   message, 
   isOwnMessage = false, 
-  userColorMap, 
   shouldAnimate = true,
   isGrouped = false,
 }) => {
@@ -36,8 +33,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   const senderEmail = sanitizeUserContent(message.senderEmail);
   const messageContent = sanitizeUserContent(message.content);
-  
-  const userColor = getUserColor(senderEmail, userColorMap);
 
   const getMessageStatus = (): string => {
     if (!message.transactionId) {return 'confirmed';}
@@ -59,7 +54,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       <div className={styles.messageBubble}>
         {!isGrouped && (
           <div className={styles.messageHeader}>
-            <strong className={styles.senderName} style={{ color: userColor }}>
+            <strong className={styles.senderName}>
               {senderEmail}
             </strong>
           </div>

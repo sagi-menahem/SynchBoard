@@ -6,7 +6,6 @@ import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
-import { createUserColorMap, type UserColorMap } from 'shared/utils';
 import logger from 'shared/utils/logger';
 
 interface UseChatWindowLogicProps {
@@ -23,7 +22,6 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const [searchVisible, setSearchVisible] = useState(false);
   const [previousMessageCount, setPreviousMessageCount] = useState(0);
   
-  const [userColorMap] = useState<UserColorMap>(() => createUserColorMap());
 
   const [optimisticMessages, addOptimisticMessage] = useOptimistic(
     messages,
@@ -164,7 +162,6 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     searchVisible,
     setSearchVisible,
     previousMessageCount,
-    userColorMap,
     
     // Computed values
     filteredMessages,
