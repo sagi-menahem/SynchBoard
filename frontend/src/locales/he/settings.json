@@ -34,7 +34,7 @@
     "pictureUpdateSuccess": "תמונת הפרופיל עודכנה!",
     "pictureDeleteSuccess": "תמונת הפרופיל הוסרה.",
     "pictureUploadError": "העלאת התמונה נכשלה.",
-    "dangerZoneHeader": "אזור מסוכן",
+    "dangerZoneHeader": "מחיקת חשבון",
     "dangerZoneText": "פעולה זו היא קבועה ולא ניתנת לביטול.",
     "deleteAccountButton": "מחק את החשבון שלי",
     "deleteAccountConfirmTitle": "למחוק את החשבון?",

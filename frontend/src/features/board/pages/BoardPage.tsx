@@ -1,4 +1,3 @@
-
 import React, { useMemo, useRef } from 'react';
 
 import { BoardProvider } from 'features/board';
