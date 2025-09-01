@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
-import { ArrowRight, LogOut, UserPlus } from 'lucide-react';
+import { LogOut, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, PageLoader, PageTransition, SectionCard, UniversalToolbar } from 'shared/ui';
+import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
   BoardConfirmDialogs,
@@ -83,7 +84,7 @@ const BoardDetailsPage: React.FC = () => {
       },
       {
         type: 'button',
-        icon: ArrowRight,
+        icon: getNavigationArrowIcon(),
         label: t('board:detailsPage.boardButton'),
         onClick: () => navigate(`/board/${numericBoardId}`),
         variant: 'navigation' as const,
