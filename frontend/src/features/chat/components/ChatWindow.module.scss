@@ -102,29 +102,22 @@
 
 .dateSeparator {
   text-align: center;
-  margin: theme.$spacing-4 0;
-  color: theme.$text-secondary;
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin: theme.$spacing-6 0 theme.$spacing-4 0;
+  color: theme.$text-muted;
+  font-size: 0.75rem;
+  font-weight: 500;
   position: relative;
-  padding: 2px theme.$spacing-5;
+  padding: 0;
   user-select: none;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
-
-  // Enhanced visibility for dark theme
+  
+  // Dark theme - more prominent
   body[data-theme='dark'] & {
-    color: #a0aec0;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9ca3af;
   }
-
-  // Light theme variant
+  
+  // Light theme - more prominent
   body[data-theme='light'] & {
-    color: #4a5568;
-    background: rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #6b7280;
   }
 }
 
@@ -133,18 +126,19 @@
   content: '';
   position: absolute;
   top: 50%;
-  width: 30%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, currentColor, transparent);
-  opacity: 0.3;
+  transform: translateY(-50%);
+  width: calc(50% - 3rem);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
 }
 
 .dateSeparator::before {
-  inset-inline-start: 8px;
+  inset-inline-start: 0;
 }
 
 .dateSeparator::after {
-  inset-inline-end: 8px;
+  inset-inline-end: 0;
 }
 
 @media (max-width: 768px) {

@@ -42,9 +42,10 @@
   max-width: 70%;
   position: relative;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  border: 1px solid transparent;
 }
 
 .myMessage .messageBubble {
@@ -60,35 +61,46 @@
   background: theme.$primary;
   color: #ffffff;
   margin-inline-start: auto;
+  position: relative;
+
 
   // Dark theme - deep navy from design tokens
   body[data-theme='dark'] & {
     background: theme.$color-chat-my-message-dark;
     color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.1);
+
   }
 
   // Light theme - light blue from design tokens
   body[data-theme='light'] & {
     background: theme.$color-chat-my-message-light;
     color: #ffffff;
+    border-color: rgba(59, 130, 246, 0.2);
+
   }
 }
 
 .otherMessage .messageBubble {
   background: theme.$surface-elevated;
   color: theme.$text-primary;
+  position: relative;
+
 
   // Dark theme - warm dark gray from design tokens
   body[data-theme='dark'] & {
     background: theme.$color-chat-other-message-dark;
     color: #f9fafb;
+    border-color: rgba(255, 255, 255, 0.08);
+
   }
 
   // Light theme - soft gray from design tokens
   body[data-theme='light'] & {
     background: theme.$color-chat-other-message-light;
     color: #1b1b1b;
-    border: 1px solid #e2e8f0;
+    border-color: rgba(0, 0, 0, 0.1);
+
   }
 }
 
