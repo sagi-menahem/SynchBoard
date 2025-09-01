@@ -87,12 +87,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
 
       <form onSubmit={handleFormSubmit}>
         <div className={styles.formContainer}>
-          {state.error && (
-            <div className={styles.error} role="alert">
-              {state.error}
-            </div>
-          )}
-
           <SectionCard 
             title={t('board:createForm.label.basicInfo')}
             variant="default"
