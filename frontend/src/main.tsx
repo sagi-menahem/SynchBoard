@@ -22,7 +22,7 @@ if (earlyTheme && (earlyTheme === 'light' || earlyTheme === 'dark')) {
   document.body.setAttribute('data-theme', fallbackTheme);
 }
 
-// Initialize scrollbar theme management
+// Initialize scrollbar theme
 setupScrollbarThemeManager();
 
 const rootElement = document.getElementById('root');
