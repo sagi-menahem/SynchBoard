@@ -9,7 +9,7 @@
   @include theme.flex-start;
   margin-right: 8px;
   color: theme.$text-muted;
-  font-size: 11px;
+  font-size: theme.$font-size-xs;
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 0.5px;

@@ -21,7 +21,7 @@
 
 .loadingText {
     color: theme.$text-secondary;
-    font-size: 14px;
+    font-size: theme.$font-size-sm;
     margin: 0;
     font-weight: 500;
 }
