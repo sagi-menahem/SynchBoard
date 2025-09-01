@@ -33,7 +33,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     handleSendMessage,
     handleSearchClose,
     shouldShowDateSeparator,
-    getBackgroundStyle,
   } = useChatWindowLogic({ boardId, messages });
 
   return (

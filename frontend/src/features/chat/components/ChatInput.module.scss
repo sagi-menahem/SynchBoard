@@ -1,24 +1,198 @@
 @use '@/styles' as theme;
 
 .form {
-    @include theme.flex-start;
     padding: theme.$spacing-4;
-    border-top: 1px solid theme.$border-primary;
-    background-color: theme.$background-secondary;
-    gap: theme.$spacing-2-5;
+    border: none;
+    background-color: transparent;
+    @include theme.flex-center;
 }
 
 .inputContainer {
-    flex: 1;
+    display: flex;
+    align-items: center;
+    background: theme.$surface-elevated;
+    border: 2px solid theme.$border-light;
+    border-radius: 24px;
+    padding: 8px 16px;
+    width: 100%;
+    max-width: 100%;
+    @include theme.smooth-transition;
     position: relative;
+    box-sizing: border-box;
+
+    &:focus-within {
+        border-color: theme.$primary;
+        box-shadow: 0 0 0 3px theme.$overlay-primary-20;
+    }
+
+    &:hover:not(.sending) {
+        border-color: theme.$border;
+        @include theme.shadow-light;
+    }
+
+    &.sending {
+        opacity: 0.8;
+        pointer-events: none;
+        
+        .input {
+            cursor: wait;
+        }
+    }
 }
 
-.inputDisabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+.input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 8px;
+    font-size: 0.95rem;
+    color: theme.$text-primary;
+    font-family: inherit;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    @include theme.smooth-transition;
+
+    &::placeholder {
+        color: theme.$text-muted;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        color: theme.$text-disabled;
+        
+        &::placeholder {
+            color: theme.$text-disabled;
+        }
+    }
+
+    /* Remove default input styling */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &[type=number] {
+        -moz-appearance: textfield;
+    }
 }
 
-.buttonSending {
-    opacity: 0.8;
-    cursor: wait;
+.sendButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    background: theme.$primary;
+    border-radius: 50%;
+    color: var(--color-text-on-primary);
+    cursor: pointer;
+    min-width: 36px;
+    min-height: 36px;
+    @include theme.smooth-transition;
+    margin-left: 8px;
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) {
+        background: theme.$primary-hover;
+        transform: scale(1.05);
+        box-shadow: theme.$shadow-button-hover;
+    }
+
+    &:active:not(:disabled) {
+        transform: scale(0.95);
+        background: theme.$primary-hover;
+    }
+
+    &:disabled {
+        background: var(--color-surface-disabled);
+        color: theme.$text-disabled;
+        cursor: not-allowed;
+        transform: scale(1);
+        box-shadow: none;
+        
+        &:hover {
+            transform: scale(1);
+            box-shadow: none;
+        }
+    }
+
+    &:focus,
+    &:focus-visible {
+        outline: none !important; /* Override global button focus outline */
+        box-shadow: 0 0 0 3px theme.$overlay-primary-30;
+    }
+
+    &:hover:not(:disabled) svg {
+        transform: translateX(1px);
+    }
+}
+
+/* Default state for the icon (Dark Theme) */
+.sendButton svg {
+    stroke: white; /* Simple, direct color */
+}
+
+/* Override for Light Theme */
+:global([data-theme="light"]) .sendButton svg {
+    stroke: black; /* Simple, direct color for light theme */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form {
+        padding: theme.$spacing-3 theme.$spacing-4;
+    }
+
+    .inputContainer {
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+
+    .input {
+        padding: 8px 6px;
+        font-size: 0.9rem;
+    }
+
+    .sendButton {
+        min-width: 32px;
+        min-height: 32px;
+        margin-left: 6px;
+    }
+}
+
+/* Accessibility and reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .inputContainer,
+    .input,
+    .sendButton,
+    .sendButton svg {
+        transition: none;
+    }
+
+    .sendButton:hover:not(:disabled) {
+        transform: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .inputContainer {
+        border-width: 3px;
+        
+        &:focus-within {
+            border-color: theme.$text-primary;
+        }
+    }
+
+    .sendButton {
+        border: 2px solid white;
+        
+        &:focus {
+            outline: 3px solid theme.$text-primary;
+            outline-offset: 2px;
+        }
+    }
 }

@@ -10,9 +10,8 @@ import { Button, Input, PictureManager, SectionCard, Textarea } from 'shared/ui'
 import { useCreateBoardForm } from '../../hooks/management';
 
 import CanvasConfigurationSection from './CanvasConfigurationSection';
-import MemberInviteInput from './MemberInviteInput';
-
 import styles from './CreateBoardForm.module.scss';
+import MemberInviteInput from './MemberInviteInput';
 
 interface CreateBoardFormProps {
     onBoardCreated: (newBoard: Board) => void;

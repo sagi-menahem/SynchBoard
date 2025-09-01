@@ -3,8 +3,6 @@ import React, { useCallback, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
-import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
-import Button from 'shared/ui/components/forms/Button';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './ResizableSplitPanel.module.scss';
@@ -34,7 +32,8 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
   // Get the user's chosen color for CSS variable
   const getUserChosenColor = useCallback(() => {
-    const savedVariable = preferences.boardBackgroundSetting; // This is now a variable name like '--board-bg-midnight-blue'
+    const savedVariable = preferences.boardBackgroundSetting; 
+    // This is now a variable name like '--board-bg-midnight-blue'
     if (!savedVariable) {
       return 'var(--color-surface)'; // Default fallback remains the same
     }
