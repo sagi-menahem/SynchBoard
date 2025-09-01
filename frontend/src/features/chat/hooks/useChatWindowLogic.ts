@@ -27,12 +27,6 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const { sendMessage } = useChatMessages();
 
   const addOptimisticMessage = useCallback((message: ChatMessageResponse & { transactionId: string }) => {
-    logger.debug('Adding message and tracking for animation and pending state:', {
-      messageId: message.id,
-      instanceId: message.instanceId,
-      transactionId: message.transactionId,
-    });
-    
     // Track this as a new message for animation
     const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
     setNewMessageIds((prev) => new Set([...prev, messageKey]));
@@ -58,9 +52,8 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     }
   }, []);
 
-  const startPendingTimer = useCallback((transactionId: string) => {
+  const startPendingTimer = useCallback((_transactionId: string) => {
     // This is now just for compatibility with useChatMessages
-    logger.debug('Starting pending timer for:', transactionId);
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -103,24 +96,12 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   };
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
-    logger.debug('Processing messages:', {
-      serverMessagesCount: messages.length,
-      pendingMessageIds: Array.from(pendingMessageIds),
-    });
-    
     return messages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
       
       // Simple pending check: if instanceId is in pendingMessageIds, show as pending
       const isPending = msg.instanceId && pendingMessageIds.has(msg.instanceId);
       const status = isPending ? 'pending' : 'confirmed';
-      
-      logger.debug('Message status:', {
-        messageId: msg.id,
-        instanceId: msg.instanceId,
-        status,
-        isPending,
-      });
       
       return {
         ...enhancedMsg,
@@ -187,8 +168,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     return { backgroundColor: savedColor };
   };
 
-  const commitChatTransaction = useCallback((instanceId: string) => {
-    logger.debug('Chat transaction commit for:', instanceId);
+  const commitChatTransaction = useCallback((_instanceId: string) => {
     // The pending state will automatically clear after 750ms via the setTimeout in addOptimisticMessage
     // No complex timing logic needed anymore!
   }, []);
