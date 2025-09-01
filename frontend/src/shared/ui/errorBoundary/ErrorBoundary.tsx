@@ -1,9 +1,14 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import i18n from 'i18next';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
+import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 
+import Card from '../components/display/Card';
 import Button from '../components/forms/Button';
+
+import styles from './ErrorBoundary.module.scss';
 
 interface Props {
   children: ReactNode;
@@ -13,16 +18,17 @@ interface Props {
 interface State {
   hasError: boolean;
   error: Error | null;
+  isRetrying: boolean;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false, error: null, isRetrying: false };
   }
 
   static getDerivedStateFromError(error: Error): Partial<State> {
-    return { hasError: true, error };
+    return { hasError: true, error, isRetrying: false };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -32,11 +38,18 @@ export class ErrorBoundary extends Component<Props, State> {
       componentStack: errorInfo.componentStack,
       timestamp: new Date().toISOString(),
       url: window.location.href,
+      userAgent: navigator.userAgent,
     });
   }
 
-  private handleRetry = () => {
-    this.setState({ hasError: false, error: null });
+  private handleRetry = async () => {
+    this.setState({ isRetrying: true });
+    
+    // Add a small delay to show loading state
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    
+    this.setState({ hasError: false, error: null, isRetrying: false });
+    
     if (this.props.onRetry) {
       this.props.onRetry();
     } else {
@@ -44,73 +57,78 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   };
 
+  private handleGoHome = () => {
+    window.location.href = '/';
+  };
+
   render() {
     if (this.state.hasError) {
-      return (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          background: 'linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%)',
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          paddingTop: '20vh',
-          color: '#fff',
-          zIndex: 'var(--z-index-modal)',
-          padding: '2rem',
-        }}>
-          <div style={{
-            textAlign: 'center',
-            maxWidth: '500px',
-            width: '100%',
-          }}>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{
-                fontSize: '4rem',
-                display: 'inline-block',
-                filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
-              }}>
-                ⚠️
-              </div>
-            </div>
-            
-            <h1 style={{
-              fontSize: '1.875rem',
-              fontWeight: 700,
-              color: '#fff',
-              margin: '0 0 1rem 0',
-              lineHeight: '1.2',
-            }}>
-              {i18n.t('common:errorBoundary.title')}
-            </h1>
-            
-            <p style={{
-              fontSize: '1.125rem',
-              color: '#ccc',
-              lineHeight: '1.6',
-              margin: '0 0 2rem 0',
-            }}>
-              {i18n.t('common:errorBoundary.message')}
-            </p>
-            
-            <div style={{
-              display: 'flex',
-              gap: '1rem',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-            }}>
-              <Button onClick={this.handleRetry} variant="primary">
-                {i18n.t('common:errorBoundary.tryAgain')}
-              </Button>
-            </div>
-          </div>
-        </div>
-      );
+      // Use a functional component wrapper to access hooks
+      return <ErrorBoundaryUI 
+        onRetry={this.handleRetry} 
+        onGoHome={this.handleGoHome}
+        isRetrying={this.state.isRetrying}
+      />;
     }
 
     return this.props.children;
   }
 }
+
+// Functional component to use hooks
+const ErrorBoundaryUI: React.FC<{
+  onRetry: () => void;
+  onGoHome: () => void;
+  isRetrying: boolean;
+}> = ({ onRetry, onGoHome, isRetrying }) => {
+  const { t } = useTranslation('common');
+  const BackArrowIcon = getBackArrowIcon();
+
+  return (
+    <div className={styles.errorContainer} role="alert" aria-live="assertive">
+      <Card variant="elevated" className={styles.errorCard}>
+        <div className={styles.iconContainer}>
+          <AlertTriangle 
+            className={styles.errorIcon} 
+            aria-hidden="true"
+            size={64}
+          />
+        </div>
+        
+        <h1 className={styles.title}>
+          {t('errorBoundary.title')}
+        </h1>
+        
+        <p className={styles.message}>
+          {t('errorBoundary.message')}
+        </p>
+        
+        <div className={styles.buttonContainer}>
+          <Button 
+            onClick={onGoHome}
+            variant="secondary"
+            className={styles.secondaryButton}
+            disabled={isRetrying}
+          >
+            <BackArrowIcon size={16} />
+            {t('errorDisplay.goBack')}
+          </Button>
+          <Button 
+            onClick={onRetry}
+            variant="primary"
+            className={styles.retryButton}
+            disabled={isRetrying}
+            aria-describedby="retry-description"
+          >
+            <RotateCcw size={18} />
+            {t('errorBoundary.tryAgain')}
+          </Button>
+        </div>
+        
+        <div id="retry-description" className="sr-only">
+          {t('errorDisplay.helpText')}
+        </div>
+      </Card>
+    </div>
+  );
+};
