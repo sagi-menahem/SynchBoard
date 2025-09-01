@@ -12,24 +12,6 @@
     
 }
 
-/* English (LTR): Scrollbars on left side */
-[dir="ltr"] .modalContainer {
-    direction: rtl;
-}
-
-[dir="ltr"] .modalContainer > * {
-    direction: ltr;
-}
-
-/* Hebrew (RTL): Scrollbars on right side */
-[dir="rtl"] .modalContainer {
-    direction: ltr;
-}
-
-[dir="rtl"] .modalContainer > * {
-    direction: ltr;
-}
-
 .modalHeader {
     text-align: center;
     padding-bottom: theme.$spacing-4;
@@ -107,7 +89,7 @@
 .buttonGroup {
     @include theme.button-group;
     gap: theme.$spacing-3;
-    justify-content: flex-end;
+    justify-content: end; /* CSS logical property - RTL aware */
     padding-top: theme.$spacing-4;
     border-top: 1px solid theme.$border-primary;
 }
@@ -150,6 +132,7 @@
     .buttonGroup {
         flex-direction: column-reverse;
         gap: theme.$spacing-2;
+        justify-content: start; /* Maintain RTL awareness in mobile */
     }
 
     .buttonGroup button {
