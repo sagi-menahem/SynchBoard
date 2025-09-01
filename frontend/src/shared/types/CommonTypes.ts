@@ -2,7 +2,7 @@ import type { TOOL_LIST } from 'features/board/constants/BoardConstants';
 
 export type Tool = (typeof TOOL_LIST)[number];
 
-export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'navigation' | 'icon' | 'cta' | 'warning';
+export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'navigation' | 'icon' | 'cta' | 'warning' | 'link';
 
 export type EditingField = 'name';
 
