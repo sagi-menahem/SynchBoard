@@ -6,14 +6,14 @@
   margin-bottom: 8px;
   box-sizing: border-box;
   animation: messageSlideIn theme.$transition-slow ease-out;
-  
+
   &.grouped {
     margin-bottom: 4px;
-    
+
     .messageBubble {
       padding: theme.$spacing-2 theme.$spacing-3;
     }
-    
+
     &.otherMessage {
       padding-inline-start: 48px; // Align with avatar width + gap
     }
@@ -60,16 +60,16 @@
   background: theme.$primary;
   color: #ffffff;
   margin-inline-start: auto;
-  
-  // Dark theme - lighter gray like send button
+
+  // Dark theme - modern blue-purple gradient
   body[data-theme='dark'] & {
-    background: #6b7280;
+    background: #0a213a;
     color: #ffffff;
   }
-  
+
   // Light theme variant with better contrast
   body[data-theme='light'] & {
-    background: #0066cc;
+    background: #d0e2f5;
     color: #ffffff;
   }
 }
@@ -77,17 +77,18 @@
 .otherMessage .messageBubble {
   background: theme.$surface-elevated;
   color: theme.$text-primary;
-  
-  // Enhanced contrast for dark theme
+
+  // Dark theme - warm dark gray with subtle purple tint
   body[data-theme='dark'] & {
-    background: #2d3748;
-    color: #e2e8f0;
+    background: #374151;
+    color: #f9fafb;
+    border: 1px solid rgba(156, 163, 175, 0.2);
   }
-  
-  // Light theme variant - clean neutral gray
+
+  // Light theme variant - soft warm gray
   body[data-theme='light'] & {
-    background: #f1f5f9;
-    color: #334155;
+    background: #f8fafc;
+    color: #1e293b;
     border: 1px solid #e2e8f0;
   }
 }
@@ -156,7 +157,7 @@
 .myMessage .messageText {
   color: theme.$primary;
   text-align: end; // CSS logical property - automatically RTL aware
-  
+
   // Override for dark theme to use white text
   body[data-theme='dark'] & {
     color: #ffffff;
