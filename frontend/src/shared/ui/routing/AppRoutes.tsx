@@ -12,7 +12,7 @@ import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
 import RootRedirect from 'shared/ui/routing/RootRedirect';
 
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
-const BoardPage = lazy(() => import('pages/BoardPage'));
+const BoardPage = lazy(() => import('features/board/pages/BoardPage'));
 const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
 
 const LazyPageLoader = () => {

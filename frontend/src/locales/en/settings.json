@@ -34,7 +34,7 @@
     "pictureUpdateSuccess": "Profile picture updated!",
     "pictureDeleteSuccess": "Profile picture removed.",
     "pictureUploadError": "Failed to upload picture.",
-    "dangerZoneHeader": "Danger Zone",
+    "dangerZoneHeader": "Delete Account",
     "dangerZoneText": "This action is permanent and cannot be undone.",
     "deleteAccountButton": "Delete My Account",
     "deleteAccountConfirmTitle": "Delete Account?",
