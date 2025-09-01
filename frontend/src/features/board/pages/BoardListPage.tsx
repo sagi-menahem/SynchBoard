@@ -9,8 +9,8 @@ import { APP_ROUTES } from 'shared/constants';
 import {
   Card,
   ConfirmationDialog,
-  EnhancedContextMenu,
   ContextMenuItem,
+  EnhancedContextMenu,
   Modal,
   PageLoader,
   PageTransition,
@@ -94,7 +94,7 @@ const BoardListPage: React.FC = () => {
     console.log('📊 BOARD LIST LOADING STATE:', {
       isLoading,
       timestamp: new Date().toISOString(),
-      boardCount: boards.length
+      boardCount: boards.length,
     });
   }, [isLoading, boards.length]);
 
