@@ -84,9 +84,7 @@ public class BoardService {
         log.info(BOARD_CREATED, newBoard.getBoardGroupId(), request.getName(), ownerEmail);
 
         // Handle member invitations if provided
-        if (request.getInviteEmails() != null && !request.getInviteEmails().isEmpty()) {
-            inviteMembers(newBoard.getBoardGroupId(), request.getInviteEmails(), ownerEmail);
-        }
+        handleBoardCreationInvitations(newBoard.getBoardGroupId(), request.getInviteEmails(), ownerEmail);
 
         notificationService.broadcastUserUpdate(ownerEmail);
         return mapToBoardResponse(newMembership);
@@ -271,6 +269,12 @@ public class BoardService {
                 .canvasHeight(membership.getGroupBoard().getCanvasHeight()).build();
     }
 
+
+    private void handleBoardCreationInvitations(Long boardId, List<String> emails, String inviter) {
+        if (emails != null && !emails.isEmpty()) {
+            inviteMembers(boardId, emails, inviter);
+        }
+    }
 
     private void inviteMembers(Long boardId, List<String> inviteEmails, String invitingUserEmail) {
         if (inviteEmails == null || inviteEmails.isEmpty()) {
