@@ -5,7 +5,6 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    direction: rtl;
     display: flex;
     
     /* Enhanced scrollbar design for light mode */
@@ -46,7 +45,21 @@
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
 }
 
-.scrollContainer>* {
+/* English (LTR): Scrollbars on left side */
+[dir="ltr"] .scrollContainer {
+    direction: rtl;
+}
+
+[dir="ltr"] .scrollContainer > * {
+    direction: ltr;
+}
+
+/* Hebrew (RTL): Scrollbars on right side */
+[dir="rtl"] .scrollContainer {
+    direction: ltr;
+}
+
+[dir="rtl"] .scrollContainer > * {
     direction: ltr;
 }
 

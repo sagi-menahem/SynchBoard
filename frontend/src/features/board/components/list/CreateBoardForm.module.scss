@@ -10,12 +10,23 @@
     padding: theme.$spacing-4;
     box-sizing: border-box;
     
-    // Move scrollbar to left side (RTL direction for scrollbar)
+}
+
+/* English (LTR): Scrollbars on left side */
+[dir="ltr"] .modalContainer {
     direction: rtl;
 }
 
-// Reset text direction back to LTR for content
-.modalContainer > * {
+[dir="ltr"] .modalContainer > * {
+    direction: ltr;
+}
+
+/* Hebrew (RTL): Scrollbars on right side */
+[dir="rtl"] .modalContainer {
+    direction: ltr;
+}
+
+[dir="rtl"] .modalContainer > * {
     direction: ltr;
 }
 
