@@ -68,7 +68,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       )}
       
       <div className={styles.messageBubble}>
-        {!isGrouped && (
+        {!isGrouped && !isOwnMessage && (
           <div className={styles.messageHeader}>
             <strong className={styles.senderName}>
               {senderEmail}
