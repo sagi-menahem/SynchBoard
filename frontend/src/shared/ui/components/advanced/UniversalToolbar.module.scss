@@ -18,6 +18,15 @@
   user-select: none;
   overflow: visible;
   @include theme.smooth-transition;
+  
+  // Responsive: Reduce padding on smaller screens to maximize content space
+  @media (max-width: 1200px) {
+    padding: 0 theme.$spacing-4;
+  }
+  
+  @media (max-width: 1075px) {
+    padding: 0 theme.$spacing-3;
+  }
 }
 
 .toolbarSection {
@@ -26,10 +35,15 @@
 }
 
 .leftSection {
-  flex: 1 1 0;
+  flex: 1 1 auto;
   justify-content: start; // CSS logical property - automatically RTL aware
-  min-width: 0;
-  overflow: visible;
+  min-width: min-content; // Prevent shrinking below content size
+  overflow: hidden; // Contain content within available space
+  
+  // Responsive: Balance space with right section
+  @media (max-width: 1200px) {
+    flex: 1 1 auto;
+  }
 }
 
 .centerSection {
@@ -39,9 +53,28 @@
 }
 
 .rightSection {
-  flex: 1 1 0;
+  flex: 0 0 auto; // Fixed size - never shrink navigation buttons
   justify-content: end; // CSS logical property - automatically RTL aware
-  min-width: min-content;
+  min-width: 150px; // Reserve minimum space for navigation buttons
+  
+  // Ensure navigation buttons are always visible and accessible
+  @media (max-width: 1200px) {
+    flex: 0 0 auto; // Maintain fixed size
+    min-width: 140px; // Slightly reduce reserved space
+  }
+  
+  @media (max-width: 1000px) {
+    min-width: 120px; // More compact but still protected
+  }
+  
+  @media (max-width: 800px) {
+    min-width: 100px; // Minimum space for icon buttons
+  }
+  
+  @media (max-width: 500px) {
+    min-width: 80px; // Ultra-compact but still functional
+    gap: theme.$spacing-1; // Reduce gap between navigation buttons
+  }
 }
 
 .toolbarTitle {
