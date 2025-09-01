@@ -128,7 +128,7 @@
 
 .senderName {
   color: theme.$text-secondary;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   @include theme.text-ellipsis;
   max-width: 100%;
@@ -158,8 +158,8 @@
   word-break: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  font-size: 0.95rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 500;
   margin-bottom: theme.$spacing-0-5;
   max-width: 100%;
   white-space: pre-wrap;

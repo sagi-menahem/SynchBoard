@@ -28,7 +28,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     setSearchTerm,
     searchVisible,
     previousMessageCount,
-    userColorMap,
     filteredMessages,
     handleSendMessage,
     handleSearchClose,
@@ -87,7 +86,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
               <ChatMessage 
                 message={message} 
                 isOwnMessage={message.senderEmail === userEmail}
-                userColorMap={userColorMap}
                 shouldAnimate={isNewMessage}
                 isGrouped={isGroupedWithPrevious}
               />
