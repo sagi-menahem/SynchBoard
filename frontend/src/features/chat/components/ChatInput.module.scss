@@ -33,7 +33,7 @@
     &.sending {
         opacity: 0.8;
         pointer-events: none;
-        
+
         .input {
             cursor: wait;
         }
@@ -60,7 +60,7 @@
     &:disabled {
         cursor: not-allowed;
         color: theme.$text-disabled;
-        
+
         &::placeholder {
             color: theme.$text-disabled;
         }
@@ -78,66 +78,69 @@
     }
 }
 
+/* === Definitive Send Button Styles === */
 .sendButton {
-    position: relative;
+    /* Basic setup */
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
     padding: 8px;
     border: none;
-    background: theme.$primary;
-    border-radius: 50%;
-    color: var(--color-text-on-primary);
-    cursor: pointer;
-    min-width: 36px;
-    min-height: 36px;
-    @include theme.smooth-transition;
-    margin-left: 8px;
-    flex-shrink: 0;
+    transition: all 0.2s ease-in-out;
 
-    &:hover:not(:disabled) {
-        background: theme.$primary-hover;
-        transform: scale(1.05);
-        box-shadow: theme.$shadow-button-hover;
+    /* --- DARK THEME STYLES (DEFAULT) --- */
+
+    /* Disabled State - Dark Theme */
+    background-color: #3a3a3a;
+    /* A clear dark gray */
+    cursor: not-allowed;
+
+    svg {
+        stroke: #707070;
+        /* A visible muted gray for the icon */
     }
 
-    &:active:not(:disabled) {
-        transform: scale(0.95);
-        background: theme.$primary-hover;
-    }
+    /* Enabled State - Dark Theme */
+    &:not(:disabled) {
+        background-color: #adb5bd;
+        /* A nice, vibrant blue */
+        cursor: pointer;
 
-    &:disabled {
-        background: var(--color-surface-disabled);
-        color: theme.$text-disabled;
-        cursor: not-allowed;
-        transform: scale(1);
-        box-shadow: none;
-        
+        svg {
+            stroke: #FFFFFF;
+            /* A pure white icon */
+        }
+
         &:hover {
-            transform: scale(1);
-            box-shadow: none;
+            transform: scale(1.1);
         }
     }
-
-    &:focus,
-    &:focus-visible {
-        outline: none !important; /* Override global button focus outline */
-        box-shadow: 0 0 0 3px theme.$overlay-primary-30;
-    }
-
-    &:hover:not(:disabled) svg {
-        transform: translateX(1px);
-    }
 }
 
-/* Default state for the icon (Dark Theme) */
-.sendButton svg {
-    stroke: white; /* Simple, direct color */
-}
+/* --- LIGHT THEME OVERRIDES --- */
+:global([data-theme="light"]) {
+    .sendButton {
+        /* Disabled State - Light Theme */
+        background-color: #e9ecef;
+        /* A clear light gray */
 
-/* Override for Light Theme */
-:global([data-theme="light"]) .sendButton svg {
-    stroke: black; /* Simple, direct color for light theme */
+        svg {
+            stroke: #adb5bd;
+            /* A visible muted dark gray for the icon */
+        }
+
+        /* Enabled State - Light Theme */
+        &:not(:disabled) {
+            background-color: #adb5bd;
+            /* The same vibrant blue */
+
+            svg {
+                stroke: #FFFFFF;
+                /* A pure white icon */
+            }
+        }
+    }
 }
 
 /* Responsive adjustments */
@@ -165,6 +168,7 @@
 
 /* Accessibility and reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
     .inputContainer,
     .input,
     .sendButton,
@@ -181,7 +185,7 @@
 @media (prefers-contrast: high) {
     .inputContainer {
         border-width: 3px;
-        
+
         &:focus-within {
             border-color: theme.$text-primary;
         }
@@ -189,7 +193,7 @@
 
     .sendButton {
         border: 2px solid white;
-        
+
         &:focus {
             outline: 3px solid theme.$text-primary;
             outline-offset: 2px;
