@@ -13,6 +13,10 @@
   color: color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 20%, var(--color-text) 80%);
 
   /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
+
+  /* 5. Background blur effect - controlled by CSS variable */
+  backdrop-filter: blur(var(--background-blur, theme.$background-blur-md));
+  -webkit-backdrop-filter: blur(var(--background-blur, theme.$background-blur-none));
 }
 
 .settingRow {
