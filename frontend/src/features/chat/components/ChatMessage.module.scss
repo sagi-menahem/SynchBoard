@@ -218,10 +218,6 @@
 
 
 @media (prefers-color-scheme: dark) {
-  .otherMessage .messageBubble {
-    background: theme.$surface-elevated !important;
-  }
-
   .avatar {
     border-color: theme.$border;
   }
