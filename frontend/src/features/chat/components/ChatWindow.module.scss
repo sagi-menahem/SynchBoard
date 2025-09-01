@@ -109,15 +109,11 @@
   position: relative;
   padding: 0;
   user-select: none;
-  
-  // Dark theme - more prominent
-  body[data-theme='dark'] & {
-    color: #9ca3af;
-  }
-  
-  // Light theme - more prominent
+
+  // Both themes - black color
+  body[data-theme='dark'] &,
   body[data-theme='light'] & {
-    color: #6b7280;
+    color: #000000;
   }
 }
 
@@ -128,9 +124,10 @@
   top: 50%;
   transform: translateY(-50%);
   width: calc(50% - 3rem);
-  height: 1px;
-  background: currentColor;
-  opacity: 0.4;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, currentColor 20%, currentColor 80%, transparent 100%);
+  opacity: 0.3;
+  border-radius: 1px;
 }
 
 .dateSeparator::before {
