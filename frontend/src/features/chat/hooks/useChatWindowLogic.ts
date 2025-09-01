@@ -27,7 +27,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const { sendMessage } = useChatMessages();
 
   const addOptimisticMessage = useCallback((message: ChatMessageResponse & { transactionId: string }) => {
-    console.log('🔄 [OPTIMISTIC] Adding message and tracking for animation and pending state:', {
+    logger.debug('Adding message and tracking for animation and pending state:', {
       messageId: message.id,
       instanceId: message.instanceId,
       transactionId: message.transactionId,
@@ -60,7 +60,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
 
   const startPendingTimer = useCallback((transactionId: string) => {
     // This is now just for compatibility with useChatMessages
-    console.log('⏰ [SIMPLE] Starting pending timer for:', transactionId);
+    logger.debug('Starting pending timer for:', transactionId);
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -103,7 +103,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   };
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
-    console.log('🗺 [SIMPLE] Processing messages:', {
+    logger.debug('Processing messages:', {
       serverMessagesCount: messages.length,
       pendingMessageIds: Array.from(pendingMessageIds),
     });
@@ -115,7 +115,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
       const isPending = msg.instanceId && pendingMessageIds.has(msg.instanceId);
       const status = isPending ? 'pending' : 'confirmed';
       
-      console.log('📝 [SIMPLE] Message status:', {
+      logger.debug('Message status:', {
         messageId: msg.id,
         instanceId: msg.instanceId,
         status,
@@ -188,7 +188,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   };
 
   const commitChatTransaction = useCallback((instanceId: string) => {
-    console.log('🔄 [SIMPLE] Chat transaction commit for:', instanceId);
+    logger.debug('Chat transaction commit for:', instanceId);
     // The pending state will automatically clear after 750ms via the setTimeout in addOptimisticMessage
     // No complex timing logic needed anymore!
   }, []);

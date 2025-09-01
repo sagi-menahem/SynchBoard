@@ -64,18 +64,18 @@ export const useBoardWorkspace = (boardId: number) => {
   }, [setBaseObjects]);
 
   const handleCommitChatTransaction = useCallback((instanceId: string) => {
-    console.log('🔄 [BOARD] Received chat commit request:', instanceId);
+    logger.debug('Received chat commit request:', instanceId);
     if (chatCommitHandlerRef.current) {
-      console.log('🔄 [BOARD] Delegating to chat handler');
+      logger.debug('Delegating to chat handler');
       chatCommitHandlerRef.current(instanceId);
     } else {
-      console.warn('⚠️ [BOARD] No chat commit handler registered');
+      logger.warn('No chat commit handler registered');
     }
   }, []);
 
   const registerChatCommitHandler = useCallback((handler: ((instanceId: string) => void) | null) => {
     chatCommitHandlerRef.current = handler;
-    console.log('📝 [BOARD] Chat commit handler registered');
+    logger.debug('Chat commit handler registered');
   }, []);
 
   useWebSocketHandler({

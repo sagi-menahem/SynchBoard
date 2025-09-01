@@ -81,14 +81,14 @@ export const useWebSocketHandler = ({
   }, [sessionInstanceId, setObjects, commitDrawingTransaction]);
 
   const handleChatMessage = useCallback((chatMessage: ChatMessageResponse) => {
-    console.log('📨 [SERVER] Received server confirmation:', {
+    logger.debug('Received server confirmation:', {
       messageId: chatMessage.id,
       instanceId: chatMessage.instanceId,
       content: `${chatMessage.content.substring(0, 10)  }...`,
     });
     
     setMessages((prevMessages) => {
-      console.log('💾 [SERVER] Adding to base messages:', {
+      logger.debug('Adding to base messages:', {
         previousCount: prevMessages.length,
         newMessageId: chatMessage.id,
         instanceId: chatMessage.instanceId,
@@ -97,7 +97,7 @@ export const useWebSocketHandler = ({
     });
 
     if (chatMessage.instanceId) {
-      console.log('🔄 [SERVER] Committing transaction:', chatMessage.instanceId);
+      logger.debug('Committing transaction:', chatMessage.instanceId);
       commitChatTransaction(chatMessage.instanceId);
     }
   }, [setMessages, commitChatTransaction]);

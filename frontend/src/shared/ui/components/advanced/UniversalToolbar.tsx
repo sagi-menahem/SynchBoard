@@ -11,6 +11,7 @@ import type {
   ViewToggleToolbarItem,
 } from 'features/board/types/ToolbarTypes';
 import { MemberActivityIndicator } from 'features/board/ui';
+import logger from 'shared/utils/logger';
 
 import Button from '../forms/Button';
 import { SearchBar } from '../navigation/SearchBar';
@@ -177,41 +178,43 @@ export const UniversalToolbar: React.FC<UniversalToolbarProps> = ({ config, clas
   // Track positioning changes
   React.useEffect(() => {
     const toolbar = toolbarRef.current;
-    if (!toolbar) return;
+    if (!toolbar) {
+      return;
+    }
 
     const rect = toolbar.getBoundingClientRect();
     const hasVerticalScrollbar = document.documentElement.scrollHeight > document.documentElement.clientHeight;
     const hasHorizontalScrollbar = document.documentElement.scrollWidth > document.documentElement.clientWidth;
     
-    console.log('🔧 TOOLBAR POSITIONED:', {
+    logger.debug('Toolbar positioned:', {
       pageType: config.pageType,
       timestamp: new Date().toISOString(),
       rect: {
         left: rect.left,
         right: rect.right, 
         width: rect.width,
-        top: rect.top
+        top: rect.top,
       },
       viewport: `${window.innerWidth}x${window.innerHeight}`,
       scrollbars: { vertical: hasVerticalScrollbar, horizontal: hasHorizontalScrollbar },
       documentSize: `${document.documentElement.scrollWidth}x${document.documentElement.scrollHeight}`,
       vwWidth: window.innerWidth, // What 100vw would be
       actualWidth: rect.width,
-      leftContent: leftSection.map(item => ({ type: item.type, content: item.type === 'title' ? item.content : 'non-title' })),
-      rightContent: rightSection.map(item => ({ type: item.type, label: item.type === 'button' ? item.label : 'non-button' }))
+      leftContent: leftSection.map((item) => ({ type: item.type, content: item.type === 'title' ? item.content : 'non-title' })),
+      rightContent: rightSection.map((item) => ({ type: item.type, label: item.type === 'button' ? item.label : 'non-button' })),
     });
 
     // Track resize events that could cause shifts
     const handleResize = () => {
       const newRect = toolbar.getBoundingClientRect();
-      console.log('📏 TOOLBAR RESIZED:', {
+      logger.debug('Toolbar resized:', {
         pageType: config.pageType,
         oldWidth: rect.width,
         newWidth: newRect.width,
         oldLeft: rect.left,
         newLeft: newRect.left,
         viewport: `${window.innerWidth}x${window.innerHeight}`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     };
 

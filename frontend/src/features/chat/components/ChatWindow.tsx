@@ -7,6 +7,7 @@ import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useTranslation } from 'react-i18next';
 import { Button, Card } from 'shared/ui';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
+import logger from 'shared/utils/logger';
 
 
 import ChatInput from './ChatInput';
@@ -39,11 +40,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
   // Register the chat commit handler with the board context
   useEffect(() => {
-    console.log('📝 [CHAT] Registering chat commit handler');
+    logger.debug('Registering chat commit handler');
     registerChatCommitHandler(commitChatTransaction);
     
     return () => {
-      console.log('📝 [CHAT] Unregistering chat commit handler');
+      logger.debug('Unregistering chat commit handler');
       registerChatCommitHandler(null);
     };
   }, [registerChatCommitHandler, commitChatTransaction]);
