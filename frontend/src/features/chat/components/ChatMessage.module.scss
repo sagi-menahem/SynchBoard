@@ -216,11 +216,6 @@
 }
 
 
-@media (prefers-color-scheme: dark) {
-  .avatar {
-    border-color: theme.$border;
-  }
-}
 
 @media (prefers-contrast: high) {
   .messageBubble {
