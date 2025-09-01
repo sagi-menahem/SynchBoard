@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { motion } from 'framer-motion';
+import logger from 'shared/utils/logger';
 
 interface PageTransitionProps {
   children: React.ReactNode;
@@ -9,9 +10,9 @@ interface PageTransitionProps {
 export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   // Diagnostic logging for page transitions
   React.useEffect(() => {
-    console.log('📄 PAGE TRANSITION MOUNTED:', {
+    logger.debug('Page transition mounted:', {
       timestamp: new Date().toISOString(),
-      childrenType: Array.isArray(children) ? 'array' : typeof children
+      childrenType: Array.isArray(children) ? 'array' : typeof children,
     });
   }, [children]);
 
@@ -25,15 +26,15 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
         ease: 'easeOut',
       }}
       onAnimationStart={() => {
-        console.log('🎬 ANIMATION START:', { 
+        logger.debug('Animation start:', { 
           timestamp: new Date().toISOString(),
-          viewport: `${window.innerWidth}x${window.innerHeight}`
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
         });
       }}
       onAnimationComplete={() => {
-        console.log('✅ ANIMATION COMPLETE:', { 
+        logger.debug('Animation complete:', { 
           timestamp: new Date().toISOString(),
-          viewport: `${window.innerWidth}x${window.innerHeight}`
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
         });
       }}
     >

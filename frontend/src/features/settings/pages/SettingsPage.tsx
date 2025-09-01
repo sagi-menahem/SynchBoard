@@ -7,7 +7,6 @@ import { LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
-import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 import {
   ConfirmationDialog,
   PageLoader,
@@ -17,6 +16,7 @@ import {
   UniversalToolbar,
 } from 'shared/ui';
 import logger from 'shared/utils/logger';
+import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
   BoardAppearanceSection,

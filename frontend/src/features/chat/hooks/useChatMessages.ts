@@ -88,7 +88,7 @@ export const useChatMessages = () => {
     addOptimisticMessage: (message: ChatMessageResponse & { transactionId: string }) => void,
     startPendingTimer?: (transactionId: string) => void,
   ): Promise<string> => {
-    console.log('📝 [SEND] Starting message send process');
+    logger.debug('Starting message send process');
     
     const validation = validateMessage(content);
     if (!validation.isValid) {
@@ -98,17 +98,17 @@ export const useChatMessages = () => {
     const { payload, instanceId } = createMessagePayload(content, boardId, userEmail, userInfo);
     const optimisticMessage = createOptimisticMessage(content, instanceId, userEmail, userInfo);
     
-    console.log('✨ [SEND] Created optimistic message:', {
+    logger.debug('Created optimistic message:', {
       messageId: optimisticMessage.id,
       transactionId: optimisticMessage.transactionId,
       instanceId: optimisticMessage.instanceId,
       hasTransactionId: !!optimisticMessage.transactionId,
     });
     
-    console.log('⏰ [SEND] Starting pending timer for:', instanceId);
+    logger.debug('Starting pending timer for:', instanceId);
     startPendingTimer?.(instanceId);
     
-    console.log('➕ [SEND] Adding optimistic message to UI');
+    logger.debug('Adding optimistic message to UI');
     // Force immediate render to ensure pending state is visible
     flushSync(() => {
       addOptimisticMessage(optimisticMessage);
@@ -116,7 +116,7 @@ export const useChatMessages = () => {
 
     try {
       WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
-      console.log('📤 [SEND] Message sent via WebSocket');
+      logger.debug('Message sent via WebSocket');
       return instanceId;
     } catch (error) {
       logger.error('Failed to send chat message:', error);

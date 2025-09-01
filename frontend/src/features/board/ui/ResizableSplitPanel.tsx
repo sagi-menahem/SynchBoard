@@ -103,7 +103,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       className={clsx(styles.container, utilStyles.unifiedDotBackground)}
       style={{ 
         '--user-chosen-color': getUserChosenColor(),
-        '--background-blur': backgroundBlur 
+        '--background-blur': backgroundBlur,
       } as React.CSSProperties}
     >
       <div 

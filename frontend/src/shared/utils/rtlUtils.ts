@@ -1,5 +1,4 @@
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, type LucideIcon } from 'lucide-react';
 
 /**
  * Returns the appropriate navigation arrow icon based on the current document direction.
