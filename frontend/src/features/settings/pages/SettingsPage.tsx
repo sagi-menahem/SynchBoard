@@ -162,7 +162,9 @@ const SettingsPage: React.FC = () => {
 
         <ProfileDetailsSection
           user={user}
-          onUpdateProfile={handleUpdateProfile}
+          onUpdateProfile={async (data) => {
+            await handleUpdateProfile(data);
+          }}
         />
 
         <DangerZoneSection

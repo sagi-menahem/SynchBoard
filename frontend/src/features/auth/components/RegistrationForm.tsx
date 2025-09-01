@@ -14,18 +14,12 @@ interface RegistrationFormProps {
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
   const { t } = useTranslation(['auth', 'common']);
-  const { state, submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
+  const { submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
   const [gender, setGender] = useState<string>('');
 
 
   return (
     <form action={submitAction} className={styles.form}>
-      {state.error !== undefined && state.error !== '' && (
-        <div className={styles.error} role="alert">
-          {state.error}
-        </div>
-      )}
-
       <div className={styles.field}>
         <label htmlFor="register-email">
           <Mail size={14} />

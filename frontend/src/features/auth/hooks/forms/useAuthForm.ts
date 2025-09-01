@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useFormWithToast, type UseFormWithToastOptions } from 'shared/hooks/useFormWithToast';
 import { validateEmail } from 'shared/utils/validationUtils';
@@ -6,9 +7,11 @@ import { validateEmail } from 'shared/utils/validationUtils';
 export const authValidation = {
   validateEmail: (email: string | null, t: (key: string) => string) => {
     if (email === null || email === '') {
+      toast.error(t('auth:validation.emailRequired'));
       return { error: t('auth:validation.emailRequired') };
     }
     if (!validateEmail(email)) {
+      toast.error(t('auth:validation.emailInvalid'));
       return { error: t('auth:validation.emailInvalid') };
     }
     return null;
@@ -16,6 +19,7 @@ export const authValidation = {
 
   validatePassword: (password: string | null, t: (key: string) => string) => {
     if (password === null || password === '') {
+      toast.error(t('auth:validation.passwordRequired'));
       return { error: t('auth:validation.passwordRequired') };
     }
     return null;
@@ -23,16 +27,20 @@ export const authValidation = {
 
   validateRequiredField: (value: string | null, fieldName: string, t: (key: string) => string) => {
     if (value === null || value === '') {
-      return { error: t('auth:validation.fieldRequired').replace('{{field}}', fieldName) };
+      const errorMessage = t('auth:validation.fieldRequired').replace('{{field}}', fieldName);
+      toast.error(errorMessage);
+      return { error: errorMessage };
     }
     return null;
   },
 
   validateVerificationCode: (code: string | null, t: (key: string) => string) => {
     if (code === null || code === '' || code.length !== 6) {
+      toast.error(t('auth:verifyEmail.validation.codeRequired'));
       return { error: t('auth:verifyEmail.validation.codeRequired') };
     }
     if (!/^\d{6}$/.test(code)) {
+      toast.error(t('auth:verifyEmail.validation.codeFormat'));
       return { error: t('auth:verifyEmail.validation.codeFormat') };
     }
     return null;

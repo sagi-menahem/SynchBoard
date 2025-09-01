@@ -46,9 +46,11 @@ export const useFormWithToast = <TRequest extends object, TResponse = unknown>(
     const validation = validateFormData(formData);
     
     if ('error' in validation) {
+      // Show validation errors as toast only, don't return in state.error
+      // This prevents double error display (toast + inline error div)
       return {
         success: false,
-        error: validation.error,
+        // Note: No error property - validation errors are handled by toast messages in the validation functions
       };
     }
 
