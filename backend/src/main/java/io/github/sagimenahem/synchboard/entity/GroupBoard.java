@@ -58,15 +58,6 @@ public class GroupBoard {
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
         this.lastModifiedDate = LocalDateTime.now();
-        if (this.canvasBackgroundColor == null) {
-            this.canvasBackgroundColor = "#222";
-        }
-        if (this.canvasWidth == null) {
-            this.canvasWidth = 1200;
-        }
-        if (this.canvasHeight == null) {
-            this.canvasHeight = 800;
-        }
     }
 
     @PreUpdate

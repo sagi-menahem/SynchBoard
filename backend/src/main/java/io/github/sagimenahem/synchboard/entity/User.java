@@ -99,24 +99,6 @@ public class User implements UserDetails {
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
-        if (this.canvasChatSplitRatio == null) {
-            this.canvasChatSplitRatio = 70;
-        }
-        if (this.defaultTool == null) {
-            this.defaultTool = "brush";
-        }
-        if (this.defaultStrokeColor == null) {
-            this.defaultStrokeColor = "#FFFFFF";
-        }
-        if (this.defaultStrokeWidth == null) {
-            this.defaultStrokeWidth = 3;
-        }
-        if (this.preferredLanguage == null) {
-            this.preferredLanguage = "en";
-        }
-        if (this.themePreference == null) {
-            this.themePreference = "light";
-        }
     }
 
     /**
