@@ -21,6 +21,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const [searchTerm, setSearchTerm] = useState('');
   const [searchVisible, setSearchVisible] = useState(false);
   const [previousMessageCount, setPreviousMessageCount] = useState(0);
+  const [newMessageIds, setNewMessageIds] = useState<Set<string>>(new Set());
   
   // 🎯 SOLUTION: Separate state management for optimistic messages
   const [forcePendingMessages, setForcePendingMessages] = useState<Set<string>>(new Set());
@@ -40,6 +41,11 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
       transactionId: message.transactionId,
       isOptimistic: message.id === -1,
     });
+    
+    // Track this as a new message for animation
+    const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
+    setNewMessageIds((prev) => new Set([...prev, messageKey]));
+    
     setOptimisticMessages((prev) => [...prev, message]);
   }, []);
 
@@ -106,14 +112,6 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   }, []);
 
   useEffect(() => {
-    const timeoutId = setTimeout(scrollToBottom, 100);
-    if (messages.length !== previousMessageCount) {
-      setPreviousMessageCount(messages.length);
-    }
-    return () => clearTimeout(timeoutId);
-  }, [messages, scrollToBottom, previousMessageCount]);
-
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey ?? e.metaKey) && e.key === 'f') {
         e.preventDefault();
@@ -146,8 +144,25 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
       forcePendingCount: forcePendingMessages.size,
     });
     
-    // Start with server messages (already confirmed)
-    const combined: ChatMessageResponse[] = [...messages];
+    // Build a map of forced pending messages for quick lookup
+    const forcedPendingMap = new Map<string, boolean>();
+    optimisticMessages.forEach((optimistic) => {
+      if (optimistic.transactionId && forcePendingMessages.has(optimistic.transactionId) && optimistic.instanceId) {
+        forcedPendingMap.set(optimistic.instanceId, true);
+      }
+    });
+    
+    // Start with server messages, but exclude those that are still forced pending
+    const combined: ChatMessageResponse[] = messages.filter((serverMsg) => {
+      const isStillForcedPending = forcedPendingMap.has(serverMsg.instanceId ?? '');
+      if (isStillForcedPending) {
+        console.log('🚫 [MESSAGES] Excluding server message (still forced pending):', {
+          messageId: serverMsg.id,
+          instanceId: serverMsg.instanceId,
+        });
+      }
+      return !isStillForcedPending;
+    });
     
     // Add optimistic messages based on server confirmation and pending state
     optimisticMessages.forEach((optimistic) => {
@@ -231,6 +246,14 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     });
   }, [messages, optimisticMessages, forcePendingMessages]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(scrollToBottom, 100);
+    if (allMessages.length !== previousMessageCount) {
+      setPreviousMessageCount(allMessages.length);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [allMessages, scrollToBottom, previousMessageCount]);
+
   const filteredMessages = useMemo(() => {
     if (!searchTerm.trim()) {
       return allMessages;
@@ -312,6 +335,15 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
       return filtered;
     });
     
+    // Remove from new message tracking after a delay to allow animation to complete
+    setTimeout(() => {
+      setNewMessageIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(instanceId);
+        return newSet;
+      });
+    }, 1000); // Remove after 1 second (longer than animation duration)
+    
     // Cleanup references
     pendingTimeouts.current.delete(instanceId);
     pendingStartTimes.current.delete(instanceId);
@@ -375,6 +407,11 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     setSearchTerm('');
   };
 
+  const isMessageNew = useCallback((message: EnhancedChatMessage): boolean => {
+    const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
+    return newMessageIds.has(messageKey);
+  }, [newMessageIds]);
+
   return {
     // Refs
     messagesEndRef,
@@ -396,5 +433,6 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     shouldShowDateSeparator,
     getBackgroundStyle,
     commitChatTransaction,
+    isMessageNew,
   };
 };
