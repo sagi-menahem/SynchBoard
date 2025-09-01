@@ -63,9 +63,10 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const minLeftRatio = (minLeftWidth / containerWidth) * 100;
       const minRightRatio = (minRightWidth / containerWidth) * 100;
 
+      // Enforce 30% minimum for canvas (left panel), 70% maximum for chat (right panel)
       const clampedRatio = Math.max(
-        minLeftRatio,
-        Math.min(100 - minRightRatio, newSplitRatio),
+        Math.max(minLeftRatio, 30), // Canvas must be at least 30%
+        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio), // Canvas max 70%
       );
 
       setSplitRatio(clampedRatio);

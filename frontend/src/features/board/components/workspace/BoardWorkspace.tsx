@@ -84,6 +84,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         leftChild={canvasComponent}
         rightChild={chatComponent}
         initialSplitRatio={effectiveSplitRatio}
+        minLeftWidth={300}
         minRightWidth={300}
         onSplitChange={handleSplitChange}
       />

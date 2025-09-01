@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CanvasPreferencesDTO {
 
-    @Min(value = 15, message = "Canvas chat split ratio must be at least 15%")
-    @Max(value = 85, message = "Canvas chat split ratio must not exceed 85%")
+    @Min(value = 30, message = "Canvas chat split ratio must be at least 30%")
+    @Max(value = 70, message = "Canvas chat split ratio must not exceed 70%")
     private Integer canvasChatSplitRatio;
 }
