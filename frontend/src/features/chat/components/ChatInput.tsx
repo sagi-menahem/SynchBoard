@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
+import { Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from 'shared/ui';
-
 
 import styles from './ChatInput.module.scss';
 
@@ -50,34 +49,48 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
     setMessage(e.target.value);
   }, []);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const form = e.currentTarget.form;
+      if (form) {
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+        form.dispatchEvent(submitEvent);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  const hasMessage = message.trim().length > 0;
+  const isDisabled = shouldBlockFunctionality || isSending;
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <label htmlFor="chat-message-input" className="sr-only">
-        {t('chat:window.placeholder')}
-      </label>
-      <div className={styles.inputContainer}>
-        <Input
+      <div className={`${styles.inputContainer} ${isSending ? styles.sending : ''}`}>
+        <input
           id="chat-message-input"
           ref={inputRef}
           type="text"
           value={message}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder ?? t('chat:window.placeholder')}
-          disabled={isSending}
-          className={isSending ? styles.inputDisabled : ''}
+          disabled={isDisabled}
+          className={styles.input}
+          aria-label={t('chat:window.placeholder')}
         />
+        <button 
+          type="submit" 
+          disabled={!hasMessage || isDisabled}
+          className={styles.sendButton}
+          aria-label={isSending ? t('chat:sending') : t('common:button.send')}
+        >
+          <Send size={18} />
+        </button>
       </div>
-      <Button 
-        type="submit" 
-        disabled={!message.trim() || shouldBlockFunctionality || isSending}
-        className={isSending ? styles.buttonSending : ''}
-      >
-        {isSending ? t('chat:sending') : t('common:button.send')}
-      </Button>
     </form>
   );
 });

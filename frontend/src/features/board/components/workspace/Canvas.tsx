@@ -39,7 +39,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     handleCanvasMouseMove,
     handleTextSubmit,
     handleTextCancel,
-    getBackgroundStyle,
   } = useCanvasInteractions({
     tool: props.tool,
     strokeColor: props.strokeColor,
