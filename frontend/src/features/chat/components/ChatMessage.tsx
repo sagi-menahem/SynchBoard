@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
 import { RelativeTimestamp } from 'shared/ui';
 import { formatDetailedTimestamp } from 'shared/utils/DateUtils';
-import logger from 'shared/utils/logger';
 
 
 import styles from './ChatMessage.module.scss';
@@ -37,19 +36,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   const messageStatus = message.transactionStatus ?? 'confirmed';
   const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
-  
-  logger.debug(`Message render with status (${new Date().toISOString().split('T')[1]}):`, {
-    messageId: message.id,
-    instanceId: message.instanceId,
-    transactionId: message.transactionId,
-    transactionStatus: message.transactionStatus,
-    calculatedStatus: messageStatus,
-    statusClass: statusClass || 'none',
-    willShowPending: messageStatus === 'pending',
-    willShowConfirmed: messageStatus === 'confirmed',
-    cssClassApplied: !!statusClass,
-    content: `${message.content.substring(0, 10)  }...`,
-  });
 
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
   

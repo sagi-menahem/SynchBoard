@@ -16,7 +16,6 @@ import {
   PageTransition,
   UniversalToolbar,
 } from 'shared/ui';
-import logger from 'shared/utils/logger';
 
 import { BoardCard, CreateBoardForm } from '../components/list';
 import { useBoardList } from '../hooks/management';
@@ -90,14 +89,6 @@ const BoardListPage: React.FC = () => {
     navigate,
   ]);
 
-  // Diagnostic logging for loading state changes
-  React.useEffect(() => {
-    logger.debug('Board list loading state:', {
-      isLoading,
-      timestamp: new Date().toISOString(),
-      boardCount: boards.length,
-    });
-  }, [isLoading, boards.length]);
 
   if (isLoading) {
     return (
