@@ -3,10 +3,11 @@ import React, { useMemo, useState } from 'react';
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
-import { ArrowRight, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
+import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 import {
   ConfirmationDialog,
   PageLoader,
@@ -96,7 +97,7 @@ const SettingsPage: React.FC = () => {
         },
         {
           type: 'button',
-          icon: ArrowRight,
+          icon: getNavigationArrowIcon(),
           label: t('settings:page.boardListButton'),
           onClick: () => navigate(APP_ROUTES.BOARD_LIST),
           variant: 'navigation',

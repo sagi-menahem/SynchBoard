@@ -6,11 +6,12 @@ import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
-import { ArrowRight, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { PageLoader, PageTransition, UniversalToolbar } from 'shared/ui';
+import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
 
 
@@ -132,7 +133,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         },
         {
           type: 'button',
-          icon: ArrowRight,
+          icon: getNavigationArrowIcon(),
           label: t('board:page.boardListButton'),
           onClick: () => navigate(APP_ROUTES.BOARD_LIST),
           variant: 'navigation',
