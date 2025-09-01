@@ -34,13 +34,12 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
   // Get the user's chosen color for CSS variable
   const getUserChosenColor = useCallback(() => {
-    const savedColor = preferences.boardBackgroundSetting;
-    if (!savedColor) {
-      return 'var(--color-surface)'; // Default fallback
+    const savedVariable = preferences.boardBackgroundSetting; // This is now a variable name like '--board-bg-midnight-blue'
+    if (!savedVariable) {
+      return 'var(--color-surface)'; // Default fallback remains the same
     }
-    
-    // Simply return the saved color directly - it should be a valid CSS color
-    return savedColor;
+    // Return the value wrapped in the var() function
+    return `var(${savedVariable})`;
   }, [preferences.boardBackgroundSetting]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
