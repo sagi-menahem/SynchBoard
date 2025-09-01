@@ -15,7 +15,7 @@
   /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
 
   /* 5. Background blur effect - controlled by CSS variable */
-  backdrop-filter: blur(var(--background-blur, theme.$background-blur-md));
+  backdrop-filter: blur(var(--background-blur, theme.$background-blur-sm));
   -webkit-backdrop-filter: blur(var(--background-blur, theme.$background-blur-none));
 }
 

@@ -30,10 +30,10 @@
 // Redesigned subtle divider
 .divider {
   position: relative;
-  width: 8px; // Increased width for better visibility and interaction
+  width: 8px; // Original width restored
   cursor: col-resize;
   @include theme.flex-center;
-  background: rgba(255, 255, 255, 0.08); // Subtle background for visibility
+  background: var(--color-border); // More visible on white backgrounds
   border: none;
   padding: 0;
   @include theme.hover-transition;
@@ -66,11 +66,11 @@
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.2); // Light gray for visibility
+  width: 2px; // Original thickness restored
+  background: var(--color-border-strong); // Darker for visibility on white
   transform: translateX(-50%);
   @include theme.hover-transition;
-  border-radius: 1px;
+  border-radius: 1px; // Original radius restored
 }
 
 // Visual drag handle in the center
@@ -87,12 +87,11 @@
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
   border-radius: theme.$border-radius-lg; // Rounded pill shape
-  box-shadow: theme.$shadow-sm;
   @include theme.hover-transition;
   z-index: 1;
 
   // Initially subtle and small
-  opacity: 0.7;
+  opacity: 0.8;
   transform: translate(-50%, -50%) scale(0.9);
 }
 
@@ -107,11 +106,11 @@
 
 // Hover states - make more prominent
 .divider:hover {
-  background: rgba(255, 255, 255, 0.12); // Slightly more visible background
-  
+  background: var(--color-border-strong); // Darker for visibility on white
+
   .dividerLine {
     background: var(--color-primary);
-    width: 3px; // Thicker on hover
+    width: 3px; // Original hover thickness
   }
 
   .dividerHandle {
@@ -119,7 +118,6 @@
     transform: translate(-50%, -50%) scale(1);
     border-color: var(--color-primary);
     background: var(--color-surface);
-    box-shadow: theme.$shadow-md;
   }
 
   .handleDot {
@@ -131,11 +129,11 @@
 
 // Active/dragging state - maximum prominence
 .divider.dragging {
-  background: rgba(255, 255, 255, 0.15); // Most visible when dragging
-  
+  background: var(--color-surface-hover); // Subtle elevated background when dragging
+
   .dividerLine {
     background: var(--color-primary);
-    width: 4px; // Thickest when dragging
+    width: 4px; // Original dragging thickness
   }
 
   .dividerHandle {
@@ -143,7 +141,6 @@
     transform: translate(-50%, -50%) scale(1.05);
     border-color: var(--color-primary);
     background: var(--color-surface);
-    box-shadow: theme.$shadow-lg;
   }
 
   .handleDot {
