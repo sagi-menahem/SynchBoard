@@ -46,7 +46,7 @@
   flex: 0 1 auto;
   justify-content: start; // CSS logical property - automatically RTL aware
   min-width: min-content; // Prevent shrinking below content size
-  overflow: hidden; // Contain content within available space
+  overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
   gap: theme.$spacing-0; // Smaller gap between title and create button
 }
 
