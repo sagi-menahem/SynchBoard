@@ -135,6 +135,7 @@ const BoardListPage: React.FC = () => {
                 variant="empty-state" 
                 hoverable
                 className={styles.emptyStateCard}
+                onClick={openModal}
               >
                 <div className={styles.emptyStateIcon}>
                   <LayoutDashboard size={48} />
