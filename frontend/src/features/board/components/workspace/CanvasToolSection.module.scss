@@ -5,7 +5,7 @@
   gap: theme.$spacing-4;
   align-items: stretch;
   flex-wrap: nowrap;
-  overflow: hidden; // Contain content within available space
+  overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
   
   // Responsive: Reduce gap on smaller screens to fit more content
   @media (max-width: 1200px) {
