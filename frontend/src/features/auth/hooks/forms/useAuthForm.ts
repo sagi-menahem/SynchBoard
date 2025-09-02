@@ -53,7 +53,26 @@ export const authErrorHandling = {
     if (err !== null && err !== undefined && typeof err === 'object' && 'response' in err) {
       const axiosError = err as { response?: { data?: { message?: string } }; message?: string };
       if (axiosError.response?.data?.message !== undefined && axiosError.response?.data?.message !== '') {
-        return axiosError.response.data.message;
+        const message = axiosError.response.data.message;
+        // Try to translate backend i18n keys
+        if (message.includes('.')) {
+          // Backend sends "auth.badCredentials", convert to "auth:badCredentials"  
+          const keyWithoutNamespace = message.replace('auth.', '');
+          const possibleKeys = [
+            `auth:errors.${keyWithoutNamespace}`,
+            `auth:${keyWithoutNamespace}`,
+            `auth:${message}`,
+            message
+          ];
+          
+          for (const key of possibleKeys) {
+            const translated = t(key);
+            if (translated && translated !== key) {
+              return translated;
+            }
+          }
+        }
+        return message;
       }
       if (axiosError.message !== undefined && axiosError.message !== '') {
         return axiosError.message;

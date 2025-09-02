@@ -102,11 +102,25 @@ apiClient.interceptors.response.use(
 
     if (error.response && isBackendError(error.response.data) && !isLoginAttempt) {
       const backendKey = error.response.data.message;
-      const fullKey = `common:errors.${backendKey}`;
-
-      if (i18n.exists(fullKey)) {
-        toast.error(i18n.t(fullKey), { id: fullKey });
-      } else {
+      
+      // Try different translation namespaces for backend i18n keys
+      const possibleKeys = [
+        `common:errors.${backendKey}`,
+        `auth:${backendKey}`,
+        `auth:errors.${backendKey}`,
+        backendKey
+      ];
+      
+      let translated = false;
+      for (const key of possibleKeys) {
+        if (i18n.exists(key)) {
+          toast.error(i18n.t(key), { id: key });
+          translated = true;
+          break;
+        }
+      }
+      
+      if (!translated) {
         toast.error(backendKey, { id: backendKey });
       }
     } else {
