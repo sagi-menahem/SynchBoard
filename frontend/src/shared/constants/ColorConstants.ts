@@ -1,7 +1,3 @@
-/**
- * Shared color constants for color picker components
- */
-
 export const PRESET_COLORS = [
   '#FFFFFF', '#000000', '#F44336', '#E91E63', '#9C27B0', '#673AB7',
   '#3F51B5', '#2196F3', '#00BCD4', '#009688', '#4CAF50', '#8BC34A',

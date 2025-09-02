@@ -13,7 +13,6 @@ import type { Tool } from 'shared/types/CommonTypes';
 import styles from './Canvas.module.scss';
 import TextInputOverlay from './TextInputOverlay';
 
-// Default canvas configuration - memoized to prevent recreation
 const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
   width: CANVAS_CONFIG.DEFAULT_WIDTH,
@@ -37,10 +36,8 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   
-  // Create a ref for the text input request handler
   const textInputRequestRef = useRef<((x: number, y: number, width: number, height: number) => void) | null>(null);
   
-  // Create canvas with text input request handler
   const { canvasRef, containerRef, handleMouseDown } = useCanvas({
     ...props,
     onTextInputRequest: (x: number, y: number, width: number, height: number) => {

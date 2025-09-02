@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { LogLevel } from 'shared/types/CommonTypes';
 
 interface LogEntry {
@@ -159,7 +158,7 @@ class Logger {
 
       sessionStorage.setItem('app_errors', JSON.stringify(errors));
     } catch {
-      // Silently fail - error reporting should not break the application
+      // Silently ignore storage errors
     }
   }
 }

@@ -71,7 +71,9 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-non-null-assertion': 'off', // Disabled - conflicts with TypeScript strict mode
-      '@typescript-eslint/prefer-nullish-coalescing': 'error',
+      '@typescript-eslint/prefer-nullish-coalescing': ['error', {
+        ignorePrimitives: { boolean: true },
+      }],
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'off', // Disabled - conflicts with TS strict mode
       '@typescript-eslint/no-unsafe-assignment': 'error',
@@ -121,6 +123,13 @@ export default [
     },
     settings: {
       react: { version: 'detect' },
+    },
+  },
+
+  {
+    files: ['**/logger.ts', '**/logger.js'],
+    rules: {
+      'no-console': 'off',
     },
   },
 
