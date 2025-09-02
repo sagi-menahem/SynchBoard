@@ -6,9 +6,6 @@ interface FlexibleToastMessages {
   error: string | ((error?: unknown) => string);
 }
 
-/**
- * Generic toast promise utility to standardize toast.promise usage across the app
- */
 export const toastPromise = async <T>(
   promise: Promise<T>,
   messages: FlexibleToastMessages,

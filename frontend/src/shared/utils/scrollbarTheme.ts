@@ -1,10 +1,3 @@
-/**
- * Scrollbar Theme Utility
- * 
- * Provides programmatic control over scrollbar theming to ensure
- * theme changes are immediately applied across all elements.
- */
-
 export type Theme = 'light' | 'dark';
 
 interface ScrollbarColors {
@@ -29,24 +22,16 @@ const SCROLLBAR_THEMES: Record<Theme, ScrollbarColors> = {
   },
 };
 
-/**
- * Apply scrollbar theme by updating CSS custom properties
- * This ensures immediate theme application
- */
 export const applyScrollbarTheme = (theme: Theme): void => {
   const colors = SCROLLBAR_THEMES[theme];
   const documentElement = document.documentElement;
   
-  // Update CSS custom properties on :root
   documentElement.style.setProperty('--scrollbar-track-bg', colors.track);
   documentElement.style.setProperty('--scrollbar-thumb-bg', colors.thumb);
   documentElement.style.setProperty('--scrollbar-thumb-hover-bg', colors.thumbHover);
   documentElement.style.setProperty('--scrollbar-corner-bg', colors.corner);
 };
 
-/**
- * Initialize scrollbar theming on page load
- */
 export const setupScrollbarThemeManager = (): void => {
   const currentTheme = document.body.getAttribute('data-theme') as Theme;
   if (currentTheme && (currentTheme === 'light' || currentTheme === 'dark')) {

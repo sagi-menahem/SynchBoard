@@ -1,15 +1,14 @@
 @use '@/styles' as theme;
 
-// Full-height container - counteract app-level padding
 .pageContent {
     position: relative;
     width: 100vw;
     height: 100vh;
-    margin-top: calc(-1 * var(--banner-height, 0px)); // Counteract app banner padding
-    margin-left: calc(-1 * var(--app-padding-x, 0px)); // Counteract any horizontal padding
-    margin-right: calc(-1 * var(--app-padding-x, 0px)); // Counteract any horizontal padding
+    margin-top: calc(-1 * var(--banner-height, 0px));
+    margin-left: calc(-1 * var(--app-padding-x, 0px));
+    margin-right: calc(-1 * var(--app-padding-x, 0px));
     box-sizing: border-box;
-    overflow-x: hidden; // Prevent horizontal scrolling
+    overflow-x: hidden;
 }
 
 .switchersCorner {
@@ -22,27 +21,25 @@
     gap: theme.$spacing-3;
 }
 
-// Split layout container
 .splitContainer {
     display: flex;
-    height: 100vh; // Use exact height instead of min-height
+    height: 100vh;
     width: 100%;
-    max-width: 100vw; // Prevent overflow
-    overflow: hidden; // Prevent any overflow from children
+    max-width: 100vw;
+    overflow: hidden;
 }
 
-// Left hero section (60% width)
 .heroSection {
     flex: 0 0 60%;
-    min-width: 0; // Prevent flex items from overflowing
+    min-width: 0;
     background: linear-gradient(135deg,
             theme.$primary 0%,
             theme.$primary-hover 100%);
     @include theme.flex-center;
-    padding: theme.$spacing-6; // Reduced padding
+    padding: theme.$spacing-6;
     color: white;
     position: relative;
-    overflow: hidden; // Prevent content overflow
+    overflow: hidden;
 
     &::before {
         content: '';
@@ -60,7 +57,7 @@
     position: relative;
     z-index: 1;
     max-width: 500px;
-    text-align: start; // CSS logical property for RTL support
+    text-align: start;
 }
 
 .pageTitle {
@@ -71,16 +68,15 @@
     font-size: 2.5rem;
     font-weight: 700;
     line-height: 1.2;
-    white-space: nowrap; // Prevent line breaking
-    overflow: hidden; // Hide any overflow
-    text-overflow: ellipsis; // Show ellipsis if text is too long
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-// Hebrew-specific title styling
 :global([dir="rtl"]) .pageTitle {
-    font-size: 2.2rem; // Slightly smaller for Hebrew to fit better
-    white-space: nowrap; // Ensure no line breaks
-    max-width: 100%; // Allow full width usage
+    font-size: 2.2rem;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 .heroSubtitle {
@@ -112,48 +108,44 @@
     backdrop-filter: blur(10px);
 }
 
-// Right form section (40% width)
 .formSection {
     flex: 0 0 40%;
-    min-width: 0; // Prevent flex items from overflowing
+    min-width: 0;
     display: flex;
-    align-items: stretch; // Fill full height
-    justify-content: stretch; // Fill full width
-    padding: 0; // Remove padding - card should fill entire white area
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 0;
     background: theme.$background-primary;
-    overflow-y: auto; // Allow scrolling within form section if needed
-    overflow-x: hidden; // Prevent horizontal overflow
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .authCard {
-    // Fill the entire white section with proper margins
-    flex: 1; // Take all available space
+    flex: 1;
     display: flex;
     flex-direction: column;
     background-color: theme.$background-secondary;
     border: 1px solid theme.$border-primary;
     border-radius: theme.$card-border-radius;
     box-shadow: theme.$shadow-lg;
-    box-sizing: border-box; // Include border in width calculation
-    overflow-y: auto; // Allow internal scrolling if needed
-    // Beautiful card appearance that fills the white area
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .authContainer {
     @include theme.flex-column;
-    gap: theme.$spacing-2; // Minimal gap for maximum compactness
-    flex: 1; // Fill the card completely
-    // Use CSS logical properties for RTL support
-    padding-block: theme.$spacing-6; // Top and bottom padding
-    padding-inline: theme.$spacing-6; // Horizontal padding
-    justify-content: center; // Center content vertically in the card
-    align-items: center; // Center content horizontally in the card
-    box-sizing: border-box; // Include padding in width calculation
-    width: 100%; // Ensure full width utilization
+    gap: theme.$spacing-2;
+    flex: 1;
+    padding-block: theme.$spacing-6;
+    padding-inline: theme.$spacing-6;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .formHeader {
-    margin-bottom: theme.$spacing-1; // Minimal spacing
+    margin-bottom: theme.$spacing-1;
 }
 
 .formTitle {
@@ -167,9 +159,9 @@
 
 .authActions {
     @include theme.flex-column-center;
-    gap: theme.$spacing-1; // Minimal spacing
-    margin-top: theme.$spacing-2; // Minimal margin
-    padding-top: theme.$spacing-2; // Minimal padding
+    gap: theme.$spacing-1;
+    margin-top: theme.$spacing-2;
+    padding-top: theme.$spacing-2;
     border-top: 1px solid theme.$border-primary;
 }
 
@@ -180,21 +172,20 @@
     text-align: center;
 }
 
-// Responsive design for mobile
 @media (max-width: 768px) {
     .pageContent {
-        min-height: auto; // Allow natural height on mobile
+        min-height: auto;
     }
 
     .splitContainer {
         flex-direction: column;
-        height: auto; // Allow natural height on mobile
+        height: auto;
         min-height: 100vh;
     }
 
     .heroSection {
         flex: 0 0 auto;
-        min-height: 35vh; // Reduced hero height on mobile
+        min-height: 35vh;
         padding: theme.$spacing-4;
     }
 
@@ -205,13 +196,12 @@
     .pageTitle {
         font-size: 1.75rem;
         margin-bottom: theme.$spacing-3;
-        white-space: nowrap; // Prevent line breaking on mobile
+        white-space: nowrap;
     }
-    
-    // Hebrew mobile title adjustments
+
     :global([dir="rtl"]) .pageTitle {
-        font-size: 1.6rem; // Even smaller on mobile for Hebrew
-        white-space: nowrap; // Ensure no line breaks on mobile
+        font-size: 1.6rem;
+        white-space: nowrap;
     }
 
     .heroSubtitle {
@@ -230,25 +220,24 @@
     }
 
     .heroFeatures {
-        gap: theme.$spacing-2; // Reduce gap on mobile
+        gap: theme.$spacing-2;
     }
 
     .formSection {
         flex: 1;
-        padding: theme.$spacing-3; // Reduced mobile padding
-        min-height: auto; // Remove min-height constraint
-        overflow-y: visible; // Allow natural scrolling
+        padding: theme.$spacing-3;
+        min-height: auto;
+        overflow-y: visible;
     }
 
     .authCard {
-        flex: 1; // Still fill available space on mobile
-        margin: 0; // Remove any margin
+        flex: 1;
+        margin: 0;
     }
 
     .authContainer {
-        // Use CSS logical properties for RTL support on mobile
-        padding-block: theme.$spacing-4; // Top and bottom padding
-        padding-inline: theme.$spacing-5; // Left and right padding (RTL aware)
+        padding-block: theme.$spacing-4;
+        padding-inline: theme.$spacing-5;
     }
 
     .switchersCorner {
@@ -266,13 +255,12 @@
 
     .pageTitle {
         font-size: 1.75rem;
-        white-space: nowrap; // Prevent line breaking on small mobile
+        white-space: nowrap;
     }
-    
-    // Hebrew small mobile title adjustments  
+
     :global([dir="rtl"]) .pageTitle {
-        font-size: 1.5rem; // Smaller on very small screens for Hebrew
-        white-space: nowrap; // Ensure no line breaks on small mobile
+        font-size: 1.5rem;
+        white-space: nowrap;
     }
 
     .heroFeatures {
@@ -288,40 +276,36 @@
     }
 }
 
-// Auth Page Dark Theme - Dark Blue Hero & Dark Gray Forms
-// Override global dark theme colors specifically for auth pages
 :global(body[data-theme='dark']) {
     .heroSection {
-        // Dark blue background like language/theme toggle buttons
         background: linear-gradient(135deg,
-            #374151 0%,
-            #1f2937 100%);
+                #374151 0%,
+                #1f2937 100%);
 
         &::before {
-            background: rgba(0, 0, 0, 0.15); // Lighter overlay for blue background
+            background: rgba(0, 0, 0, 0.15);
         }
     }
 
     .formSection {
-        // Use the previous hero section's darker gray background
-        background: #{theme.$color-gray-900}; // Very dark gray background
+        background: #{theme.$color-gray-900};
     }
 
     .authCard {
-        background-color: #{theme.$color-gray-800}; // Dark gray elevated surface
-        border: 1px solid #{theme.$color-gray-700}; // Darker border
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); // Enhanced shadow for dark background
+        background-color: #{theme.$color-gray-800};
+        border: 1px solid #{theme.$color-gray-700};
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
     .formTitle {
-        color: #{theme.$color-gray-50}; // Clean white text
+        color: #{theme.$color-gray-50};
     }
 
     .toggleText {
-        color: #{theme.$color-gray-300}; // Muted text for secondary content
+        color: #{theme.$color-gray-300};
     }
 
     .authActions {
-        border-top: 1px solid #{theme.$color-gray-700}; // Darker separator to match
+        border-top: 1px solid #{theme.$color-gray-700};
     }
 }

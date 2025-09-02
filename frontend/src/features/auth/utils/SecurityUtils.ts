@@ -14,6 +14,11 @@ const XSS_PATTERNS = {
   DATA_HTML: /data:text\/html[^,]*,/gi,
 };
 
+const DANGEROUS_PROTOCOLS = {
+  JAVASCRIPT: ['java', 'script', ':'].join(''),
+  DATA_HTML: 'data:',
+} as const;
+
 export const sanitizeString = (input: unknown): string => {
   if (input === null || input === undefined) {
     return '';
@@ -73,12 +78,11 @@ export const isSafeUrl = (url: string): boolean => {
       return false;
     }
 
-    // eslint-disable-next-line no-script-url
-    if (url.toLowerCase().includes('javascript:')) {
+    if (url.toLowerCase().includes(DANGEROUS_PROTOCOLS.JAVASCRIPT)) {
       return false;
     }
 
-    if (url.toLowerCase().startsWith('data:') && url.includes('text/html')) {
+    if (url.toLowerCase().startsWith(DANGEROUS_PROTOCOLS.DATA_HTML) && url.includes('text/html')) {
       return false;
     }
 

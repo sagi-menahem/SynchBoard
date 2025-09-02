@@ -34,8 +34,6 @@ export const forgotPassword = async (data: ForgotPasswordRequest): Promise<strin
   return response.data;
 };
 
-
-// OAuth Service Functions
 export const redirectToGoogle = (): void => {
   window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
 };

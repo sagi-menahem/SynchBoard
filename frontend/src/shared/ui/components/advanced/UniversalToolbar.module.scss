@@ -14,8 +14,8 @@
   /* -webkit-backdrop-filter: blur(20px) saturate(180%); */
   border-bottom: 1px solid var(--toolbar-border, rgba(226, 232, 240, 0.6));
   box-shadow: var(--toolbar-shadow, 0 1px 3px rgba(15, 23, 42, 0.08));
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0 theme.$spacing-6;
   z-index: theme.$z-index-dropdown;
@@ -43,7 +43,6 @@
 }
 
 .leftSection {
-  flex: 0 1 auto;
   justify-content: start; // CSS logical property - automatically RTL aware
   min-width: min-content; // Prevent shrinking below content size
   overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
@@ -51,15 +50,13 @@
 }
 
 .centerSection {
-  flex: 1 1 auto;
   justify-content: center;
   min-width: 200px; // Ensure enough space for search bar
   max-width: 400px; // Limit maximum width
-  margin: 0 auto; // Center the section itself
+  margin: 0 auto; // Center within the grid column
 
   // Hide center section when empty (no children)
   &:empty {
-    flex: 0 0 0;
     min-width: 0;
     max-width: 0;
     margin: 0;
@@ -67,7 +64,6 @@
 }
 
 .rightSection {
-  flex: 0 0 auto; // Fixed size - never shrink navigation buttons
   justify-content: end; // CSS logical property - automatically RTL aware
   // Remove min-width to allow right section to get closer to left section
 

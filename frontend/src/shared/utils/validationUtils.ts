@@ -1,6 +1,3 @@
-/**
- * Email validation using regex pattern
- */
 export const validateEmail = (email: string): boolean => {
   if (email === null || email === '' || typeof email !== 'string') {
     return false;

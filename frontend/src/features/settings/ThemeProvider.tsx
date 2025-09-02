@@ -22,10 +22,7 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-// Theme storage key
 const THEME_STORAGE_KEY = 'user-theme';
-
-// Get initial theme from localStorage or system preference
 const getInitialTheme = (): Theme => {
   const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
   if (storedTheme && (storedTheme === 'light' || storedTheme === 'dark')) {
@@ -37,14 +34,10 @@ const getInitialTheme = (): Theme => {
   return 'light';
 };
 
-// Apply theme to DOM with forced reflow for reliability
 const applyThemeToDOM = (theme: Theme) => {
   document.body.setAttribute('data-theme', theme);
-  // Apply scrollbar theme programmatically for immediate effect
   applyScrollbarTheme(theme);
-  // Force style recalculation to ensure CSS is applied immediately
-  // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
-  document.body.offsetHeight;
+  void document.body.offsetHeight;
 };
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {

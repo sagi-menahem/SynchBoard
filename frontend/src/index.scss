@@ -1,22 +1,13 @@
-// Import design tokens first
 @use 'styles/design-tokens' as dt;
-
-// App content layout - add banner padding to all content EXCEPT auth pages
 .app-content {
     padding-top: var(--banner-height, 0px);
     transition: padding-top var(--transition-duration-slow, 0.3s) ease-in-out;
     
-    // Auth pages should not have banner padding - they are full-screen experiences
     [data-auth-page] {
         margin-top: calc(-1 * var(--banner-height, 0px));
     }
 }
 
-// ========================================
-// GLOBAL STYLES - SynchBoard
-// ========================================
-
-// Font and rendering optimizations
 :root,
 body[data-theme='light'] {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -29,23 +20,20 @@ body[data-theme='light'] {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // Banner system
   --banner-height: 0px;
 
-  // Transition System
+
   --transition-duration-fast: #{dt.$transition-fast};
   --transition-duration-normal: #{dt.$transition-normal};
   --transition-duration-slow: #{dt.$transition-slow};
   --transition-slow: #{dt.$transition-slow};
   --transition-ease-in-out: #{dt.$transition-ease-in-out};
 
-  // Spacing System
   --spacing-0-5: #{dt.$spacing-0-5};
   --spacing-1: #{dt.$spacing-1};
   --spacing-2: #{dt.$spacing-2};
   --spacing-3: #{dt.$spacing-3};
 
-  // Z-Index System
   --z-index-base: #{dt.$z-index-base};
   --z-index-elevated: #{dt.$z-index-elevated};
   --z-index-dropdown: #{dt.$z-index-dropdown};
@@ -56,7 +44,6 @@ body[data-theme='light'] {
   --z-index-tooltip: #{dt.$z-index-tooltip};
   --z-index-popover: #{dt.$z-index-popover};
 
-  // Light Theme Colors
   --color-primary: #{dt.$color-primary};
   --color-primary-hover: #{dt.$color-primary-hover};
   --color-primary-light: #{dt.$color-primary-light};
@@ -92,18 +79,15 @@ body[data-theme='light'] {
   --color-canvas-background: #{dt.$color-board-light-default};
   --color-canvas-pattern: rgba(0, 0, 0, 0.03);
 
-  // Message Status Colors - Light Theme
   --color-status-pending-border: #{dt.$color-status-pending-border-light};
   --color-status-confirmed-border: #{dt.$color-status-confirmed-border-light};
   --color-status-failed-border: #{dt.$color-status-failed-border-light};
   --color-status-failed-bg: #{dt.$color-status-failed-bg-light};
 
-  // Elegant Toolbar System - Light Theme
   --toolbar-background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.98) 100%);
   --toolbar-border: rgba(226, 232, 240, 0.6);
   --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
 
-  // Navigation Buttons - Light Theme
   --nav-button-background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.9) 100%);
   --nav-button-border: rgba(226, 232, 240, 0.6);
   --nav-button-text: #{dt.$color-gray-600};
@@ -113,7 +97,6 @@ body[data-theme='light'] {
   --nav-button-hover-text: #{dt.$color-black};
   --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 1) inset;
 
-  // Destructive Buttons - Light Theme
   --destructive-button-background: linear-gradient(135deg, rgba(254, 242, 242, 0.9) 0%, rgba(255, 237, 237, 0.95) 100%);
   --destructive-button-border: rgba(252, 165, 165, 0.4);
   --destructive-button-text: #{dt.$color-error-hover};
@@ -123,10 +106,8 @@ body[data-theme='light'] {
   --destructive-button-hover-text: #{dt.$color-error-hover};
   --destructive-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 202, 202, 1) inset;
 
-  // Language Toggle
   --language-toggle-bg: #e5e7eb;
 
-  // Button Palette - Light Theme
   --btn-primary-bg: #{dt.$color-primary};
   --btn-primary-bg-hover: #{dt.$color-primary-hover};
   --btn-primary-text: #{dt.$color-white};
@@ -152,20 +133,16 @@ body[data-theme='light'] {
   --btn-icon-text: #{dt.$color-gray-500};
   --btn-icon-active-border: #{dt.$color-primary};
 
-  // Scrollbar colors
   --scrollbar-track-bg: #{dt.$color-gray-100};
   --scrollbar-thumb-bg: #{dt.$color-gray-400};
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-500};
   --scrollbar-corner-bg: #{dt.$color-gray-100};
 
-  // Theme defaults
   color: var(--color-text-primary);
   background-color: var(--color-background);
 }
 
-// Dark Theme
 body[data-theme='dark'] {
-  // Dark Theme Colors
   --color-primary: #{dt.$color-primary};
   --color-primary-hover: #{dt.$color-primary-hover};
   --color-primary-light: #{dt.$color-primary-light};
@@ -201,18 +178,15 @@ body[data-theme='dark'] {
   --color-canvas-background: #{dt.$color-board-dark-default};
   --color-canvas-pattern: rgba(255, 255, 255, 0.02);
 
-  // Message Status Colors - Dark Theme
   --color-status-pending-border: #{dt.$color-status-pending-border-dark};
   --color-status-confirmed-border: #{dt.$color-status-confirmed-border-dark};
   --color-status-failed-border: #{dt.$color-status-failed-border-dark};
   --color-status-failed-bg: #{dt.$color-status-failed-bg-dark};
 
-  // Elegant Toolbar System - Dark Theme
   --toolbar-background: linear-gradient(135deg, rgba(24, 24, 27, 0.95) 0%, rgba(39, 39, 42, 0.98) 100%);
   --toolbar-border: rgba(63, 63, 70, 0.4);
   --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 
-  // Navigation Buttons - Dark Theme
   --nav-button-background: linear-gradient(135deg, rgba(39, 39, 42, 0.8) 0%, rgba(52, 52, 55, 0.9) 100%);
   --nav-button-border: rgba(82, 82, 91, 0.4);
   --nav-button-text: #{dt.$color-gray-300};
@@ -222,7 +196,6 @@ body[data-theme='dark'] {
   --nav-button-hover-text: #{dt.$color-white};
   --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 
-  // Destructive Buttons - Dark Theme
   --destructive-button-background: linear-gradient(135deg, rgba(69, 26, 26, 0.6) 0%, rgba(87, 13, 13, 0.7) 100%);
   --destructive-button-border: rgba(153, 27, 27, 0.4);
   --destructive-button-text: #{dt.$color-error-light};
@@ -232,10 +205,8 @@ body[data-theme='dark'] {
   --destructive-button-hover-text: #{dt.$color-error-light};
   --destructive-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 226, 226, 0.1) inset;
 
-  // Language Toggle
   --language-toggle-bg: #374151;
 
-  // Button Palette - Dark Theme
   --btn-primary-bg: #{dt.$color-primary};
   --btn-primary-bg-hover: #{dt.$color-primary-hover};
   --btn-primary-text: #{dt.$color-gray-50};
@@ -261,20 +232,14 @@ body[data-theme='dark'] {
   --btn-icon-text: #{dt.$color-gray-400};
   --btn-icon-active-border: #{dt.$color-gray-500};
 
-  // Scrollbar colors
   --scrollbar-track-bg: #{dt.$color-gray-900};
   --scrollbar-thumb-bg: #{dt.$color-gray-700};
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-600};
   --scrollbar-corner-bg: #{dt.$color-gray-900};
 
-  // Theme defaults
   color: var(--color-text-primary);
   background-color: var(--color-background);
 }
-
-// ========================================
-// BASE STYLES
-// ========================================
 
 a {
   font-weight: dt.$font-weight-medium;
@@ -302,17 +267,11 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-// ========================================
-// SCROLLBAR THEMING SYSTEM
-// ========================================
-
 * {
-  // Firefox scrollbar
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
 }
 
-// WebKit scrollbar styling
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -337,10 +296,6 @@ button:focus-visible {
 *::-webkit-scrollbar-corner {
   background: var(--scrollbar-corner-bg);
 }
-
-// ========================================
-// UTILITY CLASSES
-// ========================================
 
 .sr-only {
   position: absolute !important;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import { getUserProfile } from 'features/settings/services/userService';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
@@ -16,16 +16,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
   const [token, setToken] = useState<string | null>(storedToken);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [isInitializing] = useState(false); // Start as false for immediate render
+  const [isInitializing] = useState(false);
   const [needsBackendValidation, setNeedsBackendValidation] = useState(false);
   
   const { validateTokenSync, clearExpiryWarning, clearTokenFromStorage } = useSyncAuthValidation();
 
-  // Synchronous validation on token change
   useMemo(() => {
     const result = validateTokenSync(token);
     
-    // Update state immediately based on synchronous validation
     if (result.shouldClearToken && token) {
       setToken(null);
       clearTokenFromStorage();
@@ -42,7 +40,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return result;
   }, [token, validateTokenSync, clearTokenFromStorage]);
 
-  // Background validation with backend (non-blocking)
   useEffect(() => {
     if (needsBackendValidation && token) {
       getUserProfile()
@@ -60,7 +57,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [needsBackendValidation, token, clearTokenFromStorage]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       clearExpiryWarning();
