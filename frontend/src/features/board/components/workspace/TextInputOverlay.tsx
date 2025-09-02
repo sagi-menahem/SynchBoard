@@ -75,7 +75,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         onBlur={handleSubmit}
         className={styles.textInput}
         placeholder={t('board:textInput.placeholder')}
-        dir="auto"
+        dir="ltr"
         style={{
           color,
           fontSize: `${fontSize}px`,
