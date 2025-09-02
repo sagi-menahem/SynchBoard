@@ -1,9 +1,12 @@
 package io.github.sagimenahem.synchboard.dto.board;
 
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_HEIGHT_MAX;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_HEIGHT_MIN;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_WIDTH_MAX;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_WIDTH_MIN;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateCanvasSettingsRequest {
 
-    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "validation.canvasColorPattern")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$",
+            message = "validation.canvasColorPattern")
     private String canvasBackgroundColor;
 
     @Min(value = CANVAS_WIDTH_MIN, message = "validation.canvasWidthMin")

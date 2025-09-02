@@ -1,5 +1,6 @@
 package io.github.sagimenahem.synchboard.service.storage;
 
+import static io.github.sagimenahem.synchboard.constants.FileConstants.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -13,7 +14,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import static io.github.sagimenahem.synchboard.constants.FileConstants.*;
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import io.github.sagimenahem.synchboard.constants.LoggingConstants;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
@@ -73,8 +73,9 @@ public class FileStorageService {
 
         String cleanedFilename = StringUtils.cleanPath(originalFilename);
         String fileExtension = getFileExtension(cleanedFilename);
-        String normalizedContentType = contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
-        
+        String normalizedContentType =
+                contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
+
         validateUploadedFile(file, cleanedFilename, fileSize, normalizedContentType, fileExtension);
 
         String uniqueFilename = generateUniqueFilename(fileExtension);
@@ -159,7 +160,7 @@ public class FileStorageService {
     private static class SvgSignatureValidator implements FileSignatureValidator {
         @Override
         public boolean validate(MultipartFile file) {
-            return true; // SVG validation is handled separately in validateSvgSecurity
+            return true;
         }
     }
 
@@ -226,7 +227,8 @@ public class FileStorageService {
                 return isValid;
 
             } catch (IOException e) {
-                log.error("Error reading file signature for MIME type: {}, rejecting file for security",
+                log.error(
+                        "Error reading file signature for MIME type: {}, rejecting file for security",
                         mimeType, e);
                 return false;
             }
@@ -252,55 +254,48 @@ public class FileStorageService {
             return false;
         }
     }
-    
-    /**
-     * Download and store an image from a URL (for OAuth profile pictures)
-     */
+
     public String downloadAndStoreImageFromUrl(String imageUrl) {
         if (imageUrl == null || imageUrl.isBlank()) {
             log.debug("No image URL provided");
             return null;
         }
-        
+
         try {
             java.net.URI uri = java.net.URI.create(imageUrl);
             java.net.URL url = uri.toURL();
             java.net.URLConnection connection = url.openConnection();
-            
-            // Set a reasonable timeout and user agent
+
             connection.setConnectTimeout(HTTP_CONNECTION_TIMEOUT_MS);
             connection.setReadTimeout(HTTP_READ_TIMEOUT_MS);
             connection.setRequestProperty("User-Agent", "SynchBoard/1.0");
-            
+
             String contentType = connection.getContentType();
             if (contentType != null) {
                 contentType = contentType.split(";")[0].toLowerCase().trim();
             }
-            
-            // Validate content type
+
             if (contentType == null || !FILE_SIGNATURES.containsKey(contentType)) {
                 log.warn("Unsupported image content type from URL: {} - {}", imageUrl, contentType);
                 return null;
             }
-            
-            // Generate unique filename with appropriate extension
+
             String extension = getFileExtensionFromContentType(contentType);
             String uniqueFilename = generateUniqueFilename(extension);
-            
-            // Download and store the image
+
             try (InputStream inputStream = connection.getInputStream()) {
                 Path destinationFile = securePathResolve(uniqueFilename, "download");
                 if (destinationFile == null) {
                     return null;
                 }
-                
+
                 Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-                
-                log.info("Successfully downloaded and stored image from URL: {} as {}", 
-                        imageUrl, uniqueFilename);
+
+                log.info("Successfully downloaded and stored image from URL: {} as {}", imageUrl,
+                        uniqueFilename);
                 return "/images/" + uniqueFilename;
             }
-            
+
         } catch (java.net.MalformedURLException | java.lang.IllegalArgumentException e) {
             log.warn("Invalid image URL: {}", imageUrl);
             return null;
@@ -309,7 +304,7 @@ public class FileStorageService {
             return null;
         }
     }
-    
+
     private String getFileExtensionFromContentType(String contentType) {
         switch (contentType) {
             case "image/jpeg":
@@ -321,13 +316,13 @@ public class FileStorageService {
             case "image/webp":
                 return ".webp";
             default:
-                return ".jpg"; // Default fallback
+                return ".jpg";
         }
     }
 
-    private void validateUploadedFile(MultipartFile file, String cleanedFilename, long fileSize, 
+    private void validateUploadedFile(MultipartFile file, String cleanedFilename, long fileSize,
             String normalizedContentType, String fileExtension) throws InvalidRequestException {
-        
+
         if (cleanedFilename.contains("..")) {
             log.error("Invalid path in filename: {}", cleanedFilename);
             throw new InvalidRequestException(ERROR_INVALID_PATH);
@@ -336,24 +331,22 @@ public class FileStorageService {
         if (fileSize > MAX_FILE_SIZE_BYTES) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     String.format("File size %d exceeds maximum allowed size", fileSize));
-            throw new InvalidRequestException(String.format(ERROR_FILE_TOO_LARGE,
-                    MAX_FILE_SIZE_MB));
+            throw new InvalidRequestException(
+                    String.format(ERROR_FILE_TOO_LARGE, MAX_FILE_SIZE_MB));
         }
 
         if (!isValidMimeType(normalizedContentType)) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     "MIME type not allowed: " + normalizedContentType);
-            throw new InvalidRequestException(
-                    String.format(ERROR_MIME_TYPE_NOT_ALLOWED,
-                            String.join(", ", ALLOWED_IMAGE_MIME_TYPES)));
+            throw new InvalidRequestException(String.format(ERROR_MIME_TYPE_NOT_ALLOWED,
+                    String.join(", ", ALLOWED_IMAGE_MIME_TYPES)));
         }
 
         if (!isValidExtension(fileExtension)) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     "File extension not allowed: " + fileExtension);
-            throw new InvalidRequestException(
-                    String.format(ERROR_EXTENSION_NOT_ALLOWED,
-                            String.join(", ", ALLOWED_IMAGE_EXTENSIONS)));
+            throw new InvalidRequestException(String.format(ERROR_EXTENSION_NOT_ALLOWED,
+                    String.join(", ", ALLOWED_IMAGE_EXTENSIONS)));
         }
 
         if (!validateFileSignature(file, normalizedContentType)) {

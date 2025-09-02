@@ -5,6 +5,7 @@ import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURI
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.USER_NOT_FOUND;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.EMAIL_VERIFICATION_TIMEOUT_MINUTES;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.PASSWORD_RESET_TIMEOUT_MINUTES;
+import java.time.LocalDateTime;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +22,6 @@ import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
-
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,13 +40,14 @@ public class AuthService {
     @Transactional
     public void registerUser(RegisterRequest request) {
         log.info("[SECURITY] Registration attempt for email: {}", request.getEmail());
-        
+
         validateUserRegistration(request.getEmail());
         cleanupExistingPendingRegistration(request.getEmail());
         PendingRegistration pendingRegistration = createPendingRegistration(request);
         sendVerificationEmail(pendingRegistration);
-        
-        log.info(SECURITY_PREFIX + " User registration process completed for email: {}", request.getEmail());
+
+        log.info(SECURITY_PREFIX + " User registration process completed for email: {}",
+                request.getEmail());
     }
 
     public AuthResponseDTO login(LoginRequest request) {
@@ -107,24 +107,27 @@ public class AuthService {
 
         PendingRegistration pendingRegistration = findPendingRegistration(email);
         validateVerificationAttempt(pendingRegistration, verificationCode, email);
-        
+
         User newUser = createAndSaveUser(pendingRegistration);
         cleanupPendingRegistration(pendingRegistration);
-        
+
         log.info(SECURITY_PREFIX + " Email verified and user created for: {}", email);
         return generateAuthResponse(newUser);
     }
 
     private PendingRegistration findPendingRegistration(String email) {
-        return pendingRegistrationRepository
-                .findByEmail(email)
-                .orElseThrow(() -> {
-                    log.warn(SECURITY_PREFIX + " Verification failed - no pending registration for email: {}", email);
-                    return new ResourceNotFoundException("No pending registration found for email: " + email);
-                });
+        return pendingRegistrationRepository.findByEmail(email).orElseThrow(() -> {
+            log.warn(
+                    SECURITY_PREFIX
+                            + " Verification failed - no pending registration for email: {}",
+                    email);
+            return new ResourceNotFoundException(
+                    "No pending registration found for email: " + email);
+        });
     }
 
-    private void validateVerificationAttempt(PendingRegistration pendingRegistration, String verificationCode, String email) {
+    private void validateVerificationAttempt(PendingRegistration pendingRegistration,
+            String verificationCode, String email) {
         if (pendingRegistration.isExpired()) {
             log.warn(SECURITY_PREFIX + " Verification code expired for email: {}", email);
             pendingRegistrationRepository.delete(pendingRegistration);
@@ -134,13 +137,14 @@ public class AuthService {
         if (pendingRegistration.isMaxAttemptsReached()) {
             log.warn(SECURITY_PREFIX + " Max verification attempts exceeded for email: {}", email);
             pendingRegistrationRepository.delete(pendingRegistration);
-            throw new InvalidRequestException("Too many verification attempts. Please register again.");
+            throw new InvalidRequestException(
+                    "Too many verification attempts. Please register again.");
         }
 
         if (!pendingRegistration.getVerificationCode().equals(verificationCode)) {
             pendingRegistration.incrementAttempts();
             pendingRegistrationRepository.save(pendingRegistration);
-            log.warn(SECURITY_PREFIX + " Invalid verification code for email: {} (attempt: {})", 
+            log.warn(SECURITY_PREFIX + " Invalid verification code for email: {} (attempt: {})",
                     email, pendingRegistration.getAttempts());
             throw new InvalidRequestException("Invalid verification code");
         }
@@ -148,8 +152,8 @@ public class AuthService {
 
     private void validateUserRegistration(String email) {
         if (userRepository.existsById(email)) {
-            log.warn("[SECURITY] Registration failed for email: {}. Reason: {}",
-                    email, "Email already exists");
+            log.warn("[SECURITY] Registration failed for email: {}. Reason: {}", email,
+                    "Email already exists");
             throw new ResourceConflictException(MessageConstants.EMAIL_IN_USE);
         }
     }
@@ -157,41 +161,38 @@ public class AuthService {
     private void cleanupExistingPendingRegistration(String email) {
         if (pendingRegistrationRepository.existsByEmail(email)) {
             pendingRegistrationRepository.deleteById(email);
-            log.info(SECURITY_PREFIX + " Existing pending registration deleted for email: {}", email);
+            log.info(SECURITY_PREFIX + " Existing pending registration deleted for email: {}",
+                    email);
         }
     }
 
     private PendingRegistration createPendingRegistration(RegisterRequest request) {
         String verificationCode = emailService.generateVerificationCode();
-        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(EMAIL_VERIFICATION_TIMEOUT_MINUTES);
+        LocalDateTime expiryTime =
+                LocalDateTime.now().plusMinutes(EMAIL_VERIFICATION_TIMEOUT_MINUTES);
 
-        PendingRegistration pendingRegistration = PendingRegistration.builder()
-                .email(request.getEmail())
-                .hashedPassword(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .gender(request.getGender())
-                .phoneNumber(request.getPhoneNumber())
-                .dateOfBirth(request.getDateOfBirth())
-                .verificationCode(verificationCode)
-                .expiryTime(expiryTime)
-                .attempts(0)
-                .build();
+        PendingRegistration pendingRegistration =
+                PendingRegistration.builder().email(request.getEmail())
+                        .hashedPassword(passwordEncoder.encode(request.getPassword()))
+                        .firstName(request.getFirstName()).lastName(request.getLastName())
+                        .gender(request.getGender()).phoneNumber(request.getPhoneNumber())
+                        .dateOfBirth(request.getDateOfBirth()).verificationCode(verificationCode)
+                        .expiryTime(expiryTime).attempts(0).build();
 
         pendingRegistrationRepository.save(pendingRegistration);
-        log.info(SECURITY_PREFIX + " Pending registration created for email: {}", request.getEmail());
+        log.info(SECURITY_PREFIX + " Pending registration created for email: {}",
+                request.getEmail());
         return pendingRegistration;
     }
 
     private void sendVerificationEmail(PendingRegistration pendingRegistration) {
-        boolean emailSent = emailService.sendVerificationCode(
-                pendingRegistration.getEmail(), 
+        boolean emailSent = emailService.sendVerificationCode(pendingRegistration.getEmail(),
                 pendingRegistration.getVerificationCode());
         if (!emailSent) {
-            log.error(SECURITY_PREFIX + " Failed to send verification email to: {}", 
+            log.error(SECURITY_PREFIX + " Failed to send verification email to: {}",
                     pendingRegistration.getEmail());
         } else {
-            log.info(SECURITY_PREFIX + " Verification email sent to: {}", 
+            log.info(SECURITY_PREFIX + " Verification email sent to: {}",
                     pendingRegistration.getEmail());
         }
     }
@@ -212,15 +213,12 @@ public class AuthService {
     }
 
     private User createUserFromPendingRegistration(PendingRegistration pendingRegistration) {
-        return User.builder()
-                .email(pendingRegistration.getEmail())
+        return User.builder().email(pendingRegistration.getEmail())
                 .password(pendingRegistration.getHashedPassword())
                 .firstName(pendingRegistration.getFirstName())
-                .lastName(pendingRegistration.getLastName())
-                .gender(pendingRegistration.getGender())
+                .lastName(pendingRegistration.getLastName()).gender(pendingRegistration.getGender())
                 .phoneNumber(pendingRegistration.getPhoneNumber())
-                .dateOfBirth(pendingRegistration.getDateOfBirth())
-                .build();
+                .dateOfBirth(pendingRegistration.getDateOfBirth()).build();
     }
 
     @Transactional
@@ -229,15 +227,14 @@ public class AuthService {
 
         PendingRegistration pendingRegistration = findPendingRegistration(email);
 
-        // Generate new code and extend expiry
         String newVerificationCode = emailService.generateVerificationCode();
         pendingRegistration.setVerificationCode(newVerificationCode);
-        pendingRegistration.setExpiryTime(LocalDateTime.now().plusMinutes(EMAIL_VERIFICATION_TIMEOUT_MINUTES));
-        pendingRegistration.setAttempts(0); // Reset attempts
+        pendingRegistration
+                .setExpiryTime(LocalDateTime.now().plusMinutes(EMAIL_VERIFICATION_TIMEOUT_MINUTES));
+        pendingRegistration.setAttempts(0);
 
         pendingRegistrationRepository.save(pendingRegistration);
 
-        // Send new verification email
         boolean emailSent = emailService.sendVerificationCode(email, newVerificationCode);
         if (!emailSent) {
             log.error(SECURITY_PREFIX + " Failed to resend verification email to: {}", email);
@@ -255,7 +252,6 @@ public class AuthService {
             return new ResourceNotFoundException("User not found with email: " + email);
         });
 
-        // Generate reset code
         String resetCode = emailService.generateVerificationCode();
         LocalDateTime resetExpiry = LocalDateTime.now().plusMinutes(PASSWORD_RESET_TIMEOUT_MINUTES);
 
@@ -263,7 +259,6 @@ public class AuthService {
         user.setResetExpiry(resetExpiry);
         userRepository.save(user);
 
-        // Send reset email
         boolean emailSent = emailService.sendPasswordResetCode(email, resetCode);
         if (!emailSent) {
             log.error(SECURITY_PREFIX + " Failed to send password reset email to: {}", email);
@@ -281,13 +276,11 @@ public class AuthService {
             return new ResourceNotFoundException("User not found with email: " + email);
         });
 
-        // Check if reset code exists
         if (user.getResetCode() == null || !user.getResetCode().equals(resetCode)) {
             log.warn(SECURITY_PREFIX + " Invalid reset code for user: {}", email);
             throw new InvalidRequestException("Invalid reset code");
         }
 
-        // Check if reset code expired
         if (user.isResetCodeExpired()) {
             log.warn(SECURITY_PREFIX + " Reset code expired for user: {}", email);
             user.clearResetCode();
@@ -295,7 +288,6 @@ public class AuthService {
             throw new InvalidRequestException("Reset code has expired");
         }
 
-        // Update password and clear reset code
         user.setPassword(passwordEncoder.encode(newPassword));
         user.clearResetCode();
         userRepository.save(user);

@@ -62,7 +62,6 @@ public class BoardService {
                 .canvasWidth(request.getCanvasWidth()).canvasHeight(request.getCanvasHeight())
                 .build();
 
-        // Handle board picture upload if provided
         if (request.getPicture() != null && !request.getPicture().isEmpty()) {
             try {
                 String pictureUrl = fileStorageService.store(request.getPicture());
@@ -70,7 +69,6 @@ public class BoardService {
                 log.debug("Board picture uploaded: {}", pictureUrl);
             } catch (Exception e) {
                 log.warn("Failed to upload board picture during creation: {}", e.getMessage());
-                // Continue without picture - not a critical failure
             }
         }
 
@@ -83,8 +81,8 @@ public class BoardService {
 
         log.info(BOARD_CREATED, newBoard.getBoardGroupId(), request.getName(), ownerEmail);
 
-        // Handle member invitations if provided
-        handleBoardCreationInvitations(newBoard.getBoardGroupId(), request.getInviteEmails(), ownerEmail);
+        handleBoardCreationInvitations(newBoard.getBoardGroupId(), request.getInviteEmails(),
+                ownerEmail);
 
         notificationService.broadcastUserUpdate(ownerEmail);
         return mapToBoardResponse(newMembership);
@@ -342,12 +340,10 @@ public class BoardService {
     }
 
     private MemberDTO toMemberDTO(GroupMember membership) {
-        return MemberDTO.builder()
-            .email(membership.getUser().getEmail())
-            .firstName(membership.getUser().getFirstName())
-            .lastName(membership.getUser().getLastName())
-            .profilePictureUrl(membership.getUser().getProfilePictureUrl())
-            .isAdmin(membership.getIsAdmin())
-            .build();
+        return MemberDTO.builder().email(membership.getUser().getEmail())
+                .firstName(membership.getUser().getFirstName())
+                .lastName(membership.getUser().getLastName())
+                .profilePictureUrl(membership.getUser().getProfilePictureUrl())
+                .isAdmin(membership.getIsAdmin()).build();
     }
 }

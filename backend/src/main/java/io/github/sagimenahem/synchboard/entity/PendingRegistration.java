@@ -1,13 +1,12 @@
 package io.github.sagimenahem.synchboard.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pending_registrations")
@@ -57,23 +56,14 @@ public class PendingRegistration {
         this.createdAt = LocalDateTime.now();
     }
 
-    /**
-     * Check if the verification has expired
-     */
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(this.expiryTime);
     }
 
-    /**
-     * Check if maximum attempts have been exceeded
-     */
     public boolean isMaxAttemptsReached() {
         return this.attempts >= 3;
     }
 
-    /**
-     * Increment attempt counter
-     */
     public void incrementAttempts() {
         this.attempts++;
     }

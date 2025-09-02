@@ -55,13 +55,10 @@ public class JwtService {
         String username = userDetails.getUsername();
         log.debug(SECURITY_PREFIX + " Generating JWT token for user: {}", username);
 
-        String token = Jwts.builder()
-                .claims(extraClaims)
-                .subject(username)
+        String token = Jwts.builder().claims(extraClaims).subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + getExpirationTimeInMillis()))
-                .signWith(getSignInKey())
-                .compact();
+                .signWith(getSignInKey()).compact();
 
         log.info(SECURITY_PREFIX + " JWT token generated for user: {}", username);
         return token;
@@ -100,8 +97,8 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         try {
-            return Jwts.parser().verifyWith((javax.crypto.SecretKey) getSignInKey()).build().parseSignedClaims(token)
-                    .getPayload();
+            return Jwts.parser().verifyWith((javax.crypto.SecretKey) getSignInKey()).build()
+                    .parseSignedClaims(token).getPayload();
         } catch (Exception e) {
             log.error(SECURITY_PREFIX + " Failed to extract claims from token: {}", e.getMessage());
             throw e;

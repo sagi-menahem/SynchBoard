@@ -7,21 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
-import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.LanguagePreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.ThemePreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
-import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
+import io.github.sagimenahem.synchboard.dto.user.*;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
 import io.github.sagimenahem.synchboard.entity.GroupMember;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
-import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
 import io.github.sagimenahem.synchboard.service.board.BoardNotificationService;
+import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -174,8 +168,7 @@ public class UserService {
                 .phoneNumber(user.getPhoneNumber()).dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
                 .boardBackgroundSetting(user.getBoardBackgroundSetting())
-                .preferredLanguage(user.getPreferredLanguage())
-                .build();
+                .preferredLanguage(user.getPreferredLanguage()).build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
@@ -195,97 +188,83 @@ public class UserService {
     @Transactional(readOnly = true)
     public CanvasPreferencesDTO getCanvasPreferences(String userEmail) {
         return getPreferences(userEmail, "canvas", user -> CanvasPreferencesDTO.builder()
-                .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
-                .build());
+                .canvasChatSplitRatio(user.getCanvasChatSplitRatio()).build());
     }
 
     @Transactional
-    public CanvasPreferencesDTO updateCanvasPreferences(String userEmail, CanvasPreferencesDTO preferences) {
-        return updatePreferences(userEmail, "canvas", preferences, 
-            (user, prefs) -> {
-                if (prefs.getCanvasChatSplitRatio() != null) {
-                    user.setCanvasChatSplitRatio(prefs.getCanvasChatSplitRatio());
-                }
-            },
-            user -> CanvasPreferencesDTO.builder()
-                    .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
-                    .build());
+    public CanvasPreferencesDTO updateCanvasPreferences(String userEmail,
+            CanvasPreferencesDTO preferences) {
+        return updatePreferences(userEmail, "canvas", preferences, (user, prefs) -> {
+            if (prefs.getCanvasChatSplitRatio() != null) {
+                user.setCanvasChatSplitRatio(prefs.getCanvasChatSplitRatio());
+            }
+        }, user -> CanvasPreferencesDTO.builder()
+                .canvasChatSplitRatio(user.getCanvasChatSplitRatio()).build());
     }
 
     @Transactional(readOnly = true)
     public ToolPreferencesDTO getToolPreferences(String userEmail) {
-        return getPreferences(userEmail, "tool", user -> ToolPreferencesDTO.builder()
-                .defaultTool(user.getDefaultTool())
-                .defaultStrokeColor(user.getDefaultStrokeColor())
-                .defaultStrokeWidth(user.getDefaultStrokeWidth())
-                .build());
+        return getPreferences(userEmail, "tool",
+                user -> ToolPreferencesDTO.builder().defaultTool(user.getDefaultTool())
+                        .defaultStrokeColor(user.getDefaultStrokeColor())
+                        .defaultStrokeWidth(user.getDefaultStrokeWidth()).build());
     }
 
     @Transactional
-    public ToolPreferencesDTO updateToolPreferences(String userEmail, ToolPreferencesDTO preferences) {
-        return updatePreferences(userEmail, "tool", preferences,
-            (user, prefs) -> {
-                if (prefs.getDefaultTool() != null) {
-                    user.setDefaultTool(prefs.getDefaultTool());
-                }
-                if (prefs.getDefaultStrokeColor() != null) {
-                    user.setDefaultStrokeColor(prefs.getDefaultStrokeColor());
-                }
-                if (prefs.getDefaultStrokeWidth() != null) {
-                    user.setDefaultStrokeWidth(prefs.getDefaultStrokeWidth());
-                }
-            },
-            user -> ToolPreferencesDTO.builder()
-                    .defaultTool(user.getDefaultTool())
-                    .defaultStrokeColor(user.getDefaultStrokeColor())
-                    .defaultStrokeWidth(user.getDefaultStrokeWidth())
-                    .build());
+    public ToolPreferencesDTO updateToolPreferences(String userEmail,
+            ToolPreferencesDTO preferences) {
+        return updatePreferences(userEmail, "tool", preferences, (user, prefs) -> {
+            if (prefs.getDefaultTool() != null) {
+                user.setDefaultTool(prefs.getDefaultTool());
+            }
+            if (prefs.getDefaultStrokeColor() != null) {
+                user.setDefaultStrokeColor(prefs.getDefaultStrokeColor());
+            }
+            if (prefs.getDefaultStrokeWidth() != null) {
+                user.setDefaultStrokeWidth(prefs.getDefaultStrokeWidth());
+            }
+        }, user -> ToolPreferencesDTO.builder().defaultTool(user.getDefaultTool())
+                .defaultStrokeColor(user.getDefaultStrokeColor())
+                .defaultStrokeWidth(user.getDefaultStrokeWidth()).build());
     }
 
     @Transactional(readOnly = true)
     public LanguagePreferencesDTO getLanguagePreferences(String userEmail) {
         return getPreferences(userEmail, "language", user -> LanguagePreferencesDTO.builder()
-                .preferredLanguage(user.getPreferredLanguage())
-                .build());
+                .preferredLanguage(user.getPreferredLanguage()).build());
     }
 
     @Transactional
-    public LanguagePreferencesDTO updateLanguagePreferences(String userEmail, LanguagePreferencesDTO preferences) {
-        return updatePreferences(userEmail, "language", preferences,
-            (user, prefs) -> {
-                if (prefs.getPreferredLanguage() != null) {
-                    user.setPreferredLanguage(prefs.getPreferredLanguage());
-                }
-            },
-            user -> LanguagePreferencesDTO.builder()
-                    .preferredLanguage(user.getPreferredLanguage())
-                    .build());
+    public LanguagePreferencesDTO updateLanguagePreferences(String userEmail,
+            LanguagePreferencesDTO preferences) {
+        return updatePreferences(userEmail, "language", preferences, (user, prefs) -> {
+            if (prefs.getPreferredLanguage() != null) {
+                user.setPreferredLanguage(prefs.getPreferredLanguage());
+            }
+        }, user -> LanguagePreferencesDTO.builder().preferredLanguage(user.getPreferredLanguage())
+                .build());
     }
 
     @Transactional(readOnly = true)
     public ThemePreferencesDTO getThemePreferences(String userEmail) {
-        return getPreferences(userEmail, "theme", user -> ThemePreferencesDTO.builder()
-                .theme(user.getThemePreference())
-                .build());
+        return getPreferences(userEmail, "theme",
+                user -> ThemePreferencesDTO.builder().theme(user.getThemePreference()).build());
     }
 
     @Transactional
-    public ThemePreferencesDTO updateThemePreferences(String userEmail, ThemePreferencesDTO preferences) {
-        return updatePreferences(userEmail, "theme", preferences,
-            (user, prefs) -> {
-                if (prefs.getTheme() != null) {
-                    user.setThemePreference(prefs.getTheme());
-                }
-            },
-            user -> ThemePreferencesDTO.builder()
-                    .theme(user.getThemePreference())
-                    .build());
+    public ThemePreferencesDTO updateThemePreferences(String userEmail,
+            ThemePreferencesDTO preferences) {
+        return updatePreferences(userEmail, "theme", preferences, (user, prefs) -> {
+            if (prefs.getTheme() != null) {
+                user.setThemePreference(prefs.getTheme());
+            }
+        }, user -> ThemePreferencesDTO.builder().theme(user.getThemePreference()).build());
     }
 
-    // Generic preference management methods
-    private <T> T getPreferences(String userEmail, String preferenceType, PreferenceMapper<T> mapper) {
+    private <T> T getPreferences(String userEmail, String preferenceType,
+            PreferenceMapper<T> mapper) {
         log.debug("Fetching {} preferences for user: {}", preferenceType, userEmail);
-        
+
         User user = findUserOrThrow(userEmail);
         return mapper.map(user);
     }
@@ -293,15 +272,15 @@ public class UserService {
     private <T> T updatePreferences(String userEmail, String preferenceType, T preferences,
             PreferenceUpdater<T> updater, PreferenceMapper<T> mapper) {
         log.debug("Updating {} preferences for user: {}", preferenceType, userEmail);
-        
+
         User user = findUserOrThrow(userEmail);
         updater.update(user, preferences);
         userRepository.save(user);
-        
-        log.info("{} preferences updated for user: {}", 
-            preferenceType.substring(0, 1).toUpperCase() + preferenceType.substring(1), 
-            userEmail);
-        
+
+        log.info("{} preferences updated for user: {}",
+                preferenceType.substring(0, 1).toUpperCase() + preferenceType.substring(1),
+                userEmail);
+
         return mapper.map(user);
     }
 

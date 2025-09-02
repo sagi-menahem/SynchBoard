@@ -30,7 +30,7 @@ public class BoardMemberService {
                 private final GroupMember leavingMember;
                 private final List<GroupMember> allMembers;
 
-                public BoardLeavingContext(Long boardId, String userEmail, 
+                public BoardLeavingContext(Long boardId, String userEmail,
                                 GroupMember leavingMember, List<GroupMember> allMembers) {
                         this.boardId = boardId;
                         this.userEmail = userEmail;
@@ -38,10 +38,21 @@ public class BoardMemberService {
                         this.allMembers = allMembers;
                 }
 
-                public Long getBoardId() { return boardId; }
-                public String getUserEmail() { return userEmail; }
-                public GroupMember getLeavingMember() { return leavingMember; }
-                public List<GroupMember> getAllMembers() { return allMembers; }
+                public Long getBoardId() {
+                        return boardId;
+                }
+
+                public String getUserEmail() {
+                        return userEmail;
+                }
+
+                public GroupMember getLeavingMember() {
+                        return leavingMember;
+                }
+
+                public List<GroupMember> getAllMembers() {
+                        return allMembers;
+                }
         }
 
         private final GroupMemberRepository groupMemberRepository;
@@ -75,7 +86,6 @@ public class BoardMemberService {
                         throw new AccessDeniedException(MessageConstants.AUTH_NOT_ADMIN);
                 }
 
-                // Check for self-invitation
                 if (invitedUserEmail.equals(invitingUserEmail)) {
                         log.warn("Self-invitation attempt: user {} tried to invite themselves to board {}",
                                         invitingUserEmail, boardId);
@@ -197,16 +207,16 @@ public class BoardMemberService {
                 log.info("User {} is attempting to leave board {}", userEmail, boardId);
 
                 BoardLeavingContext context = prepareBoardLeavingContext(boardId, userEmail);
-                
+
                 if (isLastMember(context)) {
                         handleBoardDeletion(context);
                         return;
                 }
-                
+
                 if (isLastAdminWithOtherMembers(context)) {
                         promoteNewAdmin(context);
                 }
-                
+
                 removeMemberAndNotify(context);
         }
 
@@ -230,34 +240,33 @@ public class BoardMemberService {
                 if (!context.getLeavingMember().getIsAdmin()) {
                         return false;
                 }
-                
-                long adminCount = context.getAllMembers().stream()
-                        .filter(GroupMember::getIsAdmin)
-                        .count();
-                        
+
+                long adminCount = context.getAllMembers().stream().filter(GroupMember::getIsAdmin)
+                                .count();
+
                 return adminCount <= 1 && context.getAllMembers().size() > 1;
         }
 
         private void handleBoardDeletion(BoardLeavingContext context) {
-                log.warn("User {} is the last member. Deleting board {}.", 
-                        context.getUserEmail(), context.getBoardId());
-                deleteBoardAndAssociatedData(context.getBoardId(), 
-                        context.getUserEmail(), context.getAllMembers());
+                log.warn("User {} is the last member. Deleting board {}.", context.getUserEmail(),
+                                context.getBoardId());
+                deleteBoardAndAssociatedData(context.getBoardId(), context.getUserEmail(),
+                                context.getAllMembers());
         }
 
         private void promoteNewAdmin(BoardLeavingContext context) {
-                log.info("User {} is the last admin. Promoting a new admin for board {}.", 
-                        context.getUserEmail(), context.getBoardId());
-                        
-                context.getAllMembers().stream()
-                        .filter(member -> !member.getUserEmail().equals(context.getUserEmail()))
-                        .findFirst()
-                        .ifPresent(memberToPromote -> {
-                                log.warn("Promoting user {} to admin for board {}.",
-                                        memberToPromote.getUserEmail(), context.getBoardId());
-                                memberToPromote.setIsAdmin(true);
-                                groupMemberRepository.save(memberToPromote);
-                        });
+                log.info("User {} is the last admin. Promoting a new admin for board {}.",
+                                context.getUserEmail(), context.getBoardId());
+
+                context.getAllMembers().stream().filter(
+                                member -> !member.getUserEmail().equals(context.getUserEmail()))
+                                .findFirst().ifPresent(memberToPromote -> {
+                                        log.warn("Promoting user {} to admin for board {}.",
+                                                        memberToPromote.getUserEmail(),
+                                                        context.getBoardId());
+                                        memberToPromote.setIsAdmin(true);
+                                        groupMemberRepository.save(memberToPromote);
+                                });
         }
 
         private void removeMemberAndNotify(BoardLeavingContext context) {
@@ -265,7 +274,7 @@ public class BoardMemberService {
                 log.info(BOARD_MEMBER_LEFT, context.getBoardId(), context.getUserEmail());
 
                 notificationService.broadcastBoardUpdate(context.getBoardId(),
-                        BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, context.getUserEmail());
+                                BoardUpdateDTO.UpdateType.MEMBERS_UPDATED, context.getUserEmail());
                 notificationService.broadcastUserUpdate(context.getUserEmail());
         }
 
@@ -328,13 +337,11 @@ public class BoardMemberService {
         }
 
         private MemberDTO toMemberDTO(GroupMember membership) {
-                return MemberDTO.builder()
-                        .email(membership.getUser().getEmail())
-                        .firstName(membership.getUser().getFirstName())
-                        .lastName(membership.getUser().getLastName())
-                        .profilePictureUrl(membership.getUser().getProfilePictureUrl())
-                        .isAdmin(membership.getIsAdmin())
-                        .build();
+                return MemberDTO.builder().email(membership.getUser().getEmail())
+                                .firstName(membership.getUser().getFirstName())
+                                .lastName(membership.getUser().getLastName())
+                                .profilePictureUrl(membership.getUser().getProfilePictureUrl())
+                                .isAdmin(membership.getIsAdmin()).build();
         }
 
 }
