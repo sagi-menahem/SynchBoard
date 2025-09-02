@@ -108,7 +108,7 @@ apiClient.interceptors.response.use(
         `common:errors.${backendKey}`,
         `auth:${backendKey}`,
         `auth:errors.${backendKey}`,
-        backendKey
+        backendKey,
       ];
       
       let translated = false;

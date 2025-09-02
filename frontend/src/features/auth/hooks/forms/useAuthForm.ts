@@ -62,7 +62,7 @@ export const authErrorHandling = {
             `auth:errors.${keyWithoutNamespace}`,
             `auth:${keyWithoutNamespace}`,
             `auth:${message}`,
-            message
+            message,
           ];
           
           for (const key of possibleKeys) {

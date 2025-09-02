@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
 
-import { Button, Modal } from 'shared/ui';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
+import { Button, Modal } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 interface BaseAuthModalProps {

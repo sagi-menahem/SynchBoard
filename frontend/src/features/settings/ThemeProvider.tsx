@@ -106,7 +106,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         
         // Check if there was a recent theme change that we should not override
         const recentChange = recentThemeChangeRef.current;
-        const isRecentChange = recentChange && (Date.now() - recentChange.timestamp) < TIMING_CONSTANTS.THEME_CHANGE_DETECTION_TIMEOUT;
+        const isRecentChange = recentChange && 
+          (Date.now() - recentChange.timestamp) < TIMING_CONSTANTS.THEME_CHANGE_DETECTION_TIMEOUT;
         
         if (isRecentChange) {
           setIsLoading(false);

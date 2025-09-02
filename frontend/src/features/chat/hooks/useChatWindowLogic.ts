@@ -31,18 +31,18 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     // Track this as a new message for animation
     const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
     setNewMessageIds((prev) => new Set([...prev, messageKey]));
-    
+
     // Track this message as pending for the configured timeout
     if (message.instanceId) {
       setPendingMessageIds((prev) => new Set([...prev, message.instanceId!]));
-      
+
       setTimeout(() => {
         setPendingMessageIds((prev) => {
           const newSet = new Set(prev);
           newSet.delete(message.instanceId!);
           return newSet;
         });
-        
+
         // Also clean up animation tracking after animation completes
         setNewMessageIds((prev) => {
           const newSet = new Set(prev);
@@ -60,11 +60,11 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
     const endElement = messagesEndRef.current;
-    
+
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
-    
+
     if (endElement) {
       endElement.scrollIntoView({ behavior: 'smooth' });
     }
@@ -81,7 +81,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
         setSearchTerm('');
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
@@ -92,18 +92,18 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
       userFullName: '',
       userProfilePictureUrl: undefined,
     };
-    
+
     return await sendMessage(content, boardId, userEmail, userInfo, addOptimisticMessage, startPendingTimer);
   };
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return messages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
-      
+
       // Simple pending check: if instanceId is in pendingMessageIds, show as pending
       const isPending = msg.instanceId && pendingMessageIds.has(msg.instanceId);
       const status = isPending ? 'pending' : 'confirmed';
-      
+
       return {
         ...enhancedMsg,
         transactionStatus: status,
@@ -123,9 +123,9 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     if (!searchTerm.trim()) {
       return allMessages;
     }
-    
+
     const lowercaseSearch = searchTerm.toLowerCase();
-    return allMessages.filter((msg) => 
+    return allMessages.filter((msg) =>
       msg.content.toLowerCase().includes(lowercaseSearch) ||
       msg.senderEmail.toLowerCase().includes(lowercaseSearch),
     );
@@ -160,17 +160,18 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     if (!savedColor) {
       return {};
     }
-    
+
     const backgroundOption = CHAT_BACKGROUND_OPTIONS.find((option) => option.color === savedColor);
     if (backgroundOption?.cssVar) {
       return { backgroundColor: `var(${backgroundOption.cssVar})` };
     }
-    
+
     return { backgroundColor: savedColor };
   };
 
   const commitChatTransaction = useCallback((_instanceId: string) => {
-    // The pending state will automatically clear after the configured timeout via the setTimeout in addOptimisticMessage
+    // The pending state will automatically clear after the configured timeout
+    // via the setTimeout in addOptimisticMessage
     // No complex timing logic needed anymore!
   }, []);
 
@@ -188,17 +189,17 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     // Refs
     messagesEndRef,
     messagesContainerRef,
-    
+
     // State
     searchTerm,
     setSearchTerm,
     searchVisible,
     setSearchVisible,
     previousMessageCount,
-    
+
     // Computed values
     filteredMessages,
-    
+
     // Handlers
     handleSendMessage,
     handleSearchClose,

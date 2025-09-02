@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Hash, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Modal } from 'shared/ui';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
+import { Button, Input, Modal } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 import { useResendVerificationCode, useVerifyEmailForm } from '../hooks/forms';
