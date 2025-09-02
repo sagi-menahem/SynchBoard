@@ -1,7 +1,5 @@
 import { lazy, Suspense } from 'react';
 
-import AuthPage from 'features/auth/pages/AuthPage';
-import BoardListPage from 'features/board/pages/BoardListPage';
 import { useTranslation } from 'react-i18next';
 import { Route, Routes } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
@@ -11,6 +9,9 @@ import { Layout } from 'shared/ui/layout';
 import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
 import RootRedirect from 'shared/ui/routing/RootRedirect';
 
+// Lazy load all page components for optimal bundle splitting
+const AuthPage = lazy(() => import('features/auth/pages/AuthPage'));
+const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
 const BoardPage = lazy(() => import('features/board/pages/BoardPage'));
 const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
@@ -32,7 +33,9 @@ export function AppRoutes() {
         path="/auth" 
         element={
           <ErrorBoundary>
-            <AuthPage />
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
           </ErrorBoundary>
         } 
       />
@@ -40,7 +43,9 @@ export function AppRoutes() {
         path={APP_ROUTES.AUTH_CALLBACK} 
         element={
           <ErrorBoundary>
-            <AuthPage />
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
           </ErrorBoundary>
         } 
       />
@@ -48,7 +53,9 @@ export function AppRoutes() {
         path={APP_ROUTES.AUTH_ERROR} 
         element={
           <ErrorBoundary>
-            <AuthPage />
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
           </ErrorBoundary>
         } 
       />
@@ -59,7 +66,9 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <BoardListPage />
+              <Suspense fallback={<LazyPageLoader />}>
+                <BoardListPage />
+              </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
         } 

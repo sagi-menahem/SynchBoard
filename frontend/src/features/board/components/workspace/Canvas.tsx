@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'features/board/constants/BoardConstants';
 import { useCanvas } from 'features/board/hooks/workspace/canvas/useCanvas';
@@ -12,6 +12,13 @@ import type { Tool } from 'shared/types/CommonTypes';
 
 import styles from './Canvas.module.scss';
 import TextInputOverlay from './TextInputOverlay';
+
+// Default canvas configuration - memoized to prevent recreation
+const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
+  backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
+  width: CANVAS_CONFIG.DEFAULT_WIDTH,
+  height: CANVAS_CONFIG.DEFAULT_HEIGHT,
+};
 
 interface CanvasProps {
     instanceId: string;
@@ -32,14 +39,8 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   
   const { canvasRef, containerRef, handleMouseDown } = useCanvas(props);
   
-  const {
-    textInput,
-    recolorCursor,
-    handleCanvasClick,
-    handleCanvasMouseMove,
-    handleTextSubmit,
-    handleTextCancel,
-  } = useCanvasInteractions({
+  // Memoize canvas interactions config to prevent unnecessary re-renders
+  const canvasInteractionsConfig = useMemo(() => ({
     tool: props.tool,
     strokeColor: props.strokeColor,
     fontSize: props.fontSize,
@@ -50,47 +51,73 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     onColorPick: props.onColorPick,
     canvasBackgroundColor: props.canvasConfig?.backgroundColor,
     handleMouseDown,
-  });
+  }), [
+    props.tool, props.strokeColor, props.fontSize, props.instanceId, 
+    props.objects, canvasRef, props.onDraw, props.onColorPick, 
+    props.canvasConfig?.backgroundColor, handleMouseDown,
+  ]);
   
-  // Update useCanvas with the text input handler - for now we'll work with the existing pattern
+  const {
+    textInput,
+    recolorCursor,
+    handleCanvasClick,
+    handleCanvasMouseMove,
+    handleTextSubmit,
+    handleTextCancel,
+  } = useCanvasInteractions(canvasInteractionsConfig);
 
-  const canvasConfig = props.canvasConfig ?? {
-    backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
-    width: CANVAS_CONFIG.DEFAULT_WIDTH,
-    height: CANVAS_CONFIG.DEFAULT_HEIGHT,
-  };
+  // Memoize canvas configuration to prevent unnecessary re-renders
+  const canvasConfig = useMemo(() => 
+    props.canvasConfig ?? DEFAULT_CANVAS_CONFIG,
+    [props.canvasConfig],
+  );
 
+  // Memoize computed values
   const canvasWidth = canvasConfig.width;
   const canvasHeight = canvasConfig.height;
   const padding = 0; // Removed padding for edge-to-edge canvas
-
   const hideBackground = false;
 
-  const canvasContainerStyle = {
+  // Memoize style objects to prevent re-renders
+  const canvasContainerStyle = useMemo(() => ({
     minWidth: `${canvasWidth + padding}px`,
     minHeight: `${canvasHeight + padding}px`,
-  };
+  }), [canvasWidth, canvasHeight, padding]);
 
+  const canvasWrapperStyle = useMemo(() => ({
+    width: `${canvasWidth}px`,
+    height: `${canvasHeight}px`,
+  }), [canvasWidth, canvasHeight]);
 
+  const canvasStyle = useMemo(() => ({
+    backgroundColor: canvasConfig.backgroundColor,
+    cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
+  }), [canvasConfig.backgroundColor, props.tool, recolorCursor]);
+
+  // Memoize computed flags and class names
   const shouldShowLoading = props.isLoading ?? false;
-  const containerClassName = `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`;
-  const canvasClassName = `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`;
-  const canvasContainerClassName = `${styles.canvasContainer} ${hideBackground ? styles.hideBackground : ''}`;
+  const containerClassName = useMemo(() => 
+    `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`,
+    [shouldShowBanner],
+  );
+  const canvasClassName = useMemo(() => 
+    `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`,
+    [shouldBlockFunctionality],
+  );
+  const canvasContainerClassName = useMemo(() => 
+    `${styles.canvasContainer} ${hideBackground ? styles.hideBackground : ''}`,
+    [hideBackground],
+  );
 
   return (
     <div ref={containerRef} className={containerClassName}>
       <div 
         className={canvasContainerClassName}
-        style={{ 
-          ...canvasContainerStyle,
-        }}
+        style={canvasContainerStyle}
       >
         <div 
           className={styles.canvasWrapper} 
-          style={{ 
-            width: `${canvasWidth}px`,
-            height: `${canvasHeight}px`,
-          }}
+          style={canvasWrapperStyle}
         >
           <canvas
             ref={canvasRef}
@@ -99,10 +126,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
             onMouseDown={handleCanvasClick}
             onMouseMove={handleCanvasMouseMove}
             className={canvasClassName}
-            style={{ 
-              backgroundColor: canvasConfig.backgroundColor,
-              cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
-            }}
+            style={canvasStyle}
           />
           
           {textInput && (

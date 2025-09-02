@@ -88,10 +88,10 @@
   padding: 0;
   user-select: none;
 
-  // Both themes - black color
+  // Use theme-appropriate text colors from variables
   body[data-theme='dark'] &,
   body[data-theme='light'] & {
-    color: #000000;
+    color: theme.$text-secondary;
   }
 }
 
