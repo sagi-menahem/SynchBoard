@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 
 import type {
   ButtonToolbarItem,
@@ -18,7 +18,7 @@ import { ViewToggle } from '../navigation/ViewToggle';
 
 import styles from './UniversalToolbar.module.scss';
 
-const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
+const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = React.memo(({ item }) => {
   const {
     icon: Icon,
     label,
@@ -29,13 +29,17 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
     className,
   } = item;
 
+  const isIconOnly = useMemo(() => 
+    variant === 'navigation' || variant === 'icon' || className === 'iconOnlyButton',
+    [variant, className],
+  );
+
+  const buttonVariant = useMemo(() => 
+    isIconOnly ? 'icon' : variant,
+    [isIconOnly, variant],
+  );
+
   if (!visible) {return null;}
-
-  // Check if this is an icon-only button (navigation or has iconOnlyButton class)
-  const isIconOnly = variant === 'navigation' || variant === 'icon' || className === 'iconOnlyButton';
-
-  // Use icon variant for icon-only buttons
-  const buttonVariant = isIconOnly ? 'icon' : variant;
 
   return (
     <Button
@@ -50,7 +54,9 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = ({ item }) => {
       {!isIconOnly && <span className={styles.buttonLabel}>{label}</span>}
     </Button>
   );
-};
+});
+
+ToolbarButton.displayName = 'ToolbarButton';
 
 const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
   const { content, visible = true, className, clickable = false, onClick } = item;
@@ -141,47 +147,65 @@ const ToolbarCustom: React.FC<{ item: CustomToolbarItem }> = ({ item }) => {
   );
 };
 
-const renderToolbarItem = (item: ToolbarItem, index: number): React.ReactNode => {
-  const key = item.key ?? `${item.type}-${index}`;
+const ToolbarSection: React.FC<{ 
+  items: ToolbarItem[]; 
+  className?: string; 
+}> = React.memo(({ items, className }) => {
+  const renderToolbarItem = useCallback((item: ToolbarItem, index: number): React.ReactNode => {
+    const key = item.key ?? `${item.type}-${index}`;
 
-  switch (item.type) {
-    case 'title':
-      return <ToolbarTitle key={key} item={item} />;
-    case 'button':
-      return <ToolbarButton key={key} item={item} />;
-    case 'search':
-      return <ToolbarSearch key={key} item={item} />;
-    case 'viewToggle':
-      return <ToolbarViewToggle key={key} item={item} />;
-    case 'memberActivity':
-      return <ToolbarMemberActivity key={key} item={item} />;
-    case 'custom':
-      return <ToolbarCustom key={key} item={item} />;
-    default:
-      return null;
-  }
-};
+    switch (item.type) {
+      case 'title':
+        return <ToolbarTitle key={key} item={item} />;
+      case 'button':
+        return <ToolbarButton key={key} item={item} />;
+      case 'search':
+        return <ToolbarSearch key={key} item={item} />;
+      case 'viewToggle':
+        return <ToolbarViewToggle key={key} item={item} />;
+      case 'memberActivity':
+        return <ToolbarMemberActivity key={key} item={item} />;
+      case 'custom':
+        return <ToolbarCustom key={key} item={item} />;
+      default:
+        return null;
+    }
+  }, []);
 
-const ToolbarSection: React.FC<{ items: ToolbarItem[]; className?: string }> = ({ items, className }) => {
+  const sectionClasses = useMemo(() => 
+    `${styles.toolbarSection} ${className ?? ''}`,
+    [className],
+  );
+
   return (
-    <div className={`${styles.toolbarSection} ${className ?? ''}`}>
+    <div className={sectionClasses}>
       {items.map(renderToolbarItem)}
     </div>
   );
-};
+});
 
-export const UniversalToolbar: React.FC<UniversalToolbarProps> = ({ config, className }) => {
-  const { leftSection = [], centerSection = [], rightSection = [] } = config;
-  const toolbarRef = React.useRef<HTMLElement>(null);
+ToolbarSection.displayName = 'ToolbarSection';
 
+export const UniversalToolbar: React.FC<UniversalToolbarProps> = React.memo(
+  ({ config, className }) => {
+    const { leftSection = [], centerSection = [], rightSection = [] } = config;
+    const toolbarRef = React.useRef<HTMLElement>(null);
 
-  return (
-    <header ref={toolbarRef} className={`${styles.universalToolbar} ${className ?? ''}`}>
-      <ToolbarSection items={leftSection} className={styles.leftSection} />
-      <ToolbarSection items={centerSection} className={styles.centerSection} />
-      <ToolbarSection items={rightSection} className={styles.rightSection} />
-    </header>
-  );
-};
+    const toolbarClasses = useMemo(() => 
+      `${styles.universalToolbar} ${className ?? ''}`,
+      [className],
+    );
+
+    return (
+      <header ref={toolbarRef} className={toolbarClasses}>
+        <ToolbarSection items={leftSection} className={styles.leftSection} />
+        <ToolbarSection items={centerSection} className={styles.centerSection} />
+        <ToolbarSection items={rightSection} className={styles.rightSection} />
+      </header>
+    );
+  },
+);
+
+UniversalToolbar.displayName = 'UniversalToolbar';
 
 export default UniversalToolbar;

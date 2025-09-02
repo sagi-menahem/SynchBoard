@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 
 import { HexColorPicker } from 'react-colorful';
 import { useTranslation } from 'react-i18next';
@@ -72,26 +72,25 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   }, [showPicker]);
 
-  const handleSwatchClick = () => {
+  const handleSwatchClick = useCallback(() => {
     if (!disabled) {
       setShowPicker(!showPicker);
     }
-  };
+  }, [disabled, showPicker]);
 
-
-  const handleColorChange = (color: string) => {
+  const handleColorChange = useCallback((color: string) => {
     onChange(color);
-  };
+  }, [onChange]);
 
-  const handlePaletteColorClick = (color: string) => {
+  const handlePaletteColorClick = useCallback((color: string) => {
     onChange(color);
-  };
+  }, [onChange]);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = useCallback(() => {
     setIsDragging(true);
-  };
+  }, []);
 
-  const handleMouseUp = (e: React.MouseEvent) => {
+  const handleMouseUp = useCallback((e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     const isSaturationArea = target.closest('.react-colorful__saturation');
     
@@ -99,7 +98,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     if (isSaturationArea) {
       setShowPicker(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleGlobalMouseUp = (e: MouseEvent) => {
@@ -122,15 +121,30 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   }, [isDragging]);
 
+  const containerClasses = useMemo(() => 
+    `${styles.colorPickerContainer} ${className}`, 
+    [className],
+  );
+
+  const swatchClasses = useMemo(() => 
+    `${styles.swatch} ${disabled ? styles.disabled : ''}`, 
+    [disabled],
+  );
+
+  const popoverStyle = useMemo(() => ({
+    top: `${popoverPosition.top}px`,
+    left: `${popoverPosition.left}px`,
+  }), [popoverPosition.top, popoverPosition.left]);
+
   return (
-    <div className={`${styles.colorPickerContainer} ${className}`}>
+    <div className={containerClasses}>
       {label && <label className={styles.label}>{label}</label>}
       <Button
         id={id}
         ref={swatchRef}
         type="button"
         variant="icon"
-        className={`${styles.swatch} ${disabled ? styles.disabled : ''}`}
+        className={swatchClasses}
         onClick={handleSwatchClick}
         disabled={disabled}
         aria-label={label ?? t('common:chooseColor')}
@@ -146,10 +160,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         <div 
           ref={pickerRef} 
           className={styles.popover}
-          style={{
-            top: `${popoverPosition.top}px`,
-            left: `${popoverPosition.left}px`,
-          }}
+          style={popoverStyle}
         >
           <div className={styles.colorfulWrapper}>
             <div

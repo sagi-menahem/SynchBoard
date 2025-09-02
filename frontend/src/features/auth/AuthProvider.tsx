@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, type ReactNode } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 
 import { getUserProfile } from 'features/settings/services/userService';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
@@ -67,23 +67,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, [clearExpiryWarning]);
 
-  const login = (newToken: string) => {
+  const login = useCallback((newToken: string) => {
     setToken(newToken);
     localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, newToken);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setToken(null);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-  };
+  }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     token,
     userEmail,
     isInitializing,
     login,
     logout,
-  };
+  }), [token, userEmail, isInitializing, login, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
