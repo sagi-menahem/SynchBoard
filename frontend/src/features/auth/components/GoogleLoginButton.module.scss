@@ -5,7 +5,8 @@
   @include theme.flex-center;
   @include theme.button-transition;
   @include theme.rounded-large;
-  width: 50%;
+  width: 65%; // Increased from 50% to accommodate text better
+  max-width: 280px; // Add max-width to prevent it getting too wide
   margin: 0 auto;
   padding: theme.$spacing-3 theme.$spacing-4;
   border: 1px solid #dadce0;

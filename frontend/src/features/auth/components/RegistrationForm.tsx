@@ -20,7 +20,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
 
   return (
     <form action={submitAction} className={styles.form}>
-      <div className={styles.field}>
+      {/* Email and Password - full width for security fields */}
+      <div className={`${styles.field} ${styles.fullWidth}`}>
         <label htmlFor="register-email">
           <Mail size={14} />
           {t('common:form.label.email')}
@@ -35,7 +36,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         />
       </div>
 
-      <div className={styles.field}>
+      <div className={`${styles.field} ${styles.fullWidth}`}>
         <label htmlFor="register-password">
           <Lock size={14} />
           {t('common:form.label.password')}
@@ -50,6 +51,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         />
       </div>
 
+      {/* Name fields - two columns */}
       <div className={styles.field}>
         <label htmlFor="register-firstName">
           <User size={14} />
@@ -78,7 +80,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         />
       </div>
 
-      <div className={styles.field}>
+      {/* Gender - full width for radio buttons */}
+      <div className={`${styles.field} ${styles.fullWidth}`}>
         <label htmlFor="register-gender">
           <User size={14} />
           {t('common:form.label.gender')}
@@ -100,6 +103,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <input type="hidden" name="gender" value={gender} />
       </div>
 
+      {/* Date and Phone - two columns */}
       <div className={styles.field}>
         <label htmlFor="register-dateOfBirth">
           <Calendar size={14} />
@@ -126,7 +130,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         />
       </div>
 
-      <Button type="submit" variant="primary" disabled={isPending} className={styles.submitButton}>
+      <Button type="submit" variant="primary" disabled={isPending} className={`${styles.submitButton} ${styles.fullWidth}`}>
         <UserPlus size={16} />
         {isPending ? t('common:button.registering') : t('auth:registerForm.button')}
       </Button>

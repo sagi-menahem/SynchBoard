@@ -2,10 +2,20 @@
 
 .form {
     @include theme.form-base;
+    // Much more compact spacing for auth forms
+    gap: theme.$spacing-2; // Much reduced spacing
+    // Remove any negative margins or positioning that might cause edge flush
+    margin: 0;
+    position: relative;
+    width: 100%; // Take full width of parent container
+    max-width: 400px; // But don't exceed reasonable form width
 }
 
 .field {
     @include theme.form-field;
+    // Compact spacing for auth form fields only
+    margin-bottom: 0; // Remove margin since gap handles spacing
+    gap: theme.$spacing-1; // Minimal gap
 }
 
 .field label {
@@ -32,7 +42,7 @@
 
 .divider {
     position: relative;
-    margin: theme.$spacing-6 0;
+    margin: theme.$spacing-3 0; // Further reduced for compactness
     text-align: center;
 }
 
@@ -40,8 +50,8 @@
     content: '';
     position: absolute;
     top: 50%;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
+    left: 0;
+    right: 0;
     height: 1px;
     background: theme.$border;
     transform: translateY(-50%);
@@ -59,8 +69,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 0.4rem; // Tight spacing
+    margin-top: 0.4rem; // Minimal margin
 }
 
 .forgotPasswordButton {

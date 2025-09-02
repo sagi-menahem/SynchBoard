@@ -1,6 +1,17 @@
 // Import design tokens first
 @use 'styles/design-tokens' as dt;
 
+// App content layout - add banner padding to all content EXCEPT auth pages
+.app-content {
+    padding-top: var(--banner-height, 0px);
+    transition: padding-top var(--transition-duration-slow, 0.3s) ease-in-out;
+    
+    // Auth pages should not have banner padding - they are full-screen experiences
+    [data-auth-page] {
+        margin-top: calc(-1 * var(--banner-height, 0px));
+    }
+}
+
 // ========================================
 // GLOBAL STYLES - SynchBoard
 // ========================================
@@ -155,21 +166,21 @@ body[data-theme='light'] {
 // Dark Theme
 body[data-theme='dark'] {
   // Dark Theme Colors
-  --color-primary: #{dt.$color-gray-50};
-  --color-primary-hover: #{dt.$color-white};
-  --color-primary-light: #{dt.$color-gray-900};
+  --color-primary: #{dt.$color-primary};
+  --color-primary-hover: #{dt.$color-primary-hover};
+  --color-primary-light: #{dt.$color-primary-light};
 
   --color-secondary: #{dt.$color-gray-500};
   --color-secondary-hover: #{dt.$color-gray-400};
 
-  --color-background: #{dt.$color-black};
-  --color-surface: #{dt.$color-gray-900};
-  --color-surface-elevated: #{dt.$color-gray-800};
+  --color-background: #{dt.$color-gray-900};
+  --color-surface: #{dt.$color-gray-800};
+  --color-surface-elevated: #{dt.$color-gray-700};
   --color-surface-hover: #{dt.$color-gray-700};
 
-  --color-border: #{dt.$color-gray-700};
-  --color-border-strong: #{dt.$color-gray-600};
-  --color-border-light: #{dt.$color-gray-900};
+  --color-border: #{dt.$color-gray-600};
+  --color-border-strong: #{dt.$color-gray-500};
+  --color-border-light: #{dt.$color-gray-700};
 
   --color-text-primary: #{dt.$color-gray-50};
   --color-text-secondary: #{dt.$color-gray-300};
@@ -225,8 +236,8 @@ body[data-theme='dark'] {
   --language-toggle-bg: #374151;
 
   // Button Palette - Dark Theme
-  --btn-primary-bg: #374151;
-  --btn-primary-bg-hover: #4b5563;
+  --btn-primary-bg: #{dt.$color-primary};
+  --btn-primary-bg-hover: #{dt.$color-primary-hover};
   --btn-primary-text: #{dt.$color-gray-50};
 
   --btn-secondary-bg: #{dt.$color-gray-700};

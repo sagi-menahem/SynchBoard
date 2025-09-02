@@ -55,7 +55,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <PageTransition>
-      <div className={styles.pageContent}>
+      <div className={styles.pageContent} data-auth-page>
         
         <div className={styles.switchersCorner}>
           <GuestLanguageSwitcher />
@@ -65,56 +65,86 @@ const AuthPage: React.FC = () => {
         {isProcessing && <PageLoader message={t('auth:signingInMessage')} />}
         
         {!isProcessing && (
-          <Card 
-            variant="default"
-            className={styles.authSection}
-          >
-          <div className={styles.sectionHeader}>
-            <h1 className={styles.pageTitle}>
-              <Users size={20} />
-              {t('auth:authPage.pageTitle')}
-            </h1>
+          <div className={styles.splitContainer}>
+            
+            {/* Left Hero Section */}
+            <div className={styles.heroSection}>
+              <div className={styles.heroContent}>
+                <h1 className={styles.pageTitle}>
+                  <Users size={24} />
+                  {t('auth:authPage.pageTitle')}
+                </h1>
+                <p className={styles.heroSubtitle}>
+                  {isLoginView 
+                    ? t('auth:authPage.loginSubtitle', 'Welcome back! Sign in to access your collaborative workspace.')
+                    : t('auth:authPage.registerSubtitle', 'Join thousands of teams collaborating in real-time on SynchBoard.')
+                  }
+                </p>
+                <div className={styles.heroFeatures}>
+                  <div className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🚀</span>
+                    <span>{t('auth:authPage.feature1', 'Real-time collaboration')}</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎨</span>
+                    <span>{t('auth:authPage.feature2', 'Interactive whiteboard')}</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <span className={styles.featureIcon}>👥</span>
+                    <span>{t('auth:authPage.feature3', 'Team management')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Form Section */}
+            <div className={styles.formSection}>
+              <Card 
+                variant="default"
+                className={styles.authCard}
+              >
+                <div className={styles.authContainer}>
+                  {isLoginView ? (
+                    <>
+                      <div className={styles.formHeader}>
+                        <h2 className={styles.formTitle}>
+                          <LogIn size={18} />
+                          {t('auth:loginForm.heading')}
+                        </h2>
+                      </div>
+                      <LoginForm onForgotPassword={() => setShowForgotPassword(true)} />
+                      <div className={styles.authActions}>
+                        <span className={styles.toggleText}>{t('auth:authPage.promptToRegister')}</span>
+                        <Button variant="secondary" onClick={toggleAuthMode}>
+                          <UserPlus size={16} />
+                          {t('auth:authPage.switchToRegisterButton')}
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={styles.formHeader}>
+                        <h2 className={styles.formTitle}>
+                          <UserPlus size={18} />
+                          {t('auth:registerForm.heading')}
+                        </h2>
+                      </div>
+                      <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
+                      <div className={styles.authActions}>
+                        <span className={styles.toggleText}>{t('auth:authPage.promptToLogin')}</span>
+                        <Button variant="secondary" onClick={toggleAuthMode}>
+                          <LogIn size={16} />
+                          {t('auth:authPage.switchToLoginButton')}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </Card>
+            </div>
+            
           </div>
-          
-          <div className={styles.authContainer}>
-            {isLoginView ? (
-              <>
-                <div className={styles.formHeader}>
-                  <h2 className={styles.formTitle}>
-                    <LogIn size={18} />
-                    {t('auth:loginForm.heading')}
-                  </h2>
-                </div>
-                <LoginForm onForgotPassword={() => setShowForgotPassword(true)} />
-                <div className={styles.authActions}>
-                  <span className={styles.toggleText}>{t('auth:authPage.promptToRegister')}</span>
-                  <Button variant="secondary" onClick={toggleAuthMode}>
-                    <UserPlus size={16} />
-                    {t('auth:authPage.switchToRegisterButton')}
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className={styles.formHeader}>
-                  <h2 className={styles.formTitle}>
-                    <UserPlus size={18} />
-                    {t('auth:registerForm.heading')}
-                  </h2>
-                </div>
-                <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
-                <div className={styles.authActions}>
-                  <span className={styles.toggleText}>{t('auth:authPage.promptToLogin')}</span>
-                  <Button variant="secondary" onClick={toggleAuthMode}>
-                    <LogIn size={16} />
-                    {t('auth:authPage.switchToLoginButton')}
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
-        </Card>
-      )}
+        )}
 
       <ForgotPasswordModal
         isOpen={showForgotPassword}

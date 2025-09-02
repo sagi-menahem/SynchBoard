@@ -1,14 +1,15 @@
 @use '@/styles' as theme;
 
+// Full-height container - counteract app-level padding
 .pageContent {
     position: relative;
-    min-height: 100vh;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: theme.$spacing-6;
-    padding-top: 3rem;
+    width: 100vw;
+    height: 100vh;
+    margin-top: calc(-1 * var(--banner-height, 0px)); // Counteract app banner padding
+    margin-left: calc(-1 * var(--app-padding-x, 0px)); // Counteract any horizontal padding
+    margin-right: calc(-1 * var(--app-padding-x, 0px)); // Counteract any horizontal padding
     box-sizing: border-box;
+    overflow-x: hidden; // Prevent horizontal scrolling
 }
 
 .switchersCorner {
@@ -17,36 +18,142 @@
     inset-inline-end: theme.$spacing-6;
     z-index: theme.$z-index-modal;
     @include theme.flex-column;
-    align-items: flex-end; // Align to the right edge
-    gap: theme.$spacing-3; // Smaller gap for vertical stacking
+    align-items: flex-end;
+    gap: theme.$spacing-3;
 }
 
-.sectionHeader {
-    margin-bottom: theme.$spacing-6;
+// Split layout container
+.splitContainer {
+    display: flex;
+    height: 100vh; // Use exact height instead of min-height
+    width: 100%;
+    max-width: 100vw; // Prevent overflow
+    overflow: hidden; // Prevent any overflow from children
 }
 
-.authSection {
-    background-color: theme.$background-secondary;
-    border: 1px solid theme.$border-primary;
-    margin-bottom: theme.$spacing-8;
+// Left hero section (60% width)
+.heroSection {
+    flex: 0 0 60%;
+    min-width: 0; // Prevent flex items from overflowing
+    background: linear-gradient(135deg,
+            theme.$primary 0%,
+            theme.$primary-hover 100%);
+    @include theme.flex-center;
+    padding: theme.$spacing-6; // Reduced padding
+    color: white;
+    position: relative;
+    overflow: hidden; // Prevent content overflow
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+    }
+}
+
+.heroContent {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    text-align: start; // CSS logical property for RTL support
 }
 
 .pageTitle {
     @include theme.flex-start;
     gap: theme.$spacing-3;
-    margin: 0;
-    color: theme.$text-primary;
-    font-size: 1.875rem;
+    margin: 0 0 theme.$spacing-6 0;
+    color: white;
+    font-size: 2.5rem;
     font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap; // Prevent line breaking
+    overflow: hidden; // Hide any overflow
+    text-overflow: ellipsis; // Show ellipsis if text is too long
+}
+
+// Hebrew-specific title styling
+:global([dir="rtl"]) .pageTitle {
+    font-size: 2.2rem; // Slightly smaller for Hebrew to fit better
+    white-space: nowrap; // Ensure no line breaks
+    max-width: 100%; // Allow full width usage
+}
+
+.heroSubtitle {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin: 0 0 theme.$spacing-8 0;
+    opacity: 0.95;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.heroFeatures {
+    @include theme.flex-column;
+    gap: theme.$spacing-4;
+}
+
+.featureItem {
+    @include theme.flex-start;
+    gap: theme.$spacing-3;
+    align-items: center;
+}
+
+.featureIcon {
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    @include theme.flex-center;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: theme.$border-radius-md;
+    backdrop-filter: blur(10px);
+}
+
+// Right form section (40% width)
+.formSection {
+    flex: 0 0 40%;
+    min-width: 0; // Prevent flex items from overflowing
+    display: flex;
+    align-items: stretch; // Fill full height
+    justify-content: stretch; // Fill full width
+    padding: 0; // Remove padding - card should fill entire white area
+    background: theme.$background-primary;
+    overflow-y: auto; // Allow scrolling within form section if needed
+    overflow-x: hidden; // Prevent horizontal overflow
+}
+
+.authCard {
+    // Fill the entire white section with proper margins
+    flex: 1; // Take all available space
+    display: flex;
+    flex-direction: column;
+    background-color: theme.$background-secondary;
+    border: 1px solid theme.$border-primary;
+    border-radius: theme.$card-border-radius;
+    box-shadow: theme.$shadow-lg;
+    box-sizing: border-box; // Include border in width calculation
+    overflow-y: auto; // Allow internal scrolling if needed
+    // Beautiful card appearance that fills the white area
 }
 
 .authContainer {
     @include theme.flex-column;
-    gap: theme.$spacing-6;
+    gap: theme.$spacing-2; // Minimal gap for maximum compactness
+    flex: 1; // Fill the card completely
+    // Use CSS logical properties for RTL support
+    padding-block: theme.$spacing-6; // Top and bottom padding
+    padding-inline: theme.$spacing-6; // Horizontal padding
+    justify-content: center; // Center content vertically in the card
+    align-items: center; // Center content horizontally in the card
+    box-sizing: border-box; // Include padding in width calculation
+    width: 100%; // Ensure full width utilization
 }
 
 .formHeader {
-    margin-bottom: theme.$spacing-4;
+    margin-bottom: theme.$spacing-1; // Minimal spacing
 }
 
 .formTitle {
@@ -60,9 +167,9 @@
 
 .authActions {
     @include theme.flex-column-center;
-    gap: theme.$spacing-4;
-    margin-top: theme.$spacing-4;
-    padding-top: theme.$spacing-4;
+    gap: theme.$spacing-1; // Minimal spacing
+    margin-top: theme.$spacing-2; // Minimal margin
+    padding-top: theme.$spacing-2; // Minimal padding
     border-top: 1px solid theme.$border-primary;
 }
 
@@ -70,42 +177,149 @@
     color: theme.$text-muted;
     font-size: 0.875rem;
     margin: 0;
+    text-align: center;
 }
 
-.forgotPasswordSection {
-    @include theme.flex-center;
-    margin-top: theme.$spacing-2;
-}
-
-.forgotPasswordButton {
-    font-size: 0.875rem;
-}
-
-@media (max-width: 640px) {
+// Responsive design for mobile
+@media (max-width: 768px) {
     .pageContent {
+        min-height: auto; // Allow natural height on mobile
+    }
+
+    .splitContainer {
+        flex-direction: column;
+        height: auto; // Allow natural height on mobile
+        min-height: 100vh;
+    }
+
+    .heroSection {
+        flex: 0 0 auto;
+        min-height: 35vh; // Reduced hero height on mobile
         padding: theme.$spacing-4;
-        padding-top: 2rem;
+    }
+
+    .heroContent {
+        max-width: 100%;
+    }
+
+    .pageTitle {
+        font-size: 1.75rem;
+        margin-bottom: theme.$spacing-3;
+        white-space: nowrap; // Prevent line breaking on mobile
+    }
+    
+    // Hebrew mobile title adjustments
+    :global([dir="rtl"]) .pageTitle {
+        font-size: 1.6rem; // Even smaller on mobile for Hebrew
+        white-space: nowrap; // Ensure no line breaks on mobile
+    }
+
+    .heroSubtitle {
+        font-size: 0.9rem;
+        margin-bottom: theme.$spacing-4;
+    }
+
+    .featureItem {
+        font-size: 0.85rem;
+    }
+
+    .featureIcon {
+        font-size: 1.1rem;
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+
+    .heroFeatures {
+        gap: theme.$spacing-2; // Reduce gap on mobile
+    }
+
+    .formSection {
+        flex: 1;
+        padding: theme.$spacing-3; // Reduced mobile padding
+        min-height: auto; // Remove min-height constraint
+        overflow-y: visible; // Allow natural scrolling
+    }
+
+    .authCard {
+        flex: 1; // Still fill available space on mobile
+        margin: 0; // Remove any margin
+    }
+
+    .authContainer {
+        // Use CSS logical properties for RTL support on mobile
+        padding-block: theme.$spacing-4; // Top and bottom padding
+        padding-inline: theme.$spacing-5; // Left and right padding (RTL aware)
     }
 
     .switchersCorner {
         top: theme.$spacing-4;
         inset-inline-end: theme.$spacing-4;
-        gap: theme.$spacing-2; // Even smaller gap on mobile
+        gap: theme.$spacing-2;
     }
+}
 
-    .authSection {
+@media (max-width: 480px) {
+    .heroSection {
+        min-height: 35vh;
         padding: theme.$spacing-4;
     }
 
     .pageTitle {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
+        white-space: nowrap; // Prevent line breaking on small mobile
+    }
+    
+    // Hebrew small mobile title adjustments  
+    :global([dir="rtl"]) .pageTitle {
+        font-size: 1.5rem; // Smaller on very small screens for Hebrew
+        white-space: nowrap; // Ensure no line breaks on small mobile
+    }
+
+    .heroFeatures {
+        gap: theme.$spacing-3;
+    }
+
+    .formSection {
+        padding: theme.$spacing-3;
     }
 
     .formTitle {
         font-size: 1.125rem;
     }
+}
+
+// Auth Page Dark Theme - Elegant Dark Gray Colors
+// Override global dark theme colors specifically for auth pages
+:global(body[data-theme='dark']) {
+    .heroSection {
+        background: linear-gradient(135deg,
+            #{theme.$color-gray-800} 0%,
+            #{theme.$color-gray-900} 100%);
+
+        &::before {
+            background: rgba(0, 0, 0, 0.2); // Slightly stronger overlay for better contrast
+        }
+    }
+
+    .formSection {
+        background: #{theme.$color-gray-800}; // Rich dark gray background
+    }
+
+    .authCard {
+        background-color: #{theme.$color-gray-700}; // Elegant elevated surface
+        border: 1px solid #{theme.$color-gray-600}; // Subtle border
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); // Enhanced shadow for depth
+    }
+
+    .formTitle {
+        color: #{theme.$color-gray-50}; // Clean white text
+    }
+
+    .toggleText {
+        color: #{theme.$color-gray-300}; // Muted text for secondary content
+    }
 
     .authActions {
-        gap: theme.$spacing-3;
+        border-top: 1px solid #{theme.$color-gray-600}; // Elegant separator
     }
 }
