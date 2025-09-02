@@ -21,6 +21,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
+import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import type { Tool } from 'shared/types/CommonTypes';
 import {
   ColorPicker,
@@ -137,12 +138,12 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                minWidth: '120px',
-                height: '36px',
-                padding: '0 8px',
+                minWidth: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_MIN_WIDTH,
+                height: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_HEIGHT,
+                padding: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_PADDING,
                 background: 'var(--color-surface-elevated)',
                 border: '1px solid var(--color-border-light)',
-                borderRadius: '6px',
+                borderRadius: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_BORDER_RADIUS,
               }}>
                 <Slider
                   value={strokeWidth}
@@ -295,12 +296,12 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              paddingRight: '8px',
+              gap: UI_CONSTANTS.TOOLBAR_GAP,
+              paddingRight: UI_CONSTANTS.TOOLBAR_PADDING_RIGHT,
               position: 'relative',
             }}>
               <div style={{
-                width: '1px',
+                width: UI_CONSTANTS.SEPARATOR_WIDTH,
                 height: '32px',
                 background: 'linear-gradient(to bottom, transparent, var(--color-border-light), transparent)',
               }} />
@@ -397,7 +398,7 @@ const BoardPage: React.FC = () => {
 
   if (!numericBoardId) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <div style={{ padding: UI_CONSTANTS.BOARD_LOADING_PADDING, textAlign: 'center' }}>
         {t('board:page.loading')}
       </div>
     );

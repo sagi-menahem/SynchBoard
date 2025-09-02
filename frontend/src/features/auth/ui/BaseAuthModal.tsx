@@ -1,6 +1,7 @@
 import React, { type ReactNode } from 'react';
 
 import { Button, Modal } from 'shared/ui';
+import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 interface BaseAuthModalProps {
@@ -28,7 +29,7 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
   cancelButtonText,
   children,
   additionalActions,
-  maxWidth = '400px',
+  maxWidth = UI_CONSTANTS.AUTH_MODAL_MAX_WIDTH,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

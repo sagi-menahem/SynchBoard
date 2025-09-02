@@ -13,8 +13,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import static io.github.sagimenahem.synchboard.constants.FileConstants.*;
 import io.github.sagimenahem.synchboard.config.AppProperties;
-import io.github.sagimenahem.synchboard.constants.FileConstants;
 import io.github.sagimenahem.synchboard.constants.LoggingConstants;
 import io.github.sagimenahem.synchboard.exception.InvalidRequestException;
 import jakarta.annotation.PostConstruct;
@@ -58,12 +58,12 @@ public class FileStorageService {
 
     public String store(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new InvalidRequestException(FileConstants.ERROR_EMPTY_FILE);
+            throw new InvalidRequestException(ERROR_EMPTY_FILE);
         }
 
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
-            throw new InvalidRequestException(FileConstants.ERROR_NO_FILENAME);
+            throw new InvalidRequestException(ERROR_NO_FILENAME);
         }
 
         String contentType = file.getContentType();
@@ -82,7 +82,7 @@ public class FileStorageService {
         try (InputStream inputStream = file.getInputStream()) {
             Path destinationFile = securePathResolve(uniqueFilename, "store");
             if (destinationFile == null) {
-                throw new InvalidRequestException(FileConstants.ERROR_STORAGE_OUTSIDE_DIRECTORY);
+                throw new InvalidRequestException(ERROR_STORAGE_OUTSIDE_DIRECTORY);
             }
 
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
@@ -93,7 +93,7 @@ public class FileStorageService {
         } catch (IOException e) {
             log.error(LoggingConstants.FILE_UPLOAD_FAILED, originalFilename, "system",
                     e.getMessage());
-            throw new RuntimeException(FileConstants.ERROR_FILE_STORAGE_FAILED, e);
+            throw new RuntimeException(ERROR_FILE_STORAGE_FAILED, e);
         }
     }
 
@@ -237,7 +237,7 @@ public class FileStorageService {
         try {
             String content = new String(file.getBytes()).toLowerCase();
 
-            for (String pattern : FileConstants.SVG_DANGEROUS_PATTERNS) {
+            for (String pattern : SVG_DANGEROUS_PATTERNS) {
                 if (content.contains(pattern.toLowerCase())) {
                     log.warn(LoggingConstants.FILE_VALIDATION_FAILED, "SVG file",
                             "Contains potentially dangerous content: " + pattern);
@@ -268,8 +268,8 @@ public class FileStorageService {
             java.net.URLConnection connection = url.openConnection();
             
             // Set a reasonable timeout and user agent
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(HTTP_CONNECTION_TIMEOUT_MS);
+            connection.setReadTimeout(HTTP_READ_TIMEOUT_MS);
             connection.setRequestProperty("User-Agent", "SynchBoard/1.0");
             
             String contentType = connection.getContentType();
@@ -330,49 +330,49 @@ public class FileStorageService {
         
         if (cleanedFilename.contains("..")) {
             log.error("Invalid path in filename: {}", cleanedFilename);
-            throw new InvalidRequestException(FileConstants.ERROR_INVALID_PATH);
+            throw new InvalidRequestException(ERROR_INVALID_PATH);
         }
 
-        if (fileSize > FileConstants.MAX_FILE_SIZE_BYTES) {
+        if (fileSize > MAX_FILE_SIZE_BYTES) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     String.format("File size %d exceeds maximum allowed size", fileSize));
-            throw new InvalidRequestException(String.format(FileConstants.ERROR_FILE_TOO_LARGE,
-                    FileConstants.MAX_FILE_SIZE_MB));
+            throw new InvalidRequestException(String.format(ERROR_FILE_TOO_LARGE,
+                    MAX_FILE_SIZE_MB));
         }
 
         if (!isValidMimeType(normalizedContentType)) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     "MIME type not allowed: " + normalizedContentType);
             throw new InvalidRequestException(
-                    String.format(FileConstants.ERROR_MIME_TYPE_NOT_ALLOWED,
-                            String.join(", ", FileConstants.ALLOWED_IMAGE_MIME_TYPES)));
+                    String.format(ERROR_MIME_TYPE_NOT_ALLOWED,
+                            String.join(", ", ALLOWED_IMAGE_MIME_TYPES)));
         }
 
         if (!isValidExtension(fileExtension)) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     "File extension not allowed: " + fileExtension);
             throw new InvalidRequestException(
-                    String.format(FileConstants.ERROR_EXTENSION_NOT_ALLOWED,
-                            String.join(", ", FileConstants.ALLOWED_IMAGE_EXTENSIONS)));
+                    String.format(ERROR_EXTENSION_NOT_ALLOWED,
+                            String.join(", ", ALLOWED_IMAGE_EXTENSIONS)));
         }
 
         if (!validateFileSignature(file, normalizedContentType)) {
             log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
                     "File signature validation failed for type: " + normalizedContentType);
-            throw new InvalidRequestException(FileConstants.ERROR_FILE_SIGNATURE_MISMATCH);
+            throw new InvalidRequestException(ERROR_FILE_SIGNATURE_MISMATCH);
         }
 
         if ("image/svg+xml".equals(normalizedContentType) && !validateSvgSecurity(file)) {
-            throw new InvalidRequestException(FileConstants.ERROR_SVG_MALICIOUS_CONTENT);
+            throw new InvalidRequestException(ERROR_SVG_MALICIOUS_CONTENT);
         }
     }
 
     private boolean isValidMimeType(String mimeType) {
-        return mimeType != null && FileConstants.ALLOWED_IMAGE_MIME_TYPES.contains(mimeType);
+        return mimeType != null && ALLOWED_IMAGE_MIME_TYPES.contains(mimeType);
     }
 
     private boolean isValidExtension(String extension) {
-        return extension != null && FileConstants.ALLOWED_IMAGE_EXTENSIONS.contains(extension.toLowerCase());
+        return extension != null && ALLOWED_IMAGE_EXTENSIONS.contains(extension.toLowerCase());
     }
 
     private Path securePathResolve(String filename, String operation) {
