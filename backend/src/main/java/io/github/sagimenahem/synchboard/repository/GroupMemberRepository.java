@@ -23,6 +23,9 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
     Optional<GroupMember> findByBoardGroupIdAndUserEmail(Long boardGroupId, String userEmail);
 
     List<GroupMember> findAllByBoardGroupId(Long boardGroupId);
+    
+    @Query("SELECT gm FROM GroupMember gm JOIN FETCH gm.user WHERE gm.boardGroupId = :boardGroupId")
+    List<GroupMember> findAllByBoardGroupIdWithUser(@Param("boardGroupId") Long boardGroupId);
 
     @Transactional
     void deleteAllByBoardGroupId(Long boardGroupId);

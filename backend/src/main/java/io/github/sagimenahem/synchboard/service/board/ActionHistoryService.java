@@ -36,7 +36,7 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response undoLastAction(Long boardId, String userEmail) {
         ActionHistory lastAction = actionHistoryRepository
-                .findTopByBoard_BoardGroupIdAndIsUndoneFalseOrderByTimestampDesc(boardId)
+                .findTopByBoardWithRelationsAndIsUndoneFalseOrderByTimestampDesc(boardId)
                 .orElse(null);
 
         if (lastAction == null) {
@@ -50,7 +50,7 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response redoLastAction(Long boardId, String userEmail) {
         ActionHistory lastUndoneAction = actionHistoryRepository
-                .findTopByBoard_BoardGroupIdAndIsUndoneTrueOrderByTimestampDesc(boardId)
+                .findTopByBoardWithRelationsAndIsUndoneTrueOrderByTimestampDesc(boardId)
                 .orElse(null);
 
         if (lastUndoneAction == null) {
