@@ -81,7 +81,7 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
         className={clsx(styles.dropdownContent, !isOpen && (styles.hidden ?? 'hidden'))}
         style={isOpen ? { 
           top: `${dropdownPosition.top}px`, 
-          left: `${dropdownPosition.left}px` 
+          left: `${dropdownPosition.left}px`, 
         } : undefined}
       >
         {toolItems.map(({ value, icon: Icon, labelKey }) => (
