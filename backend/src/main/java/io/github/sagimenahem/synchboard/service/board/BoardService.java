@@ -124,7 +124,7 @@ public class BoardService {
                 userEmail);
 
         if (newName == null || newName.trim().isEmpty()) {
-            log.warn(ERROR_VALIDATION, "boardName", newName, "cannot be empty");
+            log.warn(ERROR_VALIDATION, "boardName", newName, "Cannot be empty");
             throw new InvalidRequestException("Board name cannot be empty");
         }
 

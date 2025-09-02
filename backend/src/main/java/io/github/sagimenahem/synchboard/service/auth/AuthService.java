@@ -92,7 +92,7 @@ public class AuthService {
 
         if (passwordEncoder.matches(newPassword, user.getPassword())) {
             log.warn(ERROR_VALIDATION, "newPassword", "[HIDDEN]",
-                    "must be different from current password");
+                    "Must be different from current password");
             throw new InvalidRequestException(MessageConstants.PASSWORD_SAME_AS_OLD);
         }
 

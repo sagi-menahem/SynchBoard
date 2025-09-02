@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ThemePreferencesDTO {
 
-    @NotBlank(message = "Theme preference cannot be blank")
+    @NotBlank(message = "validation.theme")
     @Pattern(regexp = "^(light|dark)$",
-            message = "Invalid theme preference. Supported themes: light, dark")
+            message = "validation.themePattern")
     private String theme;
 }

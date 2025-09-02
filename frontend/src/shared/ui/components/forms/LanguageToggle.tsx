@@ -54,7 +54,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           cursor: 'pointer',
           borderRadius: '9999px',
           border: '2px solid transparent',
-          backgroundColor: isHebrew ? '#374151' : '#374151',
+          backgroundColor: 'var(--language-toggle-bg)',
           padding: '0',
           transition: 'background-color 0.2s',
           outline: 'none',
