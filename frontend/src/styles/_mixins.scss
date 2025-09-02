@@ -190,7 +190,7 @@
   align-items: center;
   gap: theme.$spacing-2;
   margin-bottom: theme.$spacing-2;
-  color: theme.$color-gray-300;
+  color: var(--color-text-secondary);
   font-weight: theme.$font-weight-medium;
   font-size: theme.$font-size-sm;
 }
@@ -200,7 +200,7 @@
   gap: theme.$spacing-3;
   justify-content: end; // CSS logical property - automatically handles RTL
   padding-block-start: theme.$spacing-2; // Logical property for padding-top
-  border-block-start: theme.$border-width solid theme.$color-gray-700; // Logical property for border-top
+  border-block-start: theme.$border-width solid var(--color-border); // Logical property for border-top
 }
 
 // ===== ERROR/STATUS PATTERNS =====
@@ -273,7 +273,7 @@
 @mixin theme-scrollbar {
   // Firefox scrollbar
   scrollbar-width: thin;
-  scrollbar-color: #94a3b8 #f1f5f9; // More visible light theme colors
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
   
   // WebKit scrollbar
   &::-webkit-scrollbar {
@@ -282,49 +282,28 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f5f9; // Light track
+    background: var(--scrollbar-track-bg);
     @include rounded-small;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #94a3b8; // Visible medium gray thumb
+    background: var(--scrollbar-thumb-bg);
     @include rounded-small;
     
     &:hover {
-      background: #64748b; // Darker gray on hover
+      background: var(--scrollbar-thumb-hover-bg);
     }
   }
 
   &::-webkit-scrollbar-corner {
-    background: #f1f5f9; // Light track
-  }
-  
-  // Dark theme overrides
-  body[data-theme='dark'] & {
-    scrollbar-color: #404040 #1a1a1a; // Dark theme colors
-    
-    &::-webkit-scrollbar-track {
-      background: #1a1a1a; // Dark track
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #404040; // Dark thumb
-      
-      &:hover {
-        background: #525252; // Lighter dark on hover
-      }
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #1a1a1a; // Dark track
-    }
+    background: var(--scrollbar-corner-bg);
   }
 }
 
 @mixin theme-scrollbar-enhanced {
   // Firefox scrollbar - enhanced
   scrollbar-width: auto;
-  scrollbar-color: #94a3b8 #f1f5f9; // More visible light theme colors
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
 
   // WebKit scrollbar - enhanced
   &::-webkit-scrollbar {
@@ -333,59 +312,30 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f5f9; // Light track
-    border: 1px solid #e2e8f0; // Light border
+    background: var(--scrollbar-track-bg);
+    border: 1px solid var(--color-border-light);
     @include rounded-medium;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #94a3b8; // Visible medium gray thumb
-    border: 1px solid #e2e8f0; // Light border
+    background: var(--scrollbar-thumb-bg);
+    border: 1px solid var(--color-border-light);
     @include rounded-medium;
     box-shadow: theme.$shadow-inset-light;
     
     &:hover {
-      background: #64748b; // Darker gray on hover
-      border-color: #cbd5e1;
+      background: var(--scrollbar-thumb-hover-bg);
+      border-color: var(--color-border);
     }
     
     &:active {
-      background: #64748b;
+      background: var(--scrollbar-thumb-hover-bg);
     }
   }
 
   &::-webkit-scrollbar-corner {
-    background: #f1f5f9; // Light track
-    border: 1px solid #e2e8f0; // Light border
-  }
-  
-  // Dark theme overrides
-  body[data-theme='dark'] & {
-    scrollbar-color: #404040 #1a1a1a; // Dark theme colors
-    
-    &::-webkit-scrollbar-track {
-      background: #1a1a1a; // Dark track
-      border-color: #404040; // Dark border
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #404040; // Dark thumb
-      border-color: #404040; // Dark border
-      
-      &:hover {
-        background: #525252; // Lighter dark on hover
-        border-color: #525252;
-      }
-      
-      &:active {
-        background: #525252;
-      }
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #1a1a1a; // Dark track
-      border-color: #404040; // Dark border
-    }
+    background: var(--scrollbar-corner-bg);
+    border: 1px solid var(--color-border-light);
   }
 }
 
