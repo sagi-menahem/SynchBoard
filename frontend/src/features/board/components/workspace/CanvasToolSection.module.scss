@@ -143,9 +143,11 @@
 .dropdownItem {
   display: flex;
   align-items: center;
+  justify-content: flex-start; // Align items to the start (left in LTR, right in RTL)
   gap: theme.$spacing-2;
   text-align: start; // CSS logical property - automatically RTL aware
   font-size: theme.$font-size-sm;
+  width: 100%; // Ensure full width for proper alignment
 }
 
 
