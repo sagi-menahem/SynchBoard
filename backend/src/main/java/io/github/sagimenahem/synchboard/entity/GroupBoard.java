@@ -1,6 +1,8 @@
 package io.github.sagimenahem.synchboard.entity;
 
-import static io.github.sagimenahem.synchboard.constants.CanvasConstants.*;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_BACKGROUND_COLOR;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_HEIGHT;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_WIDTH;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

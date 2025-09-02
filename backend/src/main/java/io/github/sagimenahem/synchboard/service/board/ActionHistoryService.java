@@ -1,8 +1,8 @@
 package io.github.sagimenahem.synchboard.service.board;
 
 import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_ADD_ACTION;
-import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_UPDATE_ACTION;
 import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_DELETE_ACTION;
+import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_UPDATE_ACTION;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.AccessDeniedException;
@@ -74,15 +74,16 @@ public class ActionHistoryService {
         } else {
             boardObject.setActive(true);
             BoardObject persistedObject = boardObjectRepository.save(boardObject);
-            return parseJsonAndCreateResponse(persistedObject.getObjectData(), 
-                    BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(), "redo add");
+            return parseJsonAndCreateResponse(persistedObject.getObjectData(),
+                    BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(),
+                    "redo add");
         }
     }
 
     private BoardActionDTO.Response processUpdateAction(ActionHistory action, boolean isUndo) {
-        log.info("Handling {} update for object instanceId: {}", 
-                isUndo ? "undo" : "redo", action.getBoardObject().getInstanceId());
-        
+        log.info("Handling {} update for object instanceId: {}", isUndo ? "undo" : "redo",
+                action.getBoardObject().getInstanceId());
+
         BoardObject boardObject = action.getBoardObject();
         if (boardObject == null || !boardObject.isActive()) {
             return null;
@@ -97,7 +98,7 @@ public class ActionHistoryService {
         boardObject.setLastEditedByUser(action.getUser());
         BoardObject persistedObject = boardObjectRepository.save(boardObject);
 
-        return parseJsonAndCreateResponse(targetState, BoardActionDTO.ActionType.OBJECT_UPDATE, 
+        return parseJsonAndCreateResponse(targetState, BoardActionDTO.ActionType.OBJECT_UPDATE,
                 persistedObject.getInstanceId(), isUndo ? "undo update" : "redo update");
     }
 
@@ -112,8 +113,9 @@ public class ActionHistoryService {
                 boardObject.setActive(true);
                 boardObject.setLastEditedByUser(action.getUser());
                 BoardObject persistedObject = boardObjectRepository.save(boardObject);
-                return parseJsonAndCreateResponse(persistedObject.getObjectData(), 
-                        BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(), "undo delete");
+                return parseJsonAndCreateResponse(persistedObject.getObjectData(),
+                        BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(),
+                        "undo delete");
             }
         } else {
             if (boardObject.isActive()) {
@@ -126,13 +128,12 @@ public class ActionHistoryService {
         return null;
     }
 
-    private BoardActionDTO.Response processUndoRedoAction(Long boardId, String userEmail, 
+    private BoardActionDTO.Response processUndoRedoAction(Long boardId, String userEmail,
             ActionHistory action, boolean isUndo, String operationType) {
         if (!isUserMember(boardId, userEmail)) {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
 
-        // Update action state
         if (isUndo) {
             action.setUndone(true);
             actionHistoryRepository.save(action);
@@ -140,12 +141,11 @@ public class ActionHistoryService {
             action.setUndone(false);
         }
 
-        log.info("Processing {} for action type: {} (actionId: {})", 
-                operationType, action.getActionType(), action.getActionId());
+        log.info("Processing {} for action type: {} (actionId: {})", operationType,
+                action.getActionType(), action.getActionId());
 
         BoardActionDTO.Response response = processActionByType(action, isUndo);
 
-        // Save action state for redo (undo already saved above)
         if (!isUndo) {
             actionHistoryRepository.save(action);
         }
@@ -166,8 +166,8 @@ public class ActionHistoryService {
             case OBJECT_DELETE_ACTION:
                 return processDeleteAction(action, isUndo);
             default:
-                log.warn("Unsupported action type for {}: {}", 
-                        isUndo ? "undo" : "redo", action.getActionType());
+                log.warn("Unsupported action type for {}: {}", isUndo ? "undo" : "redo",
+                        action.getActionType());
                 return null;
         }
     }
@@ -186,16 +186,12 @@ public class ActionHistoryService {
                 .instanceId(instanceId).sender("system-undo-redo").build();
     }
 
-    private BoardActionDTO.Response parseJsonAndCreateResponse(String jsonData, 
+    private BoardActionDTO.Response parseJsonAndCreateResponse(String jsonData,
             BoardActionDTO.ActionType actionType, String instanceId, String operation) {
         try {
             JsonNode payload = objectMapper.readTree(jsonData);
-            return BoardActionDTO.Response.builder()
-                    .type(actionType)
-                    .instanceId(instanceId)
-                    .payload(payload)
-                    .sender("system-undo-redo")
-                    .build();
+            return BoardActionDTO.Response.builder().type(actionType).instanceId(instanceId)
+                    .payload(payload).sender("system-undo-redo").build();
         } catch (JsonProcessingException e) {
             log.error("Failed to create {} response: {}", operation, e.getMessage(), e);
             throw new InvalidRequestException(

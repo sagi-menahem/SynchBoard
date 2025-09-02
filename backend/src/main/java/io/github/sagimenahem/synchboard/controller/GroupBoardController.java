@@ -1,7 +1,9 @@
 package io.github.sagimenahem.synchboard.controller;
 
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.*;
-import static io.github.sagimenahem.synchboard.constants.CanvasConstants.*;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_BACKGROUND_COLOR;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_HEIGHT;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_WIDTH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -12,11 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.dto.board.*;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
-import io.github.sagimenahem.synchboard.service.board.BoardService;
-import io.github.sagimenahem.synchboard.service.board.BoardMemberService;
-import io.github.sagimenahem.synchboard.service.board.BoardObjectService;
-import io.github.sagimenahem.synchboard.service.board.ActionHistoryService;
-import io.github.sagimenahem.synchboard.service.board.ChatService;
+import io.github.sagimenahem.synchboard.service.board.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

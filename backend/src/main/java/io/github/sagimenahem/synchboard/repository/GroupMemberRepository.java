@@ -14,7 +14,7 @@ import io.github.sagimenahem.synchboard.entity.GroupMemberId;
 public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupMemberId> {
 
     List<GroupMember> findAllByUserEmail(String userEmail);
-    
+
     @Query("SELECT gm FROM GroupMember gm JOIN FETCH gm.groupBoard gb WHERE gm.userEmail = :userEmail ORDER BY gb.lastModifiedDate DESC")
     List<GroupMember> findByUserWithBoard(@Param("userEmail") String userEmail);
 
@@ -23,7 +23,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
     Optional<GroupMember> findByBoardGroupIdAndUserEmail(Long boardGroupId, String userEmail);
 
     List<GroupMember> findAllByBoardGroupId(Long boardGroupId);
-    
+
     @Query("SELECT gm FROM GroupMember gm JOIN FETCH gm.user WHERE gm.boardGroupId = :boardGroupId")
     List<GroupMember> findAllByBoardGroupIdWithUser(@Param("boardGroupId") Long boardGroupId);
 

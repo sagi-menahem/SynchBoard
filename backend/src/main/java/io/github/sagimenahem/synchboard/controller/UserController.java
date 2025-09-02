@@ -6,14 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import io.github.sagimenahem.synchboard.dto.user.CanvasPreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.ChangePasswordRequest;
-import io.github.sagimenahem.synchboard.dto.user.LanguagePreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.ThemePreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.ToolPreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.UpdateUserProfileRequest;
-import io.github.sagimenahem.synchboard.dto.user.UserPreferencesDTO;
-import io.github.sagimenahem.synchboard.dto.user.UserProfileDTO;
+import io.github.sagimenahem.synchboard.dto.user.*;
 import io.github.sagimenahem.synchboard.service.auth.AuthService;
 import io.github.sagimenahem.synchboard.service.user.UserAccountService;
 import io.github.sagimenahem.synchboard.service.user.UserService;
@@ -117,9 +110,11 @@ public class UserController {
     }
 
     @GetMapping(API_USER_CANVAS_PREFERENCES)
-    public ResponseEntity<CanvasPreferencesDTO> getCanvasPreferences(Authentication authentication) {
+    public ResponseEntity<CanvasPreferencesDTO> getCanvasPreferences(
+            Authentication authentication) {
         String userEmail = authentication.getName();
-        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_CANVAS_PREFERENCES, userEmail);
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_CANVAS_PREFERENCES,
+                userEmail);
 
         CanvasPreferencesDTO canvasPreferences = userService.getCanvasPreferences(userEmail);
         log.debug(USER_PREFERENCES_FETCHED, userEmail);
@@ -127,7 +122,8 @@ public class UserController {
     }
 
     @PutMapping(API_USER_CANVAS_PREFERENCES)
-    public ResponseEntity<CanvasPreferencesDTO> updateCanvasPreferences(Authentication authentication,
+    public ResponseEntity<CanvasPreferencesDTO> updateCanvasPreferences(
+            Authentication authentication,
             @Valid @RequestBody CanvasPreferencesDTO canvasPreferencesDTO) {
         String userEmail = authentication.getName();
         log.debug(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_CANVAS_PREFERENCES,
@@ -142,7 +138,8 @@ public class UserController {
     @GetMapping(API_USER_TOOL_PREFERENCES)
     public ResponseEntity<ToolPreferencesDTO> getToolPreferences(Authentication authentication) {
         String userEmail = authentication.getName();
-        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_TOOL_PREFERENCES, userEmail);
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_TOOL_PREFERENCES,
+                userEmail);
 
         ToolPreferencesDTO toolPreferences = userService.getToolPreferences(userEmail);
         log.debug(USER_PREFERENCES_FETCHED, userEmail);
@@ -163,9 +160,11 @@ public class UserController {
     }
 
     @GetMapping(API_USER_LANGUAGE_PREFERENCES)
-    public ResponseEntity<LanguagePreferencesDTO> getLanguagePreferences(Authentication authentication) {
+    public ResponseEntity<LanguagePreferencesDTO> getLanguagePreferences(
+            Authentication authentication) {
         String userEmail = authentication.getName();
-        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_LANGUAGE_PREFERENCES, userEmail);
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_LANGUAGE_PREFERENCES,
+                userEmail);
 
         LanguagePreferencesDTO languagePreferences = userService.getLanguagePreferences(userEmail);
         log.debug(USER_PREFERENCES_FETCHED, userEmail);
@@ -173,7 +172,8 @@ public class UserController {
     }
 
     @PutMapping(API_USER_LANGUAGE_PREFERENCES)
-    public ResponseEntity<LanguagePreferencesDTO> updateLanguagePreferences(Authentication authentication,
+    public ResponseEntity<LanguagePreferencesDTO> updateLanguagePreferences(
+            Authentication authentication,
             @Valid @RequestBody LanguagePreferencesDTO languagePreferencesDTO) {
         String userEmail = authentication.getName();
         log.debug(API_REQUEST_RECEIVED, "PUT", API_USER_BASE_PATH + API_USER_LANGUAGE_PREFERENCES,
@@ -188,7 +188,8 @@ public class UserController {
     @GetMapping(API_USER_THEME_PREFERENCES)
     public ResponseEntity<ThemePreferencesDTO> getThemePreferences(Authentication authentication) {
         String userEmail = authentication.getName();
-        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_THEME_PREFERENCES, userEmail);
+        log.debug(API_REQUEST_RECEIVED, "GET", API_USER_BASE_PATH + API_USER_THEME_PREFERENCES,
+                userEmail);
 
         ThemePreferencesDTO themePreferences = userService.getThemePreferences(userEmail);
         log.debug(USER_PREFERENCES_FETCHED, userEmail);

@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "board_objects", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "board_group_id"}))
+@Table(name = "board_objects",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "board_group_id"}))
 @Data
 @Builder
 @NoArgsConstructor

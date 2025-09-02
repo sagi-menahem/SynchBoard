@@ -24,9 +24,6 @@ public class EmailService {
     @Value("${sendgrid.from-name:SynchBoard Team}")
     private String fromName;
 
-    /**
-     * Send email verification code
-     */
     public boolean sendVerificationCode(String toEmail, String verificationCode) {
         String subject = "SynchBoard - Verify Your Email";
         String body = buildVerificationEmailBody(verificationCode);
@@ -34,9 +31,6 @@ public class EmailService {
         return sendEmail(toEmail, subject, body);
     }
 
-    /**
-     * Send password reset code
-     */
     public boolean sendPasswordResetCode(String toEmail, String resetCode) {
         String subject = "SynchBoard - Password Reset";
         String body = buildPasswordResetEmailBody(resetCode);
@@ -44,9 +38,6 @@ public class EmailService {
         return sendEmail(toEmail, subject, body);
     }
 
-    /**
-     * Generic method to send email via SendGrid
-     */
     private boolean sendEmail(String toEmail, String subject, String body) {
         try {
             Email from = new Email(fromEmail, fromName);
@@ -75,9 +66,6 @@ public class EmailService {
         }
     }
 
-    /**
-     * Build verification email HTML content
-     */
     private String buildVerificationEmailBody(String verificationCode) {
         return """
                 <!DOCTYPE html>
@@ -121,9 +109,6 @@ public class EmailService {
                 .formatted(verificationCode);
     }
 
-    /**
-     * Build password reset email HTML content
-     */
     private String buildPasswordResetEmailBody(String resetCode) {
         return """
                 <!DOCTYPE html>
@@ -172,9 +157,6 @@ public class EmailService {
                 .formatted(resetCode);
     }
 
-    /**
-     * Generate a random 6-digit verification code
-     */
     public String generateVerificationCode() {
         return String.format("%06d", (int) (Math.random() * 1000000));
     }

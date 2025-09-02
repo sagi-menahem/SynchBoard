@@ -1,6 +1,9 @@
 package io.github.sagimenahem.synchboard.entity;
 
-import static io.github.sagimenahem.synchboard.constants.CanvasConstants.*;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_CHAT_SPLIT_RATIO;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_LANGUAGE;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_STROKE_COLOR;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_THEME;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +30,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = true) // Nullable for OAuth users
+    @Column(nullable = true)
     private String password;
 
     @Column(name = "first_name", nullable = false)
@@ -36,7 +39,7 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(nullable = true) // Optional for OAuth users
+    @Column(nullable = true)
     private String gender;
 
     @Enumerated(EnumType.STRING)
@@ -64,7 +67,6 @@ public class User implements UserDetails {
     @Builder.Default
     private Integer canvasChatSplitRatio = (int) DEFAULT_CANVAS_CHAT_SPLIT_RATIO;
 
-    // Tool preferences
     @Column(name = "default_tool")
     @Builder.Default
     private String defaultTool = "brush";
@@ -102,16 +104,10 @@ public class User implements UserDetails {
         this.creationDate = LocalDateTime.now();
     }
 
-    /**
-     * Check if password reset code has expired
-     */
     public boolean isResetCodeExpired() {
         return this.resetExpiry == null || LocalDateTime.now().isAfter(this.resetExpiry);
     }
 
-    /**
-     * Clear password reset code and expiry
-     */
     public void clearResetCode() {
         this.resetCode = null;
         this.resetExpiry = null;

@@ -47,18 +47,18 @@ public class BoardNotificationService {
 
     public void broadcastUserUpdatesToAllBoardMembers(Long boardId) {
         List<String> memberEmails = getBoardMemberEmails(boardId);
-        broadcastToUserList(memberEmails, UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED, 
+        broadcastToUserList(memberEmails, UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED,
                 "user updates to board " + boardId + " members");
     }
 
     public void broadcastUserUpdatesToUsers(List<String> userEmails) {
-        broadcastToUserList(userEmails, UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED, 
+        broadcastToUserList(userEmails, UserUpdateDTO.UpdateType.BOARD_LIST_CHANGED,
                 "user updates to specified users");
     }
 
     public void broadcastBoardDetailsChangedToAllBoardMembers(Long boardId) {
         List<String> memberEmails = getBoardMemberEmails(boardId);
-        broadcastToUserList(memberEmails, UserUpdateDTO.UpdateType.BOARD_DETAILS_CHANGED, 
+        broadcastToUserList(memberEmails, UserUpdateDTO.UpdateType.BOARD_DETAILS_CHANGED,
                 "board details changes to board " + boardId + " members");
     }
 
@@ -87,7 +87,7 @@ public class BoardNotificationService {
         return memberEmails;
     }
 
-    private void broadcastToUserList(List<String> userEmails, UserUpdateDTO.UpdateType updateType, 
+    private void broadcastToUserList(List<String> userEmails, UserUpdateDTO.UpdateType updateType,
             String operation) {
         if (userEmails == null || userEmails.isEmpty()) {
             log.debug("No user emails provided for {}", operation);

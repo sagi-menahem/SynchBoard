@@ -10,8 +10,7 @@ public final class MessageConstants {
     public static final String BOARD_NAME_CANT_BE_EMPTY = "Board name cannot be empty.";
     public static final String BOARD_NAME_LENGTH =
             "Board name must be between 3 and 100 characters.";
-    
-    // Validation constants
+
     public static final int BOARD_NAME_MIN_LENGTH = 3;
     public static final int BOARD_NAME_MAX_LENGTH = 100;
     public static final int CANVAS_WIDTH_MIN = 400;
@@ -30,7 +29,8 @@ public final class MessageConstants {
     public static final String CANNOT_INVITE_SELF = "cannotInviteSelf";
     public static final String AUTH_NOT_ADMIN = "You must be an admin to perform this action";
     public static final String AUTH_NOT_MEMBER = "You are not a member of this board";
-    public static final String BOARD_CANNOT_REMOVE_SELF = "You cannot remove yourself from the board";
+    public static final String BOARD_CANNOT_REMOVE_SELF =
+            "You cannot remove yourself from the board";
     public static final String USER_IS_ALREADY_ADMIN = "User is already an admin";
     public static final String PASSWORD_INCORRECT = "password.incorrect";
     public static final String UNEXPECTED_ERROR = "unexpected";
