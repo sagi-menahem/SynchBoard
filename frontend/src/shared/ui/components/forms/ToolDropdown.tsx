@@ -39,7 +39,8 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
 }) => {
   const { t } = useTranslation(['board', 'common']);
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [dropdownPosition, setDropdownPosition] = useState({ top: -9999, left: -9999 });
+  const [isPositioned, setIsPositioned] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -78,6 +79,9 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
       }
       
       setDropdownPosition({ top, left });
+      setIsPositioned(true);
+    } else if (!isOpen) {
+      setIsPositioned(false);
     }
   }, [isOpen, toolItems.length]);
 
@@ -103,8 +107,8 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
       </Button>
       
       <div 
-        className={clsx(styles.dropdownContent, !isOpen && (styles.hidden ?? 'hidden'))}
-        style={isOpen ? { 
+        className={clsx(styles.dropdownContent, (!isOpen || !isPositioned) && (styles.hidden ?? 'hidden'))}
+        style={isOpen && isPositioned ? { 
           top: `${dropdownPosition.top}px`, 
           left: `${dropdownPosition.left}px`, 
         } : undefined}
