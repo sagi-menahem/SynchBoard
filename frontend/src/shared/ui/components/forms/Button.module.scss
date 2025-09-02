@@ -100,10 +100,24 @@
     }
 
     &.active {
-        background: linear-gradient(135deg, theme.$primary-light, theme.$primary-lighter);
+        background: transparent !important;
         color: theme.$text-primary;
-        border-color: theme.$primary-border;
-        box-shadow: theme.$shadow-glow-lg theme.$primary-shadow;
+        border-color: var(--btn-icon-active-border) !important;
+        box-shadow: none;
+    }
+
+    &.active:hover,
+    &.active:focus,
+    &.active:focus-visible {
+        background: transparent !important;
+        border-color: var(--btn-icon-active-border) !important;
+        outline: none !important;
+    }
+
+    &:focus,
+    &:focus-visible {
+        outline: none !important;
+        border-color: var(--btn-icon-active-border) !important;
     }
 }
 
