@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import io.github.sagimenahem.synchboard.constants.LoggingConstants;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.error.ErrorResponseDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class GlobalExceptionHandler {
                 ErrorResponseDTO errorResponse =
                                 new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(),
                                                 MessageConstants.AUTH_BAD_CREDENTIALS);
-                log.warn("Authentication failed: {}", ex.getMessage());
+                log.warn(LoggingConstants.AUTH_LOGIN_FAILED, "unknown", ex.getMessage());
                 return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
 
