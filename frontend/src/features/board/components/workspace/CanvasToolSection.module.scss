@@ -129,6 +129,31 @@
   min-height: 36px; /* Custom canvas tool size */
 }
 
+.iconButton {
+  min-width: 36px; /* Custom canvas tool size */
+  min-height: 36px; /* Custom canvas tool size */
+  
+  &.active {
+    background: transparent !important;
+    border-color: var(--btn-icon-active-border) !important;
+    box-shadow: none !important;
+  }
+
+  &.active:hover,
+  &.active:focus,
+  &.active:focus-visible {
+    background: transparent !important;
+    border-color: var(--btn-icon-active-border) !important;
+    outline: none !important;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none !important;
+    border-color: var(--btn-icon-active-border) !important;
+  }
+}
+
 .shapeDropdown {
   position: relative;
   display: inline-block;

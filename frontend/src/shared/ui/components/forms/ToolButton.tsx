@@ -3,6 +3,8 @@ import React from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 import Button from 'shared/ui/components/forms/Button';
 
+import styles from './Button.module.scss';
+
 interface ToolButtonProps {
   tool: Tool;
   currentTool: Tool;
@@ -23,7 +25,7 @@ export const ToolButton: React.FC<ToolButtonProps> = ({
   return (
     <Button
       variant="icon"
-      className={currentTool === tool ? 'active' : ''}
+      className={currentTool === tool ? styles.active : ''}
       onClick={() => onClick(tool)}
       title={title}
       disabled={disabled}

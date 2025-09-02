@@ -136,6 +136,7 @@ body[data-theme='light'] {
 
   --btn-icon-bg-hover: #{dt.$color-gray-100};
   --btn-icon-text: #{dt.$color-gray-500};
+  --btn-icon-active-border: #{dt.$color-primary};
 
   // Scrollbar colors
   --scrollbar-track-bg: #{dt.$color-gray-100};
@@ -241,6 +242,7 @@ body[data-theme='dark'] {
 
   --btn-icon-bg-hover: #{dt.$color-gray-700};
   --btn-icon-text: #{dt.$color-gray-400};
+  --btn-icon-active-border: #{dt.$color-gray-500};
 
   // Scrollbar colors
   --scrollbar-track-bg: #{dt.$color-gray-900};
