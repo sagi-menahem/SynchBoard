@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'features/board/constants/BoardConstants';
 import { useCanvas } from 'features/board/hooks/workspace/canvas/useCanvas';
@@ -37,7 +37,16 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
   
-  const { canvasRef, containerRef, handleMouseDown } = useCanvas(props);
+  // Create a ref for the text input request handler
+  const textInputRequestRef = useRef<((x: number, y: number, width: number, height: number) => void) | null>(null);
+  
+  // Create canvas with text input request handler
+  const { canvasRef, containerRef, handleMouseDown } = useCanvas({
+    ...props,
+    onTextInputRequest: (x: number, y: number, width: number, height: number) => {
+      textInputRequestRef.current?.(x, y, width, height);
+    },
+  });
   
   // Memoize canvas interactions config to prevent unnecessary re-renders
   const canvasInteractionsConfig = useMemo(() => ({
@@ -60,11 +69,15 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const {
     textInput,
     recolorCursor,
+    handleTextInputRequest,
     handleCanvasClick,
     handleCanvasMouseMove,
     handleTextSubmit,
     handleTextCancel,
   } = useCanvasInteractions(canvasInteractionsConfig);
+  
+  // Connect the text input request handler
+  textInputRequestRef.current = handleTextInputRequest;
 
   // Memoize canvas configuration to prevent unnecessary re-renders
   const canvasConfig = useMemo(() => 
