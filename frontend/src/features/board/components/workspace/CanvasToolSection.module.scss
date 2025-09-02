@@ -151,16 +151,14 @@
 
 
 .dropdownContent {
-  position: absolute;
-  top: 100%;
-  left: 0;
+  position: fixed;
   background-color: theme.$dropdown-bg;
   backdrop-filter: blur(10px);
   border: 1px solid theme.$tool-button-border;
   @include theme.rounded-medium;
   @include theme.shadow-heavy;
   min-width: 160px; /* No direct token available */
-  z-index: theme.$z-index-modal;
+  z-index: theme.$z-index-popover;
   @include theme.flex-column;
   gap: theme.$spacing-0-5;
   padding: theme.$spacing-1;

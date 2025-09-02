@@ -41,9 +41,7 @@
 }
 
 .popover {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
+  position: fixed;
   z-index: theme.$z-index-popover;
   @include theme.card-base;
   @include theme.shadow-heavy;

@@ -28,12 +28,24 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   const { t } = useTranslation(['common']);
   const [showPicker, setShowPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
   const pickerRef = useRef<HTMLDivElement>(null);
   const swatchRef = useRef<HTMLButtonElement>(null);
 
   useClickOutside(pickerRef, () => {
     setShowPicker(false);
   }, showPicker);
+
+  // Calculate popover position when opening
+  useEffect(() => {
+    if (showPicker && swatchRef.current) {
+      const swatchRect = swatchRef.current.getBoundingClientRect();
+      setPopoverPosition({
+        top: swatchRect.bottom + 8, // 8px margin below swatch
+        left: swatchRect.left,
+      });
+    }
+  }, [showPicker]);
 
   const handleSwatchClick = () => {
     if (!disabled) {
@@ -106,7 +118,14 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       </Button>
       
       {showPicker && !disabled && (
-        <div ref={pickerRef} className={styles.popover}>
+        <div 
+          ref={pickerRef} 
+          className={styles.popover}
+          style={{
+            top: `${popoverPosition.top}px`,
+            left: `${popoverPosition.left}px`,
+          }}
+        >
           <div className={styles.colorfulWrapper}>
             <div
               onMouseDown={handleMouseDown}
