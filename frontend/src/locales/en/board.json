@@ -120,6 +120,9 @@
   "canvas": {
     "loading": "Loading canvas..."
   },
+  "textInput": {
+    "placeholder": "Type your text here..."
+  },
   "canvasSize": {
     "presets": {
       "widescreen": {

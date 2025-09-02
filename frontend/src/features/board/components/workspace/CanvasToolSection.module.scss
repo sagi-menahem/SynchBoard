@@ -174,23 +174,21 @@
 
 .textInputOverlay {
   position: absolute;
-  background-color: theme.$background-secondary;
-  border: 1px solid theme.$border-primary;
-  @include theme.rounded-medium;
-  padding: theme.$spacing-3;
+  background: transparent;
+  border: none;
+  padding: 0;
   z-index: theme.$z-index-overlay;
-  @include theme.shadow-heavy;
-  backdrop-filter: blur(10px);
 }
 
 .textInput {
-  @include theme.input-base;
-  background: none;
+  background: transparent;
   border: none;
-  color: theme.$text-primary;
+  color: inherit; // Use color from parent (text color)
   font-family: system-ui, -apple-system, sans-serif;
   outline: none;
-  overflow: auto;
-  @include theme.theme-scrollbar;
+  overflow: hidden; // Hide scrollbars for cleaner look
+  resize: none;
+  padding: 0;
+  margin: 0;
 }
 

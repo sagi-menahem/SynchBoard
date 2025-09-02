@@ -44,6 +44,7 @@
 }
 
 .canvasWrapper {
+    position: relative; // Enable absolute positioning for child elements
     display: inline-block;
     transform-origin: center center;
     @include theme.shadow-heavy;
