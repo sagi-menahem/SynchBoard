@@ -40,10 +40,35 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   useEffect(() => {
     if (showPicker && swatchRef.current) {
       const swatchRect = swatchRef.current.getBoundingClientRect();
-      setPopoverPosition({
-        top: swatchRect.bottom + 8, // 8px margin below swatch
-        left: swatchRect.left,
-      });
+      const popoverWidth = 250; // Width from CSS
+      const popoverHeight = 300; // Approximate height
+      const margin = 8;
+      
+      // Calculate initial position
+      let left = swatchRect.left;
+      let top = swatchRect.bottom + margin;
+      
+      // Check if popover would overflow right edge of viewport
+      if (left + popoverWidth > window.innerWidth) {
+        left = swatchRect.right - popoverWidth; // Align to right edge of button
+      }
+      
+      // Ensure popover doesn't go beyond left edge
+      if (left < margin) {
+        left = margin;
+      }
+      
+      // Check if popover would overflow bottom edge of viewport
+      if (top + popoverHeight > window.innerHeight) {
+        top = swatchRect.top - popoverHeight - margin; // Position above button
+      }
+      
+      // Ensure popover doesn't go beyond top edge
+      if (top < margin) {
+        top = margin;
+      }
+      
+      setPopoverPosition({ top, left });
     }
   }, [showPicker]);
 
