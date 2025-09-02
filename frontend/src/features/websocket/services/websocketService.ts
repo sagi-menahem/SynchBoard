@@ -8,6 +8,7 @@ import {
 } from 'features/auth/utils/SecurityUtils';
 import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'shared/constants/ApiConstants';
 import { WEBSOCKET_CONFIG } from 'shared/constants/AppConstants';
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
 import SockJS from 'sockjs-client';
 
@@ -175,7 +176,7 @@ class WebSocketService {
     this.connectionTimeout = setTimeout(() => {
       logger.warn('WebSocket connection timeout - forcing disconnect');
       this.handleDisconnection();
-    }, 10000); // 10 second timeout
+    }, TIMING_CONSTANTS.WEBSOCKET_CONNECTION_TIMEOUT);
 
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS(WEBSOCKET_URL),

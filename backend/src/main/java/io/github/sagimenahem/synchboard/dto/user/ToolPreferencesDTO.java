@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class ToolPreferencesDTO {
     @Pattern(regexp = "^#[0-9A-Fa-f]{6}$", message = "Default stroke color must be a valid hex color")
     private String defaultStrokeColor;
 
-    @Min(value = 1, message = "Default stroke width must be at least 1")
-    @Max(value = 50, message = "Default stroke width must not exceed 50")
+    @Min(value = DEFAULT_STROKE_WIDTH_MIN, message = "Default stroke width must be at least 1")
+    @Max(value = DEFAULT_STROKE_WIDTH_MAX, message = "Default stroke width must not exceed 50")
     private Integer defaultStrokeWidth;
 }

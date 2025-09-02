@@ -1,5 +1,6 @@
 package io.github.sagimenahem.synchboard.entity;
 
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.*;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,7 +62,7 @@ public class User implements UserDetails {
 
     @Column(name = "canvas_chat_split_ratio")
     @Builder.Default
-    private Integer canvasChatSplitRatio = 70;
+    private Integer canvasChatSplitRatio = (int) DEFAULT_CANVAS_CHAT_SPLIT_RATIO;
 
     // Tool preferences
     @Column(name = "default_tool")
@@ -70,7 +71,7 @@ public class User implements UserDetails {
 
     @Column(name = "default_stroke_color")
     @Builder.Default
-    private String defaultStrokeColor = "#FFFFFF";
+    private String defaultStrokeColor = DEFAULT_STROKE_COLOR;
 
     @Column(name = "default_stroke_width")
     @Builder.Default
@@ -78,11 +79,11 @@ public class User implements UserDetails {
 
     @Column(name = "preferred_language")
     @Builder.Default
-    private String preferredLanguage = "en";
+    private String preferredLanguage = DEFAULT_LANGUAGE;
 
     @Column(name = "theme_preference", length = 10, nullable = false)
     @Builder.Default
-    private String themePreference = "light";
+    private String themePreference = DEFAULT_THEME;
 
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;

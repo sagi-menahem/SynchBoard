@@ -6,6 +6,7 @@ import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
 
 interface UseChatWindowLogicProps {
@@ -31,7 +32,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
     setNewMessageIds((prev) => new Set([...prev, messageKey]));
     
-    // Track this message as pending for 750ms
+    // Track this message as pending for the configured timeout
     if (message.instanceId) {
       setPendingMessageIds((prev) => new Set([...prev, message.instanceId!]));
       
@@ -48,7 +49,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
           newSet.delete(messageKey);
           return newSet;
         });
-      }, 750);
+      }, TIMING_CONSTANTS.CHAT_PENDING_MESSAGE_TIMEOUT);
     }
   }, []);
 
@@ -111,7 +112,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   }, [messages, pendingMessageIds]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(scrollToBottom, 100);
+    const timeoutId = setTimeout(scrollToBottom, TIMING_CONSTANTS.CHAT_SCROLL_DELAY);
     if (allMessages.length !== previousMessageCount) {
       setPreviousMessageCount(allMessages.length);
     }
@@ -169,7 +170,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   };
 
   const commitChatTransaction = useCallback((_instanceId: string) => {
-    // The pending state will automatically clear after 750ms via the setTimeout in addOptimisticMessage
+    // The pending state will automatically clear after the configured timeout via the setTimeout in addOptimisticMessage
     // No complex timing logic needed anymore!
   }, []);
 

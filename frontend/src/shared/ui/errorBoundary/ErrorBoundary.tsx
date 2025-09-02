@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
 import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 
@@ -46,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this.setState({ isRetrying: true });
     
     // Add a small delay to show loading state
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, TIMING_CONSTANTS.ERROR_RECOVERY_DELAY));
     
     this.setState({ hasError: false, error: null, isRetrying: false });
     

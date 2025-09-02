@@ -3,6 +3,8 @@ package io.github.sagimenahem.synchboard.service.auth;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.ERROR_VALIDATION;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.USER_NOT_FOUND;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.EMAIL_VERIFICATION_TIMEOUT_MINUTES;
+import static io.github.sagimenahem.synchboard.constants.SecurityConstants.PASSWORD_RESET_TIMEOUT_MINUTES;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -161,7 +163,7 @@ public class AuthService {
 
     private PendingRegistration createPendingRegistration(RegisterRequest request) {
         String verificationCode = emailService.generateVerificationCode();
-        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(15);
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(EMAIL_VERIFICATION_TIMEOUT_MINUTES);
 
         PendingRegistration pendingRegistration = PendingRegistration.builder()
                 .email(request.getEmail())
@@ -230,7 +232,7 @@ public class AuthService {
         // Generate new code and extend expiry
         String newVerificationCode = emailService.generateVerificationCode();
         pendingRegistration.setVerificationCode(newVerificationCode);
-        pendingRegistration.setExpiryTime(LocalDateTime.now().plusMinutes(15));
+        pendingRegistration.setExpiryTime(LocalDateTime.now().plusMinutes(EMAIL_VERIFICATION_TIMEOUT_MINUTES));
         pendingRegistration.setAttempts(0); // Reset attempts
 
         pendingRegistrationRepository.save(pendingRegistration);
@@ -255,7 +257,7 @@ public class AuthService {
 
         // Generate reset code
         String resetCode = emailService.generateVerificationCode();
-        LocalDateTime resetExpiry = LocalDateTime.now().plusMinutes(60); // 1 hour
+        LocalDateTime resetExpiry = LocalDateTime.now().plusMinutes(PASSWORD_RESET_TIMEOUT_MINUTES);
 
         user.setResetCode(resetCode);
         user.setResetExpiry(resetExpiry);

@@ -1,6 +1,7 @@
 package io.github.sagimenahem.synchboard.controller;
 
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.*;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.*;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -54,13 +55,13 @@ public class GroupBoardController {
 
                 // Apply defaults if values are null
                 if (request.getCanvasBackgroundColor() == null) {
-                        request.setCanvasBackgroundColor("#222");
+                        request.setCanvasBackgroundColor(DEFAULT_BACKGROUND_COLOR);
                 }
                 if (request.getCanvasWidth() == null) {
-                        request.setCanvasWidth(1200);
+                        request.setCanvasWidth(DEFAULT_CANVAS_WIDTH);
                 }
                 if (request.getCanvasHeight() == null) {
-                        request.setCanvasHeight(800);
+                        request.setCanvasHeight(DEFAULT_CANVAS_HEIGHT);
                 }
 
                 BoardDTO newBoard = boardService.createBoard(request, userEmail);

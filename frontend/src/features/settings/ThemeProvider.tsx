@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
 import { applyScrollbarTheme } from 'shared/utils/scrollbarTheme';
 
@@ -105,7 +106,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         
         // Check if there was a recent theme change that we should not override
         const recentChange = recentThemeChangeRef.current;
-        const isRecentChange = recentChange && (Date.now() - recentChange.timestamp) < 5000; // 5 seconds
+        const isRecentChange = recentChange && (Date.now() - recentChange.timestamp) < TIMING_CONSTANTS.THEME_CHANGE_DETECTION_TIMEOUT;
         
         if (isRecentChange) {
           setIsLoading(false);

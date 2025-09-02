@@ -8,8 +8,20 @@ public final class MessageConstants {
     public static final String ERROR_EMAIL_SHOULD_BE_VALID = "Email should be valid";
     public static final String ERROR_PASSWORD_CANT_BE_EMPTY = "Password cannot be empty";
     public static final String BOARD_NAME_CANT_BE_EMPTY = "Board name cannot be empty.";
-    public static final String BOARD_NAME_LENGHT =
+    public static final String BOARD_NAME_LENGTH =
             "Board name must be between 3 and 100 characters.";
+    
+    // Validation constants
+    public static final int BOARD_NAME_MIN_LENGTH = 3;
+    public static final int BOARD_NAME_MAX_LENGTH = 100;
+    public static final int CANVAS_WIDTH_MIN = 400;
+    public static final int CANVAS_WIDTH_MAX = 4000;
+    public static final int CANVAS_HEIGHT_MIN = 300;
+    public static final int CANVAS_HEIGHT_MAX = 4000;
+    public static final int CANVAS_CHAT_SPLIT_RATIO_MIN = 30;
+    public static final int CANVAS_CHAT_SPLIT_RATIO_MAX = 70;
+    public static final int DEFAULT_STROKE_WIDTH_MIN = 1;
+    public static final int DEFAULT_STROKE_WIDTH_MAX = 50;
 
     public static final String USER_NOT_FOUND = "User not found: ";
     public static final String BOARD_NOT_FOUND = "Board not found: ";

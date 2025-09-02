@@ -1,7 +1,8 @@
 package io.github.sagimenahem.synchboard.dto.board;
 
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_CANT_BE_EMPTY;
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_LENGHT;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_LENGTH;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.*;
 import java.util.List;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CreateBoardRequest {
 
     @NotBlank(message = BOARD_NAME_CANT_BE_EMPTY)
-    @Size(min = 3, max = 100, message = BOARD_NAME_LENGHT)
+    @Size(min = BOARD_NAME_MIN_LENGTH, max = BOARD_NAME_MAX_LENGTH, message = BOARD_NAME_LENGTH)
     private String name;
 
     private String description;
@@ -31,11 +32,11 @@ public class CreateBoardRequest {
     @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "validation.canvasColorPattern")
     private String canvasBackgroundColor;
 
-    @Min(value = 400, message = "validation.canvasWidthMin")
-    @Max(value = 4000, message = "validation.canvasWidthMax")
+    @Min(value = CANVAS_WIDTH_MIN, message = "validation.canvasWidthMin")
+    @Max(value = CANVAS_WIDTH_MAX, message = "validation.canvasWidthMax")
     private Integer canvasWidth;
 
-    @Min(value = 300, message = "validation.canvasHeightMin")
-    @Max(value = 4000, message = "validation.canvasHeightMax")
+    @Min(value = CANVAS_HEIGHT_MIN, message = "validation.canvasHeightMin")
+    @Max(value = CANVAS_HEIGHT_MAX, message = "validation.canvasHeightMax")
     private Integer canvasHeight;
 }

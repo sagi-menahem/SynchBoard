@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Hash, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Modal } from 'shared/ui';
+import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 import { useResendVerificationCode, useVerifyEmailForm } from '../hooks/forms';
@@ -46,15 +47,15 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   };
 
   const resendActions = (
-    <div className={styles.additionalActions} style={{ paddingTop: '1rem', borderTop: '1px solid #444' }}>
-      <p style={{ color: '#ccc', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+    <div className={styles.additionalActions} style={{ paddingTop: UI_CONSTANTS.EMAIL_VERIFICATION_PADDING_TOP, borderTop: '1px solid #444' }}>
+      <p style={{ color: '#ccc', fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE, marginBottom: UI_CONSTANTS.EMAIL_VERIFICATION_MARGIN }}>
         {t('auth:verifyEmail.didNotReceive')}
       </p>
       <Button 
         variant="secondary" 
         onClick={handleResendCode}
         disabled={resendCooldown > 0}
-        style={{ fontSize: '0.875rem' }}
+        style={{ fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE }}
       >
         {resendCooldown > 0 
           ? t('auth:verifyEmail.resend.cooldown', { seconds: resendCooldown })
@@ -66,7 +67,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.modalContainer} style={{ maxWidth: '400px' }}>
+      <div className={styles.modalContainer} style={{ maxWidth: UI_CONSTANTS.AUTH_MODAL_MAX_WIDTH }}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>
             <Mail size={20} />
@@ -97,7 +98,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
               autoComplete="one-time-code"
               style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}
             />
-            <small style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
+            <small style={{ color: '#9ca3af', fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE, marginTop: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_MARGIN, display: 'block' }}>
               {t('auth:verifyEmail.hint.code')}
             </small>
           </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useConnectionStatus } from 'features/websocket/hooks';
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 
 import styles from './ConnectionStatusBanner.module.scss';
 
@@ -52,7 +53,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
     resizeObserver.observe(bannerRef.current);
 
     const handleResize = () => {
-      setTimeout(measureAndNotify, 100);
+      setTimeout(measureAndNotify, TIMING_CONSTANTS.CONNECTION_STATUS_MEASUREMENT_DELAY);
     };
     window.addEventListener('resize', handleResize);
 
