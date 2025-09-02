@@ -288,27 +288,29 @@
     }
 }
 
-// Auth Page Dark Theme - Elegant Dark Gray Colors
+// Auth Page Dark Theme - Dark Blue Hero & Dark Gray Forms
 // Override global dark theme colors specifically for auth pages
 :global(body[data-theme='dark']) {
     .heroSection {
+        // Dark blue background like language/theme toggle buttons
         background: linear-gradient(135deg,
-            #{theme.$color-gray-800} 0%,
-            #{theme.$color-gray-900} 100%);
+            #374151 0%,
+            #1f2937 100%);
 
         &::before {
-            background: rgba(0, 0, 0, 0.2); // Slightly stronger overlay for better contrast
+            background: rgba(0, 0, 0, 0.15); // Lighter overlay for blue background
         }
     }
 
     .formSection {
-        background: #{theme.$color-gray-800}; // Rich dark gray background
+        // Use the previous hero section's darker gray background
+        background: #{theme.$color-gray-900}; // Very dark gray background
     }
 
     .authCard {
-        background-color: #{theme.$color-gray-700}; // Elegant elevated surface
-        border: 1px solid #{theme.$color-gray-600}; // Subtle border
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); // Enhanced shadow for depth
+        background-color: #{theme.$color-gray-800}; // Dark gray elevated surface
+        border: 1px solid #{theme.$color-gray-700}; // Darker border
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); // Enhanced shadow for dark background
     }
 
     .formTitle {
@@ -320,6 +322,6 @@
     }
 
     .authActions {
-        border-top: 1px solid #{theme.$color-gray-600}; // Elegant separator
+        border-top: 1px solid #{theme.$color-gray-700}; // Darker separator to match
     }
 }
