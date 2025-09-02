@@ -120,6 +120,9 @@
   "canvas": {
     "loading": "טוען קנבס..."
   },
+  "textInput": {
+    "placeholder": "הקלד את הטקסט שלך כאן..."
+  },
   "canvasSize": {
     "presets": {
       "widescreen": {
