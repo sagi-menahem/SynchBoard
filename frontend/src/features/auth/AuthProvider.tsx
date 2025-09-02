@@ -1,9 +1,11 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useEffect, useState, useMemo, type ReactNode } from 'react';
 
+import { getUserProfile } from 'features/settings/services/userService';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
+import logger from 'shared/utils/logger';
 
 import { AuthContext } from './AuthContext';
-import { useAuthValidation } from './hooks/useAuthValidation';
+import { useSyncAuthValidation } from './hooks/useSyncAuthValidation';
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -14,29 +16,56 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
   const [token, setToken] = useState<string | null>(storedToken);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing] = useState(false); // Start as false for immediate render
+  const [needsBackendValidation, setNeedsBackendValidation] = useState(false);
   
-  const { validateToken, clearExpiryWarning, clearTokenFromStorage } = useAuthValidation();
+  const { validateTokenSync, clearExpiryWarning, clearTokenFromStorage } = useSyncAuthValidation();
 
-  useEffect(() => {
-    const performValidation = async () => {
-      const result = await validateToken(token);
-      
-      if (result.shouldClearToken) {
-        setToken(null);
-        clearTokenFromStorage();
-      }
-      
-      setUserEmail(result.userEmail);
-      setIsInitializing(false);
-    };
-
-    void performValidation();
+  // Synchronous validation on token change
+  useMemo(() => {
+    const result = validateTokenSync(token);
     
+    // Update state immediately based on synchronous validation
+    if (result.shouldClearToken && token) {
+      setToken(null);
+      clearTokenFromStorage();
+      setUserEmail(null);
+      setNeedsBackendValidation(false);
+    } else if (result.isValid) {
+      setUserEmail(result.userEmail);
+      setNeedsBackendValidation(result.needsBackendValidation);
+    } else {
+      setUserEmail(null);
+      setNeedsBackendValidation(false);
+    }
+    
+    return result;
+  }, [token, validateTokenSync, clearTokenFromStorage]);
+
+  // Background validation with backend (non-blocking)
+  useEffect(() => {
+    if (needsBackendValidation && token) {
+      getUserProfile()
+        .then(() => {
+          logger.info('[AuthProvider] Backend validation successful');
+          setNeedsBackendValidation(false);
+        })
+        .catch((error) => {
+          logger.warn('[AuthProvider] Backend validation failed - clearing token', error);
+          setToken(null);
+          setUserEmail(null);
+          clearTokenFromStorage();
+          setNeedsBackendValidation(false);
+        });
+    }
+  }, [needsBackendValidation, token, clearTokenFromStorage]);
+
+  // Cleanup on unmount
+  useEffect(() => {
     return () => {
       clearExpiryWarning();
     };
-  }, [token, validateToken, clearExpiryWarning, clearTokenFromStorage]);
+  }, [clearExpiryWarning]);
 
   const login = (newToken: string) => {
     setToken(newToken);
