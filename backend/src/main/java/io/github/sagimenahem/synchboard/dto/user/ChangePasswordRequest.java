@@ -1,6 +1,5 @@
 package io.github.sagimenahem.synchboard.dto.user;
 
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.ERROR_PASSWORD_CANT_BE_EMPTY;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChangePasswordRequest {
 
-    @NotEmpty(message = ERROR_PASSWORD_CANT_BE_EMPTY)
+    @NotEmpty(message = "validation.password")
     private String currentPassword;
 
-    @NotEmpty(message = ERROR_PASSWORD_CANT_BE_EMPTY)
+    @NotEmpty(message = "validation.newPassword")
     private String newPassword;
 }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LanguagePreferencesDTO {
 
-    @NotBlank(message = "Preferred language cannot be blank")
-    @Pattern(regexp = "^(en|he)$", message = "Invalid language code. Supported languages: en, he")
+    @NotBlank(message = "validation.language")
+    @Pattern(regexp = "^(en|he)$", message = "validation.languagePattern")
     private String preferredLanguage;
 }

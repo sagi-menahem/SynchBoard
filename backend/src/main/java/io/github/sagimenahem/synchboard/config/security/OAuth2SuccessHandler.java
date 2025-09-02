@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import io.github.sagimenahem.synchboard.config.AppProperties;
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.entity.AuthProvider;
 import io.github.sagimenahem.synchboard.entity.User;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
@@ -32,6 +34,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final FileStorageService fileStorageService;
+    private final AppProperties appProperties;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -87,7 +90,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                                     + " OAuth2 login attempted for existing non-OAuth user: {}",
                             email);
                     handleAuthenticationFailure(response,
-                            "This email is already registered. Please login with your password.");
+                            MessageConstants.AUTH_EMAIL_ALREADY_REGISTERED);
                     return;
                 }
 
@@ -126,7 +129,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
             String jwt = jwtService.generateToken(userForToken);
 
-            String frontendUrl = "http://localhost:5173/auth/callback?token="
+            String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl() + "/auth/callback?token="
                     + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
 
             log.info(SECURITY_PREFIX + " OAuth2 authentication successful for: {}", email);
@@ -134,13 +137,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         } catch (Exception e) {
             log.error(SECURITY_PREFIX + " Error processing OAuth2 authentication", e);
-            handleAuthenticationFailure(response, "Authentication failed. Please try again.");
+            handleAuthenticationFailure(response, MessageConstants.AUTH_FAILED_TRY_AGAIN);
         }
     }
 
     private void handleAuthenticationFailure(HttpServletResponse response, String message)
             throws IOException {
-        String frontendUrl = "http://localhost:5173/auth/error?message="
+        String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl() + "/auth/error?message="
                 + URLEncoder.encode(message, StandardCharsets.UTF_8);
         response.sendRedirect(frontendUrl);
     }

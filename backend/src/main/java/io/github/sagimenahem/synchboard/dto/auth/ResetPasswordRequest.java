@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResetPasswordRequest {
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email must be valid")
+    @NotBlank(message = "validation.email")
+    @Email(message = "validation.emailValid")
     private String email;
 
-    @NotBlank(message = "Reset code is required")
-    @Pattern(regexp = "^\\d{6}$", message = "Reset code must be exactly 6 digits")
+    @NotBlank(message = "validation.resetCode")
+    @Pattern(regexp = "^\\d{6}$", message = "validation.resetCodeDigits")
     private String resetCode;
 
-    @NotBlank(message = "New password is required")
+    @NotBlank(message = "validation.newPassword")
     private String newPassword;
 }

@@ -49,6 +49,12 @@
       "defaultValue": "SynchBoard Team"
     },
     {
+      "name": "app.oauth2.frontend-base-url",
+      "type": "java.lang.String",
+      "description": "Base URL for frontend OAuth2 redirects",
+      "defaultValue": "http://localhost:5173"
+    },
+    {
       "name": "verification.code-expiry-minutes",
       "type": "java.lang.Integer",
       "description": "Minutes until email verification code expires",

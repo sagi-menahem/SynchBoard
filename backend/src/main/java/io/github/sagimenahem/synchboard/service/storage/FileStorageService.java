@@ -1,5 +1,6 @@
 package io.github.sagimenahem.synchboard.service.storage;
 
+import static io.github.sagimenahem.synchboard.constants.ApiConstants.APPLICATION_VERSION;
 import static io.github.sagimenahem.synchboard.constants.FileConstants.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -268,7 +269,7 @@ public class FileStorageService {
 
             connection.setConnectTimeout(HTTP_CONNECTION_TIMEOUT_MS);
             connection.setReadTimeout(HTTP_READ_TIMEOUT_MS);
-            connection.setRequestProperty("User-Agent", "SynchBoard/1.0");
+            connection.setRequestProperty("User-Agent", "SynchBoard/" + APPLICATION_VERSION);
 
             String contentType = connection.getContentType();
             if (contentType != null) {
