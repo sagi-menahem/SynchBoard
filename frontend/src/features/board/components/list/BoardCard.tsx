@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import clsx from 'clsx';
@@ -20,24 +20,43 @@ interface BoardCardProps {
     viewMode?: ViewMode;
 }
 
-const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
+const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'grid' }) => {
   const { t } = useTranslation(['board', 'common']);
 
-  const imageSource = board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage;
+  const imageSource = useMemo(() => 
+    board.pictureUrl ? `${API_BASE_URL.replace('/api', '')}${board.pictureUrl}` : defaultBoardImage,
+    [board.pictureUrl],
+  );
   
-  const colorName = getColorName(board.canvasBackgroundColor);
-  const colorDisplayName = colorName ? t(`common:colors.${colorName}`) : board.canvasBackgroundColor;
-  const canvasResolution = formatCanvasResolution(board.canvasWidth, board.canvasHeight, t);
+  const colorDisplayName = useMemo(() => {
+    const colorName = getColorName(board.canvasBackgroundColor);
+    return colorName ? t(`common:colors.${colorName}`) : board.canvasBackgroundColor;
+  }, [board.canvasBackgroundColor, t]);
+
+  const canvasResolution = useMemo(() => 
+    formatCanvasResolution(board.canvasWidth, board.canvasHeight, t),
+    [board.canvasWidth, board.canvasHeight, t],
+  );
+
+  const cardClasses = useMemo(() => 
+    clsx(styles.boardCard, styles[viewMode]),
+    [viewMode],
+  );
+
+  const boardRoute = useMemo(() => 
+    APP_ROUTES.getBoardDetailRoute(board.id),
+    [board.id],
+  );
 
   return (
     <Link 
-      to={APP_ROUTES.getBoardDetailRoute(board.id)} 
+      to={boardRoute} 
       className={styles.cardLink}
     >
       <Card 
         variant="elevated" 
         hoverable
-        className={clsx(styles.boardCard, styles[viewMode])}
+        className={cardClasses}
       >
       <img src={imageSource} alt={board.name} className={styles.boardCardImage} />
       <div className={styles.boardCardContent}>
@@ -80,6 +99,8 @@ const BoardCard: React.FC<BoardCardProps> = ({ board, viewMode = 'grid' }) => {
       </Card>
     </Link>
   );
-};
+});
+
+BoardCard.displayName = 'BoardCard';
 
 export default BoardCard;

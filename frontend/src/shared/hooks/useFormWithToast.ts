@@ -1,4 +1,4 @@
-import { useActionState } from 'react';
+import { useActionState, useCallback } from 'react';
 
 import logger from 'shared/utils/logger';
 import { toastPromise } from 'shared/utils/toastUtils';
@@ -39,7 +39,7 @@ export const useFormWithToast = <TRequest extends object, TResponse = unknown>(
     logContext = 'Form operation',
   } = options;
 
-  const formAction = async (
+  const formAction = useCallback(async (
     _previousState: FormState<TResponse>,
     formData: FormData,
   ): Promise<FormState<TResponse>> => {
@@ -75,7 +75,7 @@ export const useFormWithToast = <TRequest extends object, TResponse = unknown>(
         success: false,
       };
     }
-  };
+  }, [validateFormData, serviceCall, toastMessages, onSuccess, logContext, contextInfo]);
 
   const [state, submitAction, isPending] = useActionState(formAction, {
     success: false,
