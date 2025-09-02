@@ -190,5 +190,7 @@
   resize: none;
   padding: 0;
   margin: 0;
+  text-align: left; // Force left alignment regardless of language
+  direction: ltr; // Force LTR direction to match canvas text rendering
 }
 
