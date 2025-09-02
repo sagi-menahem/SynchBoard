@@ -49,12 +49,37 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
   useEffect(() => {
     if (isOpen && buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: buttonRect.bottom + 8, // 8px margin below button
-        left: buttonRect.left,
-      });
+      const dropdownWidth = 160; // Min width from CSS
+      const dropdownHeight = toolItems.length * 40; // Approximate height per item
+      const margin = 8;
+      
+      // Calculate initial position
+      let left = buttonRect.left;
+      let top = buttonRect.bottom + margin;
+      
+      // Check if dropdown would overflow right edge of viewport
+      if (left + dropdownWidth > window.innerWidth) {
+        left = buttonRect.right - dropdownWidth; // Align to right edge of button
+      }
+      
+      // Ensure dropdown doesn't go beyond left edge
+      if (left < margin) {
+        left = margin;
+      }
+      
+      // Check if dropdown would overflow bottom edge of viewport
+      if (top + dropdownHeight > window.innerHeight) {
+        top = buttonRect.top - dropdownHeight - margin; // Position above button
+      }
+      
+      // Ensure dropdown doesn't go beyond top edge
+      if (top < margin) {
+        top = margin;
+      }
+      
+      setDropdownPosition({ top, left });
     }
-  }, [isOpen]);
+  }, [isOpen, toolItems.length]);
 
   const handleToolClick = (tool: Tool) => {
     onToolSelect(tool);
