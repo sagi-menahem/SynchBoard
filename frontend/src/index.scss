@@ -1,0 +1,336 @@
+// Import design tokens first
+@use 'styles/design-tokens' as dt;
+
+// ========================================
+// GLOBAL STYLES - SynchBoard
+// ========================================
+
+// Font and rendering optimizations
+:root,
+body[data-theme='light'] {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Banner system
+  --banner-height: 0px;
+
+  // Transition System
+  --transition-duration-fast: #{dt.$transition-fast};
+  --transition-duration-normal: #{dt.$transition-normal};
+  --transition-duration-slow: #{dt.$transition-slow};
+  --transition-slow: #{dt.$transition-slow};
+  --transition-ease-in-out: #{dt.$transition-ease-in-out};
+
+  // Spacing System
+  --spacing-0-5: #{dt.$spacing-0-5};
+  --spacing-1: #{dt.$spacing-1};
+  --spacing-2: #{dt.$spacing-2};
+  --spacing-3: #{dt.$spacing-3};
+
+  // Z-Index System
+  --z-index-base: #{dt.$z-index-base};
+  --z-index-elevated: #{dt.$z-index-elevated};
+  --z-index-dropdown: #{dt.$z-index-dropdown};
+  --z-index-toolbar: #{dt.$z-index-toolbar};
+  --z-index-overlay: #{dt.$z-index-overlay};
+  --z-index-modal: #{dt.$z-index-modal};
+  --z-index-banner: #{dt.$z-index-banner};
+  --z-index-tooltip: #{dt.$z-index-tooltip};
+  --z-index-popover: #{dt.$z-index-popover};
+
+  // Light Theme Colors
+  --color-primary: #{dt.$color-primary};
+  --color-primary-hover: #{dt.$color-primary-hover};
+  --color-primary-light: #{dt.$color-primary-light};
+
+  --color-secondary: #{dt.$color-gray-400};
+  --color-secondary-hover: #{dt.$color-gray-600};
+
+  --color-background: #{dt.$color-white};
+  --color-surface: #{dt.$color-gray-50};
+  --color-surface-elevated: #{dt.$color-white};
+  --color-surface-hover: #{dt.$color-gray-100};
+
+  --color-border: #{dt.$color-gray-200};
+  --color-border-strong: #{dt.$color-gray-300};
+  --color-border-light: #{dt.$color-gray-100};
+
+  --color-text-primary: #{dt.$color-black};
+  --color-text-secondary: #{dt.$color-gray-600};
+  --color-text-muted: #{dt.$color-gray-500};
+  --color-text-disabled: #{dt.$color-gray-400};
+
+  --color-success: #{dt.$color-success};
+  --color-success-light: #{dt.$color-success-light};
+  --color-warning: #{dt.$color-warning};
+  --color-warning-light: #{dt.$color-warning-light};
+  --color-error: #{dt.$color-error};
+  --color-error-light: #{dt.$color-error-light};
+
+  --color-overlay-light: rgba(0, 0, 0, 0.05);
+  --color-overlay-medium: rgba(0, 0, 0, 0.25);
+  --color-overlay-strong: #{dt.$color-backdrop};
+
+  --color-canvas-background: #{dt.$color-board-light-default};
+  --color-canvas-pattern: rgba(0, 0, 0, 0.03);
+
+  // Message Status Colors - Light Theme
+  --color-status-pending-border: #{dt.$color-status-pending-border-light};
+  --color-status-confirmed-border: #{dt.$color-status-confirmed-border-light};
+  --color-status-failed-border: #{dt.$color-status-failed-border-light};
+  --color-status-failed-bg: #{dt.$color-status-failed-bg-light};
+
+  // Elegant Toolbar System - Light Theme
+  --toolbar-background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.98) 100%);
+  --toolbar-border: rgba(226, 232, 240, 0.6);
+  --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+
+  // Navigation Buttons - Light Theme
+  --nav-button-background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.9) 100%);
+  --nav-button-border: rgba(226, 232, 240, 0.6);
+  --nav-button-text: #{dt.$color-gray-600};
+  --nav-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  --nav-button-hover-background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 1) 100%);
+  --nav-button-hover-border: #{dt.$color-black};
+  --nav-button-hover-text: #{dt.$color-black};
+  --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 1) inset;
+
+  // Destructive Buttons - Light Theme
+  --destructive-button-background: linear-gradient(135deg, rgba(254, 242, 242, 0.9) 0%, rgba(255, 237, 237, 0.95) 100%);
+  --destructive-button-border: rgba(252, 165, 165, 0.4);
+  --destructive-button-text: #{dt.$color-error-hover};
+  --destructive-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(254, 226, 226, 0.8) inset;
+  --destructive-button-hover-background: linear-gradient(135deg, rgba(254, 226, 226, 0.95) 0%, rgba(252, 165, 165, 0.2) 100%);
+  --destructive-button-hover-border: #{dt.$color-error-light};
+  --destructive-button-hover-text: #{dt.$color-error-hover};
+  --destructive-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 202, 202, 1) inset;
+
+  // Button Palette - Light Theme
+  --btn-primary-bg: #{dt.$color-gray-800};
+  --btn-primary-bg-hover: #{dt.$color-black};
+  --btn-primary-text: #{dt.$color-white};
+
+  --btn-secondary-bg: #{dt.$color-gray-50};
+  --btn-secondary-bg-hover: #{dt.$color-gray-100};
+  --btn-secondary-text: #{dt.$color-gray-700};
+  --btn-secondary-border: #{dt.$color-gray-200};
+
+  --btn-destructive-bg: #{dt.$color-error-hover};
+  --btn-destructive-bg-hover: #{dt.$color-error};
+  --btn-destructive-text: #{dt.$color-white};
+
+  --btn-cta-bg: #{dt.$color-success};
+  --btn-cta-bg-hover: #{dt.$color-success};
+  --btn-cta-text: #{dt.$color-white};
+
+  --btn-warning-bg: #{dt.$color-warning};
+  --btn-warning-bg-hover: #{dt.$color-warning};
+  --btn-warning-text: #{dt.$color-white};
+
+  --btn-icon-bg-hover: #{dt.$color-gray-100};
+  --btn-icon-text: #{dt.$color-gray-500};
+
+  // Scrollbar colors
+  --scrollbar-track-bg: #{dt.$color-gray-100};
+  --scrollbar-thumb-bg: #{dt.$color-gray-400};
+  --scrollbar-thumb-hover-bg: #{dt.$color-gray-500};
+  --scrollbar-corner-bg: #{dt.$color-gray-100};
+
+  // Theme defaults
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+}
+
+// Dark Theme
+body[data-theme='dark'] {
+  // Dark Theme Colors
+  --color-primary: #{dt.$color-gray-50};
+  --color-primary-hover: #{dt.$color-white};
+  --color-primary-light: #{dt.$color-gray-900};
+
+  --color-secondary: #{dt.$color-gray-500};
+  --color-secondary-hover: #{dt.$color-gray-400};
+
+  --color-background: #{dt.$color-black};
+  --color-surface: #{dt.$color-gray-900};
+  --color-surface-elevated: #{dt.$color-gray-800};
+  --color-surface-hover: #{dt.$color-gray-700};
+
+  --color-border: #{dt.$color-gray-700};
+  --color-border-strong: #{dt.$color-gray-600};
+  --color-border-light: #{dt.$color-gray-900};
+
+  --color-text-primary: #{dt.$color-gray-50};
+  --color-text-secondary: #{dt.$color-gray-300};
+  --color-text-muted: #{dt.$color-gray-400};
+  --color-text-disabled: #{dt.$color-gray-500};
+
+  --color-success: #{dt.$color-success};
+  --color-success-light: #{dt.$color-success-light};
+  --color-warning: #{dt.$color-warning};
+  --color-warning-light: #{dt.$color-warning-light};
+  --color-error: #{dt.$color-error};
+  --color-error-light: #{dt.$color-error-light};
+
+  --color-overlay-light: rgba(255, 255, 255, 0.05);
+  --color-overlay-medium: rgba(255, 255, 255, 0.15);
+  --color-overlay-strong: #{dt.$color-backdrop};
+
+  --color-canvas-background: #{dt.$color-board-dark-default};
+  --color-canvas-pattern: rgba(255, 255, 255, 0.02);
+
+  // Message Status Colors - Dark Theme
+  --color-status-pending-border: #{dt.$color-status-pending-border-dark};
+  --color-status-confirmed-border: #{dt.$color-status-confirmed-border-dark};
+  --color-status-failed-border: #{dt.$color-status-failed-border-dark};
+  --color-status-failed-bg: #{dt.$color-status-failed-bg-dark};
+
+  // Elegant Toolbar System - Dark Theme
+  --toolbar-background: linear-gradient(135deg, rgba(24, 24, 27, 0.95) 0%, rgba(39, 39, 42, 0.98) 100%);
+  --toolbar-border: rgba(63, 63, 70, 0.4);
+  --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+
+  // Navigation Buttons - Dark Theme
+  --nav-button-background: linear-gradient(135deg, rgba(39, 39, 42, 0.8) 0%, rgba(52, 52, 55, 0.9) 100%);
+  --nav-button-border: rgba(82, 82, 91, 0.4);
+  --nav-button-text: #{dt.$color-gray-300};
+  --nav-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --nav-button-hover-background: linear-gradient(135deg, rgba(52, 52, 55, 0.95) 0%, rgba(63, 63, 70, 1) 100%);
+  --nav-button-hover-border: #{dt.$color-gray-50};
+  --nav-button-hover-text: #{dt.$color-white};
+  --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+
+  // Destructive Buttons - Dark Theme
+  --destructive-button-background: linear-gradient(135deg, rgba(69, 26, 26, 0.6) 0%, rgba(87, 13, 13, 0.7) 100%);
+  --destructive-button-border: rgba(153, 27, 27, 0.4);
+  --destructive-button-text: #{dt.$color-error-light};
+  --destructive-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(254, 226, 226, 0.06) inset;
+  --destructive-button-hover-background: linear-gradient(135deg, rgba(87, 13, 13, 0.8) 0%, rgba(127, 29, 29, 0.9) 100%);
+  --destructive-button-hover-border: #{dt.$color-error-light};
+  --destructive-button-hover-text: #{dt.$color-error-light};
+  --destructive-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 226, 226, 0.1) inset;
+
+  // Button Palette - Dark Theme
+  --btn-primary-bg: #{dt.$color-gray-800};
+  --btn-primary-bg-hover: #{dt.$color-gray-600};
+  --btn-primary-text: #{dt.$color-gray-50};
+
+  --btn-secondary-bg: #{dt.$color-gray-700};
+  --btn-secondary-bg-hover: #{dt.$color-gray-600};
+  --btn-secondary-text: #{dt.$color-gray-100};
+  --btn-secondary-border: #{dt.$color-gray-600};
+
+  --btn-destructive-bg: #{dt.$color-error-hover};
+  --btn-destructive-bg-hover: #{dt.$color-error};
+  --btn-destructive-text: #{dt.$color-white};
+
+  --btn-cta-bg: #{dt.$color-success};
+  --btn-cta-bg-hover: #{dt.$color-success};
+  --btn-cta-text: #{dt.$color-white};
+
+  --btn-warning-bg: #{dt.$color-warning};
+  --btn-warning-bg-hover: #{dt.$color-warning};
+  --btn-warning-text: #{dt.$color-black};
+
+  --btn-icon-bg-hover: #{dt.$color-gray-700};
+  --btn-icon-text: #{dt.$color-gray-400};
+
+  // Scrollbar colors
+  --scrollbar-track-bg: #{dt.$color-gray-900};
+  --scrollbar-thumb-bg: #{dt.$color-gray-700};
+  --scrollbar-thumb-hover-bg: #{dt.$color-gray-600};
+  --scrollbar-corner-bg: #{dt.$color-gray-900};
+
+  // Theme defaults
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+}
+
+// ========================================
+// BASE STYLES
+// ========================================
+
+a {
+  font-weight: dt.$font-weight-medium;
+  color: var(--color-primary);
+  text-decoration: inherit;
+  transition: dt.$transition-colors;
+
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+h1 {
+  font-size: dt.$font-size-2xl;
+  line-height: dt.$line-height-tight;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+// ========================================
+// SCROLLBAR THEMING SYSTEM
+// ========================================
+
+* {
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+}
+
+// WebKit scrollbar styling
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-bg);
+  border-radius: dt.$border-radius-sm;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: dt.$border-radius-sm;
+  border: none;
+  transition: dt.$transition-colors;
+
+  &:hover {
+    background: var(--scrollbar-thumb-hover-bg);
+  }
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-corner-bg);
+}
+
+// ========================================
+// UTILITY CLASSES
+// ========================================
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

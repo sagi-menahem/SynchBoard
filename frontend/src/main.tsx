@@ -7,7 +7,7 @@ import logger from 'shared/utils/logger';
 import { setupScrollbarThemeManager } from 'shared/utils/scrollbarTheme';
 
 import 'shared/lib/i18n';
-import 'index.css';
+import 'index.scss';
 
 // Apply theme immediately from localStorage to prevent flash
 const THEME_STORAGE_KEY = 'user-theme';
