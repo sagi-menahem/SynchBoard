@@ -31,14 +31,14 @@ function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <ConnectionStatusBanner onHeightChange={handleBannerHeightChange} />
-        <div style={{ 
-          paddingTop: `${bannerHeight}px`,
-          '--banner-height': `${bannerHeight}px`,
-          '--toolbar-height': `${toolbarHeight}px`,
-          '--content-offset': `${bannerHeight + toolbarHeight + 16}px`,
-          transition: 'padding-top var(--transition-duration-slow) ease-in-out',
-          minHeight: '100vh',
-        } as React.CSSProperties}>
+        <div 
+          className="app-content"
+          style={{ 
+            '--banner-height': `${bannerHeight}px`,
+            '--toolbar-height': `${toolbarHeight}px`,
+            '--content-offset': `${bannerHeight + toolbarHeight + 16}px`,
+            minHeight: '100vh',
+          } as React.CSSProperties}>
           <ToasterConfig />
           <AppRoutes />
         </div>
