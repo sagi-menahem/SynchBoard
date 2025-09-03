@@ -16,7 +16,7 @@
   font-weight: 500;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   gap: theme.$spacing-3;
-  min-height: 44px;
+  min-height: theme.$button-standard-height;
   cursor: pointer;
 }
 
