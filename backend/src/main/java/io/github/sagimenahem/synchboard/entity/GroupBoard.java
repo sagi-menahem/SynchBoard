@@ -1,5 +1,8 @@
 package io.github.sagimenahem.synchboard.entity;
 
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_BACKGROUND_COLOR;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_HEIGHT;
+import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_CANVAS_WIDTH;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,29 +47,20 @@ public class GroupBoard {
 
     @Column(name = "canvas_background_color")
     @Builder.Default
-    private String canvasBackgroundColor = "#222";
+    private String canvasBackgroundColor = DEFAULT_BACKGROUND_COLOR;
 
     @Column(name = "canvas_width")
     @Builder.Default
-    private Integer canvasWidth = 1920;
+    private Integer canvasWidth = DEFAULT_CANVAS_WIDTH;
 
     @Column(name = "canvas_height")
     @Builder.Default
-    private Integer canvasHeight = 1080;
+    private Integer canvasHeight = DEFAULT_CANVAS_HEIGHT;
 
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
         this.lastModifiedDate = LocalDateTime.now();
-        if (this.canvasBackgroundColor == null) {
-            this.canvasBackgroundColor = "#222";
-        }
-        if (this.canvasWidth == null) {
-            this.canvasWidth = 1200;
-        }
-        if (this.canvasHeight == null) {
-            this.canvasHeight = 800;
-        }
     }
 
     @PreUpdate

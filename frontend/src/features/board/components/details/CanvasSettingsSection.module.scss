@@ -1,0 +1,194 @@
+@use '@/styles' as theme;
+
+.section {
+  background: theme.$background-tertiary;
+  @include theme.rounded-medium;
+  padding: theme.$spacing-6;
+  margin-bottom: 1rem;
+  border: 1px solid theme.$border-primary;
+}
+
+.sectionHeader {
+  @include theme.flex-between;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  color: theme.$text-primary;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.editButton {
+  @include theme.edit-button;
+}
+
+.readOnlySettings {
+  @include theme.flex-column;
+  gap: theme.$spacing-3;
+}
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+}
+
+.settingLabel {
+  color: theme.$text-muted;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.settingValue {
+  color: theme.$text-primary;
+  font-size: 0.9rem;
+}
+
+.colorPreview {
+  width: 24px;
+  height: 24px;
+  @include theme.rounded-small;
+  border: 1px solid theme.$border-secondary;
+  flex-shrink: 0;
+}
+
+.editForm {
+  @include theme.flex-column;
+  gap: theme.$spacing-5;
+}
+
+.formField {
+  @include theme.form-field;
+}
+
+.fieldLabel {
+  @include theme.form-label;
+  color: theme.$text-muted;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.colorInput {
+  width: 80px;
+  height: 40px;
+  border: 1px solid theme.$border-secondary;
+  @include theme.rounded-small;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sizeOptions {
+  @include theme.flex-column;
+  gap: theme.$spacing-4;
+}
+
+.sizeGroup {
+  @include theme.flex-column;
+  gap: theme.$spacing-2;
+  padding: theme.$spacing-3;
+  border: 1px solid theme.$border-primary;
+  @include theme.rounded-small;
+  background: theme.$background-surface;
+}
+
+.groupLabel {
+  color: theme.$text-light-gray;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0 0 theme.$spacing-1 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid theme.$border-primary;
+  padding-bottom: theme.$spacing-1;
+}
+
+.radioOption {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  cursor: pointer;
+  color: theme.$text-primary;
+  font-size: 0.9rem;
+  padding: theme.$spacing-1 0;
+}
+
+.radioOption input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: theme.$primary;
+  cursor: pointer;
+}
+
+.radioOption:hover {
+  color: theme.$text-hover;
+}
+
+.customSizeInputs {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  margin-top: theme.$spacing-2;
+  color: theme.$text-muted;
+  font-size: 0.9rem;
+}
+
+.customSizeInputs input {
+  width: 90px;
+}
+
+.formActions {
+  display: flex;
+  gap: theme.$spacing-3;
+  justify-content: end; // CSS logical property - automatically handles RTL
+  padding-block-start: theme.$spacing-2; // Logical property for padding-top
+  border-block-start: 1px solid theme.$border-primary; // Logical property for border-top
+}
+
+.cancelButton,
+.saveButton {
+  @include theme.button-base;
+  font-size: 0.9rem !important;
+  padding: theme.$spacing-2 theme.$spacing-4 !important;
+}
+
+.buttonGroup {
+  @include theme.button-group;
+  margin-top: theme.$spacing-4;
+}
+
+// Settings display containers
+.settingsContainer {
+  margin-bottom: 1rem;
+}
+
+.settingsContainerLarge {
+  margin-bottom: 1.5rem;
+}
+
+.settingLabel {
+  margin-bottom: 0.5rem;
+  display: block;
+  color: theme.$text-muted;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.flexRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.flexRowWithMargin {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+
+

@@ -1,0 +1,145 @@
+@use '@/styles' as theme;
+
+.radioGroup {
+  display: flex;
+  gap: theme.$spacing-3;
+}
+
+.radioGroup.vertical {
+  flex-direction: column;
+}
+
+.radioGroup.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  cursor: pointer;
+  @include theme.smooth-transition;
+  
+  &:hover {
+    .radioButton {
+      border-color: theme.$primary;
+      box-shadow: theme.$shadow-focus-outline theme.$primary-light;
+    }
+    
+    .radioLabel {
+      color: theme.$text-primary;
+    }
+  }
+}
+
+/* RTL support - radio button appears on the right side of text */
+[dir="rtl"] .radioItem {
+  flex-direction: row-reverse;
+}
+
+/* Ensure horizontal group also respects RTL flow */
+[dir="rtl"] .radioGroup.horizontal {
+  direction: rtl;
+}
+
+[dir="rtl"] .radioGroup.horizontal .radioItem {
+  direction: ltr; /* Keep individual items LTR for proper text rendering */
+}
+
+.radioButton {
+  all: unset;
+  width: theme.$spacing-4-5;
+  height: theme.$spacing-4-5;
+  border-radius: 50%;
+  border: theme.$border-width-thick solid theme.$border-strong;
+  background-color: theme.$surface;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  @include theme.smooth-transition;
+  flex-shrink: 0;
+  
+  &:focus {
+    outline: none;
+    border-color: theme.$primary;
+    box-shadow: theme.$shadow-focus-ring theme.$primary-light; /* Standard focus ring */
+  }
+  
+  &[data-state="checked"] {
+    border-color: theme.$primary;
+    background-color: theme.$surface;
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: theme.$opacity-50;
+    border-color: theme.$border-light;
+    background-color: theme.$surface-hover;
+    
+    &:hover {
+      border-color: theme.$border-light;
+      box-shadow: none;
+    }
+  }
+}
+
+.radioIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  
+  &[data-state="checked"]::after {
+    content: '';
+    display: block;
+    width: theme.$spacing-2;
+    height: theme.$spacing-2;
+    border-radius: 50%;
+    background-color: theme.$primary;
+    animation: radioScale theme.$transition-fast ease-out;
+  }
+}
+
+.radioLabel {
+  color: theme.$text-secondary;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  cursor: pointer;
+  @include theme.smooth-transition;
+  user-select: none;
+  line-height: theme.$line-height-normal;
+  
+  .radioItem:has(.radioButton[data-state="checked"]) & {
+    color: theme.$text-primary;
+  }
+  
+  .radioItem:has(.radioButton:disabled) & {
+    cursor: not-allowed;
+    opacity: theme.$opacity-50;
+  }
+}
+
+@keyframes radioScale {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Media query for smaller screens
+@media (max-width: 640px) {
+  .radioGroup.horizontal {
+    flex-direction: column;
+  }
+  
+  .radioItem {
+    padding: theme.$spacing-1 0;
+  }
+}

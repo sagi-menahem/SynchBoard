@@ -1,0 +1,198 @@
+@use '@/styles' as theme;
+
+.universalToolbar {
+  position: fixed;
+  top: var(--banner-height, 0px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 72px;
+  box-sizing: border-box;
+  background: var(--toolbar-background, rgba(255, 255, 255, 0.95));
+  /* Temporarily disable backdrop-filter for testing */
+  backdrop-filter: blur(20px) saturate(180%);
+  /* -webkit-backdrop-filter: blur(20px) saturate(180%); */
+  border-bottom: 1px solid var(--toolbar-border, rgba(226, 232, 240, 0.6));
+  box-shadow: var(--toolbar-shadow, 0 1px 3px rgba(15, 23, 42, 0.08));
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 theme.$spacing-6;
+  z-index: theme.$z-index-dropdown;
+  user-select: none;
+  overflow: visible;
+  // Remove transform to avoid conflicts with PageTransition
+  /* transform: translate3d(0, 0, 0); */
+  transition: background-color theme.$transition-normal theme.$transition-ease,
+    border-color theme.$transition-normal theme.$transition-ease,
+    box-shadow theme.$transition-normal theme.$transition-ease;
+
+  // Responsive: Reduce padding on smaller screens to maximize content space
+  @media (max-width: 1200px) {
+    padding: 0 theme.$spacing-4;
+  }
+
+  @media (max-width: 1075px) {
+    padding: 0 theme.$spacing-3;
+  }
+}
+
+.toolbarSection {
+  @include theme.flex-start;
+  gap: theme.$spacing-3;
+}
+
+.leftSection {
+  justify-content: start; // CSS logical property - automatically RTL aware
+  min-width: min-content; // Prevent shrinking below content size
+  overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
+  gap: theme.$spacing-0; // Smaller gap between title and create button
+}
+
+.centerSection {
+  justify-content: center;
+  min-width: 200px; // Ensure enough space for search bar
+  max-width: 400px; // Limit maximum width
+  margin: 0 auto; // Center within the grid column
+
+  // Hide center section when empty (no children)
+  &:empty {
+    min-width: 0;
+    max-width: 0;
+    margin: 0;
+  }
+}
+
+.rightSection {
+  justify-content: end; // CSS logical property - automatically RTL aware
+  // Remove min-width to allow right section to get closer to left section
+
+  // Only set minimum width for very small screens to ensure buttons remain accessible
+  @media (max-width: 500px) {
+    min-width: 80px; // Ultra-compact but still functional
+    gap: theme.$spacing-1; // Reduce gap between navigation buttons
+  }
+}
+
+.toolbarTitle {
+  color: theme.$text-primary;
+  font-size: theme.$font-size-md;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  @include theme.text-ellipsis;
+  min-width: 150px; // Reserve consistent space to prevent layout shifts
+  max-width: 300px;
+}
+
+.toolbarTitle.clickableTitle {
+  cursor: pointer;
+  @include theme.smooth-transition;
+}
+
+
+// Title button styling overrides
+.titleButton {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: theme.$spacing-0-5 theme.$spacing-1 !important;
+  border-radius: theme.$border-radius-sm !important;
+
+  // Remove Button component hover styles and use toolbar title hover styles
+  &:hover:not(:disabled) {
+    background: theme.$surface-elevated !important;
+    border: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    color: theme.$primary;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98) !important;
+    box-shadow: none !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid theme.$primary !important;
+    outline-offset: 2px !important;
+    background: transparent !important;
+    border: none !important;
+  }
+}
+
+.customItem {
+  @include theme.flex-start;
+  gap: theme.$spacing-2;
+}
+
+.toolbarSection>*:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, theme.$border-light, transparent);
+  pointer-events: none;
+}
+
+.toolbarSection>*:last-child::after {
+  display: none;
+}
+
+.toolbarSection>.customItem::after,
+.toolbarSection>*:has(.searchInput)::after,
+.toolbarSection>*:has(.viewToggle)::after {
+  display: none;
+}
+
+// Priority-based tool hiding for canvas toolbar
+// Hide tools in order: EXPORT → HISTORY → TOOLS → LINES → SHAPES → DRAW → SIZE → COLOR
+// Lower priority numbers hide first
+
+// EXPORT (Priority 1) - Hide first at 1280px
+@media (max-width: 935px) {
+  .leftSection :global(.toolbar-priority-1) {
+    display: none !important;
+  }
+}
+
+// HISTORY (Priority 2) - Hide at 1180px  
+@media (max-width: 870px) {
+  .leftSection :global(.toolbar-priority-2) {
+    display: none !important;
+  }
+}
+
+// TOOLS (Priority 3) - Hide at 1080px
+@media (max-width: 770px) {
+  .leftSection :global(.toolbar-priority-3) {
+    display: none !important;
+  }
+}
+
+// LINES (Priority 4) - Hide at 980px
+@media (max-width: 630px) {
+  .leftSection :global(.toolbar-priority-4) {
+    display: none !important;
+  }
+}
+
+// SHAPES (Priority 5) - Hide at 880px
+@media (max-width: 570px) {
+  .leftSection :global(.toolbar-priority-5) {
+    display: none !important;
+  }
+}
+
+// DRAW (Priority 6) - Hide at 780px
+@media (max-width: 500px) {
+  .leftSection :global(.toolbar-priority-6) {
+    display: none !important;
+  }
+}

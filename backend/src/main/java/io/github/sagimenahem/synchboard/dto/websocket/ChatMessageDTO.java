@@ -33,7 +33,7 @@ public final class ChatMessageDTO {
         private String senderEmail;
         private String senderFullName;
         private String senderProfilePictureUrl;
-        
+
         private String instanceId;
 
         public enum MessageType {

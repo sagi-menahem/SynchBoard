@@ -1,0 +1,23 @@
+@use '@/styles' as theme;
+
+.container {
+  @include theme.flex-column-center;
+  gap: theme.$spacing-6;
+}
+
+.imageContainer {
+  @include theme.flex-center;
+}
+
+.image {
+  width: 168px;
+  height: 168px;
+  @include theme.rounded-circle;
+  object-fit: cover;
+}
+
+.buttonGroup {
+  @include theme.button-group;
+}
+
+// No RTL overrides needed - CSS logical properties handle this automatically

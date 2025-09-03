@@ -1,0 +1,221 @@
+@use '@/styles' as theme;
+
+.canvasToolSection {
+  display: flex;
+  gap: theme.$spacing-4;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
+  
+  // Responsive: Reduce gap on smaller screens to fit more content
+  @media (max-width: 1200px) {
+    gap: theme.$spacing-3;
+  }
+  
+  @media (max-width: 1075px) {
+    gap: theme.$spacing-2;
+  }
+  
+  // Progressive tool hiding: Hide tools only when absolutely necessary
+  @media (max-width: 950px) {
+    gap: theme.$spacing-1;
+    
+    // Hide export tools first (Download button - least critical during editing)
+    > :last-child {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 850px) {
+    // Hide line tools next (Line drawing tools)
+    > :nth-last-child(2) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 750px) {
+    // Hide shape tools (Shape drawing tools)  
+    > :nth-last-child(3) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 650px) {
+    // Hide additional tools (Text, Color Picker, Recolor tools)
+    > :nth-last-child(4) {
+      display: none;
+    }
+  }
+}
+
+.toolGroup {
+  @include theme.flex-column;
+  @include theme.flex-center;
+  padding: theme.$spacing-2 14px;
+  position: relative;
+  min-height: theme.$spacing-image-md;
+  @include theme.rounded-medium;
+  @include theme.hover-transition;
+}
+
+.toolGroup:hover {
+  background-color: theme.$tool-hover-bg;
+}
+
+.toolGroup:hover .toolLabel {
+  color: theme.$text-secondary;
+}
+
+.toolGroup:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: theme.$spacing-8;
+  width: theme.$border-width;
+  background: linear-gradient(to bottom, transparent, theme.$tool-separator, transparent);
+}
+
+
+
+.colorPickerWrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 36px; /* Custom canvas tool size */
+}
+
+.colorPickerWrapper :global(.colorPickerContainer) {
+  height: 36px; /* Custom canvas tool size */
+}
+
+.colorPickerWrapper :global(.swatch) {
+  width: 36px;
+  height: 36px; /* Custom canvas tool size - matches other toolbar buttons */
+}
+
+.strokeControl {
+  display: inline-flex;
+  align-items: center;
+  min-width: 120px; /* No direct token available */
+  height: 36px; /* Custom canvas tool size */
+  padding: 0 theme.$spacing-2;
+  background: theme.$tool-control-bg;
+  border: 1px solid theme.$tool-button-border;
+  @include theme.rounded-small;
+}
+
+.toolLabel {
+  font-size: theme.$font-size-2xs;
+  font-weight: theme.$font-weight-normal;
+  color: theme.$tool-label-text;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.8px; /* No direct token available */
+  margin-top: theme.$spacing-1-5;
+  @include theme.smooth-transition;
+  text-shadow: 0 1px 2px theme.$text-shadow;
+}
+
+.toolControls {
+  display: flex;
+  gap: theme.$spacing-1-5;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolButton {
+  min-width: 36px; /* Custom canvas tool size */
+  min-height: 36px; /* Custom canvas tool size */
+}
+
+.iconButton {
+  min-width: 36px; /* Custom canvas tool size */
+  min-height: 36px; /* Custom canvas tool size */
+  
+  &.active {
+    background: transparent !important;
+    border-color: var(--btn-icon-active-border) !important;
+    box-shadow: none !important;
+  }
+
+  &.active:hover,
+  &.active:focus,
+  &.active:focus-visible {
+    background: transparent !important;
+    border-color: var(--btn-icon-active-border) !important;
+    outline: none !important;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none !important;
+    border-color: var(--btn-icon-active-border) !important;
+  }
+}
+
+.shapeDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-1-5;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; // Align items to the start (left in LTR, right in RTL)
+  gap: theme.$spacing-2;
+  text-align: start; // CSS logical property - automatically RTL aware
+  font-size: theme.$font-size-sm;
+  width: 100%; // Ensure full width for proper alignment
+}
+
+
+
+.dropdownContent {
+  position: fixed;
+  background-color: theme.$dropdown-bg;
+  backdrop-filter: blur(10px);
+  border: 1px solid theme.$tool-button-border;
+  @include theme.rounded-medium;
+  @include theme.shadow-heavy;
+  min-width: 160px; /* No direct token available */
+  z-index: theme.$z-index-popover;
+  @include theme.flex-column;
+  gap: theme.$spacing-0-5;
+  padding: theme.$spacing-1;
+  margin-top: theme.$spacing-1;
+}
+
+.dropdownContent.hidden {
+  display: none;
+}
+
+
+.textInputOverlay {
+  position: absolute;
+  background: transparent;
+  border: none;
+  padding: 0;
+  z-index: theme.$z-index-overlay;
+}
+
+.textInput {
+  background: transparent;
+  border: none;
+  color: inherit; // Use color from parent (text color)
+  font-family: system-ui, -apple-system, sans-serif;
+  outline: none;
+  overflow: hidden; // Hide scrollbars for cleaner look
+  resize: none;
+  padding: 0;
+  margin: 0;
+  text-align: left; // Force left alignment regardless of language
+  direction: ltr; // Force LTR direction to match canvas text rendering
+}
+

@@ -66,9 +66,70 @@ export default [
       'semi': ['error', 'always'],
       'quotes': ['error', 'single', { avoidEscape: true }],
       'object-curly-spacing': ['error', 'always'],
+
+      // TypeScript strict rules
+      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'off', // Disabled - conflicts with TypeScript strict mode
+      '@typescript-eslint/prefer-nullish-coalescing': ['error', {
+        ignorePrimitives: { boolean: true },
+      }],
+      '@typescript-eslint/prefer-optional-chain': 'error',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off', // Disabled - conflicts with TS strict mode
+      '@typescript-eslint/no-unsafe-assignment': 'error',
+      '@typescript-eslint/no-unsafe-call': 'error',
+      '@typescript-eslint/no-unsafe-member-access': 'error',
+      '@typescript-eslint/no-unsafe-return': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/await-thenable': 'error',
+
+      // React specific strict rules
+      'react/jsx-key': ['error', { checkFragmentShorthand: true }],
+      'react/jsx-no-useless-fragment': 'error',
+      'react/no-array-index-key': 'error',
+      'react/no-unstable-nested-components': 'error',
+      'react/self-closing-comp': 'error',
+      'react/jsx-boolean-value': ['error', 'never'],
+      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
+      'react/jsx-fragments': ['error', 'syntax'],
+
+      // React hooks strict rules
+      'react-hooks/exhaustive-deps': 'error',
+
+      // General code quality rules
+      'no-console': 'warn',
+      'no-debugger': 'error',
+      'no-alert': 'error',
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
+      'no-script-url': 'error',
+      'prefer-const': 'error',
+      'no-var': 'error',
+      'eqeqeq': ['error', 'always'],
+      'no-duplicate-imports': 'error',
+      'no-unused-expressions': 'error',
+      'no-unreachable': 'error',
+      'no-empty': 'error',
+      'no-empty-function': ['error', { allow: ['arrowFunctions'] }],
+      'curly': ['error', 'all'],
+
+      // Performance and best practices
+      'no-nested-ternary': 'error',
+      'no-unneeded-ternary': 'error',
+      'prefer-arrow-callback': 'error',
+      'prefer-template': 'error',
+      'no-useless-concat': 'error',
     },
     settings: {
       react: { version: 'detect' },
+    },
+  },
+
+  {
+    files: ['**/logger.ts', '**/logger.js'],
+    rules: {
+      'no-console': 'off',
     },
   },
 

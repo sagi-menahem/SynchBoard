@@ -49,6 +49,12 @@
       "defaultValue": "SynchBoard Team"
     },
     {
+      "name": "app.oauth2.frontend-base-url",
+      "type": "java.lang.String",
+      "description": "Base URL for frontend OAuth2 redirects",
+      "defaultValue": "http://localhost:5173"
+    },
+    {
       "name": "verification.code-expiry-minutes",
       "type": "java.lang.Integer",
       "description": "Minutes until email verification code expires",
@@ -65,6 +71,18 @@
       "type": "java.lang.Integer",
       "description": "Minutes until password reset code expires",
       "defaultValue": 60
+    },
+    {
+      "name": "email.verification.expiry-minutes",
+      "type": "java.lang.Integer",
+      "description": "Minutes until email verification code expires (for templates)",
+      "defaultValue": 15
+    },
+    {
+      "name": "email.password-reset.expiry-hours",
+      "type": "java.lang.Integer",
+      "description": "Hours until password reset code expires (for templates)",
+      "defaultValue": 1
     }
   ]
 }

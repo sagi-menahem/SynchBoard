@@ -1,0 +1,109 @@
+@use '@/styles' as theme;
+
+.colorPickerContainer {
+  position: relative;
+  @include theme.flex-start;
+}
+
+.label {
+  @include theme.flex-start;
+  margin-right: 8px;
+  color: theme.$text-muted;
+  font-size: theme.$font-size-xs;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  height: 28px;
+}
+
+.swatch {
+  // Reset to standard button styling - will inherit from Button component variant="icon"
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; // Ensure color fill doesn't overflow button boundaries
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.colorFill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px; // Even smaller centered square
+  height: 20px; // Even smaller centered square  
+  border-radius: 50%; // Circle shape
+}
+
+.popover {
+  position: fixed;
+  z-index: theme.$z-index-popover;
+  @include theme.card-base;
+  @include theme.shadow-heavy;
+  animation: popoverIn theme.$transition-normal ease-out;
+  padding: theme.$spacing-3;
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: none !important;
+}
+
+@media (max-height: 500px) {
+  .popover {
+    top: 0;
+    left: calc(100% + 8px);
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: none !important;
+  }
+}
+
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.colorfulWrapper {
+  @include theme.flex-column;
+  gap: theme.$spacing-3;
+}
+
+.presetColors {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: theme.$spacing-1;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.presetColor {
+  width: 24px;
+  height: 24px;
+  border: 1px solid theme.$border-primary;
+  @include theme.rounded-small;
+  @include theme.interactive-button;
+  @include theme.smooth-transition;
+
+  &:hover {
+    border-color: theme.$primary;
+    transform: scale(1.1);
+    @include theme.shadow-light;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: theme.$primary;
+    box-shadow: theme.$shadow-focus-outline theme.$overlay-primary-30;
+  }
+}

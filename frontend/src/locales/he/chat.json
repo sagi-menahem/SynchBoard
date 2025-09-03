@@ -1,0 +1,12 @@
+{
+  "searchPlaceholder": "חיפוש הודעות...",
+  "emptyMessage": "תוכן ההודעה לא יכול להיות ריק",
+  "messageTooLong": "ההודעה ארוכה מדי (מקסימום 5000 תווים)",
+  "sending": "שולח...",
+  "window": {
+    "placeholder": "הקלד הודעה..."
+  },
+  "message": {
+    "failedToSendTooltip": "נכשל בשליחה - ההודעה תישלח שוב כשהחיבור יחזור"
+  }
+}

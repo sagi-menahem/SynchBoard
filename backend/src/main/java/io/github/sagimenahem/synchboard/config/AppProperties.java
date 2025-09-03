@@ -9,6 +9,7 @@ public class AppProperties {
     private final Stomp stomp = new Stomp();
     private final Upload upload = new Upload();
     private final Security security = new Security();
+    private final Oauth2 oauth2 = new Oauth2();
 
     public Jwt getJwt() {
         return jwt;
@@ -24,6 +25,10 @@ public class AppProperties {
 
     public Security getSecurity() {
         return security;
+    }
+
+    public Oauth2 getOauth2() {
+        return oauth2;
     }
 
     public static class Jwt {
@@ -89,6 +94,18 @@ public class AppProperties {
 
         public void setAllowedOrigins(String allowedOrigins) {
             this.allowedOrigins = allowedOrigins;
+        }
+    }
+
+    public static class Oauth2 {
+        private String frontendBaseUrl;
+
+        public String getFrontendBaseUrl() {
+            return frontendBaseUrl;
+        }
+
+        public void setFrontendBaseUrl(String frontendBaseUrl) {
+            this.frontendBaseUrl = frontendBaseUrl;
         }
     }
 }

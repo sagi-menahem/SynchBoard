@@ -1,0 +1,168 @@
+@use '@/styles' as theme;
+
+.section {
+    background-color: theme.$background-secondary;
+    border: 1px solid theme.$border-primary;
+    @include theme.rounded-medium;
+    padding: theme.$spacing-6;
+    margin-bottom: 2rem;
+}
+
+.sectionHeader {
+    @include theme.flex-between;
+    margin-bottom: theme.$spacing-6;
+}
+
+
+.sectionTitle {
+    color: theme.$text-primary;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: start; // CSS logical property - automatically RTL aware
+}
+
+
+.editButton {
+    @include theme.edit-button;
+}
+
+.imageContainer {
+    @include theme.flex-center;
+    margin-bottom: theme.$spacing-6;
+}
+
+.boardImage {
+    width: 168px;
+    height: 168px;
+    @include theme.rounded-circle;
+    object-fit: cover;
+}
+
+.buttonGroup {
+    @include theme.button-group;
+    gap: theme.$spacing-3;
+}
+
+.descriptionContent {
+    padding: 0;
+}
+
+.description {
+    color: theme.$text-secondary;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.editForm {
+    @include theme.flex-column;
+    gap: theme.$spacing-5;
+}
+
+.formField {
+    @include theme.form-field;
+}
+
+.formActions {
+    display: flex;
+    gap: theme.$spacing-3;
+    justify-content: end; // CSS logical property - automatically handles RTL
+    padding-block-start: theme.$spacing-2; // Logical property for padding-top
+    border-block-start: 1px solid theme.$border-primary; // Logical property for border-top
+}
+
+.cancelButton,
+.saveButton {
+    @include theme.button-base;
+    font-size: 0.9rem !important;
+    padding: theme.$spacing-2 theme.$spacing-4 !important;
+}
+
+.descriptionTextarea {
+    @include theme.input-base;
+    width: 100%;
+    padding: theme.$spacing-3;
+    background-color: theme.$background-surface;
+    border: 1px solid theme.$border-secondary;
+    @include theme.rounded-small;
+    color: theme.$text-primary;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.descriptionTextarea:focus {
+    @include theme.input-focus;
+    outline: none;
+    border-color: theme.$primary;
+    box-shadow: theme.$shadow-focus-outline theme.$primary-light;
+}
+
+.descriptionTextarea::placeholder {
+    color: theme.$text-placeholder;
+}
+
+.descriptionTextarea:disabled {
+    background-color: theme.$background-tertiary;
+    cursor: not-allowed;
+}
+
+.emptyDescription {
+    padding: theme.$spacing-6;
+    background-color: var(--color-surface-hover);
+    border: 2px dashed var(--color-border-light);
+    border-radius: theme.$border-radius-md;
+    margin: theme.$spacing-2 0;
+    @include theme.smooth-transition;
+    
+    &:hover {
+        background-color: var(--color-surface-elevated);
+        border-color: var(--color-border);
+    }
+    
+    // Style the label elements to match Canvas Settings format
+    label {
+        color: theme.$text-muted;
+        font-size: 0.875rem;
+        font-weight: normal;
+        cursor: default;
+        margin: 0;
+        padding: 0;
+        text-align: start; // CSS logical property - automatically RTL aware
+    }
+}
+
+// Regular description styling
+.description {
+    color: theme.$text-primary;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    padding: theme.$spacing-2 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: start; // CSS logical property - automatically RTL aware
+}
+
+// RTL support for descriptions
+
+// Empty description label styles
+.emptyDescriptionLabel {
+  margin-bottom: 0.5rem;
+  display: block;
+  color: theme.$text-muted;
+  font-size: 0.875rem;
+  font-weight: normal;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+

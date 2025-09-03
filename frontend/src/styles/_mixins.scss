@@ -1,0 +1,443 @@
+// SCSS Mixins - Reusable CSS Patterns
+// This file contains reusable mixins for common CSS patterns found across components
+@use 'design-tokens' as theme;
+@use 'variables' as vars;
+
+// ===== FLEXBOX LAYOUT PATTERNS =====
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin flex-end {
+  display: flex;
+  justify-content: end; // Already using logical property
+  align-items: center;
+}
+
+@mixin flex-start {
+  display: flex;
+  justify-content: start; // CSS logical property
+  align-items: center;
+}
+
+// ===== BUTTON/INTERACTIVE PATTERNS =====
+
+@mixin interactive-button {
+  cursor: pointer;
+  transition: all theme.$transition-medium;
+  border: none;
+  background: none;
+  padding: theme.$spacing-0;
+  font-family: inherit;
+}
+
+@mixin button-hover-lift {
+  &:hover:not(:disabled) {
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: theme.$shadow-button;
+  }
+}
+
+@mixin button-disabled {
+  &:disabled {
+    cursor: not-allowed;
+    opacity: theme.$opacity-60;
+    transform: none;
+  }
+}
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: theme.$spacing-2;
+  padding: theme.$button-padding-y theme.$button-padding-x;
+  font-size: theme.$font-size-base;
+  font-weight: theme.$font-weight-medium;
+  font-family: inherit;
+  cursor: pointer;
+  border: theme.$border-width solid transparent;
+  border-radius: theme.$button-border-radius;
+  transition: theme.$transition-all;
+  text-decoration: none;
+  box-sizing: border-box;
+  min-height: theme.$button-height-md;
+}
+
+@mixin button-group {
+  display: flex;
+  gap: theme.$spacing-3;
+  justify-content: end; // CSS logical property - automatically handles RTL
+}
+
+// ===== INPUT FIELD PATTERNS =====
+
+@mixin input-base {
+  width: 100%;
+  padding: theme.$input-padding;
+  box-sizing: border-box;
+  background-color: var(--color-surface);
+  border: theme.$input-border-width solid var(--color-border);
+  border-radius: theme.$input-border-radius;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: inherit;
+  transition: border-color theme.$transition-normal ease, box-shadow theme.$transition-normal ease;
+
+  // Autofill overrides for browser compatibility
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+    -webkit-box-shadow: theme.$shadow-overlay-hack var(--color-surface) inset !important;
+    box-shadow: theme.$shadow-overlay-hack var(--color-surface) inset !important;
+    background-color: var(--color-surface) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  &:disabled {
+    background-color: var(--color-surface);
+    color: var(--color-text-disabled);
+    border-color: var(--color-border-light);
+    cursor: not-allowed;
+    opacity: theme.$opacity-60;
+  }
+}
+
+@mixin input-focus {
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: theme.$shadow-focus;
+  }
+}
+
+@mixin textarea-base {
+  width: 100%;
+  padding: theme.$spacing-3;
+  background-color: var(--color-surface);
+  border: theme.$border-width solid var(--color-border);
+  border-radius: theme.$border-radius-md;
+  color: var(--color-text-primary);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+// ===== CARD/SECTION PATTERNS =====
+
+@mixin card-base {
+  background-color: var(--color-surface-elevated);
+  border: theme.$card-border-width solid var(--color-border);
+  border-radius: theme.$card-border-radius;
+  padding: theme.$card-padding;
+}
+
+@mixin card-hover-effect {
+  transition: background-color theme.$transition-normal, transform theme.$transition-slow ease-out, box-shadow theme.$transition-normal ease;
+  
+  &:hover {
+    background-color: var(--color-surface-hover);
+    transform: translateY(theme.$transform-translate-y-sm);
+    box-shadow: theme.$shadow-card;
+  }
+}
+
+@mixin section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: theme.$spacing-6;
+}
+
+// ===== FORM PATTERNS =====
+
+@mixin form-base {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-6;
+}
+
+@mixin form-field {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-2;
+  margin-bottom: theme.$spacing-4;
+}
+
+@mixin form-label {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  margin-bottom: theme.$spacing-2;
+  color: var(--color-text-secondary);
+  font-weight: theme.$font-weight-medium;
+  font-size: theme.$font-size-sm;
+}
+
+@mixin form-actions {
+  display: flex;
+  gap: theme.$spacing-3;
+  justify-content: end; // CSS logical property - automatically handles RTL
+  padding-block-start: theme.$spacing-2; // Logical property for padding-top
+  border-block-start: theme.$border-width solid var(--color-border); // Logical property for border-top
+}
+
+// ===== ERROR/STATUS PATTERNS =====
+
+@mixin error-message {
+  background-color: theme.$color-error-light;
+  border: theme.$border-width solid theme.$color-error;
+  color: theme.$color-error;
+  padding: theme.$spacing-3;
+  border-radius: theme.$border-radius-md;
+  font-size: theme.$font-size-sm;
+}
+
+@mixin success-message {
+  background-color: theme.$color-success-light;
+  border: theme.$border-width solid theme.$color-success;
+  color: theme.$color-success;
+  padding: theme.$spacing-3;
+  border-radius: theme.$border-radius-md;
+  font-size: theme.$font-size-sm;
+}
+
+// ===== BORDER RADIUS PATTERNS =====
+
+@mixin rounded-small {
+  border-radius: theme.$border-radius-sm;
+}
+
+@mixin rounded-medium {
+  border-radius: theme.$border-radius-md;
+}
+
+@mixin rounded-large {
+  border-radius: theme.$border-radius-lg;
+}
+
+@mixin rounded-circle {
+  border-radius: theme.$border-radius-full;
+}
+
+// ===== POSITION/OVERLAY PATTERNS =====
+
+@mixin overlay-full {
+  position: absolute;
+  top: theme.$spacing-0;
+  left: theme.$spacing-0;
+  right: theme.$spacing-0;
+  bottom: theme.$spacing-0;
+}
+
+@mixin fixed-overlay {
+  position: fixed;
+  top: theme.$spacing-0;
+  left: theme.$spacing-0;
+  right: theme.$spacing-0;
+  bottom: theme.$spacing-0;
+  z-index: theme.$z-index-tooltip;
+}
+
+@mixin modal-backdrop {
+  @include fixed-overlay;
+  @include flex-center;
+  background-color: theme.$color-backdrop;
+  padding: theme.$spacing-0 theme.$spacing-4;
+  overflow-y: auto;
+}
+
+// ===== SCROLLBAR PATTERNS =====
+
+@mixin theme-scrollbar {
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+  
+  // WebKit scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg);
+    @include rounded-small;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    @include rounded-small;
+    
+    &:hover {
+      background: var(--scrollbar-thumb-hover-bg);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg);
+  }
+}
+
+@mixin theme-scrollbar-enhanced {
+  // Firefox scrollbar - enhanced
+  scrollbar-width: auto;
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+
+  // WebKit scrollbar - enhanced
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg);
+    border: 1px solid var(--color-border-light);
+    @include rounded-medium;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    border: 1px solid var(--color-border-light);
+    @include rounded-medium;
+    box-shadow: theme.$shadow-inset-light;
+    
+    &:hover {
+      background: var(--scrollbar-thumb-hover-bg);
+      border-color: var(--color-border);
+    }
+    
+    &:active {
+      background: var(--scrollbar-thumb-hover-bg);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: var(--scrollbar-corner-bg);
+    border: 1px solid var(--color-border-light);
+  }
+}
+
+// ===== TRANSITION PATTERNS =====
+
+@mixin smooth-transition {
+  transition: theme.$transition-all;
+}
+
+@mixin button-transition {
+  transition: all theme.$transition-medium;
+}
+
+@mixin hover-transition {
+  transition: background-color theme.$transition-normal, transform theme.$transition-slow ease-out, box-shadow theme.$transition-normal ease;
+}
+
+// ===== BOX SHADOW PATTERNS =====
+
+@mixin shadow-light {
+  box-shadow: theme.$shadow-button;
+}
+
+@mixin shadow-medium {
+  box-shadow: theme.$shadow-card;
+}
+
+@mixin shadow-heavy {
+  box-shadow: theme.$shadow-xl;
+}
+
+@mixin focus-shadow {
+  box-shadow: theme.$shadow-focus;
+}
+
+// ===== RADIO BUTTON PATTERNS =====
+
+@mixin radio-option {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  font-size: theme.$font-size-sm-plus;
+  padding: theme.$spacing-1 0;
+}
+
+@mixin radio-input {
+  width: theme.$spacing-4;
+  height: theme.$spacing-4;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+// ===== TEXT PATTERNS =====
+
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ===== LOADING/SPINNER PATTERNS =====
+
+@mixin spinner-base {
+  border: theme.$border-width-thick solid rgba(theme.$color-white, theme.$opacity-10);
+  border-top: theme.$border-width-thick solid theme.$color-primary;
+  border-radius: theme.$border-radius-full;
+  animation: spin theme.$transition-very-slow linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// ===== UTILITY PATTERNS =====
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: theme.$spacing-px !important;
+  height: theme.$spacing-px !important;
+  padding: theme.$spacing-0 !important;
+  margin: -theme.$spacing-px !important;
+  overflow: hidden !important;
+  clip: rect(theme.$spacing-0, theme.$spacing-0, theme.$spacing-0, theme.$spacing-0) !important;
+  white-space: nowrap !important;
+  border: theme.$spacing-0 !important;
+}
+
+@mixin clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

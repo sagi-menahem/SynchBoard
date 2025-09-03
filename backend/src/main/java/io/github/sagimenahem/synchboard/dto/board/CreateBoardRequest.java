@@ -1,17 +1,12 @@
 package io.github.sagimenahem.synchboard.dto.board;
 
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_CANT_BE_EMPTY;
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_LENGHT;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.*;
 import java.util.List;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CreateBoardRequest {
 
     @NotBlank(message = BOARD_NAME_CANT_BE_EMPTY)
-    @Size(min = 3, max = 100, message = BOARD_NAME_LENGHT)
+    @Size(min = BOARD_NAME_MIN_LENGTH, max = BOARD_NAME_MAX_LENGTH, message = BOARD_NAME_LENGTH)
     private String name;
 
     private String description;
@@ -28,14 +23,15 @@ public class CreateBoardRequest {
 
     private List<String> inviteEmails;
 
-    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "Canvas background color must be a valid hex color")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$",
+            message = "validation.canvasColorPattern")
     private String canvasBackgroundColor;
 
-    @Min(value = 400, message = "Canvas width must be at least 400 pixels")
-    @Max(value = 4000, message = "Canvas width must not exceed 4000 pixels")
+    @Min(value = CANVAS_WIDTH_MIN, message = "validation.canvasWidthMin")
+    @Max(value = CANVAS_WIDTH_MAX, message = "validation.canvasWidthMax")
     private Integer canvasWidth;
 
-    @Min(value = 300, message = "Canvas height must be at least 300 pixels")
-    @Max(value = 4000, message = "Canvas height must not exceed 4000 pixels")
+    @Min(value = CANVAS_HEIGHT_MIN, message = "validation.canvasHeightMin")
+    @Max(value = CANVAS_HEIGHT_MAX, message = "validation.canvasHeightMax")
     private Integer canvasHeight;
 }

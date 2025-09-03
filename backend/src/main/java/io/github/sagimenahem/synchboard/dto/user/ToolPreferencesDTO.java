@@ -1,5 +1,7 @@
 package io.github.sagimenahem.synchboard.dto.user;
 
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.DEFAULT_STROKE_WIDTH_MAX;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.DEFAULT_STROKE_WIDTH_MIN;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -15,16 +17,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ToolPreferencesDTO {
 
-    @NotBlank(message = "Default tool cannot be blank")
-    @Pattern(regexp = "brush|eraser|square|rectangle|circle|triangle|pentagon|hexagon|star|line|dottedLine|arrow|text|colorPicker|recolor", 
-             message = "Invalid tool type")
+    @NotBlank(message = "validation.toolRequired")
+    @Pattern(
+            regexp = "brush|eraser|square|rectangle|circle|triangle|pentagon|hexagon|star|line|dottedLine|arrow|text|colorPicker|recolor",
+            message = "validation.toolPattern")
     private String defaultTool;
 
-    @NotBlank(message = "Default stroke color cannot be blank")
-    @Pattern(regexp = "^#[0-9A-Fa-f]{6}$", message = "Default stroke color must be a valid hex color")
+    @NotBlank(message = "validation.strokeColorRequired")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{6}$",
+            message = "validation.strokeColorPattern")
     private String defaultStrokeColor;
 
-    @Min(value = 1, message = "Default stroke width must be at least 1")
-    @Max(value = 50, message = "Default stroke width must not exceed 50")
+    @Min(value = DEFAULT_STROKE_WIDTH_MIN, message = "validation.strokeWidthMin")
+    @Max(value = DEFAULT_STROKE_WIDTH_MAX, message = "validation.strokeWidthMax")
     private Integer defaultStrokeWidth;
 }

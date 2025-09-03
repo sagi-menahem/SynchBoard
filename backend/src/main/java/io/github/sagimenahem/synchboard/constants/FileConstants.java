@@ -15,6 +15,9 @@ public final class FileConstants {
         public static final long MAX_FILE_SIZE_BYTES = 5L * 1024 * 1024;
         public static final int MAX_FILE_SIZE_MB = 5;
 
+        public static final int HTTP_CONNECTION_TIMEOUT_MS = 5000;
+        public static final int HTTP_READ_TIMEOUT_MS = 10000;
+
         public static final List<String> ALLOWED_IMAGE_MIME_TYPES = Arrays.asList("image/jpeg",
                         "image/png", "image/gif", "image/webp", "image/svg+xml");
 

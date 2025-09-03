@@ -1,0 +1,33 @@
+@use '@/styles' as theme;
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+}
+
+.label {
+  font-size: 0.875rem; // 14px
+  color: var(--color-text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.switch {
+  // Override any default styles from react-switch if needed
+  flex-shrink: 0;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+// RTL support - ReactSwitch handles direction automatically, but we can add custom overrides if needed
+[dir="rtl"] .container {
+  flex-direction: row-reverse;
+}

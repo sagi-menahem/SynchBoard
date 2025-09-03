@@ -12,4 +12,7 @@ public final class SecurityConstants {
     public static final int JWT_PREFIX_LENGTH = 7;
     public static final String JWT_SECRETKEY_VALUE = "${application.security.jwt.secret-key}";
     public static final long JWT_EXPIRATION_MS = 1000 * 60 * 60 * 24;
+
+    public static final int EMAIL_VERIFICATION_TIMEOUT_MINUTES = 15;
+    public static final int PASSWORD_RESET_TIMEOUT_MINUTES = 60;
 }

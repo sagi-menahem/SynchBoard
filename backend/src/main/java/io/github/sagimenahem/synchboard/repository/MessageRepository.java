@@ -14,7 +14,7 @@ import io.github.sagimenahem.synchboard.entity.Message;
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findAllByBoard_BoardGroupIdOrderByTimestampAsc(Long boardId);
-    
+
     @Query("SELECT m FROM Message m LEFT JOIN FETCH m.sender WHERE m.board.boardGroupId = :boardId ORDER BY m.timestamp ASC")
     List<Message> findByBoardWithSender(@Param("boardId") Long boardId);
 

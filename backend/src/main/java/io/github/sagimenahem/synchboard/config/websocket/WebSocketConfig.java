@@ -31,28 +31,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
-        // Use STOMP broker relay with ActiveMQ Artemis
         config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
                 .setRelayHost(appProperties.getStomp().getBrokerHost())
-                .setRelayPort(appProperties.getStomp().getBrokerPort())
-                .setClientLogin(brokerUser)
-                .setClientPasscode(brokerPassword)
-                .setSystemLogin(brokerUser)
+                .setRelayPort(appProperties.getStomp().getBrokerPort()).setClientLogin(brokerUser)
+                .setClientPasscode(brokerPassword).setSystemLogin(brokerUser)
                 .setSystemPasscode(brokerPassword)
-                .setSystemHeartbeatSendInterval(15000)
-                .setSystemHeartbeatReceiveInterval(15000)
+                .setSystemHeartbeatSendInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
+                .setSystemHeartbeatReceiveInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
                 .setVirtualHost("/");
-        
+
         config.setApplicationDestinationPrefixes(WEBSOCKET_APP_PREFIX);
     }
 
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
         registry.addEndpoint(WEBSOCKET_ENDPOINT)
-                .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins())
-                .withSockJS()
-                .setStreamBytesLimit(1024 * 1024)
-                .setHttpMessageCacheSize(1000)
+                .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins()).withSockJS()
+                .setStreamBytesLimit(1024 * 1024).setHttpMessageCacheSize(1000)
                 .setDisconnectDelay(30 * 1000);
     }
 
