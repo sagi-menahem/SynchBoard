@@ -44,27 +44,27 @@
   background-color: theme.$surface-elevated;
   animation: popoverIn theme.$transition-normal ease-out;
   padding: theme.$spacing-3;
-  width: 250px !important;
-  min-width: 250px !important;
+  width: theme.$color-picker-width !important;
+  min-width: theme.$color-picker-width !important;
 }
 
 /* Highly specific rule to override any library defaults */
 .colorPickerPopupWrapper :global([class*="colorPickerContainer"]) :global([class*="popover"]) {
-  width: 250px !important;
-  min-width: 250px !important;
+  width: theme.$color-picker-width !important;
+  min-width: theme.$color-picker-width !important;
   max-width: none !important;
 }
 
 /* Even more specific - target by attribute and class combination */
 .colorPickerPopupWrapper :global(div[class*="popover"]) {
-  width: 250px !important;
-  min-width: 250px !important;
+  width: theme.$color-picker-width !important;
+  min-width: theme.$color-picker-width !important;
   max-width: none !important;
 }
 
 .colorPickerPopupWrapper :global(.react-colorful) {
   width: 100%;
-  height: 150px;
+  height: theme.$color-picker-height;
   margin: 0;
   padding: 0;
 }
@@ -79,7 +79,7 @@
 }
 
 .colorPickerPopupWrapper :global(.react-colorful__hue) {
-  height: 20px;
+  height: theme.$color-picker-slider-height;
   border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
   width: 100% !important;
   margin: 0 !important;
@@ -88,7 +88,7 @@
 }
 
 .colorPickerPopupWrapper :global(.react-colorful__alpha) {
-  height: 20px;
+  height: theme.$color-picker-slider-height;
   border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
   width: 100% !important;
   margin: 0 !important;
@@ -97,8 +97,8 @@
 }
 
 .colorPickerPopupWrapper :global(.react-colorful__pointer) {
-  width: 16px;
-  height: 16px;
-  border: 2px solid theme.$text-primary;
+  width: theme.$color-picker-pointer-size;
+  height: theme.$color-picker-pointer-size;
+  border: theme.$border-width-thick solid theme.$text-primary;
   @include theme.shadow-light;
 }
