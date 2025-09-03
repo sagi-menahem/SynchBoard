@@ -334,6 +334,8 @@ $google-button-max-width: $spacing-container-xs; // 300px
 // === BUTTON COMPONENT TOKENS ===
 $icon-button-size: 36px;
 $button-compact-height: 28px;
+$button-standard-height: 44px; // Standard button minimum touch target
+$edit-button-height: 32px; // Edit button minimum height
 
 // === COLOR PICKER TOKENS ===
 $color-picker-width: 250px;
