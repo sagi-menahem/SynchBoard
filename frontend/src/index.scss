@@ -138,6 +138,15 @@ body[data-theme='light'] {
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-500};
   --scrollbar-corner-bg: #{dt.$color-gray-100};
 
+  --google-button-bg: #{dt.$google-button-bg-light};
+  --google-button-text: #{dt.$google-button-text-light};
+  --google-button-border: #{dt.$google-button-border-light};
+  --google-button-hover-bg: #{dt.$google-button-hover-bg-light};
+  --google-button-hover-border: #{dt.$google-button-hover-border-light};
+  --google-button-active-bg: #{dt.$google-button-active-bg-light};
+  --google-button-disabled-text: #{dt.$google-button-disabled-text-light};
+  --google-button-disabled-border: #{dt.$google-button-disabled-border-light};
+
   color: var(--color-text-primary);
   background-color: var(--color-background);
 }
@@ -236,6 +245,15 @@ body[data-theme='dark'] {
   --scrollbar-thumb-bg: #{dt.$color-gray-700};
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-600};
   --scrollbar-corner-bg: #{dt.$color-gray-900};
+
+  --google-button-bg: #{dt.$google-button-bg-dark};
+  --google-button-text: #{dt.$google-button-text-dark};
+  --google-button-border: #{dt.$google-button-border-dark};
+  --google-button-hover-bg: #{dt.$google-button-hover-bg-dark};
+  --google-button-hover-border: #{dt.$google-button-hover-border-dark};
+  --google-button-active-bg: #{dt.$google-button-active-bg-dark};
+  --google-button-disabled-text: #{dt.$google-button-disabled-text-dark};
+  --google-button-disabled-border: #{dt.$google-button-disabled-border-dark};
 
   color: var(--color-text-primary);
   background-color: var(--color-background);

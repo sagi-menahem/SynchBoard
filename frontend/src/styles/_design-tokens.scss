@@ -299,18 +299,53 @@ $card-border-radius: $border-radius-md;
 $card-border-width: 1px;
 
 // ========================================
-// GOOGLE BRANDING (Immutable)
+// GOOGLE BRANDING - Theme Aware
 // ========================================
-// These values must remain consistent with Google's brand guidelines
+// Google branding adapted for light and dark themes while maintaining brand consistency
 
-$google-button-bg: #ffffff;
-$google-button-text: #1f1f1f;
-$google-button-border: #dadce0;
-$google-button-hover-bg: #f8f8f8;
-$google-button-hover-border: #c6c6c6;
-$google-button-active-bg: #f1f1f1;
-$google-button-disabled-text: #9aa0a6;
-$google-button-disabled-border: #f1f3f4;
+// === LIGHT THEME GOOGLE COLORS ===
+$google-button-bg-light: #ffffff;
+$google-button-text-light: #1f1f1f;
+$google-button-border-light: #dadce0;
+$google-button-hover-bg-light: #f8f8f8;
+$google-button-hover-border-light: #c6c6c6;
+$google-button-active-bg-light: #f1f1f1;
+$google-button-disabled-text-light: #9aa0a6;
+$google-button-disabled-border-light: #f1f3f4;
+
+// === DARK THEME GOOGLE COLORS ===
+$google-button-bg-dark: #2d2d2d;
+$google-button-text-dark: #e8eaed;
+$google-button-border-dark: #5f6368;
+$google-button-hover-bg-dark: #3c4043;
+$google-button-hover-border-dark: #8e918e;
+$google-button-active-bg-dark: #494c50;
+$google-button-disabled-text-dark: #9aa0a6;
+$google-button-disabled-border-dark: #3c4043;
+
+// ========================================
+// COMPONENT-SPECIFIC TOKENS
+// ========================================
+
+// === GOOGLE BUTTON TOKENS ===
+$google-button-width-ratio: 65%;
+$google-button-max-width: $spacing-container-xs; // 300px
+
+// === BUTTON COMPONENT TOKENS ===
+$icon-button-size: 36px;
+$button-compact-height: 28px;
+
+// === COLOR PICKER TOKENS ===
+$color-picker-width: 250px;
+$color-picker-height: 150px;
+$color-picker-slider-height: 20px;
+$color-picker-pointer-size: 16px;
+
+// === BOARD COMPONENT TOKENS ===
+$board-card-grid-height: 280px;
+$board-card-grid-max-width: 700px;
+$board-card-image-height-grid: 120px;
+$board-card-image-size-list: 60px;
 
 // ========================================
 // UTILITY TOKENS

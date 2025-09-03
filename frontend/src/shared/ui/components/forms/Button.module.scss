@@ -81,8 +81,8 @@
     @include theme.rounded-medium;
     @include theme.flex-center;
     @include theme.button-transition;
-    min-width: 36px; /* Custom canvas tool size */
-    min-height: 36px; /* Custom canvas tool size */
+    min-width: theme.$icon-button-size; /* Custom canvas tool size */
+    min-height: theme.$icon-button-size; /* Custom canvas tool size */
     position: relative;
 
     &:hover:not(:disabled) {
@@ -128,7 +128,7 @@
     border: 1px solid var(--btn-cta-bg);
     font-weight: theme.$font-weight-semibold;
     box-shadow: theme.$shadow-button;
-    min-height: 28px; // 28px - medium size for toolbar use
+    min-height: theme.$button-compact-height; // medium size for toolbar use
     padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - balanced compact padding
     font-size: theme.$font-size-xs; // 12px - balanced text size
 
@@ -153,7 +153,7 @@
     border: 1px solid var(--btn-warning-bg);
     font-weight: theme.$font-weight-semibold;
     box-shadow: theme.$shadow-button;
-    min-height: 28px; // 28px - medium size for toolbar use
+    min-height: theme.$button-compact-height; // medium size for toolbar use
     padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - balanced compact padding
     font-size: theme.$font-size-xs; // 12px - balanced text size
 
@@ -181,7 +181,7 @@
     color: var(--color-text-muted);
     text-decoration: none;
     font-weight: theme.$font-weight-normal;
-    font-size: 0.9rem;
+    font-size: theme.$font-size-sm-plus;
     cursor: pointer;
     @include theme.button-transition;
 
