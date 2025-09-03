@@ -1,0 +1,12 @@
+@use '@/styles' as theme;
+
+.textarea {
+    @include theme.input-base;
+    @include theme.input-focus;
+    margin-top: theme.$spacing-1;
+    padding: theme.$input-padding;
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}

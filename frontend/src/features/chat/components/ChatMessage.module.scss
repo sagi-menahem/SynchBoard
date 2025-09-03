@@ -1,0 +1,288 @@
+@use '@/styles' as theme;
+
+.messageContainer {
+  width: 100%;
+  padding: theme.$spacing-1 16px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  animation: messageSlideIn theme.$transition-slow ease-out;
+
+  &.grouped {
+    margin-bottom: 4px;
+
+    .messageBubble {
+      padding: theme.$spacing-2 theme.$spacing-3;
+    }
+
+    &.otherMessage {
+      padding-inline-start: 48px; // Align with avatar width + gap
+    }
+  }
+}
+
+.messageContainer.noAnimation {
+  animation: none;
+}
+
+.myMessage {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.otherMessage {
+  display: flex;
+  gap: theme.$spacing-2;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.messageBubble {
+  padding: theme.$spacing-3;
+  border-radius: 20px;
+  max-width: 70%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: visible;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  border: 1px solid transparent;
+}
+
+.myMessage .messageBubble {
+  width: 100%;
+}
+
+.otherMessage .messageBubble {
+  flex: 1;
+  /* Takes remaining width after avatar */
+}
+
+.myMessage .messageBubble {
+  background: theme.$primary;
+  color: #ffffff;
+  margin-inline-start: auto;
+  position: relative;
+
+
+  // Dark theme - deep navy from design tokens
+  body[data-theme='dark'] & {
+    background: theme.$color-chat-my-message-dark;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.1);
+
+  }
+
+  // Light theme - light blue from design tokens
+  body[data-theme='light'] & {
+    background: theme.$color-chat-my-message-light;
+    color: #ffffff;
+    border-color: rgba(59, 130, 246, 0.2);
+
+  }
+}
+
+.otherMessage .messageBubble {
+  background: theme.$surface-elevated;
+  color: theme.$text-primary;
+  position: relative;
+
+
+  // Dark theme - warm dark gray from design tokens
+  body[data-theme='dark'] & {
+    background: theme.$color-chat-other-message-dark;
+    color: #f9fafb;
+    border-color: rgba(255, 255, 255, 0.08);
+
+  }
+
+  // Light theme - soft gray from design tokens
+  body[data-theme='light'] & {
+    background: theme.$color-chat-other-message-light;
+    color: #1b1b1b;
+    border-color: rgba(0, 0, 0, 0.1);
+
+  }
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  @include theme.rounded-circle;
+  object-fit: cover;
+  border: 2px solid theme.$border-light;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.messageHeader {
+  margin-bottom: theme.$spacing-1;
+}
+
+.otherMessage .messageHeader {
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.myMessage .messageHeader {
+  text-align: end; // CSS logical property - automatically RTL aware
+}
+
+.senderName {
+  color: theme.$text-secondary;
+  font-size: 0.85rem;
+  font-weight: 600;
+  @include theme.text-ellipsis;
+  max-width: 100%;
+}
+
+.messageBody {
+  position: relative;
+}
+
+.timestampContainer {
+  margin-top: theme.$spacing-1;
+  display: flex;
+  width: 100%;
+}
+
+.otherMessage .timestampContainer {
+  justify-content: end; // CSS logical property - automatically RTL aware
+}
+
+.myMessage .timestampContainer {
+  justify-content: start; // CSS logical property - automatically RTL aware
+}
+
+.messageText {
+  line-height: 1.4;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: theme.$spacing-0-5;
+  max-width: 100%;
+  white-space: pre-wrap;
+}
+
+.myMessage .messageText {
+  color: theme.$primary;
+  text-align: end; // CSS logical property - automatically RTL aware
+
+  // Override for dark theme to use white text
+  body[data-theme='dark'] & {
+    color: #ffffff;
+  }
+}
+
+.otherMessage .messageText {
+  color: theme.$text-primary;
+  text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.timestamp {
+  color: theme.$text-muted;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+
+.failureIcon {
+  position: absolute;
+  bottom: theme.$spacing-0-5;
+  right: 6px;
+  font-size: 12px;
+  color: theme.$text-primary !important;
+  z-index: theme.$z-index-base;
+  cursor: help;
+  opacity: 0.8;
+}
+
+.otherMessage .failureIcon {
+  color: theme.$error-color-alt !important;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.messageBubble:hover {
+  transform: translateY(-1px);
+  @include theme.shadow-light;
+  @include theme.smooth-transition;
+}
+
+.messageContainer:focus-within {
+  outline: 2px solid theme.$accent-purple;
+  outline-offset: 2px;
+  border-radius: theme.$border-radius-3xl;
+}
+
+
+
+@media (prefers-contrast: high) {
+  .messageBubble {
+    border: 1px solid theme.$border-strong;
+  }
+
+  .myMessage .messageBubble {
+    background: theme.$primary !important;
+  }
+
+  .messageText {
+    font-weight: 500;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .messageContainer {
+    animation: none;
+  }
+
+  .processing {
+    animation: none;
+  }
+
+  .messageBubble:hover {
+    transform: none;
+  }
+}
+
+// ========================================
+// MESSAGE STATUS STYLING
+// ========================================
+
+// Pending status - warm orange border with transparency
+.pending {
+  .messageBubble {
+    border-color: theme.$status-pending-border !important;
+    opacity: 0.6 !important;
+    @include theme.smooth-transition;
+  }
+}
+
+// Confirmed status - restore normal styling 
+.confirmed {
+  .messageBubble {
+    opacity: 1 !important;
+    @include theme.smooth-transition;
+  }
+}
+
+// Failed status - red border with subtle error background
+.failed {
+  .messageBubble {
+    border-color: theme.$status-failed-border !important;
+    background-color: theme.$status-failed-bg !important;
+    @include theme.smooth-transition;
+  }
+}

@@ -1,0 +1,88 @@
+@use '@/styles' as theme;
+
+.overlay {
+    @include theme.modal-backdrop;
+}
+
+.backdrop {
+    @include theme.overlay-full;
+    background-color: theme.$overlay-strong;
+    border: none;
+    cursor: pointer;
+}
+
+.content {
+    @include theme.card-base;
+    @include theme.rounded-medium;
+    @include theme.shadow-heavy;
+    @include theme.theme-scrollbar;
+    background: theme.$surface-elevated;
+    border: theme.$border-width solid theme.$border;
+    min-width: theme.$modal-min-width;
+    max-width: theme.$modal-max-width;
+    max-height: 70vh;
+    height: fit-content;
+    position: relative;
+    z-index: theme.$z-index-base;
+    overflow-y: auto;
+    margin: theme.$spacing-6 auto;
+}
+
+.closeButton {
+    position: absolute;
+    top: theme.$spacing-4;
+    inset-inline-end: theme.$spacing-4;
+    background: theme.$surface-hover;
+    backdrop-filter: blur(theme.$blur-sm);
+    border: theme.$border-width solid theme.$border-strong;
+    @include theme.rounded-small;
+    font-size: theme.$font-size-base;
+    padding: theme.$spacing-2;
+    line-height: 1;
+    z-index: theme.$z-index-dropdown;
+    min-width: auto;
+    width: theme.$spacing-8;
+    height: theme.$spacing-8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: theme.$breakpoint-md) {
+    .overlay {
+        padding: theme.$spacing-4 theme.$spacing-2;
+    }
+
+    .content {
+        min-width: 280px;
+        max-width: calc(100vw - theme.$spacing-4);
+        max-height: calc(100vh - theme.$spacing-8);
+        padding: theme.$spacing-6;
+        margin: theme.$spacing-4 auto;
+    }
+
+    .closeButton {
+        top: theme.$spacing-3;
+        inset-inline-end: theme.$spacing-3;
+        font-size: theme.$font-size-base;
+    }
+}
+
+@media (max-width: theme.$breakpoint-sm) {
+    .overlay {
+        padding: theme.$spacing-2;
+        align-items: stretch;
+    }
+
+    .content {
+        min-width: auto;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+        padding: theme.$spacing-4;
+        padding-top: theme.$spacing-12;
+    }
+}

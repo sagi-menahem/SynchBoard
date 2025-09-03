@@ -1,0 +1,33 @@
+@use '@/styles' as theme;
+
+.memberItem {
+    background-color: theme.$surface-elevated;
+    border: 1px solid theme.$border-primary;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: theme.$spacing-4;
+}
+
+.memberAvatar {
+    width: 40px;
+    height: 40px;
+    @include theme.rounded-circle;
+    object-fit: cover;
+}
+
+.memberName {
+    font-weight: bold;
+}
+
+.memberEmail {
+    color: theme.$text-light-gray;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+.adminBadge {
+    @include theme.flex-center;
+    margin-inline-start: auto;
+    color: theme.$text-muted;
+}

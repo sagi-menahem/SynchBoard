@@ -1,0 +1,340 @@
+// ========================================
+// DESIGN TOKENS - SynchBoard Design System
+// ========================================
+// Single source of truth for all design values
+// Consolidated from comprehensive codebase audit
+
+// ========================================
+// COLOR SYSTEM - Rationalized & Consolidated
+// ========================================
+
+// === CORE SEMANTIC COLORS ===
+$color-primary: #3b82f6; // Primary blue - consistent across all components
+$color-primary-hover: #2563eb; // Primary hover state
+$color-primary-light: #bfdbfe; // Light primary variant
+
+$color-success: #10b981; // Success/positive feedback
+$color-success-light: #a7f3d0; // Light success variant
+
+$color-error: #ef4444; // Error/danger states
+$color-error-hover: #dc2626; // Error hover state  
+$color-error-light: #fca5a5; // Light error variant
+
+$color-warning: #f59e0b; // Warning/caution states
+$color-warning-light: #fde68a; // Light warning variant
+
+// === NEUTRAL GRAYS - Consolidated from similar values ===
+$color-white: #ffffff; // Pure white
+$color-gray-50: #f8f8f8; // Lightest gray (consolidated: f8f8f8, f5f5f5)
+$color-gray-100: #f1f1f1; // Very light gray  
+$color-gray-200: #dadce0; // Light gray (consolidated: dadce0, c6c6c6)
+$color-gray-300: #cccccc; // Medium light gray
+$color-gray-400: #9aa0a6; // Medium gray
+$color-gray-500: #999999; // Mid gray
+$color-gray-600: #555555; // Dark gray
+$color-gray-700: #444444; // Darker gray (consolidated: 444, 333 use cases)
+$color-gray-800: #333333; // Very dark gray
+$color-gray-900: #2a2a2a; // Almost black (consolidated: 2a2a2a, 1f1f1f)
+$color-black: #1a1a1a; // Pure black
+
+// === BOARD BACKGROUND COLORS ===
+// Light theme variants
+$color-board-light-default: #f5f5f5;
+$color-board-light-midnight: #e8eaf6;
+$color-board-light-ember: #fbe9e7;
+$color-board-light-forest: #e8f5e9;
+$color-board-light-purple: #f3e5f5;
+$color-board-light-ocean: #e0f2f1;
+$color-board-light-crimson: #ffebee;
+$color-board-light-golden: #fff3e0;
+
+// Dark theme variants
+$color-board-dark-default: #282828;
+$color-board-dark-midnight: #2a2d35;
+$color-board-dark-ember: #332f2f;
+$color-board-dark-forest: #2f3d30;
+$color-board-dark-purple: #302a35;
+$color-board-dark-ocean: #2a3538;
+$color-board-dark-crimson: #3a2b2b;
+$color-board-dark-golden: #3d3429;
+
+// === CHAT BUBBLE COLORS ===
+// Message bubbles for chat component - optimized for readability and contrast
+$color-chat-my-message-dark: #081120; // My messages in dark theme - very dark blue
+$color-chat-my-message-light: #e1e2e4; // My messages in light theme - light blue
+$color-chat-other-message-dark: #3f3f46; // Other users' messages in dark theme - clean neutral gray
+$color-chat-other-message-light: #dde9f7; // Other users' messages in light theme - soft gray
+
+// === MESSAGE STATUS COLORS ===
+// Message status border colors for visual feedback - light and dark theme variants
+
+// Pending status - warm orange indicating "in progress"
+$color-status-pending-border-light: #f59e0b; // Based on $color-warning - warm orange for light theme
+$color-status-pending-border-dark: #fbbf24; // Slightly lighter orange for dark theme visibility
+
+// Confirmed status - uses subtle border for delivered messages  
+$color-status-confirmed-border-light: #e2e8f0; // Based on existing $color-border-light
+$color-status-confirmed-border-dark: #404040; // Based on existing dark theme border colors
+
+// Failed status - red indicating error state
+$color-status-failed-border-light: #f87171; // Based on $color-error-light - soft red for light theme
+$color-status-failed-border-dark: #fca5a5; // Lighter red for dark theme visibility
+
+// Failed status background colors for subtle error indication
+$color-status-failed-bg-light: rgba(254, 242, 242, 0.3); // Very subtle red background for light theme
+$color-status-failed-bg-dark: rgba(69, 26, 26, 0.2); // Very subtle red background for dark theme
+
+// === OVERLAY COLORS ===
+$color-backdrop: rgba(0, 0, 0, 0.7); // Modal backdrop overlay
+
+// ========================================
+// SPACING SYSTEM - 4px Base Grid
+// ========================================
+
+// === MICRO SPACING ===
+$spacing-0: 0;
+$spacing-px: 1px; // Borders, hairlines
+$spacing-0-5: 0.125rem; // 2px
+$spacing-1: 0.25rem; // 4px
+
+// === SMALL SPACING ===
+$spacing-1-5: 0.375rem; // 6px
+$spacing-2: 0.5rem; // 8px
+$spacing-2-5: 0.625rem; // 10px
+$spacing-3: 0.75rem; // 12px
+
+// === MEDIUM SPACING ===
+$spacing-4: 1rem; // 16px - base unit
+$spacing-4-5: 1.125rem; // 18px
+$spacing-5: 1.25rem; // 20px
+$spacing-6: 1.5rem; // 24px
+$spacing-8: 2rem; // 32px
+
+// === LARGE SPACING ===
+$spacing-10: 2.5rem; // 40px
+$spacing-12: 3rem; // 48px
+$spacing-16: 4rem; // 64px
+$spacing-20: 5rem; // 80px
+
+// === COMPONENT-SPECIFIC SIZES ===
+$spacing-button-height: 2.75rem; // 44px - minimum touch target
+$spacing-toolbar-height: 4.5rem; // 72px - toolbar height
+$spacing-image-sm: 3.125rem; // 50px - small images
+$spacing-image-md: 3.75rem; // 60px - medium images  
+$spacing-image-lg: 6.25rem; // 100px - large images
+$spacing-card-sm: 13.75rem; // 220px - small cards
+$spacing-card-md: 15rem; // 240px - medium cards
+$spacing-card-lg: 17.5rem; // 280px - large cards
+
+// === CONTAINER SIZES ===
+$spacing-container-xs: 18.75rem; // 300px - modals
+$spacing-container-sm: 25rem; // 400px - forms
+$spacing-container-md: 31.25rem; // 500px - large modals
+$spacing-container-lg: 37.5rem; // 600px - content areas
+$spacing-container-xl: 50rem; // 800px - max content
+
+// ========================================
+// TYPOGRAPHY SYSTEM - Modular Scale
+// ========================================
+
+// === FONT SIZES - 1.125 Modular Scale ===
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px - most common small
+$font-size-base: 1rem; // 16px - base font size
+$font-size-md: 1.125rem; // 18px 
+$font-size-lg: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
+$font-size-2xl: 1.875rem; // 30px
+
+// === LEGACY FONT SIZES - Gradually migrate these ===
+$font-size-2xs: 0.7rem; // 11.2px - phase out
+$font-size-sm-plus: 0.9rem; // 14.4px - consolidate to sm
+$font-size-base-plus: 1.1rem; // 17.6px - consolidate to md
+
+// === FONT WEIGHTS ===
+$font-weight-normal: 400; // Normal text
+$font-weight-medium: 500; // Medium text (most common)
+$font-weight-semibold: 600; // Semi-bold text  
+$font-weight-bold: 700; // Bold text
+
+// === LINE HEIGHTS ===
+$line-height-tight: 1.2; // Tight line height
+$line-height-normal: 1.4; // Normal line height
+$line-height-relaxed: 1.5; // Relaxed line height (most common)
+
+// ========================================
+// BORDER RADIUS SYSTEM
+// ========================================
+
+$border-radius-none: 0;
+$border-radius-xs: 0.125rem; // 2px
+$border-radius-sm: 0.25rem; // 4px
+$border-radius-md: 0.375rem; // 6px - most common
+$border-radius-lg: 0.5rem; // 8px - very common
+$border-radius-xl: 0.75rem; // 12px
+$border-radius-2xl: 1rem; // 16px
+$border-radius-3xl: 1.25rem; // 20px
+$border-radius-full: 50%; // Circles
+$border-radius-pill: 9999px; // Pills/rounded buttons
+
+// ========================================
+// SHADOW SYSTEM - Elevation-based
+// ========================================
+
+// === SHADOW LEVELS ===
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+$shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+// === COMPONENT SHADOWS ===
+$shadow-button: 0 2px 4px rgba(0, 0, 0, 0.2);
+$shadow-button-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-button-active: 0 2px 8px rgba(0, 0, 0, 0.15);
+$shadow-button-small: 0 1px 4px rgba(0, 0, 0, 0.15);
+$shadow-card: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.3);
+$shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.1);
+$shadow-focus-outline: 0 0 0 2px; // For outline focus states (color applied separately)
+$shadow-focus-ring: 0 0 0 3px; // For focus rings (color applied separately)
+$shadow-focus-ring-lg: 0 0 0 4px; // Large focus ring (color applied separately)
+$shadow-glow-sm: 0 0 4px; // Small glow effect (color applied separately)
+$shadow-glow-md: 0 0 8px; // Medium glow effect (color applied separately)  
+$shadow-glow-lg: 0 0 12px; // Large glow effect (color applied separately)
+
+// === SHADOW UTILITIES ===
+$shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-inset-light: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+$shadow-google: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-google-hover: 0 1px 2px rgba(0, 0, 0, 0.15);
+$shadow-primary-glow: 0 0 12px rgba(59, 130, 246, 0.5);
+$shadow-overlay-hack: 0 0 0px 1000px; // Browser autofill override hack
+$shadow-none: none;
+
+// ========================================
+// OPACITY SCALE
+// ========================================
+
+$opacity-0: 0; // Hidden
+$opacity-10: 0.1; // Barely visible
+$opacity-25: 0.25; // Very transparent
+$opacity-50: 0.5; // Semi-transparent
+$opacity-60: 0.6; // Moderately transparent (disabled state)
+$opacity-75: 0.75; // Mostly opaque
+$opacity-100: 1; // Fully opaque
+
+// ========================================
+// Z-INDEX SCALE - Layering System
+// ========================================
+
+$z-index-base: 1; // Slightly elevated
+$z-index-elevated: 10; // Elevated content
+$z-index-dropdown: 50; // Dropdowns, tooltips
+$z-index-toolbar: 100; // Toolbar level
+$z-index-overlay: 200; // High priority overlays
+$z-index-modal: 1000; // Modals
+$z-index-banner: 1000; // Banners, notifications
+$z-index-tooltip: 1000; // Tooltips, popovers
+$z-index-popover: 1000; // ColorPicker, ContextMenu (highest)
+
+// ========================================
+// TRANSITION SYSTEM
+// ========================================
+
+// === DURATIONS ===
+$transition-instant: 0.1s; // Instant feedback
+$transition-fast: 0.15s; // Very fast
+$transition-normal: 0.2s; // Standard (most common)
+$transition-medium: 0.25s; // Button transitions
+$transition-slow: 0.3s; // Hover effects
+$transition-very-slow: 1s; // Complex animations
+
+// === TIMING FUNCTIONS ===
+$transition-ease: ease;
+$transition-ease-in-out: ease-in-out;
+
+// === COMMON PATTERNS ===
+$transition-all: all $transition-normal $transition-ease;
+$transition-colors: background-color $transition-normal $transition-ease,
+    border-color $transition-normal $transition-ease,
+    color $transition-normal $transition-ease;
+$transition-transform: transform $transition-normal $transition-ease;
+
+// ========================================
+// BREAKPOINTS - Mobile First
+// ========================================
+
+$breakpoint-sm: 480px; // Small mobile
+$breakpoint-md: 768px; // Tablet (most commonly used)
+$breakpoint-lg: 1024px; // Desktop
+$breakpoint-xl: 1280px; // Large desktop
+
+// ========================================
+// COMPONENT TOKENS
+// ========================================
+
+// === BUTTONS ===
+$button-height-sm: 2rem; // 32px
+$button-height-md: $spacing-button-height; // 44px - standard
+$button-height-lg: 3rem; // 48px
+$button-padding-x: 1.2rem; // Horizontal padding
+$button-padding-y: 0.6rem; // Vertical padding
+$button-border-radius: $border-radius-md;
+
+// === INPUTS ===
+$input-height: 2.75rem; // 44px - same as button
+$input-padding: 0.75rem; // 12px
+$input-border-radius: $border-radius-md;
+$input-border-width: 1px;
+
+// === MODALS ===
+$modal-min-width: $spacing-container-xs; // 300px
+$modal-max-width: $spacing-container-md; // 500px
+$modal-padding: $spacing-6; // 24px
+$modal-border-radius: $border-radius-md;
+
+// === CARDS ===
+$card-padding: $spacing-6; // 24px
+$card-border-radius: $border-radius-md;
+$card-border-width: 1px;
+
+// ========================================
+// GOOGLE BRANDING (Immutable)
+// ========================================
+// These values must remain consistent with Google's brand guidelines
+
+$google-button-bg: #ffffff;
+$google-button-text: #1f1f1f;
+$google-button-border: #dadce0;
+$google-button-hover-bg: #f8f8f8;
+$google-button-hover-border: #c6c6c6;
+$google-button-active-bg: #f1f1f1;
+$google-button-disabled-text: #9aa0a6;
+$google-button-disabled-border: #f1f3f4;
+
+// ========================================
+// UTILITY TOKENS
+// ========================================
+
+// === COMMON VALUES ===
+$blur-sm: 4px;
+$blur-md: 8px;
+$border-width: 1px;
+$border-width-thick: 2px;
+
+// === TRANSFORM VALUES ===
+$transform-translate-y-xs: -1px; // Small upward movement
+$transform-translate-y-xxs: -0.5px; // Micro upward movement
+$transform-translate-y-sm: -2px; // Medium upward movement
+
+// === PATTERN VALUES ===
+$pattern-repeat-sm: 10px;
+$pattern-repeat-md: 20px;
+
+// === BACKGROUND BLUR VALUES ===
+$background-blur-none: 0px;
+$background-blur-xs: 2px; 
+$background-blur-sm: 4px;
+$background-blur-md: 8px;
+$background-blur-lg: 12px;
+$background-blur-xl: 16px;

@@ -1,0 +1,226 @@
+@use '@/styles' as theme;
+
+// Base section card styling - matching BoardCard design
+.sectionCard {
+    background-color: theme.$background-secondary; // Match BoardCard background
+    border: 1px solid theme.$border-primary; // Match BoardCard border
+    border-radius: theme.$card-border-radius;
+    // No padding on main container - header spans full width
+    margin-bottom: 2rem;
+    position: relative;
+    @include theme.smooth-transition;
+
+    // Responsive width - 700px base that shrinks on smaller screens
+    width: min(700px, 100%) !important;
+    max-width: 700px;
+    flex-shrink: 1;
+
+    // Override any child element min-width requirements to ensure card stays at 368px
+    :global(.form) {
+        min-width: unset !important;
+        width: 100% !important;
+    }
+
+    // Ensure all child content respects the container width
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+// Variant: Default (standard section with subtle shadow)
+.default {
+    box-shadow: theme.$shadow-card;
+
+    // Match BoardCard hover behavior
+    &:hover {
+        background-color: theme.$background-surface;
+    }
+}
+
+// Variant: Elevated (stronger shadow for prominence)  
+.elevated {
+    box-shadow: theme.$shadow-lg;
+
+    &:hover {
+        background-color: theme.$background-surface;
+        transform: translateY(-1px);
+    }
+}
+
+// Variant: Warning (orange border for cautionary sections)
+.warning {
+    box-shadow: theme.$shadow-card;
+    border: 2px solid theme.$warning;
+    background: linear-gradient(to bottom,
+            var(--color-surface),
+            rgba(245, 158, 11, 0.02));
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, theme.$warning, theme.$warning-light);
+        border-radius: theme.$border-radius-sm theme.$border-radius-sm 0 0;
+    }
+}
+
+// Variant: Danger (red border + glow for dangerous actions)
+.danger {
+    border: 1px solid var(--btn-destructive-bg);
+    border-top: 2px solid var(--btn-destructive-bg);
+    box-shadow: theme.$shadow-glow-md var(--btn-destructive-bg);
+    background: linear-gradient(to bottom,
+            var(--color-surface),
+            color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent));
+}
+
+// Header styling - spans full card width
+.header {
+    margin-bottom: 0;
+    padding: theme.$card-padding;
+    padding-bottom: theme.$spacing-4;
+    border-bottom: 1px solid theme.$border-primary;
+}
+
+.headerContent {
+    display: flex;
+    align-items: flex-start;
+    gap: theme.$spacing-4;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.titleGroup {
+    min-width: 0;
+}
+
+.title {
+    @include theme.section-header;
+    margin: 0;
+    color: theme.$text-primary;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: start; // CSS logical property - automatically RTL aware
+    line-height: 1.3;
+}
+
+.subtitle {
+    margin: theme.$spacing-1 0 0;
+    color: theme.$text-secondary;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-align: start; // CSS logical property - automatically RTL aware
+}
+
+.headerActions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: theme.$spacing-2;
+}
+
+// Content wrapper with padding
+.contentWrapper {
+    // Base content wrapper - padding variants will be applied here
+}
+
+// Content area
+.content {
+    // Content area inside the padded wrapper
+}
+
+// Padding variants using design tokens
+.padding-none {
+    padding: 0;
+}
+
+.padding-sm {
+    padding: theme.$spacing-4;
+}
+
+.padding-md {
+    padding: theme.$card-padding; // 24px (default)
+}
+
+.padding-lg {
+    padding: theme.$spacing-8; // 32px
+}
+
+// No RTL overrides needed - CSS logical properties handle this automatically
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .sectionCard {
+        margin-bottom: 1.5rem;
+        // Maintain responsive behavior on mobile
+        width: min(700px, 100%) !important;
+        max-width: 700px;
+        flex-shrink: 1;
+    }
+
+    .headerContent {
+        flex-direction: column;
+        align-items: stretch;
+        gap: theme.$spacing-3;
+    }
+
+    .headerActions {
+        justify-content: start; /* CSS logical property - RTL aware */
+        margin-top: theme.$spacing-2;
+    }
+
+    .title {
+        font-size: 1.125rem;
+    }
+
+    // Reduce padding on mobile
+    .padding-md {
+        padding: theme.$spacing-4;
+    }
+
+    .padding-lg {
+        padding: theme.$spacing-6;
+    }
+}
+
+// Focus management for accessibility
+// Only show outline when form elements inside receive focus, not buttons
+.sectionCard input:focus,
+.sectionCard textarea:focus,
+.sectionCard select:focus {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+}
+
+// Card focus when the card itself is focused (for keyboard navigation)
+.sectionCard:focus {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+}
+
+// Animation support
+.sectionCard {
+    @include theme.smooth-transition;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+
+    .default,
+    .elevated {
+        border-width: 2px;
+    }
+
+    .warning {
+        border-width: 3px;
+    }
+
+    .danger {
+        border-width: 2px;
+        border-top-width: 3px;
+    }
+}

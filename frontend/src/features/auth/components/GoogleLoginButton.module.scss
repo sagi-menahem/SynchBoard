@@ -1,0 +1,52 @@
+@use '@/styles' as theme;
+
+/* Google branding guidelines - consistent across themes */
+.googleButton {
+  @include theme.flex-center;
+  @include theme.button-transition;
+  @include theme.rounded-large;
+  width: 65%; // Increased from 50% to accommodate text better
+  max-width: 280px; // Add max-width to prevent it getting too wide
+  margin: 0 auto;
+  padding: theme.$spacing-3 theme.$spacing-4;
+  border: 1px solid #dadce0;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: theme.$spacing-3;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.googleButton:hover:not(:disabled) {
+  background: #f8f8f8;
+  border-color: #c6c6c6;
+  box-shadow: theme.$shadow-google;
+}
+
+.googleButton:active:not(:disabled) {
+  background: #f1f1f1;
+  box-shadow: theme.$shadow-google-hover;
+}
+
+.googleButton:disabled {
+  background: #ffffff;
+  color: #9aa0a6;
+  border-color: #f1f3f4;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.googleIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.buttonText {
+  font-family: inherit;
+  font-weight: 500;
+}

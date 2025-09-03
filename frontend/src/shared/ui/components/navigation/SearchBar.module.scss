@@ -1,0 +1,61 @@
+@use '@/styles' as theme;
+
+.searchForm {
+  margin: 0;
+  padding: 0;
+}
+
+.searchContainer {
+  position: relative;
+  @include theme.flex-start;
+  background: theme.$surface-elevated;
+  border: 1px solid theme.$border-strong;
+  @include theme.rounded-medium;
+  padding: theme.$spacing-2 theme.$spacing-3;
+  gap: theme.$spacing-2;
+  @include theme.smooth-transition;
+  min-width: 300px;
+  max-width: 400px;
+
+  &:focus-within {
+    background: theme.$surface-hover;
+    border-color: theme.$primary;
+    box-shadow: theme.$shadow-glow-md theme.$primary-light;
+  }
+}
+
+.searchIcon {
+  color: theme.$text-muted;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  background: none;
+  border: none;
+  color: theme.$text-primary;
+  font-size: theme.$font-size-sm;
+  outline: none;
+  flex: 1;
+  min-width: 0;
+
+  &::placeholder {
+    color: theme.$text-placeholder;
+  }
+}
+
+.clearButton {
+  @include theme.interactive-button;
+  color: theme.$text-muted;
+  padding: theme.$spacing-0-5;
+  @include theme.rounded-small;
+  @include theme.flex-center;
+  @include theme.smooth-transition;
+  flex-shrink: 0;
+
+  &:hover {
+    color: theme.$text-primary;
+    background: theme.$surface-hover;
+  }
+}
+
+/* Desktop-only: No mobile responsive code needed */

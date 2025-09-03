@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateUserProfileRequest {
 
-    @NotBlank(message = "First name cannot be blank")
+    @NotBlank(message = "validation.firstName")
     private String firstName;
 
     private String lastName;
 
-    @NotBlank(message = "Gender is required")
-    @Pattern(regexp = "^(male|female)$", message = "Gender must be 'male' or 'female'")
+    @NotBlank(message = "validation.genderRequired")
+    @Pattern(regexp = "^(male|female)$", message = "validation.genderPattern")
     private String gender;
 
     private String phoneNumber;

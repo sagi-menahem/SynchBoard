@@ -1,0 +1,85 @@
+@use '@/styles' as theme;
+
+.banner {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  z-index: theme.$z-index-banner;
+  @include theme.flex-center;
+  padding: theme.$spacing-3 theme.$spacing-4;
+  border-bottom: 1px solid;
+  backdrop-filter: blur(10px);
+  @include theme.smooth-transition;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  font-size: 0.875rem;
+  font-weight: 500;
+  max-width: 600px;
+  text-align: center;
+}
+
+.icon {
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.message {
+  line-height: 1.25;
+  flex: 1;
+}
+
+
+.disconnected {
+  background-color: theme.$error-bg;
+  color: theme.$text-primary;
+  border-color: theme.$error-border;
+}
+
+.disconnected .icon {
+  animation: pulse theme.$transition-very-slow ease-in-out infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    padding: theme.$spacing-2;
+  }
+
+  .content {
+    font-size: 0.8125rem;
+    gap: theme.$spacing-1-5;
+  }
+
+  .message {
+    font-size: 0.8125rem;
+  }
+}

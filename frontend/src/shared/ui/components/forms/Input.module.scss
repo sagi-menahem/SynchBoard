@@ -1,0 +1,33 @@
+@use '@/styles' as theme;
+
+.input {
+    @include theme.input-base;
+    @include theme.input-focus;
+    margin-top: theme.$spacing-1;
+    padding: theme.$input-padding;
+}
+
+.input[type="date"] {
+    text-align: center;
+    direction: ltr;
+    unicode-bidi: embed;
+    position: relative;
+}
+
+.input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset-inline-end: theme.$spacing-2-5;
+    cursor: pointer;
+    opacity: theme.$opacity-75;
+    @include theme.smooth-transition;
+}
+
+.input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: theme.$opacity-100;
+}
+
+.input[type="date"]::-moz-calendar-picker-indicator {
+    position: absolute;
+    inset-inline-end: theme.$spacing-2-5;
+    cursor: pointer;
+}

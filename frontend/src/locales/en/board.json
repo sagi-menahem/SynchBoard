@@ -1,0 +1,290 @@
+{
+  "provider": {
+    "invalidIdError": "Invalid Board ID provided in URL."
+  },
+  "listPage": {
+    "heading": "My Boards",
+    "createNewBoardButton": "Create New Board",
+    "loading": "Loading your boards...",
+    "fetchError": "Failed to fetch boards. Please try again later.",
+    "noDescription": "No description.",
+    "adminLabel": " (Admin)",
+    "noBoardsMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
+    "emptyStateTitle": "No boards yet",
+    "emptyStateMessage": "You are not a member of any boards yet. Click \"Create New Board\" to get started!",
+    "noSearchResults": "No boards found matching \"{{query}}\".",
+    "setting": "Setting"
+  },
+  "detailsPage": {
+    "backToBoardButton": "Back to Board",
+    "boardDetailsButton": "Board details",
+    "boardButton": "Go to Board",
+    "loading": "Loading board details...",
+    "notFound": "Board not found or you do not have access.",
+    "noDescription": "No description available.",
+    "noDescriptionHint": "Click the edit button above to add a description.",
+    "inviteButton": "Invite Member",
+    "membersHeader": "Members",
+    "adminBadge": "Admin",
+    "boardPicture": "Board Picture",
+    "changePicture": "Change Picture",
+    "deletePicture": "Delete Picture",
+    "boardDescription": "Board Description",
+    "editDescription": "Edit Description",
+    "descriptionPlaceholder": "Enter a description for this board..."
+  },
+  "page": {
+    "backButton": "Back to Boards",
+    "inviteButton": "Invite Member",
+    "heading": "Board Workspace (ID: {{boardId}})",
+    "loading": "Loading board...",
+    "boardDetailsButton": "Board Details",
+    "boardListButton": "Board List"
+  },
+  "createForm": {
+    "heading": "Create a New Board",
+    "nameLengthError": "Board name must be at least 3 characters long.",
+    "failedError": "Failed to create board. Please try again.",
+    "label": {
+      "boardName": "Board Name",
+      "description": "Description (Optional)",
+      "boardImage": "Board Image",
+      "basicInfo": "Basic Information",
+      "inviteMembers": "Invite Members",
+      "inviteMembersDescription": "Invite members to collaborate (Optional)",
+      "canvasSettings": "Canvas Settings",
+      "canvasBackground": "Canvas Background Color",
+      "canvasSize": "Canvas Size",
+      "width": "Width",
+      "height": "Height",
+      "pixels": "pixels"
+    },
+    "placeholder": {
+      "name": "What is the name of the board?",
+      "description": "What is this board about?",
+      "inviteEmails": "Enter email address",
+      "width": "Width",
+      "height": "Height"
+    },
+    "button": {
+      "createBoard": "Create Board"
+    },
+    "boardImageAlt": "Board image preview",
+    "clickToUpload": "Click to upload image",
+    "uploadImage": "Upload Image",
+    "removeImage": "Remove Image",
+    "addMember": "Add",
+    "removeMember": "Remove {{email}}",
+    "inviteCount": "{{count}} member(s) will be invited",
+    "invalidEmail": "Please enter a valid email address",
+    "emailAlreadyAdded": "This email has already been added",
+    "cannotInviteSelf": "You cannot invite yourself to the board",
+    "userNotFound": "User {{email}} not found",
+    "errorCheckingUser": "Error checking if user exists. Please try again.",
+    "validation": {
+      "nameRequired": "Board name is required"
+    }
+  },
+  "editNameForm": {
+    "title": "Edit Board Name",
+    "label": "Board Name"
+  },
+  "inviteMemberForm": {
+    "heading": "Invite a Member",
+    "label": "User's Email:",
+    "placeholder": "e.g., user@example.com",
+    "emailRequiredError": "Email address is required.",
+    "inviteSuccess": "Invitation sent to {{email}}!",
+    "genericError": "Failed to send invitation. Please try again.",
+    "button": {
+      "sendInvite": "Send Invite",
+      "sendingInvite": "Sending..."
+    }
+  },
+  "contextMenu": {
+    "promoteToAdmin": "Promote {{userName}} to Admin",
+    "removeFromBoard": "Remove {{userName}} from Board"
+  },
+  "leaveBoard": {
+    "button": "Leave Board",
+    "confirmTitle": "Leave Board?",
+    "confirmText": "Are you sure you want to leave '{{boardName}}'? This action cannot be undone.",
+    "success": "You have successfully left '{{boardName}}'.",
+    "error": "Failed to leave the board."
+  },
+  "pictureManager": {
+    "title": "Manage picture for '{{boardName}}'",
+    "changeButton": "Change Picture",
+    "deleteButton": "Delete Picture"
+  },
+  "canvas": {
+    "loading": "Loading canvas..."
+  },
+  "textInput": {
+    "placeholder": "Type your text here..."
+  },
+  "canvasSize": {
+    "presets": {
+      "widescreen": {
+        "label": "Widescreen",
+        "description": "Perfect for presentations and wide content (16:9)"
+      },
+      "square": {
+        "label": "Square",
+        "description": "Ideal for social media and balanced layouts (1:1)"
+      },
+      "portrait": {
+        "label": "Portrait",
+        "description": "Great for mobile content and vertical layouts (9:16)"
+      },
+      "document": {
+        "label": "Document",
+        "description": "Standard document format similar to A4 paper"
+      }
+    },
+    "custom": {
+      "label": "Custom Size"
+    }
+  },
+  "details": {
+    "canvasSettings": {
+      "title": "Canvas Settings",
+      "backgroundColor": "Background Color",
+      "size": "Canvas Size",
+      "width": "Width",
+      "height": "Height",
+      "pixels": "pixels",
+      "edit": "Edit Settings",
+      "applyChanges": "Apply Changes",
+      "custom": "Custom"
+    }
+  },
+  "sync": {
+    "nothingToUndo": "Nothing to undo.",
+    "nothingToRedo": "Nothing to redo."
+  },
+  "toolbar": {
+    "ariaLabel": "Drawing toolbar",
+    "label": {
+      "color": "Color",
+      "size": "Size",
+      "draw": "Draw",
+      "shapes": "Shapes",
+      "lines": "Lines",
+      "tools": "Tools",
+      "history": "History",
+      "export": "Export",
+      "BackToBoards": "Boards",
+      "layout": "Layout"
+    },
+    "expand": "Expand Toolbar",
+    "collapse": "Collapse Toolbar",
+    "dragHandle": "Drag to move toolbar",
+    "tool": {
+      "brush": "Brush",
+      "square": "Square",
+      "rectangle": "Rectangle",
+      "circle": "Circle",
+      "triangle": "Triangle",
+      "pentagon": "Pentagon",
+      "hexagon": "Hexagon",
+      "star": "Star",
+      "line": "Line",
+      "dottedLine": "Dotted Line",
+      "arrow": "Arrow",
+      "text": "Text",
+      "colorPicker": "Color Picker",
+      "recolor": "Recolor",
+      "download": "Download",
+      "eraser": "Eraser",
+      "undo": "Undo",
+      "redo": "Redo",
+      "resetZoom": "Reset",
+      "focusCanvas": "Focus Canvas",
+      "balanced": "Balanced",
+      "focusChat": "Focus Chat",
+      "lines": "Lines"
+    },
+    "search": {
+      "boardName": "Search boards...",
+      "placeholder": "Type board name...",
+      "clear": "Clear search"
+    },
+    "view": {
+      "grid": "Grid view",
+      "list": "List view"
+    },
+    "activity": {
+      "membersOnline": "{{count}} members online"
+    },
+    "editBoard": {
+      "tooltip": "Edit board name"
+    },
+    "shapeTools": "Shape Tools"
+  },
+  "sidebar": {
+    "title": "Sidebar",
+    "onlineUsers": "Online Users:"
+  },
+  "errors": {
+    "create": "Failed to create board. Please try again.",
+    "nameUpdate": "Failed to update board name. Please try again.",
+    "descriptionUpdate": "Failed to update board description. Please try again.",
+    "fetch": "Failed to load boards. Please check your connection and try again.",
+    "leave": "Failed to leave board. Please try again.",
+    "details": "Failed to load board details. Please check your connection and try again.",
+    "workspace": "Failed to load board workspace. Please check your connection and try again.",
+    "notFound": "Board not found.",
+    "cannotRemoveSelf": "You cannot remove yourself via this action.",
+    "drawingTooLarge": "Drawing is too large to be saved.",
+    "drawingFailed": "Failed to save drawing. Please try again.",
+    "action": {
+      "undo": "Failed to undo action. Please try again.",
+      "redo": "Failed to redo action. Please try again."
+    }
+  },
+  "loading": {
+    "create": "Creating board...",
+    "nameUpdate": "Updating board name...",
+    "descriptionUpdate": "Updating board description...",
+    "fetch": "Loading boards...",
+    "leave": "Leaving board..."
+  },
+  "success": {
+    "create": "Board '{{boardName}}' created successfully!",
+    "nameUpdate": "Board name updated successfully!",
+    "descriptionUpdate": "Board description updated successfully!",
+    "pictureUpdate": "Board picture updated successfully!",
+    "pictureDelete": "Board picture deleted.",
+    "canvasSettingsUpdate": "Canvas settings updated successfully!",
+    "leave": "You have successfully left '{{boardName}}'."
+  },
+  "member": {
+    "errors": {
+      "promote": "Failed to promote member. Please try again.",
+      "remove": "Failed to remove member. Please try again.",
+      "invite": "Failed to send invitation. Please try again."
+    },
+    "loading": {
+      "promote": "Promoting member...",
+      "remove": "Removing member...",
+      "invite": "Sending invitation..."
+    },
+    "success": {
+      "promote": "{{userName}} has been promoted to admin.",
+      "remove": "{{userName}} has been removed from the board.",
+      "invite": "Invitation sent to {{email}}!"
+    }
+  },
+  "user": {
+    "errors": {
+      "notFound": "User not found.",
+      "alreadyMember": "This user is already a member of the board.",
+      "alreadyAdmin": "This user is already an admin.",
+      "cannotInviteSelf": "You cannot invite yourself to the board."
+    }
+  },
+  "fallbacks": {
+    "untitled": "Untitled Board"
+  }
+}

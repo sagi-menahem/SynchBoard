@@ -1,0 +1,121 @@
+{
+  "page": {
+    "heading": "Account Settings",
+    "loading": "Loading your settings...",
+    "loadError": "Could not load user data.",
+    "profileSectionHeader": "Profile Information",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "genderLabel": "Gender",
+    "phoneNumberLabel": "Phone Number",
+    "dateOfBirthLabel": "Date of Birth",
+    "notProvided": "Not provided",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Failed to update profile.",
+    "buttons": {
+      "edit": "Edit Profile",
+      "cancel": "Cancel",
+      "save": "Save Changes"
+    },
+    "passwordSectionHeader": "Change Password",
+    "currentPasswordLabel": "Current Password",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "passwordUpdateSuccess": "Password updated successfully!",
+    "passwordUpdateError": "Failed to update password. Please check your current password.",
+    "passwordsDoNotMatch": "New passwords do not match.",
+    "passwordTooShort": "New password must be at least 8 characters long.",
+    "pictureSectionHeader": "Profile Picture",
+    "profilePictureAlt": "Profile picture for {{userName}}",
+    "changePicture": "Change Picture",
+    "deletePicture": "Delete Picture",
+    "deletePictureConfirmTitle": "Delete Picture?",
+    "deletePictureConfirmText": "Are you sure you want to delete your profile picture?",
+    "pictureUpdateSuccess": "Profile picture updated!",
+    "pictureDeleteSuccess": "Profile picture removed.",
+    "pictureUploadError": "Failed to upload picture.",
+    "dangerZoneHeader": "Delete Account",
+    "dangerZoneText": "This action is permanent and cannot be undone.",
+    "deleteAccountButton": "Delete My Account",
+    "deleteAccountConfirmTitle": "Delete Account?",
+    "deleteAccountConfirmText": "Are you absolutely sure? This action cannot be undone. All your data, including boards you own as the last admin, will be permanently deleted.",
+    "accountDeleteSuccess": "Your account has been deleted.",
+    "accountDeleteError": "Failed to delete your account.",
+    "backToBoards": "Back to Boards",
+    "logoutButton": "Logout",
+    "boardListButton": "Board List",
+    "languageHeader": "Language Preferences",
+    "languageLabel": "Select Language",
+    "language": {
+      "en": "English",
+      "he": "עברית"
+    },
+    "themeHeader": "Theme Preferences",
+    "boardAppearanceHeader": "Board Appearance",
+    "boardBackgroundColorLabel": "Background Color",
+    "chatFontSizeLabel": "Font Size",
+    "font": {
+      "small": "Small",
+      "regular": "Regular",
+      "large": "Large"
+    }
+  },
+  "errors": {
+    "profile": {
+      "update": "Failed to update profile.",
+      "fetch": "Failed to load user profile. Please try again."
+    },
+    "picture": {
+      "upload": "Failed to upload picture.",
+      "delete": "Failed to delete picture."
+    },
+    "password": {
+      "update": "Failed to update password. Please check your current password."
+    },
+    "account": {
+      "delete": "Failed to delete your account."
+    },
+    "preferences": {
+      "fetch": "Failed to load user preferences. Please check your connection and try again.",
+      "update": "Failed to update preferences. Please try again."
+    }
+  },
+  "loading": {
+    "profile": {
+      "update": "Updating profile...",
+      "fetch": "Loading profile..."
+    },
+    "picture": {
+      "upload": "Uploading picture...",
+      "delete": "Deleting picture..."
+    },
+    "password": {
+      "update": "Updating password..."
+    },
+    "account": {
+      "delete": "Deleting account..."
+    },
+    "preferences": {
+      "update": "Updating preferences...",
+      "fetch": "Loading preferences..."
+    }
+  },
+  "success": {
+    "profile": {
+      "update": "Profile updated successfully!"
+    },
+    "picture": {
+      "update": "Profile picture updated!",
+      "delete": "Profile picture deleted."
+    },
+    "password": {
+      "update": "Password updated successfully!"
+    },
+    "account": {
+      "delete": "Your account has been deleted."
+    },
+    "preferences": {
+      "update": "Preferences updated successfully!"
+    }
+  }
+}

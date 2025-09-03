@@ -4,6 +4,8 @@ public final class ApiConstants {
 
     private ApiConstants() {}
 
+    public static final String APPLICATION_VERSION = "1.0.0";
+
     public static final String API_AUTH_BASE_PATH = "/api/auth";
     public static final String API_BOARDS_BASE_PATH = "/api/boards";
     public static final String API_USER_BASE_PATH = "/api/user";
@@ -47,6 +49,7 @@ public final class ApiConstants {
     public static final String API_USER_CANVAS_PREFERENCES = "/canvas-preferences";
     public static final String API_USER_TOOL_PREFERENCES = "/tool-preferences";
     public static final String API_USER_LANGUAGE_PREFERENCES = "/language-preferences";
+    public static final String API_USER_THEME_PREFERENCES = "/theme-preferences";
     public static final String API_USER_EXISTS = "/exists/{email}";
 
     public static final String AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE = "Hello, authenticated user!";

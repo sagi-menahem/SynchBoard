@@ -1,0 +1,290 @@
+{
+  "provider": {
+    "invalidIdError": "מזהה לוח לא תקין סופק בכתובת."
+  },
+  "listPage": {
+    "heading": "הלוחות שלי",
+    "createNewBoardButton": "צור לוח חדש",
+    "loading": "טוען את הלוחות שלך...",
+    "fetchError": "טעינת הלוחות נכשלה. אנא נסה שוב מאוחר יותר.",
+    "noDescription": "אין תיאור.",
+    "adminLabel": " (מנהל)",
+    "noBoardsMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!",
+    "emptyStateTitle": "עדיין אין לוחות",
+    "emptyStateMessage": "אינך חבר באף לוח עדיין. לחץ על \"צור לוח חדש\" כדי להתחיל!",
+    "noSearchResults": "לא נמצאו לוחות התואמים ל-\"{{query}}\".",
+    "setting": "הגדרות"
+  },
+  "detailsPage": {
+    "backToBoardButton": "חזרה ללוח",
+    "boardDetailsButton": "פרטי הלוח",
+    "boardButton": "עבור ללוח",
+    "loading": "טוען פרטי לוח...",
+    "notFound": "הלוח לא נמצא או שאין לך גישה אליו.",
+    "noDescription": "אין תיאור זמין.",
+    "noDescriptionHint": "לחץ על כפתור העריכה למעלה כדי להוסיף תיאור.",
+    "inviteButton": "הזמן חבר",
+    "membersHeader": "חברים",
+    "adminBadge": "מנהל",
+    "boardPicture": "תמונת הלוח",
+    "changePicture": "שנה תמונה",
+    "deletePicture": "מחק תמונה",
+    "boardDescription": "תיאור הלוח",
+    "editDescription": "עריכת תיאור",
+    "descriptionPlaceholder": "הזן תיאור עבור הלוח הזה..."
+  },
+  "page": {
+    "backButton": "חזרה ללוחות",
+    "inviteButton": "הזמן חבר",
+    "heading": "סביבת עבודה בלוח (מזהה: {{boardId}})",
+    "loading": "טוען לוח...",
+    "boardDetailsButton": "פרטי לוח",
+    "boardListButton": "רשימת לוחות"
+  },
+  "createForm": {
+    "heading": "צור לוח חדש",
+    "nameLengthError": "שם הלוח חייב להכיל לפחות 3 תווים.",
+    "failedError": "יצירת הלוח נכשלה. אנא נסה שנית.",
+    "label": {
+      "boardName": "שם הלוח",
+      "description": "תיאור (אופציונלי)",
+      "boardImage": "תמונת לוח",
+      "basicInfo": "מידע בסיסי",
+      "inviteMembers": "הזמן חברים",
+      "inviteMembersDescription": "הזמן חברים לשיתוף פעולה (אופציונלי)",
+      "canvasSettings": "הגדרות קנבס",
+      "canvasBackground": "צבע רקע הקנבס",
+      "canvasSize": "גודל הקנבס",
+      "width": "רוחב",
+      "height": "גובה",
+      "pixels": "פיקסלים"
+    },
+    "placeholder": {
+      "name": "מה השם של הלוח?",
+      "description": "על מה הלוח הזה?",
+      "inviteEmails": "הזן כתובת אימייל",
+      "width": "רוחב",
+      "height": "גובה"
+    },
+    "button": {
+      "createBoard": "צור לוח"
+    },
+    "boardImageAlt": "תצוגה מקדימה של תמונת הלוח",
+    "clickToUpload": "לחץ להעלאת תמונה",
+    "uploadImage": "העלה תמונה",
+    "removeImage": "הסר תמונה",
+    "addMember": "הוסף",
+    "removeMember": "הסר {{email}}",
+    "inviteCount": "{{count}} חבר/ים יוזמנו",
+    "invalidEmail": "אנא הזן כתובת אימייל תקינה",
+    "emailAlreadyAdded": "האימייל הזה כבר נוסף",
+    "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח",
+    "userNotFound": "המשתמש {{email}} לא נמצא",
+    "errorCheckingUser": "שגיאה בבדיקה אם המשתמש קיים. אנא נסה שנית.",
+    "validation": {
+      "nameRequired": "שם הלוח נדרש"
+    }
+  },
+  "editNameForm": {
+    "title": "ערוך שם לוח",
+    "label": "שם הלוח"
+  },
+  "inviteMemberForm": {
+    "heading": "הזמן חבר חדש",
+    "label": "אימייל משתמש:",
+    "placeholder": "לדוגמה, user@example.com",
+    "emailRequiredError": "יש להזין כתובת אימייל.",
+    "inviteSuccess": "הזמנה נשלחה אל {{email}}!",
+    "genericError": "שליחת ההזמנה נכשלה. אנא נסה שנית.",
+    "button": {
+      "sendInvite": "שלח הזמנה",
+      "sendingInvite": "שולח..."
+    }
+  },
+  "contextMenu": {
+    "promoteToAdmin": "קדם את {{userName}} למנהל",
+    "removeFromBoard": "הסר את {{userName}} מהלוח"
+  },
+  "leaveBoard": {
+    "button": "עזוב קבוצה",
+    "confirmTitle": "לעזוב את הקבוצה?",
+    "confirmText": "האם אתה בטוח שברצונך לעזוב את הלוח '{{boardName}}'? לא ניתן לבטל פעולה זו.",
+    "success": "עזבת בהצלחה את הלוח '{{boardName}}'.",
+    "error": "עזיבת הלוח נכשלה."
+  },
+  "pictureManager": {
+    "title": "נהל תמונה עבור '{{boardName}}'",
+    "changeButton": "שנה תמונה",
+    "deleteButton": "מחק תמונה"
+  },
+  "canvas": {
+    "loading": "טוען קנבס..."
+  },
+  "textInput": {
+    "placeholder": "הקלד את הטקסט שלך כאן..."
+  },
+  "canvasSize": {
+    "presets": {
+      "widescreen": {
+        "label": "מסך רחב",
+        "description": "מושלם למצגות ותוכן רחב (16:9)"
+      },
+      "square": {
+        "label": "ריבוע",
+        "description": "אידיאלי לרשתות חברתיות ופריסות מאוזנות (1:1)"
+      },
+      "portrait": {
+        "label": "פורטרט",
+        "description": "מעולה לתוכן מובייל ופריסות אנכיות (9:16)"
+      },
+      "document": {
+        "label": "מסמך",
+        "description": "פורמט מסמך סטנדרטי דומה לנייר A4"
+      }
+    },
+    "custom": {
+      "label": "גודל מותאם אישית"
+    }
+  },
+  "details": {
+    "canvasSettings": {
+      "title": "הגדרות קנבס",
+      "backgroundColor": "צבע רקע",
+      "size": "גודל קנבס",
+      "width": "רוחב",
+      "height": "גובה",
+      "pixels": "פיקסלים",
+      "edit": "עריכת הגדרות",
+      "applyChanges": "החל שינויים",
+      "custom": "מותאם אישית"
+    }
+  },
+  "sync": {
+    "nothingToUndo": "אין פעולות לביטול.",
+    "nothingToRedo": "אין פעולות לביצוע מחדש."
+  },
+  "toolbar": {
+    "ariaLabel": "סרגל כלי ציור",
+    "label": {
+      "color": "צבע",
+      "size": "גודל",
+      "draw": "ציור",
+      "shapes": "צורות",
+      "lines": "קווים",
+      "tools": "כלים",
+      "history": "היסטוריה",
+      "export": "ייצוא",
+      "BackToBoards": "לוחות",
+      "layout": "פריסה"
+    },
+    "expand": "הרחב סרגל כלים",
+    "collapse": "צמצם סרגל כלים",
+    "dragHandle": "גרור להזזת סרגל הכלים",
+    "tool": {
+      "brush": "מברשת",
+      "square": "ריבוע",
+      "rectangle": "מלבן",
+      "circle": "עיגול",
+      "triangle": "משולש",
+      "pentagon": "מחומש",
+      "hexagon": "משושה",
+      "star": "כוכב",
+      "line": "קו",
+      "dottedLine": "קו מקווקו",
+      "arrow": "חץ",
+      "text": "טקסט",
+      "colorPicker": "בורר צבעים",
+      "recolor": "צביעה מחדש",
+      "download": "הורדה",
+      "eraser": "מחק",
+      "undo": "בטל",
+      "redo": "בצע שוב",
+      "resetZoom": "איפוס",
+      "focusCanvas": "התמקד בקנבס",
+      "balanced": "מאוזן",
+      "focusChat": "התמקד בצ'אט",
+      "lines": "קווים"
+    },
+    "search": {
+      "boardName": "חפש לוחות...",
+      "placeholder": "הקלד שם לוח...",
+      "clear": "נקה חיפוש"
+    },
+    "view": {
+      "grid": "תצוגת רשת",
+      "list": "תצוגת רשימה"
+    },
+    "activity": {
+      "membersOnline": "{{count}} חברים מחוברים"
+    },
+    "editBoard": {
+      "tooltip": "ערוך שם לוח"
+    },
+    "shapeTools": "כלי צורות"
+  },
+  "sidebar": {
+    "title": "סרגל צד",
+    "onlineUsers": "משתמשים מחוברים:"
+  },
+  "errors": {
+    "create": "יצירת הלוח נכשלה. אנא נסה שנית.",
+    "nameUpdate": "עדכון שם הלוח נכשל. אנא נסה שנית.",
+    "descriptionUpdate": "עדכון תיאור הלוח נכשל. אנא נסה שנית.",
+    "fetch": "נכשל בטעינת הלוחות. אנא בדוק את החיבור ונסה שנית.",
+    "leave": "נכשל ביציאה מהלוח. אנא נסה שנית.",
+    "details": "נכשל בטעינת פרטי הלוח. אנא בדוק את החיבור ונסה שנית.",
+    "workspace": "נכשל בטעינת סביבת העבודה של הלוח. אנא בדוק את החיבור ונסה שנית.",
+    "notFound": "הלוח לא נמצא.",
+    "cannotRemoveSelf": "אינך יכול להסיר את עצמך דרך פעולה זו.",
+    "drawingTooLarge": "הציור גדול מדי לשמירה.",
+    "drawingFailed": "נכשל בשמירת הציור. אנא נסה שנית.",
+    "action": {
+      "undo": "נכשל בביטול הפעולה. אנא נסה שנית.",
+      "redo": "נכשל בביצוע הפעולה מחדש. אנא נסה שנית."
+    }
+  },
+  "loading": {
+    "create": "יוצר לוח...",
+    "nameUpdate": "מעדכן שם לוח...",
+    "descriptionUpdate": "מעדכן תיאור לוח...",
+    "fetch": "טוען לוחות...",
+    "leave": "עוזב לוח..."
+  },
+  "success": {
+    "create": "הלוח '{{boardName}}' נוצר בהצלחה!",
+    "nameUpdate": "שם הלוח עודכן בהצלחה!",
+    "descriptionUpdate": "תיאור הלוח עודכן בהצלחה!",
+    "pictureUpdate": "תמונת הלוח עודכנה בהצלחה!",
+    "pictureDelete": "תמונת הלוח נמחקה.",
+    "canvasSettingsUpdate": "הגדרות הקנבס עודכנו בהצלחה!",
+    "leave": "עזבת בהצלחה את הלוח '{{boardName}}'."
+  },
+  "member": {
+    "errors": {
+      "promote": "קידום החבר נכשל. אנא נסה שנית.",
+      "remove": "הסרת החבר נכשלה. אנא נסה שנית.",
+      "invite": "שליחת ההזמנה נכשלה. אנא נסה שנית."
+    },
+    "loading": {
+      "promote": "מקדם חבר...",
+      "remove": "מסיר חבר...",
+      "invite": "שולח הזמנה..."
+    },
+    "success": {
+      "promote": "{{userName}} קודם לתפקיד מנהל.",
+      "remove": "{{userName}} הוסר מהלוח.",
+      "invite": "הזמנה נשלחה אל {{email}}!"
+    }
+  },
+  "user": {
+    "errors": {
+      "notFound": "המשתמש לא נמצא.",
+      "alreadyMember": "המשתמש הזה כבר חבר בלוח.",
+      "alreadyAdmin": "המשתמש הזה הוא כבר מנהל.",
+      "cannotInviteSelf": "אינך יכול להזמין את עצמך ללוח."
+    }
+  },
+  "fallbacks": {
+    "untitled": "לוח ללא כותרת"
+  }
+}

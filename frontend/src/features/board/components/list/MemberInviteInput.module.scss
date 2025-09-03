@@ -1,0 +1,69 @@
+@use '@/styles' as theme;
+
+.container {
+    @include theme.flex-column;
+    gap: theme.$spacing-3;
+}
+
+.inputContainer {
+    display: flex;
+    gap: theme.$spacing-2;
+    align-items: flex-start;
+}
+
+.addButton {
+    @include theme.button-base;
+    flex-shrink: 0;
+    height: 2.5rem;
+}
+
+.emailTags {
+    @include theme.flex-column;
+    @include theme.theme-scrollbar;
+    gap: theme.$spacing-2;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: theme.$spacing-2;
+    border: 1px solid theme.$border-primary;
+    @include theme.rounded-small;
+    background-color: theme.$overlay-darker;
+}
+
+.emailTag {
+    background-color: theme.$secondary-color;
+    color: theme.$text-primary;
+    padding: theme.$spacing-2 theme.$spacing-3;
+    @include theme.rounded-small;
+    @include theme.flex-between;
+    font-size: 0.875rem;
+    min-height: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.removeTag {
+    @include theme.button-base;
+    background: none;
+    border: none;
+    color: theme.$text-primary;
+    cursor: pointer;
+    padding: theme.$spacing-1;
+    font-size: 1.2rem;
+    line-height: 1;
+    @include theme.rounded-circle;
+    width: 1.5rem;
+    height: 1.5rem;
+    @include theme.flex-center;
+    @include theme.hover-transition;
+    flex-shrink: 0;
+}
+
+.removeTag:hover {
+    background-color: theme.$overlay-light;
+}
+
+.helpText {
+    font-size: 0.8rem;
+    color: theme.$text-light-gray;
+    margin: 0;
+}

@@ -16,4 +16,7 @@ public final class WebSocketConstants {
 
     public static final int WEBSOCKET_MESSAGE_SIZE_LIMIT = 1024 * 1024;
     public static final int WEBSOCKET_SEND_BUFFER_SIZE_LIMIT = 1024 * 1024;
+
+    // WebSocket heartbeat configuration
+    public static final long WEBSOCKET_HEARTBEAT_INTERVAL_MS = 15000;
 }

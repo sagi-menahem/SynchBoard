@@ -1,5 +1,9 @@
 package io.github.sagimenahem.synchboard.dto.board;
 
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_HEIGHT_MAX;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_HEIGHT_MIN;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_WIDTH_MAX;
+import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_WIDTH_MIN;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -12,14 +16,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateCanvasSettingsRequest {
 
-    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "Canvas background color must be a valid hex color")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$",
+            message = "validation.canvasColorPattern")
     private String canvasBackgroundColor;
 
-    @Min(value = 400, message = "Canvas width must be at least 400 pixels")
-    @Max(value = 4000, message = "Canvas width must not exceed 4000 pixels")
+    @Min(value = CANVAS_WIDTH_MIN, message = "validation.canvasWidthMin")
+    @Max(value = CANVAS_WIDTH_MAX, message = "validation.canvasWidthMax")
     private Integer canvasWidth;
 
-    @Min(value = 300, message = "Canvas height must be at least 300 pixels")
-    @Max(value = 4000, message = "Canvas height must not exceed 4000 pixels")
+    @Min(value = CANVAS_HEIGHT_MIN, message = "validation.canvasHeightMin")
+    @Max(value = CANVAS_HEIGHT_MAX, message = "validation.canvasHeightMax")
     private Integer canvasHeight;
 }

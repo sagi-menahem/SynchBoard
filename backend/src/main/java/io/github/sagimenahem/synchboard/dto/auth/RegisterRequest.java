@@ -1,7 +1,7 @@
 package io.github.sagimenahem.synchboard.dto.auth;
 
 import java.time.LocalDate;
-import jakarta.validation.constraints.Email;
+import io.github.sagimenahem.synchboard.validation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -9,20 +9,19 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @ValidEmail
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "validation.password")
     private String password;
 
-    @NotBlank(message = "First name is required")
+    @NotBlank(message = "validation.firstName")
     private String firstName;
 
     private String lastName;
 
-    @NotBlank(message = "Gender is required")
-    @Pattern(regexp = "^(male|female)$", message = "Gender must be 'male' or 'female'")
+    @NotBlank(message = "validation.genderRequired")
+    @Pattern(regexp = "^(male|female)$", message = "validation.genderPattern")
     private String gender;
 
     private String phoneNumber;
