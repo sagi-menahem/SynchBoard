@@ -16,48 +16,114 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+/**
+ * Service for sending emails using SendGrid API. Handles email verification codes, password reset
+ * codes, and other transactional emails with internationalization support.
+ * 
+ * @author Sagi Menahem
+ */
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
+    /**
+     * Thymeleaf template engine for rendering email templates
+     */
     private final TemplateEngine templateEngine;
+
+    /**
+     * Message source for internationalization
+     */
     private final MessageSource messageSource;
 
+    /**
+     * SendGrid API key for authentication
+     */
     @Value("${sendgrid.api-key}")
     private String sendGridApiKey;
 
+    /**
+     * Sender email address
+     */
     @Value("${sendgrid.from-email:noreply@synchboard.com}")
     private String fromEmail;
 
+    /**
+     * Sender display name
+     */
     @Value("${sendgrid.from-name:SynchBoard Team}")
     private String fromName;
 
+    /**
+     * Email verification code expiry time in minutes
+     */
     @Value("${email.verification.expiry-minutes:15}")
     private int verificationExpiryMinutes;
 
+    /**
+     * Password reset code expiry time in hours
+     */
     @Value("${email.password-reset.expiry-hours:1}")
     private int passwordResetExpiryHours;
 
+    /**
+     * Sends an email verification code using the default locale (English).
+     * 
+     * @param toEmail the recipient's email address
+     * @param verificationCode the 6-digit verification code
+     * @return true if the email was sent successfully, false otherwise
+     */
     public boolean sendVerificationCode(String toEmail, String verificationCode) {
         return sendVerificationCode(toEmail, verificationCode, Locale.ENGLISH);
     }
 
+    /**
+     * Sends an email verification code with localized content.
+     * 
+     * @param toEmail the recipient's email address
+     * @param verificationCode the 6-digit verification code
+     * @param locale the locale for email content
+     * @return true if the email was sent successfully, false otherwise
+     */
     public boolean sendVerificationCode(String toEmail, String verificationCode, Locale locale) {
         String subject = messageSource.getMessage("email.verification.subject", null, locale);
         String body = buildVerificationEmailBody(verificationCode, locale);
         return sendEmail(toEmail, subject, body);
     }
 
+    /**
+     * Sends a password reset code using the default locale (English).
+     * 
+     * @param toEmail the recipient's email address
+     * @param resetCode the password reset code
+     * @return true if the email was sent successfully, false otherwise
+     */
     public boolean sendPasswordResetCode(String toEmail, String resetCode) {
         return sendPasswordResetCode(toEmail, resetCode, Locale.ENGLISH);
     }
 
+    /**
+     * Sends a password reset code with localized content.
+     * 
+     * @param toEmail the recipient's email address
+     * @param resetCode the password reset code
+     * @param locale the locale for email content
+     * @return true if the email was sent successfully, false otherwise
+     */
     public boolean sendPasswordResetCode(String toEmail, String resetCode, Locale locale) {
         String subject = messageSource.getMessage("email.passwordReset.subject", null, locale);
         String body = buildPasswordResetEmailBody(resetCode, locale);
         return sendEmail(toEmail, subject, body);
     }
 
+    /**
+     * Sends an email using the SendGrid API.
+     * 
+     * @param toEmail the recipient's email address
+     * @param subject the email subject
+     * @param body the HTML email body
+     * @return true if the email was sent successfully (2xx status code), false otherwise
+     */
     private boolean sendEmail(String toEmail, String subject, String body) {
         try {
             Email from = new Email(fromEmail, fromName);
@@ -75,16 +141,25 @@ public class EmailService {
 
             Response response = sg.api(request);
 
+            // Check if response status indicates success (2xx range)
             if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
                 return true;
             } else {
                 return false;
             }
         } catch (IOException ex) {
+            // Log the exception in a real application
             return false;
         }
     }
 
+    /**
+     * Builds the HTML body for email verification emails using Thymeleaf templates.
+     * 
+     * @param verificationCode the 6-digit verification code
+     * @param locale the locale for template processing
+     * @return the rendered HTML email body
+     */
     private String buildVerificationEmailBody(String verificationCode, Locale locale) {
         Context context = new Context(locale);
         context.setVariable("verificationCode", verificationCode);
@@ -92,6 +167,13 @@ public class EmailService {
         return templateEngine.process("email/verification", context);
     }
 
+    /**
+     * Builds the HTML body for password reset emails using Thymeleaf templates.
+     * 
+     * @param resetCode the password reset code
+     * @param locale the locale for template processing
+     * @return the rendered HTML email body
+     */
     private String buildPasswordResetEmailBody(String resetCode, Locale locale) {
         Context context = new Context(locale);
         context.setVariable("resetCode", resetCode);
@@ -99,6 +181,11 @@ public class EmailService {
         return templateEngine.process("email/password-reset", context);
     }
 
+    /**
+     * Generates a random 6-digit verification code.
+     * 
+     * @return a 6-digit numerical verification code as a string
+     */
     public String generateVerificationCode() {
         return String.format("%06d", (int) (Math.random() * 1000000));
     }
