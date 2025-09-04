@@ -55,7 +55,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     showPicker,
   );
 
-  // Calculate optimal popover position to avoid viewport overflow
+  // Calculate optimal popover position to avoid viewport overflow - runs when popover opens
   useEffect(() => {
     if (showPicker && swatchRef.current) {
       const swatchRect = swatchRef.current.getBoundingClientRect();
@@ -122,7 +122,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   }, []);
 
-  // Handle global mouse events to close picker after drag operations
+  // Handle global mouse events to close picker after drag operations - manages drag state cleanup
   useEffect(() => {
     const handleGlobalMouseUp = (e: MouseEvent) => {
       if (isDragging) {
@@ -144,16 +144,19 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   }, [isDragging]);
 
+  // Memoized to avoid recalculating CSS classes when className prop hasn't changed
   const containerClasses = useMemo(
     () => `${styles.colorPickerContainer} ${className}`,
     [className],
   );
 
+  // Memoized to avoid recalculating disabled state CSS classes on every render
   const swatchClasses = useMemo(
     () => `${styles.swatch} ${disabled ? styles.disabled : ''}`,
     [disabled],
   );
 
+  // Memoized to avoid recalculating popover position styles when coordinates haven't changed
   const popoverStyle = useMemo(
     () => ({
       top: `${popoverPosition.top}px`,

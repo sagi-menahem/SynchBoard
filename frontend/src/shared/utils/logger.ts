@@ -13,7 +13,7 @@ class Logger {
   private isDevelopment: boolean;
   private isProduction: boolean;
   private logHistory: LogEntry[] = [];
-  private maxHistorySize = 100;
+  private maxHistorySize = 100; // Balance memory usage with debugging capability
 
   constructor() {
     this.isDevelopment = import.meta.env.DEV;
@@ -164,7 +164,7 @@ class Logger {
       level,
       message,
       timestamp: new Date().toISOString(),
-      data: data && data.length > 0 ? data : undefined,
+      data: data && data.length > 0 ? data : undefined, // Only store data if present to minimize memory
     };
 
     this.logHistory.unshift(entry);
@@ -200,7 +200,7 @@ class Logger {
         url: window.location.href,
       });
 
-      if (errors.length > 50) {
+      if (errors.length > 50) { // Prevent session storage bloat in production
         errors.shift();
       }
 

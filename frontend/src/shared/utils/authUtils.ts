@@ -129,6 +129,6 @@ export const shouldRefreshToken = (token?: string | null): boolean => {
   const currentTime = Date.now() / 1000;
   const timeUntilExpiry = expiry - currentTime;
 
-  // Refresh if expires within 5 minutes but is still valid
+  // Refresh if expires within 5 minutes but is still valid (300 seconds provides enough buffer for API calls to complete)
   return timeUntilExpiry < 300 && timeUntilExpiry > 0;
 };

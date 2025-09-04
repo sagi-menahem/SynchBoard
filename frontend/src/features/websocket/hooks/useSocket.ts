@@ -62,11 +62,12 @@ export const useSocketSubscription = <T>(
     onMessageReceivedRef.current = onMessageReceived;
   }, [onMessageReceived]);
 
-  // Stable callback that always calls the latest message handler
+  // Stable callback that always calls the latest message handler - memoized to prevent subscription churn
   const stableOnMessageReceived = useCallback((message: T) => {
     onMessageReceivedRef.current(message);
   }, []);
 
+  // Manages WebSocket subscription lifecycle with connection state and topic dependencies
   useEffect(() => {
     // Only attempt subscription when connected and topic is provided
     if (!isSocketConnected || !topic) {

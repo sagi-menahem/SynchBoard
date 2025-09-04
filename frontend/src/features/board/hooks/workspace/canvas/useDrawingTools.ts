@@ -115,7 +115,7 @@ export const useDrawingTools = ({
 
       const { startPoint, currentPoint } = eventData;
 
-      if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
+      if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) { // Need at least 2 points for a valid stroke
         const optimizedPoints = optimizeDrawingPoints([...currentPath.current]);
 
         const payload: Omit<LinePayload, 'instanceId'> = {
@@ -130,7 +130,9 @@ export const useDrawingTools = ({
         const height = currentPoint.y - startPoint.y;
         const size = Math.max(Math.abs(width), Math.abs(height));
 
-        const squareX = width < 0 ? startPoint.x - size : startPoint.x;
+        // Adjust X position when dragging left to maintain square origin from correct corner
+        const squareX = width < 0 ? startPoint.x - size : startPoint.x; 
+        // Adjust Y position when dragging up to maintain square origin from correct corner
         const squareY = height < 0 ? startPoint.y - size : startPoint.y;
 
         const normalizedX = squareX / canvas.width;
@@ -151,8 +153,10 @@ export const useDrawingTools = ({
           onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         }
       } else if (tool === TOOLS.RECTANGLE) {
+        // Calculate top-left corner by taking minimum coordinates (handles drag in any direction)
         const rectX = Math.min(startPoint.x, currentPoint.x) / canvas.width;
         const rectY = Math.min(startPoint.y, currentPoint.y) / canvas.height;
+        // Calculate absolute dimensions regardless of drag direction
         const rectWidth = Math.abs(currentPoint.x - startPoint.x) / canvas.width;
         const rectHeight = Math.abs(currentPoint.y - startPoint.y) / canvas.height;
 
@@ -169,6 +173,7 @@ export const useDrawingTools = ({
           onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         }
       } else if (tool === TOOLS.CIRCLE) {
+        // Calculate radius using Euclidean distance formula from center to current mouse position
         const radius =
           Math.sqrt(
             Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),
@@ -192,10 +197,13 @@ export const useDrawingTools = ({
         if (isShapeSizeValid(width, height)) {
           const payload: Omit<TrianglePayload, 'instanceId'> = {
             tool,
+            // Top vertex: horizontal midpoint between start and current, at start Y level
             x1: (startPoint.x + (currentPoint.x - startPoint.x) / 2) / canvas.width,
             y1: startPoint.y / canvas.height,
+            // Bottom-left vertex: at start X position and current Y level
             x2: startPoint.x / canvas.width,
             y2: currentPoint.y / canvas.height,
+            // Bottom-right vertex: at current X and Y position
             x3: currentPoint.x / canvas.width,
             y3: currentPoint.y / canvas.height,
             color: strokeColor,
@@ -204,9 +212,11 @@ export const useDrawingTools = ({
           onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         }
       } else if (tool === TOOLS.PENTAGON || tool === TOOLS.HEXAGON) {
+        // Calculate radius in pixels using Euclidean distance from center to mouse position
         const pixelRadius = Math.sqrt(
           Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),
         );
+        // Normalize radius relative to smaller dimension to maintain proportions across canvas sizes
         const normalizedRadius = pixelRadius / Math.min(canvas.width, canvas.height);
 
         if (isRadiusValid(normalizedRadius)) {
@@ -223,9 +233,11 @@ export const useDrawingTools = ({
           onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
         }
       } else if (tool === TOOLS.STAR) {
+        // Calculate radius in pixels using Euclidean distance from center to mouse position
         const pixelRadius = Math.sqrt(
           Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),
         );
+        // Normalize radius relative to smaller dimension for consistent star proportions
         const normalizedRadius = pixelRadius / Math.min(canvas.width, canvas.height);
 
         if (isRadiusValid(normalizedRadius)) {
@@ -249,6 +261,7 @@ export const useDrawingTools = ({
           y2: currentPoint.y / canvas.height,
           color: strokeColor,
           strokeWidth,
+          // Create dash pattern with gaps proportional to stroke width for visual consistency
           dashPattern: tool === TOOLS.DOTTED_LINE ? [strokeWidth * 2, strokeWidth * 2] : undefined,
         };
         onDraw({ type: ActionType.OBJECT_ADD, payload, sender: senderId });
@@ -273,6 +286,7 @@ export const useDrawingTools = ({
           rectWidth >= minSize &&
           rectHeight >= minSize
         ) {
+          // Calculate text box bounds in pixel coordinates (top-left origin with positive dimensions)
           const pixelX = Math.min(startPoint.x, currentPoint.x);
           const pixelY = Math.min(startPoint.y, currentPoint.y);
           const pixelWidth = Math.abs(currentPoint.x - startPoint.x);

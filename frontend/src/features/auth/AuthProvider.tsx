@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const { validateTokenSync, clearExpiryWarning, clearTokenFromStorage } = useSyncAuthValidation();
 
+  // Memoized to avoid expensive token validation on every render - only recalculates when token changes
   useMemo(() => {
     const result = validateTokenSync(token);
 
@@ -74,16 +75,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, [clearExpiryWarning]);
 
+  // Memoized to prevent child components from re-rendering when login function reference changes
   const login = useCallback((newToken: string) => {
     setToken(newToken);
     saveToken(newToken);
   }, []);
 
+  // Memoized to prevent child components from re-rendering when logout function reference changes
   const logout = useCallback(() => {
     setToken(null);
     removeToken();
   }, []);
 
+  // Memoized to prevent context consumers from re-rendering when dependencies haven't changed
   const value = useMemo(
     () => ({
       token,

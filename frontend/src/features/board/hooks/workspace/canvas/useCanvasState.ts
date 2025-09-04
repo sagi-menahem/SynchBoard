@@ -53,12 +53,14 @@ export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) =
     setDimensions({ width, height });
   }, []);
 
+  // Initializes canvas rendering context when dimensions are available
   useEffect(() => {
     if (dimensions.width > 0 && dimensions.height > 0 && canvasRef.current && !contextRef.current) {
       contextRef.current = setupCanvasContext(canvasRef.current);
     }
   }, [dimensions]);
 
+  // Redraws all canvas objects whenever objects array or dimensions change
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
@@ -71,6 +73,7 @@ export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) =
     objects.forEach((obj) => replayDrawAction(obj, ctx, canvas!));
   }, [objects, dimensions]);
 
+  // Updates canvas dimensions when configuration changes
   useEffect(() => {
     if (canvasConfig) {
       setCanvasDimensions(canvasConfig.width, canvasConfig.height);

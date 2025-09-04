@@ -62,7 +62,7 @@ class WebSocketService {
 
     this.messageSchemas.set('chat', {
       requiredFields: ['type', 'content', 'timestamp', 'senderEmail'],
-      maxLength: 5000,
+      maxLength: 5000, // Prevents memory abuse from malicious large chat payloads
     });
   }
 
@@ -164,7 +164,7 @@ class WebSocketService {
 
     // Exponential backoff with cap to prevent excessive delays
     const baseDelay = WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY;
-    const delay = Math.min(baseDelay * Math.pow(2, this.reconnectionAttempts), 30000);
+    const delay = Math.min(baseDelay * Math.pow(2, this.reconnectionAttempts), 30000); // Cap at 30 seconds to balance retry frequency with server load
     this.reconnectionAttempts++;
 
     this.reconnectionTimer = setTimeout(() => {
@@ -250,9 +250,9 @@ class WebSocketService {
       connectHeaders: {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
-      reconnectDelay: 0,
-      heartbeatIncoming: 30000,
-      heartbeatOutgoing: 30000,
+      reconnectDelay: 0, // Disable STOMP's built-in reconnection to use custom exponential backoff
+      heartbeatIncoming: 30000, // Server heartbeat interval for connection health monitoring
+      heartbeatOutgoing: 30000, // Client heartbeat interval to keep connection alive through firewalls
       onConnect: async () => {
         this.connectionState = 'connected';
         this.resetReconnectionState();
@@ -291,7 +291,7 @@ class WebSocketService {
           return;
         }
 
-        if (this.rollbackCallbacks.size > 0) {
+        if (this.rollbackCallbacks.size > 0) { // Only process rollbacks if pending optimistic updates exist
           this.rollbackCallbacks.forEach((callback) => {
             try {
               callback();

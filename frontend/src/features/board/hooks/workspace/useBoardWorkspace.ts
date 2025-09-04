@@ -74,6 +74,7 @@ export const useBoardWorkspace = (boardId: number) => {
 
   const [hasInitialized, setHasInitialized] = useState(false);
 
+  // Initializes undo/redo counts when board data loads for the first time
   useEffect(() => {
     if (!isLoading && baseObjects.length > 0 && !hasInitialized) {
       resetCounts(baseObjects.length);
@@ -83,6 +84,7 @@ export const useBoardWorkspace = (boardId: number) => {
 
   const handleCommitDrawingTransaction = useCallback(
     (instanceId: string) => {
+      // Convert pending optimistic actions to confirmed state to prevent duplicate rendering
       setBaseObjects((prev) =>
         prev.map((obj) => {
           const enhancedObj = obj as EnhancedActionPayload;
@@ -166,6 +168,7 @@ export const useBoardWorkspace = (boardId: number) => {
     [boardId, incrementUndo, addOptimisticObject, t],
   );
 
+  // Handles access loss by redirecting to board list
   useEffect(() => {
     if (accessLost) {
       logger.warn('[useBoardWorkspace] accessLost is true. Navigating to board list...');

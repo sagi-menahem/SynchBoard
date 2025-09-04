@@ -70,9 +70,9 @@ apiClient.interceptors.response.use(
     const isBoardRequest = error.config?.url?.includes('/boards/');
     const responseData = error.response?.data as { message?: string } | undefined;
     const isUserNotFoundInResponse =
-      error.response?.status === 500 && responseData?.message?.includes?.('User not found');
+      error.response?.status === 500 && responseData?.message?.includes?.('User not found'); // 500 Internal Server Error - backend database issue
     const isUserNotFoundInMessage =
-      error.response?.status === 500 && error.message?.includes?.('User not found');
+      error.response?.status === 500 && error.message?.includes?.('User not found'); // 500 Internal Server Error - user session corrupted
     const isUserNotFoundError = isUserNotFoundInResponse || isUserNotFoundInMessage;
     
     // Detect OAuth redirect errors (often indicate expired sessions)
@@ -84,7 +84,7 @@ apiClient.interceptors.response.use(
       getToken();
       
     const isHttpUnauthorized =
-      error.response && [401, 403].includes(error.response.status) && !isLoginAttempt;
+      error.response && [401, 403].includes(error.response.status) && !isLoginAttempt; // 401 Unauthorized/403 Forbidden - invalid or expired credentials
     const isUserNotFoundErrorTimeout = isUserNotFoundError && !isLoginAttempt;
     const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isLoginAttempt;
     
@@ -94,7 +94,7 @@ apiClient.interceptors.response.use(
 
     if (isSessionTimeout) {
       if (
-        error.response?.status === 401 ||
+        error.response?.status === 401 || // 401 Unauthorized - token expired or invalid
         !isBoardRequest ||
         isUserNotFoundError ||
         isOAuthRedirectError

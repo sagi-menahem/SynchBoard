@@ -34,7 +34,7 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children 
 
   const boardData = useBoardWorkspace(boardId);
 
-  if (isNaN(boardId) || boardId <= 0) {
+  if (isNaN(boardId) || boardId <= 0) { // Validate board ID exists and is a positive integer to prevent invalid board access
     return <div>{t('board:provider.invalidIdError')}</div>;
   }
 
