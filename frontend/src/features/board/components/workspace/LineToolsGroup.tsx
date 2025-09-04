@@ -1,4 +1,3 @@
-
 import clsx from 'clsx';
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { ArrowRight, Minus } from 'lucide-react';

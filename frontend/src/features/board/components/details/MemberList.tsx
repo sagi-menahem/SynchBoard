@@ -1,7 +1,6 @@
 import type { Member } from 'features/board/types/BoardTypes';
 import React from 'react';
 
-
 import MemberListItem from './MemberListItem';
 
 interface MemberListProps {

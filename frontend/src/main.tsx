@@ -1,4 +1,3 @@
-
 import App from 'App';
 import { AppProvider } from 'AppProvider';
 import React from 'react';

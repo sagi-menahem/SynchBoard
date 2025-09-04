@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import { useOAuthCallback } from 'features/auth/hooks/useOAuthCallback';
 import { GuestLanguageSwitcher } from 'features/settings/ui';

@@ -1,4 +1,3 @@
-
 import * as boardService from 'features/board/services/boardService';
 import type { Member, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
 import { useCallback, useState } from 'react';

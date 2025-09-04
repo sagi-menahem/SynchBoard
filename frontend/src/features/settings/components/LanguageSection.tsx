@@ -1,4 +1,3 @@
-
 import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
 import React, { useEffect, useState } from 'react';

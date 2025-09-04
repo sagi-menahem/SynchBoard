@@ -1,4 +1,3 @@
-
 import type { ActionPayload, Point } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import {

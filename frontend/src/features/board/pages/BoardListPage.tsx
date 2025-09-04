@@ -1,4 +1,3 @@
-
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { LayoutDashboard, LogOut, Plus, Settings } from 'lucide-react';
 import React, { useMemo } from 'react';

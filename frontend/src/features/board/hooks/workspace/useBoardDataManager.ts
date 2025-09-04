@@ -1,4 +1,3 @@
-
 import { AxiosError } from 'axios';
 import * as boardService from 'features/board/services/boardService';
 import type { ActionPayload } from 'features/board/types/BoardObjectTypes';

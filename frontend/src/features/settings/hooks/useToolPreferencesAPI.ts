@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
 import { useCallback, useEffect, useState } from 'react';

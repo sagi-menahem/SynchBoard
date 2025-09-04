@@ -1,4 +1,3 @@
-
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { ResizableSplitPanel } from 'features/board/ui';

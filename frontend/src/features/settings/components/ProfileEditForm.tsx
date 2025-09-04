@@ -1,4 +1,3 @@
-
 import type { UpdateUserProfileRequest } from 'features/settings/types/UserTypes';
 import { Save, X } from 'lucide-react';
 import React from 'react';

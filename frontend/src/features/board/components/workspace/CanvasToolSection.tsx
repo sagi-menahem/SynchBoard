@@ -1,4 +1,3 @@
-
 import { STROKE_WIDTH_RANGE, TOOLS } from 'features/board/constants/BoardConstants';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { Brush, Download, Eraser, PaintBucket, Pipette, Redo, Type, Undo } from 'lucide-react';

@@ -1,4 +1,3 @@
-
 import type { ChangePasswordRequest } from 'features/settings/types/UserTypes';
 import { Save } from 'lucide-react';
 import React, { useState } from 'react';

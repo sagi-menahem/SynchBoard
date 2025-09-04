@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useChatWindowLogic } from 'features/chat/hooks/useChatWindowLogic';

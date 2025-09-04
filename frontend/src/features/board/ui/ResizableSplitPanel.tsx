@@ -1,4 +1,3 @@
-
 import clsx from 'clsx';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import React, { useCallback, useRef, useState } from 'react';

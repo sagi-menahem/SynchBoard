@@ -1,4 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
+import logger from './logger';
 
 interface JwtPayload {
   sub: string;
@@ -36,7 +37,7 @@ export const isTokenValid = (token?: string | null): boolean => {
     const currentTime = Date.now() / 1000;
     return decoded.exp > currentTime;
   } catch (error) {
-    console.error('Error validating token:', error);
+    logger.error('Error validating token:', error);
     return false;
   }
 };
@@ -51,7 +52,7 @@ export const decodeToken = (token?: string | null): JwtPayload | null => {
   try {
     return jwtDecode<JwtPayload>(tokenToDecode);
   } catch (error) {
-    console.error('Error decoding token:', error);
+    logger.error('Error decoding token:', error);
     return null;
   }
 };

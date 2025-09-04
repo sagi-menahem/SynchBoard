@@ -1,4 +1,3 @@
-
 import defaultUserImage from 'assets/default-user-image.png';
 import { isSafeUrl, sanitizeUserContent } from 'features/auth/utils/SecurityUtils';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';

@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import websocketService from 'features/websocket/services/websocketService';
 import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';

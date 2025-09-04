@@ -1,4 +1,3 @@
-
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { Monitor } from 'lucide-react';
 import React from 'react';

@@ -1,4 +1,3 @@
-
 import { CANVAS_CONFIG, TOOLS } from 'features/board/constants/BoardConstants';
 import { useCanvas } from 'features/board/hooks/workspace/canvas/useCanvas';
 import { useCanvasInteractions } from 'features/board/hooks/workspace/canvas/useCanvasInteractions';

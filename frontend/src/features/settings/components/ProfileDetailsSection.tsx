@@ -1,4 +1,3 @@
-
 import { ProfileDisplayView, ProfileEditForm } from 'features/settings/components';
 import { useUserProfile } from 'features/settings/hooks/profile/useUserProfile';
 import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/types/UserTypes';

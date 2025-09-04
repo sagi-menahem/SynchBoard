@@ -1,4 +1,3 @@
-
 import defaultBoardImage from 'assets/default-board-image.png';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
 import { PencilLine, Save, X } from 'lucide-react';

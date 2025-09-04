@@ -1,4 +1,3 @@
-
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { Point } from 'features/board/types/BoardObjectTypes';
 import { useCallback, useRef } from 'react';

@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import { useConnectionStatus } from 'features/websocket/hooks';
 import React, { useEffect, useRef } from 'react';

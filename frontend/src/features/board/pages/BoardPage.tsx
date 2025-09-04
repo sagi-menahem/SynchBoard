@@ -1,4 +1,3 @@
-
 import { BoardProvider } from 'features/board';
 import { BoardWorkspace } from 'features/board/components/workspace';
 import { STROKE_WIDTH_RANGE, TOOLS } from 'features/board/constants/BoardConstants';

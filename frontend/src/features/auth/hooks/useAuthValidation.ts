@@ -1,4 +1,3 @@
-
 import { getUserProfile } from 'features/settings/services/userService';
 import { jwtDecode } from 'jwt-decode';
 import { useCallback, useRef } from 'react';

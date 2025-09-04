@@ -1,4 +1,3 @@
-
 import { Switch } from '@headlessui/react';
 import { useTheme } from 'features/settings/ThemeProvider';
 import { Moon, Sun } from 'lucide-react';

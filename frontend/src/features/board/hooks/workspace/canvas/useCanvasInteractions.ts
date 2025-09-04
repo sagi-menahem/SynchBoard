@@ -1,4 +1,3 @@
-
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type {
   ActionPayload,

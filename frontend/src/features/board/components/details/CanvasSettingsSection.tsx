@@ -1,4 +1,3 @@
-
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { useCanvasSettings } from 'features/board/hooks/useCanvasSettings';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
