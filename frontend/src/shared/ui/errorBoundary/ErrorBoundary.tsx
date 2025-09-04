@@ -12,16 +12,26 @@ import Button from '../components/forms/Button';
 import styles from './ErrorBoundary.module.scss';
 
 interface Props {
+  /** Child components to render when no error has occurred */
   children: ReactNode;
+  /** Optional callback to execute when user clicks retry */
   onRetry?: () => void;
 }
 
 interface State {
+  /** Whether an error has been caught by the boundary */
   hasError: boolean;
+  /** The caught error object, if any */
   error: Error | null;
+  /** Whether a retry operation is currently in progress */
   isRetrying: boolean;
 }
 
+/**
+ * Error boundary component that catches JavaScript errors anywhere in the child component tree.
+ * Provides a user-friendly error interface with retry functionality and comprehensive error logging.
+ * Prevents the entire application from crashing due to unhandled component errors.
+ */
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -29,10 +39,12 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): Partial<State> {
+    // Update state to show error UI on next render
     return { hasError: true, error, isRetrying: false };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Log comprehensive error information for debugging
     logger.error('Application Error:', {
       error: error.message,
       stack: error.stack,
@@ -46,6 +58,7 @@ export class ErrorBoundary extends Component<Props, State> {
   private handleRetry = async () => {
     this.setState({ isRetrying: true });
 
+    // Brief delay to provide visual feedback before retry
     await new Promise((resolve) => setTimeout(resolve, TIMING_CONSTANTS.ERROR_RECOVERY_DELAY));
 
     this.setState({ hasError: false, error: null, isRetrying: false });
@@ -53,6 +66,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.props.onRetry) {
       this.props.onRetry();
     } else {
+      // Fallback to page reload if no custom retry handler
       window.location.reload();
     }
   };
@@ -76,6 +90,14 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 }
 
+/**
+ * Error boundary user interface component with localized messaging and accessibility features.
+ * Displays a user-friendly error message with retry and navigation options.
+ *
+ * @param onRetry - Callback to attempt error recovery
+ * @param onGoHome - Callback to navigate back to home page
+ * @param isRetrying - Whether retry operation is in progress
+ */
 const ErrorBoundaryUI: React.FC<{
   onRetry: () => void;
   onGoHome: () => void;

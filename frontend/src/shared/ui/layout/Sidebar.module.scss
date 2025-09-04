@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Fixed-width sidebar component with secondary background styling
 .aside {
   background: theme.$background-secondary;
   padding: theme.$spacing-4;
