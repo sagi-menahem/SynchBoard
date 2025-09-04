@@ -85,6 +85,7 @@ export function useUserBoardPreferencesService() {
   const { token } = useAuth();
   const isAuthenticated = !!token;
 
+  // Memoize to prevent infinite loops when used in useEffect dependency arrays
   const refreshPreferences = useCallback(async () => {
     if (!isAuthenticated) {
       return;
@@ -107,6 +108,7 @@ export function useUserBoardPreferencesService() {
     }
   }, [isAuthenticated, t]);
 
+  // Memoize to prevent unnecessary re-renders when background update function is passed as prop
   const updateBoardBackground = useCallback(
     async (background: string) => {
       // Store previous state for potential rollback
@@ -128,6 +130,7 @@ export function useUserBoardPreferencesService() {
     [isAuthenticated, state.preferences, t],
   );
 
+  // Memoize to maintain stable function reference for components consuming this hook
   const updatePreferences = useCallback(
     async (newPrefs: Partial<UserBoardPreferences>) => {
       if (!isAuthenticated) {
@@ -151,6 +154,7 @@ export function useUserBoardPreferencesService() {
     [isAuthenticated, state.preferences, t],
   );
 
+  // Memoize to avoid function recreation and provide stable reference for silent updates
   const updatePreferencesSilent = useCallback(
     async (newPrefs: Partial<UserBoardPreferences>) => {
       if (!isAuthenticated) {

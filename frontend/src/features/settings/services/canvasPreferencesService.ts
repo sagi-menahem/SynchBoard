@@ -15,7 +15,7 @@ export interface CanvasPreferences {
 }
 
 const DEFAULT_CANVAS_PREFERENCES: CanvasPreferences = {
-  canvasChatSplitRatio: 70,
+  canvasChatSplitRatio: 70, // Default canvas to chat area ratio: 70% canvas, 30% chat
   layoutMode: 'balanced',
 };
 

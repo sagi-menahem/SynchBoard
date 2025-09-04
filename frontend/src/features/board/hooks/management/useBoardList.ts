@@ -52,13 +52,14 @@ export const useBoardList = () => {
     setSearchQuery('');
   }, []);
 
+  // Memoized to prevent unnecessary API calls while maintaining loading state consistency
   const fetchBoards = useCallback(() => {
     if (!boards.length) {
       setIsLoading(true);
     }
 
     const startTime = Date.now();
-    const minDelay = 200;
+    const minDelay = 200; // Minimum delay ensures smooth UI transitions and prevents jarring loading flashes
 
     BoardService.getBoards()
       .then((userBoards: Board[]) => {

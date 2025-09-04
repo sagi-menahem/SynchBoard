@@ -98,13 +98,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
           const shouldAnimate = isMessageNew(message);
           const prevMessage = filteredMessages[index - 1] ?? null;
 
-          // Group consecutive messages from same user within time window
+          // Complex message grouping logic: consecutive messages from same user within time window receive visual grouping
           const isGroupedWithPrevious =
             prevMessage &&
             prevMessage.senderEmail === message.senderEmail &&
             !shouldShowDateSeparator(message, prevMessage) &&
             new Date(message.timestamp).getTime() - new Date(prevMessage.timestamp).getTime() <
-              TIMING_CONSTANTS.CHAT_MESSAGE_GROUPING_WINDOW;
+              TIMING_CONSTANTS.CHAT_MESSAGE_GROUPING_WINDOW; // Time window for grouping related messages together
 
           return (
             <React.Fragment key={message.instanceId ?? `${message.id}-${message.timestamp}`}>

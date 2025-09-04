@@ -279,7 +279,7 @@ export const useDrawingTools = ({
       } else if (tool === TOOLS.TEXT) {
         const rectWidth = Math.abs(currentPoint.x - startPoint.x) / canvas.width;
         const rectHeight = Math.abs(currentPoint.y - startPoint.y) / canvas.height;
-        const minSize = 0.02;
+        const minSize = 0.02; // Minimum text box size threshold for usable text input areas
 
         if (
           isShapeSizeValid(rectWidth, rectHeight) &&

@@ -81,7 +81,7 @@ export const useSocketSubscription = <T>(
       if (WebSocketService.isConnected()) {
         subscription = WebSocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
       }
-    }, 100);
+    }, 100); // Brief delay ensures WebSocket connection is fully established before subscribing
 
     // Cleanup subscription and timeout on effect cleanup
     return () => {

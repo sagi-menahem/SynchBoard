@@ -89,12 +89,13 @@ export const useCanvasInteractions = ({
           if (data[3] === 0) {
             const backgroundColor = canvasBackgroundColor ?? '#FFFFFF';
             // Expand 3-digit hex shorthand to 6-digit format (#ABC -> #AABBCC)
+            // Character duplication algorithm: each hex digit is repeated to create full RGB values
             const normalizedColor =
               backgroundColor.length === 4
                 ? `#${backgroundColor
                     .slice(1)
                     .split('')
-                    .map((c) => c + c) // Duplicate each character
+                    .map((c) => c + c) // Duplicate each character (#A -> AA, #B -> BB, #C -> CC)
                     .join('')}`
                 : backgroundColor;
             onColorPick?.(normalizedColor);

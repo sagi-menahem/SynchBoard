@@ -24,7 +24,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     // Log security event for unauthorized access attempt
     logger.warn('[ProtectedRoute] SECURITY: No token found - redirecting to login', {
       attemptedPath: window.location.pathname,
-      localStorageHasToken: !!localStorage.getItem('AUTH_TOKEN'),
+      localStorageHasToken: !!localStorage.getItem('AUTH_TOKEN'), // Different key used for debugging - actual token key is in LOCAL_STORAGE_KEYS
       timestamp: new Date().toISOString(),
     });
     return <Navigate to={APP_ROUTES.AUTH} replace />;

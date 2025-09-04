@@ -122,8 +122,8 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
               type="text"
               required
               disabled={isPending}
-              maxLength={6}
-              pattern="[0-9]{6}"
+              maxLength={6} // 6-digit verification code length for optimal memorability and security
+              pattern="[0-9]{6}" // Exactly 6 numeric digits to match backend generation format
               placeholder={t('auth:verifyEmail.placeholder.code')}
               autoComplete="one-time-code"
               style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}

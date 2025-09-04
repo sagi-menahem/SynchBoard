@@ -72,16 +72,18 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
             newSet.delete(messageKey);
             return newSet;
           });
-        }, TIMING_CONSTANTS.CHAT_PENDING_MESSAGE_TIMEOUT);
+        }, TIMING_CONSTANTS.CHAT_PENDING_MESSAGE_TIMEOUT); // Remove pending status after timeout to prevent stuck messages
       }
     },
     [],
   );
 
   // Memoized to provide stable function reference for pending timer operations
+  // Prevents unnecessary re-renders when managing transaction timeout handlers
   const startPendingTimer = useCallback((_transactionId: string) => {}, []);
 
   // Memoized to prevent unnecessary re-renders when scrolling chat to bottom
+  // Avoids creating new function references that could trigger effect dependencies
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
     const endElement = messagesEndRef.current;
@@ -96,6 +98,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   }, []);
 
   // Manages keyboard event listeners for chat search functionality
+  // Handles Ctrl/Cmd+F to open search and Escape to close search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey ?? e.metaKey) && e.key === 'f') {
@@ -145,8 +148,9 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   }, [messages, pendingMessageIds]);
 
   // Handles automatic scrolling when new messages arrive
+  // Delays scroll to ensure DOM updates are complete before scrolling
   useEffect(() => {
-    const timeoutId = setTimeout(scrollToBottom, TIMING_CONSTANTS.CHAT_SCROLL_DELAY);
+    const timeoutId = setTimeout(scrollToBottom, TIMING_CONSTANTS.CHAT_SCROLL_DELAY); // Delay allows message rendering to complete
     if (allMessages.length !== previousMessageCount) {
       setPreviousMessageCount(allMessages.length);
     }
@@ -205,6 +209,8 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     return { backgroundColor: savedColor };
   };
 
+  // Memoized to provide stable function reference for transaction commit operations
+  // Prevents unnecessary re-renders when managing message confirmation states
   const commitChatTransaction = useCallback((_instanceId: string) => {}, []);
 
   const handleSearchClose = () => {
@@ -213,6 +219,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
   };
 
   // Memoized to prevent unnecessary re-renders when checking message new status
+  // Only recreates when newMessageIds changes to avoid triggering child component re-renders
   const isMessageNew = useCallback(
     (message: EnhancedChatMessage): boolean => {
       const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;

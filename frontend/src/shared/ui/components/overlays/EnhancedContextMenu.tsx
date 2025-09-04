@@ -53,8 +53,8 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    const wouldOverflowRight = x + menuRect.width > viewportWidth - 10;
-    const wouldOverflowBottom = y + menuRect.height > viewportHeight - 10;
+    const wouldOverflowRight = x + menuRect.width > viewportWidth - 10; // 10px viewport margin prevents edge clipping
+    const wouldOverflowBottom = y + menuRect.height > viewportHeight - 10; // 10px viewport margin prevents edge clipping
 
     let adjustedX = x;
     let adjustedY = y;
@@ -98,7 +98,7 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
     const timeoutId = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscape);
-    }, 100);
+    }, 100); // Brief delay prevents immediate closure from the same click that opened the menu
 
     return () => {
       clearTimeout(timeoutId);

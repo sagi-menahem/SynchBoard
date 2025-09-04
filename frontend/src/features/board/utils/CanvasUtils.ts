@@ -275,7 +275,7 @@ export const drawTextPayload = (
   targetCtx.rect(pixelX, pixelY, pixelWidth, pixelHeight);
   targetCtx.clip();
 
-  const lineHeight = fontSize * 1.2; // 1.2x line height provides readable spacing between text lines
+  const lineHeight = fontSize * 1.2; // 1.2x multiplier provides readable spacing calculation between text lines
 
   const words = text.split(' ');
   const lines: string[] = [];
@@ -303,7 +303,7 @@ export const drawTextPayload = (
       const overflowText = '...';
       const overflowY = pixelY + pixelHeight - fontSize;
 
-      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4); // Clear area with 2px padding above/below for visual separation
+      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4); // 2px padding provides visual separation purpose above/below text
 
       targetCtx.fillText(overflowText, pixelX, overflowY);
       break;

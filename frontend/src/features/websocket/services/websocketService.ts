@@ -331,6 +331,7 @@ class WebSocketService {
     this.connectionState = 'disconnected';
     this.pendingSubscriptions = [];
 
+    // Brief delay allows disconnect handler to complete before clearing intentional disconnect flag
     setTimeout(() => {
       this.isIntentionalDisconnect = false;
     }, 100);

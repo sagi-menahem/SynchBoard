@@ -92,6 +92,7 @@ export function useCanvasPreferencesService() {
   const { token, userEmail } = useAuth();
   const isAuthenticated = !!token;
 
+  // Memoize to prevent infinite re-renders when used in useEffect dependencies
   const refreshPreferences = useCallback(async () => {
     if (!isAuthenticated) {
       return;
@@ -109,6 +110,7 @@ export function useCanvasPreferencesService() {
     }
   }, [isAuthenticated]);
 
+  // Memoize to prevent component re-renders when split ratio function is passed as prop
   const updateSplitRatio = useCallback(
     async (splitRatio: number) => {
       // Optimistically update local state for immediate UI feedback
@@ -131,6 +133,7 @@ export function useCanvasPreferencesService() {
     dispatch({ type: 'UPDATE_LAYOUT_MODE', payload: layoutMode });
   };
 
+  // Memoize to avoid recreation on every render when function is passed to child components
   const updateCanvasPreferences = useCallback(
     async (newPrefs: Partial<CanvasPreferences>) => {
       if (!isAuthenticated) {
@@ -157,6 +160,7 @@ export function useCanvasPreferencesService() {
     dispatch({ type: 'RESET_ERROR' });
   };
 
+  // Memoize to maintain stable reference for WebSocket subscription callback
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
       // Handle real-time canvas settings changes from other clients

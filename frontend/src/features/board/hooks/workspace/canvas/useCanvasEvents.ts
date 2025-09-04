@@ -100,6 +100,7 @@ export const useCanvasEvents = ({
     ],
   );
 
+  // Manage global mouse event listeners during drawing operations - global listeners needed to track mouse outside canvas bounds
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) {

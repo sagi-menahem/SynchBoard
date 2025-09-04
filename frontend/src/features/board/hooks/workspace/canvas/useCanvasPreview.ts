@@ -153,7 +153,7 @@ export const useCanvasPreview = ({
         const radius = Math.sqrt(
           Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),
         );
-        const innerRadius = radius * 0.4;
+        const innerRadius = radius * 0.4; // 40% inner radius creates classic five-pointed star proportions
         const points = 5;
         ctx.beginPath();
         for (let i = 0; i < points * 2; i++) {

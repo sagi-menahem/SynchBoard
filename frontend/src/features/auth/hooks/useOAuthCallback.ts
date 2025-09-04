@@ -22,6 +22,7 @@ export const useOAuthCallback = () => {
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
 
+  // Expensive initialization: OAuth callback detection with URL parsing to prevent unnecessary renders
   const [isProcessing, setIsProcessing] = useState(() => {
     const isCallback = window.location.pathname === '/auth/callback';
     const hasParams =
@@ -95,7 +96,7 @@ export const useOAuthCallback = () => {
         void window.history.replaceState({}, document.title, '/auth');
         void navigate(APP_ROUTES.BOARD_LIST, { replace: true });
 
-        // Clean up session storage after navigation completes
+        // Clean up session storage after navigation completes - 1 second delay ensures navigation is complete
         setTimeout(() => {
           sessionStorage.removeItem('oauth_success_shown');
           sessionStorage.removeItem('oauth_callback_processed');
