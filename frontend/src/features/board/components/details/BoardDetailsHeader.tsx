@@ -7,14 +7,34 @@ import { Button, PictureManager, SectionCard, Textarea } from 'shared/ui';
 
 import styles from './BoardDetailsHeader.module.scss';
 
+/**
+ * Props interface for BoardDetailsHeader component.
+ * Defines the board data and event handlers for managing board header content.
+ */
 interface BoardDetailsHeaderProps {
+  /** Complete board information including name, description, and picture */
   boardDetails: BoardDetails;
+  /** Whether the current user has admin privileges for this board */
   currentUserIsAdmin: boolean;
+  /** Handler for uploading new board picture files */
   onPictureUpload: (file: File) => void;
+  /** Handler for updating board description with async validation */
   onUpdateDescription: (description: string) => Promise<void>;
+  /** Handler for removing the current board picture */
   onDeletePicture: () => void;
 }
 
+/**
+ * Renders the board header with picture management and editable description.
+ * This component provides a comprehensive interface for managing board visual identity
+ * including picture uploads/deletion and inline description editing with admin controls.
+ * 
+ * @param boardDetails - Complete board information including name, description, and picture
+ * @param currentUserIsAdmin - Whether the current user has admin privileges for this board
+ * @param onPictureUpload - Handler for uploading new board picture files
+ * @param onUpdateDescription - Handler for updating board description with async validation
+ * @param onDeletePicture - Handler for removing the current board picture
+ */
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const {
