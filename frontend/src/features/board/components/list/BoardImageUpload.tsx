@@ -6,11 +6,25 @@ import Button from 'shared/ui/components/forms/Button';
 
 import styles from './BoardImageUpload.module.scss';
 
+/**
+ * Props interface for BoardImageUpload component.
+ * Defines the image selection callback and component state configuration.
+ */
 interface BoardImageUploadProps {
+  /** Callback function triggered when user selects or removes an image file */
   onImageSelect: (file: File | null) => void;
+  /** Whether the upload functionality should be disabled */
   disabled?: boolean;
 }
 
+/**
+ * Interactive image upload component with preview functionality for board creation.
+ * This component provides a user-friendly interface for selecting board images with 
+ * drag-and-drop style interactions, preview display, and removal capabilities.
+ * 
+ * @param onImageSelect - Callback function triggered when user selects or removes an image file
+ * @param disabled - Whether the upload functionality should be disabled
+ */
 const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disabled = false }) => {
   const { t } = useTranslation(['board', 'common']);
   const fileInputRef = useRef<HTMLInputElement>(null);

@@ -30,6 +30,7 @@
   gap: theme.$spacing-6;
   width: 100%;
 
+  /* Global override for section cards to ensure full width in form context */
   :global(.sectionCard) {
     width: 100% !important;
     max-width: 100% !important;
@@ -90,6 +91,7 @@
   border-top: 1px solid theme.$border-primary;
 }
 
+/* Global overrides for image upload component sizing within create board form */
 .modalContainer :global(.container) :global(.image) {
   width: 126px !important;
   height: 126px !important;
