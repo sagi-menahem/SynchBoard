@@ -23,6 +23,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Service layer for managing collaborative whiteboards and board operations. Handles board
+ * creation, retrieval, updates, member management, and file operations with comprehensive access
+ * control and real-time notification support.
+ * 
+ * @author Sagi Menahem
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -40,7 +47,8 @@ public class BoardService {
         log.debug("Fetching boards for user: {}", userEmail);
 
         List<GroupMember> memberships = groupMemberRepository.findByUserWithBoard(userEmail);
-        List<BoardDTO> boards = memberships.stream().map(this::mapToBoardResponse).collect(Collectors.toList());
+        List<BoardDTO> boards =
+                memberships.stream().map(this::mapToBoardResponse).collect(Collectors.toList());
 
         log.debug("Found {} boards for user: {}", boards.size(), userEmail);
         return boards;
@@ -50,21 +58,16 @@ public class BoardService {
     public BoardDTO createBoard(CreateBoardRequest request, String ownerEmail) {
         log.debug("Creating board: {} for user: {}", request.getName(), ownerEmail);
 
-        User owner = userRepository
-            .findById(ownerEmail)
-            .orElseThrow(() -> {
-                log.warn(USER_NOT_FOUND, ownerEmail);
-                return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + ownerEmail);
-            });
+        User owner = userRepository.findById(ownerEmail).orElseThrow(() -> {
+            log.warn(USER_NOT_FOUND, ownerEmail);
+            return new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + ownerEmail);
+        });
 
-        GroupBoard newBoard = GroupBoard.builder()
-            .boardGroupName(request.getName())
-            .groupDescription(request.getDescription())
-            .createdByUser(owner)
-            .canvasBackgroundColor(request.getCanvasBackgroundColor())
-            .canvasWidth(request.getCanvasWidth())
-            .canvasHeight(request.getCanvasHeight())
-            .build();
+        GroupBoard newBoard = GroupBoard.builder().boardGroupName(request.getName())
+                .groupDescription(request.getDescription()).createdByUser(owner)
+                .canvasBackgroundColor(request.getCanvasBackgroundColor())
+                .canvasWidth(request.getCanvasWidth()).canvasHeight(request.getCanvasHeight())
+                .build();
 
         if (request.getPicture() != null && !request.getPicture().isEmpty()) {
             try {
@@ -78,18 +81,15 @@ public class BoardService {
 
         groupBoardRepository.save(newBoard);
 
-        GroupMember newMembership = GroupMember.builder()
-            .user(owner)
-            .groupBoard(newBoard)
-            .userEmail(owner.getEmail())
-            .boardGroupId(newBoard.getBoardGroupId())
-            .isAdmin(true)
-            .build();
+        GroupMember newMembership =
+                GroupMember.builder().user(owner).groupBoard(newBoard).userEmail(owner.getEmail())
+                        .boardGroupId(newBoard.getBoardGroupId()).isAdmin(true).build();
         groupMemberRepository.save(newMembership);
 
         log.info(BOARD_CREATED, newBoard.getBoardGroupId(), request.getName(), ownerEmail);
 
-        handleBoardCreationInvitations(newBoard.getBoardGroupId(), request.getInviteEmails(), ownerEmail);
+        handleBoardCreationInvitations(newBoard.getBoardGroupId(), request.getInviteEmails(),
+                ownerEmail);
 
         notificationService.broadcastUserUpdate(ownerEmail);
         return mapToBoardResponse(newMembership);
@@ -105,7 +105,8 @@ public class BoardService {
         }
 
         log.debug(BOARD_ACCESS_GRANTED, boardId, userEmail);
-        List<GroupMember> membersWithBoardAndUser = groupBoardRepository.findMembersWithDetails(boardId);
+        List<GroupMember> membersWithBoardAndUser =
+                groupBoardRepository.findMembersWithDetails(boardId);
 
         if (membersWithBoardAndUser.isEmpty()) {
             log.warn("Board not found: {}", boardId);
@@ -113,27 +114,21 @@ public class BoardService {
         }
 
         GroupBoard board = membersWithBoardAndUser.get(0).getGroupBoard();
-        List<MemberDTO> memberDTOs = membersWithBoardAndUser
-            .stream()
-            .map(this::toMemberDTO)
-            .collect(Collectors.toList());
+        List<MemberDTO> memberDTOs = membersWithBoardAndUser.stream().map(this::toMemberDTO)
+                .collect(Collectors.toList());
 
-        log.debug("Board details fetched successfully. BoardId: {}, Members: {}", boardId, memberDTOs.size());
-        return BoardDetailsDTO.builder()
-            .id(board.getBoardGroupId())
-            .name(board.getBoardGroupName())
-            .description(board.getGroupDescription())
-            .pictureUrl(board.getGroupPictureUrl())
-            .members(memberDTOs)
-            .canvasBackgroundColor(board.getCanvasBackgroundColor())
-            .canvasWidth(board.getCanvasWidth())
-            .canvasHeight(board.getCanvasHeight())
-            .build();
+        log.debug("Board details fetched successfully. BoardId: {}, Members: {}", boardId,
+                memberDTOs.size());
+        return BoardDetailsDTO.builder().id(board.getBoardGroupId()).name(board.getBoardGroupName())
+                .description(board.getGroupDescription()).pictureUrl(board.getGroupPictureUrl())
+                .members(memberDTOs).canvasBackgroundColor(board.getCanvasBackgroundColor())
+                .canvasWidth(board.getCanvasWidth()).canvasHeight(board.getCanvasHeight()).build();
     }
 
     @Transactional
     public BoardDTO updateBoardName(Long boardId, String newName, String userEmail) {
-        log.debug("Updating board name. BoardId: {}, NewName: {}, User: {}", boardId, newName, userEmail);
+        log.debug("Updating board name. BoardId: {}, NewName: {}, User: {}", boardId, newName,
+                userEmail);
 
         if (newName == null || newName.trim().isEmpty()) {
             log.warn(ERROR_VALIDATION, "boardName", newName, "Cannot be empty");
@@ -141,19 +136,20 @@ public class BoardService {
         }
 
         GroupMember member = groupMemberRepository
-            .findByBoardGroupIdAndUserEmail(boardId, userEmail)
-            .orElseThrow(() -> {
-                log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
-                return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-            });
+                .findByBoardGroupIdAndUserEmail(boardId, userEmail).orElseThrow(() -> {
+                    log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         String oldName = member.getGroupBoard().getBoardGroupName();
         GroupBoard boardToUpdate = member.getGroupBoard();
         boardToUpdate.setBoardGroupName(newName.trim());
 
-        log.info(BOARD_UPDATED, boardId, "name (" + oldName + " -> " + newName.trim() + ")", userEmail);
+        log.info(BOARD_UPDATED, boardId, "name (" + oldName + " -> " + newName.trim() + ")",
+                userEmail);
 
-        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
+                userEmail);
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
@@ -165,20 +161,21 @@ public class BoardService {
         String trimmedDescription = newDescription != null ? newDescription.trim() : null;
 
         GroupMember member = groupMemberRepository
-            .findByBoardGroupIdAndUserEmail(boardId, userEmail)
-            .orElseThrow(() -> {
-                log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
-                return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-            });
+                .findByBoardGroupIdAndUserEmail(boardId, userEmail).orElseThrow(() -> {
+                    log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         GroupBoard boardToUpdate = member.getGroupBoard();
         String oldDescription = boardToUpdate.getGroupDescription();
         boardToUpdate.setGroupDescription(trimmedDescription);
 
         log.info(BOARD_UPDATED, boardId, "description", userEmail);
-        log.debug("Board description changed from '{}' to '{}'", oldDescription, trimmedDescription);
+        log.debug("Board description changed from '{}' to '{}'", oldDescription,
+                trimmedDescription);
 
-        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
+                userEmail);
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
@@ -189,11 +186,10 @@ public class BoardService {
         log.debug("Updating board picture. BoardId: {}, User: {}", boardId, userEmail);
 
         GroupMember member = groupMemberRepository
-            .findByBoardGroupIdAndUserEmail(boardId, userEmail)
-            .orElseThrow(() -> {
-                log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
-                return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-            });
+                .findByBoardGroupIdAndUserEmail(boardId, userEmail).orElseThrow(() -> {
+                    log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         GroupBoard boardToUpdate = member.getGroupBoard();
         deleteExistingPicture(boardToUpdate);
@@ -204,7 +200,8 @@ public class BoardService {
         log.info(BOARD_UPDATED, boardId, "picture", userEmail);
         log.info(FILE_UPLOAD_SUCCESS, newPictureUrl, userEmail);
 
-        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
+                userEmail);
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
 
         return mapToBoardResponse(member);
@@ -215,11 +212,10 @@ public class BoardService {
         log.debug("Deleting board picture. BoardId: {}, User: {}", boardId, userEmail);
 
         GroupMember member = groupMemberRepository
-            .findByBoardGroupIdAndUserEmail(boardId, userEmail)
-            .orElseThrow(() -> {
-                log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
-                return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-            });
+                .findByBoardGroupIdAndUserEmail(boardId, userEmail).orElseThrow(() -> {
+                    log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         GroupBoard boardToUpdate = member.getGroupBoard();
         String oldPictureUrl = boardToUpdate.getGroupPictureUrl();
@@ -232,7 +228,8 @@ public class BoardService {
             log.info(FILE_DELETE_SUCCESS, oldPictureUrl, userEmail);
         }
 
-        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED, userEmail);
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.DETAILS_UPDATED,
+                userEmail);
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
         return mapToBoardResponse(member);
     }
@@ -266,17 +263,15 @@ public class BoardService {
     }
 
     private BoardDTO mapToBoardResponse(GroupMember membership) {
-        return BoardDTO.builder()
-            .id(membership.getGroupBoard().getBoardGroupId())
-            .name(membership.getGroupBoard().getBoardGroupName())
-            .description(membership.getGroupBoard().getGroupDescription())
-            .pictureUrl(membership.getGroupBoard().getGroupPictureUrl())
-            .lastModifiedDate(membership.getGroupBoard().getLastModifiedDate())
-            .isAdmin(membership.getIsAdmin())
-            .canvasBackgroundColor(membership.getGroupBoard().getCanvasBackgroundColor())
-            .canvasWidth(membership.getGroupBoard().getCanvasWidth())
-            .canvasHeight(membership.getGroupBoard().getCanvasHeight())
-            .build();
+        return BoardDTO.builder().id(membership.getGroupBoard().getBoardGroupId())
+                .name(membership.getGroupBoard().getBoardGroupName())
+                .description(membership.getGroupBoard().getGroupDescription())
+                .pictureUrl(membership.getGroupBoard().getGroupPictureUrl())
+                .lastModifiedDate(membership.getGroupBoard().getLastModifiedDate())
+                .isAdmin(membership.getIsAdmin())
+                .canvasBackgroundColor(membership.getGroupBoard().getCanvasBackgroundColor())
+                .canvasWidth(membership.getGroupBoard().getCanvasWidth())
+                .canvasHeight(membership.getGroupBoard().getCanvasHeight()).build();
     }
 
     private void handleBoardCreationInvitations(Long boardId, List<String> emails, String inviter) {
@@ -306,27 +301,24 @@ public class BoardService {
             }
         }
 
-        log.info(
-            "Board {} creation: {} successful invites, {} failed invites",
-            boardId,
-            successfulInvites,
-            failedInvites
-        );
+        log.info("Board {} creation: {} successful invites, {} failed invites", boardId,
+                successfulInvites, failedInvites);
     }
 
     @Transactional
-    public BoardDTO updateCanvasSettings(Long boardId, UpdateCanvasSettingsRequest request, String userEmail) {
+    public BoardDTO updateCanvasSettings(Long boardId, UpdateCanvasSettingsRequest request,
+            String userEmail) {
         log.debug("Updating canvas settings. BoardId: {}, User: {}", boardId, userEmail);
 
         GroupMember member = groupMemberRepository
-            .findByBoardGroupIdAndUserEmail(boardId, userEmail)
-            .orElseThrow(() -> {
-                log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
-                return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
-            });
+                .findByBoardGroupIdAndUserEmail(boardId, userEmail).orElseThrow(() -> {
+                    log.warn(BOARD_ACCESS_DENIED, boardId, userEmail);
+                    return new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
+                });
 
         if (!member.getIsAdmin()) {
-            log.warn("Non-admin user {} attempted to update canvas settings for board {}", userEmail, boardId);
+            log.warn("Non-admin user {} attempted to update canvas settings for board {}",
+                    userEmail, boardId);
             throw new AccessDeniedException("Only board administrators can update canvas settings");
         }
 
@@ -346,19 +338,18 @@ public class BoardService {
 
         log.info(BOARD_UPDATED, boardId, "canvas settings", userEmail);
 
-        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.CANVAS_UPDATED, userEmail);
+        notificationService.broadcastBoardUpdate(boardId, BoardUpdateDTO.UpdateType.CANVAS_UPDATED,
+                userEmail);
         notificationService.broadcastBoardDetailsChangedToAllBoardMembers(boardId);
 
         return mapToBoardResponse(member);
     }
 
     private MemberDTO toMemberDTO(GroupMember membership) {
-        return MemberDTO.builder()
-            .email(membership.getUser().getEmail())
-            .firstName(membership.getUser().getFirstName())
-            .lastName(membership.getUser().getLastName())
-            .profilePictureUrl(membership.getUser().getProfilePictureUrl())
-            .isAdmin(membership.getIsAdmin())
-            .build();
+        return MemberDTO.builder().email(membership.getUser().getEmail())
+                .firstName(membership.getUser().getFirstName())
+                .lastName(membership.getUser().getLastName())
+                .profilePictureUrl(membership.getUser().getProfilePictureUrl())
+                .isAdmin(membership.getIsAdmin()).build();
     }
 }
