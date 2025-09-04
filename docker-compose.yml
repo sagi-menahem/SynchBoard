@@ -74,48 +74,6 @@ services:
     profiles:
       - tools
 
-# Optional: Backend service (uncomment when needed)
-# backend:
-#   build:
-#     context: ./backend
-#     dockerfile: Dockerfile
-#   container_name: synchboard-backend
-#   restart: unless-stopped
-#   env_file:
-#     - ./backend/.env
-#   environment:
-#     DB_URL: jdbc:postgresql://postgres:5432/synchboard_db
-#     STOMP_BROKER_HOST: activemq
-#     ACTIVEMQ_BROKER_URL: tcp://activemq:61616?wireFormat.maxInactivityDuration=0
-#   ports:
-#     - "8080:8080"
-#   volumes:
-#     - ./backend/uploads:/app/uploads
-#     - ./backend/logs:/app/logs
-#   depends_on:
-#     postgres:
-#       condition: service_healthy
-#     activemq:
-#       condition: service_healthy
-#   networks:
-#     - synchboard-network
-
-# Optional: Frontend service (uncomment when needed)
-# frontend:
-#   build:
-#     context: ./frontend
-#     dockerfile: Dockerfile
-#   container_name: synchboard-frontend
-#   restart: unless-stopped
-#   ports:
-#     - "5173:5173"
-#   environment:
-#     VITE_API_URL: http://localhost:8080
-#   depends_on:
-#     - backend
-#   networks:
-#     - synchboard-network
-
 volumes:
   postgres_data:
     name: synchboard_postgres_data
