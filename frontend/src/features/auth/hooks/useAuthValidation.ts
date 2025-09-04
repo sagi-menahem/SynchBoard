@@ -7,11 +7,21 @@ import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
 import logger from 'shared/utils/logger';
 
 interface AuthValidationResult {
+  // Whether the authentication token is valid and user is authenticated
   isValid: boolean;
+  // Email address from the decoded token, null if invalid
   userEmail: string | null;
+  // Whether the token should be removed from storage due to invalidity
   shouldClearToken: boolean;
 }
 
+/**
+ * Hook for validating JWT authentication tokens and managing session expiry warnings.
+ * Handles token decoding, expiration checking, user validation, and proactive session
+ * management with expiry notifications to maintain secure authentication state.
+ *
+ * @returns Object containing token validation methods and storage management functions
+ */
 export const useAuthValidation = () => {
   const { t } = useTranslation(['auth']);
   const expiryWarningTimeoutRef = useRef<number | null>(null);
@@ -25,6 +35,7 @@ export const useAuthValidation = () => {
 
   const scheduleExpiryWarning = useCallback(
     (expiryTime: number) => {
+      // Schedule warning 5 minutes before token expires
       const warningTime = expiryTime - 5 * 60 * 1000;
       const timeUntilWarning = warningTime - Date.now();
 
@@ -70,6 +81,7 @@ export const useAuthValidation = () => {
         }
 
         try {
+          // Verify token validity by attempting to fetch user profile
           await getUserProfile();
 
           if (decodedToken.exp !== undefined) {

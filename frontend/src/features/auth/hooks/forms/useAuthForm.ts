@@ -110,6 +110,14 @@ export const authToastMessages = {
   }),
 };
 
+/**
+ * Hook for creating authentication forms with standardized validation, error handling, and toast messages.
+ * Provides consistent form behavior across login, registration, password reset, and email verification flows
+ * with integrated validation utilities and localized messaging.
+ *
+ * @param options - Form configuration including API service, validation, and form type
+ * @returns Form handlers and state management for authentication operations
+ */
 export const useAuthForm = <TRequest extends object, TResponse>(
   options: Omit<UseFormWithToastOptions<TRequest, TResponse>, 'toastMessages'> & {
     formType: 'login' | 'register' | 'forgotPassword' | 'verifyEmail';

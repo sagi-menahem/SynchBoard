@@ -5,6 +5,14 @@ import * as authService from '../../services/authService';
 
 import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
 
+/**
+ * Hook for managing user registration form submission with comprehensive validation.
+ * Handles validation of required fields (email, password, firstName, gender) and optional fields,
+ * processes registration API call, and triggers email verification flow upon success.
+ *
+ * @param onRegistrationSuccess - Callback fired when registration is successful, receives the registered email
+ * @returns Form submission handler and loading state for registration functionality
+ */
 export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) => {
   const { t } = useTranslation(['auth', 'common']);
 
@@ -48,6 +56,7 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
         return genderError;
       }
 
+      // Include optional fields only if they have values
       return {
         email,
         password,
