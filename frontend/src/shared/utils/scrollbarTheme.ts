@@ -22,6 +22,13 @@ const SCROLLBAR_THEMES: Record<Theme, ScrollbarColors> = {
   },
 };
 
+/**
+ * Applies scrollbar color theme by updating CSS custom properties on the document element.
+ * Sets appropriate colors for scrollbar components to match the overall application theme.
+ * Used when theme changes occur to maintain visual consistency.
+ * 
+ * @param {Theme} theme - The theme to apply ('light' or 'dark')
+ */
 export const applyScrollbarTheme = (theme: Theme): void => {
   const colors = SCROLLBAR_THEMES[theme];
   const documentElement = document.documentElement;
@@ -32,6 +39,12 @@ export const applyScrollbarTheme = (theme: Theme): void => {
   documentElement.style.setProperty('--scrollbar-corner-bg', colors.corner);
 };
 
+/**
+ * Initializes the scrollbar theme based on the current document theme attribute.
+ * Reads the data-theme attribute from document body and applies the corresponding
+ * scrollbar styling. Falls back to light theme if no valid theme is detected.
+ * Called during application initialization.
+ */
 export const setupScrollbarThemeManager = (): void => {
   const currentTheme = document.body.getAttribute('data-theme') as Theme;
   if (currentTheme && (currentTheme === 'light' || currentTheme === 'dark')) {
