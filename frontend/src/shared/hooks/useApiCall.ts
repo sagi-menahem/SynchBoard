@@ -63,6 +63,7 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
     showErrorToast = true,
   } = options;
 
+  // Memoized to prevent re-creating API executor function when dependencies haven't changed
   const execute = useCallback(
     async (...args: P): Promise<T | null> => {
       try {
@@ -110,6 +111,7 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
     ],
   );
 
+  // Memoized to provide stable function reference for resetting hook state
   const reset = useCallback(() => {
     setData(null);
     setError(null);
@@ -146,6 +148,7 @@ export function useApiMutation<P extends unknown[] = unknown[]>(
     showErrorToast = true,
   } = options;
 
+  // Memoized to prevent re-creating mutation executor function when dependencies haven't changed
   const execute = useCallback(
     async (...args: P): Promise<boolean> => {
       try {

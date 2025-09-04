@@ -77,7 +77,7 @@ export const drawLinePayload = (
   targetCanvas: HTMLCanvasElement,
 ): void => {
   const { points, color, lineWidth } = payload;
-  if (points.length < 2) {
+  if (points.length < 2) { // Need at least 2 points to draw a line segment
     return;
   }
 
@@ -275,7 +275,7 @@ export const drawTextPayload = (
   targetCtx.rect(pixelX, pixelY, pixelWidth, pixelHeight);
   targetCtx.clip();
 
-  const lineHeight = fontSize * 1.2;
+  const lineHeight = fontSize * 1.2; // 1.2x line height provides readable spacing between text lines
 
   const words = text.split(' ');
   const lines: string[] = [];
@@ -303,7 +303,7 @@ export const drawTextPayload = (
       const overflowText = '...';
       const overflowY = pixelY + pixelHeight - fontSize;
 
-      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4);
+      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4); // Clear area with 2px padding above/below for visual separation
 
       targetCtx.fillText(overflowText, pixelX, overflowY);
       break;
@@ -336,8 +336,8 @@ export const drawStarPayload = (
   const centerX = x * targetCanvas.width;
   const centerY = y * targetCanvas.height;
   const outerRadius = radius * radiusScale;
-  const innerRadius = outerRadius * 0.4;
-  const points = 5;
+  const innerRadius = outerRadius * 0.4; // 40% inner radius creates classic star proportions
+  const points = 5; // Five-pointed star is the standard star shape
 
   targetCtx.beginPath();
   for (let i = 0; i < points * 2; i++) {
@@ -423,13 +423,15 @@ export const drawArrowPayload = (
   const angle = Math.atan2(endY - startY, endX - startX);
   const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
-  // Scale arrowhead proportionally to stroke width with min/max bounds
+  // Scale arrowhead proportionally to stroke width with min/max bounds for visual balance
   const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
-  const arrowWidth = arrowLength * 0.6; // Width is 60% of length for proper proportions
-  const arrowAngle = Math.atan(arrowWidth / arrowLength); // Half-angle of arrowhead triangle
+  // Width is 60% of length for proper arrowhead proportions
+  const arrowWidth = arrowLength * 0.6;
+  // Calculate half-angle of arrowhead triangle using inverse tangent
+  const arrowAngle = Math.atan(arrowWidth / arrowLength);
 
-  // Adjust line endpoint to prevent overlap with arrowhead
-  const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle); // 30% overlap for visual continuity
+  // Adjust line endpoint to prevent overlap with arrowhead (30% overlap for visual continuity)
+  const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle);
   const lineEndY = endY - arrowLength * 0.3 * Math.sin(angle);
 
   targetCtx.strokeStyle = color;
@@ -456,7 +458,7 @@ export const drawArrowPayload = (
   targetCtx.fill();
 
   targetCtx.strokeStyle = color;
-  targetCtx.lineWidth = Math.max(1, strokeWidth * 0.5);
+  targetCtx.lineWidth = Math.max(1, strokeWidth * 0.5); // Arrowhead outline is 50% of main stroke width, minimum 1px
   targetCtx.stroke();
 };
 
@@ -567,7 +569,7 @@ export const optimizeDrawingPoints = (
     return points;
   }
 
-  if (points.length <= 3) {
+  if (points.length <= 3) { // Short strokes don't benefit from optimization
     return points;
   }
 
@@ -582,7 +584,7 @@ export const optimizeDrawingPoints = (
 
   // Fallback for over-aggressive optimization
   if (optimizedPoints.length < 2 && points.length >= 2) {
-    return [points[0], points[points.length - 1]]; // Minimum viable stroke
+    return [points[0], points[points.length - 1]]; // Minimum viable stroke with start and end points only
   }
 
   return optimizedPoints;

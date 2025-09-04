@@ -13,7 +13,7 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
 
   let r, g, b;
   // Handle 3-digit hex shorthand by duplicating each digit (#ABC -> #AABBCC)
-  if (hex.length === 4) { // 3-digit format like #ABC
+  if (hex.length === 4) { // Length 4 includes the # prefix for 3-digit hex
     r = parseInt(result[1] + result[1], 16); // A -> AA
     g = parseInt(result[2] + result[2], 16); // B -> BB
     b = parseInt(result[3] + result[3], 16); // C -> CC

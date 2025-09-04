@@ -71,8 +71,8 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
       flipY = true;
     }
 
-    adjustedX = Math.max(10, adjustedX);
-    adjustedY = Math.max(10, adjustedY);
+    adjustedX = Math.max(10, adjustedX); // Minimum 10px from viewport edge to prevent clipping
+    adjustedY = Math.max(10, adjustedY); // Minimum 10px from viewport top to ensure visibility
 
     setPosition({ x: adjustedX, y: adjustedY, flipX, flipY });
 

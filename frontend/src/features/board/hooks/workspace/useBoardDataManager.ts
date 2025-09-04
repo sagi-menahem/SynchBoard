@@ -32,7 +32,7 @@ export const useBoardDataManager = (boardId: number) => {
     setIsLoading(true);
 
     const startTime = Date.now();
-    const minDelay = 200;
+    const minDelay = 200; // Minimum loading delay ensures smooth UI transition and prevents jarring flashes
 
     Promise.all([
       boardService.getBoardDetails(boardId),
@@ -67,7 +67,7 @@ export const useBoardDataManager = (boardId: number) => {
   }, [boardId, t]);
 
   useEffect(() => {
-    if (isNaN(boardId) ?? boardId === 0) {
+    if (isNaN(boardId) ?? boardId === 0) { // Validate board ID exists and is valid to prevent accessing non-existent boards
       setAccessLost(true);
       return;
     }

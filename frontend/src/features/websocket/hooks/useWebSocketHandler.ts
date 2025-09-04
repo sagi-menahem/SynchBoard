@@ -83,7 +83,7 @@ export const useWebSocketHandler = ({
           .then((details) => setBoardName(details.name))
           .catch((err) => {
             // Handle case where user lost access due to member removal
-            if (err instanceof AxiosError && err.response?.status === 403) {
+            if (err instanceof AxiosError && err.response?.status === 403) { // 403 Forbidden - user no longer has board access
               setAccessLost(true);
             }
           });
@@ -151,6 +151,9 @@ export const useWebSocketHandler = ({
         return;
       }
 
+      // Complex message routing logic: discriminate between different WebSocket message types
+      // using duck typing to avoid strict type checking on dynamic payloads from different sources
+      
       // Check for board update messages (member/details changes)
       if (
         'updateType' in (payload as Record<string, unknown>) &&

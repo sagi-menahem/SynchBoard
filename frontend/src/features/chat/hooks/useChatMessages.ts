@@ -66,7 +66,7 @@ export const useChatMessages = () => {
       userInfo: UserInfo,
     ): ChatMessageResponse & { transactionId: string } => {
       return {
-        id: -1, // Temporary ID for optimistic messages
+        id: -1, // Negative ID prevents conflicts with server-assigned positive IDs
         type: 'CHAT',
         content: content.trim(),
         timestamp: new Date().toISOString(),
@@ -114,7 +114,7 @@ export const useChatMessages = () => {
         return { isValid: false, error: t('chat:emptyMessage') };
       }
 
-      // Enforce maximum message length for performance and UX
+      // Prevent database overflow and maintain readable chat experience
       if (trimmedContent.length > 5000) {
         return { isValid: false, error: t('chat:messageTooLong') };
       }

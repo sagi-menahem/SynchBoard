@@ -186,8 +186,8 @@ export const useCanvasPreview = ({
           Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),
         );
 
-        const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
-        const arrowWidth = arrowLength * 0.6;
+        const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15)); // Min 3x stroke, max 6x stroke or 15% of line length
+        const arrowWidth = arrowLength * 0.6; // Width is 60% of length for proper proportions
         const arrowAngle = Math.atan(arrowWidth / arrowLength);
 
         const lineEndX = currentPoint.x - arrowLength * 0.3 * Math.cos(angle);
@@ -215,7 +215,7 @@ export const useCanvasPreview = ({
         ctx.fill();
 
         ctx.strokeStyle = strokeColor;
-        ctx.lineWidth = Math.max(1, strokeWidth * 0.5);
+        ctx.lineWidth = Math.max(1, strokeWidth * 0.5); // Arrowhead outline is 50% of main stroke width, minimum 1px
         ctx.stroke();
       } else if (tool === TOOLS.TEXT) {
         ctx.setLineDash([5, 5]);

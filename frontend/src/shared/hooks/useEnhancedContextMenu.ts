@@ -14,6 +14,7 @@ export const useEnhancedContextMenu = <T>() => {
   const { showContextMenu, hideContextMenu, isOpen } = useContextMenuProvider();
   const [data, setData] = useState<T | null>(null);
 
+  // Memoized to prevent re-creating event handlers that would trigger unnecessary re-renders
   const handleContextMenu = useCallback(
     (event: React.MouseEvent, contextData: T, content: React.ReactNode, onClose?: () => void) => {
       event.preventDefault();
@@ -30,6 +31,7 @@ export const useEnhancedContextMenu = <T>() => {
     [showContextMenu],
   );
 
+  // Memoized to provide stable function reference for menu cleanup operations
   const closeMenu = useCallback(() => {
     hideContextMenu();
     setData(null);

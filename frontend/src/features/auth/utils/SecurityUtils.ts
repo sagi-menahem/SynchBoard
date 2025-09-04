@@ -77,6 +77,7 @@ export const sanitizeObject = (obj: unknown): unknown => {
   if (typeof obj === 'object') {
     const objRecord = obj as Record<string, unknown>;
     const sanitized: Record<string, unknown> = {};
+    // Use hasOwnProperty check to prevent prototype pollution while maintaining traversal integrity
     for (const key in objRecord) {
       if (Object.prototype.hasOwnProperty.call(objRecord, key)) {
         // Sanitize both object keys and values to prevent key-based XSS

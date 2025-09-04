@@ -37,12 +37,14 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   >('disconnected');
 
   // Synchronize React state with underlying WebSocket service state
+  // Memoized to prevent unnecessary re-renders when WebSocket connection state changes
   const updateConnectionState = useCallback(() => {
     const currentState = websocketService.getConnectionState();
     setConnectionState(currentState);
     setIsSocketConnected(currentState === 'connected');
   }, []);
 
+  // Manages WebSocket connection lifecycle and connection state polling
   useEffect(() => {
     let pollInterval: ReturnType<typeof setInterval>;
     // Cleanup flag to prevent state updates after component unmount
@@ -101,6 +103,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     };
   }, [token, userEmail, updateConnectionState]);
 
+  // Memoized to prevent context consumers from re-rendering when dependencies haven't changed
   const value = useMemo(
     () => ({
       isSocketConnected,

@@ -51,6 +51,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
 
   const { sendMessage } = useChatMessages();
 
+  // Memoized to prevent unnecessary re-renders when adding optimistic messages
   const addOptimisticMessage = useCallback(
     (message: ChatMessageResponse & { transactionId: string }) => {
       const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
@@ -77,8 +78,10 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     [],
   );
 
+  // Memoized to provide stable function reference for pending timer operations
   const startPendingTimer = useCallback((_transactionId: string) => {}, []);
 
+  // Memoized to prevent unnecessary re-renders when scrolling chat to bottom
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
     const endElement = messagesEndRef.current;
@@ -92,6 +95,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     }
   }, []);
 
+  // Manages keyboard event listeners for chat search functionality
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey ?? e.metaKey) && e.key === 'f') {
@@ -125,6 +129,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     );
   };
 
+  // Memoized to avoid recalculating enhanced messages when pending states haven't changed
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return messages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
@@ -139,6 +144,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     });
   }, [messages, pendingMessageIds]);
 
+  // Handles automatic scrolling when new messages arrive
   useEffect(() => {
     const timeoutId = setTimeout(scrollToBottom, TIMING_CONSTANTS.CHAT_SCROLL_DELAY);
     if (allMessages.length !== previousMessageCount) {
@@ -147,6 +153,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     return () => clearTimeout(timeoutId);
   }, [allMessages, scrollToBottom, previousMessageCount]);
 
+  // Memoized to avoid recalculating filtered messages when search term or messages haven't changed
   const filteredMessages = useMemo(() => {
     if (!searchTerm.trim()) {
       return allMessages;
@@ -205,6 +212,7 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     setSearchTerm('');
   };
 
+  // Memoized to prevent unnecessary re-renders when checking message new status
   const isMessageNew = useCallback(
     (message: EnhancedChatMessage): boolean => {
       const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;

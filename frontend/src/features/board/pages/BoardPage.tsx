@@ -94,7 +94,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     void updateSplitRatio(newRatio);
   };
 
-  // Create canvas configuration from board details
+  // Create canvas configuration from board details - memoized to prevent unnecessary re-renders
   const canvasConfig = useMemo(() => {
     return boardDetails
       ? {
@@ -121,7 +121,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     [handleDownload, updateTool],
   );
 
-  // Configure comprehensive toolbar with all drawing tools and actions
+  // Configure comprehensive toolbar with all drawing tools and actions - memoized due to expensive toolbar creation
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'canvas',
@@ -158,8 +158,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
                     >
                       <Slider
                         value={strokeWidth}
-                        min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
-                        max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
+                        min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN} // Text tool minimum ensures readable font size
+                        max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX} // Text tool maximum prevents oversized fonts that break layout
                         onChange={updateStrokeWidth}
                         aria-label={t('common:accessibility.sizeSlider', { size: strokeWidth })}
                       />

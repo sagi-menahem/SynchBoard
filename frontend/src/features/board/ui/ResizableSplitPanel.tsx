@@ -82,9 +82,10 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const minRightRatio = (minRightWidth / containerWidth) * 100;
 
       // Clamp ratio to respect minimum widths and reasonable limits
+      // Double Math.max/min pattern ensures ratio stays within both dynamic constraints (panel minimums) and static bounds (30-70%)
       const clampedRatio = Math.max(
-        Math.max(minLeftRatio, 30),
-        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio),
+        Math.max(minLeftRatio, 30), // Left panel minimum: larger of calculated minimum or 30% of container
+        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio), // Right panel minimum: smaller of 70% limit or calculated constraint
       );
 
       setSplitRatio(clampedRatio);

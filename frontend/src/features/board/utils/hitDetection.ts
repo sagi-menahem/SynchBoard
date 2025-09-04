@@ -73,7 +73,7 @@ export const isPointOnRectangleBorder = (
   const rectY = y * canvasHeight;
   const rectWidth = width * canvasWidth;
   const rectHeight = height * canvasHeight;
-  const tolerance = Math.max(strokeWidth / 2, 3);
+  const tolerance = Math.max(strokeWidth / 2, 3); // Minimum 3px ensures clickable border even for thin strokes
 
   const nearLeftEdge =
     Math.abs(point.x - rectX) <= tolerance &&
@@ -152,7 +152,7 @@ export const isPointOnCircleBorder = (
   const circleX = centerX * canvasWidth;
   const circleY = centerY * canvasHeight;
   const circleRadius = radius * canvasWidth;
-  const tolerance = Math.max(strokeWidth / 2, 3);
+  const tolerance = Math.max(strokeWidth / 2, 3); // Minimum 3px ensures clickable border even for thin strokes
 
   const distance = Math.sqrt(Math.pow(point.x - circleX, 2) + Math.pow(point.y - circleY, 2));
   return Math.abs(distance - circleRadius) <= tolerance;
@@ -237,7 +237,7 @@ export const isPointOnTriangleBorder = (
   canvasWidth: number,
   canvasHeight: number,
 ): boolean => {
-  const tolerance = Math.max(strokeWidth / 2, 3);
+  const tolerance = Math.max(strokeWidth / 2, 3); // Minimum 3px ensures clickable border even for thin strokes
 
   const edges = [
     { x1: x1 * canvasWidth, y1: y1 * canvasHeight, x2: x2 * canvasWidth, y2: y2 * canvasHeight },
@@ -288,15 +288,19 @@ export const isPointInPolygon = (
     });
   }
 
+  // Ray casting algorithm: cast horizontal ray from point and count intersections
   let inside = false;
   for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+    // Check if edge crosses the horizontal ray from the test point
     if (
       vertices[i].y > point.y !== vertices[j].y > point.y &&
+      // Calculate X intersection of edge with horizontal ray through test point
       point.x <
         ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
           (vertices[j].y - vertices[i].y) +
           vertices[i].x
     ) {
+      // Toggle inside state for each intersection (odd = inside, even = outside)
       inside = !inside;
     }
   }
@@ -328,10 +332,10 @@ export const isPointInStar = (
 ): boolean => {
   const radiusScale = Math.min(canvasWidth, canvasHeight);
   const outerRadius = radius * radiusScale;
-  const innerRadius = outerRadius * 0.4;
+  const innerRadius = outerRadius * 0.4; // 40% inner radius creates classic star proportions
   const actualCenterX = centerX * canvasWidth;
   const actualCenterY = centerY * canvasHeight;
-  const points = 5;
+  const points = 5; // Five-pointed star is the standard star shape
 
   const vertices: Point[] = [];
   for (let i = 0; i < points * 2; i++) {
@@ -343,15 +347,19 @@ export const isPointInStar = (
     });
   }
 
+  // Ray casting algorithm: cast horizontal ray from point and count intersections
   let inside = false;
   for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+    // Check if edge crosses the horizontal ray from the test point
     if (
       vertices[i].y > point.y !== vertices[j].y > point.y &&
+      // Calculate X intersection of edge with horizontal ray through test point
       point.x <
         ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
           (vertices[j].y - vertices[i].y) +
           vertices[i].x
     ) {
+      // Toggle inside state for each intersection (odd = inside, even = outside)
       inside = !inside;
     }
   }
@@ -394,7 +402,7 @@ export const distanceToLineSegment = (
   }
 
   // Calculate projection parameter and clamp to segment bounds [0,1]
-  let param = dot / lenSq;
+  let param = dot / lenSq; // Vector projection: dot product divided by squared length gives parameter t
   param = Math.max(0, Math.min(1, param)); // Clamp to prevent extrapolation beyond segment endpoints
 
   const xx = x1 + param * C;
@@ -432,7 +440,7 @@ export const isPointOnLine = (
   canvasWidth: number,
   canvasHeight: number,
 ): boolean => {
-  const tolerance = Math.max(strokeWidth / 2, 3);
+  const tolerance = Math.max(strokeWidth / 2, 3); // Minimum 3px ensures clickable line even for thin strokes
   const lineX1 = x1 * canvasWidth;
   const lineY1 = y1 * canvasHeight;
   const lineX2 = x2 * canvasWidth;
@@ -488,6 +496,7 @@ export const detectObjectHit = (
   canvasWidth: number,
   canvasHeight: number,
 ): HitResult => {
+  // Iterate through objects in reverse order (top to bottom) to find topmost hit
   for (let i = objects.length - 1; i >= 0; i--) {
     const obj = objects[i];
 
@@ -509,6 +518,7 @@ export const detectObjectHit = (
           canvasHeight,
         )
       ) {
+        // Prioritize stroke hit over fill hit (border detection takes precedence)
         if (
           'strokeWidth' in rect &&
           isPointOnRectangleBorder(
@@ -691,6 +701,7 @@ export const detectObjectHit = (
       if ('points' in obj && 'lineWidth' in obj) {
         const line = obj as { points: { x: number; y: number }[]; lineWidth: number };
 
+        // Check each line segment in the brush stroke for hit detection
         for (let j = 0; j < line.points.length - 1; j++) {
           const p1 = line.points[j];
           const p2 = line.points[j + 1];

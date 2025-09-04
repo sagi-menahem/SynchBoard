@@ -27,17 +27,17 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
-  // Show "just now" for very recent content
+  // Show "just now" for content posted within last minute to avoid confusion
   if (diffMinutes < 1) {
     return i18n.t('common:dates.justNow');
   }
 
-  // Show relative minutes for content within the last hour
+  // Switch to time display after one hour when exact minutes become less relevant
   if (diffMinutes < 60) {
     return i18n.t('common:dates.minutesAgo', { count: diffMinutes });
   }
 
-  // Show time only for content from today
+  // Use 24-hour boundary to group content by calendar day
   if (diffHours < 24 && date.getDate() === now.getDate()) {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }

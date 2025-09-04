@@ -57,7 +57,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
 
     const result = await resendVerificationCode();
     if (result.success) {
-      // Start 60-second cooldown after successful resend
+      // Start 60-second cooldown after successful resend to prevent spam while allowing reasonable retry frequency
       setResendCooldown(60);
     }
   };
