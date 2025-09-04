@@ -121,6 +121,13 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    /**
+     * Removes the current profile picture for the authenticated user. Deletes the associated image
+     * file from storage and updates the user profile to remove the picture reference.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @return ResponseEntity containing updated user profile without profile picture
+     */
     @DeleteMapping(API_USER_PROFILE_PICTURE)
     public ResponseEntity<UserProfileDTO> deleteProfilePicture(Authentication authentication) {
         String userEmail = authentication.getName();
@@ -148,6 +155,14 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Updates comprehensive user preferences including theme, language, canvas, and tool settings.
+     * Allows bulk update of multiple preference categories in a single request.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @param userPreferencesDTO the updated preferences including theme, language, and tool settings
+     * @return ResponseEntity containing updated user profile with new preferences applied
+     */
     @PutMapping(API_USER_PREFERENCES)
     public ResponseEntity<UserProfileDTO> updateUserPreferences(Authentication authentication,
             @RequestBody UserPreferencesDTO userPreferencesDTO) {
@@ -161,6 +176,13 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    /**
+     * Retrieves canvas-specific preferences for the authenticated user. Returns drawing tool
+     * defaults, canvas layout settings, and visual preferences.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @return ResponseEntity containing canvas preferences including tool defaults and layout settings
+     */
     @GetMapping(API_USER_CANVAS_PREFERENCES)
     public ResponseEntity<CanvasPreferencesDTO> getCanvasPreferences(
             Authentication authentication) {
@@ -173,6 +195,14 @@ public class UserController {
         return ResponseEntity.ok(canvasPreferences);
     }
 
+    /**
+     * Updates canvas-specific preferences for the authenticated user. Modifies drawing tool
+     * defaults, canvas layout settings, and visual display preferences.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @param canvasPreferencesDTO the updated canvas preferences including tool settings and layout
+     * @return ResponseEntity containing updated canvas preferences
+     */
     @PutMapping(API_USER_CANVAS_PREFERENCES)
     public ResponseEntity<CanvasPreferencesDTO> updateCanvasPreferences(
             Authentication authentication,
@@ -187,6 +217,13 @@ public class UserController {
         return ResponseEntity.ok(updatedPreferences);
     }
 
+    /**
+     * Retrieves drawing tool preferences for the authenticated user. Returns default tool selection,
+     * brush settings, stroke properties, and other tool-specific configurations.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @return ResponseEntity containing tool preferences including default selections and settings
+     */
     @GetMapping(API_USER_TOOL_PREFERENCES)
     public ResponseEntity<ToolPreferencesDTO> getToolPreferences(Authentication authentication) {
         String userEmail = authentication.getName();
@@ -198,6 +235,14 @@ public class UserController {
         return ResponseEntity.ok(toolPreferences);
     }
 
+    /**
+     * Updates drawing tool preferences for the authenticated user. Modifies default tool selection,
+     * brush settings, stroke properties, and other tool-specific configurations.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @param toolPreferencesDTO the updated tool preferences including default selections and settings
+     * @return ResponseEntity containing updated tool preferences
+     */
     @PutMapping(API_USER_TOOL_PREFERENCES)
     public ResponseEntity<ToolPreferencesDTO> updateToolPreferences(Authentication authentication,
             @Valid @RequestBody ToolPreferencesDTO toolPreferencesDTO) {
@@ -211,6 +256,13 @@ public class UserController {
         return ResponseEntity.ok(updatedPreferences);
     }
 
+    /**
+     * Retrieves language and localization preferences for the authenticated user. Returns preferred
+     * language settings and regional formatting options.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @return ResponseEntity containing language preferences including locale and formatting settings
+     */
     @GetMapping(API_USER_LANGUAGE_PREFERENCES)
     public ResponseEntity<LanguagePreferencesDTO> getLanguagePreferences(
             Authentication authentication) {
@@ -223,6 +275,14 @@ public class UserController {
         return ResponseEntity.ok(languagePreferences);
     }
 
+    /**
+     * Updates language and localization preferences for the authenticated user. Modifies preferred
+     * language settings and regional formatting options for the application interface.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @param languagePreferencesDTO the updated language preferences including locale settings
+     * @return ResponseEntity containing updated language preferences
+     */
     @PutMapping(API_USER_LANGUAGE_PREFERENCES)
     public ResponseEntity<LanguagePreferencesDTO> updateLanguagePreferences(
             Authentication authentication,
@@ -237,6 +297,13 @@ public class UserController {
         return ResponseEntity.ok(updatedPreferences);
     }
 
+    /**
+     * Retrieves theme and visual appearance preferences for the authenticated user. Returns color
+     * scheme settings, dark/light mode preferences, and other visual customizations.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @return ResponseEntity containing theme preferences including color schemes and visual settings
+     */
     @GetMapping(API_USER_THEME_PREFERENCES)
     public ResponseEntity<ThemePreferencesDTO> getThemePreferences(Authentication authentication) {
         String userEmail = authentication.getName();
@@ -248,6 +315,14 @@ public class UserController {
         return ResponseEntity.ok(themePreferences);
     }
 
+    /**
+     * Updates theme and visual appearance preferences for the authenticated user. Modifies color
+     * scheme settings, dark/light mode preferences, and other visual customizations.
+     * 
+     * @param authentication the authentication context containing user credentials
+     * @param themePreferencesDTO the updated theme preferences including color schemes and visual settings
+     * @return ResponseEntity containing updated theme preferences
+     */
     @PutMapping(API_USER_THEME_PREFERENCES)
     public ResponseEntity<ThemePreferencesDTO> updateThemePreferences(Authentication authentication,
             @Valid @RequestBody ThemePreferencesDTO themePreferencesDTO) {
