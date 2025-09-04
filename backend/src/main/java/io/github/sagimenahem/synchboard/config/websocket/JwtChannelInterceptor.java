@@ -52,6 +52,7 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
             String authHeader = accessor.getFirstNativeHeader(AUTHORIZATION);
 
             if (authHeader != null && authHeader.startsWith(JWT_PREFIX)) {
+                // Extract JWT token by removing "Bearer " prefix (7 characters)
                 String jwt = authHeader.substring(7);
                 String userEmail = jwtService.extractUsername(jwt);
                 log.debug("WebSocket authentication attempt for user: {}", userEmail);
