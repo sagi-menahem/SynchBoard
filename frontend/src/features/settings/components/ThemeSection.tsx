@@ -6,6 +6,12 @@ import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
 
 import styles from '../pages/SettingsPage.module.scss';
 
+/**
+ * Theme selection section component for user interface customization.
+ * Provides a simple interface for switching between application themes (light/dark/system).
+ * Integrates with the global theme system to provide immediate visual feedback and persistence.
+ * Uses the shared ThemeSwitcher component with appropriate sizing and labeling for settings context.
+ */
 const ThemeSection: React.FC = () => {
   const { t } = useTranslation(['settings']);
 
