@@ -78,6 +78,9 @@ body[data-theme='light'] {
   --color-canvas-background: #{dt.$color-board-light-default};
   --color-canvas-pattern: rgba(0, 0, 0, 0.03);
 
+  --color-random-shapes-bg: #{dt.$color-random-shapes-bg-light};
+  --color-random-shapes-pattern: #{dt.$color-random-shapes-pattern-light};
+
   --color-status-pending-border: #{dt.$color-status-pending-border-light};
   --color-status-confirmed-border: #{dt.$color-status-confirmed-border-light};
   --color-status-failed-border: #{dt.$color-status-failed-border-light};
@@ -206,6 +209,9 @@ body[data-theme='dark'] {
 
   --color-canvas-background: #{dt.$color-board-dark-default};
   --color-canvas-pattern: rgba(255, 255, 255, 0.02);
+
+  --color-random-shapes-bg: #{dt.$color-random-shapes-bg-dark};
+  --color-random-shapes-pattern: #{dt.$color-random-shapes-pattern-dark};
 
   --color-status-pending-border: #{dt.$color-status-pending-border-dark};
   --color-status-confirmed-border: #{dt.$color-status-confirmed-border-dark};
