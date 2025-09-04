@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
 
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import WebSocketService from 'features/websocket/services/websocketService';
+import { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';

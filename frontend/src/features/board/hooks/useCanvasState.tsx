@@ -1,7 +1,7 @@
-import { useState } from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
+import { useState } from 'react';
 
 interface UseCanvasStateOptions {
   boardDetails: BoardDetails;

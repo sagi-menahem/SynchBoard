@@ -1,6 +1,6 @@
+import { Trash2 } from 'lucide-react';
 import React from 'react';
 
-import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, SectionCard } from 'shared/ui';
 

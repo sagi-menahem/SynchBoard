@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
 
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { LayoutDashboard, LogOut, Plus, Settings } from 'lucide-react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';

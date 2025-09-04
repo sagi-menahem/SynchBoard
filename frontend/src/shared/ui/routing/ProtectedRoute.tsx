@@ -1,6 +1,6 @@
+import { useAuth } from 'features/auth/hooks';
 import React from 'react';
 
-import { useAuth } from 'features/auth/hooks';
 import { Navigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import logger from 'shared/utils/logger';

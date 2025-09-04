@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useOAuthCallback } from 'features/auth/hooks/useOAuthCallback';
 import { GuestLanguageSwitcher } from 'features/settings/ui';
 import { LogIn, UserPlus, Users } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';

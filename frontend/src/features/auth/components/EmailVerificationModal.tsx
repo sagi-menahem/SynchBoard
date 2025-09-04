@@ -1,6 +1,6 @@
+import { Hash, Mail } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-import { Hash, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { Button, Input, Modal } from 'shared/ui';

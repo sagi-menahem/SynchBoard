@@ -1,6 +1,6 @@
+import { Search, X } from 'lucide-react';
 import React, { useCallback, useState, type KeyboardEvent } from 'react';
 
-import { Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../forms/Button';

@@ -1,9 +1,9 @@
-import React, { startTransition, useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';
 import { FileText, Pencil, Users } from 'lucide-react';
+import React, { startTransition, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PictureManager, SectionCard, Textarea } from 'shared/ui';
 

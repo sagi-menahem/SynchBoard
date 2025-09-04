@@ -1,4 +1,3 @@
-import React, { useMemo, useCallback } from 'react';
 
 import type {
   ButtonToolbarItem,
@@ -11,6 +10,7 @@ import type {
   ViewToggleToolbarItem,
 } from 'features/board/types/ToolbarTypes';
 import { MemberActivityIndicator } from 'features/board/ui';
+import React, { useMemo, useCallback } from 'react';
 
 import Button from '../forms/Button';
 import { SearchBar } from '../navigation/SearchBar';

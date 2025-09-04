@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
 
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { LogOut, UserPlus } from 'lucide-react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, PageLoader, PageTransition, SectionCard, UniversalToolbar } from 'shared/ui';

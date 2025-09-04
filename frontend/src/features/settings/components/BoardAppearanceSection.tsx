@@ -1,6 +1,6 @@
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import React from 'react';
 
-import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { Button, SectionCard } from 'shared/ui';

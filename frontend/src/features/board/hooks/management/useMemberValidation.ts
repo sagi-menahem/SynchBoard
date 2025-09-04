@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
 
 import { useAuth } from 'features/auth/hooks/useAuth';
 import { checkUserExists } from 'features/settings/services/userService';
+import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';

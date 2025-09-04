@@ -1,7 +1,7 @@
-import { useCallback, useRef } from 'react';
 
 import { getUserProfile } from 'features/settings/services/userService';
 import { jwtDecode } from 'jwt-decode';
+import { useCallback, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';

@@ -1,6 +1,6 @@
+import * as boardService from 'features/board/services/boardService';
 import { useCallback, useState } from 'react';
 
-import * as boardService from 'features/board/services/boardService';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';

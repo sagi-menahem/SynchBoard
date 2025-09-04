@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { ActionPayload, Point } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
@@ -15,6 +14,7 @@ import {
   replayDrawAction,
   setupCanvasContext,
 } from 'features/board/utils/CanvasUtils';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseCanvasStateProps {
   objects: ActionPayload[];

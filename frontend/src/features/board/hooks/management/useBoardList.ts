@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import * as BoardService from 'features/board/services/boardService';
@@ -6,6 +5,7 @@ import type { Board } from 'features/board/types/BoardTypes';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 
 import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LanguageToggle, SectionCard } from 'shared/ui';

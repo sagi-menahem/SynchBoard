@@ -1,6 +1,6 @@
+import { useAuth } from 'features/auth/hooks';
 import React, { useEffect } from 'react';
 
-import { useAuth } from 'features/auth/hooks';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 

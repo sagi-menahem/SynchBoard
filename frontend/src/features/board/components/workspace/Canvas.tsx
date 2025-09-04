@@ -1,4 +1,3 @@
-import React, { useMemo, useRef } from 'react';
 
 import { CANVAS_CONFIG, TOOLS } from 'features/board/constants/BoardConstants';
 import { useCanvas } from 'features/board/hooks/workspace/canvas/useCanvas';
@@ -6,6 +5,7 @@ import { useCanvasInteractions } from 'features/board/hooks/workspace/canvas/use
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
+import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 

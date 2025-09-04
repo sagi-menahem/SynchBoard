@@ -1,9 +1,9 @@
-import React from 'react';
 
 import { ProfileDisplayView, ProfileEditForm } from 'features/settings/components';
 import { useUserProfile } from 'features/settings/hooks/profile/useUserProfile';
 import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/types/UserTypes';
 import { PencilLine } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, SectionCard } from 'shared/ui';
 import logger from 'shared/utils/logger';

@@ -1,6 +1,6 @@
+import { jwtDecode } from 'jwt-decode';
 import { useCallback, useRef } from 'react';
 
-import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';

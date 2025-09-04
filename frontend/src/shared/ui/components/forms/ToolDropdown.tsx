@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
 
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useClickOutside } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';

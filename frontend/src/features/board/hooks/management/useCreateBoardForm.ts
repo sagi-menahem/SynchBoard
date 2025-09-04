@@ -1,7 +1,7 @@
-import { useActionState } from 'react';
 
 import { createBoard } from 'features/board/services/boardService';
 import type { Board } from 'features/board/types/BoardTypes';
+import { useActionState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { APP_CONFIG } from 'shared/constants/AppConstants';

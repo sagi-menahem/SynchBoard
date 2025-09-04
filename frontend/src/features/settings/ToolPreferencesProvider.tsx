@@ -1,9 +1,9 @@
-import React, { createContext, useContext } from 'react';
-
 import {
   useToolPreferencesAPI,
   type ToolPreferences,
 } from 'features/settings/hooks/useToolPreferencesAPI';
+import React, { createContext, useContext } from 'react';
+
 import type { Tool } from 'shared/types/CommonTypes';
 
 export interface ToolPreferencesContextType {

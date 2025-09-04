@@ -1,9 +1,9 @@
-import React from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { useCanvasSettings } from 'features/board/hooks/useCanvasSettings';
 import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
 import { Save, Settings2, X } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';

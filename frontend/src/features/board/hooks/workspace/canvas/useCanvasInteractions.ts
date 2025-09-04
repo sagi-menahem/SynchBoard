@@ -1,4 +1,3 @@
-import { useCallback, useState } from 'react';
 
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type {
@@ -9,6 +8,7 @@ import type {
 import { getRecolorCursor } from 'features/board/utils/canvas/cursorUtils';
 import { processRecolorClick } from 'features/board/utils/canvas/recolorLogic';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
+import { useCallback, useState } from 'react';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import type { Tool } from 'shared/types/CommonTypes';
 

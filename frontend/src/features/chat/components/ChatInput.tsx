@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { Send } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'shared/ui/components/forms/Button';
 

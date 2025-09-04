@@ -1,6 +1,6 @@
+import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { useCallback } from 'react';
 
-import type { CanvasConfig } from 'features/board/types/BoardTypes';
 
 export interface UseCanvasDownloadProps {
   boardName: string;

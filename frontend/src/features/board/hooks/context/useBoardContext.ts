@@ -1,6 +1,6 @@
+import { BoardContext } from 'features/board/BoardContext';
 import { useContext } from 'react';
 
-import { BoardContext } from 'features/board/BoardContext';
 import logger from 'shared/utils/logger';
 
 export const useBoardContext = () => {

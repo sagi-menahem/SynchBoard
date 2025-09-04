@@ -1,7 +1,7 @@
-import { useCallback, useRef } from 'react';
 
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { Point } from 'features/board/types/BoardObjectTypes';
+import { useCallback, useRef } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import type { CanvasEventData } from './useCanvasEvents';

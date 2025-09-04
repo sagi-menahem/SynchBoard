@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import websocketService from 'features/websocket/services/websocketService';
+import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 import logger from 'shared/utils/logger';
 
 import { WebSocketContext } from './WebSocketContext';

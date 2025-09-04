@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useConnectionStatus } from 'features/websocket/hooks';
+import React, { useEffect, useRef } from 'react';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 
 import styles from './ConnectionStatusBanner.module.scss';
