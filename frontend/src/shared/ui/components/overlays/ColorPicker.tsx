@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { HexColorPicker } from 'react-colorful';
 import { useTranslation } from 'react-i18next';
@@ -40,34 +40,28 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     showPicker,
   );
 
-  // Calculate popover position when opening
   useEffect(() => {
     if (showPicker && swatchRef.current) {
       const swatchRect = swatchRef.current.getBoundingClientRect();
-      const popoverWidth = 250; // Width from CSS
-      const popoverHeight = 300; // Approximate height
+      const popoverWidth = 250;
+      const popoverHeight = 300;
       const margin = 8;
 
-      // Calculate initial position
       let left = swatchRect.left;
       let top = swatchRect.bottom + margin;
 
-      // Check if popover would overflow right edge of viewport
       if (left + popoverWidth > window.innerWidth) {
-        left = swatchRect.right - popoverWidth; // Align to right edge of button
+        left = swatchRect.right - popoverWidth;
       }
 
-      // Ensure popover doesn't go beyond left edge
       if (left < margin) {
         left = margin;
       }
 
-      // Check if popover would overflow bottom edge of viewport
       if (top + popoverHeight > window.innerHeight) {
-        top = swatchRect.top - popoverHeight - margin; // Position above button
+        top = swatchRect.top - popoverHeight - margin;
       }
 
-      // Ensure popover doesn't go beyond top edge
       if (top < margin) {
         top = margin;
       }
@@ -162,7 +156,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         disabled={disabled}
         aria-label={label ?? t('common:chooseColor')}
       >
-        {/* Colored square fill */}
         <div className={styles.colorFill} style={{ backgroundColor: color ?? '#FFFFFF' }} />
       </Button>
 

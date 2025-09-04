@@ -24,9 +24,7 @@ interface ContextMenuProviderProps {
   children: ReactNode;
 }
 
-const noop = (): void => {
-  // Intentionally empty - default no-op function for context menu
-};
+const noop = (): void => {};
 
 export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ children }) => {
   const [menuState, setMenuState] = useState<ContextMenuState>({

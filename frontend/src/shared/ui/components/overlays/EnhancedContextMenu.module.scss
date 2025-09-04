@@ -25,7 +25,6 @@
   transform: scale(1) translateY(0);
 }
 
-// Smart positioning classes
 .flipX {
   transform-origin: top right;
 }
@@ -38,7 +37,6 @@
   transform-origin: bottom right;
 }
 
-// Animation variants for different flip states
 .flipX.hidden {
   transform: scale(0.95) translate(4px, -4px);
 }
@@ -51,13 +49,11 @@
   transform: scale(0.95) translate(4px, 4px);
 }
 
-// Enhanced focus and hover states
 .menu:focus-within {
   outline: 2px solid theme.$primary;
   outline-offset: 2px;
 }
 
-// Backdrop blur effect for better visibility
 .menu::before {
   content: '';
   position: absolute;
@@ -76,7 +72,6 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-// Animation for menu items and separators
 .menu > * {
   animation: slideInItem 0.15s ease-out backwards;
 }
@@ -84,23 +79,27 @@
 .menu > *:nth-child(1) {
   animation-delay: 0ms;
 }
+
 .menu > *:nth-child(2) {
   animation-delay: 25ms;
 }
+
 .menu > *:nth-child(3) {
   animation-delay: 50ms;
 }
+
 .menu > *:nth-child(4) {
   animation-delay: 75ms;
 }
+
 .menu > *:nth-child(5) {
   animation-delay: 100ms;
 }
+
 .menu > *:nth-child(6) {
   animation-delay: 125ms;
 }
 
-// Separator specific animation (slides in from left, fades in)
 .separator {
   animation: slideInSeparator 0.2s ease-out backwards;
 }
@@ -110,6 +109,7 @@
     opacity: 0;
     transform: scaleX(0);
   }
+
   to {
     opacity: 0.6;
     transform: scaleX(1);
@@ -121,13 +121,13 @@
     opacity: 0;
     transform: translateX(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-// Responsive adjustments for mobile
 @media (max-width: 768px) {
   .menu {
     min-width: 160px;
@@ -143,7 +143,6 @@
   }
 }
 
-// Menu separator
 .separator {
   height: 1px;
   background-color: var(--color-border-light);
@@ -151,7 +150,6 @@
   opacity: 0.6;
 }
 
-// Menu item styles
 .item {
   padding: theme.$spacing-1-5 theme.$spacing-3;
   @include theme.rounded-small;
@@ -173,7 +171,6 @@
     background-color: var(--color-surface-elevated);
   }
 
-  // Default variant
   &.default {
     color: theme.$text-primary;
 
@@ -183,7 +180,6 @@
     }
   }
 
-  // Primary variant (for promote actions)
   &.primary {
     color: theme.$primary;
 
@@ -193,7 +189,6 @@
     }
   }
 
-  // Destructive variant
   &.destructive {
     color: var(--btn-destructive-color);
 
@@ -204,7 +199,6 @@
   }
 }
 
-// Item content layout
 .itemContent {
   display: flex;
   align-items: center;

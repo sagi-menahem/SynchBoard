@@ -10,7 +10,6 @@
   flex-shrink: 0;
 }
 
-// PRIMARY BUTTON - Vibrant blue for main actions (Login, Save, Create, etc.)
 .primary {
   background-color: var(--btn-primary-bg);
   color: var(--btn-primary-text);
@@ -30,7 +29,6 @@
   }
 }
 
-// DESTRUCTIVE BUTTON - Elegant refined design for dangerous actions (matches toolbar style)
 .destructive {
   background-color: var(--btn-destructive-bg);
   border-color: transparent;
@@ -51,7 +49,6 @@
   }
 }
 
-// SECONDARY BUTTON - Subtle for supporting actions (Cancel, Change Picture, etc.)
 .secondary {
   background-color: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
@@ -70,7 +67,6 @@
   }
 }
 
-// ICON BUTTON - For icon-only buttons (tools, toggles, clear buttons, etc.)
 .icon {
   @include theme.interactive-button;
   background: theme.$tool-button-bg;
@@ -81,8 +77,8 @@
   @include theme.rounded-medium;
   @include theme.flex-center;
   @include theme.button-transition;
-  min-width: theme.$icon-button-size; /* Custom canvas tool size */
-  min-height: theme.$icon-button-size; /* Custom canvas tool size */
+  min-width: theme.$icon-button-size;
+  min-height: theme.$icon-button-size;
   position: relative;
 
   &:hover:not(:disabled) {
@@ -121,16 +117,15 @@
   }
 }
 
-// CTA BUTTON - High-impact call-to-action for critical user flows (Create Board, Send Invite, etc.)
 .cta {
   background-color: transparent;
   color: var(--btn-cta-bg);
   border: 1px solid var(--btn-cta-bg);
   font-weight: theme.$font-weight-semibold;
   box-shadow: theme.$shadow-button;
-  min-height: theme.$button-compact-height; // medium size for toolbar use
-  padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - balanced compact padding
-  font-size: theme.$font-size-xs; // 12px - balanced text size
+  min-height: theme.$button-compact-height;
+  padding: theme.$spacing-1 theme.$spacing-2;
+  font-size: theme.$font-size-xs;
 
   &:hover:not(:disabled) {
     background-color: var(--btn-cta-bg);
@@ -146,16 +141,15 @@
   }
 }
 
-// WARNING BUTTON - Caution-based actions requiring user attention (Logout, Leave Board, etc.)
 .warning {
   background-color: transparent;
   color: var(--btn-warning-bg);
   border: 1px solid var(--btn-warning-bg);
   font-weight: theme.$font-weight-semibold;
   box-shadow: theme.$shadow-button;
-  min-height: theme.$button-compact-height; // medium size for toolbar use
-  padding: theme.$spacing-1 theme.$spacing-2; // 4px 8px - balanced compact padding
-  font-size: theme.$font-size-xs; // 12px - balanced text size
+  min-height: theme.$button-compact-height;
+  padding: theme.$spacing-1 theme.$spacing-2;
+  font-size: theme.$font-size-xs;
 
   &:hover:not(:disabled) {
     background-color: var(--btn-warning-bg);
@@ -171,7 +165,6 @@
   }
 }
 
-// LINK BUTTON - Text link styling for secondary actions (Forgot Password, etc.)
 .link {
   background: none;
   border: none;

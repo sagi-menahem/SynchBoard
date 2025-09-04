@@ -1,16 +1,13 @@
 @use '@/styles' as theme;
 
-// Base card styling - uses the standardized card-base mixin
 .card {
   @include theme.card-base;
 }
 
-// Variant: Default (standard card with subtle shadow)
 .default {
   box-shadow: theme.$shadow-card;
 }
 
-// Variant: Elevated (stronger shadow for prominence)
 .elevated {
   box-shadow: theme.$shadow-lg;
 
@@ -20,13 +17,11 @@
   }
 }
 
-// Variant: Outlined (border-only, no shadow)
 .outlined {
   box-shadow: none;
   border: theme.$card-border-width solid var(--color-border);
 }
 
-// Variant: Empty state (special styling for empty content)
 .empty-state {
   box-shadow: none;
   border: theme.$border-width dashed var(--color-border);
@@ -38,24 +33,22 @@
   }
 }
 
-// Padding variants using design tokens
 .padding-none {
   padding: 0;
 }
 
 .padding-sm {
-  padding: theme.$spacing-4; // 16px
+  padding: theme.$spacing-4;
 }
 
 .padding-md {
-  padding: theme.$card-padding; // 24px (default)
+  padding: theme.$card-padding;
 }
 
 .padding-lg {
-  padding: theme.$spacing-8; // 32px
+  padding: theme.$spacing-8;
 }
 
-// Hoverable state
 .hoverable {
   cursor: pointer;
   @include theme.smooth-transition;

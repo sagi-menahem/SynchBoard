@@ -33,18 +33,16 @@
   }
 }
 
-/* RTL support - radio button appears on the right side of text */
 [dir='rtl'] .radioItem {
   flex-direction: row-reverse;
 }
 
-/* Ensure horizontal group also respects RTL flow */
 [dir='rtl'] .radioGroup.horizontal {
   direction: rtl;
 }
 
 [dir='rtl'] .radioGroup.horizontal .radioItem {
-  direction: ltr; /* Keep individual items LTR for proper text rendering */
+  direction: ltr;
 }
 
 .radioButton {
@@ -65,7 +63,7 @@
   &:focus {
     outline: none;
     border-color: theme.$primary;
-    box-shadow: theme.$shadow-focus-ring theme.$primary-light; /* Standard focus ring */
+    box-shadow: theme.$shadow-focus-ring theme.$primary-light;
   }
 
   &[data-state='checked'] {
@@ -128,12 +126,12 @@
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
 }
 
-// Media query for smaller screens
 @media (max-width: 640px) {
   .radioGroup.horizontal {
     flex-direction: column;

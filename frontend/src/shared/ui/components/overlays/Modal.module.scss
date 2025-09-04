@@ -48,7 +48,6 @@
   justify-content: center;
 }
 
-/* Mobile responsive adjustments */
 @media (max-width: theme.$breakpoint-md) {
   .overlay {
     padding: theme.$spacing-4 theme.$spacing-2;

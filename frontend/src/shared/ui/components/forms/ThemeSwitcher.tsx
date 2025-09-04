@@ -19,7 +19,6 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const { theme, setTheme } = useTheme();
   const isRTL = i18n.language === 'he';
 
-  // Size configurations
   const sizeConfig = {
     sm: { height: 28, width: 56, iconSize: 14 },
     md: { height: 32, width: 64, iconSize: 16 },
@@ -69,7 +68,6 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         aria-labelledby={showLabel ? 'theme-label' : undefined}
         aria-label={!showLabel ? t('common:theme') : undefined}
       >
-        {/* Handle */}
         <span
           style={{
             position: 'relative',
@@ -92,7 +90,6 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           }}
         />
 
-        {/* Background icons */}
         <div
           style={{
             position: 'absolute',

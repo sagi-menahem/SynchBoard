@@ -100,11 +100,13 @@
   transform: translateY(-50%);
   width: calc(50% - 3rem);
   height: 2px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      currentColor 20%,
-      currentColor 80%,
-      transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    currentColor 20%,
+    currentColor 80%,
+    transparent 100%
+  );
   opacity: 0.3;
   border-radius: 1px;
 }
