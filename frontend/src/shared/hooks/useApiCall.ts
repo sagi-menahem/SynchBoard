@@ -3,23 +3,49 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import logger from 'shared/utils/logger';
 
+/**
+ * Configuration options for API call hooks.
+ */
 interface ApiCallOptions<T> {
+  // Callback executed when the API call succeeds
   onSuccess?: (data: T) => void;
+  // Callback executed when the API call fails
   onError?: (error: AxiosError) => void;
+  // Toast message to display on successful API call
   successMessage?: string;
+  // Toast message to display on failed API call (overrides server message)
   errorMessage?: string;
+  // Whether to show success toast notification
   showSuccessToast?: boolean;
+  // Whether to show error toast notification
   showErrorToast?: boolean;
 }
 
+/**
+ * Return value from the useApiCall hook.
+ */
 interface UseApiCallReturn<T, P extends unknown[]> {
+  // The data returned from the successful API call
   data: T | null;
+  // Whether the API call is currently in progress
   loading: boolean;
+  // The error returned from a failed API call
   error: AxiosError | null;
+  // Function to execute the API call with parameters
   execute: (...args: P) => Promise<T | null>;
+  // Function to reset the hook state
   reset: () => void;
 }
 
+/**
+ * Custom hook for managing API calls with loading states, error handling, and toast notifications.
+ * Provides a standardized way to handle asynchronous API operations with automatic state management
+ * and user feedback through toast messages.
+ * 
+ * @param {Function} apiFunction - The API function to execute, should return a Promise<T>
+ * @param {ApiCallOptions<T>} options - Configuration options for success/error handling and notifications
+ * @returns {UseApiCallReturn<T, P>} Object containing data, loading state, error, execute function, and reset function
+ */
 export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
   apiFunction: (...args: P) => Promise<T>,
   options: ApiCallOptions<T> = {},
@@ -59,6 +85,7 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
         logger.error('API call failed:', axiosError);
 
         if (showErrorToast) {
+          // Use custom error message or extract from server response, with fallback
           const message =
             errorMessage ||
             (axiosError.response?.data as { message?: string })?.message ||
@@ -92,6 +119,15 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
   return { data, loading, error, execute, reset };
 }
 
+/**
+ * Custom hook for managing API mutations (create, update, delete operations) without return data.
+ * Similar to useApiCall but optimized for operations that don't return meaningful data,
+ * focusing on success/failure status and user feedback through toast notifications.
+ * 
+ * @param {Function} apiFunction - The API mutation function to execute, should return a Promise
+ * @param {Object} options - Configuration options for success/error handling and notifications
+ * @returns {Object} Object containing loading state, error, and execute function that returns boolean success status
+ */
 export function useApiMutation<P extends unknown[] = unknown[]>(
   apiFunction: (...args: P) => Promise<unknown>,
   options: Omit<ApiCallOptions<unknown>, 'onSuccess'> & {
@@ -131,6 +167,7 @@ export function useApiMutation<P extends unknown[] = unknown[]>(
         logger.error('API mutation failed:', axiosError);
 
         if (showErrorToast) {
+          // Use custom error message or extract from server response, with fallback
           const message =
             errorMessage ||
             (axiosError.response?.data as { message?: string })?.message ||
