@@ -8,12 +8,24 @@ import Button from '../forms/Button';
 
 import styles from './ViewToggle.module.scss';
 
+/**
+ * Props for the ViewToggle component.
+ */
 interface ViewToggleProps {
-  value: ViewMode;
-  onChange: (mode: ViewMode) => void;
+  value: ViewMode; // Currently selected view mode
+  onChange: (mode: ViewMode) => void; // Callback when view mode changes
   className?: string;
 }
 
+/**
+ * View mode toggle component for switching between grid and list layouts.
+ * Provides a segmented control interface with visual feedback for the active selection.
+ * Supports keyboard navigation and accessibility features for view mode switching.
+ * 
+ * @param {ViewMode} value - Currently selected view mode ('grid' or 'list')
+ * @param {function} onChange - Callback function called when view mode changes
+ * @param {string} className - Optional CSS class to apply to the toggle container
+ */
 export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, className }) => {
   const { t } = useTranslation(['board', 'common']);
 
