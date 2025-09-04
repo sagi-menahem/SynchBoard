@@ -1,3 +1,10 @@
+/**
+ * Configured Axios client for the SynchBoard application API.
+ * Includes request/response interceptors for authentication, error handling,
+ * session management, and internationalized user feedback through toast notifications.
+ * Automatically handles JWT token injection, session expiration, and backend error translation.
+ */
+
 import axios, { type AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import {
@@ -11,6 +18,7 @@ import { isBackendError } from 'shared/utils';
 import { getToken, removeToken } from 'shared/utils/authUtils';
 import logger from 'shared/utils/logger';
 
+// Create configured axios instance with base URL and default headers
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -18,10 +26,12 @@ const apiClient = axios.create({
   },
 });
 
+// Request interceptor to inject JWT authentication token for protected endpoints
 apiClient.interceptors.request.use(
   (config) => {
     const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
 
+    // Add Authorization header for protected endpoints
     if (!isPublicEndpoint) {
       const token = getToken();
       if (token) {
@@ -39,6 +49,7 @@ apiClient.interceptors.request.use(
   },
 );
 
+// Response interceptor for error handling, session management, and user feedback
 apiClient.interceptors.response.use(
   (response) => {
     return response;
@@ -55,6 +66,7 @@ apiClient.interceptors.response.use(
 
     const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
 
+    // Analyze error context to determine if session has expired
     const isBoardRequest = error.config?.url?.includes('/boards/');
     const responseData = error.response?.data as { message?: string } | undefined;
     const isUserNotFoundInResponse =
@@ -62,16 +74,21 @@ apiClient.interceptors.response.use(
     const isUserNotFoundInMessage =
       error.response?.status === 500 && error.message?.includes?.('User not found');
     const isUserNotFoundError = isUserNotFoundInResponse || isUserNotFoundInMessage;
+    
+    // Detect OAuth redirect errors (often indicate expired sessions)
     const isOAuthRedirectError =
       !error.response &&
       (error.message?.includes?.('CORS') ||
         error.message?.includes?.('blocked by CORS policy') ||
         error.code === 'ERR_NETWORK') &&
       getToken();
+      
     const isHttpUnauthorized =
       error.response && [401, 403].includes(error.response.status) && !isLoginAttempt;
     const isUserNotFoundErrorTimeout = isUserNotFoundError && !isLoginAttempt;
     const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isLoginAttempt;
+    
+    // Determine if this is a session timeout requiring user reauthentication
     const isSessionTimeout =
       isHttpUnauthorized || isUserNotFoundErrorTimeout || isOAuthRedirectErrorTimeout;
 
@@ -82,6 +99,7 @@ apiClient.interceptors.response.use(
         isUserNotFoundError ||
         isOAuthRedirectError
       ) {
+        // Determine the specific reason for session invalidation for logging
         const reason = (() => {
           if (isUserNotFoundError) {
             return 'user not found in database';
@@ -100,6 +118,7 @@ apiClient.interceptors.response.use(
         });
         removeToken();
 
+        // Show session expired notification and redirect to auth page
         toast.error(i18n.t('auth:errors.sessionExpired'), { id: 'session-expired' });
 
         if (window.location.pathname !== '/auth') {
@@ -109,9 +128,11 @@ apiClient.interceptors.response.use(
       }
     }
 
+    // Handle structured backend errors with internationalized messages
     if (error.response && isBackendError(error.response.data) && !isLoginAttempt) {
       const backendKey = error.response.data.message;
 
+      // Try multiple i18n key patterns to find appropriate translation
       const possibleKeys = [
         `common:errors.${backendKey}`,
         `auth:${backendKey}`,
@@ -128,10 +149,12 @@ apiClient.interceptors.response.use(
         }
       }
 
+      // Fallback to raw backend message if no translation found
       if (!translated) {
         toast.error(backendKey, { id: backendKey });
       }
     } else {
+      // Handle unexpected errors without structured backend messages
       if (!isLoginAttempt) {
         logger.error('Unexpected error without backend message', error);
         toast.error(i18n.t('common:errors.common.unexpected'), { id: 'unexpected-error' });
