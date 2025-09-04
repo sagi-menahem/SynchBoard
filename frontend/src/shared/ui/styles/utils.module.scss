@@ -1,20 +1,13 @@
 @use '@/styles' as theme;
 
 .unifiedDotBackground {
-  /* 1. RandomShapes dedicated background color */
   background-color: var(--user-chosen-color, var(--color-random-shapes-bg));
 
-  /* 2. The new SVG logo pattern file */
   background-image: url('../../../assets/RandomShapes.svg');
   background-size: 400px 400px;
-  /* Controls the pattern density */
 
-  /* 3. RandomShapes dedicated pattern color - inherited by SVG's "currentColor" */
   color: var(--color-random-shapes-pattern);
 
-  /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
-
-  /* 5. Background blur effect - controlled by CSS variable */
   backdrop-filter: blur(var(--background-blur, theme.$background-blur-sm));
   -webkit-backdrop-filter: blur(var(--background-blur, theme.$background-blur-none));
 }
@@ -28,10 +21,6 @@
 .settingValue {
   color: var(--text-primary);
   font-size: 0.9rem;
-}
-
-.colorPickerPopupWrapper {
-  /* Don't override the flex direction - let the parent container decide */
 }
 
 .colorPickerPopupWrapper :global(.popover) {
@@ -48,14 +37,12 @@
   min-width: theme.$color-picker-width !important;
 }
 
-/* Highly specific rule to override any library defaults */
 .colorPickerPopupWrapper :global([class*='colorPickerContainer']) :global([class*='popover']) {
   width: theme.$color-picker-width !important;
   min-width: theme.$color-picker-width !important;
   max-width: none !important;
 }
 
-/* Even more specific - target by attribute and class combination */
 .colorPickerPopupWrapper :global(div[class*='popover']) {
   width: theme.$color-picker-width !important;
   min-width: theme.$color-picker-width !important;

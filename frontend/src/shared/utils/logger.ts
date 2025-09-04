@@ -149,10 +149,10 @@ class Logger {
         error:
           error instanceof Error
             ? {
-                message: error.message,
-                stack: error.stack,
-                name: error.name,
-              }
+              message: error.message,
+              stack: error.stack,
+              name: error.name,
+            }
             : error,
         data,
         timestamp: new Date().toISOString(),
@@ -166,7 +166,6 @@ class Logger {
 
       sessionStorage.setItem('app_errors', JSON.stringify(errors));
     } catch {
-      // Silently ignore storage errors
     }
   }
 }

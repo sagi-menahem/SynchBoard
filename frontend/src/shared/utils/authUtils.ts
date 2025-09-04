@@ -77,6 +77,5 @@ export const shouldRefreshToken = (token?: string | null): boolean => {
   const currentTime = Date.now() / 1000;
   const timeUntilExpiry = expiry - currentTime;
 
-  // Refresh if less than 5 minutes remaining
   return timeUntilExpiry < 300 && timeUntilExpiry > 0;
 };

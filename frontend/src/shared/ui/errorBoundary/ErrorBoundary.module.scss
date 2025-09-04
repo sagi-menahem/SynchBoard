@@ -23,7 +23,6 @@
   box-shadow: var(--color-overlay-medium) 0px 8px 32px;
   backdrop-filter: blur(8px);
 
-  // Responsive adjustments for mobile devices
   @media (max-width: 768px) {
     padding: theme.$spacing-8;
     margin: theme.$spacing-4;
@@ -58,6 +57,7 @@
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
@@ -144,7 +144,6 @@
   }
 }
 
-// RTL Support
 [dir='rtl'] {
   .buttonContainer {
     flex-direction: row-reverse;
@@ -162,7 +161,6 @@
   }
 }
 
-// High contrast mode support
 @media (prefers-contrast: high) {
   .errorCard {
     border-width: 2px;
@@ -174,7 +172,6 @@
   }
 }
 
-// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   .errorIcon {
     animation: none;
@@ -186,14 +183,12 @@
   }
 }
 
-// Focus management
 .retryButton:focus,
 .secondaryButton:focus {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-// Loading state for retry button
 .retryButton:disabled {
   pointer-events: none;
   opacity: 0.7;
@@ -207,6 +202,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
