@@ -42,7 +42,6 @@ const BoardListPage: React.FC = () => {
     viewMode,
   } = useBoardList();
 
-  // Toolbar configuration
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'boards',

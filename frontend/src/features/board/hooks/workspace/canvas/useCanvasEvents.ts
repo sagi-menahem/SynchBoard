@@ -132,7 +132,6 @@ export const useCanvasEvents = ({
       setIsDrawing(false);
       onMouseUp?.(eventData);
 
-      // Clean up
       startPoint.current = null;
       lastMousePosition.current = null;
     };

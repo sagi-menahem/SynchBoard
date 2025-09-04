@@ -3,7 +3,6 @@
 .pageContent {
   position: relative;
   padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px);
-  /* Banner + toolbar + reduced gap */
   min-height: calc(100vh - var(--banner-height, 0px) - var(--toolbar-height, 72px) - 36px);
   width: 100%;
   max-width: 1200px;
@@ -80,10 +79,8 @@
 }
 
 .boardList.grid {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px))
-  );
+  grid-template-columns: repeat(auto-fit,
+      minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px)));
   justify-content: center;
 }
 

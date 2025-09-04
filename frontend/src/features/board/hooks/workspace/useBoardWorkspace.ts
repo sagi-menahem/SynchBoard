@@ -114,7 +114,6 @@ export const useBoardWorkspace = (boardId: number) => {
         | Omit<SendBoardActionRequest, 'boardId'>
         | Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>,
     ) => {
-      // Use existing instanceId for updates, generate new one for adds
       const instanceId = 'instanceId' in action ? action.instanceId : crypto.randomUUID();
       const actionRequest: SendBoardActionRequest = {
         ...action,
@@ -123,7 +122,6 @@ export const useBoardWorkspace = (boardId: number) => {
         sender: sessionInstanceId.current,
       };
 
-      // Validate payload size
       const messageSize = JSON.stringify(actionRequest).length;
       if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
         logger.error(
@@ -133,14 +131,12 @@ export const useBoardWorkspace = (boardId: number) => {
         return;
       }
 
-      // Create optimistic object
       const optimisticObject: EnhancedActionPayload = {
         ...(actionRequest.payload as ActionPayload),
         instanceId,
         transactionStatus: 'pending' as const,
       };
 
-      // Add optimistic update in transition - will automatically rollback on error
       startTransition(() => {
         addOptimisticObject(optimisticObject);
       });
@@ -151,8 +147,7 @@ export const useBoardWorkspace = (boardId: number) => {
       } catch (error) {
         logger.error('Failed to send drawing action:', error);
         toast.error(t('board:errors.drawingFailed'));
-        // No need to manually remove optimistic update - useOptimistic handles rollback
-        throw error; // Re-throw to trigger automatic rollback
+        throw error;
       }
     },
     [boardId, incrementUndo, addOptimisticObject, t],
@@ -170,7 +165,6 @@ export const useBoardWorkspace = (boardId: number) => {
       if (message.updateType === 'BOARD_LIST_CHANGED') {
         void navigate(APP_ROUTES.BOARD_LIST);
       } else if (message.updateType === 'BOARD_DETAILS_CHANGED') {
-        // Board details changed - handled by other hooks
       }
     },
     [navigate],
@@ -185,7 +179,6 @@ export const useBoardWorkspace = (boardId: number) => {
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {
       if (message.updateType === 'CANVAS_UPDATED') {
-        // Refresh board details to get updated canvas settings
         fetchInitialData();
       }
     },
@@ -206,7 +199,7 @@ export const useBoardWorkspace = (boardId: number) => {
     boardName,
     boardDetails,
     accessLost,
-    objects: optimisticObjects, // Return optimistic objects for real-time UI
+    objects: optimisticObjects,
     messages,
     instanceId: sessionInstanceId.current,
     isUndoAvailable,

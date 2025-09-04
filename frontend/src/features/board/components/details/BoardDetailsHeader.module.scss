@@ -18,7 +18,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 }
 
 .editButton {
@@ -67,9 +67,9 @@
 .formActions {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: end; // CSS logical property - automatically handles RTL
-  padding-block-start: theme.$spacing-2; // Logical property for padding-top
-  border-block-start: 1px solid theme.$border-primary; // Logical property for border-top
+  justify-content: end;
+  padding-block-start: theme.$spacing-2;
+  border-block-start: 1px solid theme.$border-primary;
 }
 
 .cancelButton,
@@ -124,7 +124,6 @@
     border-color: var(--color-border);
   }
 
-  // Style the label elements to match Canvas Settings format
   label {
     color: theme.$text-muted;
     font-size: 0.875rem;
@@ -132,11 +131,10 @@
     cursor: default;
     margin: 0;
     padding: 0;
-    text-align: start; // CSS logical property - automatically RTL aware
+    text-align: start;
   }
 }
 
-// Regular description styling
 .description {
   color: theme.$text-primary;
   font-size: 1rem;
@@ -145,12 +143,10 @@
   padding: theme.$spacing-2 0;
   white-space: pre-wrap;
   word-break: break-word;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 }
 
-// RTL support for descriptions
 
-// Empty description label styles
 .emptyDescriptionLabel {
   margin-bottom: 0.5rem;
   display: block;
@@ -160,5 +156,5 @@
   cursor: default;
   margin: 0;
   padding: 0;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 }

@@ -46,7 +46,6 @@ export const useCanvasState = ({
   };
 
   return {
-    // State
     isEditing,
     isUpdating,
     backgroundColor,
@@ -54,7 +53,6 @@ export const useCanvasState = ({
     customWidth,
     customHeight,
 
-    // State setters
     setIsEditing,
     setIsUpdating,
     setBackgroundColor,
@@ -63,7 +61,6 @@ export const useCanvasState = ({
     setCustomWidth,
     setCustomHeight,
 
-    // Utilities
     resetState,
     calculateDimensions,
   };

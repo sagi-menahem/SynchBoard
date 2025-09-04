@@ -179,13 +179,11 @@ export const useCanvasPreview = ({
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Draw line
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
         ctx.lineTo(lineEndX, lineEndY);
         ctx.stroke();
 
-        // Draw arrowhead
         const arrowPoint1X = currentPoint.x - arrowLength * Math.cos(angle - arrowAngle);
         const arrowPoint1Y = currentPoint.y - arrowLength * Math.sin(angle - arrowAngle);
         const arrowPoint2X = currentPoint.x - arrowLength * Math.cos(angle + arrowAngle);
@@ -203,7 +201,6 @@ export const useCanvasPreview = ({
         ctx.lineWidth = Math.max(1, strokeWidth * 0.5);
         ctx.stroke();
       } else if (tool === TOOLS.TEXT) {
-        // Text preview with dashed border and semi-transparent fill
         ctx.setLineDash([5, 5]);
         ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 1;
@@ -235,10 +232,8 @@ export const useCanvasPreview = ({
         return;
       }
 
-      // Restore original state
       restoreCanvasState();
 
-      // Set up preview style
       setupCanvasStyle(ctx, 0.8);
       const originalAlpha = ctx.globalAlpha;
 
@@ -248,7 +243,6 @@ export const useCanvasPreview = ({
         renderShapePreview(ctx, eventData.startPoint, eventData.currentPoint);
       }
 
-      // Restore original alpha
       ctx.globalAlpha = originalAlpha;
     },
     [
@@ -271,7 +265,6 @@ export const useCanvasPreview = ({
 
       saveCanvasState();
 
-      // Set up canvas context for drawing tools
       setupCanvasStyle(ctx, 1.0);
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {

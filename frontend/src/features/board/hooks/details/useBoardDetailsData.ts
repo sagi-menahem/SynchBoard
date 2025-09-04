@@ -22,15 +22,12 @@ interface BoardPermissions {
 }
 
 export interface UseBoardDetailsDataReturn {
-  // Board data state
   boardDetails: BoardDetails | null;
   isLoading: boolean;
   refetch: () => void;
 
-  // Permissions
   permissions: BoardPermissions;
 
-  // Optimistic editing state
   optimisticState: BoardEditState;
   handleUpdateName: (newName: string) => Promise<void>;
   handleUpdateDescription: (newDescription: string) => Promise<void>;
@@ -41,18 +38,15 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
   const { userEmail } = useAuth();
   const navigate = useNavigate();
 
-  // Board details state
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Optimistic editing state
   const [baseState, setBaseState] = useState<BoardEditState>({});
   const [optimisticState, setOptimisticState] = useOptimistic(
     baseState,
     (state, update: Partial<BoardEditState>) => ({ ...state, ...update }),
   );
 
-  // Update base state when board details change
   useEffect(() => {
     if (boardDetails) {
       const newBaseState = {
@@ -63,14 +57,12 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
     }
   }, [boardDetails]);
 
-  // Calculate permissions
   const permissions: BoardPermissions = {
     currentUserIsAdmin:
       boardDetails?.members.find((member) => member.email === userEmail)?.isAdmin ?? false,
     userEmail,
   };
 
-  // Fetch board details
   const fetchDetails = useCallback(() => {
     if (!boardId || isNaN(boardId)) {
       setIsLoading(false);
@@ -106,7 +98,6 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
       });
   }, [boardId, navigate, t]);
 
-  // WebSocket update handler
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {
       if (!boardId || isNaN(boardId)) {
@@ -132,7 +123,6 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
     [boardId, navigate],
   );
 
-  // Board editing handlers
   const handleUpdateName = useCallback(
     async (newName: string) => {
       if (!boardId) {
@@ -148,7 +138,6 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
         toast.success(t('board:success.nameUpdate'));
       } catch (error) {
         toast.dismiss();
-        // Don't show generic error - specific validation errors are already shown by apiClient
         throw error;
       }
     },
@@ -170,19 +159,16 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
         toast.success(t('board:success.descriptionUpdate'));
       } catch (error) {
         toast.dismiss();
-        // Don't show generic error - specific validation errors are already shown by apiClient
         throw error;
       }
     },
     [boardId, t, setOptimisticState],
   );
 
-  // Load initial data
   useEffect(() => {
     fetchDetails();
   }, [fetchDetails]);
 
-  // Subscribe to WebSocket updates
   useSocketSubscription(boardId ? WEBSOCKET_TOPICS.BOARD(boardId) : '', handleBoardUpdate, 'board');
 
   return {

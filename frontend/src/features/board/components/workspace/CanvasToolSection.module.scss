@@ -5,9 +5,8 @@
   gap: theme.$spacing-4;
   align-items: stretch;
   flex-wrap: nowrap;
-  overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
+  overflow: visible;
 
-  // Responsive: Reduce gap on smaller screens to fit more content
   @media (max-width: 1200px) {
     gap: theme.$spacing-3;
   }
@@ -16,32 +15,27 @@
     gap: theme.$spacing-2;
   }
 
-  // Progressive tool hiding: Hide tools only when absolutely necessary
   @media (max-width: 950px) {
     gap: theme.$spacing-1;
 
-    // Hide export tools first (Download button - least critical during editing)
     > :last-child {
       display: none;
     }
   }
 
   @media (max-width: 850px) {
-    // Hide line tools next (Line drawing tools)
     > :nth-last-child(2) {
       display: none;
     }
   }
 
   @media (max-width: 750px) {
-    // Hide shape tools (Shape drawing tools)
     > :nth-last-child(3) {
       display: none;
     }
   }
 
   @media (max-width: 650px) {
-    // Hide additional tools (Text, Color Picker, Recolor tools)
     > :nth-last-child(4) {
       display: none;
     }
@@ -80,23 +74,28 @@
 .colorPickerWrapper {
   display: inline-flex;
   align-items: center;
-  height: 36px; /* Custom canvas tool size */
+  height: 36px;
+  /* Custom canvas tool size */
 }
 
 .colorPickerWrapper :global(.colorPickerContainer) {
-  height: 36px; /* Custom canvas tool size */
+  height: 36px;
+  /* Custom canvas tool size */
 }
 
 .colorPickerWrapper :global(.swatch) {
   width: 36px;
-  height: 36px; /* Custom canvas tool size - matches other toolbar buttons */
+  height: 36px;
+  /* Custom canvas tool size - matches other toolbar buttons */
 }
 
 .strokeControl {
   display: inline-flex;
   align-items: center;
-  min-width: 120px; /* No direct token available */
-  height: 36px; /* Custom canvas tool size */
+  min-width: 120px;
+  /* No direct token available */
+  height: 36px;
+  /* Custom canvas tool size */
   padding: 0 theme.$spacing-2;
   background: theme.$tool-control-bg;
   border: 1px solid theme.$tool-button-border;
@@ -109,7 +108,8 @@
   color: theme.$tool-label-text;
   white-space: nowrap;
   text-transform: uppercase;
-  letter-spacing: 0.8px; /* No direct token available */
+  letter-spacing: 0.8px;
+  /* No direct token available */
   margin-top: theme.$spacing-1-5;
   @include theme.smooth-transition;
   text-shadow: 0 1px 2px theme.$text-shadow;
@@ -123,13 +123,17 @@
 }
 
 .toolButton {
-  min-width: 36px; /* Custom canvas tool size */
-  min-height: 36px; /* Custom canvas tool size */
+  min-width: 36px;
+  /* Custom canvas tool size */
+  min-height: 36px;
+  /* Custom canvas tool size */
 }
 
 .iconButton {
-  min-width: 36px; /* Custom canvas tool size */
-  min-height: 36px; /* Custom canvas tool size */
+  min-width: 36px;
+  /* Custom canvas tool size */
+  min-height: 36px;
+  /* Custom canvas tool size */
 
   &.active {
     background: transparent !important;
@@ -166,11 +170,11 @@
 .dropdownItem {
   display: flex;
   align-items: center;
-  justify-content: flex-start; // Align items to the start (left in LTR, right in RTL)
+  justify-content: flex-start;
   gap: theme.$spacing-2;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
   font-size: theme.$font-size-sm;
-  width: 100%; // Ensure full width for proper alignment
+  width: 100%;
 }
 
 .dropdownContent {
@@ -180,7 +184,7 @@
   border: 1px solid theme.$tool-button-border;
   @include theme.rounded-medium;
   @include theme.shadow-heavy;
-  min-width: 160px; /* No direct token available */
+  min-width: 160px;
   z-index: theme.$z-index-popover;
   @include theme.flex-column;
   gap: theme.$spacing-0-5;
@@ -203,16 +207,13 @@
 .textInput {
   background: transparent;
   border: none;
-  color: inherit; // Use color from parent (text color)
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  color: inherit;
+  font-family: system-ui, -apple-system, sans-serif;
   outline: none;
-  overflow: hidden; // Hide scrollbars for cleaner look
+  overflow: hidden;
   resize: none;
   padding: 0;
   margin: 0;
-  text-align: left; // Force left alignment regardless of language
-  direction: ltr; // Force LTR direction to match canvas text rendering
+  text-align: left;
+  direction: ltr;
 }

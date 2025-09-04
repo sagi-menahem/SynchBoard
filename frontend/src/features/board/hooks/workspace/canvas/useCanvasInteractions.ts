@@ -66,14 +66,13 @@ export const useCanvasInteractions = ({
 
           if (data[3] === 0) {
             const backgroundColor = canvasBackgroundColor ?? '#FFFFFF';
-            // Ensure color is in 6-character hex format
             const normalizedColor =
               backgroundColor.length === 4
                 ? `#${backgroundColor
-                    .slice(1)
-                    .split('')
-                    .map((c) => c + c)
-                    .join('')}`
+                  .slice(1)
+                  .split('')
+                  .map((c) => c + c)
+                  .join('')}`
                 : backgroundColor;
             onColorPick?.(normalizedColor);
           } else {
@@ -186,11 +185,9 @@ export const useCanvasInteractions = ({
   }, [preferences.boardBackgroundSetting]);
 
   return {
-    // State
     textInput,
     recolorCursor,
 
-    // Handlers
     handleTextInputRequest,
     handleCanvasClick,
     handleCanvasMouseMove,

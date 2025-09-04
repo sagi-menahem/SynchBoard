@@ -20,7 +20,6 @@ interface UseCanvasProps {
   onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
 }
 
-// Default canvas configuration - memoized to prevent recreation
 const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
   width: CANVAS_CONFIG.DEFAULT_WIDTH,
@@ -37,10 +36,8 @@ export const useCanvas = ({
   canvasConfig,
   onTextInputRequest,
 }: UseCanvasProps) => {
-  // Memoize final canvas config to prevent unnecessary re-renders
   const finalCanvasConfig = useMemo(() => canvasConfig ?? DEFAULT_CANVAS_CONFIG, [canvasConfig]);
 
-  // Canvas state and utilities
   const {
     canvasRef,
     containerRef,
@@ -59,7 +56,6 @@ export const useCanvas = ({
     canvasConfig: finalCanvasConfig,
   });
 
-  // Memoize state objects to prevent unnecessary hook re-execution
   const canvasEventsState = useMemo(
     () => ({
       isDrawing,
@@ -77,7 +73,6 @@ export const useCanvas = ({
     [currentPath],
   );
 
-  // Memoize hook configuration objects to prevent unnecessary re-renders
   const previewConfig = useMemo(
     () => ({
       canvasRef,
@@ -117,13 +112,11 @@ export const useCanvas = ({
     ],
   );
 
-  // Initialize the three focused hooks with memoized configs
   const { handlePreviewStart, handlePreviewMove, handlePreviewEnd } =
     useCanvasPreview(previewConfig);
   const { handleToolMouseDown, handleToolMouseMove, handleToolMouseUp } =
     useDrawingTools(drawingToolsConfig);
 
-  // Compose the event handlers
   const handleMouseDown = useCallback(
     (eventData: CanvasEventData) => {
       handlePreviewStart(eventData);
@@ -148,7 +141,6 @@ export const useCanvas = ({
     [handlePreviewEnd, handleToolMouseUp],
   );
 
-  // Memoize canvas events configuration
   const canvasEventsConfig = useMemo(
     () => ({
       canvasRef,
@@ -170,7 +162,6 @@ export const useCanvas = ({
     ],
   );
 
-  // Canvas events hook handles the actual mouse events and calls our composed handlers
   const { handleMouseDown: canvasMouseDown } = useCanvasEvents(canvasEventsConfig);
 
   return {

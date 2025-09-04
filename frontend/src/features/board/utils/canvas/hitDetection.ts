@@ -92,7 +92,7 @@ export const isPointOnCircleBorder = (
   const circleX = centerX * canvasWidth;
   const circleY = centerY * canvasHeight;
   const circleRadius = radius * canvasWidth;
-  const tolerance = Math.max(strokeWidth / 2, 3); // At least 3px tolerance
+  const tolerance = Math.max(strokeWidth / 2, 3);
 
   const distance = Math.sqrt(Math.pow(point.x - circleX, 2) + Math.pow(point.y - circleY, 2));
   return Math.abs(distance - circleRadius) <= tolerance;
@@ -119,7 +119,7 @@ export const isPointInTriangle = (
   const denominator = (p2y - p3y) * (p1x - p3x) + (p3x - p2x) * (p1y - p3y);
   if (Math.abs(denominator) < 1e-10) {
     return false;
-  } // Degenerate triangle
+  }
 
   const a = ((p2y - p3y) * (point.x - p3x) + (p3x - p2x) * (point.y - p3y)) / denominator;
   const b = ((p3y - p1y) * (point.x - p3x) + (p1x - p3x) * (point.y - p3y)) / denominator;
@@ -181,9 +181,9 @@ export const isPointInPolygon = (
     if (
       vertices[i].y > point.y !== vertices[j].y > point.y &&
       point.x <
-        ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
-          (vertices[j].y - vertices[i].y) +
-          vertices[i].x
+      ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
+      (vertices[j].y - vertices[i].y) +
+      vertices[i].x
     ) {
       inside = !inside;
     }
@@ -222,9 +222,9 @@ export const isPointInStar = (
     if (
       vertices[i].y > point.y !== vertices[j].y > point.y &&
       point.x <
-        ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
-          (vertices[j].y - vertices[i].y) +
-          vertices[i].x
+      ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
+      (vertices[j].y - vertices[i].y) +
+      vertices[i].x
     ) {
       inside = !inside;
     }
