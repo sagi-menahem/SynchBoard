@@ -8,9 +8,18 @@ import { AuthContext } from './AuthContext';
 import { useSyncAuthValidation } from './hooks/useSyncAuthValidation';
 
 interface AuthProviderProps {
+  /** Child components that will have access to authentication context */
   children: ReactNode;
 }
 
+/**
+ * Authentication context provider that manages global authentication state.
+ * Handles JWT token validation, user session management, and automatic token cleanup.
+ * Provides authentication context value containing user state, login/logout methods,
+ * and initialization status to all child components.
+ *
+ * @param children - Child components that will have access to authentication context
+ */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const storedToken = getToken();
 
@@ -24,6 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useMemo(() => {
     const result = validateTokenSync(token);
 
+    // Clear invalid or expired tokens from state and storage
     if (result.shouldClearToken && token) {
       setToken(null);
       clearTokenFromStorage();
@@ -42,6 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (needsBackendValidation && token) {
+      // Validate token with backend to ensure it's still accepted by server
       getUserProfile()
         .then(() => {
           logger.info('[AuthProvider] Backend validation successful');

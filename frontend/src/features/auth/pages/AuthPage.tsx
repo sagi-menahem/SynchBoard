@@ -18,28 +18,46 @@ import {
 
 import styles from './AuthPage.module.scss';
 
+/**
+ * Main authentication page component providing dual-purpose login/registration interface.
+ * Features a split-screen layout with hero section showcasing app features and form section
+ * for user authentication. Manages modal states for email verification and password reset flows.
+ * Handles OAuth callback processing and automatic navigation upon successful authentication.
+ * 
+ * Key responsibilities:
+ * - Toggle between login and registration forms based on user preference
+ * - Coordinate post-registration email verification flow with modal state management
+ * - Handle successful authentication by storing JWT token and redirecting to board list
+ * - Process OAuth callbacks with loading states during authentication handoff
+ * - Manage forgot password flow with success feedback and form state reset
+ */
 const AuthPage: React.FC = () => {
   const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
+  // Primary view toggle between login and registration forms
   const [isLoginView, setIsLoginView] = useState(true);
 
+  // Modal state management for secondary authentication flows
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [pendingEmail, setPendingEmail] = useState('');
 
   const { isProcessing } = useOAuthCallback();
 
+  // Transition from registration completion to email verification modal
   const handleRegistrationSuccess = (email: string) => {
     setPendingEmail(email);
     setShowEmailVerification(true);
   };
 
+  // Reset password flow completion brings user back to login form
   const handleForgotPasswordSuccess = () => {
     setShowForgotPassword(false);
     setIsLoginView(true);
   };
 
+  // Email verification completion authenticates user and navigates to main app
   const handleEmailVerificationSuccess = (token: string) => {
     authLogin(token);
     setShowEmailVerification(false);

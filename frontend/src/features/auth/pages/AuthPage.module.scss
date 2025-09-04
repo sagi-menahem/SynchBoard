@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+/* Full viewport reset negating app-level margins */
 .pageContent {
   position: relative;
   width: 100vw;
@@ -11,6 +12,7 @@
   overflow-x: hidden;
 }
 
+/* Fixed corner area for theme/language switchers using logical properties */
 .switchersCorner {
   position: fixed;
   top: theme.$spacing-6;
@@ -39,6 +41,7 @@
   position: relative;
   overflow: hidden;
 
+  /* Subtle overlay for better text contrast on gradient */
   &::before {
     content: '';
     position: absolute;
@@ -58,6 +61,7 @@
   text-align: start;
 }
 
+/* Title with text overflow protection for very long app names */
 .pageTitle {
   @include theme.flex-start;
   gap: theme.$spacing-3;
@@ -96,6 +100,7 @@
   align-items: center;
 }
 
+/* Glassmorphism effect for feature icons */
 .featureIcon {
   font-size: 1.5rem;
   width: 2.5rem;
@@ -170,6 +175,7 @@
   text-align: center;
 }
 
+/* Mobile breakpoint: stack hero and form vertically */
 @media (max-width: 768px) {
   .pageContent {
     min-height: auto;
@@ -274,6 +280,7 @@
   }
 }
 
+/* Dark theme gradient using grays instead of primary colors */
 :global(body[data-theme='dark']) {
   .heroSection {
     background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
