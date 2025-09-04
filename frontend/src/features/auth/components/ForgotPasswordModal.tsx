@@ -8,11 +8,23 @@ import styles from 'shared/ui/styles/CommonForm.module.scss';
 import { useForgotPasswordForm } from '../hooks/forms';
 
 interface ForgotPasswordModalProps {
+  /** Whether the modal is currently visible */
   isOpen: boolean;
+  /** Callback fired when modal should be closed */
   onClose: () => void;
+  /** Callback fired when password reset email is successfully sent */
   onSuccess: (email: string) => void;
 }
 
+/**
+ * Modal component for requesting a password reset via email.
+ * Provides a simple form to enter email address and sends reset instructions
+ * to the user's email inbox.
+ *
+ * @param isOpen - Whether the modal is currently visible
+ * @param onClose - Callback fired when modal should be closed
+ * @param onSuccess - Callback fired when password reset email is successfully sent
+ */
 const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   isOpen,
   onClose,
@@ -23,6 +35,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // Extract form data and submit via form action
     const formData = new FormData(event.currentTarget);
     submitAction(formData);
   };

@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Compact login form with centered layout
 .form {
   @include theme.form-base;
   gap: theme.$spacing-2;
@@ -20,6 +21,7 @@
   color: theme.$text-muted;
 }
 
+// Center-aligned text inputs for login fields
 .field input {
   text-align: center;
 }
@@ -30,6 +32,7 @@
   margin-bottom: theme.$spacing-4;
 }
 
+// Centered submit button with reduced width
 .submitButton {
   margin-top: theme.$spacing-2;
   width: 50%;
@@ -37,12 +40,14 @@
   justify-content: center;
 }
 
+// Visual separator between login methods
 .divider {
   position: relative;
   margin: theme.$spacing-3 0;
   text-align: center;
 }
 
+// Horizontal line element for divider
 .divider::before {
   content: '';
   position: absolute;
@@ -54,6 +59,7 @@
   transform: translateY(-50%);
 }
 
+// Text overlay on divider line
 .dividerText {
   position: relative;
   background: theme.$surface-elevated;
@@ -62,6 +68,7 @@
   font-size: 0.875rem;
 }
 
+// Container for secondary action buttons
 .secondaryActionsContainer {
   display: flex;
   flex-direction: column;
@@ -74,6 +81,7 @@
   font-size: 0.875rem;
 }
 
+// Mobile responsive adjustments
 @media (max-width: 640px) {
   .form {
     gap: theme.$spacing-4;
