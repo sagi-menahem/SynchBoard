@@ -8,11 +8,36 @@ import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
 
+/**
+ * Properties for the useChatWindowLogic hook defining board context and message data.
+ */
 interface UseChatWindowLogicProps {
+  /** Board identifier for associating chat with specific board context */
   boardId: number;
+  /** Array of chat messages to display and manage in the window */
   messages: ChatMessageResponse[];
 }
 
+/**
+ * Custom hook for managing chat window state, interactions, and UI logic.
+ * Provides comprehensive chat functionality including message handling, search capabilities,
+ * automatic scrolling, keyboard shortcuts, and visual feedback for real-time messaging.
+ * Integrates with board context for optimistic updates and transaction-based message management.
+ * 
+ * Key features:
+ * - Message state management with optimistic updates and pending indicators
+ * - Search functionality with keyboard shortcuts (Ctrl/Cmd+F)
+ * - Automatic scroll-to-bottom behavior for new messages
+ * - Message grouping and date separation logic
+ * - Background styling based on user preferences
+ * - Transaction-based message tracking for conflict resolution
+ * - Integration with WebSocket service for real-time updates
+ * - Keyboard event handling for enhanced user experience
+ * 
+ * @param boardId - Board identifier for chat context and message association
+ * @param messages - Array of chat messages to display and manage
+ * @returns Object containing chat window state, handlers, and UI utilities
+ */
 export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProps) => {
   const { preferences } = useUserBoardPreferences();
   const { userEmail } = useAuth();

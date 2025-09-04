@@ -12,16 +12,41 @@ import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import styles from './ChatWindow.module.scss';
 
+/**
+ * Properties for the ChatWindow component defining board association and message data.
+ */
 interface ChatWindowProps {
+  /** Board identifier for associating chat with specific board context */
   boardId: number;
+  /** Array of chat messages to display and manage in the window */
   messages: ChatMessageResponse[];
 }
 
+/**
+ * Main chat window component providing real-time messaging interface for board collaboration.
+ * Integrates with board context for WebSocket message handling, implements message grouping,
+ * search functionality, and automatic scrolling behavior. Manages chat state and optimistic
+ * updates for seamless real-time communication experience.
+ * 
+ * Key features:
+ * - Real-time message display with WebSocket integration
+ * - Message grouping for consecutive messages from the same sender
+ * - Search functionality with result filtering and highlighting
+ * - Automatic scrolling to newest messages with smooth behavior
+ * - Date separators for better message organization
+ * - Optimistic message updates with transaction-based conflict resolution
+ * - Message animation control for performance optimization
+ * - Integration with board context for unified state management
+ * 
+ * @param boardId - Board identifier for chat context
+ * @param messages - Array of chat messages to display
+ */
 const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { userEmail } = useAuth();
   const { registerChatCommitHandler } = useBoardContext();
 
+  // Hook providing all chat window logic and state management
   const {
     messagesEndRef,
     messagesContainerRef,
@@ -36,6 +61,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     isMessageNew,
   } = useChatWindowLogic({ boardId, messages });
 
+  // Register chat transaction handler with board context for WebSocket integration
   useEffect(() => {
     registerChatCommitHandler(commitChatTransaction);
 
@@ -46,6 +72,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
   return (
     <Card className={styles.container} padding="none">
+      {/* Search interface shown when search is active */}
       {searchVisible && (
         <div className={styles.searchContainer}>
           <input
@@ -71,6 +98,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
           const shouldAnimate = isMessageNew(message);
           const prevMessage = filteredMessages[index - 1] ?? null;
 
+          // Group consecutive messages from same user within time window
           const isGroupedWithPrevious =
             prevMessage &&
             prevMessage.senderEmail === message.senderEmail &&
@@ -80,6 +108,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
 
           return (
             <React.Fragment key={message.instanceId ?? `${message.id}-${message.timestamp}`}>
+              {/* Show date separator when messages are from different days */}
               {shouldShowDateSeparator(message, prevMessage) && (
                 <div className={styles.dateSeparator}>{formatDateSeparator(message.timestamp)}</div>
               )}
@@ -92,6 +121,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
             </React.Fragment>
           );
         })}
+        {/* Scroll anchor for automatic scrolling to newest messages */}
         <div ref={messagesEndRef} />
       </div>
 
