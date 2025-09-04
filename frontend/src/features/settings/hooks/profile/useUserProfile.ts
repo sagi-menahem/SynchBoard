@@ -5,6 +5,15 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
+/**
+ * Custom hook for comprehensive user profile management with editing capabilities and media handling.
+ * Provides complete profile lifecycle management including fetching, editing, updating, and media operations.
+ * Implements inline editing state management with form validation, optimistic updates, and proper error handling.
+ * Handles profile picture upload and deletion with proper loading states and user feedback through toast notifications.
+ * Includes minimum loading delays for better perceived performance and smooth user experience transitions.
+ * 
+ * @returns Object containing user profile data, editing state, form handlers, and media management functions
+ */
 export const useUserProfile = () => {
   const { t } = useTranslation(['settings', 'common']);
 
@@ -19,15 +28,18 @@ export const useUserProfile = () => {
     phoneNumber: '',
   });
 
+  // Memoize to prevent infinite loops when used in useEffect dependencies
   const fetchUser = useCallback(() => {
     setIsLoading(true);
+    // Track timing for minimum loading delay to prevent flashing
     const startTime = Date.now();
-    const minDelay = 200;
+    const minDelay = 200; // Minimum loading time in ms to prevent flashing UI
 
     userService
       .getUserProfile()
       .then((userData: UserProfile) => {
         setUser(userData);
+        // Initialize form data with current user profile values
         setFormData({
           firstName: userData.firstName,
           lastName: userData.lastName ?? '',
@@ -40,6 +52,7 @@ export const useUserProfile = () => {
         toast.error(t('settings:errors.profile.fetch'));
       })
       .finally(() => {
+        // Ensure minimum loading time for smooth UX
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
 
@@ -49,6 +62,7 @@ export const useUserProfile = () => {
       });
   }, [t]);
 
+  // Memoize to maintain stable function reference for profile form components
   const handleUpdateProfile = useCallback(
     async (data: UpdateUserProfileRequest) => {
       try {
@@ -67,6 +81,7 @@ export const useUserProfile = () => {
     [t],
   );
 
+  // Memoize to provide stable reference for file upload handlers
   const handlePictureUpload = useCallback(
     async (file: File) => {
       const updatedUser = await toast.promise(userService.uploadProfilePicture(file), {
@@ -80,6 +95,7 @@ export const useUserProfile = () => {
     [t],
   );
 
+  // Memoize to prevent unnecessary re-renders when delete function is passed as prop
   const handlePictureDelete = useCallback(async () => {
     const updatedUser = await toast.promise(userService.deleteProfilePicture(), {
       loading: t('settings:loading.picture.delete'),
@@ -90,13 +106,17 @@ export const useUserProfile = () => {
     return updatedUser;
   }, [t]);
 
+  // Memoize to prevent form input re-renders on every parent component update
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
+  // Memoize to provide stable reference for edit mode activation
   const startEditing = useCallback(() => setIsEditing(true), []);
 
+  // Memoize to avoid recreation when passed to cancel buttons or escape handlers
   const cancelEditing = useCallback(() => {
+    // Reset form data to current user values when canceling edit
     if (user) {
       setFormData({
         firstName: user.firstName,
@@ -108,6 +128,7 @@ export const useUserProfile = () => {
     setIsEditing(false);
   }, [user]);
 
+  // Memoize to provide stable reference for edit mode deactivation
   const stopEditing = useCallback(() => setIsEditing(false), []);
 
   useEffect(() => {

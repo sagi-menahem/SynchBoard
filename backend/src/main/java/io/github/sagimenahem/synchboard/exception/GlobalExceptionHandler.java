@@ -13,6 +13,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * Global exception handler for centralized error handling across the application. Provides
+ * consistent error responses, logging, and HTTP status code mapping for all controller exceptions
+ * and validation errors.
+ * 
+ * @author Sagi Menahem
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -23,37 +30,38 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(BadCredentialsException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(
+            BadCredentialsException ex) {
         log.warn(LoggingConstants.AUTH_LOGIN_FAILED, "unknown", ex.getMessage());
         return buildErrorResponse(HttpStatus.UNAUTHORIZED, MessageConstants.AUTH_BAD_CREDENTIALS);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(
+            ResourceNotFoundException ex) {
         log.warn("Resource not found: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(ResourceConflictException.class)
-    public ResponseEntity<ErrorResponseDTO> handleResourceConflictException(ResourceConflictException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleResourceConflictException(
+            ResourceConflictException ex) {
         log.warn("Resource conflict: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity<ErrorResponseDTO> handleInvalidRequestException(InvalidRequestException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleInvalidRequestException(
+            InvalidRequestException ex) {
         log.warn("Invalid request: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String errorMessage = ex
-            .getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .map((error) -> error.getDefaultMessage())
-            .collect(Collectors.joining(", "));
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+                .map((error) -> error.getDefaultMessage()).collect(Collectors.joining(", "));
         log.warn("Validation error: {}", errorMessage);
         return buildErrorResponse(HttpStatus.BAD_REQUEST, errorMessage);
     }
@@ -67,6 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleAllExceptions(Exception ex) {
         log.error("An unexpected error occurred", ex);
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, MessageConstants.UNEXPECTED_ERROR);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                MessageConstants.UNEXPECTED_ERROR);
     }
 }

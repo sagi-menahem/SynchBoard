@@ -4,28 +4,44 @@ import { createPortal } from 'react-dom';
 
 import { EnhancedContextMenu } from './EnhancedContextMenu';
 
+/**
+ * Internal state for tracking context menu visibility and positioning.
+ */
 interface ContextMenuState {
-  isOpen: boolean;
-  x: number;
-  y: number;
-  content: ReactNode | null;
-  onClose: () => void;
+  isOpen: boolean; // Whether the context menu is currently visible
+  x: number; // Horizontal position of the context menu
+  y: number; // Vertical position of the context menu
+  content: ReactNode | null; // Menu content to render
+  onClose: () => void; // Callback for when menu is closed
 }
 
+/**
+ * Context API interface for global context menu management.
+ */
 interface ContextMenuContextType {
-  showContextMenu: (x: number, y: number, content: ReactNode, onClose?: () => void) => void;
-  hideContextMenu: () => void;
-  isOpen: boolean;
+  showContextMenu: (x: number, y: number, content: ReactNode, onClose?: () => void) => void; // Show context menu at position
+  hideContextMenu: () => void; // Hide currently visible context menu
+  isOpen: boolean; // Whether any context menu is currently open
 }
 
 const ContextMenuContext = createContext<ContextMenuContextType | null>(null);
 
+/**
+ * Props for the ContextMenuProvider component.
+ */
 interface ContextMenuProviderProps {
-  children: ReactNode;
+  children: ReactNode; // Child components that can trigger context menus
 }
 
 const noop = (): void => {};
 
+/**
+ * Global context menu provider component that manages application-wide context menus.
+ * Provides a centralized system for showing context menus at specific coordinates with custom content.
+ * Uses React portals to render menus outside the normal component hierarchy for proper z-index layering.
+ * 
+ * @param {React.ReactNode} children - Child components that can trigger context menus
+ */
 export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ children }) => {
   const [menuState, setMenuState] = useState<ContextMenuState>({
     isOpen: false,
@@ -35,6 +51,7 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
     onClose: noop,
   });
 
+  // Display context menu at specified coordinates with custom content
   const showContextMenu = (x: number, y: number, content: ReactNode, onClose?: () => void) => {
     const handleClose = () => {
       hideContextMenu();
@@ -50,6 +67,7 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
     });
   };
 
+  // Hide currently visible context menu
   const hideContextMenu = () => {
     setMenuState((prev) => ({
       ...prev,
@@ -79,6 +97,13 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
   );
 };
 
+/**
+ * Hook to access the global context menu functionality.
+ * Must be used within a ContextMenuProvider component.
+ * 
+ * @returns {ContextMenuContextType} Context menu controls and state
+ * @throws {Error} When used outside of ContextMenuProvider
+ */
 export const useContextMenuProvider = () => {
   const context = useContext(ContextMenuContext);
   if (!context) {

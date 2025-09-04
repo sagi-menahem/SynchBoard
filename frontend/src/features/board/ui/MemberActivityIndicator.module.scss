@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Member activity indicator with optional interactive behavior
 .activityIndicator {
   display: flex;
   align-items: center;
@@ -56,6 +57,7 @@
   color: theme.$text-secondary;
 }
 
+// Pulsing dot to indicate online presence
 .onlineIndicator {
   position: absolute;
   top: 6px;
@@ -68,6 +70,7 @@
   animation: pulse theme.$transition-very-slow ease-in-out infinite;
 }
 
+// Pulse animation for online presence indicator
 @keyframes pulse {
   0%,
   100% {

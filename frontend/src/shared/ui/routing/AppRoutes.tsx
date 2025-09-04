@@ -15,11 +15,19 @@ const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPag
 const BoardPage = lazy(() => import('features/board/pages/BoardPage'));
 const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
 
+/**
+ * Loading component wrapper for lazy-loaded pages with localized messaging.
+ */
 const LazyPageLoader = () => {
   const { t } = useTranslation(['common']);
   return <PageLoader message={t('common:loading')} />;
 };
 
+/**
+ * Main application routing configuration with lazy loading and error boundaries.
+ * Defines all application routes with authentication protection and progressive loading.
+ * Wraps protected routes with authentication checks and provides error recovery for each route.
+ */
 export function AppRoutes() {
   return (
     <Routes>

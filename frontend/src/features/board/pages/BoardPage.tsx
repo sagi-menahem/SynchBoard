@@ -41,10 +41,23 @@ import { useCanvasDownload } from '../hooks/useCanvasDownload';
 
 import styles from './BoardPage.module.scss';
 
+/**
+ * Props interface for the BoardPageContent component.
+ */
 interface BoardPageContentProps {
+  /** ID of the board to render and manage in the collaborative workspace */
   boardId: number;
 }
 
+/**
+ * Board Page Content component that provides the complete collaborative whiteboard workspace.
+ * This component serves as the main drawing and collaboration interface, integrating a comprehensive
+ * toolbar with all drawing tools, canvas workspace, chat functionality, and real-time collaboration
+ * features. It manages tool state, canvas preferences, drawing actions, and provides full-featured
+ * whiteboard functionality with undo/redo, export capabilities, and multi-user interaction support.
+ *
+ * @param boardId - ID of the board to render and manage in the workspace
+ */
 const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
@@ -66,6 +79,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   const { preferences, updateTool, updateStrokeColor, updateStrokeWidth } = useToolPreferences();
 
+  // Extract current tool settings from user preferences
   const tool = preferences.defaultTool;
   const strokeColor = preferences.defaultStrokeColor;
   const strokeWidth = preferences.defaultStrokeWidth;
@@ -80,6 +94,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     void updateSplitRatio(newRatio);
   };
 
+  // Create canvas configuration from board details - memoized to prevent unnecessary re-renders
   const canvasConfig = useMemo(() => {
     return boardDetails
       ? {
@@ -106,6 +121,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     [handleDownload, updateTool],
   );
 
+  // Configure comprehensive toolbar with all drawing tools and actions - memoized due to expensive toolbar creation
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'canvas',
@@ -142,8 +158,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
                     >
                       <Slider
                         value={strokeWidth}
-                        min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
-                        max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
+                        min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN} // Text tool minimum ensures readable font size
+                        max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX} // Text tool maximum prevents oversized fonts that break layout
                         onChange={updateStrokeWidth}
                         aria-label={t('common:accessibility.sizeSlider', { size: strokeWidth })}
                       />
@@ -383,6 +399,12 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   );
 };
 
+/**
+ * Board Page component that serves as the entry point for the collaborative whiteboard experience.
+ * This component handles board ID validation, provides the BoardProvider context for state management,
+ * and renders the complete board workspace. It ensures proper board ID parsing and validation before
+ * initializing the collaborative workspace environment.
+ */
 const BoardPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const { boardId } = useParams<{ boardId: string }>();

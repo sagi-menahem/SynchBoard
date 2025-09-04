@@ -10,6 +10,7 @@
   border-radius: 0 !important;
 }
 
+/* Scrollable message area with smooth scrolling behavior */
 .messageList {
   flex: 1;
   overflow-y: auto;
@@ -27,6 +28,7 @@
   @include theme.theme-scrollbar-enhanced;
 }
 
+/* Search interface container with subtle background separation */
 .searchContainer {
   @include theme.flex-start;
   padding: theme.$spacing-3 theme.$spacing-4;
@@ -76,6 +78,7 @@
   white-space: nowrap;
 }
 
+/* Date separator with decorative gradient lines */
 .dateSeparator {
   text-align: center;
   margin: theme.$spacing-6 0 theme.$spacing-4 0;
@@ -92,6 +95,7 @@
   }
 }
 
+/* Decorative lines on both sides of date separator text */
 .dateSeparator::before,
 .dateSeparator::after {
   content: '';

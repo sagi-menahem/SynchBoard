@@ -1,3 +1,5 @@
+// --- Primary Color System ---
+
 $color-primary: #3b82f6;
 $color-primary-hover: #2563eb;
 $color-primary-light: #bfdbfe;
@@ -12,6 +14,8 @@ $color-error-light: #fca5a5;
 $color-warning: #f59e0b;
 $color-warning-light: #fde68a;
 
+// --- Neutral Color Palette ---
+
 $color-white: #ffffff;
 $color-gray-50: #f8f8f8;
 $color-gray-100: #f1f1f1;
@@ -24,6 +28,8 @@ $color-gray-700: #444444;
 $color-gray-800: #333333;
 $color-gray-900: #2a2a2a;
 $color-black: #1a1a1a;
+
+// --- Board Theme Colors ---
 
 $color-board-light-default: #f5f5f5;
 $color-board-light-midnight: #e8eaf6;
@@ -43,11 +49,14 @@ $color-board-dark-ocean: #2a3538;
 $color-board-dark-crimson: #3a2b2b;
 $color-board-dark-golden: #3d3429;
 
+// --- Chat Message Colors ---
+
 $color-chat-my-message-dark: #081120;
 $color-chat-my-message-light: #e1e2e4;
 $color-chat-other-message-dark: #3f3f46;
 $color-chat-other-message-light: #dde9f7;
 
+// --- Status Indicator Colors ---
 
 $color-status-pending-border-light: #f59e0b;
 $color-status-pending-border-dark: #fbbf24;
@@ -65,6 +74,8 @@ $color-status-failed-bg-light: rgba(254,
 $color-status-failed-bg-dark: rgba(69, 26, 26, 0.2);
 
 $color-backdrop: rgba(0, 0, 0, 0.7);
+
+// --- Spacing System ---
 
 $spacing-0: 0;
 $spacing-px: 1px;
@@ -102,6 +113,7 @@ $spacing-container-md: 31.25rem;
 $spacing-container-lg: 37.5rem;
 $spacing-container-xl: 50rem;
 
+// --- Typography Scale ---
 
 $font-size-xs: 0.75rem;
 $font-size-sm: 0.875rem;
@@ -124,6 +136,8 @@ $line-height-tight: 1.2;
 $line-height-normal: 1.4;
 $line-height-relaxed: 1.5;
 
+// --- Border Radius Scale ---
+
 $border-radius-none: 0;
 $border-radius-xs: 0.125rem;
 $border-radius-sm: 0.25rem;
@@ -134,6 +148,8 @@ $border-radius-2xl: 1rem;
 $border-radius-3xl: 1.25rem;
 $border-radius-full: 50%;
 $border-radius-pill: 9999px;
+
+// --- Shadow System ---
 
 $shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
 $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
@@ -162,10 +178,14 @@ $shadow-primary-glow: 0 0 12px rgba(59, 130, 246, 0.5);
 $shadow-overlay-hack: 0 0 0px 1000px;
 $shadow-none: none;
 
+// --- Background Pattern Colors ---
+
 $color-random-shapes-bg-light: #fafafa;
 $color-random-shapes-bg-dark: #2d3748;
 $color-random-shapes-pattern-light: #1a202c;
 $color-random-shapes-pattern-dark: #f7fafc;
+
+// --- Opacity Scale ---
 
 $opacity-0: 0;
 $opacity-10: 0.1;
@@ -174,6 +194,8 @@ $opacity-50: 0.5;
 $opacity-60: 0.6;
 $opacity-75: 0.75;
 $opacity-100: 1;
+
+// --- Z-Index Layers ---
 
 $z-index-base: 1;
 $z-index-elevated: 10;
@@ -184,6 +206,8 @@ $z-index-modal: 1000;
 $z-index-banner: 1000;
 $z-index-tooltip: 1000;
 $z-index-popover: 1000;
+
+// --- Animation Timing ---
 
 $transition-instant: 0.1s;
 $transition-fast: 0.15s;
@@ -201,10 +225,14 @@ $transition-colors: background-color $transition-normal $transition-ease,
   color $transition-normal $transition-ease;
 $transition-transform: transform $transition-normal $transition-ease;
 
+// --- Responsive Breakpoints ---
+
 $breakpoint-sm: 480px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1280px;
+
+// --- Component Dimensions ---
 
 $button-height-sm: 2rem;
 $button-height-md: $spacing-button-height;
@@ -227,6 +255,8 @@ $card-padding: $spacing-6;
 $card-border-radius: $border-radius-md;
 $card-border-width: 1px;
 
+// --- Google Button Theming ---
+
 $google-button-bg-light: #ffffff;
 $google-button-text-light: #1f1f1f;
 $google-button-border-light: #dadce0;
@@ -248,20 +278,28 @@ $google-button-disabled-border-dark: #3c4043;
 $google-button-width-ratio: 65%;
 $google-button-max-width: $spacing-container-xs;
 
+// --- Interactive Element Sizing ---
+
 $icon-button-size: 36px;
 $button-compact-height: 28px;
 $button-standard-height: 44px;
 $edit-button-height: 32px;
+
+// --- Color Picker Dimensions ---
 
 $color-picker-width: 250px;
 $color-picker-height: 150px;
 $color-picker-slider-height: 20px;
 $color-picker-pointer-size: 16px;
 
+// --- Board Card Layout ---
+
 $board-card-grid-height: 280px;
 $board-card-grid-max-width: 700px;
 $board-card-image-height-grid: 120px;
 $board-card-image-size-list: 60px;
+
+// --- Visual Effects ---
 
 $blur-sm: 4px;
 $blur-md: 8px;
@@ -274,6 +312,8 @@ $transform-translate-y-sm: -2px;
 
 $pattern-repeat-sm: 10px;
 $pattern-repeat-md: 20px;
+
+// --- Backdrop Blur Scale ---
 
 $background-blur-none: 0px;
 $background-blur-xs: 2px;

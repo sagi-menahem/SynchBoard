@@ -17,6 +17,10 @@ import { ViewToggle } from '../navigation/ViewToggle';
 
 import styles from './UniversalToolbar.module.scss';
 
+/**
+ * Renders a button toolbar item with adaptive styling based on variant.
+ * Automatically determines icon-only display based on variant or className.
+ */
 const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = React.memo(({ item }) => {
   const {
     icon: Icon,
@@ -56,6 +60,10 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = React.memo(({ item 
 
 ToolbarButton.displayName = 'ToolbarButton';
 
+/**
+ * Renders a toolbar title that can optionally be made clickable.
+ * Switches between h1 element and button styling based on interactivity needs.
+ */
 const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
   const { content, visible = true, className, clickable = false, onClick } = item;
 
@@ -84,6 +92,9 @@ const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
   return <h1 className={titleClass}>{content}</h1>;
 };
 
+/**
+ * Renders a search input within the toolbar with integrated clear functionality.
+ */
 const ToolbarSearch: React.FC<{ item: SearchToolbarItem }> = ({ item }) => {
   const { placeholder, value, onSearch, onClear, visible = true, className } = item;
 
@@ -102,6 +113,9 @@ const ToolbarSearch: React.FC<{ item: SearchToolbarItem }> = ({ item }) => {
   );
 };
 
+/**
+ * Renders view toggle controls for switching between different display modes.
+ */
 const ToolbarViewToggle: React.FC<{ item: ViewToggleToolbarItem }> = ({ item }) => {
   const { value, onChange, visible = true, className } = item;
 
@@ -112,6 +126,9 @@ const ToolbarViewToggle: React.FC<{ item: ViewToggleToolbarItem }> = ({ item }) 
   return <ViewToggle value={value} onChange={onChange} className={className} />;
 };
 
+/**
+ * Displays member activity indicators showing online presence and counts.
+ */
 const ToolbarMemberActivity: React.FC<{ item: MemberActivityToolbarItem }> = ({ item }) => {
   const { memberCount, onlineCount, onClick, visible = true, className } = item;
 
@@ -129,6 +146,9 @@ const ToolbarMemberActivity: React.FC<{ item: MemberActivityToolbarItem }> = ({ 
   );
 };
 
+/**
+ * Renders custom content within the toolbar with consistent styling wrapper.
+ */
 const ToolbarCustom: React.FC<{ item: CustomToolbarItem }> = ({ item }) => {
   const { content, visible = true, className } = item;
 
@@ -139,6 +159,10 @@ const ToolbarCustom: React.FC<{ item: CustomToolbarItem }> = ({ item }) => {
   return <div className={`${styles.customItem} ${className ?? ''}`}>{content}</div>;
 };
 
+/**
+ * Renders a collection of toolbar items within a section container.
+ * Handles item type routing and provides consistent section-level styling.
+ */
 const ToolbarSection: React.FC<{
   items: ToolbarItem[];
   className?: string;
@@ -171,6 +195,17 @@ const ToolbarSection: React.FC<{
 
 ToolbarSection.displayName = 'ToolbarSection';
 
+/**
+ * Comprehensive toolbar component with three-section layout and responsive behavior.
+ * Orchestrates different toolbar item types within a fixed header with backdrop blur.
+ * Features priority-based responsive hiding and intelligent section sizing.
+ *
+ * @param config - Toolbar configuration defining items for each section
+ * @param config.leftSection - Items aligned to the left with priority-based hiding
+ * @param config.centerSection - Items centered with auto-collapse when empty
+ * @param config.rightSection - Items aligned to the right with compact mobile layout
+ * @param className - Additional CSS classes for toolbar customization
+ */
 export const UniversalToolbar: React.FC<UniversalToolbarProps> = React.memo(
   ({ config, className }) => {
     const { leftSection = [], centerSection = [], rightSection = [] } = config;

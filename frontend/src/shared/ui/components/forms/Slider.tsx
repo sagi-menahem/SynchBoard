@@ -3,18 +3,36 @@ import React from 'react';
 
 import styles from './Slider.module.scss';
 
+/**
+ * Props for the Slider component.
+ */
 interface SliderProps {
-  value: number;
-  min: number;
-  max: number;
-  onChange: (value: number) => void;
-  label?: string;
+  value: number; // Current slider value
+  min: number; // Minimum allowed value
+  max: number; // Maximum allowed value
+  onChange: (value: number) => void; // Callback when value changes
+  label?: string; // Optional label for the slider
   className?: string;
-  'aria-label'?: string;
-  disabled?: boolean;
-  step?: number;
+  'aria-label'?: string; // Accessibility label
+  disabled?: boolean; // Whether slider is disabled
+  step?: number; // Step increment for value changes
 }
 
+/**
+ * Slider input component built on Radix UI primitives.
+ * Provides smooth value selection with visual feedback and accessibility features.
+ * Displays current value alongside the slider for immediate user feedback.
+ * 
+ * @param {number} value - Current slider value
+ * @param {number} min - Minimum allowed value
+ * @param {number} max - Maximum allowed value
+ * @param {function} onChange - Callback function called when value changes
+ * @param {string} label - Optional label text displayed beside the slider
+ * @param {string} className - Optional CSS class to apply to the container
+ * @param {string} aria-label - Accessibility label for screen readers
+ * @param {boolean} disabled - Whether the slider is disabled and non-interactive
+ * @param {number} step - Step increment for discrete value changes
+ */
 export const Slider: React.FC<SliderProps> = ({
   value,
   min,

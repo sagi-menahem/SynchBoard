@@ -5,10 +5,22 @@ import { useTranslation } from 'react-i18next';
 
 import styles from '../pages/SettingsPage.module.scss';
 
+/**
+ * Properties for the ProfileDisplayView component defining user data to display.
+ */
 interface ProfileDisplayViewProps {
+  /** User profile data containing personal information to render */
   user: UserProfile;
 }
 
+/**
+ * Read-only profile display component for user information presentation.
+ * Renders user profile data in a structured format with proper null handling and localization.
+ * Provides formatted display for dates and uses appropriate fallback messages for missing data.
+ * Implements accessible field labeling and consistent visual hierarchy for profile information.
+ * 
+ * @param user - User profile data object containing personal information fields
+ */
 const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {
   const { t } = useTranslation(['settings', 'common']);
 

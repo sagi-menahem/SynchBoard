@@ -26,27 +26,47 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+/**
+ * OAuth2 authentication success handler for processing Google OAuth2 login. Handles user creation,
+ * updates, JWT token generation, and frontend redirection after successful OAuth2 authentication.
+ * Includes profile picture download and proper error handling with user-friendly messages.
+ * 
+ * @author Sagi Menahem
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    /** Repository for user data operations */
     private final UserRepository userRepository;
+    /** Service for JWT token generation */
     private final JwtService jwtService;
+    /** Service for profile picture download and storage */
     private final FileStorageService fileStorageService;
+    /** Application configuration properties */
     private final AppProperties appProperties;
 
+    /**
+     * Handles successful OAuth2 authentication by processing user data and generating JWT tokens.
+     * Creates new users or updates existing users, downloads profile pictures, and redirects to the
+     * frontend with a JWT token or error message.
+     * 
+     * @param request The HTTP servlet request
+     * @param response The HTTP servlet response
+     * @param authentication The OAuth2 authentication object
+     * @throws IOException if I/O operations fail
+     * @throws ServletException if servlet operations fail
+     */
     @Override
-    public void onAuthenticationSuccess(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        Authentication authentication
-    ) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException, ServletException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = oauthToken.getPrincipal();
         String registrationId = oauthToken.getAuthorizedClientRegistrationId();
 
-        log.info(SECURITY_PREFIX + " OAuth2 authentication success for provider: {}", registrationId);
+        log.info(SECURITY_PREFIX + " OAuth2 authentication success for provider: {}",
+                registrationId);
 
         try {
             String email = oAuth2User.getAttribute("email");
@@ -56,29 +76,24 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
             if (email == null || providerId == null) {
                 log.error(
-                    SECURITY_PREFIX + " Missing required OAuth2 user data - email: {}, providerId: {}",
-                    email != null,
-                    providerId != null
-                );
-                handleAuthenticationFailure(response, "Missing required user information from Google");
+                        SECURITY_PREFIX
+                                + " Missing required OAuth2 user data - email: {}, providerId: {}",
+                        email != null, providerId != null);
+                handleAuthenticationFailure(response,
+                        "Missing required user information from Google");
                 return;
             }
 
             Optional<User> existingUser;
             try {
                 existingUser = userRepository.findById(email);
-                log.info(
-                    SECURITY_PREFIX + " OAuth2 user lookup result for {}: exists={}",
-                    email,
-                    existingUser.isPresent()
-                );
+                log.info(SECURITY_PREFIX + " OAuth2 user lookup result for {}: exists={}", email,
+                        existingUser.isPresent());
             } catch (Exception dbException) {
-                log.error(
-                    SECURITY_PREFIX + " Database error during OAuth2 user lookup for {}: {}",
-                    email,
-                    dbException.getMessage()
-                );
-                handleAuthenticationFailure(response, "Database is not available. Please try again later.");
+                log.error(SECURITY_PREFIX + " Database error during OAuth2 user lookup for {}: {}",
+                        email, dbException.getMessage());
+                handleAuthenticationFailure(response,
+                        "Database is not available. Please try again later.");
                 return;
             }
 
@@ -86,16 +101,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
             if (existingUser.isPresent()) {
                 User user = existingUser.get();
-                log.info(
-                    SECURITY_PREFIX + " Found existing user: email={}, authProvider={}, creationDate={}",
-                    email,
-                    user.getAuthProvider(),
-                    user.getCreationDate()
-                );
+                log.info(SECURITY_PREFIX
+                        + " Found existing user: email={}, authProvider={}, creationDate={}", email,
+                        user.getAuthProvider(), user.getCreationDate());
 
                 if (user.getAuthProvider() != User.AuthProvider.GOOGLE) {
-                    log.warn(SECURITY_PREFIX + " OAuth2 login attempted for existing non-OAuth user: {}", email);
-                    handleAuthenticationFailure(response, MessageConstants.AUTH_EMAIL_ALREADY_REGISTERED);
+                    log.warn(
+                            SECURITY_PREFIX
+                                    + " OAuth2 login attempted for existing non-OAuth user: {}",
+                            email);
+                    handleAuthenticationFailure(response,
+                            MessageConstants.AUTH_EMAIL_ALREADY_REGISTERED);
                     return;
                 }
 
@@ -106,11 +122,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     log.info(SECURITY_PREFIX + " Updated existing OAuth2 user: {}", email);
                 } catch (Exception dbException) {
                     log.error(
-                        SECURITY_PREFIX + " Database error during OAuth2 user update for {}: {}",
-                        email,
-                        dbException.getMessage()
-                    );
-                    handleAuthenticationFailure(response, "Database is not available. Please try again later.");
+                            SECURITY_PREFIX
+                                    + " Database error during OAuth2 user update for {}: {}",
+                            email, dbException.getMessage());
+                    handleAuthenticationFailure(response,
+                            "Database is not available. Please try again later.");
                     return;
                 }
             } else {
@@ -119,27 +135,23 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 try {
                     userForToken = userRepository.save(newUser);
                     log.info(
-                        SECURITY_PREFIX + " Created new OAuth2 user: {} with creation date: {}",
-                        email,
-                        newUser.getCreationDate()
-                    );
+                            SECURITY_PREFIX + " Created new OAuth2 user: {} with creation date: {}",
+                            email, newUser.getCreationDate());
                 } catch (Exception dbException) {
                     log.error(
-                        SECURITY_PREFIX + " Database error during OAuth2 user creation for {}: {}",
-                        email,
-                        dbException.getMessage()
-                    );
-                    handleAuthenticationFailure(response, "Database is not available. Please try again later.");
+                            SECURITY_PREFIX
+                                    + " Database error during OAuth2 user creation for {}: {}",
+                            email, dbException.getMessage());
+                    handleAuthenticationFailure(response,
+                            "Database is not available. Please try again later.");
                     return;
                 }
             }
 
             String jwt = jwtService.generateToken(userForToken);
 
-            String frontendUrl =
-                appProperties.getOauth2().getFrontendBaseUrl() +
-                "/auth/callback?token=" +
-                URLEncoder.encode(jwt, StandardCharsets.UTF_8);
+            String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl()
+                    + "/auth/callback?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
 
             log.info(SECURITY_PREFIX + " OAuth2 authentication successful for: {}", email);
             response.sendRedirect(frontendUrl);
@@ -149,39 +161,63 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
     }
 
-    private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
-        String frontendUrl =
-            appProperties.getOauth2().getFrontendBaseUrl() +
-            "/auth/error?message=" +
-            URLEncoder.encode(message, StandardCharsets.UTF_8);
+    /**
+     * Handles OAuth2 authentication failures by redirecting to frontend error page.
+     * 
+     * @param response The HTTP servlet response
+     * @param message The error message to display to user
+     * @throws IOException if redirect fails
+     */
+    private void handleAuthenticationFailure(HttpServletResponse response, String message)
+            throws IOException {
+        String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl() + "/auth/error?message="
+                + URLEncoder.encode(message, StandardCharsets.UTF_8);
         response.sendRedirect(frontendUrl);
     }
 
-    private User createUserFromOAuth2(String email, String name, String pictureUrl, String providerId) {
+    /**
+     * Creates a new User entity from OAuth2 user data. Downloads and stores the profile picture if
+     * provided.
+     * 
+     * @param email The user's email address
+     * @param name The user's full name
+     * @param pictureUrl The URL of the user's profile picture
+     * @param providerId The OAuth provider's user identifier
+     * @return A new User entity with OAuth2 data
+     */
+    private User createUserFromOAuth2(String email, String name, String pictureUrl,
+            String providerId) {
         String[] nameParts = splitName(name);
 
         String localPicturePath = null;
         if (pictureUrl != null) {
             localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
-                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}", email);
+                log.info(
+                        SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}",
+                        email);
             } else {
-                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}", pictureUrl);
+                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
+                        pictureUrl);
             }
         }
 
-        return User.builder()
-            .email(email)
-            .firstName(nameParts[0])
-            .lastName(nameParts[1])
-            .authProvider(User.AuthProvider.GOOGLE)
-            .providerId(providerId)
-            .profilePictureUrl(localPicturePath)
-            .creationDate(LocalDateTime.now())
-            .build();
+        return User.builder().email(email).firstName(nameParts[0]).lastName(nameParts[1])
+                .authProvider(User.AuthProvider.GOOGLE).providerId(providerId)
+                .profilePictureUrl(localPicturePath).creationDate(LocalDateTime.now()).build();
     }
 
-    private void updateUserFromOAuth2(User user, String name, String pictureUrl, String providerId) {
+    /**
+     * Updates an existing User entity with fresh OAuth2 data. Replaces the profile picture if a new
+     * one is provided.
+     * 
+     * @param user The existing user to update
+     * @param name The updated full name
+     * @param pictureUrl The updated profile picture URL
+     * @param providerId The OAuth provider's user identifier
+     */
+    private void updateUserFromOAuth2(User user, String name, String pictureUrl,
+            String providerId) {
         if (name != null) {
             String[] nameParts = splitName(name);
             user.setFirstName(nameParts[0]);
@@ -190,21 +226,22 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         if (pictureUrl != null) {
             if (StringUtils.hasText(user.getProfilePictureUrl())) {
-                String existingFilename = user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
+                // Extract filename from stored URL by removing the base path prefix
+                // This assumes the stored URL format is consistent: IMAGES_BASE_PATH + filename
+                String existingFilename =
+                        user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
                 if (existingFilename != null && !existingFilename.isBlank()) {
-                    log.debug(SECURITY_PREFIX + " Deleting existing OAuth profile picture: {}", existingFilename);
+                    log.debug(SECURITY_PREFIX + " Deleting existing OAuth profile picture: {}",
+                            existingFilename);
                     try {
                         fileStorageService.delete(existingFilename);
-                        log.debug(
-                            SECURITY_PREFIX + " Successfully deleted existing OAuth profile picture: {}",
-                            existingFilename
-                        );
+                        log.debug(SECURITY_PREFIX
+                                + " Successfully deleted existing OAuth profile picture: {}",
+                                existingFilename);
                     } catch (Exception e) {
-                        log.warn(
-                            SECURITY_PREFIX + " Failed to delete existing OAuth profile picture: {} - {}",
-                            existingFilename,
-                            e.getMessage()
-                        );
+                        log.warn(SECURITY_PREFIX
+                                + " Failed to delete existing OAuth profile picture: {} - {}",
+                                existingFilename, e.getMessage());
                     }
                 }
             }
@@ -212,9 +249,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
                 user.setProfilePictureUrl(localPicturePath);
-                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for user: {}", user.getEmail());
+                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for user: {}",
+                        user.getEmail());
             } else {
-                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}", pictureUrl);
+                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
+                        pictureUrl);
                 user.setProfilePictureUrl(null);
             }
         }
@@ -222,15 +261,21 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         user.setProviderId(providerId);
     }
 
+    /**
+     * Splits a full name into first and last name components.
+     * 
+     * @param fullName The full name to split
+     * @return Array containing [firstName, lastName], with lastName possibly null
+     */
     private String[] splitName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) {
-            return new String[] { "Unknown", null };
+            return new String[] {"Unknown", null};
         }
 
         String[] parts = fullName.trim().split("\\s+", 2);
         String firstName = parts[0];
         String lastName = parts.length > 1 ? parts[1] : null;
 
-        return new String[] { firstName, lastName };
+        return new String[] {firstName, lastName};
     }
 }

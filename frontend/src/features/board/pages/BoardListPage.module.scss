@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Dynamic height calculation accounting for banner and toolbar presence
 .pageContent {
   position: relative;
   padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px);
@@ -78,6 +79,7 @@
   margin: 0;
 }
 
+// Responsive grid layout with fluid column sizing
 .boardList.grid {
   grid-template-columns: repeat(
     auto-fit,
@@ -112,6 +114,7 @@
   transform: translateY(-1px);
 }
 
+// Staggered entrance animation for board list items
 @keyframes boardStaggerIn {
   from {
     opacity: 0;

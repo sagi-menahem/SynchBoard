@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Main Error Display Container ---
+
+// Full-screen error overlay with centered content
 .errorContainer {
   position: fixed;
   inset: 0;
@@ -12,6 +15,7 @@
   box-sizing: border-box;
 }
 
+// Error information card with responsive design and backdrop blur
 .errorCard {
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
@@ -35,6 +39,9 @@
   }
 }
 
+// --- Error Visual Elements ---
+
+// Container for animated error icon with subtle effects
 .iconContainer {
   margin-bottom: theme.$spacing-6;
   position: relative;
@@ -52,6 +59,7 @@
   }
 }
 
+// Subtle pulsing animation for error icon
 @keyframes pulseIcon {
   0%,
   100% {
@@ -63,6 +71,9 @@
   }
 }
 
+// --- Text Content ---
+
+// Primary error title with responsive typography
 .title {
   color: var(--color-text-primary);
   font-size: 2rem;
@@ -75,6 +86,7 @@
   }
 }
 
+// Secondary error description with constrained width
 .message {
   color: var(--color-text-secondary);
   font-size: 1.125rem;
@@ -89,6 +101,9 @@
   }
 }
 
+// --- Action Buttons ---
+
+// Responsive button layout container with mobile stack behavior
 .buttonContainer {
   display: flex;
   gap: theme.$spacing-4;
@@ -108,6 +123,7 @@
   }
 }
 
+// Primary retry action button with loading state support
 .retryButton {
   min-width: 140px;
   height: 44px;
@@ -126,6 +142,7 @@
   }
 }
 
+// Secondary action button with consistent sizing
 .secondaryButton {
   min-width: 120px;
   height: 44px;
@@ -144,6 +161,8 @@
   }
 }
 
+// --- RTL Language Support ---
+
 [dir='rtl'] {
   .buttonContainer {
     flex-direction: row-reverse;
@@ -161,6 +180,9 @@
   }
 }
 
+// --- Accessibility Enhancements ---
+
+// High contrast mode adjustments
 @media (prefers-contrast: high) {
   .errorCard {
     border-width: 2px;
@@ -172,6 +194,7 @@
   }
 }
 
+// Reduced motion preferences compliance
 @media (prefers-reduced-motion: reduce) {
   .errorIcon {
     animation: none;
@@ -183,12 +206,15 @@
   }
 }
 
+// --- Focus States ---
+
 .retryButton:focus,
 .secondaryButton:focus {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
+// Loading state for retry button with spinning icon
 .retryButton:disabled {
   pointer-events: none;
   opacity: 0.7;
@@ -198,6 +224,7 @@
   }
 }
 
+// Loading spinner animation for disabled retry button
 @keyframes spin {
   from {
     transform: rotate(0deg);

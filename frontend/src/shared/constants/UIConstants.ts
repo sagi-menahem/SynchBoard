@@ -1,3 +1,10 @@
+/**
+ * User interface layout and styling constants for the SynchBoard application.
+ * Defines precise pixel measurements, spacing values, dimensions, and tolerances used
+ * across various UI components including toolbars, modals, canvas interactions, and layout elements.
+ * These constants ensure consistent visual spacing and behavior throughout the application.
+ */
+
 export const UI_CONSTANTS = {
   AUTH_MODAL_MAX_WIDTH: '400px',
 

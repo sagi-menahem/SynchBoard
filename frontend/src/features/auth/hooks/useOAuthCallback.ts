@@ -10,11 +10,19 @@ import { extractErrorFromCallback, extractTokenFromCallback } from '../services/
 
 import { useAuth } from '.';
 
+/**
+ * Hook for processing OAuth authentication callbacks from external providers.
+ * Handles token extraction, error handling, session management, and navigation
+ * after OAuth flow completion. Prevents duplicate processing and manages loading states.
+ *
+ * @returns Object containing processing state for OAuth callback handling
+ */
 export const useOAuthCallback = () => {
   const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
 
+  // Expensive initialization: OAuth callback detection with URL parsing to prevent unnecessary renders
   const [isProcessing, setIsProcessing] = useState(() => {
     const isCallback = window.location.pathname === '/auth/callback';
     const hasParams =
@@ -24,6 +32,7 @@ export const useOAuthCallback = () => {
     const shouldProcess = isCallback && hasParams;
 
     if (shouldProcess) {
+      // Mark OAuth flow as in progress to prevent UI flickering
       sessionStorage.setItem('oauth_loading', 'true');
     }
 
@@ -32,6 +41,7 @@ export const useOAuthCallback = () => {
 
   useEffect(() => {
     const processedKey = 'oauth_callback_processed';
+    // Prevent duplicate processing of the same callback
     if (sessionStorage.getItem(processedKey) === 'true') {
       return;
     }
@@ -86,6 +96,7 @@ export const useOAuthCallback = () => {
         void window.history.replaceState({}, document.title, '/auth');
         void navigate(APP_ROUTES.BOARD_LIST, { replace: true });
 
+        // Clean up session storage after navigation completes - 1 second delay ensures navigation is complete
         setTimeout(() => {
           sessionStorage.removeItem('oauth_success_shown');
           sessionStorage.removeItem('oauth_callback_processed');

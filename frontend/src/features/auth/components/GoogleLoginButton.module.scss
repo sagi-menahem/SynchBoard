@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Google OAuth button with brand-compliant styling and theming support
 .googleButton {
   @include theme.flex-center;
   @include theme.button-transition;
@@ -19,17 +20,20 @@
   cursor: pointer;
 }
 
+// Hover state with Google-style shadow elevation
 .googleButton:hover:not(:disabled) {
   background: var(--google-button-hover-bg);
   border-color: var(--google-button-hover-border);
   box-shadow: theme.$shadow-google;
 }
 
+// Active press state with reduced shadow
 .googleButton:active:not(:disabled) {
   background: var(--google-button-active-bg);
   box-shadow: theme.$shadow-google-hover;
 }
 
+// Disabled state with reduced opacity and no interaction
 .googleButton:disabled {
   background: var(--google-button-bg);
   color: var(--google-button-disabled-text);
@@ -39,12 +43,14 @@
   box-shadow: none;
 }
 
+// Fixed-size Google logo icon
 .googleIcon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
 }
 
+// Button text with consistent font styling
 .buttonText {
   font-family: inherit;
   font-weight: 500;

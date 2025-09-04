@@ -85,6 +85,7 @@
   gap: theme.$spacing-4;
 }
 
+/* Grouped container for related canvas size options with visual separation */
 .sizeGroup {
   @include theme.flex-column;
   gap: theme.$spacing-2;
@@ -115,6 +116,7 @@
   padding: theme.$spacing-1 0;
 }
 
+/* Custom styled radio input with theme accent color */
 .radioOption input[type='radio'] {
   width: 1rem;
   height: 1rem;
@@ -126,6 +128,7 @@
   color: theme.$text-hover;
 }
 
+/* Container for custom dimension inputs with consistent spacing and typography */
 .customSizeInputs {
   display: flex;
   align-items: center;

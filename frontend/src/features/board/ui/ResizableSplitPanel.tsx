@@ -16,6 +16,22 @@ interface ResizableSplitPanelProps {
   backgroundBlur?: string;
 }
 
+/**
+ * Resizable split panel component for flexible two-column layouts.
+ * This component provides a drag-and-resize interface between two content areas,
+ * supporting RTL layouts, keyboard accessibility, and user preference integration.
+ * The divider includes visual feedback and maintains minimum width constraints for
+ * both panels. It integrates with user board preferences for background styling
+ * and provides smooth resize interactions with proper cursor management.
+ * 
+ * @param leftChild - React component or content for the left panel
+ * @param rightChild - React component or content for the right panel
+ * @param initialSplitRatio - Initial percentage width of the left panel (defaults to 70%)
+ * @param minLeftWidth - Minimum pixel width for the left panel
+ * @param minRightWidth - Minimum pixel width for the right panel
+ * @param onSplitChange - Callback fired when the split ratio changes
+ * @param backgroundBlur - CSS blur value for background styling
+ */
 const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   leftChild,
   rightChild,
@@ -31,6 +47,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Get user's chosen background color from preferences
   const getUserChosenColor = useCallback(() => {
     const savedVariable = preferences.boardBackgroundSetting;
     if (!savedVariable) {
@@ -54,6 +71,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const containerWidth = containerRect.width;
       let mouseX = e.clientX - containerRect.left;
 
+      // Adjust for RTL layout direction
       const isRTL = document.documentElement.dir === 'rtl';
       if (isRTL) {
         mouseX = containerWidth - mouseX;
@@ -63,9 +81,11 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const minLeftRatio = (minLeftWidth / containerWidth) * 100;
       const minRightRatio = (minRightWidth / containerWidth) * 100;
 
+      // Clamp ratio to respect minimum widths and reasonable limits
+      // Double Math.max/min pattern ensures ratio stays within both dynamic constraints (panel minimums) and static bounds (30-70%)
       const clampedRatio = Math.max(
-        Math.max(minLeftRatio, 30),
-        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio),
+        Math.max(minLeftRatio, 30), // Left panel minimum: larger of calculated minimum or 30% of container
+        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio), // Right panel minimum: smaller of 70% limit or calculated constraint
       );
 
       setSplitRatio(clampedRatio);
@@ -78,6 +98,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
     setIsDragging(false);
   }, []);
 
+  // Manage global mouse events and cursor during drag operation
   React.useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);

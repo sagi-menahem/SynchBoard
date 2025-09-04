@@ -34,10 +34,12 @@ export const authValidation = {
   },
 
   validateVerificationCode: (code: string | null, t: (key: string) => string) => {
+    // Verification codes are always 6 digits for optimal user memorability and security balance
     if (code === null || code === '' || code.length !== 6) {
       toast.error(t('auth:verifyEmail.validation.codeRequired'));
       return { error: t('auth:verifyEmail.validation.codeRequired') };
     }
+    // Ensure code contains exactly 6 numeric digits to match backend generation format
     if (!/^\d{6}$/.test(code)) {
       toast.error(t('auth:verifyEmail.validation.codeFormat'));
       return { error: t('auth:verifyEmail.validation.codeFormat') };
@@ -55,8 +57,11 @@ export const authErrorHandling = {
         axiosError.response?.data?.message !== ''
       ) {
         const message = axiosError.response.data.message;
+        // Check if message appears to be a translation key (contains dots)
         if (message.includes('.')) {
+          // Remove 'auth.' prefix if present to normalize the key
           const keyWithoutNamespace = message.replace('auth.', '');
+          // Try multiple translation key patterns in priority order
           const possibleKeys = [
             `auth:errors.${keyWithoutNamespace}`,
             `auth:${keyWithoutNamespace}`,
@@ -64,6 +69,7 @@ export const authErrorHandling = {
             message,
           ];
 
+          // Find first successful translation (where result differs from key)
           for (const key of possibleKeys) {
             const translated = t(key);
             if (translated && translated !== key) {
@@ -110,6 +116,14 @@ export const authToastMessages = {
   }),
 };
 
+/**
+ * Hook for creating authentication forms with standardized validation, error handling, and toast messages.
+ * Provides consistent form behavior across login, registration, password reset, and email verification flows
+ * with integrated validation utilities and localized messaging.
+ *
+ * @param {Object} options - Form configuration including API service, validation schema, and form type specification
+ * @returns Form handlers and state management for authentication operations
+ */
 export const useAuthForm = <TRequest extends object, TResponse>(
   options: Omit<UseFormWithToastOptions<TRequest, TResponse>, 'toastMessages'> & {
     formType: 'login' | 'register' | 'forgotPassword' | 'verifyEmail';

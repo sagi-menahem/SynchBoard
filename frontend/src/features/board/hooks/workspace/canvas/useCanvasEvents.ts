@@ -25,6 +25,24 @@ interface UseCanvasEventsProps {
   onMouseUp?: (eventData: CanvasEventData) => void;
 }
 
+/**
+ * Custom hook that manages comprehensive canvas mouse event handling for collaborative drawing interactions.
+ * This hook provides sophisticated event processing for canvas interactions including mouse down, move, and up events
+ * with proper state management, coordinate tracking, and connection status awareness. It handles the complex
+ * coordination between local drawing state and global canvas events, manages event propagation with proper cleanup,
+ * and integrates connection status checking to prevent interactions during disconnected states. The hook abstracts
+ * the complexity of canvas event handling while providing structured event data to downstream handlers and maintaining
+ * proper drawing state consistency throughout interaction sessions.
+ * 
+ * @param canvasRef - Reference to the HTML canvas element for event attachment and coordinate calculations
+ * @param contextRef - Reference to the 2D canvas rendering context for drawing operations validation
+ * @param drawingState - Object containing drawing state management functions and current drawing status
+ * @param getMouseCoordinates - Function for converting mouse events to canvas coordinate system
+ * @param onMouseDown - Optional callback for handling mouse down events with structured event data
+ * @param onMouseMove - Optional callback for handling mouse move events during drawing operations
+ * @param onMouseUp - Optional callback for handling mouse up events to complete drawing operations
+ * @returns Object containing the primary mouse down handler and current drawing status for canvas interactions
+ */
 export const useCanvasEvents = ({
   canvasRef,
   contextRef,
@@ -82,6 +100,7 @@ export const useCanvasEvents = ({
     ],
   );
 
+  // Manage global mouse event listeners during drawing operations - global listeners needed to track mouse outside canvas bounds
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) {

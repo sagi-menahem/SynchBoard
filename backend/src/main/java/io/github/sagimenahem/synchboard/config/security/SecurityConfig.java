@@ -22,6 +22,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * Spring Security configuration for the SynchBoard application. Configures JWT-based
+ * authentication, OAuth2 integration, CORS policies, and security filters for protecting API
+ * endpoints and WebSocket connections.
+ * 
+ * @author Sagi Menahem
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -36,28 +43,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
-            .csrf((csrf) -> csrf.disable())
-            .authorizeHttpRequests((auth) ->
-                auth
-                    .requestMatchers(API_AUTH_PATH_PATTERN)
-                    .permitAll()
-                    .requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS)
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN)
-                    .permitAll()
-                    .requestMatchers("/login/oauth2/**", "/oauth2/**")
-                    .permitAll()
-                    .requestMatchers(API_USER_PATH_PATTERN)
-                    .authenticated()
-                    .anyRequest()
-                    .authenticated()
-            )
-            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .oauth2Login((oauth2) -> oauth2.successHandler(oAuth2SuccessHandler).failureHandler(oAuth2FailureHandler));
+        http.cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+                .csrf((csrf) -> csrf.disable())
+                .authorizeHttpRequests((auth) -> auth.requestMatchers(API_AUTH_PATH_PATTERN)
+                        .permitAll().requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
+                        .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN).permitAll()
+                        .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
+                        .requestMatchers(API_USER_PATH_PATTERN).authenticated().anyRequest()
+                        .authenticated())
+                .sessionManagement(
+                        (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login((oauth2) -> oauth2.successHandler(oAuth2SuccessHandler)
+                        .failureHandler(oAuth2FailureHandler));
 
         return http.build();
     }
@@ -65,7 +64,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(appProperties.getSecurity().getAllowedOrigins()));
+        configuration
+                .setAllowedOrigins(Arrays.asList(appProperties.getSecurity().getAllowedOrigins()));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

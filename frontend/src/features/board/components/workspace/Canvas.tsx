@@ -11,25 +11,59 @@ import type { Tool } from 'shared/types/CommonTypes';
 import styles from './Canvas.module.scss';
 import TextInputOverlay from './TextInputOverlay';
 
+/**
+ * Default canvas configuration used when no custom config is provided.
+ * Provides fallback values for background color, width, and height.
+ */
 const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   backgroundColor: CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
   width: CANVAS_CONFIG.DEFAULT_WIDTH,
   height: CANVAS_CONFIG.DEFAULT_HEIGHT,
 };
 
+/**
+ * Props interface for Canvas component.
+ * Defines the drawing state, interaction handlers, and canvas configuration.
+ */
 interface CanvasProps {
+  /** Unique instance identifier for this canvas session */
   instanceId: string;
+  /** Handler for drawing actions performed on the canvas */
   onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+  /** Array of drawing objects/actions to render on the canvas */
   objects: ActionPayload[];
+  /** Currently selected drawing tool */
   tool: Tool;
+  /** Current stroke color for drawing operations */
   strokeColor: string;
+  /** Current stroke width for drawing operations */
   strokeWidth: number;
+  /** Current font size for text tools */
   fontSize: number;
+  /** Canvas configuration including dimensions and background color */
   canvasConfig?: CanvasConfig;
+  /** Handler for color picking interactions on the canvas */
   onColorPick?: (color: string) => void;
+  /** Whether the canvas is in a loading state */
   isLoading?: boolean;
 }
 
+/**
+ * Interactive HTML5 canvas component for collaborative drawing and whiteboarding.
+ * This component manages the drawing surface, tool interactions, text input overlays,
+ * and connection status indicators for real-time collaborative drawing.
+ * 
+ * @param instanceId - Unique instance identifier for this canvas session
+ * @param onDraw - Handler for drawing actions performed on the canvas
+ * @param objects - Array of drawing objects/actions to render on the canvas
+ * @param tool - Currently selected drawing tool
+ * @param strokeColor - Current stroke color for drawing operations
+ * @param strokeWidth - Current stroke width for drawing operations
+ * @param fontSize - Current font size for text tools
+ * @param canvasConfig - Canvas configuration including dimensions and background color
+ * @param onColorPick - Handler for color picking interactions on the canvas
+ * @param isLoading - Whether the canvas is in a loading state
+ */
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();

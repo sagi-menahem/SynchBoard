@@ -24,6 +24,27 @@ interface UseCanvasInteractionsProps {
   handleMouseDown: (e: React.MouseEvent<HTMLCanvasElement>) => void;
 }
 
+/**
+ * Custom hook that manages specialized canvas interactions including color picking, recoloring, and text input.
+ * This hook provides advanced interaction capabilities beyond basic drawing, handling tool-specific behaviors
+ * such as color picker sampling, object recoloring with hover feedback, text input overlay management, and
+ * background styling preferences integration. It processes complex interactions that require pixel-level canvas
+ * access, coordinate transformations, and specialized tool logic. The hook coordinates between user interactions
+ * and drawing actions while maintaining proper state management for text input overlays and dynamic cursor
+ * feedback for recoloring operations.
+ * 
+ * @param tool - Currently active drawing tool that determines interaction behavior
+ * @param strokeColor - Active color setting for drawing and recoloring operations
+ * @param fontSize - Font size setting for text input operations
+ * @param instanceId - Unique identifier for action tracking and collaboration
+ * @param objects - Array of existing canvas objects for recoloring target detection
+ * @param canvasRef - Reference to the HTML canvas element for pixel access and coordinate calculations
+ * @param onDraw - Callback function for submitting drawing actions to the collaboration system
+ * @param onColorPick - Optional callback for color picker tool results
+ * @param canvasBackgroundColor - Optional canvas background color for transparent pixel handling
+ * @param handleMouseDown - Fallback mouse down handler for standard drawing operations
+ * @returns Object containing text input state, cursor styles, and specialized interaction handlers
+ */
 export const useCanvasInteractions = ({
   tool,
   strokeColor,
@@ -64,19 +85,24 @@ export const useCanvasInteractions = ({
           const imageData = ctx.getImageData(x, y, 1, 1);
           const data = imageData.data;
 
+          // Check for transparent pixel (alpha channel = 0)
           if (data[3] === 0) {
             const backgroundColor = canvasBackgroundColor ?? '#FFFFFF';
+            // Expand 3-digit hex shorthand to 6-digit format (#ABC -> #AABBCC)
+            // Character duplication algorithm: each hex digit is repeated to create full RGB values
             const normalizedColor =
               backgroundColor.length === 4
                 ? `#${backgroundColor
                     .slice(1)
                     .split('')
-                    .map((c) => c + c)
+                    .map((c) => c + c) // Duplicate each character (#A -> AA, #B -> BB, #C -> CC)
                     .join('')}`
                 : backgroundColor;
             onColorPick?.(normalizedColor);
           } else {
+            // Convert RGB pixel data to hexadecimal color string
             const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
+            // Bit manipulation: (1 << 24) ensures 6-digit hex by setting bit 24, then slice(1) removes leading '1'
             onColorPick?.(hex);
           }
         }

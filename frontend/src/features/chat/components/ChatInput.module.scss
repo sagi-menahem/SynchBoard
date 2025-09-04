@@ -7,6 +7,7 @@
   @include theme.flex-center;
 }
 
+/* Pill-shaped input container with hover and focus states */
 .inputContainer {
   display: flex;
   align-items: center;
@@ -30,6 +31,7 @@
     @include theme.shadow-light;
   }
 
+  /* Disabled state during message sending */
   &.sending {
     opacity: 0.8;
     pointer-events: none;
@@ -66,6 +68,7 @@
     }
   }
 
+  /* Remove spinner arrows from number inputs */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -78,6 +81,7 @@
   }
 }
 
+/* Circular send button with scale hover effect */
 .sendButton {
   display: flex;
   align-items: center;
@@ -148,6 +152,7 @@
   }
 }
 
+/* Accessibility: disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .inputContainer,
   .input,
@@ -161,6 +166,7 @@
   }
 }
 
+/* Accessibility: enhanced contrast for high contrast preference */
 @media (prefers-contrast: high) {
   .inputContainer {
     border-width: 3px;

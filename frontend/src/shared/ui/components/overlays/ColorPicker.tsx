@@ -8,15 +8,30 @@ import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ColorPicker.module.scss';
 
+/**
+ * Props for the ColorPicker component.
+ */
 interface ColorPickerProps {
-  color: string;
-  onChange: (color: string) => void;
-  disabled?: boolean;
+  color: string; // Current selected color in hex format
+  onChange: (color: string) => void; // Callback when color selection changes
+  disabled?: boolean; // Whether the color picker is disabled
   className?: string;
-  label?: string;
-  id?: string;
+  label?: string; // Optional label text for accessibility
+  id?: string; // HTML id attribute for the color picker
 }
 
+/**
+ * Advanced color picker component with popover interface and preset colors.
+ * Provides both a visual color wheel picker and quick-select preset colors for efficient color selection.
+ * Features intelligent positioning to avoid viewport overflow and supports keyboard navigation.
+ * 
+ * @param {string} color - Current selected color in hex format
+ * @param {function} onChange - Callback function called when color selection changes
+ * @param {boolean} disabled - Whether the color picker is disabled and non-interactive
+ * @param {string} className - Additional CSS classes to apply to the component
+ * @param {string} label - Optional label text for accessibility and display
+ * @param {string} id - HTML id attribute for the color picker button
+ */
 const ColorPicker: React.FC<ColorPickerProps> = ({
   color,
   onChange,
@@ -40,12 +55,13 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     showPicker,
   );
 
+  // Calculate optimal popover position to avoid viewport overflow - runs when popover opens
   useEffect(() => {
     if (showPicker && swatchRef.current) {
       const swatchRect = swatchRef.current.getBoundingClientRect();
-      const popoverWidth = 250;
-      const popoverHeight = 300;
-      const margin = 8;
+      const popoverWidth = 250; // Color picker widget standard width
+      const popoverHeight = 300; // Color picker widget standard height with palette and sliders
+      const margin = 8; // Visual spacing between swatch and popover for better UX
 
       let left = swatchRect.left;
       let top = swatchRect.bottom + margin;
@@ -90,13 +106,15 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     [onChange],
   );
 
+  // Track dragging state to close picker when color selection is complete
   const handleMouseDown = useCallback(() => {
     setIsDragging(true);
   }, []);
 
+  // Close picker when user finishes selecting from color wheel
   const handleMouseUp = useCallback((e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    const isSaturationArea = target.closest('.react-colorful__saturation');
+    const isSaturationArea = target.closest('.react-colorful__saturation'); // CSS class name from react-colorful library for main color selection area
 
     setIsDragging(false);
     if (isSaturationArea) {
@@ -104,6 +122,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   }, []);
 
+  // Handle global mouse events to close picker after drag operations - manages drag state cleanup
   useEffect(() => {
     const handleGlobalMouseUp = (e: MouseEvent) => {
       if (isDragging) {
@@ -125,16 +144,19 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }
   }, [isDragging]);
 
+  // Memoized to avoid recalculating CSS classes when className prop hasn't changed
   const containerClasses = useMemo(
     () => `${styles.colorPickerContainer} ${className}`,
     [className],
   );
 
+  // Memoized to avoid recalculating disabled state CSS classes on every render
   const swatchClasses = useMemo(
     () => `${styles.swatch} ${disabled ? styles.disabled : ''}`,
     [disabled],
   );
 
+  // Memoized to avoid recalculating popover position styles when coordinates haven't changed
   const popoverStyle = useMemo(
     () => ({
       top: `${popoverPosition.top}px`,

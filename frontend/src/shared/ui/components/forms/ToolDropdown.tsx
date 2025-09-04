@@ -7,24 +7,45 @@ import type { Tool } from 'shared/types/CommonTypes';
 
 import Button from './Button';
 
+/**
+ * Represents a single tool item in the dropdown.
+ */
 interface ToolItem {
-  value: Tool;
-  icon: React.ComponentType<{ size?: number }>;
-  labelKey: string;
+  value: Tool; // Tool enum value
+  icon: React.ComponentType<{ size?: number }>; // Icon component for this tool
+  labelKey: string; // Translation key for the tool label
 }
 
+/**
+ * Props for the ToolDropdown component.
+ */
 interface ToolDropdownProps {
-  currentTool: Tool;
-  onToolSelect: (tool: Tool) => void;
-  toolItems: ToolItem[];
-  buttonTitle: string;
+  currentTool: Tool; // Currently selected tool
+  onToolSelect: (tool: Tool) => void; // Callback when tool is selected
+  toolItems: ToolItem[]; // Array of available tools
+  buttonTitle: string; // Tooltip for the dropdown button
   className?: string;
-  styles: Record<string, string>;
-  iconSize?: number;
-  chevronSize?: number;
-  showLabels?: boolean;
+  styles: Record<string, string>; // CSS modules styles object
+  iconSize?: number; // Size of tool icons
+  chevronSize?: number; // Size of dropdown chevron
+  showLabels?: boolean; // Whether to show text labels in dropdown
 }
 
+/**
+ * Dropdown component for selecting tools with intelligent positioning.
+ * Shows current tool icon with chevron and displays available options in a positioned dropdown.
+ * Automatically adjusts position to prevent viewport overflow and provides keyboard navigation.
+ * 
+ * @param {Tool} currentTool - Currently selected tool value
+ * @param {function} onToolSelect - Callback function called when a tool is selected
+ * @param {ToolItem[]} toolItems - Array of available tools with icons and labels
+ * @param {string} buttonTitle - Tooltip text for the dropdown trigger button
+ * @param {string} className - Optional CSS class to apply to the dropdown container
+ * @param {Record<string, string>} styles - CSS modules styles object for styling
+ * @param {number} iconSize - Size in pixels for tool icons
+ * @param {number} chevronSize - Size in pixels for the dropdown chevron icon
+ * @param {boolean} showLabels - Whether to display text labels alongside icons in dropdown
+ */
 export const ToolDropdown: React.FC<ToolDropdownProps> = ({
   currentTool,
   onToolSelect,
@@ -45,6 +66,7 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
 
   useClickOutside(dropdownRef, () => setIsOpen(false));
 
+  // Calculate dropdown position to avoid viewport overflow
   useEffect(() => {
     if (isOpen && buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
@@ -83,6 +105,7 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
     setIsOpen(false);
   };
 
+  // Find current tool item and determine if any tool in dropdown is active
   const currentToolItem = toolItems.find((item) => item.value === currentTool) ?? toolItems[0];
   const isToolActive = toolItems.some((item) => item.value === currentTool);
 

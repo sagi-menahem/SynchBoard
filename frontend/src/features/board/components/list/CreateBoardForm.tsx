@@ -12,11 +12,25 @@ import CanvasConfigurationSection from './CanvasConfigurationSection';
 import styles from './CreateBoardForm.module.scss';
 import MemberInviteInput from './MemberInviteInput';
 
+/**
+ * Props interface for CreateBoardForm component.
+ * Defines the callback handlers for board creation success and form cancellation.
+ */
 interface CreateBoardFormProps {
+  /** Callback executed when board creation succeeds with the newly created board data */
   onBoardCreated: (newBoard: Board) => void;
+  /** Callback to close the create board form modal */
   onClose: () => void;
 }
 
+/**
+ * Comprehensive form for creating new boards with full configuration options.
+ * This component provides a multi-section form interface for board creation including
+ * basic information, member invitations, canvas settings, and image upload capabilities.
+ * 
+ * @param onBoardCreated - Callback executed when board creation succeeds with the newly created board data
+ * @param onClose - Callback to close the create board form modal
+ */
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
   const { t } = useTranslation(['board', 'common']);
   const { submitAction, isPending } = useCreateBoardForm(onBoardCreated);

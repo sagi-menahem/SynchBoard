@@ -2,6 +2,11 @@ import React from 'react';
 
 import { Toaster } from 'react-hot-toast';
 
+/**
+ * Global toast notification configuration component for the application.
+ * Provides centralized styling and positioning for all toast notifications using react-hot-toast.
+ * Configures theme-aware toast appearance that adapts to the application's design system.
+ */
 export const ToasterConfig: React.FC = () => {
   return (
     <Toaster

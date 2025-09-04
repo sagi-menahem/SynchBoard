@@ -11,6 +11,18 @@ export interface MemberValidationResult {
   error?: string;
 }
 
+/**
+ * Custom hook that provides comprehensive email validation for board member operations.
+ * This hook handles the complex validation logic required for member invitations including
+ * email format validation, duplicate checking, self-invitation prevention, and user existence
+ * verification. It integrates with the user service to check if invited users exist in the system
+ * and provides detailed error feedback through toast notifications. The hook separates validation
+ * concerns into discrete functions for flexibility and reusability across different member
+ * management scenarios, ensuring data integrity and user experience quality.
+ * 
+ * @returns Object containing validation functions for email format, self-invite checking,
+ *   duplicate detection, and comprehensive member email validation with API verification
+ */
 export const useMemberValidation = () => {
   const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();

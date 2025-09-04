@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Tool Group Layout ---
+
+// Main container for grouped tools with label
 .toolGroup {
   display: flex;
   flex-direction: column;
@@ -9,6 +12,7 @@
   padding: theme.$spacing-2;
 }
 
+// Container for tool buttons
 .toolControls {
   display: flex;
   flex-direction: row;
@@ -17,6 +21,7 @@
   gap: theme.$spacing-1;
 }
 
+// Label text below tool group
 .toolLabel {
   font-size: theme.$font-size-xs;
   color: theme.$text-tertiary;

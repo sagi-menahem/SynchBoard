@@ -7,6 +7,12 @@ import { Button, SectionCard } from 'shared/ui';
 
 import styles from '../pages/SettingsPage.module.scss';
 
+/**
+ * Board appearance customization section component for user settings.
+ * Provides a visual color picker interface allowing users to customize their board background.
+ * Integrates with user preferences context to persist selections and provide immediate visual feedback.
+ * Uses accessible design patterns with proper ARIA labels and keyboard navigation support.
+ */
 const BoardAppearanceSection: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
   const { preferences, updatePreferences } = useUserBoardPreferences();

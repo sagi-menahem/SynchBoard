@@ -1,9 +1,13 @@
 @use '@/styles' as theme;
 
+// --- Modal Layout ---
+
+// Full-screen modal overlay container
 .overlay {
   @include theme.modal-backdrop;
 }
 
+// Clickable backdrop behind modal content
 .backdrop {
   @include theme.overlay-full;
   background-color: theme.$overlay-strong;
@@ -11,6 +15,7 @@
   cursor: pointer;
 }
 
+// Modal content container with responsive sizing
 .content {
   @include theme.card-base;
   @include theme.rounded-medium;
@@ -28,6 +33,7 @@
   margin: theme.$spacing-6 auto;
 }
 
+// Floating close button in top-right corner
 .closeButton {
   position: absolute;
   top: theme.$spacing-4;
@@ -48,6 +54,9 @@
   justify-content: center;
 }
 
+// --- Responsive Design ---
+
+// Tablet responsive adjustments
 @media (max-width: theme.$breakpoint-md) {
   .overlay {
     padding: theme.$spacing-4 theme.$spacing-2;
@@ -68,6 +77,7 @@
   }
 }
 
+// Mobile responsive adjustments - full screen
 @media (max-width: theme.$breakpoint-sm) {
   .overlay {
     padding: theme.$spacing-2;

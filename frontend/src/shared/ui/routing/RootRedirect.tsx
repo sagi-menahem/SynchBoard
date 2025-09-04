@@ -4,16 +4,23 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 
+/**
+ * Root route handler that redirects users based on authentication status.
+ * Provides initial loading state during authentication initialization and
+ * intelligently routes authenticated users to boards or unauthenticated users to auth.
+ */
 const RootRedirect: React.FC = () => {
   const { t } = useTranslation(['common']);
   const { token, isInitializing } = useAuth();
 
   useEffect(() => {
+    // Authentication state has finished initializing
     if (!isInitializing) {
     }
   }, [token, isInitializing]);
 
   if (isInitializing) {
+    // Show loading state while authentication context initializes
     return (
       <div
         style={{

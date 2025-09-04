@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Flexible container for split panel layout
 .container {
   display: flex;
   height: 100%;
@@ -27,6 +28,7 @@
   @include theme.flex-column;
 }
 
+// Interactive divider with extended hit area for resizing
 .divider {
   position: relative;
   width: 8px;
@@ -39,6 +41,7 @@
   height: 100%;
   margin: 0;
 
+  // Extended invisible hit area for easier interaction
   &::before {
     content: '';
     position: absolute;
@@ -97,6 +100,7 @@
   @include theme.hover-transition;
 }
 
+// Enhanced hover state with visual feedback
 .divider:hover {
   background: var(--color-border-strong);
 
@@ -119,6 +123,7 @@
   }
 }
 
+// Active dragging state with emphasized visual cues
 .divider.dragging {
   background: var(--color-surface-hover);
 
