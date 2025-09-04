@@ -35,17 +35,14 @@ const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  // Local modal states
   const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
   const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
 
-  // Consolidated profile hook - no more coordination needed
   const { user, isLoading, handleUpdateProfile, handlePictureUpload, handlePictureDelete } =
     useUserProfile();
 
   const { handleChangePassword, handleDeleteAccount } = useAccountActions();
 
-  // Simplified handler functions with cleanup
   const handlePictureUploadWithCleanup = async (file: File) => {
     try {
       await handlePictureUpload(file);

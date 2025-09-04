@@ -14,7 +14,6 @@ export const usePasswordManager = () => {
       toast.success(t('settings:success.password.update'));
     } catch (error) {
       toast.dismiss();
-      // Don't show generic error - specific validation errors are already shown by apiClient
       throw error;
     }
   };
