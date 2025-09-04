@@ -6,9 +6,9 @@ import {
   AUTH_HEADER_CONFIG,
   PUBLIC_API_ENDPOINTS,
 } from 'shared/constants/ApiConstants';
-import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
 import i18n from 'shared/lib/i18n';
 import { isBackendError } from 'shared/utils';
+import { getToken, removeToken } from 'shared/utils/authUtils';
 import logger from 'shared/utils/logger';
 
 const apiClient = axios.create({
@@ -23,7 +23,7 @@ apiClient.interceptors.request.use(
     const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
 
     if (!isPublicEndpoint) {
-      const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+      const token = getToken();
       if (token) {
         config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] = `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
       } else {
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
       method: error.config?.method?.toUpperCase(),
       url: error.config?.url,
       currentPath: window.location.pathname,
-      hasToken: !!localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN),
+      hasToken: !!getToken(),
       errorData: error.response?.data,
     });
 
@@ -65,7 +65,7 @@ apiClient.interceptors.response.use(
       (error.message?.includes?.('CORS') ||
         error.message?.includes?.('blocked by CORS policy') ||
         error.code === 'ERR_NETWORK') &&
-      localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+      getToken();
     const isHttpUnauthorized = error.response && [401, 403].includes(error.response.status) && !isLoginAttempt;
     const isUserNotFoundErrorTimeout = isUserNotFoundError && !isLoginAttempt;
     const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isLoginAttempt;
@@ -89,7 +89,7 @@ apiClient.interceptors.response.use(
           isUserNotFoundError,
           isOAuthRedirectError,
         });
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+        removeToken();
 
         toast.error(i18n.t('auth:errors.sessionExpired'), { id: 'session-expired' });
 
