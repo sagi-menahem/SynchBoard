@@ -4,4 +4,3 @@ export interface EnhancedChatMessage extends ChatMessageResponse {
   transactionId?: string;
   transactionStatus?: 'pending' | 'confirmed' | 'failed';
 }
-

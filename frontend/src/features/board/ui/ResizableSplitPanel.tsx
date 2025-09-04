@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
-
 import clsx from 'clsx';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
@@ -32,14 +31,11 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Get the user's chosen color for CSS variable
   const getUserChosenColor = useCallback(() => {
-    const savedVariable = preferences.boardBackgroundSetting; 
-    // This is now a variable name like '--board-bg-midnight-blue'
+    const savedVariable = preferences.boardBackgroundSetting;
     if (!savedVariable) {
-      return 'var(--color-surface)'; // Default fallback remains the same
+      return 'var(--color-surface)';
     }
-    // Return the value wrapped in the var() function
     return `var(${savedVariable})`;
   }, [preferences.boardBackgroundSetting]);
 
@@ -50,12 +46,14 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (!isDragging || !containerRef.current) {return;}
+      if (!isDragging || !containerRef.current) {
+        return;
+      }
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
       let mouseX = e.clientX - containerRect.left;
-      
+
       const isRTL = document.documentElement.dir === 'rtl';
       if (isRTL) {
         mouseX = containerWidth - mouseX;
@@ -65,10 +63,9 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const minLeftRatio = (minLeftWidth / containerWidth) * 100;
       const minRightRatio = (minRightWidth / containerWidth) * 100;
 
-      // Enforce 30% minimum for canvas (left panel), 70% maximum for chat (right panel)
       const clampedRatio = Math.max(
-        Math.max(minLeftRatio, 30), // Canvas must be at least 30%
-        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio), // Canvas max 70%
+        Math.max(minLeftRatio, 30),
+        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio),
       );
 
       setSplitRatio(clampedRatio);
@@ -98,22 +95,21 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className={clsx(styles.container, utilStyles.unifiedDotBackground)}
-      style={{ 
-        '--user-chosen-color': getUserChosenColor(),
-        '--background-blur': backgroundBlur,
-      } as React.CSSProperties}
+      style={
+        {
+          '--user-chosen-color': getUserChosenColor(),
+          '--background-blur': backgroundBlur,
+        } as React.CSSProperties
+      }
     >
-      <div 
-        className={styles.leftPanel} 
-        style={{ flexBasis: `${splitRatio}%` }}
-      >
+      <div className={styles.leftPanel} style={{ flexBasis: `${splitRatio}%` }}>
         {leftChild}
       </div>
-      
-      <div 
+
+      <div
         className={clsx(styles.divider, isDragging && styles.dragging)}
         onMouseDown={handleMouseDown}
         role="button"
@@ -132,11 +128,8 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
           <div className={styles.handleDot} />
         </div>
       </div>
-      
-      <div 
-        className={styles.rightPanel} 
-        style={{ flexBasis: `${100 - splitRatio}%` }}
-      >
+
+      <div className={styles.rightPanel} style={{ flexBasis: `${100 - splitRatio}%` }}>
         {rightChild}
       </div>
     </div>

@@ -6,9 +6,9 @@ import {
   AUTH_HEADER_CONFIG,
   PUBLIC_API_ENDPOINTS,
 } from 'shared/constants/ApiConstants';
-import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
 import i18n from 'shared/lib/i18n';
 import { isBackendError } from 'shared/utils';
+import { getToken, removeToken } from 'shared/utils/authUtils';
 import logger from 'shared/utils/logger';
 
 const apiClient = axios.create({
@@ -23,9 +23,10 @@ apiClient.interceptors.request.use(
     const isPublicEndpoint = config.url ? PUBLIC_API_ENDPOINTS.includes(config.url) : false;
 
     if (!isPublicEndpoint) {
-      const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+      const token = getToken();
       if (token) {
-        config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] = `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
+        config.headers[AUTH_HEADER_CONFIG.HEADER_NAME] =
+          `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`;
       } else {
         logger.warn('No auth token available for protected endpoint');
       }
@@ -48,7 +49,7 @@ apiClient.interceptors.response.use(
       method: error.config?.method?.toUpperCase(),
       url: error.config?.url,
       currentPath: window.location.pathname,
-      hasToken: !!localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN),
+      hasToken: !!getToken(),
       errorData: error.response?.data,
     });
 
@@ -56,23 +57,31 @@ apiClient.interceptors.response.use(
 
     const isBoardRequest = error.config?.url?.includes('/boards/');
     const responseData = error.response?.data as { message?: string } | undefined;
-    const isUserNotFoundInResponse = error.response?.status === 500 &&
-      responseData?.message?.includes?.('User not found');
-    const isUserNotFoundInMessage = error.response?.status === 500 &&
-      error.message?.includes?.('User not found');
+    const isUserNotFoundInResponse =
+      error.response?.status === 500 && responseData?.message?.includes?.('User not found');
+    const isUserNotFoundInMessage =
+      error.response?.status === 500 && error.message?.includes?.('User not found');
     const isUserNotFoundError = isUserNotFoundInResponse || isUserNotFoundInMessage;
-    const isOAuthRedirectError = !error.response &&
+    const isOAuthRedirectError =
+      !error.response &&
       (error.message?.includes?.('CORS') ||
         error.message?.includes?.('blocked by CORS policy') ||
         error.code === 'ERR_NETWORK') &&
-      localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    const isHttpUnauthorized = error.response && [401, 403].includes(error.response.status) && !isLoginAttempt;
+      getToken();
+    const isHttpUnauthorized =
+      error.response && [401, 403].includes(error.response.status) && !isLoginAttempt;
     const isUserNotFoundErrorTimeout = isUserNotFoundError && !isLoginAttempt;
     const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isLoginAttempt;
-    const isSessionTimeout = isHttpUnauthorized || isUserNotFoundErrorTimeout || isOAuthRedirectErrorTimeout;
+    const isSessionTimeout =
+      isHttpUnauthorized || isUserNotFoundErrorTimeout || isOAuthRedirectErrorTimeout;
 
     if (isSessionTimeout) {
-      if (error.response?.status === 401 || !isBoardRequest || isUserNotFoundError || isOAuthRedirectError) {
+      if (
+        error.response?.status === 401 ||
+        !isBoardRequest ||
+        isUserNotFoundError ||
+        isOAuthRedirectError
+      ) {
         const reason = (() => {
           if (isUserNotFoundError) {
             return 'user not found in database';
@@ -89,7 +98,7 @@ apiClient.interceptors.response.use(
           isUserNotFoundError,
           isOAuthRedirectError,
         });
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+        removeToken();
 
         toast.error(i18n.t('auth:errors.sessionExpired'), { id: 'session-expired' });
 
@@ -100,17 +109,16 @@ apiClient.interceptors.response.use(
       }
     }
 
-
     if (error.response && isBackendError(error.response.data) && !isLoginAttempt) {
       const backendKey = error.response.data.message;
-      
+
       const possibleKeys = [
         `common:errors.${backendKey}`,
         `auth:${backendKey}`,
         `auth:errors.${backendKey}`,
         backendKey,
       ];
-      
+
       let translated = false;
       for (const key of possibleKeys) {
         if (i18n.exists(key)) {
@@ -119,7 +127,7 @@ apiClient.interceptors.response.use(
           break;
         }
       }
-      
+
       if (!translated) {
         toast.error(backendKey, { id: backendKey });
       }

@@ -1,6 +1,8 @@
-
 package io.github.sagimenahem.synchboard.config.security;
 
+import io.github.sagimenahem.synchboard.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,9 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import io.github.sagimenahem.synchboard.constants.MessageConstants;
-import io.github.sagimenahem.synchboard.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
@@ -23,22 +22,24 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        MessageConstants.USER_NOT_FOUND + ": " + username));
+        return (username) ->
+            userRepository
+                .findById(username)
+                .orElseThrow(() -> new UsernameNotFoundException(MessageConstants.USER_NOT_FOUND + ": " + username));
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+    public AuthenticationProvider authenticationProvider(
+        UserDetailsService userDetailsService,
+        PasswordEncoder passwordEncoder
+    ) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 

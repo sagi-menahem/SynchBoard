@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { BoardContext } from './BoardContext';
 import { useBoardWorkspace } from './hooks/workspace';
 
-
 interface BoardProviderProps {
-    boardId: number;
-    children: ReactNode;
+  boardId: number;
+  children: ReactNode;
 }
 
 export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children }) => {

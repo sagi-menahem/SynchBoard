@@ -17,7 +17,6 @@ export const CanvasPreferencesService = {
   async fetchPreferences(): Promise<CanvasPreferences> {
     try {
       const canvasPrefs = await userService.getCanvasPreferences();
-      // Note: layoutMode is client-side only for now
       return {
         canvasChatSplitRatio: canvasPrefs.canvasChatSplitRatio,
         layoutMode: 'balanced',
@@ -39,7 +38,6 @@ export const CanvasPreferencesService = {
 
   async updatePreferences(preferences: Partial<CanvasPreferences>): Promise<void> {
     try {
-      // Only update server-side preferences (not layoutMode)
       if (preferences.canvasChatSplitRatio !== undefined) {
         await userService.updateCanvasPreferences({
           canvasChatSplitRatio: preferences.canvasChatSplitRatio,

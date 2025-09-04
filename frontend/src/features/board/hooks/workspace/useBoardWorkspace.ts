@@ -1,18 +1,33 @@
-
-import { startTransition, useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
-
 import { useAuth } from 'features/auth/hooks';
 import { useBoardActions } from 'features/board/hooks/workspace/useBoardActions';
 import { useBoardDataManager } from 'features/board/hooks/workspace/useBoardDataManager';
-import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
+import type {
+  ActionPayload,
+  EnhancedActionPayload,
+  SendBoardActionRequest,
+} from 'features/board/types/BoardObjectTypes';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import { useWebSocketHandler } from 'features/websocket/hooks/useWebSocketHandler';
 import WebSocketService from 'features/websocket/services/websocketService';
 import type { BoardUpdateDTO, UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useOptimistic,
+  useRef,
+  useState,
+} from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'shared/constants';
+import {
+  APP_ROUTES,
+  WEBSOCKET_CONFIG,
+  WEBSOCKET_DESTINATIONS,
+  WEBSOCKET_TOPICS,
+} from 'shared/constants';
 import logger from 'shared/utils/logger';
 
 export const useBoardWorkspace = (boardId: number) => {
@@ -53,15 +68,19 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, baseObjects.length, resetCounts, hasInitialized]);
 
-
-  const handleCommitDrawingTransaction = useCallback((instanceId: string) => {
-    setBaseObjects((prev) => prev.map((obj) => {
-      const enhancedObj = obj as EnhancedActionPayload;
-      return enhancedObj.instanceId === instanceId
-        ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
-        : obj;
-    }));
-  }, [setBaseObjects]);
+  const handleCommitDrawingTransaction = useCallback(
+    (instanceId: string) => {
+      setBaseObjects((prev) =>
+        prev.map((obj) => {
+          const enhancedObj = obj as EnhancedActionPayload;
+          return enhancedObj.instanceId === instanceId
+            ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
+            : obj;
+        }),
+      );
+    },
+    [setBaseObjects],
+  );
 
   const handleCommitChatTransaction = useCallback((instanceId: string) => {
     if (chatCommitHandlerRef.current) {
@@ -71,9 +90,12 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, []);
 
-  const registerChatCommitHandler = useCallback((handler: ((instanceId: string) => void) | null) => {
-    chatCommitHandlerRef.current = handler;
-  }, []);
+  const registerChatCommitHandler = useCallback(
+    (handler: ((instanceId: string) => void) | null) => {
+      chatCommitHandlerRef.current = handler;
+    },
+    [],
+  );
 
   useWebSocketHandler({
     boardId,
@@ -87,8 +109,11 @@ export const useBoardWorkspace = (boardId: number) => {
   });
 
   const handleDrawAction = useCallback(
-    async (action: Omit<SendBoardActionRequest, 'boardId'> | Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
-      // Use existing instanceId for updates, generate new one for adds
+    async (
+      action:
+        | Omit<SendBoardActionRequest, 'boardId'>
+        | Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>,
+    ) => {
       const instanceId = 'instanceId' in action ? action.instanceId : crypto.randomUUID();
       const actionRequest: SendBoardActionRequest = {
         ...action,
@@ -97,7 +122,6 @@ export const useBoardWorkspace = (boardId: number) => {
         sender: sessionInstanceId.current,
       };
 
-      // Validate payload size
       const messageSize = JSON.stringify(actionRequest).length;
       if (messageSize > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
         logger.error(
@@ -107,14 +131,12 @@ export const useBoardWorkspace = (boardId: number) => {
         return;
       }
 
-      // Create optimistic object
       const optimisticObject: EnhancedActionPayload = {
         ...(actionRequest.payload as ActionPayload),
         instanceId,
         transactionStatus: 'pending' as const,
       };
 
-      // Add optimistic update in transition - will automatically rollback on error
       startTransition(() => {
         addOptimisticObject(optimisticObject);
       });
@@ -125,8 +147,7 @@ export const useBoardWorkspace = (boardId: number) => {
       } catch (error) {
         logger.error('Failed to send drawing action:', error);
         toast.error(t('board:errors.drawingFailed'));
-        // No need to manually remove optimistic update - useOptimistic handles rollback
-        throw error; // Re-throw to trigger automatic rollback
+        throw error;
       }
     },
     [boardId, incrementUndo, addOptimisticObject, t],
@@ -144,18 +165,20 @@ export const useBoardWorkspace = (boardId: number) => {
       if (message.updateType === 'BOARD_LIST_CHANGED') {
         void navigate(APP_ROUTES.BOARD_LIST);
       } else if (message.updateType === 'BOARD_DETAILS_CHANGED') {
-        // Board details changed - handled by other hooks
       }
     },
     [navigate],
   );
 
-  useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
+  useSocketSubscription(
+    userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '',
+    handleUserUpdate,
+    'user',
+  );
 
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {
       if (message.updateType === 'CANVAS_UPDATED') {
-        // Refresh board details to get updated canvas settings
         fetchInitialData();
       }
     },
@@ -176,7 +199,7 @@ export const useBoardWorkspace = (boardId: number) => {
     boardName,
     boardDetails,
     accessLost,
-    objects: optimisticObjects, // Return optimistic objects for real-time UI
+    objects: optimisticObjects,
     messages,
     instanceId: sessionInstanceId.current,
     isUndoAvailable,

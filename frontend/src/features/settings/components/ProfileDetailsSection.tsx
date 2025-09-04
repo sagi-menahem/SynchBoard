@@ -1,9 +1,8 @@
-import React from 'react';
-
 import { ProfileDisplayView, ProfileEditForm } from 'features/settings/components';
 import { useUserProfile } from 'features/settings/hooks/profile/useUserProfile';
 import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/types/UserTypes';
 import { PencilLine } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, SectionCard } from 'shared/ui';
 import logger from 'shared/utils/logger';
@@ -11,13 +10,14 @@ import logger from 'shared/utils/logger';
 import styles from '../pages/SettingsPage.module.scss';
 
 interface ProfileDetailsSectionProps {
-    user: UserProfile;
-    onUpdateProfile: (data: UpdateUserProfileRequest) => Promise<void>;
+  user: UserProfile;
+  onUpdateProfile: (data: UpdateUserProfileRequest) => Promise<void>;
 }
 
 const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onUpdateProfile }) => {
   const { t } = useTranslation(['settings', 'common']);
-  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useUserProfile();
+  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } =
+    useUserProfile();
 
   const onSave = async () => {
     try {
@@ -29,7 +29,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
   };
 
   return (
-    <SectionCard 
+    <SectionCard
       title={t('settings:page.profileSectionHeader')}
       variant="default"
       headerActions={

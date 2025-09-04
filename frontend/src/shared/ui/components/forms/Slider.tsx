@@ -1,6 +1,5 @@
-import React from 'react';
-
 import * as RadixSlider from '@radix-ui/react-slider';
+import React from 'react';
 
 import styles from './Slider.module.scss';
 

@@ -1,16 +1,15 @@
+import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import type { LucideIcon } from 'lucide-react';
 import type { ButtonVariant } from 'shared/types/CommonTypes';
 
-export type ToolbarItemType = 
-  | 'title' 
-  | 'button' 
-  | 'search' 
-  | 'viewToggle' 
+export type ToolbarItemType =
+  | 'title'
+  | 'button'
+  | 'search'
+  | 'viewToggle'
   | 'memberActivity'
   | 'custom';
-
 
 export type ViewMode = 'grid' | 'list';
 
@@ -64,7 +63,7 @@ export interface CustomToolbarItem extends BaseToolbarItem {
   content: ReactNode;
 }
 
-export type ToolbarItem = 
+export type ToolbarItem =
   | TitleToolbarItem
   | ButtonToolbarItem
   | SearchToolbarItem

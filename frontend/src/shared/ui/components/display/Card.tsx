@@ -10,21 +10,19 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ 
-    children, 
-    className, 
-    variant = 'default', 
-    padding = 'md', 
-    hoverable = false, 
-    ...props 
-  }, ref) => {
+  (
+    { children, className, variant = 'default', padding = 'md', hoverable = false, ...props },
+    ref,
+  ) => {
     const cardClasses = [
       styles.card,
       styles[variant],
       styles[`padding-${padding}`],
       hoverable && styles.hoverable,
       className,
-    ].filter(Boolean).join(' ');
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return (
       <div ref={ref} className={cardClasses} {...props}>

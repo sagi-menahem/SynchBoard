@@ -1,6 +1,6 @@
+import { Search, X } from 'lucide-react';
 import React, { useCallback, useState, type KeyboardEvent } from 'react';
 
-import { Search, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../forms/Button';
@@ -25,17 +25,23 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const { t } = useTranslation(['board', 'common']);
   const [inputValue, setInputValue] = useState(value);
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(inputValue.trim());
-  }, [inputValue, onSearch]);
-
-  const handleKeyPress = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
       e.preventDefault();
       onSearch(inputValue.trim());
-    }
-  }, [inputValue, onSearch]);
+    },
+    [inputValue, onSearch],
+  );
+
+  const handleKeyPress = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        onSearch(inputValue.trim());
+      }
+    },
+    [inputValue, onSearch],
+  );
 
   const handleClear = useCallback(() => {
     setInputValue('');

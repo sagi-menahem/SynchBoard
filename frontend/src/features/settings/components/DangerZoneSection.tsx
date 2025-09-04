@@ -1,20 +1,20 @@
+import { Trash2 } from 'lucide-react';
 import React from 'react';
 
-import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, SectionCard } from 'shared/ui';
 
 import styles from '../pages/SettingsPage.module.scss';
 
 interface DangerZoneSectionProps {
-    onDeleteAccount: () => void;
+  onDeleteAccount: () => void;
 }
 
 const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }) => {
   const { t } = useTranslation(['settings', 'common']);
 
   return (
-    <SectionCard 
+    <SectionCard
       title={t('settings:page.dangerZoneHeader')}
       subtitle={t('settings:page.dangerZoneText')}
       variant="danger"

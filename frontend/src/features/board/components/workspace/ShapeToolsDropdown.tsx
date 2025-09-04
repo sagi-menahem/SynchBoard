@@ -1,15 +1,6 @@
-
-import React from 'react';
-
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import {
-  Circle,
-  Hexagon,
-  Pentagon,
-  Square,
-  Star,
-  Triangle,
-} from 'lucide-react';
+import { Circle, Hexagon, Pentagon, Square, Star, Triangle } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ToolDropdown } from 'shared/ui';

@@ -1,8 +1,7 @@
-import React from 'react';
-
 import clsx from 'clsx';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { Grid3X3, List } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../forms/Button';
@@ -17,7 +16,7 @@ interface ViewToggleProps {
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, className }) => {
   const { t } = useTranslation(['board', 'common']);
-  
+
   return (
     <div className={clsx(styles.viewToggle, className)}>
       <Button

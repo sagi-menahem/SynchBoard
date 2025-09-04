@@ -20,18 +20,33 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       const phoneNumber = extractFormData.phoneNumber(formData);
       const dateOfBirth = extractFormData.dateOfBirth(formData);
 
-      // Validate required fields
       const emailError = authValidation.validateEmail(email, t);
-      if (emailError) { return emailError; }
+      if (emailError) {
+        return emailError;
+      }
 
       const passwordError = authValidation.validatePassword(password, t);
-      if (passwordError) { return passwordError; }
+      if (passwordError) {
+        return passwordError;
+      }
 
-      const firstNameError = authValidation.validateRequiredField(firstName, t('auth:registerForm.fields.firstName'), t);
-      if (firstNameError) { return firstNameError; }
+      const firstNameError = authValidation.validateRequiredField(
+        firstName,
+        t('auth:registerForm.fields.firstName'),
+        t,
+      );
+      if (firstNameError) {
+        return firstNameError;
+      }
 
-      const genderError = authValidation.validateRequiredField(genderValue as string, t('auth:registerForm.fields.gender'), t);
-      if (genderError) { return genderError; }
+      const genderError = authValidation.validateRequiredField(
+        genderValue as string,
+        t('auth:registerForm.fields.gender'),
+        t,
+      );
+      if (genderError) {
+        return genderError;
+      }
 
       return {
         email,

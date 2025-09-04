@@ -15,8 +15,10 @@ export const API_ENDPOINTS = {
   REDO: (boardId: number) => `/boards/${boardId}/redo`,
   INVITE_MEMBER: (boardId: number) => `/boards/${boardId}/members`,
   GET_BOARD_DETAILS: (boardId: number) => `/boards/${boardId}/details`,
-  REMOVE_MEMBER: (boardId: number, memberEmail: string) => `/boards/${boardId}/members/${memberEmail}`,
-  PROMOTE_MEMBER: (boardId: number, memberEmail: string) => `/boards/${boardId}/members/${memberEmail}/promote`,
+  REMOVE_MEMBER: (boardId: number, memberEmail: string) =>
+    `/boards/${boardId}/members/${memberEmail}`,
+  PROMOTE_MEMBER: (boardId: number, memberEmail: string) =>
+    `/boards/${boardId}/members/${memberEmail}/promote`,
   UPDATE_BOARD_NAME: (boardId: number) => `/boards/${boardId}/name`,
   UPDATE_BOARD_DESCRIPTION: (boardId: number) => `/boards/${boardId}/description`,
   LEAVE_BOARD: (boardId: number) => `/boards/${boardId}/members/leave`,
@@ -62,7 +64,6 @@ export const WEBSOCKET_TOPICS = {
   BOARD: (boardId: number) => `/topic/board/${boardId}` as const,
   USER: (userEmail: string) => `/topic/user/${userEmail}` as const,
 } as const;
-
 
 export const AUTH_HEADER_CONFIG = {
   HEADER_NAME: 'Authorization',

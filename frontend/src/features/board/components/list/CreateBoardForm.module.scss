@@ -1,148 +1,139 @@
 @use '@/styles' as theme;
 
 .modalContainer {
-    @include theme.flex-column;
-    gap: theme.$spacing-6;
-    max-width: 1050px; // 1.5x larger than 700px
-    width: 100%;
-    // Remove height and overflow - let parent modal handle scrolling
-    overflow: visible; // Don't create inner scrollbar
-    padding: theme.$spacing-4;
-    box-sizing: border-box;
-    
+  @include theme.flex-column;
+  gap: theme.$spacing-6;
+  max-width: 1050px;
+  width: 100%;
+  overflow: visible;
+  padding: theme.$spacing-4;
+  box-sizing: border-box;
 }
 
 .modalHeader {
-    text-align: center;
-    padding-bottom: theme.$spacing-4;
-    border-bottom: 1px solid theme.$border-primary;
+  text-align: center;
+  padding-bottom: theme.$spacing-4;
+  border-bottom: 1px solid theme.$border-primary;
 }
 
 .modalTitle {
-    @include theme.flex-center;
-    color: theme.$text-primary;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-    gap: theme.$spacing-3;
+  @include theme.flex-center;
+  color: theme.$text-primary;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  gap: theme.$spacing-3;
 }
 
 .formContainer {
-    @include theme.flex-column;
-    gap: theme.$spacing-6;
-    width: 100%;
-    // Prevent nested scrolling by not setting overflow here
+  @include theme.flex-column;
+  gap: theme.$spacing-6;
+  width: 100%;
 
-    // Override SectionCard width constraints within this modal
-    :global(.sectionCard) {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex-shrink: 1 !important;
-    }
+  :global(.sectionCard) {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 1 !important;
+  }
 }
 
 .error {
-    @include theme.error-message;
-    margin-bottom: theme.$spacing-4;
+  @include theme.error-message;
+  margin-bottom: theme.$spacing-4;
 }
 
 .field {
-    @include theme.form-field;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+  @include theme.form-field;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .field label {
-    @include theme.form-label;
-    color: theme.$text-secondary;
-    @include theme.flex-start;
-    gap: theme.$spacing-2;
-    align-items: center;
+  @include theme.form-label;
+  color: theme.$text-secondary;
+  @include theme.flex-start;
+  gap: theme.$spacing-2;
+  align-items: center;
 }
 
 .field input,
 .field textarea {
-    @include theme.input-base;
-    background-color: theme.$background-secondary;
-    border: 1px solid theme.$border-primary;
-    color: theme.$text-primary;
-    margin-top: 4px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+  @include theme.input-base;
+  background-color: theme.$background-secondary;
+  border: 1px solid theme.$border-primary;
+  color: theme.$text-primary;
+  margin-top: 4px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .description {
-    @include theme.textarea-base;
-    @include theme.rounded-small;
-    background-color: theme.$background-secondary;
-    border: 1px solid theme.$border-primary;
-    color: theme.$text-primary;
-    margin-top: 4px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    resize: vertical; // Only allow vertical resizing
+  @include theme.textarea-base;
+  @include theme.rounded-small;
+  background-color: theme.$background-secondary;
+  border: 1px solid theme.$border-primary;
+  color: theme.$text-primary;
+  margin-top: 4px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
 }
 
 .buttonGroup {
-    @include theme.button-group;
-    gap: theme.$spacing-3;
-    justify-content: end; /* CSS logical property - RTL aware */
-    padding-top: theme.$spacing-4;
-    border-top: 1px solid theme.$border-primary;
+  @include theme.button-group;
+  gap: theme.$spacing-3;
+  justify-content: end;
+  padding-top: theme.$spacing-4;
+  border-top: 1px solid theme.$border-primary;
 }
 
-// Specific styling for PictureManager image in create board form
-// 0.75 * 168px = 126px
 .modalContainer :global(.container) :global(.image) {
-    width: 126px !important;
-    height: 126px !important;
-    max-width: 126px !important;
-    max-height: 126px !important;
+  width: 126px !important;
+  height: 126px !important;
+  max-width: 126px !important;
+  max-height: 126px !important;
 }
 
-// Also resize the image container
 .modalContainer :global(.imageContainer) {
-    width: 126px !important;
-    height: 126px !important;
+  width: 126px !important;
+  height: 126px !important;
 }
 
-// Responsive design
 @media (max-width: 1200px) {
-    .modalContainer {
-        max-width: 95vw;
-        padding: theme.$spacing-3;
-    }
+  .modalContainer {
+    max-width: 95vw;
+    padding: theme.$spacing-3;
+  }
 }
 
 @media (max-width: 768px) {
-    .modalContainer {
-        max-width: 95vw;
-        padding: theme.$spacing-2;
-        gap: theme.$spacing-4;
-        // Remove height constraint to prevent inner scrollbar
-    }
+  .modalContainer {
+    max-width: 95vw;
+    padding: theme.$spacing-2;
+    gap: theme.$spacing-4;
+  }
 
-    .modalTitle {
-        font-size: 1.25rem;
-    }
+  .modalTitle {
+    font-size: 1.25rem;
+  }
 
-    .buttonGroup {
-        flex-direction: column-reverse;
-        gap: theme.$spacing-2;
-        justify-content: start; /* Maintain RTL awareness in mobile */
-    }
+  .buttonGroup {
+    flex-direction: column-reverse;
+    gap: theme.$spacing-2;
+    justify-content: start;
+  }
 
-    .buttonGroup button {
-        width: 100%;
-    }
+  .buttonGroup button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
-    .modalContainer {
-        padding: theme.$spacing-1;
-        gap: theme.$spacing-3;
-    }
+  .modalContainer {
+    padding: theme.$spacing-1;
+    gap: theme.$spacing-3;
+  }
 }

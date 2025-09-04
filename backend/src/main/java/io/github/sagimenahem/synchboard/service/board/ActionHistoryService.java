@@ -4,10 +4,7 @@ import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_
 import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_DELETE_ACTION;
 import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_UPDATE_ACTION;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +18,10 @@ import io.github.sagimenahem.synchboard.repository.BoardObjectRepository;
 import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +37,8 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response undoLastAction(Long boardId, String userEmail) {
         ActionHistory lastAction = actionHistoryRepository
-                .findTopByBoardWithRelationsAndIsUndoneFalseOrderByTimestampDesc(boardId)
-                .orElse(null);
+            .findTopByBoardWithRelationsAndIsUndoneFalseOrderByTimestampDesc(boardId)
+            .orElse(null);
 
         if (lastAction == null) {
             log.info("No active actions to undo for boardId: {}", boardId);
@@ -50,8 +51,8 @@ public class ActionHistoryService {
     @Transactional
     public BoardActionDTO.Response redoLastAction(Long boardId, String userEmail) {
         ActionHistory lastUndoneAction = actionHistoryRepository
-                .findTopByBoardWithRelationsAndIsUndoneTrueOrderByTimestampDesc(boardId)
-                .orElse(null);
+            .findTopByBoardWithRelationsAndIsUndoneTrueOrderByTimestampDesc(boardId)
+            .orElse(null);
 
         if (lastUndoneAction == null) {
             log.info("No undone actions to redo for boardId: {}", boardId);
@@ -74,15 +75,21 @@ public class ActionHistoryService {
         } else {
             boardObject.setActive(true);
             BoardObject persistedObject = boardObjectRepository.save(boardObject);
-            return parseJsonAndCreateResponse(persistedObject.getObjectData(),
-                    BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(),
-                    "redo add");
+            return parseJsonAndCreateResponse(
+                persistedObject.getObjectData(),
+                BoardActionDTO.ActionType.OBJECT_ADD,
+                persistedObject.getInstanceId(),
+                "redo add"
+            );
         }
     }
 
     private BoardActionDTO.Response processUpdateAction(ActionHistory action, boolean isUndo) {
-        log.info("Handling {} update for object instanceId: {}", isUndo ? "undo" : "redo",
-                action.getBoardObject().getInstanceId());
+        log.info(
+            "Handling {} update for object instanceId: {}",
+            isUndo ? "undo" : "redo",
+            action.getBoardObject().getInstanceId()
+        );
 
         BoardObject boardObject = action.getBoardObject();
         if (boardObject == null || !boardObject.isActive()) {
@@ -98,8 +105,12 @@ public class ActionHistoryService {
         boardObject.setLastEditedByUser(action.getUser());
         BoardObject persistedObject = boardObjectRepository.save(boardObject);
 
-        return parseJsonAndCreateResponse(targetState, BoardActionDTO.ActionType.OBJECT_UPDATE,
-                persistedObject.getInstanceId(), isUndo ? "undo update" : "redo update");
+        return parseJsonAndCreateResponse(
+            targetState,
+            BoardActionDTO.ActionType.OBJECT_UPDATE,
+            persistedObject.getInstanceId(),
+            isUndo ? "undo update" : "redo update"
+        );
     }
 
     private BoardActionDTO.Response processDeleteAction(ActionHistory action, boolean isUndo) {
@@ -113,9 +124,12 @@ public class ActionHistoryService {
                 boardObject.setActive(true);
                 boardObject.setLastEditedByUser(action.getUser());
                 BoardObject persistedObject = boardObjectRepository.save(boardObject);
-                return parseJsonAndCreateResponse(persistedObject.getObjectData(),
-                        BoardActionDTO.ActionType.OBJECT_ADD, persistedObject.getInstanceId(),
-                        "undo delete");
+                return parseJsonAndCreateResponse(
+                    persistedObject.getObjectData(),
+                    BoardActionDTO.ActionType.OBJECT_ADD,
+                    persistedObject.getInstanceId(),
+                    "undo delete"
+                );
             }
         } else {
             if (boardObject.isActive()) {
@@ -128,8 +142,13 @@ public class ActionHistoryService {
         return null;
     }
 
-    private BoardActionDTO.Response processUndoRedoAction(Long boardId, String userEmail,
-            ActionHistory action, boolean isUndo, String operationType) {
+    private BoardActionDTO.Response processUndoRedoAction(
+        Long boardId,
+        String userEmail,
+        ActionHistory action,
+        boolean isUndo,
+        String operationType
+    ) {
         if (!isUserMember(boardId, userEmail)) {
             throw new AccessDeniedException(MessageConstants.AUTH_NOT_MEMBER);
         }
@@ -141,8 +160,12 @@ public class ActionHistoryService {
             action.setUndone(false);
         }
 
-        log.info("Processing {} for action type: {} (actionId: {})", operationType,
-                action.getActionType(), action.getActionId());
+        log.info(
+            "Processing {} for action type: {} (actionId: {})",
+            operationType,
+            action.getActionType(),
+            action.getActionId()
+        );
 
         BoardActionDTO.Response response = processActionByType(action, isUndo);
 
@@ -166,8 +189,7 @@ public class ActionHistoryService {
             case OBJECT_DELETE_ACTION:
                 return processDeleteAction(action, isUndo);
             default:
-                log.warn("Unsupported action type for {}: {}", isUndo ? "undo" : "redo",
-                        action.getActionType());
+                log.warn("Unsupported action type for {}: {}", isUndo ? "undo" : "redo", action.getActionType());
                 return null;
         }
     }
@@ -182,20 +204,30 @@ public class ActionHistoryService {
     }
 
     private BoardActionDTO.Response createDeleteResponse(String instanceId) {
-        return BoardActionDTO.Response.builder().type(BoardActionDTO.ActionType.OBJECT_DELETE)
-                .instanceId(instanceId).sender("system-undo-redo").build();
+        return BoardActionDTO.Response.builder()
+            .type(BoardActionDTO.ActionType.OBJECT_DELETE)
+            .instanceId(instanceId)
+            .sender("system-undo-redo")
+            .build();
     }
 
-    private BoardActionDTO.Response parseJsonAndCreateResponse(String jsonData,
-            BoardActionDTO.ActionType actionType, String instanceId, String operation) {
+    private BoardActionDTO.Response parseJsonAndCreateResponse(
+        String jsonData,
+        BoardActionDTO.ActionType actionType,
+        String instanceId,
+        String operation
+    ) {
         try {
             JsonNode payload = objectMapper.readTree(jsonData);
-            return BoardActionDTO.Response.builder().type(actionType).instanceId(instanceId)
-                    .payload(payload).sender("system-undo-redo").build();
+            return BoardActionDTO.Response.builder()
+                .type(actionType)
+                .instanceId(instanceId)
+                .payload(payload)
+                .sender("system-undo-redo")
+                .build();
         } catch (JsonProcessingException e) {
             log.error("Failed to create {} response: {}", operation, e.getMessage(), e);
-            throw new InvalidRequestException(
-                    operation + " operation failed due to corrupted data");
+            throw new InvalidRequestException(operation + " operation failed due to corrupted data");
         }
     }
 }

@@ -1,124 +1,125 @@
 @use '@/styles' as theme;
 
 .pageContent {
-    position: relative;
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px);
-    /* Banner + toolbar + reduced gap */
-    min-height: calc(100vh - var(--banner-height, 0px) - var(--toolbar-height, 72px) - 36px);
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-inline-start: 24px;
-    padding-inline-end: 24px;
-    padding-bottom: 24px;
-    box-sizing: border-box;
+  position: relative;
+  padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px);
+  min-height: calc(100vh - var(--banner-height, 0px) - var(--toolbar-height, 72px) - 36px);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
 }
 
-
 .emptyState {
-    @include theme.flex-center;
-    padding: theme.$spacing-16 theme.$spacing-8;
-    text-align: center;
+  @include theme.flex-center;
+  padding: theme.$spacing-16 theme.$spacing-8;
+  text-align: center;
 }
 
 .emptyState p {
-    color: theme.$text-secondary;
-    font-size: 16px;
-    margin: 0;
-    max-width: 400px;
-    line-height: 1.5;
+  color: theme.$text-secondary;
+  font-size: 16px;
+  margin: 0;
+  max-width: 400px;
+  line-height: 1.5;
 }
 
 .emptyStateCard {
-    padding: theme.$spacing-12 theme.$spacing-10;
-    max-width: 420px;
-    position: relative;
-    cursor: pointer;
-    @include theme.smooth-transition;
-    
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    }
-    
-    &:active {
-        transform: translateY(0);
-    }
+  padding: theme.$spacing-12 theme.$spacing-10;
+  max-width: 420px;
+  position: relative;
+  cursor: pointer;
+  @include theme.smooth-transition;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .emptyStateIcon {
-    margin-bottom: theme.$spacing-6;
-    color: theme.$icon-empty-state;
-    @include theme.flex-center;
+  margin-bottom: theme.$spacing-6;
+  color: theme.$icon-empty-state;
+  @include theme.flex-center;
 }
 
 .emptyStateContent {
-    @include theme.flex-column;
-    gap: theme.$spacing-3;
+  @include theme.flex-column;
+  gap: theme.$spacing-3;
 }
 
 .emptyStateTitle {
-    color: theme.$text-primary;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: -0.01em;
+  color: theme.$text-primary;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .emptyStateMessage {
-    color: theme.$text-secondary-light;
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 0;
+  color: theme.$text-secondary-light;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .boardList {
-    display: grid;
-    gap: theme.$spacing-6;
-    padding: theme.$spacing-2 0;
-    list-style: none;
-    margin: 0;
+  display: grid;
+  gap: theme.$spacing-6;
+  padding: theme.$spacing-2 0;
+  list-style: none;
+  margin: 0;
 }
 
 .boardList.grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px)));
-    justify-content: center;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px))
+  );
+  justify-content: center;
 }
 
 .boardList.list {
-    @include theme.flex-column;
-    gap: theme.$spacing-4;
+  @include theme.flex-column;
+  gap: theme.$spacing-4;
 }
 
 .boardListItem {
-    animation: boardStaggerIn theme.$transition-slow ease-out backwards;
-    @include theme.smooth-transition;
+  animation: boardStaggerIn theme.$transition-slow ease-out backwards;
+  @include theme.smooth-transition;
 }
 
 .boardListItem.noAnimation {
-    animation: none;
+  animation: none;
 }
 
 .boardList.list .boardListItem {
-    width: 100%;
+  width: 100%;
 }
 
 .boardListItem:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .boardList.list .boardListItem:hover {
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 @keyframes boardStaggerIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

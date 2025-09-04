@@ -4,7 +4,7 @@
   display: flex;
   height: 100%;
   width: 100%;
-  gap: 0; // Explicitly no gap between flex items
+  gap: 0;
 }
 
 .leftPanel,
@@ -16,64 +16,59 @@
 .leftPanel {
   border: 1px solid theme.$border-light;
   @include theme.rounded-medium;
-  background: transparent; // Transparent to show pattern background
+  background: transparent;
   flex-shrink: 0;
 }
 
 .rightPanel {
   border: 1px solid theme.$border-light;
-  border-radius: 0; // Square corners to match canvas style
-  background: transparent; // Transparent to show pattern background
+  border-radius: 0;
+  background: transparent;
   @include theme.flex-column;
 }
 
-// Redesigned subtle divider
 .divider {
   position: relative;
-  width: 8px; // Original width restored
+  width: 8px;
   cursor: col-resize;
   @include theme.flex-center;
-  background: var(--color-border); // More visible on white backgrounds
+  background: var(--color-border);
   border: none;
   padding: 0;
   @include theme.hover-transition;
   height: 100%;
   margin: 0;
 
-  // Larger invisible clickable area using pseudo-element
   &::before {
     content: '';
     position: absolute;
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 12px; // Larger clickable area
+    width: 12px;
     background: transparent;
     transform: translateX(-50%);
     z-index: 0;
   }
 
-  // Focus styles for accessibility
   &:focus-visible {
     outline: 2px solid theme.$primary;
     outline-offset: 2px;
   }
 }
 
-// More visible separator line
 .dividerLine {
   position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 2px; // Original thickness restored
-  background: var(--color-border-strong); // Darker for visibility on white
+  width: 2px;
+  background: var(--color-border-strong);
   transform: translateX(-50%);
   @include theme.hover-transition;
-  border-radius: 1px; // Original radius restored
+  border-radius: 1px;
 }
 
-// Visual drag handle in the center
 .dividerHandle {
   position: absolute;
   left: 50%;
@@ -86,16 +81,14 @@
   padding: theme.$spacing-2 theme.$spacing-1;
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
-  border-radius: theme.$border-radius-lg; // Rounded pill shape
+  border-radius: theme.$border-radius-lg;
   @include theme.hover-transition;
   z-index: 1;
 
-  // Initially subtle and small
   opacity: 0.8;
   transform: translate(-50%, -50%) scale(0.9);
 }
 
-// Individual dots in the handle
 .handleDot {
   width: 2px;
   height: 2px;
@@ -104,13 +97,12 @@
   @include theme.hover-transition;
 }
 
-// Hover states - make more prominent
 .divider:hover {
-  background: var(--color-border-strong); // Darker for visibility on white
+  background: var(--color-border-strong);
 
   .dividerLine {
     background: var(--color-primary);
-    width: 3px; // Original hover thickness
+    width: 3px;
   }
 
   .dividerHandle {
@@ -127,13 +119,12 @@
   }
 }
 
-// Active/dragging state - maximum prominence
 .divider.dragging {
-  background: var(--color-surface-hover); // Subtle elevated background when dragging
+  background: var(--color-surface-hover);
 
   .dividerLine {
     background: var(--color-primary);
-    width: 4px; // Original dragging thickness
+    width: 4px;
   }
 
   .dividerHandle {

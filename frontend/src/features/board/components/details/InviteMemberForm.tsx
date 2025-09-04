@@ -1,15 +1,14 @@
-import React from 'react';
-
 import type { UseBoardMemberActionsReturn } from 'features/board/hooks/details/useBoardMemberActions';
 import type { Member } from 'features/board/types/BoardTypes';
 import { Mail, UserPlus } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
 interface InviteMemberFormProps {
-    inviteForm: UseBoardMemberActionsReturn['inviteForm'];
-    onInviteSuccess: (newMember: Member) => void;
+  inviteForm: UseBoardMemberActionsReturn['inviteForm'];
+  onInviteSuccess: (newMember: Member) => void;
 }
 
 const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ inviteForm, onInviteSuccess }) => {
@@ -24,7 +23,7 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ inviteForm, onInvit
           {t('board:inviteMemberForm.heading')}
         </h3>
       </div>
-      
+
       <form onSubmit={(e) => handleSubmit(e, onInviteSuccess)} className={styles.form}>
         <div className={styles.field}>
           <label htmlFor="member-email">

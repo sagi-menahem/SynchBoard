@@ -1,5 +1,3 @@
-import React, { useMemo, useCallback } from 'react';
-
 import type {
   ButtonToolbarItem,
   CustomToolbarItem,
@@ -11,6 +9,7 @@ import type {
   ViewToggleToolbarItem,
 } from 'features/board/types/ToolbarTypes';
 import { MemberActivityIndicator } from 'features/board/ui';
+import React, { useMemo, useCallback } from 'react';
 
 import Button from '../forms/Button';
 import { SearchBar } from '../navigation/SearchBar';
@@ -29,17 +28,16 @@ const ToolbarButton: React.FC<{ item: ButtonToolbarItem }> = React.memo(({ item 
     className,
   } = item;
 
-  const isIconOnly = useMemo(() => 
-    variant === 'navigation' || variant === 'icon' || className === 'iconOnlyButton',
+  const isIconOnly = useMemo(
+    () => variant === 'navigation' || variant === 'icon' || className === 'iconOnlyButton',
     [variant, className],
   );
 
-  const buttonVariant = useMemo(() => 
-    isIconOnly ? 'icon' : variant,
-    [isIconOnly, variant],
-  );
+  const buttonVariant = useMemo(() => (isIconOnly ? 'icon' : variant), [isIconOnly, variant]);
 
-  if (!visible) {return null;}
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Button
@@ -61,19 +59,19 @@ ToolbarButton.displayName = 'ToolbarButton';
 const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
   const { content, visible = true, className, clickable = false, onClick } = item;
 
-  if (!visible) {return null;}
+  if (!visible) {
+    return null;
+  }
 
-  const titleClass = [
-    styles.toolbarTitle,
-    clickable && styles.clickableTitle,
-    className,
-  ].filter(Boolean).join(' ');
+  const titleClass = [styles.toolbarTitle, clickable && styles.clickableTitle, className]
+    .filter(Boolean)
+    .join(' ');
 
   if (clickable && onClick) {
     return (
       <Button
         variant="icon"
-        className={`${titleClass} ${styles.titleButton}`} 
+        className={`${titleClass} ${styles.titleButton}`}
         onClick={onClick}
         type="button"
         aria-label={`Edit ${content}`}
@@ -83,17 +81,15 @@ const ToolbarTitle: React.FC<{ item: TitleToolbarItem }> = ({ item }) => {
     );
   }
 
-  return (
-    <h1 className={titleClass}>
-      {content}
-    </h1>
-  );
+  return <h1 className={titleClass}>{content}</h1>;
 };
 
 const ToolbarSearch: React.FC<{ item: SearchToolbarItem }> = ({ item }) => {
   const { placeholder, value, onSearch, onClear, visible = true, className } = item;
 
-  if (!visible) {return null;}
+  if (!visible) {
+    return null;
+  }
 
   return (
     <SearchBar
@@ -109,21 +105,19 @@ const ToolbarSearch: React.FC<{ item: SearchToolbarItem }> = ({ item }) => {
 const ToolbarViewToggle: React.FC<{ item: ViewToggleToolbarItem }> = ({ item }) => {
   const { value, onChange, visible = true, className } = item;
 
-  if (!visible) {return null;}
+  if (!visible) {
+    return null;
+  }
 
-  return (
-    <ViewToggle
-      value={value}
-      onChange={onChange}
-      className={className}
-    />
-  );
+  return <ViewToggle value={value} onChange={onChange} className={className} />;
 };
 
 const ToolbarMemberActivity: React.FC<{ item: MemberActivityToolbarItem }> = ({ item }) => {
   const { memberCount, onlineCount, onClick, visible = true, className } = item;
 
-  if (!visible) {return null;}
+  if (!visible) {
+    return null;
+  }
 
   return (
     <MemberActivityIndicator
@@ -138,18 +132,16 @@ const ToolbarMemberActivity: React.FC<{ item: MemberActivityToolbarItem }> = ({ 
 const ToolbarCustom: React.FC<{ item: CustomToolbarItem }> = ({ item }) => {
   const { content, visible = true, className } = item;
 
-  if (!visible) {return null;}
+  if (!visible) {
+    return null;
+  }
 
-  return (
-    <div className={`${styles.customItem} ${className ?? ''}`}>
-      {content}
-    </div>
-  );
+  return <div className={`${styles.customItem} ${className ?? ''}`}>{content}</div>;
 };
 
-const ToolbarSection: React.FC<{ 
-  items: ToolbarItem[]; 
-  className?: string; 
+const ToolbarSection: React.FC<{
+  items: ToolbarItem[];
+  className?: string;
 }> = React.memo(({ items, className }) => {
   const renderToolbarItem = useCallback((item: ToolbarItem, index: number): React.ReactNode => {
     const key = item.key ?? `${item.type}-${index}`;
@@ -172,16 +164,9 @@ const ToolbarSection: React.FC<{
     }
   }, []);
 
-  const sectionClasses = useMemo(() => 
-    `${styles.toolbarSection} ${className ?? ''}`,
-    [className],
-  );
+  const sectionClasses = useMemo(() => `${styles.toolbarSection} ${className ?? ''}`, [className]);
 
-  return (
-    <div className={sectionClasses}>
-      {items.map(renderToolbarItem)}
-    </div>
-  );
+  return <div className={sectionClasses}>{items.map(renderToolbarItem)}</div>;
 });
 
 ToolbarSection.displayName = 'ToolbarSection';
@@ -191,8 +176,8 @@ export const UniversalToolbar: React.FC<UniversalToolbarProps> = React.memo(
     const { leftSection = [], centerSection = [], rightSection = [] } = config;
     const toolbarRef = React.useRef<HTMLElement>(null);
 
-    const toolbarClasses = useMemo(() => 
-      `${styles.universalToolbar} ${className ?? ''}`,
+    const toolbarClasses = useMemo(
+      () => `${styles.universalToolbar} ${className ?? ''}`,
       [className],
     );
 

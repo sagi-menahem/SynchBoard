@@ -1,7 +1,8 @@
-
 const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
   const result = /^#?([a-f\d]{1,2})([a-f\d]{1,2})([a-f\d]{1,2})$/i.exec(hex);
-  if (!result) {return null;}
+  if (!result) {
+    return null;
+  }
 
   let r, g, b;
   if (hex.length === 4) {
@@ -78,14 +79,18 @@ export const getColorName = (hexColor: string): string | null => {
   }
 
   const inputRgb = hexToRgb(hexColor);
-  if (!inputRgb) {return null;}
+  if (!inputRgb) {
+    return null;
+  }
 
   let closestColor = null;
   let minDistance = Infinity;
 
   for (const [hex, colorName] of Object.entries(colorMap)) {
     const rgb = hexToRgb(hex);
-    if (!rgb) {continue;}
+    if (!rgb) {
+      continue;
+    }
 
     const distance = getColorDistance(inputRgb, rgb);
     if (distance < minDistance) {

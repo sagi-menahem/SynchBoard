@@ -35,44 +35,25 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modalContainer} style={{ maxWidth }}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>
-            {title}
-          </h2>
+          <h2 className={styles.modalTitle}>{title}</h2>
         </div>
-        
-        {description && (
-          <p className={styles.modalDescription}>
-            {description}
-          </p>
-        )}
+
+        {description && <p className={styles.modalDescription}>{description}</p>}
 
         <form onSubmit={onSubmit} className={styles.form}>
           {children}
 
           <div className={styles.buttonGroup}>
-            <Button 
-              type="button" 
-              onClick={onClose} 
-              disabled={isPending} 
-              variant="secondary"
-            >
+            <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
               {cancelButtonText}
             </Button>
-            <Button 
-              type="submit" 
-              disabled={isPending} 
-              variant="primary"
-            >
+            <Button type="submit" disabled={isPending} variant="primary">
               {submitButtonText}
             </Button>
           </div>
         </form>
 
-        {additionalActions && (
-          <div className={styles.additionalActions}>
-            {additionalActions}
-          </div>
-        )}
+        {additionalActions && <div className={styles.additionalActions}>{additionalActions}</div>}
       </div>
     </Modal>
   );

@@ -1,88 +1,85 @@
 @use '@/styles' as theme;
 
 .form {
-    @include theme.form-base;
-    // Much more compact spacing for auth forms
-    gap: theme.$spacing-2; // Much reduced spacing
-    // Remove any negative margins or positioning that might cause edge flush
-    margin: 0;
-    position: relative;
-    width: 100%; // Take full width of parent container
-    max-width: 400px; // But don't exceed reasonable form width
+  @include theme.form-base;
+  gap: theme.$spacing-2;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
 }
 
 .field {
-    @include theme.form-field;
-    // Compact spacing for auth form fields only
-    margin-bottom: 0; // Remove margin since gap handles spacing
-    gap: theme.$spacing-1; // Minimal gap
+  @include theme.form-field;
+  margin-bottom: 0;
+  gap: theme.$spacing-1;
 }
 
 .field label {
-    @include theme.form-label;
-    color: theme.$text-muted;
+  @include theme.form-label;
+  color: theme.$text-muted;
 }
 
 .field input {
-    text-align: center;
+  text-align: center;
 }
 
 .error {
-    @include theme.error-message;
-    color: theme.$error;
-    margin-bottom: theme.$spacing-4;
+  @include theme.error-message;
+  color: theme.$error;
+  margin-bottom: theme.$spacing-4;
 }
 
 .submitButton {
-    margin-top: theme.$spacing-2;
-    width: 50%;
-    align-self: center;
-    justify-content: center;
+  margin-top: theme.$spacing-2;
+  width: 50%;
+  align-self: center;
+  justify-content: center;
 }
 
 .divider {
-    position: relative;
-    margin: theme.$spacing-3 0; // Further reduced for compactness
-    text-align: center;
+  position: relative;
+  margin: theme.$spacing-3 0;
+  text-align: center;
 }
 
 .divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: theme.$border;
-    transform: translateY(-50%);
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: theme.$border;
+  transform: translateY(-50%);
 }
 
 .dividerText {
-    position: relative;
-    background: theme.$surface-elevated;
-    padding: 0 theme.$spacing-4;
-    color: theme.$text-disabled;
-    font-size: 0.875rem;
+  position: relative;
+  background: theme.$surface-elevated;
+  padding: 0 theme.$spacing-4;
+  color: theme.$text-disabled;
+  font-size: 0.875rem;
 }
 
 .secondaryActionsContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem; // Tight spacing
-    margin-top: 0.4rem; // Minimal margin
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .forgotPasswordButton {
-    font-size: 0.875rem;
+  font-size: 0.875rem;
 }
 
 @media (max-width: 640px) {
-    .form {
-        gap: theme.$spacing-4;
-    }
+  .form {
+    gap: theme.$spacing-4;
+  }
 
-    .divider {
-        margin: theme.$spacing-4 0;
-    }
+  .divider {
+    margin: theme.$spacing-4 0;
+  }
 }

@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class ThemePreferencesDTO {
 
     @NotBlank(message = "validation.theme")
-    @Pattern(regexp = "^(light|dark)$",
-            message = "validation.themePattern")
+    @Pattern(regexp = "^(light|dark)$", message = "validation.themePattern")
     private String theme;
 }

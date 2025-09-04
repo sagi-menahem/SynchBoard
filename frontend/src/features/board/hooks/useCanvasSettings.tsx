@@ -14,15 +14,13 @@ interface UseCanvasSettingsOptions {
 }
 
 interface UseCanvasSettingsReturn {
-  // State
   isEditing: boolean;
   isUpdating: boolean;
   backgroundColor: string;
   canvasSize: string;
   customWidth: number;
   customHeight: number;
-  
-  // Actions
+
   handleStartEditing: () => void;
   handleCancel: () => void;
   handleSave: () => Promise<void>;
@@ -30,8 +28,7 @@ interface UseCanvasSettingsReturn {
   handleCanvasSizeChange: (value: string) => void;
   handleCustomWidthChange: (value: string) => void;
   handleCustomHeightChange: (value: string) => void;
-  
-  // Computed values
+
   presetOptions: {
     value: string;
     label: React.ReactElement;
@@ -39,9 +36,11 @@ interface UseCanvasSettingsReturn {
   }[];
 }
 
-export const useCanvasSettings = (
-  { boardDetails, onUpdateSettings, styles }: UseCanvasSettingsOptions,
-): UseCanvasSettingsReturn => {
+export const useCanvasSettings = ({
+  boardDetails,
+  onUpdateSettings,
+  styles,
+}: UseCanvasSettingsOptions): UseCanvasSettingsReturn => {
   const { detectCurrentSizePreset, generatePresetOptions } = useCanvasPresets({ styles });
   const {
     isEditing,
@@ -60,7 +59,6 @@ export const useCanvasSettings = (
     calculateDimensions,
   } = useCanvasState({ boardDetails, detectCurrentSizePreset });
 
-  // Business logic functions
   const handleStartEditing = () => {
     setIsEditing(true);
   };
@@ -86,7 +84,6 @@ export const useCanvasSettings = (
     }
   };
 
-
   const handleCustomWidthChange = (value: string) => {
     const parsedValue = parseInt(value);
     setCustomWidth(Number.isNaN(parsedValue) ? boardDetails.canvasWidth : parsedValue);
@@ -97,17 +94,14 @@ export const useCanvasSettings = (
     setCustomHeight(Number.isNaN(parsedValue) ? boardDetails.canvasHeight : parsedValue);
   };
 
-
   return {
-    // State
     isEditing,
     isUpdating,
     backgroundColor,
     canvasSize,
     customWidth,
     customHeight,
-    
-    // Actions
+
     handleStartEditing,
     handleCancel,
     handleSave,
@@ -115,8 +109,7 @@ export const useCanvasSettings = (
     handleCanvasSizeChange,
     handleCustomWidthChange,
     handleCustomHeightChange,
-    
-    // Computed values
+
     presetOptions: generatePresetOptions(),
   };
 };

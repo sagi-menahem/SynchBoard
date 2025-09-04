@@ -231,6 +231,10 @@
     "yesterday": "Yesterday",
     "today": "Today"
   },
+  "connection": {
+    "lost": "Connection lost - limited functionality",
+    "drawingDisabled": "Drawing disabled - No connection to server"
+  },
   "errorHandler": {
     "unexpectedError": "An unexpected error occurred"
   }

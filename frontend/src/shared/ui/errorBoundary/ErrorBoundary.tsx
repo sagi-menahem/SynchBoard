@@ -1,6 +1,6 @@
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
@@ -45,12 +45,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   private handleRetry = async () => {
     this.setState({ isRetrying: true });
-    
-    // Add a small delay to show loading state
+
     await new Promise((resolve) => setTimeout(resolve, TIMING_CONSTANTS.ERROR_RECOVERY_DELAY));
-    
+
     this.setState({ hasError: false, error: null, isRetrying: false });
-    
+
     if (this.props.onRetry) {
       this.props.onRetry();
     } else {
@@ -64,19 +63,19 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      // Use a functional component wrapper to access hooks
-      return <ErrorBoundaryUI 
-        onRetry={this.handleRetry} 
-        onGoHome={this.handleGoHome}
-        isRetrying={this.state.isRetrying}
-      />;
+      return (
+        <ErrorBoundaryUI
+          onRetry={this.handleRetry}
+          onGoHome={this.handleGoHome}
+          isRetrying={this.state.isRetrying}
+        />
+      );
     }
 
     return this.props.children;
   }
 }
 
-// Functional component to use hooks
 const ErrorBoundaryUI: React.FC<{
   onRetry: () => void;
   onGoHome: () => void;
@@ -89,23 +88,15 @@ const ErrorBoundaryUI: React.FC<{
     <div className={styles.errorContainer} role="alert" aria-live="assertive">
       <Card variant="elevated" className={styles.errorCard}>
         <div className={styles.iconContainer}>
-          <AlertTriangle 
-            className={styles.errorIcon} 
-            aria-hidden="true"
-            size={64}
-          />
+          <AlertTriangle className={styles.errorIcon} aria-hidden="true" size={64} />
         </div>
-        
-        <h1 className={styles.title}>
-          {t('errorBoundary.title')}
-        </h1>
-        
-        <p className={styles.message}>
-          {t('errorBoundary.message')}
-        </p>
-        
+
+        <h1 className={styles.title}>{t('errorBoundary.title')}</h1>
+
+        <p className={styles.message}>{t('errorBoundary.message')}</p>
+
         <div className={styles.buttonContainer}>
-          <Button 
+          <Button
             onClick={onGoHome}
             variant="secondary"
             className={styles.secondaryButton}
@@ -114,7 +105,7 @@ const ErrorBoundaryUI: React.FC<{
             <BackArrowIcon size={16} />
             {t('errorDisplay.goBack')}
           </Button>
-          <Button 
+          <Button
             onClick={onRetry}
             variant="primary"
             className={styles.retryButton}
@@ -125,7 +116,7 @@ const ErrorBoundaryUI: React.FC<{
             {t('errorBoundary.tryAgain')}
           </Button>
         </div>
-        
+
         <div id="retry-description" className="sr-only">
           {t('errorDisplay.helpText')}
         </div>

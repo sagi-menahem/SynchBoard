@@ -1,20 +1,21 @@
 package io.github.sagimenahem.synchboard.service.auth;
 
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -55,10 +56,13 @@ public class JwtService {
         String username = userDetails.getUsername();
         log.debug(SECURITY_PREFIX + " Generating JWT token for user: {}", username);
 
-        String token = Jwts.builder().claims(extraClaims).subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + getExpirationTimeInMillis()))
-                .signWith(getSignInKey()).compact();
+        String token = Jwts.builder()
+            .claims(extraClaims)
+            .subject(username)
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + getExpirationTimeInMillis()))
+            .signWith(getSignInKey())
+            .compact();
 
         log.info(SECURITY_PREFIX + " JWT token generated for user: {}", username);
         return token;
@@ -75,9 +79,11 @@ public class JwtService {
         if (isValid) {
             log.debug(SECURITY_PREFIX + " JWT token validated for user: {}", username);
         } else {
-            log.warn(SECURITY_PREFIX + " Invalid JWT token for user: {}. Reason: {}", username,
-                    !username.equals(userDetails.getUsername()) ? "username mismatch"
-                            : "token expired");
+            log.warn(
+                SECURITY_PREFIX + " Invalid JWT token for user: {}. Reason: {}",
+                username,
+                !username.equals(userDetails.getUsername()) ? "username mismatch" : "token expired"
+            );
         }
 
         return isValid;
@@ -97,8 +103,11 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         try {
-            return Jwts.parser().verifyWith((javax.crypto.SecretKey) getSignInKey()).build()
-                    .parseSignedClaims(token).getPayload();
+            return Jwts.parser()
+                .verifyWith((javax.crypto.SecretKey) getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         } catch (Exception e) {
             log.error(SECURITY_PREFIX + " Failed to extract claims from token: {}", e.getMessage());
             throw e;

@@ -1,10 +1,8 @@
-import React from 'react';
-
 import { Switch } from '@headlessui/react';
 import { useTheme } from 'features/settings/ThemeProvider';
 import { Moon, Sun } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-
 
 interface ThemeSwitcherProps {
   className?: string;
@@ -12,8 +10,8 @@ interface ThemeSwitcherProps {
   showLabel?: boolean;
 }
 
-const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ 
-  className, 
+const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
+  className,
   size = 'sm',
   showLabel = false,
 }) => {
@@ -21,7 +19,6 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const { theme, setTheme } = useTheme();
   const isRTL = i18n.language === 'he';
 
-  // Size configurations
   const sizeConfig = {
     sm: { height: 28, width: 56, iconSize: 14 },
     md: { height: 32, width: 64, iconSize: 16 },
@@ -38,7 +35,15 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className={className}>
       {showLabel && (
-        <span style={{ fontSize: '14px', color: 'var(--color-text-muted)', fontWeight: '500', whiteSpace: 'nowrap' }} id="theme-label">
+        <span
+          style={{
+            fontSize: '14px',
+            color: 'var(--color-text-muted)',
+            fontWeight: '500',
+            whiteSpace: 'nowrap',
+          }}
+          id="theme-label"
+        >
           {t('common:theme')}
         </span>
       )}
@@ -63,7 +68,6 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         aria-labelledby={showLabel ? 'theme-label' : undefined}
         aria-label={!showLabel ? t('common:theme') : undefined}
       >
-        {/* Handle */}
         <span
           style={{
             position: 'relative',
@@ -75,7 +79,9 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
             transform: (() => {
               if (isDark) {
-                return isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`;
+                return isRTL
+                  ? `translateX(-${config.width - config.height}px)`
+                  : `translateX(${config.width - config.height}px)`;
               }
               return 'translateX(0px)';
             })(),
@@ -83,18 +89,19 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             zIndex: 1,
           }}
         />
-        
-        {/* Background icons */}
-        <div style={{
-          position: 'absolute',
-          inset: '2px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingLeft: '6px',
-          paddingRight: '6px',
-          zIndex: 2,
-        }}>
+
+        <div
+          style={{
+            position: 'absolute',
+            inset: '2px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingLeft: '6px',
+            paddingRight: '6px',
+            zIndex: 2,
+          }}
+        >
           <Sun size={config.iconSize} color={isDark ? '#6b7280' : '#f59e0b'} />
           <Moon size={config.iconSize} color={isDark ? '#a5b4fc' : '#6b7280'} />
         </div>

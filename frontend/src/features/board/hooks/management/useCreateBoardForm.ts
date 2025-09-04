@@ -1,12 +1,10 @@
-import { useActionState } from 'react';
-
 import { createBoard } from 'features/board/services/boardService';
 import type { Board } from 'features/board/types/BoardTypes';
+import { useActionState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { APP_CONFIG } from 'shared/constants/AppConstants';
 import logger from 'shared/utils/logger';
-
 
 interface CreateBoardState {
   success: boolean;
@@ -17,7 +15,10 @@ interface CreateBoardState {
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {
   const { t } = useTranslation(['board', 'common']);
 
-  const createBoardAction = async (_previousState: CreateBoardState, formData: FormData): Promise<CreateBoardState> => {
+  const createBoardAction = async (
+    _previousState: CreateBoardState,
+    formData: FormData,
+  ): Promise<CreateBoardState> => {
     const name = (formData.get('name') as string)?.trim() ?? '';
     const description = (formData.get('description') as string)?.trim() ?? '';
     const picture = formData.get('picture') as File;
@@ -78,7 +79,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       };
     } catch (err: unknown) {
       toast.dismiss();
-      // Don't show generic error - specific validation errors are already shown by apiClient
       logger.error('[useCreateBoardForm] Failed to create board:', err);
       return {
         success: false,

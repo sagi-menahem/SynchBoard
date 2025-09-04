@@ -1,7 +1,6 @@
-import { useCallback, useRef } from 'react';
-
 import { getUserProfile } from 'features/settings/services/userService';
 import { jwtDecode } from 'jwt-decode';
+import { useCallback, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
@@ -24,82 +23,84 @@ export const useAuthValidation = () => {
     }
   }, []);
 
-  const scheduleExpiryWarning = useCallback((expiryTime: number) => {
-    const warningTime = expiryTime - (5 * 60 * 1000); // 5 minutes before expiry
-    const timeUntilWarning = warningTime - Date.now();
-    
-    if (timeUntilWarning > 0) {
-      expiryWarningTimeoutRef.current = window.setTimeout(() => {
-        toast(t('auth:sessionExpiry.warning'), {
-          duration: 10000,
-          id: 'session-expiry-warning',
-          icon: '⚠️',
-        });
-      }, timeUntilWarning);
-    }
-  }, [t]);
+  const scheduleExpiryWarning = useCallback(
+    (expiryTime: number) => {
+      const warningTime = expiryTime - 5 * 60 * 1000;
+      const timeUntilWarning = warningTime - Date.now();
 
-  const validateToken = useCallback(async (token: string | null): Promise<AuthValidationResult> => {
-    // Clear any existing expiry warnings
-    clearExpiryWarning();
+      if (timeUntilWarning > 0) {
+        expiryWarningTimeoutRef.current = window.setTimeout(() => {
+          toast(t('auth:sessionExpiry.warning'), {
+            duration: 10000,
+            id: 'session-expiry-warning',
+            icon: '⚠️',
+          });
+        }, timeUntilWarning);
+      }
+    },
+    [t],
+  );
 
-    if (!token) {
-      return {
-        isValid: false,
-        userEmail: null,
-        shouldClearToken: false,
-      };
-    }
+  const validateToken = useCallback(
+    async (token: string | null): Promise<AuthValidationResult> => {
+      clearExpiryWarning();
 
-    try {
-      // Decode and validate JWT structure
-      const decodedToken: { sub: string, exp?: number } = jwtDecode(token);
-      const userEmail = decodedToken.sub;
-      
-      // Check if token is expired
-      const isExpired = decodedToken.exp !== undefined ? decodedToken.exp * 1000 < Date.now() : false;
-      
-      if (isExpired) {
-        logger.warn('[useAuthValidation] Token is expired');
+      if (!token) {
         return {
           isValid: false,
           userEmail: null,
-          shouldClearToken: true,
+          shouldClearToken: false,
         };
       }
 
       try {
-        // Validate token with backend by attempting to get user profile
-        await getUserProfile();
-        
-        // Schedule expiry warning if token has expiry time
-        if (decodedToken.exp !== undefined) {
-          const expiryTime = decodedToken.exp * 1000;
-          scheduleExpiryWarning(expiryTime);
+        const decodedToken: { sub: string; exp?: number } = jwtDecode(token);
+        const userEmail = decodedToken.sub;
+
+        const isExpired =
+          decodedToken.exp !== undefined ? decodedToken.exp * 1000 < Date.now() : false;
+
+        if (isExpired) {
+          logger.warn('[useAuthValidation] Token is expired');
+          return {
+            isValid: false,
+            userEmail: null,
+            shouldClearToken: true,
+          };
         }
-        
-        return {
-          isValid: true,
-          userEmail,
-          shouldClearToken: false,
-        };
+
+        try {
+          await getUserProfile();
+
+          if (decodedToken.exp !== undefined) {
+            const expiryTime = decodedToken.exp * 1000;
+            scheduleExpiryWarning(expiryTime);
+          }
+
+          return {
+            isValid: true,
+            userEmail,
+            shouldClearToken: false,
+          };
+        } catch (error) {
+          logger.warn('[useAuthValidation] User validation failed - token may be invalid', error);
+          return {
+            isValid: false,
+            userEmail: null,
+            shouldClearToken: true,
+          };
+        }
       } catch (error) {
-        logger.warn('[useAuthValidation] User validation failed - token may be invalid', error);
+        logger.error('[useAuthValidation] Failed to decode JWT token', error);
         return {
           isValid: false,
           userEmail: null,
           shouldClearToken: true,
         };
       }
-    } catch (error) {
-      logger.error('[useAuthValidation] Failed to decode JWT token', error);
-      return {
-        isValid: false,
-        userEmail: null,
-        shouldClearToken: true,
-      };
-    }
-  }, [clearExpiryWarning, scheduleExpiryWarning]);
+    },
+    [clearExpiryWarning, scheduleExpiryWarning],
+  );
 
   const clearTokenFromStorage = useCallback(() => {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);

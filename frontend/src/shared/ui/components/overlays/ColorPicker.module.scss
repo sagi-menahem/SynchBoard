@@ -17,12 +17,11 @@
 }
 
 .swatch {
-  // Reset to standard button styling - will inherit from Button component variant="icon"
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; // Ensure color fill doesn't overflow button boundaries
+  overflow: hidden;
 
   &.disabled {
     opacity: 0.5;
@@ -35,9 +34,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px; // Even smaller centered square
-  height: 20px; // Even smaller centered square  
-  border-radius: 50%; // Circle shape
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }
 
 .popover {

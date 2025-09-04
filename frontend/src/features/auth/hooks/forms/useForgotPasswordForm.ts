@@ -13,9 +13,10 @@ export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) =
     validateFormData: (formData: FormData) => {
       const email = extractFormData.email(formData);
 
-      // Validate email
       const emailError = authValidation.validateEmail(email, t);
-      if (emailError) { return emailError; }
+      if (emailError) {
+        return emailError;
+      }
 
       return { email };
     },

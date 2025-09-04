@@ -49,5 +49,7 @@ export const extractErrorFromCallback = (): string | null => {
 };
 
 export const isOAuthCallback = (): boolean => {
-  return window.location.pathname === '/auth/callback' || window.location.pathname === '/auth/error';
+  return (
+    window.location.pathname === '/auth/callback' || window.location.pathname === '/auth/error'
+  );
 };

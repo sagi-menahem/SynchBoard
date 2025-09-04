@@ -3,19 +3,19 @@ import React from 'react';
 import styles from './EnhancedContextMenu.module.scss';
 
 interface ContextMenuItemProps {
-    onClick: () => void;
-    children: React.ReactNode;
-    destructive?: boolean;
-    icon?: React.ReactNode;
-    variant?: 'default' | 'primary' | 'destructive';
+  onClick: () => void;
+  children: React.ReactNode;
+  destructive?: boolean;
+  icon?: React.ReactNode;
+  variant?: 'default' | 'primary' | 'destructive';
 }
 
-export const ContextMenuItem: React.FC<ContextMenuItemProps> = ({ 
-  onClick, 
-  children, 
-  destructive = false, 
+export const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
+  onClick,
+  children,
+  destructive = false,
   icon,
-  variant, 
+  variant,
 }) => {
   const finalVariant = variant ?? (destructive ? 'destructive' : 'default');
   const itemClasses = `${styles.item} ${styles[finalVariant]}`;

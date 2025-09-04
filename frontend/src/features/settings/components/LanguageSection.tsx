@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-
 import { useLanguageSync } from 'features/settings/hooks';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LanguageToggle, SectionCard } from 'shared/ui';
@@ -9,15 +8,15 @@ import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
 
-
 const LanguageSection: React.FC = () => {
   const { t, i18n } = useTranslation(['settings', 'common']);
   const { loadUserLanguage, updateLanguagePreference, isLanguageLoaded } = useLanguageSync();
-  const [languagePrefs, setLanguagePrefs] = useState<LanguagePreferences>({ preferredLanguage: 'en' });
+  const [languagePrefs, setLanguagePrefs] = useState<LanguagePreferences>({
+    preferredLanguage: 'en',
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const currentLanguage = languagePrefs.preferredLanguage ?? i18n.language ?? 'en';
-
 
   useEffect(() => {
     const initializeLanguagePrefs = async () => {
@@ -57,10 +56,7 @@ const LanguageSection: React.FC = () => {
 
   if (isLoading) {
     return (
-      <SectionCard 
-        title={t('settings:page.languageHeader')}
-        variant="default"
-      >
+      <SectionCard title={t('settings:page.languageHeader')} variant="default">
         <div className={styles.field}>
           <span>{t('settings:page.loading')}</span>
         </div>
@@ -69,10 +65,7 @@ const LanguageSection: React.FC = () => {
   }
 
   return (
-    <SectionCard 
-      title={t('settings:page.languageHeader')}
-      variant="default"
-    >
+    <SectionCard title={t('settings:page.languageHeader')} variant="default">
       <div className={styles.field}>
         <LanguageToggle
           value={currentLanguage}

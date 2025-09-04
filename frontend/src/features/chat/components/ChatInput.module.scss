@@ -1,202 +1,181 @@
 @use '@/styles' as theme;
 
 .form {
-    padding: theme.$spacing-4;
-    border: none;
-    background-color: transparent;
-    @include theme.flex-center;
+  padding: theme.$spacing-4;
+  border: none;
+  background-color: transparent;
+  @include theme.flex-center;
 }
 
 .inputContainer {
-    display: flex;
-    align-items: center;
-    background: theme.$surface-elevated;
-    border: 2px solid theme.$border-light;
-    border-radius: 24px;
-    padding: theme.$spacing-2 theme.$spacing-4;
-    width: 100%;
-    max-width: 100%;
-    @include theme.smooth-transition;
-    position: relative;
-    box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  background: theme.$surface-elevated;
+  border: 2px solid theme.$border-light;
+  border-radius: 24px;
+  padding: theme.$spacing-2 theme.$spacing-4;
+  width: 100%;
+  max-width: 100%;
+  @include theme.smooth-transition;
+  position: relative;
+  box-sizing: border-box;
 
-    &:focus-within {
-        border-color: theme.$primary;
-        box-shadow: 0 0 0 3px theme.$overlay-primary-20;
+  &:focus-within {
+    border-color: theme.$primary;
+    box-shadow: 0 0 0 3px theme.$overlay-primary-20;
+  }
+
+  &:hover:not(.sending) {
+    border-color: theme.$border;
+    @include theme.shadow-light;
+  }
+
+  &.sending {
+    opacity: 0.8;
+    pointer-events: none;
+
+    .input {
+      cursor: wait;
     }
-
-    &:hover:not(.sending) {
-        border-color: theme.$border;
-        @include theme.shadow-light;
-    }
-
-    &.sending {
-        opacity: 0.8;
-        pointer-events: none;
-
-        .input {
-            cursor: wait;
-        }
-    }
+  }
 }
 
 .input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: theme.$spacing-2-5 theme.$spacing-2;
-    font-size: 0.95rem;
-    color: theme.$text-primary;
-    font-family: inherit;
-    line-height: 1.4;
-    resize: none;
-    outline: none;
-    @include theme.smooth-transition;
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: theme.$spacing-2-5 theme.$spacing-2;
+  font-size: 0.95rem;
+  color: theme.$text-primary;
+  font-family: inherit;
+  line-height: 1.4;
+  resize: none;
+  outline: none;
+  @include theme.smooth-transition;
+
+  &::placeholder {
+    color: theme.$text-muted;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: theme.$text-disabled;
 
     &::placeholder {
-        color: theme.$text-muted;
+      color: theme.$text-disabled;
     }
+  }
 
-    &:disabled {
-        cursor: not-allowed;
-        color: theme.$text-disabled;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-        &::placeholder {
-            color: theme.$text-disabled;
-        }
-    }
-
-    /* Remove default input styling */
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    &[type=number] {
-        -moz-appearance: textfield;
-    }
+  &[type='number'] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
 }
 
-/* === Definitive Send Button Styles === */
 .sendButton {
-    /* Basic setup */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    padding: 8px;
-    border: none;
-    transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 8px;
+  border: none;
+  transition: all 0.2s ease-in-out;
 
-    /* --- DARK THEME STYLES (DEFAULT) --- */
+  background-color: #3a3a3a;
+  cursor: not-allowed;
 
-    /* Disabled State - Dark Theme */
-    background-color: #3a3a3a;
-    /* A clear dark gray */
-    cursor: not-allowed;
+  svg {
+    stroke: #707070;
+  }
+
+  &:not(:disabled) {
+    background-color: #adb5bd;
+    cursor: pointer;
 
     svg {
-        stroke: #707070;
-        /* A visible muted gray for the icon */
+      stroke: #ffffff;
     }
 
-    /* Enabled State - Dark Theme */
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+:global([data-theme='light']) {
+  .sendButton {
+    background-color: #e9ecef;
+
+    svg {
+      stroke: #adb5bd;
+    }
+
     &:not(:disabled) {
-        background-color: #adb5bd;
-        /* A nice, vibrant blue */
-        cursor: pointer;
+      background-color: #adb5bd;
 
-        svg {
-            stroke: #FFFFFF;
-            /* A pure white icon */
-        }
-
-        &:hover {
-            transform: scale(1.1);
-        }
+      svg {
+        stroke: #ffffff;
+      }
     }
+  }
 }
 
-/* --- LIGHT THEME OVERRIDES --- */
-:global([data-theme="light"]) {
-    .sendButton {
-        /* Disabled State - Light Theme */
-        background-color: #e9ecef;
-        /* A clear light gray */
-
-        svg {
-            stroke: #adb5bd;
-            /* A visible muted dark gray for the icon */
-        }
-
-        /* Enabled State - Light Theme */
-        &:not(:disabled) {
-            background-color: #adb5bd;
-            /* The same vibrant blue */
-
-            svg {
-                stroke: #FFFFFF;
-                /* A pure white icon */
-            }
-        }
-    }
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-    .form {
-        padding: theme.$spacing-3 theme.$spacing-4;
-    }
+  .form {
+    padding: theme.$spacing-3 theme.$spacing-4;
+  }
 
-    .inputContainer {
-        padding: 6px 12px;
-        border-radius: 20px;
-    }
+  .inputContainer {
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
 
-    .input {
-        padding: 8px 6px;
-        font-size: 0.9rem;
-    }
+  .input {
+    padding: 8px 6px;
+    font-size: 0.9rem;
+  }
 
-    .sendButton {
-        min-width: 32px;
-        min-height: 32px;
-        margin-left: 6px;
-    }
+  .sendButton {
+    min-width: 32px;
+    min-height: 32px;
+    margin-left: 6px;
+  }
 }
 
-/* Accessibility and reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .inputContainer,
+  .input,
+  .sendButton,
+  .sendButton svg {
+    transition: none;
+  }
 
-    .inputContainer,
-    .input,
-    .sendButton,
-    .sendButton svg {
-        transition: none;
-    }
-
-    .sendButton:hover:not(:disabled) {
-        transform: none;
-    }
+  .sendButton:hover:not(:disabled) {
+    transform: none;
+  }
 }
 
-/* High contrast mode */
 @media (prefers-contrast: high) {
-    .inputContainer {
-        border-width: 3px;
+  .inputContainer {
+    border-width: 3px;
 
-        &:focus-within {
-            border-color: theme.$text-primary;
-        }
+    &:focus-within {
+      border-color: theme.$text-primary;
     }
+  }
 
-    .sendButton {
-        border: 2px solid white;
+  .sendButton {
+    border: 2px solid white;
 
-        &:focus {
-            outline: 3px solid theme.$text-primary;
-            outline-offset: 2px;
-        }
+    &:focus {
+      outline: 3px solid theme.$text-primary;
+      outline-offset: 2px;
     }
+  }
 }

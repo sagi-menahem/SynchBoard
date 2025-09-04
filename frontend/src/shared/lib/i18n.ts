@@ -46,8 +46,7 @@ void i18n.use(initReactI18next).init({
   resources,
   lng: getInitialLanguage(),
   fallbackLng: 'en',
-  
-  // Configure namespaces
+
   defaultNS: 'common',
   ns: ['common', 'auth', 'board', 'chat', 'settings'],
 

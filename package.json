@@ -1,0 +1,25 @@
+{
+  "name": "synchboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real-time collaborative whiteboard application",
+  "scripts": {
+    "format:all": "prettier --write \"**/*.{java,ts,tsx,js,jsx,json,md,yml,yaml,css,scss,html}\"",
+    "format:check": "prettier --check \"**/*.{java,ts,tsx,js,jsx,json,md,yml,yaml,css,scss,html}\"",
+    "format:backend": "prettier --write \"backend/**/*.java\"",
+    "format:frontend": "prettier --write \"frontend/**/*.{ts,tsx,js,jsx,json,css,scss}\"",
+    "install:all": "cd frontend && npm install",
+    "dev:backend": "cd backend && ./gradlew bootRun",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && ./gradlew build",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "prettier-plugin-java": "^2.6.5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

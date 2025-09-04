@@ -1,9 +1,8 @@
-import React, { startTransition, useState } from 'react';
-
 import defaultBoardImage from 'assets/default-board-image.png';
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';
 import { FileText, Pencil, Users } from 'lucide-react';
+import React, { startTransition, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PictureManager, SectionCard, Textarea } from 'shared/ui';
 
@@ -14,8 +13,8 @@ import styles from './CreateBoardForm.module.scss';
 import MemberInviteInput from './MemberInviteInput';
 
 interface CreateBoardFormProps {
-    onBoardCreated: (newBoard: Board) => void;
-    onClose: () => void;
+  onBoardCreated: (newBoard: Board) => void;
+  onClose: () => void;
 }
 
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
@@ -24,14 +23,17 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
-  const [canvasBackgroundColor, setCanvasBackgroundColor] = useState<string>(CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR);
-  const [canvasSize, setCanvasSize] = useState<keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'>('WIDESCREEN');
+  const [canvasBackgroundColor, setCanvasBackgroundColor] = useState<string>(
+    CANVAS_CONFIG.DEFAULT_BACKGROUND_COLOR,
+  );
+  const [canvasSize, setCanvasSize] = useState<
+    keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom'
+  >('WIDESCREEN');
   const [customWidth, setCustomWidth] = useState<number>(CANVAS_CONFIG.DEFAULT_WIDTH);
   const [customHeight, setCustomHeight] = useState<number>(CANVAS_CONFIG.DEFAULT_HEIGHT);
 
   const handleImageUpload = (file: File) => {
     setSelectedImage(file);
-    // Create preview URL
     const reader = new FileReader();
     reader.onload = (e) => {
       setPreviewImageUrl(e.target?.result as string);
@@ -46,19 +48,19 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     const formData = new FormData(event.currentTarget);
-    
+
     if (selectedImage) {
       formData.append('picture', selectedImage);
     }
-    
+
     inviteEmails.forEach((email) => {
       formData.append('inviteEmails', email);
     });
 
     formData.append('canvasBackgroundColor', canvasBackgroundColor);
-    
+
     let width, height;
     if (canvasSize === 'custom') {
       width = customWidth;
@@ -68,10 +70,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
       width = preset.width;
       height = preset.height;
     }
-    
+
     formData.append('canvasWidth', width.toString());
     formData.append('canvasHeight', height.toString());
-    
+
     startTransition(() => {
       submitAction(formData);
     });
@@ -80,18 +82,12 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   return (
     <div className={styles.modalContainer}>
       <div className={styles.modalHeader}>
-        <h3 className={styles.modalTitle}>
-          {t('board:createForm.heading')}
-        </h3>
+        <h3 className={styles.modalTitle}>{t('board:createForm.heading')}</h3>
       </div>
 
       <form onSubmit={handleFormSubmit}>
         <div className={styles.formContainer}>
-          <SectionCard 
-            title={t('board:createForm.label.basicInfo')}
-            variant="default"
-            padding="md"
-          >
+          <SectionCard title={t('board:createForm.label.basicInfo')} variant="default" padding="md">
             <div className={styles.field}>
               <label htmlFor="board-name">
                 <Pencil size={14} />
@@ -123,7 +119,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
             </div>
           </SectionCard>
 
-          <SectionCard 
+          <SectionCard
             title={t('board:createForm.label.inviteMembers')}
             variant="default"
             padding="md"
@@ -133,10 +129,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
                 <Users size={14} />
                 {t('board:createForm.label.inviteMembersDescription')}
               </label>
-              <MemberInviteInput 
-                id="board-invite-members" 
-                onMembersChange={setInviteEmails} 
-                disabled={isPending} 
+              <MemberInviteInput
+                id="board-invite-members"
+                onMembersChange={setInviteEmails}
+                disabled={isPending}
               />
             </div>
           </SectionCard>
@@ -153,7 +149,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
             disabled={isPending}
           />
 
-          <SectionCard 
+          <SectionCard
             title={t('board:createForm.label.boardImage')}
             variant="default"
             padding="md"
