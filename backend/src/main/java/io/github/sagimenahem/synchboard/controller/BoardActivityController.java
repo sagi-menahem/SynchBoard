@@ -4,11 +4,7 @@ import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.MAPPING_BOARD_DRAW_ACTION;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.MAPPING_CHAT_SEND_MESSAGE;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
-import java.security.Principal;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Controller;
+
 import io.github.sagimenahem.synchboard.dto.error.ErrorResponseDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.ChatMessageDTO;
@@ -16,8 +12,13 @@ import io.github.sagimenahem.synchboard.repository.GroupBoardRepository;
 import io.github.sagimenahem.synchboard.service.board.BoardNotificationService;
 import io.github.sagimenahem.synchboard.service.board.BoardObjectService;
 import io.github.sagimenahem.synchboard.service.board.ChatService;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
@@ -34,8 +35,7 @@ public class BoardActivityController {
     public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
         String userEmail = principal.getName();
 
-        log.debug("[DIAGNOSTIC] Received WebSocket message at /app/chat.sendMessage. Payload: {}",
-                request.toString());
+        log.debug("[DIAGNOSTIC] Received WebSocket message at /app/chat.sendMessage. Payload: {}", request.toString());
 
         log.debug(WEBSOCKET_MESSAGE_RECEIVED, "CHAT_MESSAGE", request.getBoardId(), userEmail);
 
@@ -46,11 +46,17 @@ public class BoardActivityController {
             updateBoardActivity(request.getBoardId());
         } catch (Exception e) {
             log.error(
-                    WEBSOCKET_PREFIX
-                            + " Failed to process chat message. BoardId: {}, User: {}, Error: {}",
-                    request.getBoardId(), userEmail, e.getMessage(), e);
-            messagingTemplate.convertAndSendToUser(userEmail, "/topic/errors",
-                    new ErrorResponseDTO("Failed to send message", "CHAT_ERROR"));
+                WEBSOCKET_PREFIX + " Failed to process chat message. BoardId: {}, User: {}, Error: {}",
+                request.getBoardId(),
+                userEmail,
+                e.getMessage(),
+                e
+            );
+            messagingTemplate.convertAndSendToUser(
+                userEmail,
+                "/topic/errors",
+                new ErrorResponseDTO("Failed to send message", "CHAT_ERROR")
+            );
         }
     }
 
@@ -61,8 +67,11 @@ public class BoardActivityController {
 
         try {
             BoardActionDTO.Response response = BoardActionDTO.Response.builder()
-                    .type(request.getType()).payload(request.getPayload()).sender(userEmail)
-                    .instanceId(request.getInstanceId()).build();
+                .type(request.getType())
+                .payload(request.getPayload())
+                .sender(userEmail)
+                .instanceId(request.getInstanceId())
+                .build();
 
             String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
 
@@ -74,11 +83,19 @@ public class BoardActivityController {
 
             updateBoardActivity(request.getBoardId());
         } catch (Exception e) {
-            log.error(WEBSOCKET_PREFIX
-                    + " Failed to process draw action. BoardId: {}, User: {}, Type: {}, Error: {}",
-                    request.getBoardId(), userEmail, request.getType(), e.getMessage(), e);
-            messagingTemplate.convertAndSendToUser(userEmail, "/topic/errors",
-                    new ErrorResponseDTO("Failed to save draw action", "DRAW_ACTION_ERROR"));
+            log.error(
+                WEBSOCKET_PREFIX + " Failed to process draw action. BoardId: {}, User: {}, Type: {}, Error: {}",
+                request.getBoardId(),
+                userEmail,
+                request.getType(),
+                e.getMessage(),
+                e
+            );
+            messagingTemplate.convertAndSendToUser(
+                userEmail,
+                "/topic/errors",
+                new ErrorResponseDTO("Failed to save draw action", "DRAW_ACTION_ERROR")
+            );
         }
     }
 
@@ -90,8 +107,7 @@ public class BoardActivityController {
 
             log.debug("Board activity updated for boardId: {}", boardId);
         } catch (Exception e) {
-            log.warn("Failed to update board activity for boardId: {}, Error: {}", boardId,
-                    e.getMessage());
+            log.warn("Failed to update board activity for boardId: {}, Error: {}", boardId, e.getMessage());
         }
     }
 }

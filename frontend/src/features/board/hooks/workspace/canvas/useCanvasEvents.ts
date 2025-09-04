@@ -44,14 +44,18 @@ export const useCanvasEvents = ({
       const canvas = canvasRef.current;
       const ctx = contextRef.current;
 
-      if (!canvas || !ctx || isDrawing) { return; }
+      if (!canvas || !ctx || isDrawing) {
+        return;
+      }
 
       if (shouldBlockFunctionality) {
         return;
       }
 
       const coords = getMouseCoordinates(event.nativeEvent, canvas);
-      if (!coords) { return; }
+      if (!coords) {
+        return;
+      }
 
       resetDrawingState();
       setIsDrawing(true);
@@ -81,15 +85,22 @@ export const useCanvasEvents = ({
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) { return; }
+    if (!canvas) {
+      return;
+    }
 
     const handleMouseMove = (event: MouseEvent) => {
-      if (!isDrawing || !startPoint.current) { return; }
+      if (!isDrawing || !startPoint.current) {
+        return;
+      }
 
       const coords = getMouseCoordinates(event, canvas);
-      if (!coords) { return; }
+      if (!coords) {
+        return;
+      }
 
-      const isFirstMove = !lastMousePosition.current ||
+      const isFirstMove =
+        !lastMousePosition.current ||
         (lastMousePosition.current.x === startPoint.current.x &&
           lastMousePosition.current.y === startPoint.current.y);
 
@@ -104,10 +115,14 @@ export const useCanvasEvents = ({
     };
 
     const handleMouseUp = (event: MouseEvent) => {
-      if (!isDrawing || !startPoint.current) { return; }
+      if (!isDrawing || !startPoint.current) {
+        return;
+      }
 
       const coords = getMouseCoordinates(event, canvas);
-      if (!coords) { return; }
+      if (!coords) {
+        return;
+      }
 
       const eventData: CanvasEventData = {
         startPoint: startPoint.current,
@@ -132,15 +147,7 @@ export const useCanvasEvents = ({
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [
-    isDrawing,
-    canvasRef,
-    getMouseCoordinates,
-    startPoint,
-    setIsDrawing,
-    onMouseMove,
-    onMouseUp,
-  ]);
+  }, [isDrawing, canvasRef, getMouseCoordinates, startPoint, setIsDrawing, onMouseMove, onMouseUp]);
 
   return {
     handleMouseDown,

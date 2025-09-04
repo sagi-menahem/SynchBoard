@@ -22,7 +22,7 @@ export const removeToken = (): void => {
 
 export const isTokenValid = (token?: string | null): boolean => {
   const tokenToCheck = token || getToken();
-  
+
   if (!tokenToCheck) {
     return false;
   }
@@ -32,7 +32,7 @@ export const isTokenValid = (token?: string | null): boolean => {
     if (!decoded) {
       return false;
     }
-    
+
     const currentTime = Date.now() / 1000;
     return decoded.exp > currentTime;
   } catch (error) {
@@ -43,7 +43,7 @@ export const isTokenValid = (token?: string | null): boolean => {
 
 export const decodeToken = (token?: string | null): JwtPayload | null => {
   const tokenToDecode = token || getToken();
-  
+
   if (!tokenToDecode) {
     return null;
   }
@@ -68,14 +68,14 @@ export const getUserEmailFromToken = (token?: string | null): string | null => {
 
 export const shouldRefreshToken = (token?: string | null): boolean => {
   const expiry = getTokenExpiry(token);
-  
+
   if (!expiry) {
     return false;
   }
 
   const currentTime = Date.now() / 1000;
   const timeUntilExpiry = expiry - currentTime;
-  
+
   // Refresh if less than 5 minutes remaining
   return timeUntilExpiry < 300 && timeUntilExpiry > 0;
 };

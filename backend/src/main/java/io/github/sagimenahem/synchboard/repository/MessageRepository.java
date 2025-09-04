@@ -1,5 +1,7 @@
 package io.github.sagimenahem.synchboard.repository;
 
+import io.github.sagimenahem.synchboard.constants.ApiConstants;
+import io.github.sagimenahem.synchboard.entity.Message;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,15 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import io.github.sagimenahem.synchboard.constants.ApiConstants;
-import io.github.sagimenahem.synchboard.entity.Message;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-
     List<Message> findAllByBoard_BoardGroupIdOrderByTimestampAsc(Long boardId);
 
-    @Query("SELECT m FROM Message m LEFT JOIN FETCH m.sender WHERE m.board.boardGroupId = :boardId ORDER BY m.timestamp ASC")
+    @Query(
+        "SELECT m FROM Message m LEFT JOIN FETCH m.sender WHERE m.board.boardGroupId = :boardId ORDER BY m.timestamp ASC"
+    )
     List<Message> findByBoardWithSender(@Param("boardId") Long boardId);
 
     @Modifying

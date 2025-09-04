@@ -31,7 +31,7 @@ export const useToolPreferencesAPI = () => {
 
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const toolPrefs = await userService.getToolPreferences();
       setPreferences(toolPrefs);

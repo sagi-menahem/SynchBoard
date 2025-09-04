@@ -9,7 +9,6 @@ import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatu
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 
-
 import styles from './Canvas.module.scss';
 import TextInputOverlay from './TextInputOverlay';
 
@@ -20,49 +19,61 @@ const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
 };
 
 interface CanvasProps {
-    instanceId: string;
-    onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
-    objects: ActionPayload[];
-    tool: Tool;
-    strokeColor: string;
-    strokeWidth: number;
-    fontSize: number;
-    canvasConfig?: CanvasConfig;
-    onColorPick?: (color: string) => void;
-    isLoading?: boolean;
+  instanceId: string;
+  onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+  objects: ActionPayload[];
+  tool: Tool;
+  strokeColor: string;
+  strokeWidth: number;
+  fontSize: number;
+  canvasConfig?: CanvasConfig;
+  onColorPick?: (color: string) => void;
+  isLoading?: boolean;
 }
 
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
-  
-  const textInputRequestRef = useRef<((x: number, y: number, width: number, height: number) => void) | null>(null);
-  
+
+  const textInputRequestRef = useRef<
+    ((x: number, y: number, width: number, height: number) => void) | null
+  >(null);
+
   const { canvasRef, containerRef, handleMouseDown } = useCanvas({
     ...props,
     onTextInputRequest: (x: number, y: number, width: number, height: number) => {
       textInputRequestRef.current?.(x, y, width, height);
     },
   });
-  
+
   // Memoize canvas interactions config to prevent unnecessary re-renders
-  const canvasInteractionsConfig = useMemo(() => ({
-    tool: props.tool,
-    strokeColor: props.strokeColor,
-    fontSize: props.fontSize,
-    instanceId: props.instanceId,
-    objects: props.objects,
-    canvasRef,
-    onDraw: props.onDraw,
-    onColorPick: props.onColorPick,
-    canvasBackgroundColor: props.canvasConfig?.backgroundColor,
-    handleMouseDown,
-  }), [
-    props.tool, props.strokeColor, props.fontSize, props.instanceId, 
-    props.objects, canvasRef, props.onDraw, props.onColorPick, 
-    props.canvasConfig?.backgroundColor, handleMouseDown,
-  ]);
-  
+  const canvasInteractionsConfig = useMemo(
+    () => ({
+      tool: props.tool,
+      strokeColor: props.strokeColor,
+      fontSize: props.fontSize,
+      instanceId: props.instanceId,
+      objects: props.objects,
+      canvasRef,
+      onDraw: props.onDraw,
+      onColorPick: props.onColorPick,
+      canvasBackgroundColor: props.canvasConfig?.backgroundColor,
+      handleMouseDown,
+    }),
+    [
+      props.tool,
+      props.strokeColor,
+      props.fontSize,
+      props.instanceId,
+      props.objects,
+      canvasRef,
+      props.onDraw,
+      props.onColorPick,
+      props.canvasConfig?.backgroundColor,
+      handleMouseDown,
+    ],
+  );
+
   const {
     textInput,
     recolorCursor,
@@ -72,13 +83,13 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     handleTextSubmit,
     handleTextCancel,
   } = useCanvasInteractions(canvasInteractionsConfig);
-  
+
   // Connect the text input request handler
   textInputRequestRef.current = handleTextInputRequest;
 
   // Memoize canvas configuration to prevent unnecessary re-renders
-  const canvasConfig = useMemo(() => 
-    props.canvasConfig ?? DEFAULT_CANVAS_CONFIG,
+  const canvasConfig = useMemo(
+    () => props.canvasConfig ?? DEFAULT_CANVAS_CONFIG,
     [props.canvasConfig],
   );
 
@@ -89,46 +100,49 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const hideBackground = false;
 
   // Memoize style objects to prevent re-renders
-  const canvasContainerStyle = useMemo(() => ({
-    minWidth: `${canvasWidth + padding}px`,
-    minHeight: `${canvasHeight + padding}px`,
-  }), [canvasWidth, canvasHeight, padding]);
+  const canvasContainerStyle = useMemo(
+    () => ({
+      minWidth: `${canvasWidth + padding}px`,
+      minHeight: `${canvasHeight + padding}px`,
+    }),
+    [canvasWidth, canvasHeight, padding],
+  );
 
-  const canvasWrapperStyle = useMemo(() => ({
-    width: `${canvasWidth}px`,
-    height: `${canvasHeight}px`,
-  }), [canvasWidth, canvasHeight]);
+  const canvasWrapperStyle = useMemo(
+    () => ({
+      width: `${canvasWidth}px`,
+      height: `${canvasHeight}px`,
+    }),
+    [canvasWidth, canvasHeight],
+  );
 
-  const canvasStyle = useMemo(() => ({
-    backgroundColor: canvasConfig.backgroundColor,
-    cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
-  }), [canvasConfig.backgroundColor, props.tool, recolorCursor]);
+  const canvasStyle = useMemo(
+    () => ({
+      backgroundColor: canvasConfig.backgroundColor,
+      cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
+    }),
+    [canvasConfig.backgroundColor, props.tool, recolorCursor],
+  );
 
   // Memoize computed flags and class names
   const shouldShowLoading = props.isLoading ?? false;
-  const containerClassName = useMemo(() => 
-    `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`,
+  const containerClassName = useMemo(
+    () => `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`,
     [shouldShowBanner],
   );
-  const canvasClassName = useMemo(() => 
-    `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`,
+  const canvasClassName = useMemo(
+    () => `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`,
     [shouldBlockFunctionality],
   );
-  const canvasContainerClassName = useMemo(() => 
-    `${styles.canvasContainer} ${hideBackground ? styles.hideBackground : ''}`,
+  const canvasContainerClassName = useMemo(
+    () => `${styles.canvasContainer} ${hideBackground ? styles.hideBackground : ''}`,
     [hideBackground],
   );
 
   return (
     <div ref={containerRef} className={containerClassName}>
-      <div 
-        className={canvasContainerClassName}
-        style={canvasContainerStyle}
-      >
-        <div 
-          className={styles.canvasWrapper} 
-          style={canvasWrapperStyle}
-        >
+      <div className={canvasContainerClassName} style={canvasContainerStyle}>
+        <div className={styles.canvasWrapper} style={canvasWrapperStyle}>
           <canvas
             ref={canvasRef}
             width={canvasWidth}
@@ -138,7 +152,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
             className={canvasClassName}
             style={canvasStyle}
           />
-          
+
           {textInput && (
             <TextInputOverlay
               x={textInput.x}

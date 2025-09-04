@@ -32,6 +32,7 @@ public class AppProperties {
     }
 
     public static class Jwt {
+
         private String secretKey;
         private int expirationHours = 24;
 
@@ -53,6 +54,7 @@ public class AppProperties {
     }
 
     public static class Stomp {
+
         private String brokerHost;
         private int brokerPort;
 
@@ -74,6 +76,7 @@ public class AppProperties {
     }
 
     public static class Upload {
+
         private String dir;
 
         public String getDir() {
@@ -86,6 +89,7 @@ public class AppProperties {
     }
 
     public static class Security {
+
         private String allowedOrigins;
 
         public String getAllowedOrigins() {
@@ -98,6 +102,7 @@ public class AppProperties {
     }
 
     public static class Oauth2 {
+
         private String frontendBaseUrl;
 
         public String getFrontendBaseUrl() {

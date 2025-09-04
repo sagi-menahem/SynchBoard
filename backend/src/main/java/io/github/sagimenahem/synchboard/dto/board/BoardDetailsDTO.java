@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDetailsDTO {
+
     private Long id;
     private String name;
     private String description;

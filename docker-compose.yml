@@ -10,12 +10,12 @@ services:
       POSTGRES_PASSWORD: test12345
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U synchboard_user -d synchboard_db"]
+      test: ['CMD-SHELL', 'pg_isready -U synchboard_user -d synchboard_db']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,22 +31,22 @@ services:
       ARTEMIS_USER: admin
       ARTEMIS_PASSWORD: admin
       ANONYMOUS_LOGIN: false
-      EXTRA_ARGS: "--http-host 0.0.0.0 --relax-jolokia"
+      EXTRA_ARGS: '--http-host 0.0.0.0 --relax-jolokia'
     ports:
       # Web Console
-      - "8161:8161"
+      - '8161:8161'
       # Core (TCP)
-      - "61616:61616"
+      - '61616:61616'
       # STOMP
-      - "61613:61613"
+      - '61613:61613'
       # AMQP
-      - "5672:5672"
+      - '5672:5672'
       # MQTT
-      - "1883:1883"
+      - '1883:1883'
     volumes:
       - activemq_data:/var/lib/artemis-instance
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8161/"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:8161/']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -64,7 +64,7 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
     ports:
-      - "5050:80"
+      - '5050:80'
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
@@ -76,7 +76,7 @@ services:
 
 # Optional: Backend service (uncomment when needed)
 # backend:
-#   build: 
+#   build:
 #     context: ./backend
 #     dockerfile: Dockerfile
 #   container_name: synchboard-backend

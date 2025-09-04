@@ -1,10 +1,21 @@
-
-import { startTransition, useCallback, useEffect, useMemo, useOptimistic, useRef, useState } from 'react';
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useOptimistic,
+  useRef,
+  useState,
+} from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useBoardActions } from 'features/board/hooks/workspace/useBoardActions';
 import { useBoardDataManager } from 'features/board/hooks/workspace/useBoardDataManager';
-import type { ActionPayload, EnhancedActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
+import type {
+  ActionPayload,
+  EnhancedActionPayload,
+  SendBoardActionRequest,
+} from 'features/board/types/BoardObjectTypes';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import { useWebSocketHandler } from 'features/websocket/hooks/useWebSocketHandler';
 import WebSocketService from 'features/websocket/services/websocketService';
@@ -12,7 +23,12 @@ import type { BoardUpdateDTO, UserUpdateDTO } from 'features/websocket/types/Web
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { APP_ROUTES, WEBSOCKET_CONFIG, WEBSOCKET_DESTINATIONS, WEBSOCKET_TOPICS } from 'shared/constants';
+import {
+  APP_ROUTES,
+  WEBSOCKET_CONFIG,
+  WEBSOCKET_DESTINATIONS,
+  WEBSOCKET_TOPICS,
+} from 'shared/constants';
 import logger from 'shared/utils/logger';
 
 export const useBoardWorkspace = (boardId: number) => {
@@ -53,15 +69,19 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, [isLoading, baseObjects.length, resetCounts, hasInitialized]);
 
-
-  const handleCommitDrawingTransaction = useCallback((instanceId: string) => {
-    setBaseObjects((prev) => prev.map((obj) => {
-      const enhancedObj = obj as EnhancedActionPayload;
-      return enhancedObj.instanceId === instanceId
-        ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
-        : obj;
-    }));
-  }, [setBaseObjects]);
+  const handleCommitDrawingTransaction = useCallback(
+    (instanceId: string) => {
+      setBaseObjects((prev) =>
+        prev.map((obj) => {
+          const enhancedObj = obj as EnhancedActionPayload;
+          return enhancedObj.instanceId === instanceId
+            ? { ...enhancedObj, transactionStatus: 'confirmed' as const }
+            : obj;
+        }),
+      );
+    },
+    [setBaseObjects],
+  );
 
   const handleCommitChatTransaction = useCallback((instanceId: string) => {
     if (chatCommitHandlerRef.current) {
@@ -71,9 +91,12 @@ export const useBoardWorkspace = (boardId: number) => {
     }
   }, []);
 
-  const registerChatCommitHandler = useCallback((handler: ((instanceId: string) => void) | null) => {
-    chatCommitHandlerRef.current = handler;
-  }, []);
+  const registerChatCommitHandler = useCallback(
+    (handler: ((instanceId: string) => void) | null) => {
+      chatCommitHandlerRef.current = handler;
+    },
+    [],
+  );
 
   useWebSocketHandler({
     boardId,
@@ -87,7 +110,11 @@ export const useBoardWorkspace = (boardId: number) => {
   });
 
   const handleDrawAction = useCallback(
-    async (action: Omit<SendBoardActionRequest, 'boardId'> | Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => {
+    async (
+      action:
+        | Omit<SendBoardActionRequest, 'boardId'>
+        | Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>,
+    ) => {
       // Use existing instanceId for updates, generate new one for adds
       const instanceId = 'instanceId' in action ? action.instanceId : crypto.randomUUID();
       const actionRequest: SendBoardActionRequest = {
@@ -150,7 +177,11 @@ export const useBoardWorkspace = (boardId: number) => {
     [navigate],
   );
 
-  useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
+  useSocketSubscription(
+    userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '',
+    handleUserUpdate,
+    'user',
+  );
 
   const handleBoardUpdate = useCallback(
     (message: BoardUpdateDTO) => {

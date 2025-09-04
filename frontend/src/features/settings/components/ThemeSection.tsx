@@ -10,10 +10,7 @@ const ThemeSection: React.FC = () => {
   const { t } = useTranslation(['settings']);
 
   return (
-    <SectionCard 
-      title={t('settings:page.themeHeader')}
-      variant="default"
-    >
+    <SectionCard title={t('settings:page.themeHeader')} variant="default">
       <div className={styles.field}>
         <ThemeSwitcher showLabel size="md" />
       </div>

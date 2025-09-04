@@ -102,7 +102,9 @@
   color: var(--color-text-primary);
   font-family: inherit;
   font-size: inherit;
-  transition: border-color theme.$transition-normal ease, box-shadow theme.$transition-normal ease;
+  transition:
+    border-color theme.$transition-normal ease,
+    box-shadow theme.$transition-normal ease;
 
   // Autofill overrides for browser compatibility
   &:-webkit-autofill,
@@ -154,8 +156,11 @@
 }
 
 @mixin card-hover-effect {
-  transition: background-color theme.$transition-normal, transform theme.$transition-slow ease-out, box-shadow theme.$transition-normal ease;
-  
+  transition:
+    background-color theme.$transition-normal,
+    transform theme.$transition-slow ease-out,
+    box-shadow theme.$transition-normal ease;
+
   &:hover {
     background-color: var(--color-surface-hover);
     transform: translateY(theme.$transform-translate-y-sm);
@@ -274,7 +279,7 @@
   // Firefox scrollbar
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
-  
+
   // WebKit scrollbar
   &::-webkit-scrollbar {
     width: theme.$spacing-2;
@@ -289,7 +294,7 @@
   &::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb-bg);
     @include rounded-small;
-    
+
     &:hover {
       background: var(--scrollbar-thumb-hover-bg);
     }
@@ -322,12 +327,12 @@
     border: 1px solid var(--color-border-light);
     @include rounded-medium;
     box-shadow: theme.$shadow-inset-light;
-    
+
     &:hover {
       background: var(--scrollbar-thumb-hover-bg);
       border-color: var(--color-border);
     }
-    
+
     &:active {
       background: var(--scrollbar-thumb-hover-bg);
     }
@@ -350,7 +355,10 @@
 }
 
 @mixin hover-transition {
-  transition: background-color theme.$transition-normal, transform theme.$transition-slow ease-out, box-shadow theme.$transition-normal ease;
+  transition:
+    background-color theme.$transition-normal,
+    transform theme.$transition-slow ease-out,
+    box-shadow theme.$transition-normal ease;
 }
 
 // ===== BOX SHADOW PATTERNS =====
@@ -416,8 +424,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 // ===== UTILITY PATTERNS =====
@@ -436,7 +448,7 @@
 
 @mixin clearfix {
   &::after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }

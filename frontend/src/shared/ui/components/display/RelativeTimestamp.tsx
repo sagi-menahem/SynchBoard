@@ -13,7 +13,7 @@ const RelativeTimestamp: React.FC<RelativeTimestampProps> = ({ timestamp, classN
 
   useEffect(() => {
     setDisplayTime(formatSmartTimestamp(timestamp));
-    
+
     const interval = setInterval(() => {
       setDisplayTime(formatSmartTimestamp(timestamp));
     }, 55000);

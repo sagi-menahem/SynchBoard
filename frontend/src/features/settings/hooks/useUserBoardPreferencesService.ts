@@ -4,7 +4,10 @@ import { useAuth } from 'features/auth/hooks';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { UserPreferencesService, type UserBoardPreferences } from '../services/userPreferencesService';
+import {
+  UserPreferencesService,
+  type UserBoardPreferences,
+} from '../services/userPreferencesService';
 
 export interface UserBoardPreferencesState {
   preferences: UserBoardPreferences;
@@ -73,14 +76,15 @@ export function useUserBoardPreferencesService() {
     }
 
     dispatch({ type: 'LOAD_START' });
-    
+
     try {
       const preferences = await UserPreferencesService.fetchPreferences();
       dispatch({ type: 'LOAD_SUCCESS', payload: preferences });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load board preferences';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to load board preferences';
       dispatch({ type: 'LOAD_ERROR', payload: errorMessage });
-      
+
       if (document.location.pathname.includes('/settings')) {
         toast.error(t('settings:errors.preferences.fetch'));
       }

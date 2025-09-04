@@ -10,7 +10,11 @@
   /* Controls the pattern density */
 
   /* 3. This color will be inherited by the SVG's "currentColor" - high contrast */
-  color: color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 20%, var(--color-text) 80%);
+  color: color-mix(
+    in srgb,
+    var(--user-chosen-color, var(--color-surface)) 20%,
+    var(--color-text) 80%
+  );
 
   /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
 
@@ -49,14 +53,14 @@
 }
 
 /* Highly specific rule to override any library defaults */
-.colorPickerPopupWrapper :global([class*="colorPickerContainer"]) :global([class*="popover"]) {
+.colorPickerPopupWrapper :global([class*='colorPickerContainer']) :global([class*='popover']) {
   width: theme.$color-picker-width !important;
   min-width: theme.$color-picker-width !important;
   max-width: none !important;
 }
 
 /* Even more specific - target by attribute and class combination */
-.colorPickerPopupWrapper :global(div[class*="popover"]) {
+.colorPickerPopupWrapper :global(div[class*='popover']) {
   width: theme.$color-picker-width !important;
   min-width: theme.$color-picker-width !important;
   max-width: none !important;

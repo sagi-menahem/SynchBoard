@@ -13,11 +13,10 @@ public class BoardUpdateDTO {
     private String sourceUserEmail;
 
     public enum UpdateType {
-
         DETAILS_UPDATED,
 
         MEMBERS_UPDATED,
 
-        CANVAS_UPDATED
+        CANVAS_UPDATED,
     }
 }

@@ -39,10 +39,7 @@ export const useCanvas = ({
   onTextInputRequest,
 }: UseCanvasProps) => {
   // Memoize final canvas config to prevent unnecessary re-renders
-  const finalCanvasConfig = useMemo(() => 
-    canvasConfig ?? DEFAULT_CANVAS_CONFIG,
-    [canvasConfig],
-  );
+  const finalCanvasConfig = useMemo(() => canvasConfig ?? DEFAULT_CANVAS_CONFIG, [canvasConfig]);
 
   // Canvas state and utilities
   const {
@@ -64,73 +61,115 @@ export const useCanvas = ({
   });
 
   // Memoize state objects to prevent unnecessary hook re-execution
-  const canvasEventsState = useMemo(() => ({
-    isDrawing,
-    setIsDrawing,
-    startPoint,
-    resetDrawingState,
-  }), [isDrawing, setIsDrawing, startPoint, resetDrawingState]);
+  const canvasEventsState = useMemo(
+    () => ({
+      isDrawing,
+      setIsDrawing,
+      startPoint,
+      resetDrawingState,
+    }),
+    [isDrawing, setIsDrawing, startPoint, resetDrawingState],
+  );
 
-  const drawingToolsState = useMemo(() => ({
-    currentPath,
-  }), [currentPath]);
+  const drawingToolsState = useMemo(
+    () => ({
+      currentPath,
+    }),
+    [currentPath],
+  );
 
   // Memoize hook configuration objects to prevent unnecessary re-renders
-  const previewConfig = useMemo(() => ({
-    canvasRef,
-    contextRef,
-    tool,
-    strokeWidth,
-    strokeColor,
-    currentPath,
-  }), [canvasRef, contextRef, tool, strokeWidth, strokeColor, currentPath]);
+  const previewConfig = useMemo(
+    () => ({
+      canvasRef,
+      contextRef,
+      tool,
+      strokeWidth,
+      strokeColor,
+      currentPath,
+    }),
+    [canvasRef, contextRef, tool, strokeWidth, strokeColor, currentPath],
+  );
 
-  const drawingToolsConfig = useMemo(() => ({
-    canvasRef,
-    tool,
-    strokeWidth,
-    strokeColor,
-    onDraw,
-    senderId,
-    drawingState: drawingToolsState,
-    isShapeSizeValid,
-    isRadiusValid,
-    onTextInputRequest,
-  }), [
-    canvasRef, tool, strokeWidth, strokeColor, onDraw, senderId,
-    drawingToolsState, isShapeSizeValid, isRadiusValid, onTextInputRequest,
-  ]);
+  const drawingToolsConfig = useMemo(
+    () => ({
+      canvasRef,
+      tool,
+      strokeWidth,
+      strokeColor,
+      onDraw,
+      senderId,
+      drawingState: drawingToolsState,
+      isShapeSizeValid,
+      isRadiusValid,
+      onTextInputRequest,
+    }),
+    [
+      canvasRef,
+      tool,
+      strokeWidth,
+      strokeColor,
+      onDraw,
+      senderId,
+      drawingToolsState,
+      isShapeSizeValid,
+      isRadiusValid,
+      onTextInputRequest,
+    ],
+  );
 
   // Initialize the three focused hooks with memoized configs
-  const { handlePreviewStart, handlePreviewMove, handlePreviewEnd } = useCanvasPreview(previewConfig);
-  const { handleToolMouseDown, handleToolMouseMove, handleToolMouseUp } = useDrawingTools(drawingToolsConfig);
+  const { handlePreviewStart, handlePreviewMove, handlePreviewEnd } =
+    useCanvasPreview(previewConfig);
+  const { handleToolMouseDown, handleToolMouseMove, handleToolMouseUp } =
+    useDrawingTools(drawingToolsConfig);
 
   // Compose the event handlers
-  const handleMouseDown = useCallback((eventData: CanvasEventData) => {
-    handlePreviewStart(eventData);
-    handleToolMouseDown(eventData);
-  }, [handlePreviewStart, handleToolMouseDown]);
+  const handleMouseDown = useCallback(
+    (eventData: CanvasEventData) => {
+      handlePreviewStart(eventData);
+      handleToolMouseDown(eventData);
+    },
+    [handlePreviewStart, handleToolMouseDown],
+  );
 
-  const handleMouseMove = useCallback((eventData: CanvasEventData) => {
-    handlePreviewMove(eventData);
-    handleToolMouseMove(eventData);
-  }, [handlePreviewMove, handleToolMouseMove]);
+  const handleMouseMove = useCallback(
+    (eventData: CanvasEventData) => {
+      handlePreviewMove(eventData);
+      handleToolMouseMove(eventData);
+    },
+    [handlePreviewMove, handleToolMouseMove],
+  );
 
-  const handleMouseUp = useCallback((eventData: CanvasEventData) => {
-    handlePreviewEnd();
-    handleToolMouseUp(eventData);
-  }, [handlePreviewEnd, handleToolMouseUp]);
+  const handleMouseUp = useCallback(
+    (eventData: CanvasEventData) => {
+      handlePreviewEnd();
+      handleToolMouseUp(eventData);
+    },
+    [handlePreviewEnd, handleToolMouseUp],
+  );
 
   // Memoize canvas events configuration
-  const canvasEventsConfig = useMemo(() => ({
-    canvasRef,
-    contextRef,
-    drawingState: canvasEventsState,
-    getMouseCoordinates,
-    onMouseDown: handleMouseDown,
-    onMouseMove: handleMouseMove,
-    onMouseUp: handleMouseUp,
-  }), [canvasRef, contextRef, canvasEventsState, getMouseCoordinates, handleMouseDown, handleMouseMove, handleMouseUp]);
+  const canvasEventsConfig = useMemo(
+    () => ({
+      canvasRef,
+      contextRef,
+      drawingState: canvasEventsState,
+      getMouseCoordinates,
+      onMouseDown: handleMouseDown,
+      onMouseMove: handleMouseMove,
+      onMouseUp: handleMouseUp,
+    }),
+    [
+      canvasRef,
+      contextRef,
+      canvasEventsState,
+      getMouseCoordinates,
+      handleMouseDown,
+      handleMouseMove,
+      handleMouseUp,
+    ],
+  );
 
   // Canvas events hook handles the actual mouse events and calls our composed handlers
   const { handleMouseDown: canvasMouseDown } = useCanvasEvents(canvasEventsConfig);

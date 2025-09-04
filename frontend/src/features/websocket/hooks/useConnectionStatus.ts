@@ -43,9 +43,9 @@ export const useConnectionStatus = (): ConnectionStatusState => {
   return {
     shouldShowBanner: shouldShowBanner && connectionState === 'disconnected',
     shouldBlockFunctionality: !isSocketConnected,
-     
+
     connectionState,
-     
+
     isSocketConnected,
   };
 };

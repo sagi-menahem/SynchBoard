@@ -28,6 +28,6 @@
 }
 
 // RTL support - ReactSwitch handles direction automatically, but we can add custom overrides if needed
-[dir="rtl"] .container {
+[dir='rtl'] .container {
   flex-direction: row-reverse;
 }

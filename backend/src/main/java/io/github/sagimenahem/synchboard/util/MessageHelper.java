@@ -11,8 +11,12 @@ public class MessageHelper {
         return messageKey + ": " + parameter;
     }
 
-    public String formatLocalizedMessage(MessageSource messageSource, String messageKey,
-            Locale locale, Object... parameters) {
+    public String formatLocalizedMessage(
+        MessageSource messageSource,
+        String messageKey,
+        Locale locale,
+        Object... parameters
+    ) {
         return messageSource.getMessage(messageKey, parameters, locale);
     }
 }

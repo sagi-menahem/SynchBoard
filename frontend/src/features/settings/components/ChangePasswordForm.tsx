@@ -8,11 +8,10 @@ import { APP_CONFIG } from 'shared/constants/AppConstants';
 import { Button, PasswordInput } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
-
 import styles from './ChangePasswordForm.module.scss';
 
 interface ChangePasswordFormProps {
-    onSubmit: (data: ChangePasswordRequest) => Promise<void>;
+  onSubmit: (data: ChangePasswordRequest) => Promise<void>;
 }
 
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => {

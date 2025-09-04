@@ -23,7 +23,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   onUpdateSettings,
 }) => {
   const { t } = useTranslation(['board', 'common']);
-  
+
   const {
     isEditing,
     isUpdating,
@@ -39,9 +39,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
     handleCustomWidthChange,
     handleCustomHeightChange,
     presetOptions,
-  } = useCanvasSettings({ 
-    boardDetails, 
-    onUpdateSettings, 
+  } = useCanvasSettings({
+    boardDetails,
+    onUpdateSettings,
     styles: {
       presetLabel: styles.presetLabel,
       presetName: styles.presetName,
@@ -51,34 +51,32 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
 
   if (!isAdmin) {
     return (
-      <SectionCard 
-        title={t('board:details.canvasSettings.title')}
-        variant="default"
-      >
+      <SectionCard title={t('board:details.canvasSettings.title')} variant="default">
         <div className={styles.settingsContainer}>
           <label className={styles.settingLabel}>
             {t('board:details.canvasSettings.backgroundColor')}:
           </label>
           <div className={styles.flexRow}>
-            <div 
-              className={styles.colorPreview} 
+            <div
+              className={styles.colorPreview}
               style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
               title={boardDetails.canvasBackgroundColor}
             />
             <span>
               {(() => {
                 const colorName = getColorName(boardDetails.canvasBackgroundColor);
-                return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+                return colorName
+                  ? t(`common:colors.${colorName}`)
+                  : boardDetails.canvasBackgroundColor;
               })()}
             </span>
           </div>
         </div>
         <div>
-          <label className={styles.settingLabel}>
-            {t('board:details.canvasSettings.size')}:
-          </label>
+          <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</label>
           <p>
-            {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
+            {boardDetails.canvasWidth} × {boardDetails.canvasHeight}{' '}
+            {t('board:details.canvasSettings.pixels')}
           </p>
         </div>
       </SectionCard>
@@ -86,7 +84,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   }
 
   return (
-    <SectionCard 
+    <SectionCard
       title={t('board:details.canvasSettings.title')}
       variant="default"
       headerActions={
@@ -98,11 +96,12 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
         ) : undefined
       }
     >
-
       {isEditing ? (
         <>
           <div className={styles.settingsContainerLarge}>
-            <label className={styles.settingLabel}>{t('board:details.canvasSettings.backgroundColor')}</label>
+            <label className={styles.settingLabel}>
+              {t('board:details.canvasSettings.backgroundColor')}
+            </label>
             <div className={styles.flexRowWithMargin}>
               <div className={utilStyles.colorPickerPopupWrapper}>
                 <ColorPicker
@@ -158,21 +157,15 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
 
           <div className={styles.buttonGroup}>
-            <Button 
-              onClick={handleCancel} 
-              disabled={isUpdating} 
-              variant="secondary"
-            >
+            <Button onClick={handleCancel} disabled={isUpdating} variant="secondary">
               <X size={16} />
               {t('common:button.cancel')}
             </Button>
-            <Button 
-              onClick={handleSave} 
-              disabled={isUpdating}
-              variant="primary"
-            >
+            <Button onClick={handleSave} disabled={isUpdating} variant="primary">
               <Save size={16} />
-              {isUpdating ? t('common:button.saving') : t('board:details.canvasSettings.applyChanges')}
+              {isUpdating
+                ? t('common:button.saving')
+                : t('board:details.canvasSettings.applyChanges')}
             </Button>
           </div>
         </>
@@ -183,25 +176,26 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
               {t('board:details.canvasSettings.backgroundColor')}:
             </label>
             <div className={styles.flexRow}>
-              <div 
-                className={styles.colorPreview} 
+              <div
+                className={styles.colorPreview}
                 style={{ backgroundColor: boardDetails.canvasBackgroundColor }}
                 title={boardDetails.canvasBackgroundColor}
               />
               <span>
                 {(() => {
                   const colorName = getColorName(boardDetails.canvasBackgroundColor);
-                  return colorName ? t(`common:colors.${colorName}`) : boardDetails.canvasBackgroundColor;
+                  return colorName
+                    ? t(`common:colors.${colorName}`)
+                    : boardDetails.canvasBackgroundColor;
                 })()}
               </span>
             </div>
           </div>
           <div>
-            <label className={styles.settingLabel}>
-              {t('board:details.canvasSettings.size')}:
-            </label>
+            <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</label>
             <p>
-              {boardDetails.canvasWidth} × {boardDetails.canvasHeight} {t('board:details.canvasSettings.pixels')}
+              {boardDetails.canvasWidth} × {boardDetails.canvasHeight}{' '}
+              {t('board:details.canvasSettings.pixels')}
             </p>
           </div>
         </>

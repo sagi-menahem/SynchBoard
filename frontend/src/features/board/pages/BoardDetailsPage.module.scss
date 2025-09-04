@@ -1,114 +1,113 @@
 @use '@/styles' as theme;
 
 .pageContent {
-    position: relative;
-    padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
-    /* Banner + toolbar + gap */
-    min-height: 100vh;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-inline-start: 24px;
-    padding-inline-end: 24px;
-    padding-bottom: 24px;
-    box-sizing: border-box;
-    text-align: start;
-    
-    // Center content for consistent layout
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: relative;
+  padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
+  /* Banner + toolbar + gap */
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+  text-align: start;
+
+  // Center content for consistent layout
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 // Responsive adjustments for mobile devices
 @media (max-width: 768px) {
-    .pageContent {
-        padding-inline-start: 16px;
-        padding-inline-end: 16px;
-    }
+  .pageContent {
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
+  }
 }
 
 @media (max-width: 480px) {
-    .pageContent {
-        padding-inline-start: 12px;
-        padding-inline-end: 12px;
-    }
+  .pageContent {
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
+  }
 }
 
-
 .notFound {
-    @include theme.flex-center;
-    padding: theme.$spacing-12;
-    color: theme.$text-secondary;
-    font-size: 16px;
+  @include theme.flex-center;
+  padding: theme.$spacing-12;
+  color: theme.$text-secondary;
+  font-size: 16px;
 }
 
 .membersSection {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .sectionTitle {
-    color: theme.$text-primary;
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid theme.$border-light;
+  color: theme.$text-primary;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid theme.$border-light;
 }
 
 .membersListContainer {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .quickSettingsModal {
-    position: fixed;
-    top: 0;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    bottom: 0;
-    background: theme.$overlay-modal;
-    backdrop-filter: blur(4px);
-    @include theme.flex-center;
-    z-index: theme.$z-index-toolbar;
-    padding: theme.$spacing-8;
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  bottom: 0;
+  background: theme.$overlay-modal;
+  backdrop-filter: blur(4px);
+  @include theme.flex-center;
+  z-index: theme.$z-index-toolbar;
+  padding: theme.$spacing-8;
 }
 
 .quickSettingsContent {
-    background: linear-gradient(to bottom, theme.$background-secondary, theme.$background-tertiary);
-    border: 1px solid theme.$border-light;
-    @include theme.rounded-large;
-    @include theme.theme-scrollbar;
-    padding: theme.$spacing-8;
-    max-width: 600px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-    @include theme.shadow-heavy;
+  background: linear-gradient(to bottom, theme.$background-secondary, theme.$background-tertiary);
+  border: 1px solid theme.$border-light;
+  @include theme.rounded-large;
+  @include theme.theme-scrollbar;
+  padding: theme.$spacing-8;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  @include theme.shadow-heavy;
 }
 
 .closeQuickSettings {
-    @include theme.button-base;
-    position: absolute;
-    top: 1rem;
-    inset-inline-end: 1rem;
-    background: theme.$overlay-light;
-    border: none;
-    color: theme.$text-secondary;
-    width: 32px;
-    height: 32px;
-    @include theme.rounded-circle;
-    @include theme.flex-center;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    @include theme.button-transition;
+  @include theme.button-base;
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  background: theme.$overlay-light;
+  border: none;
+  color: theme.$text-secondary;
+  width: 32px;
+  height: 32px;
+  @include theme.rounded-circle;
+  @include theme.flex-center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  @include theme.button-transition;
 }
 
 .closeQuickSettings:hover {
-    background: theme.$overlay-medium;
-    color: theme.$text-primary;
-    transform: scale(1.1);
+  background: theme.$overlay-medium;
+  color: theme.$text-primary;
+  transform: scale(1.1);
 }

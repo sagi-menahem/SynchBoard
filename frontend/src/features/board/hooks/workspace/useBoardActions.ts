@@ -5,8 +5,6 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
-
-
 export const useBoardActions = (boardId: number) => {
   const { t } = useTranslation(['board', 'common']);
   const [undoCount, setUndoCount] = useState(0);

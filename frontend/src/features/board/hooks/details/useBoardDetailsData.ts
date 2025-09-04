@@ -27,10 +27,10 @@ export interface UseBoardDetailsDataReturn {
   boardDetails: BoardDetails | null;
   isLoading: boolean;
   refetch: () => void;
-  
+
   // Permissions
   permissions: BoardPermissions;
-  
+
   // Optimistic editing state
   optimisticState: BoardEditState;
   handleUpdateName: (newName: string) => Promise<void>;
@@ -41,11 +41,11 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
   const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();
   const navigate = useNavigate();
-  
+
   // Board details state
   const [boardDetails, setBoardDetails] = useState<BoardDetails | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  
+
   // Optimistic editing state
   const [baseState, setBaseState] = useState<BoardEditState>({});
   const [optimisticState, setOptimisticState] = useOptimistic(
@@ -66,7 +66,8 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
 
   // Calculate permissions
   const permissions: BoardPermissions = {
-    currentUserIsAdmin: boardDetails?.members.find((member) => member.email === userEmail)?.isAdmin ?? false,
+    currentUserIsAdmin:
+      boardDetails?.members.find((member) => member.email === userEmail)?.isAdmin ?? false,
     userEmail,
   };
 
@@ -78,11 +79,12 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
     }
 
     setIsLoading(true);
-    
+
     const startTime = Date.now();
     const minDelay = 200;
 
-    void boardService.getBoardDetails(boardId)
+    void boardService
+      .getBoardDetails(boardId)
       .then((data: unknown) => {
         setBoardDetails(data as BoardDetails);
       })
@@ -98,7 +100,7 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
-        
+
         setTimeout(() => {
           setIsLoading(false);
         }, remainingDelay);
@@ -112,14 +114,18 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
         return;
       }
 
-      void boardService.getBoardDetails(boardId)
+      void boardService
+        .getBoardDetails(boardId)
         .then((data: unknown) => {
           setBoardDetails(data as BoardDetails);
         })
         .catch((error: unknown) => {
           logger.error('Failed to refetch board details after WebSocket update:', error);
-          if (message.updateType === 'MEMBERS_UPDATED' && 
-                        error instanceof AxiosError && error.response?.status === 403) {
+          if (
+            message.updateType === 'MEMBERS_UPDATED' &&
+            error instanceof AxiosError &&
+            error.response?.status === 403
+          ) {
             void navigate(APP_ROUTES.BOARD_LIST);
           }
         });

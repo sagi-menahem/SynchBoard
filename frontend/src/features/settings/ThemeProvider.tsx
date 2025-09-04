@@ -43,11 +43,11 @@ const applyThemeToDOM = (theme: Theme) => {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const { token } = useAuth();
   const isAuthenticated = !!token;
-  
+
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Track recent theme changes to prevent server overrides
   const recentThemeChangeRef = useRef<{ theme: Theme; timestamp: number } | null>(null);
 
@@ -58,16 +58,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         theme: newTheme,
         timestamp: Date.now(),
       };
-      
+
       // 1. Apply immediately to DOM (visual feedback first)
       applyThemeToDOM(newTheme);
-      
+
       // 2. Update React state
       setThemeState(newTheme);
-      
+
       // 3. Save to localStorage
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
-      
+
       // 4. Background API sync (fire-and-forget, don't block UI)
       if (isAuthenticated) {
         userService.updateThemePreferences({ theme: newTheme }).catch((err) => {
@@ -96,20 +96,21 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       setIsLoading(true);
       try {
         const themePrefs = await userService.getThemePreferences();
-        
+
         // Check if there was a recent theme change that we should not override
         const recentChange = recentThemeChangeRef.current;
-        const isRecentChange = recentChange && 
-          (Date.now() - recentChange.timestamp) < TIMING_CONSTANTS.THEME_CHANGE_DETECTION_TIMEOUT;
-        
+        const isRecentChange =
+          recentChange &&
+          Date.now() - recentChange.timestamp < TIMING_CONSTANTS.THEME_CHANGE_DETECTION_TIMEOUT;
+
         if (isRecentChange) {
           setIsLoading(false);
           return;
         }
-        
+
         // Get the current theme from localStorage
         const localTheme = getInitialTheme();
-        
+
         // Only override localStorage if server has a different theme
         if (themePrefs.theme && themePrefs.theme !== localTheme) {
           setThemeState(themePrefs.theme);

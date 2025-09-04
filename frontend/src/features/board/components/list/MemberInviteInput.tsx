@@ -5,16 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 import { validateEmail } from 'shared/utils/validationUtils';
 
-
 import styles from './MemberInviteInput.module.scss';
 
 interface MemberInviteInputProps {
-    onMembersChange: (emails: string[]) => void;
-    disabled?: boolean;
-    id?: string;
+  onMembersChange: (emails: string[]) => void;
+  disabled?: boolean;
+  id?: string;
 }
 
-const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, disabled = false, id }) => {
+const MemberInviteInput: React.FC<MemberInviteInputProps> = ({
+  onMembersChange,
+  disabled = false,
+  id,
+}) => {
   const { t } = useTranslation(['board', 'common']);
   const [inputValue, setInputValue] = useState('');
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
@@ -23,8 +26,10 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
 
   const addEmail = async (email: string) => {
     const trimmedEmail = email.trim().toLowerCase();
-    
-    if (!trimmedEmail) {return;}
+
+    if (!trimmedEmail) {
+      return;
+    }
 
     const validation = await validateMemberEmail(trimmedEmail, inviteEmails);
     if (!validation.isValid) {
@@ -79,7 +84,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
           {t('board:createForm.addMember')}
         </Button>
       </div>
-      
+
       {inviteEmails.length > 0 && (
         <div className={styles.emailTags}>
           {inviteEmails.map((email) => (
@@ -100,7 +105,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({ onMembersChange, 
           ))}
         </div>
       )}
-      
+
       {inviteEmails.length > 0 && (
         <p className={styles.helpText}>
           {t('board:createForm.inviteCount', { count: inviteEmails.length })}

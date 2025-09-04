@@ -3,8 +3,6 @@ import type { ChangePasswordRequest } from 'features/settings/types/UserTypes';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-
-
 export const usePasswordManager = () => {
   const { t } = useTranslation(['settings', 'common']);
 

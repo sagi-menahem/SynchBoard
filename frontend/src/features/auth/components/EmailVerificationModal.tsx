@@ -39,7 +39,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
     if (resendCooldown > 0) {
       return;
     }
-    
+
     const result = await resendVerificationCode();
     if (result.success) {
       setResendCooldown(60);
@@ -47,34 +47,48 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   };
 
   const resendActions = (
-    <div className={styles.additionalActions} style={{ paddingTop: UI_CONSTANTS.EMAIL_VERIFICATION_PADDING_TOP, borderTop: '1px solid #444' }}>
-      <p style={{ color: '#ccc', fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE, marginBottom: UI_CONSTANTS.EMAIL_VERIFICATION_MARGIN }}>
+    <div
+      className={styles.additionalActions}
+      style={{
+        paddingTop: UI_CONSTANTS.EMAIL_VERIFICATION_PADDING_TOP,
+        borderTop: '1px solid #444',
+      }}
+    >
+      <p
+        style={{
+          color: '#ccc',
+          fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE,
+          marginBottom: UI_CONSTANTS.EMAIL_VERIFICATION_MARGIN,
+        }}
+      >
         {t('auth:verifyEmail.didNotReceive')}
       </p>
-      <Button 
-        variant="secondary" 
+      <Button
+        variant="secondary"
         onClick={handleResendCode}
         disabled={resendCooldown > 0}
         style={{ fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE }}
       >
-        {resendCooldown > 0 
+        {resendCooldown > 0
           ? t('auth:verifyEmail.resend.cooldown', { seconds: resendCooldown })
-          : t('auth:verifyEmail.resend.button')
-        }
+          : t('auth:verifyEmail.resend.button')}
       </Button>
     </div>
   );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.modalContainer} style={{ maxWidth: UI_CONSTANTS.AUTH_MODAL_MAX_WIDTH }}>
+      <div
+        className={styles.modalContainer}
+        style={{ maxWidth: UI_CONSTANTS.AUTH_MODAL_MAX_WIDTH }}
+      >
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>
             <Mail size={20} />
             {t('auth:verifyEmail.heading')}
           </h2>
         </div>
-        
+
         <p className={styles.modalDescription}>
           {t('auth:verifyEmail.description')} <strong style={{ color: '#fff' }}>{email}</strong>
         </p>
@@ -98,25 +112,23 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
               autoComplete="one-time-code"
               style={{ textAlign: 'center', fontSize: '1.2em', letterSpacing: '0.2em' }}
             />
-            <small style={{ color: '#9ca3af', fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE, marginTop: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_MARGIN, display: 'block' }}>
+            <small
+              style={{
+                color: '#9ca3af',
+                fontSize: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_FONT_SIZE,
+                marginTop: UI_CONSTANTS.EMAIL_VERIFICATION_SMALL_MARGIN,
+                display: 'block',
+              }}
+            >
               {t('auth:verifyEmail.hint.code')}
             </small>
           </div>
 
           <div className={styles.buttonGroup}>
-            <Button 
-              type="button" 
-              onClick={onClose} 
-              disabled={isPending} 
-              variant="secondary"
-            >
+            <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
               {t('common:button.cancel')}
             </Button>
-            <Button 
-              type="submit" 
-              disabled={isPending} 
-              variant="primary"
-            >
+            <Button type="submit" disabled={isPending} variant="primary">
               {isPending ? t('common:button.verifying') : t('auth:verifyEmail.button')}
             </Button>
           </div>

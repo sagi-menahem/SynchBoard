@@ -10,9 +10,9 @@ interface GuestLanguageSwitcherProps {
   showLabel?: boolean;
 }
 
-const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({ 
-  className, 
-  size = 'sm', 
+const GuestLanguageSwitcher: React.FC<GuestLanguageSwitcherProps> = ({
+  className,
+  size = 'sm',
   showLabel = false,
 }) => {
   const { i18n } = useTranslation(['common']);

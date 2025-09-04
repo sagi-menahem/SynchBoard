@@ -1,5 +1,5 @@
 export interface BackendError {
-    message: string;
+  message: string;
 }
 
 export const isBackendError = (data: unknown): data is BackendError => {
@@ -11,8 +11,8 @@ export const isBackendError = (data: unknown): data is BackendError => {
 
   return (
     'message' in obj &&
-        typeof obj.message === 'string' &&
-        obj.message.trim().length > 0 &&
-        obj.message.length <= 500
+    typeof obj.message === 'string' &&
+    obj.message.trim().length > 0 &&
+    obj.message.length <= 500
   );
 };

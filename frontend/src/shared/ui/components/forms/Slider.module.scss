@@ -31,7 +31,7 @@
   touch-action: none;
   width: 80px;
   height: 20px;
-  
+
   &[data-disabled] {
     opacity: 0.5;
     cursor: not-allowed;
@@ -64,22 +64,22 @@
   border-radius: 50%;
   cursor: pointer;
   @include theme.smooth-transition;
-  
+
   &:hover {
     transform: scale(1.1);
     box-shadow: theme.$shadow-focus-ring theme.$primary-light;
   }
-  
+
   &:focus {
     outline: none;
     box-shadow: theme.$shadow-focus-ring theme.$primary-light;
   }
-  
-  &[data-state="dragging"] {
+
+  &[data-state='dragging'] {
     transform: scale(1.15);
     box-shadow: theme.$shadow-focus-ring-lg theme.$primary-light;
   }
-  
+
   .sliderRoot[data-disabled] & {
     cursor: not-allowed;
     transform: none;

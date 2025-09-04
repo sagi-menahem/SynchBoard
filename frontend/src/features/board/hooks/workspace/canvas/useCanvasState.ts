@@ -16,7 +16,6 @@ import {
   setupCanvasContext,
 } from 'features/board/utils/CanvasUtils';
 
-
 interface UseCanvasStateProps {
   objects: ActionPayload[];
   canvasConfig?: CanvasConfig;
@@ -75,20 +74,20 @@ export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) =
   return {
     // Refs (direct access, no object wrapping)
     canvasRef,
-    containerRef, 
+    containerRef,
     contextRef,
-    
+
     // State
     dimensions,
     isDrawing,
     setIsDrawing,
     startPoint,
     currentPath,
-    
+
     // Actions
     resetDrawingState,
     setCanvasDimensions,
-    
+
     // Utils (direct functions, no object wrapping)
     replayDrawAction,
     drawLinePayload,

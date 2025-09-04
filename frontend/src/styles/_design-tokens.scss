@@ -17,7 +17,7 @@ $color-success: #10b981; // Success/positive feedback
 $color-success-light: #a7f3d0; // Light success variant
 
 $color-error: #ef4444; // Error/danger states
-$color-error-hover: #dc2626; // Error hover state  
+$color-error-hover: #dc2626; // Error hover state
 $color-error-light: #fca5a5; // Light error variant
 
 $color-warning: #f59e0b; // Warning/caution states
@@ -26,7 +26,7 @@ $color-warning-light: #fde68a; // Light warning variant
 // === NEUTRAL GRAYS - Consolidated from similar values ===
 $color-white: #ffffff; // Pure white
 $color-gray-50: #f8f8f8; // Lightest gray (consolidated: f8f8f8, f5f5f5)
-$color-gray-100: #f1f1f1; // Very light gray  
+$color-gray-100: #f1f1f1; // Very light gray
 $color-gray-200: #dadce0; // Light gray (consolidated: dadce0, c6c6c6)
 $color-gray-300: #cccccc; // Medium light gray
 $color-gray-400: #9aa0a6; // Medium gray
@@ -72,7 +72,7 @@ $color-chat-other-message-light: #dde9f7; // Other users' messages in light them
 $color-status-pending-border-light: #f59e0b; // Based on $color-warning - warm orange for light theme
 $color-status-pending-border-dark: #fbbf24; // Slightly lighter orange for dark theme visibility
 
-// Confirmed status - uses subtle border for delivered messages  
+// Confirmed status - uses subtle border for delivered messages
 $color-status-confirmed-border-light: #e2e8f0; // Based on existing $color-border-light
 $color-status-confirmed-border-dark: #404040; // Based on existing dark theme border colors
 
@@ -81,7 +81,12 @@ $color-status-failed-border-light: #f87171; // Based on $color-error-light - sof
 $color-status-failed-border-dark: #fca5a5; // Lighter red for dark theme visibility
 
 // Failed status background colors for subtle error indication
-$color-status-failed-bg-light: rgba(254, 242, 242, 0.3); // Very subtle red background for light theme
+$color-status-failed-bg-light: rgba(
+  254,
+  242,
+  242,
+  0.3
+); // Very subtle red background for light theme
 $color-status-failed-bg-dark: rgba(69, 26, 26, 0.2); // Very subtle red background for dark theme
 
 // === OVERLAY COLORS ===
@@ -120,7 +125,7 @@ $spacing-20: 5rem; // 80px
 $spacing-button-height: 2.75rem; // 44px - minimum touch target
 $spacing-toolbar-height: 4.5rem; // 72px - toolbar height
 $spacing-image-sm: 3.125rem; // 50px - small images
-$spacing-image-md: 3.75rem; // 60px - medium images  
+$spacing-image-md: 3.75rem; // 60px - medium images
 $spacing-image-lg: 6.25rem; // 100px - large images
 $spacing-card-sm: 13.75rem; // 220px - small cards
 $spacing-card-md: 15rem; // 240px - medium cards
@@ -141,7 +146,7 @@ $spacing-container-xl: 50rem; // 800px - max content
 $font-size-xs: 0.75rem; // 12px
 $font-size-sm: 0.875rem; // 14px - most common small
 $font-size-base: 1rem; // 16px - base font size
-$font-size-md: 1.125rem; // 18px 
+$font-size-md: 1.125rem; // 18px
 $font-size-lg: 1.25rem; // 20px
 $font-size-xl: 1.5rem; // 24px
 $font-size-2xl: 1.875rem; // 30px
@@ -154,7 +159,7 @@ $font-size-base-plus: 1.1rem; // 17.6px - consolidate to md
 // === FONT WEIGHTS ===
 $font-weight-normal: 400; // Normal text
 $font-weight-medium: 500; // Medium text (most common)
-$font-weight-semibold: 600; // Semi-bold text  
+$font-weight-semibold: 600; // Semi-bold text
 $font-weight-bold: 700; // Bold text
 
 // === LINE HEIGHTS ===
@@ -199,7 +204,7 @@ $shadow-focus-outline: 0 0 0 2px; // For outline focus states (color applied sep
 $shadow-focus-ring: 0 0 0 3px; // For focus rings (color applied separately)
 $shadow-focus-ring-lg: 0 0 0 4px; // Large focus ring (color applied separately)
 $shadow-glow-sm: 0 0 4px; // Small glow effect (color applied separately)
-$shadow-glow-md: 0 0 8px; // Medium glow effect (color applied separately)  
+$shadow-glow-md: 0 0 8px; // Medium glow effect (color applied separately)
 $shadow-glow-lg: 0 0 12px; // Large glow effect (color applied separately)
 
 // === SHADOW UTILITIES ===
@@ -255,9 +260,10 @@ $transition-ease-in-out: ease-in-out;
 
 // === COMMON PATTERNS ===
 $transition-all: all $transition-normal $transition-ease;
-$transition-colors: background-color $transition-normal $transition-ease,
-    border-color $transition-normal $transition-ease,
-    color $transition-normal $transition-ease;
+$transition-colors:
+  background-color $transition-normal $transition-ease,
+  border-color $transition-normal $transition-ease,
+  color $transition-normal $transition-ease;
 $transition-transform: transform $transition-normal $transition-ease;
 
 // ========================================
@@ -370,7 +376,7 @@ $pattern-repeat-md: 20px;
 
 // === BACKGROUND BLUR VALUES ===
 $background-blur-none: 0px;
-$background-blur-xs: 2px; 
+$background-blur-xs: 2px;
 $background-blur-sm: 4px;
 $background-blur-md: 8px;
 $background-blur-lg: 12px;

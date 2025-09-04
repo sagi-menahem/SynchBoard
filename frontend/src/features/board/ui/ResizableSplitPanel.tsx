@@ -34,7 +34,7 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
   // Get the user's chosen color for CSS variable
   const getUserChosenColor = useCallback(() => {
-    const savedVariable = preferences.boardBackgroundSetting; 
+    const savedVariable = preferences.boardBackgroundSetting;
     // This is now a variable name like '--board-bg-midnight-blue'
     if (!savedVariable) {
       return 'var(--color-surface)'; // Default fallback remains the same
@@ -50,12 +50,14 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (!isDragging || !containerRef.current) {return;}
+      if (!isDragging || !containerRef.current) {
+        return;
+      }
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
       let mouseX = e.clientX - containerRect.left;
-      
+
       const isRTL = document.documentElement.dir === 'rtl';
       if (isRTL) {
         mouseX = containerWidth - mouseX;
@@ -98,22 +100,21 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className={clsx(styles.container, utilStyles.unifiedDotBackground)}
-      style={{ 
-        '--user-chosen-color': getUserChosenColor(),
-        '--background-blur': backgroundBlur,
-      } as React.CSSProperties}
+      style={
+        {
+          '--user-chosen-color': getUserChosenColor(),
+          '--background-blur': backgroundBlur,
+        } as React.CSSProperties
+      }
     >
-      <div 
-        className={styles.leftPanel} 
-        style={{ flexBasis: `${splitRatio}%` }}
-      >
+      <div className={styles.leftPanel} style={{ flexBasis: `${splitRatio}%` }}>
         {leftChild}
       </div>
-      
-      <div 
+
+      <div
         className={clsx(styles.divider, isDragging && styles.dragging)}
         onMouseDown={handleMouseDown}
         role="button"
@@ -132,11 +133,8 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
           <div className={styles.handleDot} />
         </div>
       </div>
-      
-      <div 
-        className={styles.rightPanel} 
-        style={{ flexBasis: `${100 - splitRatio}%` }}
-      >
+
+      <div className={styles.rightPanel} style={{ flexBasis: `${100 - splitRatio}%` }}>
         {rightChild}
       </div>
     </div>

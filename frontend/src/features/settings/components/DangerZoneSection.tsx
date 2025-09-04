@@ -7,14 +7,14 @@ import { Button, SectionCard } from 'shared/ui';
 import styles from '../pages/SettingsPage.module.scss';
 
 interface DangerZoneSectionProps {
-    onDeleteAccount: () => void;
+  onDeleteAccount: () => void;
 }
 
 const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }) => {
   const { t } = useTranslation(['settings', 'common']);
 
   return (
-    <SectionCard 
+    <SectionCard
       title={t('settings:page.dangerZoneHeader')}
       subtitle={t('settings:page.dangerZoneText')}
       variant="danger"

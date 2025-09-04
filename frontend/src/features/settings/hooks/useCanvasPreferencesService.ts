@@ -5,7 +5,11 @@ import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
 
-import { CanvasPreferencesService, type CanvasPreferences, type LayoutMode } from '../services/canvasPreferencesService';
+import {
+  CanvasPreferencesService,
+  type CanvasPreferences,
+  type LayoutMode,
+} from '../services/canvasPreferencesService';
 
 export interface CanvasPreferencesState {
   preferences: CanvasPreferences;
@@ -80,12 +84,13 @@ export function useCanvasPreferencesService() {
     }
 
     dispatch({ type: 'LOAD_START' });
-    
+
     try {
       const preferences = await CanvasPreferencesService.fetchPreferences();
       dispatch({ type: 'LOAD_SUCCESS', payload: preferences });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load canvas preferences';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to load canvas preferences';
       dispatch({ type: 'LOAD_ERROR', payload: errorMessage });
     }
   }, [isAuthenticated]);

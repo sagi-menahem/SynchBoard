@@ -12,10 +12,7 @@ const BoardAppearanceSection: React.FC = () => {
   const { preferences, updatePreferences } = useUserBoardPreferences();
 
   return (
-    <SectionCard 
-      title={t('settings:page.boardAppearanceHeader')}
-      variant="default"
-    >
+    <SectionCard title={t('settings:page.boardAppearanceHeader')} variant="default">
       <div className={styles.field}>
         <label>{t('settings:page.boardBackgroundColorLabel')}</label>
         <ul className={styles.colorSwatchContainer}>

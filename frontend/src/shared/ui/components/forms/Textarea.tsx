@@ -10,13 +10,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => {
     const textareaClasses = `${styles.textarea} ${className ?? ''}`.trim();
 
-    return (
-      <textarea
-        ref={ref}
-        className={textareaClasses}
-        {...props}
-      />
-    );
+    return <textarea ref={ref} className={textareaClasses} {...props} />;
   },
 );
 

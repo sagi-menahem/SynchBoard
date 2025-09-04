@@ -10,13 +10,17 @@ interface ConnectionStatusBannerProps {
   onHeightChange?: (height: number) => void;
 }
 
-export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ onHeightChange }) => {
+export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
+  onHeightChange,
+}) => {
   const { token } = useAuth();
   const { shouldShowBanner } = useConnectionStatus();
   const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!bannerRef.current) {return;}
+    if (!bannerRef.current) {
+      return;
+    }
 
     const measureAndNotify = () => {
       if (bannerRef.current) {
@@ -24,13 +28,13 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
         const computedStyle = window.getComputedStyle(bannerRef.current);
         const height = rect.height;
         const computedHeight = parseFloat(computedStyle.height);
-        
+
         const finalHeight = Math.max(height, computedHeight);
-        
+
         if (onHeightChange && finalHeight > 0) {
           onHeightChange(finalHeight);
         }
-        
+
         document.documentElement.style.setProperty('--banner-height', `${finalHeight}px`);
       }
     };
@@ -40,13 +44,13 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
     const resizeObserver = new ResizeObserver((entries) => {
       const height = entries[0].contentRect.height;
       const borderBoxHeight = entries[0].borderBoxSize?.[0]?.blockSize ?? height;
-      
+
       const finalHeight = Math.max(height, borderBoxHeight);
-      
+
       if (onHeightChange && finalHeight > 0) {
         onHeightChange(finalHeight);
       }
-      
+
       document.documentElement.style.setProperty('--banner-height', `${finalHeight}px`);
     });
 
@@ -72,16 +76,18 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
       document.documentElement.style.setProperty('--banner-height', '0px');
     } else {
       const measureWithRetry = (attempt = 1, maxAttempts = 5) => {
-        if (!bannerRef.current) {return;}
-        
+        if (!bannerRef.current) {
+          return;
+        }
+
         const rect = bannerRef.current.getBoundingClientRect();
         const computedStyle = window.getComputedStyle(bannerRef.current);
         const height = rect.height;
         const computedHeight = parseFloat(computedStyle.height);
         const offsetHeight = bannerRef.current.offsetHeight;
-        
+
         const finalHeight = Math.max(height, computedHeight, offsetHeight);
-        
+
         if (finalHeight > 0) {
           if (onHeightChange) {
             onHeightChange(finalHeight);
@@ -97,11 +103,10 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
           document.documentElement.style.setProperty('--banner-height', `${fallbackHeight}px`);
         }
       };
-      
+
       measureWithRetry();
     }
   }, [token, shouldShowBanner, onHeightChange]);
-
 
   if (!token || !shouldShowBanner) {
     return null;
@@ -113,9 +118,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({ 
         <span className={styles.icon} aria-hidden="true">
           ⚠️
         </span>
-        <span className={styles.message}>
-          Connection lost - limited functionality
-        </span>
+        <span className={styles.message}>Connection lost - limited functionality</span>
       </div>
     </div>
   );

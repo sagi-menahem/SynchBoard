@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPreferencesDTO {
+
     private String boardBackgroundSetting;
 }

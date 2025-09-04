@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 
-
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
@@ -19,7 +18,9 @@ export const useLanguageSync = () => {
   const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
 
   const loadUserLanguage = useCallback(async (): Promise<LanguagePreferences | null> => {
-    if (!token) {return null;}
+    if (!token) {
+      return null;
+    }
 
     if (languagePrefsCache) {
       return languagePrefsCache;
@@ -66,7 +67,9 @@ export const useLanguageSync = () => {
   }, [token]);
 
   useEffect(() => {
-    if (authLoading) {return;}
+    if (authLoading) {
+      return;
+    }
 
     if (token) {
       void loadUserLanguage();
@@ -83,26 +86,33 @@ export const useLanguageSync = () => {
     }
   };
 
-  const updateLanguagePreference = useCallback(async (language: 'en' | 'he') => {
-    if (!token) {return;}
-
-    try {
-      languagePrefsCache = null;
-
-      const updatedPrefs = await userService.updateLanguagePreferences({ preferredLanguage: language });
-
-      languagePrefsCache = updatedPrefs;
-
-      if (i18n.language !== language) {
-        await i18n.changeLanguage(language);
+  const updateLanguagePreference = useCallback(
+    async (language: 'en' | 'he') => {
+      if (!token) {
+        return;
       }
 
-      return updatedPrefs;
-    } catch (error) {
-      logger.error('Failed to update language preference:', error);
-      throw error;
-    }
-  }, [token, i18n]);
+      try {
+        languagePrefsCache = null;
+
+        const updatedPrefs = await userService.updateLanguagePreferences({
+          preferredLanguage: language,
+        });
+
+        languagePrefsCache = updatedPrefs;
+
+        if (i18n.language !== language) {
+          await i18n.changeLanguage(language);
+        }
+
+        return updatedPrefs;
+      } catch (error) {
+        logger.error('Failed to update language preference:', error);
+        throw error;
+      }
+    },
+    [token, i18n],
+  );
 
   return {
     setGuestLanguage,

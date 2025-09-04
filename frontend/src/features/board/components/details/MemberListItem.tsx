@@ -10,8 +10,8 @@ import { Card } from 'shared/ui';
 import styles from './MemberListItem.module.scss';
 
 interface MemberListItemProps {
-    member: Member;
-    onContextMenu: (event: React.MouseEvent, member: Member) => void;
+  member: Member;
+  onContextMenu: (event: React.MouseEvent, member: Member) => void;
 }
 
 const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onContextMenu }) => {
@@ -22,16 +22,14 @@ const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onCo
 
   return (
     <div onContextMenu={(e) => onContextMenu(e, member)}>
-      <Card 
-        variant="default" 
-        padding="sm"
-        className={styles.memberItem}
-      >
-        <img src={imageSource} alt={t('common:accessibility.memberAvatar', { email: member.email })} className={styles.memberAvatar} />
+      <Card variant="default" padding="sm" className={styles.memberItem}>
+        <img
+          src={imageSource}
+          alt={t('common:accessibility.memberAvatar', { email: member.email })}
+          className={styles.memberAvatar}
+        />
         <div>
-          <div className={styles.memberName}>
-            {member.email}
-          </div>
+          <div className={styles.memberName}>{member.email}</div>
         </div>
         {member.isAdmin && (
           <div className={styles.adminBadge} title={t('board:detailsPage.adminBadge')}>

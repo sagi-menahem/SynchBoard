@@ -21,7 +21,7 @@ interface UseCanvasSettingsReturn {
   canvasSize: string;
   customWidth: number;
   customHeight: number;
-  
+
   // Actions
   handleStartEditing: () => void;
   handleCancel: () => void;
@@ -30,7 +30,7 @@ interface UseCanvasSettingsReturn {
   handleCanvasSizeChange: (value: string) => void;
   handleCustomWidthChange: (value: string) => void;
   handleCustomHeightChange: (value: string) => void;
-  
+
   // Computed values
   presetOptions: {
     value: string;
@@ -39,9 +39,11 @@ interface UseCanvasSettingsReturn {
   }[];
 }
 
-export const useCanvasSettings = (
-  { boardDetails, onUpdateSettings, styles }: UseCanvasSettingsOptions,
-): UseCanvasSettingsReturn => {
+export const useCanvasSettings = ({
+  boardDetails,
+  onUpdateSettings,
+  styles,
+}: UseCanvasSettingsOptions): UseCanvasSettingsReturn => {
   const { detectCurrentSizePreset, generatePresetOptions } = useCanvasPresets({ styles });
   const {
     isEditing,
@@ -86,7 +88,6 @@ export const useCanvasSettings = (
     }
   };
 
-
   const handleCustomWidthChange = (value: string) => {
     const parsedValue = parseInt(value);
     setCustomWidth(Number.isNaN(parsedValue) ? boardDetails.canvasWidth : parsedValue);
@@ -97,7 +98,6 @@ export const useCanvasSettings = (
     setCustomHeight(Number.isNaN(parsedValue) ? boardDetails.canvasHeight : parsedValue);
   };
 
-
   return {
     // State
     isEditing,
@@ -106,7 +106,7 @@ export const useCanvasSettings = (
     canvasSize,
     customWidth,
     customHeight,
-    
+
     // Actions
     handleStartEditing,
     handleCancel,
@@ -115,7 +115,7 @@ export const useCanvasSettings = (
     handleCanvasSizeChange,
     handleCustomWidthChange,
     handleCustomHeightChange,
-    
+
     // Computed values
     presetOptions: generatePresetOptions(),
   };

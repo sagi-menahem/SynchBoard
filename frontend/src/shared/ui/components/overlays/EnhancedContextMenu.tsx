@@ -16,11 +16,11 @@ interface MenuPosition {
   flipY: boolean;
 }
 
-export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({ 
-  x, 
-  y, 
-  onClose, 
-  children, 
+export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
+  x,
+  y,
+  onClose,
+  children,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<MenuPosition>({ x, y, flipX: false, flipY: false });
@@ -28,17 +28,19 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
 
   // Calculate smart positioning with boundary detection
   useEffect(() => {
-    if (!menuRef.current) {return;}
+    if (!menuRef.current) {
+      return;
+    }
 
     const menu = menuRef.current;
     const menuRect = menu.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    
+
     // Calculate if menu would overflow viewport
     const wouldOverflowRight = x + menuRect.width > viewportWidth - 10; // 10px margin
     const wouldOverflowBottom = y + menuRect.height > viewportHeight - 10;
-    
+
     // Calculate adjusted position
     let adjustedX = x;
     let adjustedY = y;
@@ -60,7 +62,7 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
     adjustedY = Math.max(10, adjustedY);
 
     setPosition({ x: adjustedX, y: adjustedY, flipX, flipY });
-    
+
     // Trigger fade-in animation
     setTimeout(() => setIsVisible(true), 10);
   }, [x, y]);
@@ -97,7 +99,9 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
     isVisible ? styles.visible : styles.hidden,
     position.flipX ? styles.flipX : '',
     position.flipY ? styles.flipY : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const style = {
     left: `${position.x}px`,
@@ -105,13 +109,7 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
   };
 
   return (
-    <div 
-      ref={menuRef} 
-      className={menuClasses} 
-      style={style}
-      role="menu"
-      aria-hidden={!isVisible}
-    >
+    <div ref={menuRef} className={menuClasses} style={style} role="menu" aria-hidden={!isVisible}>
       {children}
     </div>
   );

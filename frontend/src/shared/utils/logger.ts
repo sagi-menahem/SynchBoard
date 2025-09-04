@@ -136,16 +136,23 @@ class Logger {
     }
   }
 
-  private reportToExternalService(message: string, error?: Error | unknown, data?: unknown[]): void {
+  private reportToExternalService(
+    message: string,
+    error?: Error | unknown,
+    data?: unknown[],
+  ): void {
     try {
       const errors = JSON.parse(sessionStorage.getItem('app_errors') ?? '[]') as unknown[];
       errors.push({
         message,
-        error: error instanceof Error ? {
-          message: error.message,
-          stack: error.stack,
-          name: error.name,
-        } : error,
+        error:
+          error instanceof Error
+            ? {
+                message: error.message,
+                stack: error.stack,
+                name: error.name,
+              }
+            : error,
         data,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent,
@@ -153,7 +160,7 @@ class Logger {
       });
 
       if (errors.length > 50) {
-        (errors).shift();
+        errors.shift();
       }
 
       sessionStorage.setItem('app_errors', JSON.stringify(errors));

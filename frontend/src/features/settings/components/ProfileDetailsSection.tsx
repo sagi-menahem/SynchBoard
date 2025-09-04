@@ -11,13 +11,14 @@ import logger from 'shared/utils/logger';
 import styles from '../pages/SettingsPage.module.scss';
 
 interface ProfileDetailsSectionProps {
-    user: UserProfile;
-    onUpdateProfile: (data: UpdateUserProfileRequest) => Promise<void>;
+  user: UserProfile;
+  onUpdateProfile: (data: UpdateUserProfileRequest) => Promise<void>;
 }
 
 const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onUpdateProfile }) => {
   const { t } = useTranslation(['settings', 'common']);
-  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } = useUserProfile();
+  const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } =
+    useUserProfile();
 
   const onSave = async () => {
     try {
@@ -29,7 +30,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
   };
 
   return (
-    <SectionCard 
+    <SectionCard
       title={t('settings:page.profileSectionHeader')}
       variant="default"
       headerActions={

@@ -1,4 +1,3 @@
-
 import { useCallback, useState } from 'react';
 
 import * as boardService from 'features/board/services/boardService';
@@ -28,13 +27,8 @@ export const useBoardDetailsPage = (boardId: number) => {
   } = useBoardDetailsData(boardId);
 
   // Consolidated member actions logic
-  const {
-    handlePromoteMember,
-    handleRemoveMember,
-    handleRightClick,
-    contextMenu,
-    inviteForm,
-  } = useBoardMemberActions(boardId, permissions.currentUserIsAdmin);
+  const { handlePromoteMember, handleRemoveMember, handleRightClick, contextMenu, inviteForm } =
+    useBoardMemberActions(boardId, permissions.currentUserIsAdmin);
 
   // Local UI state
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
@@ -43,12 +37,9 @@ export const useBoardDetailsPage = (boardId: number) => {
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   // Member action handlers with context menu integration
-  const handleInviteSuccess = useCallback(
-    (_newMember: Member) => {
-      setInviteModalOpen(false);
-    },
-    [],
-  );
+  const handleInviteSuccess = useCallback((_newMember: Member) => {
+    setInviteModalOpen(false);
+  }, []);
 
   const handlePromote = useCallback(async () => {
     if (!contextMenu.data) {
@@ -136,25 +127,25 @@ export const useBoardDetailsPage = (boardId: number) => {
     isLoading,
     boardDetails,
     optimisticBoardState: optimisticState,
-    
+
     // User permissions
     userEmail: permissions.userEmail,
     currentUserIsAdmin: permissions.currentUserIsAdmin,
-    
+
     // Member actions
     contextMenu,
     handlePromote,
     handleRemove,
     handleRightClick,
-    
+
     // Invite form
     inviteForm,
     handleInviteSuccess,
-    
+
     // Board editing
     handleUpdateName,
     handleUpdateDescription,
-    
+
     // UI state
     isInviteModalOpen,
     setInviteModalOpen,
@@ -164,7 +155,7 @@ export const useBoardDetailsPage = (boardId: number) => {
     setLeaveConfirmOpen,
     isDeleteConfirmOpen,
     setDeleteConfirmOpen,
-    
+
     // Board management
     handleLeaveBoard,
     handlePictureUpload,

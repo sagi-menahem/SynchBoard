@@ -1,5 +1,11 @@
 import type { BoardActionResponse } from 'features/board/types/BoardObjectTypes';
-import type { Board, BoardDetails, CreateBoardRequest, Member, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
+import type {
+  Board,
+  BoardDetails,
+  CreateBoardRequest,
+  Member,
+  UpdateCanvasSettingsRequest,
+} from 'features/board/types/BoardTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { API_ENDPOINTS } from 'shared/constants';
 import apiClient from 'shared/lib/apiClient';
@@ -54,8 +60,13 @@ export const updateBoardName = async (boardId: number, name: string): Promise<Bo
   return response.data;
 };
 
-export const updateBoardDescription = async (boardId: number, description: string): Promise<Board> => {
-  const response = await apiClient.put<Board>(API_ENDPOINTS.UPDATE_BOARD_DESCRIPTION(boardId), { description });
+export const updateBoardDescription = async (
+  boardId: number,
+  description: string,
+): Promise<Board> => {
+  const response = await apiClient.put<Board>(API_ENDPOINTS.UPDATE_BOARD_DESCRIPTION(boardId), {
+    description,
+  });
   return response.data;
 };
 
@@ -67,11 +78,15 @@ export const uploadBoardPicture = async (boardId: number, file: File): Promise<B
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await apiClient.post<Board>(API_ENDPOINTS.UPLOAD_BOARD_PICTURE(boardId), formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
+  const response = await apiClient.post<Board>(
+    API_ENDPOINTS.UPLOAD_BOARD_PICTURE(boardId),
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     },
-  });
+  );
   return response.data;
 };
 
@@ -81,11 +96,19 @@ export const deleteBoardPicture = async (boardId: number): Promise<Board> => {
 };
 
 export const getBoardMessages = async (boardId: number): Promise<ChatMessageResponse[]> => {
-  const response = await apiClient.get<ChatMessageResponse[]>(API_ENDPOINTS.GET_BOARD_MESSAGES(boardId));
+  const response = await apiClient.get<ChatMessageResponse[]>(
+    API_ENDPOINTS.GET_BOARD_MESSAGES(boardId),
+  );
   return response.data;
 };
 
-export const updateCanvasSettings = async (boardId: number, settings: UpdateCanvasSettingsRequest): Promise<Board> => {
-  const response = await apiClient.put<Board>(API_ENDPOINTS.UPDATE_CANVAS_SETTINGS(boardId), settings);
+export const updateCanvasSettings = async (
+  boardId: number,
+  settings: UpdateCanvasSettingsRequest,
+): Promise<Board> => {
+  const response = await apiClient.put<Board>(
+    API_ENDPOINTS.UPDATE_CANVAS_SETTINGS(boardId),
+    settings,
+  );
   return response.data;
 };

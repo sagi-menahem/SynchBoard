@@ -1,4 +1,3 @@
-
 import type { LoginRequest } from 'features/settings/types/UserTypes';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -22,11 +21,15 @@ export const useLoginForm = () => {
 
       // Validate email
       const emailError = authValidation.validateEmail(email, t);
-      if (emailError) { return emailError; }
+      if (emailError) {
+        return emailError;
+      }
 
       // Validate password
       const passwordError = authValidation.validatePassword(password, t);
-      if (passwordError) { return passwordError; }
+      if (passwordError) {
+        return passwordError;
+      }
 
       return { email, password };
     },

@@ -1,12 +1,13 @@
 package io.github.sagimenahem.synchboard.dto.board;
 
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.*;
-import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -23,8 +24,7 @@ public class CreateBoardRequest {
 
     private List<String> inviteEmails;
 
-    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$",
-            message = "validation.canvasColorPattern")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "validation.canvasColorPattern")
     private String canvasBackgroundColor;
 
     @Min(value = CANVAS_WIDTH_MIN, message = "validation.canvasWidthMin")

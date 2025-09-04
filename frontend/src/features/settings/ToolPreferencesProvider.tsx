@@ -1,6 +1,9 @@
 import React, { createContext, useContext } from 'react';
 
-import { useToolPreferencesAPI, type ToolPreferences } from 'features/settings/hooks/useToolPreferencesAPI';
+import {
+  useToolPreferencesAPI,
+  type ToolPreferences,
+} from 'features/settings/hooks/useToolPreferencesAPI';
 import type { Tool } from 'shared/types/CommonTypes';
 
 export interface ToolPreferencesContextType {
@@ -24,7 +27,11 @@ interface ToolPreferencesProviderProps {
 export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = ({ children }) => {
   const toolPreferencesAPI = useToolPreferencesAPI();
 
-  return <ToolPreferencesContext.Provider value={toolPreferencesAPI}>{children}</ToolPreferencesContext.Provider>;
+  return (
+    <ToolPreferencesContext.Provider value={toolPreferencesAPI}>
+      {children}
+    </ToolPreferencesContext.Provider>
+  );
 };
 
 // Hook to use the context

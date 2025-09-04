@@ -15,7 +15,8 @@ export const UserPreferencesService = {
     try {
       const profile: UserProfile = await userService.getUserProfile();
       return {
-        boardBackgroundSetting: profile.boardBackgroundSetting ?? DEFAULT_BOARD_PREFERENCES.boardBackgroundSetting,
+        boardBackgroundSetting:
+          profile.boardBackgroundSetting ?? DEFAULT_BOARD_PREFERENCES.boardBackgroundSetting,
       };
     } catch (error) {
       logger.error('Failed to fetch user board preferences:', error);

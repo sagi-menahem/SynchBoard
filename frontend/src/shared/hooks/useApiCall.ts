@@ -22,7 +22,7 @@ interface UseApiCallReturn<T, P extends any[]> {
 
 export function useApiCall<T = any, P extends any[] = any[]>(
   apiFunction: (...args: P) => Promise<T>,
-  options: ApiCallOptions<T> = {}
+  options: ApiCallOptions<T> = {},
 ): UseApiCallReturn<T, P> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
@@ -55,13 +55,12 @@ export function useApiCall<T = any, P extends any[] = any[]>(
       } catch (err) {
         const axiosError = err as AxiosError;
         setError(axiosError);
-        
+
         logger.error('API call failed:', axiosError);
 
         if (showErrorToast) {
-          const message = errorMessage || 
-            (axiosError.response?.data as any)?.message || 
-            'An error occurred';
+          const message =
+            errorMessage || (axiosError.response?.data as any)?.message || 'An error occurred';
           toast.error(message);
         }
 
@@ -71,7 +70,15 @@ export function useApiCall<T = any, P extends any[] = any[]>(
         setLoading(false);
       }
     },
-    [apiFunction, onSuccess, onError, successMessage, errorMessage, showSuccessToast, showErrorToast]
+    [
+      apiFunction,
+      onSuccess,
+      onError,
+      successMessage,
+      errorMessage,
+      showSuccessToast,
+      showErrorToast,
+    ],
   );
 
   const reset = useCallback(() => {
@@ -86,9 +93,9 @@ export function useApiCall<T = any, P extends any[] = any[]>(
 // Variant for mutations that don't need to store data
 export function useApiMutation<P extends any[] = any[]>(
   apiFunction: (...args: P) => Promise<any>,
-  options: Omit<ApiCallOptions<any>, 'onSuccess'> & { 
-    onSuccess?: () => void 
-  } = {}
+  options: Omit<ApiCallOptions<any>, 'onSuccess'> & {
+    onSuccess?: () => void;
+  } = {},
 ) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
@@ -119,13 +126,12 @@ export function useApiMutation<P extends any[] = any[]>(
       } catch (err) {
         const axiosError = err as AxiosError;
         setError(axiosError);
-        
+
         logger.error('API mutation failed:', axiosError);
 
         if (showErrorToast) {
-          const message = errorMessage || 
-            (axiosError.response?.data as any)?.message || 
-            'An error occurred';
+          const message =
+            errorMessage || (axiosError.response?.data as any)?.message || 'An error occurred';
           toast.error(message);
         }
 
@@ -135,7 +141,15 @@ export function useApiMutation<P extends any[] = any[]>(
         setLoading(false);
       }
     },
-    [apiFunction, onSuccess, onError, successMessage, errorMessage, showSuccessToast, showErrorToast]
+    [
+      apiFunction,
+      onSuccess,
+      onError,
+      successMessage,
+      errorMessage,
+      showSuccessToast,
+      showErrorToast,
+    ],
   );
 
   return { loading, error, execute };

@@ -4,6 +4,7 @@ import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_LENGTH;
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_MAX_LENGTH;
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_MIN_LENGTH;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
