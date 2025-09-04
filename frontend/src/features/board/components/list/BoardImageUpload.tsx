@@ -19,7 +19,6 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setPreviewUrl(e.target?.result as string);

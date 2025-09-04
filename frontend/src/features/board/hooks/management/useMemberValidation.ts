@@ -19,30 +19,25 @@ export const useMemberValidation = () => {
     async (email: string, existingEmails: string[] = []): Promise<MemberValidationResult> => {
       const trimmedEmail = email.trim().toLowerCase();
 
-      // Check if email is empty
       if (!trimmedEmail) {
         return { isValid: false, error: 'Empty email' };
       }
 
-      // Check email format
       if (!validateEmail(trimmedEmail)) {
         toast.error(t('board:createForm.invalidEmail'));
         return { isValid: false, error: 'Invalid email format' };
       }
 
-      // Check if user is trying to invite themselves
       if (userEmail && trimmedEmail === userEmail.toLowerCase()) {
         toast.error(t('board:createForm.cannotInviteSelf'));
         return { isValid: false, error: 'Cannot invite self' };
       }
 
-      // Check if email is already in the list
       if (existingEmails.includes(trimmedEmail)) {
         toast.error(t('board:createForm.emailAlreadyAdded'));
         return { isValid: false, error: 'Email already added' };
       }
 
-      // Check if user exists in the system
       try {
         const userExists = await checkUserExists(trimmedEmail);
         if (!userExists) {

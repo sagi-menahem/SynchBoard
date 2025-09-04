@@ -15,10 +15,8 @@ export interface UseBoardMemberActionsReturn {
   handleInviteMember: (email: string) => Promise<Member>;
   handleRightClick: (event: React.MouseEvent, member: Member) => void;
 
-  // Context menu state
   contextMenu: ReturnType<typeof useContextMenu<Member>>;
 
-  // Invite form state
   inviteForm: {
     email: string;
     setEmail: (email: string) => void;
@@ -38,11 +36,9 @@ export const useBoardMemberActions = (
   const { userEmail } = useAuth();
   const contextMenu = useContextMenu<Member>();
 
-  // Invite form state
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Member management actions
   const handlePromoteMember = useCallback(
     async (member: Member) => {
       await toastPromise(boardService.promoteMember(boardId, member.email), {
@@ -87,7 +83,6 @@ export const useBoardMemberActions = (
     [currentUserIsAdmin, userEmail, contextMenu],
   );
 
-  // Invite form submit handler
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>, onSuccess: (newMember: Member) => void) => {
       event.preventDefault();

@@ -79,7 +79,6 @@ export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) =>
       };
     } catch (err: unknown) {
       toast.dismiss();
-      // Don't show generic error - specific validation errors are already shown by apiClient
       logger.error('[useCreateBoardForm] Failed to create board:', err);
       return {
         success: false,

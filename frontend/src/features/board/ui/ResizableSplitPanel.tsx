@@ -31,14 +31,11 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Get the user's chosen color for CSS variable
   const getUserChosenColor = useCallback(() => {
     const savedVariable = preferences.boardBackgroundSetting;
-    // This is now a variable name like '--board-bg-midnight-blue'
     if (!savedVariable) {
-      return 'var(--color-surface)'; // Default fallback remains the same
+      return 'var(--color-surface)';
     }
-    // Return the value wrapped in the var() function
     return `var(${savedVariable})`;
   }, [preferences.boardBackgroundSetting]);
 
@@ -66,10 +63,9 @@ const ResizableSplitPanel: React.FC<ResizableSplitPanelProps> = ({
       const minLeftRatio = (minLeftWidth / containerWidth) * 100;
       const minRightRatio = (minRightWidth / containerWidth) * 100;
 
-      // Enforce 30% minimum for canvas (left panel), 70% maximum for chat (right panel)
       const clampedRatio = Math.max(
-        Math.max(minLeftRatio, 30), // Canvas must be at least 30%
-        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio), // Canvas max 70%
+        Math.max(minLeftRatio, 30),
+        Math.min(Math.min(100 - minRightRatio, 70), newSplitRatio),
       );
 
       setSplitRatio(clampedRatio);

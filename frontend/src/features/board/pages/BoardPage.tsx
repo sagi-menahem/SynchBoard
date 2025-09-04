@@ -16,7 +16,7 @@ import {
   Type,
   Undo,
 } from 'lucide-react';
-import React, { useMemo, useRef, useCallback } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
@@ -110,7 +110,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     () => ({
       pageType: 'canvas',
       leftSection: [
-        // COLOR - Always visible
         {
           type: 'custom',
           key: 'color-group',
@@ -122,7 +121,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </ToolGroup>
           ),
         },
-        // SIZE - Always visible (except for download tool)
         ...(tool !== TOOLS.DOWNLOAD
           ? [
               {
@@ -181,7 +179,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </ToolGroup>
           ),
         },
-        // SHAPES - Priority 5
         {
           type: 'custom',
           key: 'shapes-group',
@@ -192,7 +189,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </ToolGroup>
           ),
         },
-        // LINES - Priority 4
         {
           type: 'custom',
           key: 'lines-group',
@@ -203,7 +199,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </ToolGroup>
           ),
         },
-        // TOOLS - Priority 3
         {
           type: 'custom',
           key: 'tools-group',
@@ -237,7 +232,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </ToolGroup>
           ),
         },
-        // HISTORY - Priority 2
         {
           type: 'custom',
           key: 'history-group',
@@ -263,7 +257,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </ToolGroup>
           ),
         },
-        // EXPORT - Priority 1 (hides first)
         {
           type: 'custom',
           key: 'export-group',
@@ -281,7 +274,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           ),
         },
       ],
-      centerSection: [], // Explicitly empty - no center section for board page
+      centerSection: [],
       rightSection: [
         {
           type: 'custom',

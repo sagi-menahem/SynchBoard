@@ -34,7 +34,6 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
 
   const handleImageUpload = (file: File) => {
     setSelectedImage(file);
-    // Create preview URL
     const reader = new FileReader();
     reader.onload = (e) => {
       setPreviewImageUrl(e.target?.result as string);

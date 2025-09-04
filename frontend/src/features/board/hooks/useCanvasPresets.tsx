@@ -10,7 +10,6 @@ interface UseCanvasPresetsOptions {
   };
 }
 
-// Translation key mapping utility
 const getTranslationKey = (sizeKey: string): string => {
   const keyMap: Record<string, string> = {
     WIDESCREEN: 'widescreen',
@@ -24,7 +23,6 @@ const getTranslationKey = (sizeKey: string): string => {
 export const useCanvasPresets = ({ styles }: UseCanvasPresetsOptions = {}) => {
   const { t } = useTranslation(['board']);
 
-  // Detect current canvas size preset or custom
   const detectCurrentSizePreset = (
     boardDetails: BoardDetails,
   ): keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom' => {
@@ -40,7 +38,6 @@ export const useCanvasPresets = ({ styles }: UseCanvasPresetsOptions = {}) => {
     return 'custom';
   };
 
-  // Generate preset options for RadioGroup
   const generatePresetOptions = () => [
     ...CANVAS_CONFIG.PRESET_ORDER.map((size) => {
       const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];

@@ -14,7 +14,6 @@ interface UseCanvasSettingsOptions {
 }
 
 interface UseCanvasSettingsReturn {
-  // State
   isEditing: boolean;
   isUpdating: boolean;
   backgroundColor: string;
@@ -22,7 +21,6 @@ interface UseCanvasSettingsReturn {
   customWidth: number;
   customHeight: number;
 
-  // Actions
   handleStartEditing: () => void;
   handleCancel: () => void;
   handleSave: () => Promise<void>;
@@ -31,7 +29,6 @@ interface UseCanvasSettingsReturn {
   handleCustomWidthChange: (value: string) => void;
   handleCustomHeightChange: (value: string) => void;
 
-  // Computed values
   presetOptions: {
     value: string;
     label: React.ReactElement;
@@ -62,7 +59,6 @@ export const useCanvasSettings = ({
     calculateDimensions,
   } = useCanvasState({ boardDetails, detectCurrentSizePreset });
 
-  // Business logic functions
   const handleStartEditing = () => {
     setIsEditing(true);
   };
@@ -99,7 +95,6 @@ export const useCanvasSettings = ({
   };
 
   return {
-    // State
     isEditing,
     isUpdating,
     backgroundColor,
@@ -107,7 +102,6 @@ export const useCanvasSettings = ({
     customWidth,
     customHeight,
 
-    // Actions
     handleStartEditing,
     handleCancel,
     handleSave,
@@ -116,7 +110,6 @@ export const useCanvasSettings = ({
     handleCustomWidthChange,
     handleCustomHeightChange,
 
-    // Computed values
     presetOptions: generatePresetOptions(),
   };
 };

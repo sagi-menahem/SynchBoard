@@ -45,7 +45,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     },
   });
 
-  // Memoize canvas interactions config to prevent unnecessary re-renders
   const canvasInteractionsConfig = useMemo(
     () => ({
       tool: props.tool,
@@ -83,22 +82,18 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     handleTextCancel,
   } = useCanvasInteractions(canvasInteractionsConfig);
 
-  // Connect the text input request handler
   textInputRequestRef.current = handleTextInputRequest;
 
-  // Memoize canvas configuration to prevent unnecessary re-renders
   const canvasConfig = useMemo(
     () => props.canvasConfig ?? DEFAULT_CANVAS_CONFIG,
     [props.canvasConfig],
   );
 
-  // Memoize computed values
   const canvasWidth = canvasConfig.width;
   const canvasHeight = canvasConfig.height;
-  const padding = 0; // Removed padding for edge-to-edge canvas
+  const padding = 0;
   const hideBackground = false;
 
-  // Memoize style objects to prevent re-renders
   const canvasContainerStyle = useMemo(
     () => ({
       minWidth: `${canvasWidth + padding}px`,
@@ -123,7 +118,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     [canvasConfig.backgroundColor, props.tool, recolorCursor],
   );
 
-  // Memoize computed flags and class names
   const shouldShowLoading = props.isLoading ?? false;
   const containerClassName = useMemo(
     () => `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`,

@@ -260,7 +260,6 @@ export const useDrawingTools = ({
         }
       }
 
-      // Clean up drawing state
       currentPath.current = [];
     },
     [
