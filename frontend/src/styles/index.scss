@@ -1,3 +1,13 @@
+/**
+ * Main SCSS aggregator file for the SynchBoard application.
+ * This file forwards all global style partials in their proper dependency order:
+ * 1. Design tokens - Base design system values
+ * 2. Variables - Semantic color and spacing variables built on tokens
+ * 3. Mixins - Reusable style patterns and utilities
+ * 4. Board backgrounds - Canvas and board-specific styling
+ * 5. Edit buttons - Interactive element styling for board editing
+ */
+
 @forward 'design-tokens';
 @forward 'variables';
 @forward 'mixins';
