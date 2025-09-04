@@ -10,6 +10,7 @@
   @include theme.theme-scrollbar-enhanced;
 }
 
+/* RTL/LTR direction handling for scroll behavior in different text directions */
 [dir='ltr'] .scrollContainer {
   direction: rtl;
 }
@@ -61,6 +62,7 @@
   filter: grayscale(0.3);
 }
 
+/* Pseudo-element overlay for disconnected state with customizable content via CSS variable */
 .scrollContainer.disconnected::after {
   content: var(--drawing-disabled-text, 'Drawing disabled - No connection to server');
   position: absolute;

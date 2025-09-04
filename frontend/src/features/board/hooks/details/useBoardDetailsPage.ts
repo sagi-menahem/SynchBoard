@@ -11,6 +11,19 @@ import logger from 'shared/utils/logger';
 import { useBoardDetailsData } from './useBoardDetailsData';
 import { useBoardMemberActions } from './useBoardMemberActions';
 
+/**
+ * Custom hook that orchestrates all board details page functionality and state management.
+ * This hook combines board data management, member actions, modal states, file operations,
+ * and canvas settings to provide a complete interface for the board details page component.
+ * It handles complex interactions between different aspects of board management including
+ * member promotion/removal, board leaving, picture upload/deletion, and canvas configuration.
+ * The hook serves as the primary controller for the board details page, coordinating between
+ * multiple sub-hooks and providing a unified interface for component interaction.
+ * 
+ * @param {number} boardId - ID of the board to manage and orchestrate all page operations for
+ * @returns Complete board details page management interface containing board state, user permissions,
+ *   member management handlers, modal controls, file operations, and canvas settings functionality
+ */
 export const useBoardDetailsPage = (boardId: number) => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();

@@ -1,3 +1,5 @@
+// --- Light Theme Board Backgrounds ---
+
 :root,
 body[data-theme='light'] {
   --board-bg-default: #f5f5f5;
@@ -17,6 +19,8 @@ body[data-theme='light'] {
   --board-bg-golden-brown: #fff3e0;
 }
 
+// --- Dark Theme Board Backgrounds ---
+
 body[data-theme='dark'] {
   --board-bg-default: #282828;
 
@@ -35,6 +39,8 @@ body[data-theme='dark'] {
   --board-bg-golden-brown: #3d3429;
 }
 
+// --- SASS Variable Mappings ---
+
 $board-bg-default: var(--board-bg-default);
 $board-bg-midnight-blue: var(--board-bg-midnight-blue);
 $board-bg-warm-ember: var(--board-bg-warm-ember);
@@ -44,6 +50,7 @@ $board-bg-ocean-teal: var(--board-bg-ocean-teal);
 $board-bg-crimson-red: var(--board-bg-crimson-red);
 $board-bg-golden-brown: var(--board-bg-golden-brown);
 
+// Applies themed board background based on color key mapping
 @mixin apply-board-background($color-key) {
   @if $color-key =='#282828' {
     background-color: $board-bg-default;

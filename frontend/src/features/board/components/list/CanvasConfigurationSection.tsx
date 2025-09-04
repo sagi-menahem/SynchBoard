@@ -7,18 +7,46 @@ import styles from 'shared/ui/styles/CommonForm.module.scss';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
 
+/**
+ * Props interface for CanvasConfigurationSection component.
+ * Defines the canvas settings state and change handlers for board creation.
+ */
 interface CanvasConfigurationSectionProps {
+  /** Current background color value for the canvas */
   canvasBackgroundColor: string;
+  /** Handler for canvas background color changes */
   onCanvasBackgroundColorChange: (color: string) => void;
+  /** Selected canvas size preset or 'custom' for custom dimensions */
   canvasSize: keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom';
+  /** Handler for canvas size preset selection changes */
   onCanvasSizeChange: (size: keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom') => void;
+  /** Custom width value in pixels when using custom size mode */
   customWidth: number;
+  /** Handler for custom width value changes */
   onCustomWidthChange: (width: number) => void;
+  /** Custom height value in pixels when using custom size mode */
   customHeight: number;
+  /** Handler for custom height value changes */
   onCustomHeightChange: (height: number) => void;
+  /** Whether the configuration controls should be disabled */
   disabled?: boolean;
 }
 
+/**
+ * Configuration section for canvas settings during board creation.
+ * This component provides controls for setting canvas background color and dimensions,
+ * supporting both preset sizes and custom dimensions with validation constraints.
+ * 
+ * @param canvasBackgroundColor - Current background color value for the canvas
+ * @param onCanvasBackgroundColorChange - Handler for canvas background color changes
+ * @param canvasSize - Selected canvas size preset or 'custom' for custom dimensions
+ * @param onCanvasSizeChange - Handler for canvas size preset selection changes
+ * @param customWidth - Custom width value in pixels when using custom size mode
+ * @param onCustomWidthChange - Handler for custom width value changes
+ * @param customHeight - Custom height value in pixels when using custom size mode
+ * @param onCustomHeightChange - Handler for custom height value changes
+ * @param disabled - Whether the configuration controls should be disabled
+ */
 const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
   canvasBackgroundColor,
   onCanvasBackgroundColorChange,

@@ -40,6 +40,7 @@
   @include theme.rounded-medium;
 }
 
+/* Grid view: full-width image with top corners rounded and negative margins to extend to card edges */
 .boardCard.grid .boardCardImage {
   width: 100%;
   height: theme.$board-card-image-height-grid;
@@ -149,6 +150,7 @@
   flex: 1;
 }
 
+/* Center section positioned absolutely with logical positioning and transform centering */
 .centerSection {
   position: absolute;
   inset-inline-start: 50%;

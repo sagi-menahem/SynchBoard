@@ -1,15 +1,22 @@
 @use '@/styles' as theme;
 
+// --- Button Base Styles ---
+
+// Foundation styles applied to all button variants
 .base {
   @include theme.button-base;
   @include theme.button-transition;
   @include theme.button-disabled;
 }
 
+// SVG icon styling within buttons
 .base svg {
   flex-shrink: 0;
 }
 
+// --- Button Variants ---
+
+// Primary action button with prominent styling
 .primary {
   background-color: var(--btn-primary-bg);
   color: var(--btn-primary-text);
@@ -29,6 +36,7 @@
   }
 }
 
+// Destructive action button with warning appearance
 .destructive {
   background-color: var(--btn-destructive-bg);
   border-color: transparent;
@@ -49,6 +57,7 @@
   }
 }
 
+// Secondary button with subtle styling
 .secondary {
   background-color: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
@@ -67,6 +76,7 @@
   }
 }
 
+// Icon-only button for toolbar and compact interfaces
 .icon {
   @include theme.interactive-button;
   background: theme.$tool-button-bg;
@@ -95,6 +105,7 @@
     cursor: not-allowed;
   }
 
+  // Active state for toggle icon buttons
   &.active {
     background: transparent !important;
     color: theme.$text-primary;
@@ -117,6 +128,7 @@
   }
 }
 
+// Call-to-action button with outline style
 .cta {
   background-color: transparent;
   color: var(--btn-cta-bg);
@@ -141,6 +153,7 @@
   }
 }
 
+// Warning button for cautionary actions
 .warning {
   background-color: transparent;
   color: var(--btn-warning-bg);
@@ -165,6 +178,7 @@
   }
 }
 
+// Link-style button that mimics text links
 .link {
   background: none;
   border: none;

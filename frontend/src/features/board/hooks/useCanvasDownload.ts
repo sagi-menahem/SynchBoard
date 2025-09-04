@@ -1,11 +1,26 @@
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { useCallback } from 'react';
 
+/**
+ * Props interface for useCanvasDownload hook.
+ * Defines the configuration needed for canvas download operations.
+ */
 export interface UseCanvasDownloadProps {
+  /** Name of the board to use in the downloaded file name */
   boardName: string;
+  /** Canvas configuration including background color settings */
   canvasConfig?: CanvasConfig;
 }
 
+/**
+ * Custom hook that manages canvas download functionality for board exports.
+ * This hook provides the ability to download the current canvas as a PNG image with
+ * proper background color handling and timestamp-based file naming.
+ * 
+ * @param {string} boardName - Name of the board to use in the downloaded file name
+ * @param {CanvasConfig} [canvasConfig] - Canvas configuration including background color and dimension settings
+ * @returns Object containing the handleDownload function for triggering canvas exports
+ */
 export function useCanvasDownload({ boardName, canvasConfig }: UseCanvasDownloadProps) {
   const handleDownload = useCallback(() => {
     const canvas = document.querySelector('canvas') as HTMLCanvasElement;

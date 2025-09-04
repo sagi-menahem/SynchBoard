@@ -1,13 +1,20 @@
 @use '@/styles' as theme;
 
+// --- Card Base Styles ---
+
+// Foundation card styling
 .card {
   @include theme.card-base;
 }
 
+// --- Card Variants ---
+
+// Standard card with subtle shadow
 .default {
   box-shadow: theme.$shadow-card;
 }
 
+// Elevated card with stronger shadow and hover effects
 .elevated {
   box-shadow: theme.$shadow-lg;
 
@@ -17,11 +24,13 @@
   }
 }
 
+// Outlined card with border instead of shadow
 .outlined {
   box-shadow: none;
   border: theme.$card-border-width solid var(--color-border);
 }
 
+// Dashed border card for empty states
 .empty-state {
   box-shadow: none;
   border: theme.$border-width dashed var(--color-border);
@@ -33,22 +42,31 @@
   }
 }
 
+// --- Padding Variants ---
+
+// No internal padding
 .padding-none {
   padding: 0;
 }
 
+// Small padding for compact cards
 .padding-sm {
   padding: theme.$spacing-4;
 }
 
+// Medium padding (default)
 .padding-md {
   padding: theme.$card-padding;
 }
 
+// Large padding for spacious layouts
 .padding-lg {
   padding: theme.$spacing-8;
 }
 
+// --- Interactive States ---
+
+// Clickable card with hover effects
 .hoverable {
   cursor: pointer;
   @include theme.smooth-transition;

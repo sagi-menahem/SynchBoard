@@ -8,6 +8,13 @@ import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
 
+/**
+ * Language preference section component for user settings interface.
+ * Manages language selection with persistent storage and real-time application localization.
+ * Integrates with i18n system to provide immediate language switching with fallback handling.
+ * Implements proper loading states and error handling for language preference operations.
+ * Synchronizes language preferences between local state, backend storage, and i18n context.
+ */
 const LanguageSection: React.FC = () => {
   const { t, i18n } = useTranslation(['settings', 'common']);
   const { loadUserLanguage, updateLanguagePreference, isLanguageLoaded } = useLanguageSync();
@@ -32,6 +39,7 @@ const LanguageSection: React.FC = () => {
       }
     };
 
+    // Load from backend if not already synchronized, otherwise use i18n current language
     if (!isLanguageLoaded) {
       void initializeLanguagePrefs();
     } else {
@@ -50,6 +58,7 @@ const LanguageSection: React.FC = () => {
     } catch (error) {
       logger.error('Failed to update language preference:', error);
       toast.error(t('common:errors.common.unexpected'));
+      // Revert i18n language to previous state on failure
       void i18n.changeLanguage(currentLanguage);
     }
   };

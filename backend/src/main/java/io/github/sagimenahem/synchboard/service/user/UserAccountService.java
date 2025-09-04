@@ -20,29 +20,52 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+/**
+ * Service for managing user account lifecycle operations. Handles critical operations like account
+ * deletion with proper data cleanup, reference nullification, and file cleanup to maintain data
+ * integrity.
+ * 
+ * @author Sagi Menahem
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserAccountService {
 
+    /** Repository for user data operations */
     private final UserRepository userRepository;
+    /** Repository for board membership management */
     private final GroupMemberRepository groupMemberRepository;
+    /** Repository for user action history */
     private final ActionHistoryRepository actionHistoryRepository;
+    /** Repository for board objects */
     private final BoardObjectRepository boardObjectRepository;
+    /** Repository for board data operations */
     private final GroupBoardRepository groupBoardRepository;
+    /** Repository for chat messages */
     private final MessageRepository messageRepository;
+    /** Service for file storage operations */
     private final FileStorageService fileStorageService;
 
+    /** Service for board membership operations (lazy to avoid circular dependency) */
     @Lazy
     private final BoardMemberService boardMemberService;
 
+    /**
+     * Permanently deletes a user account and all associated data. Performs comprehensive cleanup
+     * including: - Nullifying foreign key references to maintain data integrity - Removing user
+     * from all board memberships - Deleting action history - Cleaning up profile pictures - Final
+     * user record deletion
+     * 
+     * @param userEmail The email of the user account to delete
+     * @throws ResourceNotFoundException if the user is not found
+     */
     @Transactional
     public void deleteAccount(String userEmail) {
         log.warn(CRITICAL_PREFIX + " Account deletion initiated for user: {}", userEmail);
 
-        User user = userRepository
-            .findById(userEmail)
-            .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User user = userRepository.findById(userEmail).orElseThrow(
+                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
         log.info("Starting data cleanup for user: {}", userEmail);
 
@@ -62,17 +85,21 @@ public class UserAccountService {
         log.debug("Nullified message sender references for user: {}", userEmail);
 
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
-        List<Long> boardIds = memberships.stream().map(GroupMember::getBoardGroupId).collect(Collectors.toList());
+        List<Long> boardIds =
+                memberships.stream().map(GroupMember::getBoardGroupId).collect(Collectors.toList());
 
-        log.info("User {} is member of {} boards, initiating board leave process", userEmail, boardIds.size());
+        log.info("User {} is member of {} boards, initiating board leave process", userEmail,
+                boardIds.size());
         boardIds.forEach((boardId) -> {
             log.debug("Processing board leave for user {} from board {}", userEmail, boardId);
             boardMemberService.leaveBoard(boardId, userEmail);
         });
 
         if (StringUtils.hasText(user.getProfilePictureUrl())) {
-            String existingFilename = user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
-            log.debug("Deleting profile picture file: {} for user: {}", existingFilename, userEmail);
+            String existingFilename =
+                    user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
+            log.debug("Deleting profile picture file: {} for user: {}", existingFilename,
+                    userEmail);
             fileStorageService.delete(existingFilename);
         }
 
@@ -81,6 +108,7 @@ public class UserAccountService {
         log.warn(USER_ACCOUNT_DELETED, userEmail);
 
         boolean userStillExists = userRepository.existsById(userEmail);
-        log.info("User deletion verification for {}: still exists in DB = {}", userEmail, userStillExists);
+        log.info("User deletion verification for {}: still exists in DB = {}", userEmail,
+                userStillExists);
     }
 }

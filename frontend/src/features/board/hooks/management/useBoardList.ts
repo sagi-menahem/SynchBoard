@@ -12,6 +12,17 @@ import { APP_ROUTES, WEBSOCKET_TOPICS } from 'shared/constants';
 import { useContextMenu } from 'shared/hooks';
 import logger from 'shared/utils/logger';
 
+/**
+ * Custom hook that manages the board list interface including fetching, filtering, and operations.
+ * This hook provides comprehensive board list management functionality including real-time updates
+ * via WebSocket subscriptions, search filtering, board creation handling, and board leaving operations.
+ * It handles the complex state management for the board list page, including optimistic updates for
+ * specific board changes and full refetches for broader updates. The hook integrates with the context
+ * menu system for board actions and manages modal states for board creation and confirmation dialogs.
+ * 
+ * @returns Object containing board list state, filtered boards, loading states, modal controls,
+ *   search functionality, and handlers for board operations and real-time updates
+ */
 export const useBoardList = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
@@ -41,13 +52,14 @@ export const useBoardList = () => {
     setSearchQuery('');
   }, []);
 
+  // Memoized to prevent unnecessary API calls while maintaining loading state consistency
   const fetchBoards = useCallback(() => {
     if (!boards.length) {
       setIsLoading(true);
     }
 
     const startTime = Date.now();
-    const minDelay = 200;
+    const minDelay = 200; // Minimum delay ensures smooth UI transitions and prevents jarring loading flashes
 
     BoardService.getBoards()
       .then((userBoards: Board[]) => {

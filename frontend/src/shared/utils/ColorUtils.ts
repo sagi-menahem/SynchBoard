@@ -1,3 +1,10 @@
+/**
+ * Converts a hexadecimal color string to RGB values.
+ * Supports both 3-digit shorthand (#FFF) and 6-digit full format (#FFFFFF).
+ * 
+ * @param {string} hex - Hex color string with or without # prefix
+ * @returns {{ r: number; g: number; b: number } | null} RGB object or null if invalid
+ */
 const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
   const result = /^#?([a-f\d]{1,2})([a-f\d]{1,2})([a-f\d]{1,2})$/i.exec(hex);
   if (!result) {
@@ -5,11 +12,12 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
   }
 
   let r, g, b;
-  if (hex.length === 4) {
-    r = parseInt(result[1] + result[1], 16);
-    g = parseInt(result[2] + result[2], 16);
-    b = parseInt(result[3] + result[3], 16);
-  } else {
+  // Handle 3-digit hex shorthand by duplicating each digit (#ABC -> #AABBCC)
+  if (hex.length === 4) { // Length 4 includes the # prefix for 3-digit hex
+    r = parseInt(result[1] + result[1], 16); // A -> AA
+    g = parseInt(result[2] + result[2], 16); // B -> BB
+    b = parseInt(result[3] + result[3], 16); // C -> CC
+  } else { // 6-digit format like #AABBCC
     r = parseInt(result[1], 16);
     g = parseInt(result[2], 16);
     b = parseInt(result[3], 16);
@@ -18,6 +26,14 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
   return { r, g, b };
 };
 
+/**
+ * Calculates the Euclidean distance between two RGB colors in color space.
+ * Used to find the closest matching color from a predefined palette.
+ * 
+ * @param {Object} color1 - First RGB color object
+ * @param {Object} color2 - Second RGB color object
+ * @returns {number} Distance value (lower means more similar colors)
+ */
 const getColorDistance = (
   color1: { r: number; g: number; b: number },
   color2: { r: number; g: number; b: number },
@@ -29,6 +45,14 @@ const getColorDistance = (
   );
 };
 
+/**
+ * Maps a hexadecimal color to a semantic color name for internationalization and accessibility.
+ * First attempts exact match, then finds the closest color from a predefined palette using
+ * Euclidean distance in RGB space. Used for screen readers and UI color descriptions.
+ * 
+ * @param {string} hexColor - Hex color string to identify
+ * @returns {string | null} Semantic color name or null if unable to determine
+ */
 export const getColorName = (hexColor: string): string | null => {
   const colorMap: Record<string, string> = {
     '#FFFFFF': 'white',
@@ -74,10 +98,12 @@ export const getColorName = (hexColor: string): string | null => {
 
   const upperHex = hexColor.toUpperCase();
 
+  // Try exact match first
   if (colorMap[upperHex]) {
     return colorMap[upperHex];
   }
 
+  // Fall back to closest color match using distance calculation
   const inputRgb = hexToRgb(hexColor);
   if (!inputRgb) {
     return null;

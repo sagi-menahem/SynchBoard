@@ -95,6 +95,7 @@
   box-sizing: border-box;
 }
 
+/* Focus state with custom outline using theme colors for accessibility */
 .descriptionTextarea:focus {
   @include theme.input-focus;
   outline: none;
@@ -111,6 +112,7 @@
   cursor: not-allowed;
 }
 
+/* Empty state container for board description with interactive hover feedback */
 .emptyDescription {
   padding: theme.$spacing-6;
   background-color: var(--color-surface-hover);

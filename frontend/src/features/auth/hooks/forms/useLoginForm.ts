@@ -8,6 +8,13 @@ import { useAuth } from '../useAuth';
 
 import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
 
+/**
+ * Hook for managing user login form submission and authentication flow.
+ * Handles email and password validation, authentication API call, token storage,
+ * and automatic navigation to the boards page upon successful login.
+ *
+ * @returns Form submission handler and loading state for login functionality
+ */
 export const useLoginForm = () => {
   const { t } = useTranslation(['auth', 'common']);
   const { login } = useAuth();

@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- View Toggle Layout ---
+
+// Container for toggle button group
 .viewToggle {
   display: flex;
   background: theme.$overlay-white-08;
@@ -8,6 +11,7 @@
   overflow: hidden;
 }
 
+// Individual toggle button styling
 .toggleButton {
   @include theme.interactive-button;
   color: theme.$text-muted;
@@ -29,6 +33,7 @@
     box-shadow: theme.$shadow-glow-md theme.$overlay-primary-10;
   }
 
+  // Separator line between buttons
   &:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -39,10 +44,12 @@
     background: theme.$overlay-white-10;
   }
 
+  // Hide separator for active buttons
   &.active:not(:last-child)::after {
     display: none;
   }
 
+  // Keyboard focus styling
   &:focus-visible {
     outline: 2px solid theme.$overlay-primary-50;
     outline-offset: -2px;

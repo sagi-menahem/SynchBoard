@@ -13,6 +13,15 @@ import type {
   TrianglePayload,
 } from 'features/board/types/BoardObjectTypes';
 
+/**
+ * Converts browser mouse coordinates to canvas-relative pixel coordinates.
+ * This function accounts for the canvas element's position and size within the viewport
+ * to provide accurate coordinate mapping for drawing operations.
+ * 
+ * @param event - Mouse event containing browser-relative coordinates
+ * @param canvas - Target canvas element for coordinate calculation
+ * @returns Canvas-relative coordinates or null if invalid
+ */
 export const getMouseCoordinates = (
   event: MouseEvent,
   canvas: HTMLCanvasElement,
@@ -24,6 +33,15 @@ export const getMouseCoordinates = (
   };
 };
 
+/**
+ * Validates whether a shape's dimensions meet the minimum size requirements.
+ * This prevents creation of shapes that are too small to be useful or visible,
+ * ensuring a better user experience in collaborative drawing.
+ * 
+ * @param width - Normalized width of the shape (0-1)
+ * @param height - Normalized height of the shape (0-1) 
+ * @returns True if the shape meets minimum size requirements
+ */
 export const isShapeSizeValid = (width: number, height: number): boolean => {
   return (
     width > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD ||
@@ -31,17 +49,35 @@ export const isShapeSizeValid = (width: number, height: number): boolean => {
   );
 };
 
+/**
+ * Validates whether a circular shape's radius meets minimum size requirements.
+ * This ensures circles and other radial shapes are large enough to be meaningful
+ * and visible in the collaborative drawing context.
+ * 
+ * @param radius - Normalized radius value (0-1)
+ * @returns True if the radius meets minimum size requirements
+ */
 export const isRadiusValid = (radius: number): boolean => {
   return radius > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD;
 };
 
+/**
+ * Renders a line drawing (brush or eraser) on the target canvas.
+ * This function handles both brush strokes and eraser operations by drawing
+ * connected line segments through a series of points. For eraser tool,
+ * it switches to destination-out composite operation to remove content.
+ * 
+ * @param payload - Line drawing data including points, color, and tool type
+ * @param targetCtx - Canvas rendering context to draw on
+ * @param targetCanvas - Target canvas element for coordinate scaling
+ */
 export const drawLinePayload = (
   payload: LinePayload,
   targetCtx: CanvasRenderingContext2D,
   targetCanvas: HTMLCanvasElement,
 ): void => {
   const { points, color, lineWidth } = payload;
-  if (points.length < 2) {
+  if (points.length < 2) { // Need at least 2 points to draw a line segment
     return;
   }
 
@@ -62,6 +98,16 @@ export const drawLinePayload = (
   targetCtx.stroke();
 };
 
+/**
+ * Renders a rectangular shape on the target canvas.
+ * Supports both filled and outlined rectangles, handling coordinate
+ * conversion from normalized values to canvas pixels. Used for both
+ * rectangle and square drawing tools.
+ * 
+ * @param payload - Rectangle drawing data including dimensions, colors, and stroke width
+ * @param targetCtx - Canvas rendering context to draw on
+ * @param targetCanvas - Target canvas element for coordinate scaling
+ */
 export const drawRectanglePayload = (
   payload: RectanglePayload,
   targetCtx: CanvasRenderingContext2D,
@@ -84,6 +130,16 @@ export const drawRectanglePayload = (
   targetCtx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 };
 
+/**
+ * Renders a circular shape on the target canvas.
+ * Creates perfect circles with optional fill and stroke, converting normalized
+ * coordinates and radius to canvas pixels. The radius is scaled relative to
+ * canvas width for consistent proportions across different canvas sizes.
+ * 
+ * @param payload - Circle drawing data including center point, radius, colors, and stroke width
+ * @param targetCtx - Canvas rendering context to draw on  
+ * @param targetCanvas - Target canvas element for coordinate scaling
+ */
 export const drawCirclePayload = (
   payload: CirclePayload,
   targetCtx: CanvasRenderingContext2D,
@@ -108,6 +164,16 @@ export const drawCirclePayload = (
   targetCtx.stroke();
 };
 
+/**
+ * Renders a triangle shape on the canvas using three specific vertex coordinates.
+ * Creates a triangle by connecting three points with normalized coordinates, supporting
+ * both fill and stroke styling. Unlike regular polygons, this allows for arbitrary
+ * triangle shapes defined by explicit vertex positions.
+ * 
+ * @param payload - Triangle drawing data including three vertex coordinates, colors, and stroke width
+ * @param targetCtx - Canvas 2D rendering context for drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling calculations
+ */
 export const drawTrianglePayload = (
   payload: TrianglePayload,
   targetCtx: CanvasRenderingContext2D,
@@ -131,6 +197,16 @@ export const drawTrianglePayload = (
   targetCtx.stroke();
 };
 
+/**
+ * Renders a regular polygon (pentagon, hexagon, etc.) on the canvas using normalized coordinates.
+ * Creates a polygon with the specified number of sides, centered at the given position.
+ * All vertices are calculated mathematically to form a perfect regular polygon with
+ * consistent angles and side lengths.
+ * 
+ * @param payload - Polygon drawing data including center position, radius, side count, colors, and stroke width
+ * @param targetCtx - Canvas 2D rendering context for drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling calculations
+ */
 export const drawPolygonPayload = (
   payload: PolygonPayload,
   targetCtx: CanvasRenderingContext2D,
@@ -167,6 +243,16 @@ export const drawPolygonPayload = (
   targetCtx.stroke();
 };
 
+/**
+ * Renders text within a bounded text box on the canvas with automatic word wrapping.
+ * Handles text overflow with ellipsis, maintains proper line spacing, and clips content
+ * to fit within the specified bounding box. Uses normalized coordinates for consistent
+ * rendering across different canvas sizes.
+ * 
+ * @param payload - Text rendering data including position, dimensions, text content, font size, and color
+ * @param targetCtx - Canvas 2D rendering context for text drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling and text measurement
+ */
 export const drawTextPayload = (
   payload: TextBoxPayload,
   targetCtx: CanvasRenderingContext2D,
@@ -189,7 +275,7 @@ export const drawTextPayload = (
   targetCtx.rect(pixelX, pixelY, pixelWidth, pixelHeight);
   targetCtx.clip();
 
-  const lineHeight = fontSize * 1.2;
+  const lineHeight = fontSize * 1.2; // 1.2x multiplier provides readable spacing calculation between text lines
 
   const words = text.split(' ');
   const lines: string[] = [];
@@ -217,7 +303,7 @@ export const drawTextPayload = (
       const overflowText = '...';
       const overflowY = pixelY + pixelHeight - fontSize;
 
-      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4);
+      targetCtx.clearRect(pixelX, overflowY - 2, pixelWidth, fontSize + 4); // 2px padding provides visual separation purpose above/below text
 
       targetCtx.fillText(overflowText, pixelX, overflowY);
       break;
@@ -230,6 +316,15 @@ export const drawTextPayload = (
   targetCtx.restore();
 };
 
+/**
+ * Renders a five-pointed star shape on the canvas using normalized coordinates.
+ * Creates a star with alternating outer and inner radii to form the classic star pattern.
+ * The inner radius is automatically calculated as 40% of the outer radius for proper proportions.
+ * 
+ * @param payload - Star drawing data including center position, radius, colors, and stroke width
+ * @param targetCtx - Canvas 2D rendering context for drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling calculations
+ */
 export const drawStarPayload = (
   payload: PolygonPayload,
   targetCtx: CanvasRenderingContext2D,
@@ -241,8 +336,8 @@ export const drawStarPayload = (
   const centerX = x * targetCanvas.width;
   const centerY = y * targetCanvas.height;
   const outerRadius = radius * radiusScale;
-  const innerRadius = outerRadius * 0.4;
-  const points = 5;
+  const innerRadius = outerRadius * 0.4; // 40% inner radius creates classic star proportions
+  const points = 5; // Five-pointed star is the standard star shape
 
   targetCtx.beginPath();
   for (let i = 0; i < points * 2; i++) {
@@ -269,6 +364,15 @@ export const drawStarPayload = (
   targetCtx.stroke();
 };
 
+/**
+ * Renders a straight line between two points on the canvas using normalized coordinates.
+ * Supports optional dash patterns for dotted or dashed line styles. Properly manages
+ * line dash state to prevent affecting subsequent drawing operations.
+ * 
+ * @param payload - Line drawing data including start/end points, color, stroke width, and optional dash pattern
+ * @param targetCtx - Canvas 2D rendering context for drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling calculations
+ */
 export const drawStraightLinePayload = (
   payload: StraightLinePayload,
   targetCtx: CanvasRenderingContext2D,
@@ -293,6 +397,16 @@ export const drawStraightLinePayload = (
   }
 };
 
+/**
+ * Renders an arrow from one point to another with a proportional arrowhead.
+ * Calculates the arrow angle and dimensions based on line length and stroke width,
+ * creating a visually balanced arrow with a filled triangular arrowhead.
+ * The arrowhead size adapts to the line thickness for consistent appearance.
+ * 
+ * @param payload - Arrow drawing data including start/end points, color, and stroke width
+ * @param targetCtx - Canvas 2D rendering context for drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling calculations
+ */
 export const drawArrowPayload = (
   payload: ArrowPayload,
   targetCtx: CanvasRenderingContext2D,
@@ -305,13 +419,18 @@ export const drawArrowPayload = (
   const endX = x2 * targetCanvas.width;
   const endY = y2 * targetCanvas.height;
 
+  // Calculate arrow direction and length from line endpoints
   const angle = Math.atan2(endY - startY, endX - startX);
   const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
+  // Scale arrowhead proportionally to stroke width with min/max bounds for visual balance
   const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
+  // Width is 60% of length for proper arrowhead proportions
   const arrowWidth = arrowLength * 0.6;
+  // Calculate half-angle of arrowhead triangle using inverse tangent
   const arrowAngle = Math.atan(arrowWidth / arrowLength);
 
+  // Adjust line endpoint to prevent overlap with arrowhead (30% overlap for visual continuity)
   const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle);
   const lineEndY = endY - arrowLength * 0.3 * Math.sin(angle);
 
@@ -339,10 +458,18 @@ export const drawArrowPayload = (
   targetCtx.fill();
 
   targetCtx.strokeStyle = color;
-  targetCtx.lineWidth = Math.max(1, strokeWidth * 0.5);
+  targetCtx.lineWidth = Math.max(1, strokeWidth * 0.5); // Arrowhead outline is 50% of main stroke width, minimum 1px
   targetCtx.stroke();
 };
 
+/**
+ * Initializes and configures a canvas 2D rendering context with optimal settings.
+ * Sets up default line styles and enables frequent reading optimization for better
+ * performance in collaborative drawing scenarios where canvas data is frequently accessed.
+ * 
+ * @param canvas - Canvas element to initialize, or null for safety
+ * @returns Configured 2D rendering context or null if canvas is invalid
+ */
 export const setupCanvasContext = (
   canvas: HTMLCanvasElement | null,
 ): CanvasRenderingContext2D | null => {
@@ -375,6 +502,16 @@ const getTransactionOpacity = (payload: EnhancedActionPayload): number => {
   }
 };
 
+/**
+ * Replays a drawing action on the canvas with appropriate opacity based on transaction status.
+ * Routes the drawing operation to the correct rendering function based on tool type,
+ * applying visual feedback for pending, failed, or confirmed actions through opacity changes.
+ * Essential for collaborative drawing synchronization and action state visualization.
+ * 
+ * @param payload - Drawing action data containing tool type and rendering parameters
+ * @param targetCtx - Canvas 2D rendering context for drawing operations
+ * @param targetCanvas - Canvas element for coordinate scaling calculations
+ */
 export const replayDrawAction = (
   payload: ActionPayload,
   targetCtx: CanvasRenderingContext2D,
@@ -411,6 +548,16 @@ export const replayDrawAction = (
   targetCtx.globalCompositeOperation = CANVAS_CONFIG.COMPOSITE_OPERATIONS.DRAW;
 };
 
+/**
+ * Optimizes drawing point arrays by reducing density while preserving shape quality.
+ * Uses decimation to reduce the number of points in brush strokes, improving performance
+ * for long drawing paths. Always preserves start and end points to maintain stroke integrity.
+ * Applies configurable thresholds to avoid over-optimization of short strokes.
+ * 
+ * @param points - Array of drawing points to optimize
+ * @param enabled - Whether optimization is enabled (defaults to configuration setting)
+ * @returns Optimized point array with reduced density but preserved shape
+ */
 export const optimizeDrawingPoints = (
   points: Point[],
   enabled: boolean = CANVAS_CONFIG.OPTIMIZATION.ENABLED,
@@ -422,20 +569,22 @@ export const optimizeDrawingPoints = (
     return points;
   }
 
-  if (points.length <= 3) {
+  if (points.length <= 3) { // Short strokes don't benefit from optimization
     return points;
   }
 
+  // Apply decimation while preserving critical points
   const optimizedPoints = points.filter((_, index) => {
     if (PRESERVE_ENDPOINTS && (index === 0 || index === points.length - 1)) {
-      return true;
+      return true; // Always keep start and end points for stroke integrity
     }
 
-    return index % DECIMATION_FACTOR === 0;
+    return index % DECIMATION_FACTOR === 0; // Keep every Nth point for density reduction
   });
 
+  // Fallback for over-aggressive optimization
   if (optimizedPoints.length < 2 && points.length >= 2) {
-    return [points[0], points[points.length - 1]];
+    return [points[0], points[points.length - 1]]; // Minimum viable stroke with start and end points only
   }
 
   return optimizedPoints;
@@ -447,6 +596,16 @@ export interface CanvasPresetInfo {
   isCustom: boolean;
 }
 
+/**
+ * Identifies canvas size preset information based on dimensions.
+ * Matches provided width and height against known canvas size presets to determine
+ * if the canvas uses a standard size (A4, Letter, etc.) or custom dimensions.
+ * Returns preset name, aspect ratio, and custom status for UI display purposes.
+ * 
+ * @param width - Canvas width in pixels
+ * @param height - Canvas height in pixels
+ * @returns Preset information including name, ratio, and custom status
+ */
 export const getCanvasPresetInfo = (width: number, height: number): CanvasPresetInfo => {
   for (const [key, preset] of Object.entries(CANVAS_CONFIG.CANVAS_SIZE_PRESETS)) {
     if (preset.width === width && preset.height === height) {
@@ -465,6 +624,17 @@ export const getCanvasPresetInfo = (width: number, height: number): CanvasPreset
   };
 };
 
+/**
+ * Formats canvas resolution for display in user interface with localized preset names.
+ * Combines preset information with actual dimensions to create user-friendly display strings.
+ * Handles both standard presets (with aspect ratios) and custom sizes, using the provided
+ * translation function to localize preset names for international users.
+ * 
+ * @param width - Canvas width in pixels
+ * @param height - Canvas height in pixels
+ * @param t - Translation function for localizing preset names
+ * @returns Formatted resolution string for UI display
+ */
 export const formatCanvasResolution = (
   width: number,
   height: number,

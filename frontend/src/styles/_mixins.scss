@@ -1,41 +1,90 @@
 @use 'design-tokens' as theme;
 @use 'variables' as vars;
 
+/**
+ * Centers content both horizontally and vertically using flexbox.
+ * @example
+ *   .centered-content {
+ *     @include flex-center;
+ *   }
+ */
 @mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/**
+ * Distributes content with space between using flexbox alignment.
+ * @example
+ *   .navbar {
+ *     @include flex-between;
+ *   }
+ */
 @mixin flex-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/**
+ * Creates a vertical flex container.
+ * @example
+ *   .sidebar {
+ *     @include flex-column;
+ *   }
+ */
 @mixin flex-column {
   display: flex;
   flex-direction: column;
 }
 
+/**
+ * Creates a vertical flex container with centered items.
+ * @example
+ *   .modal-content {
+ *     @include flex-column-center;
+ *   }
+ */
 @mixin flex-column-center {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/**
+ * Aligns flex items to the end of the container.
+ * @example
+ *   .button-group {
+ *     @include flex-end;
+ *   }
+ */
 @mixin flex-end {
   display: flex;
   justify-content: end;
   align-items: center;
 }
 
+/**
+ * Aligns flex items to the start of the container.
+ * @example
+ *   .form-row {
+ *     @include flex-start;
+ *   }
+ */
 @mixin flex-start {
   display: flex;
   justify-content: start;
   align-items: center;
 }
 
+/**
+ * Base styling for interactive button elements without visual styling.
+ * @example
+ *   .icon-button {
+ *     @include interactive-button;
+ *   }
+ */
 @mixin interactive-button {
   cursor: pointer;
   transition: all theme.$transition-medium;
@@ -45,6 +94,13 @@
   font-family: inherit;
 }
 
+/**
+ * Adds subtle lift animation on hover for enhanced button interactivity.
+ * @example
+ *   .primary-button {
+ *     @include button-hover-lift;
+ *   }
+ */
 @mixin button-hover-lift {
   &:hover:not(:disabled) {
     transform: translateY(theme.$transform-translate-y-xs);
@@ -52,6 +108,13 @@
   }
 }
 
+/**
+ * Applies disabled state styling for buttons.
+ * @example
+ *   .form-button {
+ *     @include button-disabled;
+ *   }
+ */
 @mixin button-disabled {
   &:disabled {
     cursor: not-allowed;
@@ -60,6 +123,14 @@
   }
 }
 
+/**
+ * Foundation button styling with consistent appearance and behavior.
+ * @example
+ *   .custom-button {
+ *     @include button-base;
+ *     background-color: var(--color-primary);
+ *   }
+ */
 @mixin button-base {
   display: inline-flex;
   align-items: center;
@@ -78,12 +149,27 @@
   min-height: theme.$button-height-md;
 }
 
+/**
+ * Container for grouped buttons with consistent spacing.
+ * @example
+ *   .action-buttons {
+ *     @include button-group;
+ *   }
+ */
 @mixin button-group {
   display: flex;
   gap: theme.$spacing-3;
   justify-content: end;
 }
 
+/**
+ * Foundation input styling with theming and autofill handling.
+ * @example
+ *   .text-input {
+ *     @include input-base;
+ *     @include input-focus;
+ *   }
+ */
 @mixin input-base {
   width: 100%;
   padding: theme.$input-padding;
@@ -117,6 +203,14 @@
   }
 }
 
+/**
+ * Focus state styling for input elements with primary color border.
+ * @example
+ *   .search-input {
+ *     @include input-base;
+ *     @include input-focus;
+ *   }
+ */
 @mixin input-focus {
   &:focus {
     outline: none;
@@ -125,6 +219,13 @@
   }
 }
 
+/**
+ * Foundation textarea styling with vertical resize capability.
+ * @example
+ *   .comment-textarea {
+ *     @include textarea-base;
+ *   }
+ */
 @mixin textarea-base {
   width: 100%;
   padding: theme.$spacing-3;
@@ -137,6 +238,13 @@
   box-sizing: border-box;
 }
 
+/**
+ * Foundation card styling with elevated background and border.
+ * @example
+ *   .info-card {
+ *     @include card-base;
+ *   }
+ */
 @mixin card-base {
   background-color: var(--color-surface-elevated);
   border: theme.$card-border-width solid var(--color-border);
@@ -144,6 +252,14 @@
   padding: theme.$card-padding;
 }
 
+/**
+ * Interactive hover effect for cards with lift animation and background change.
+ * @example
+ *   .board-card {
+ *     @include card-base;
+ *     @include card-hover-effect;
+ *   }
+ */
 @mixin card-hover-effect {
   transition:
     background-color theme.$transition-normal,
@@ -157,6 +273,13 @@
   }
 }
 
+/**
+ * Header layout for sections with space-between alignment.
+ * @example
+ *   .dashboard-section {
+ *     @include section-header;
+ *   }
+ */
 @mixin section-header {
   display: flex;
   justify-content: space-between;
@@ -164,12 +287,26 @@
   margin-bottom: theme.$spacing-6;
 }
 
+/**
+ * Foundation form container with vertical layout and consistent spacing.
+ * @example
+ *   .registration-form {
+ *     @include form-base;
+ *   }
+ */
 @mixin form-base {
   display: flex;
   flex-direction: column;
   gap: theme.$spacing-6;
 }
 
+/**
+ * Individual form field container with label and input spacing.
+ * @example
+ *   .input-group {
+ *     @include form-field;
+ *   }
+ */
 @mixin form-field {
   display: flex;
   flex-direction: column;
@@ -177,6 +314,13 @@
   margin-bottom: theme.$spacing-4;
 }
 
+/**
+ * Form label styling with consistent typography and spacing.
+ * @example
+ *   .field-label {
+ *     @include form-label;
+ *   }
+ */
 @mixin form-label {
   display: flex;
   align-items: center;
@@ -187,6 +331,13 @@
   font-size: theme.$font-size-sm;
 }
 
+/**
+ * Form action button container with border separator.
+ * @example
+ *   .form-footer {
+ *     @include form-actions;
+ *   }
+ */
 @mixin form-actions {
   display: flex;
   gap: theme.$spacing-3;
@@ -195,6 +346,13 @@
   border-block-start: theme.$border-width solid var(--color-border);
 }
 
+/**
+ * Error message styling with red background and border.
+ * @example
+ *   .validation-error {
+ *     @include error-message;
+ *   }
+ */
 @mixin error-message {
   background-color: theme.$color-error-light;
   border: theme.$border-width solid theme.$color-error;
@@ -204,6 +362,13 @@
   font-size: theme.$font-size-sm;
 }
 
+/**
+ * Success message styling with green background and border.
+ * @example
+ *   .form-success {
+ *     @include success-message;
+ *   }
+ */
 @mixin success-message {
   background-color: theme.$color-success-light;
   border: theme.$border-width solid theme.$color-success;
@@ -213,22 +378,57 @@
   font-size: theme.$font-size-sm;
 }
 
+/**
+ * Applies small border radius for subtle rounding.
+ * @example
+ *   .tag {
+ *     @include rounded-small;
+ *   }
+ */
 @mixin rounded-small {
   border-radius: theme.$border-radius-sm;
 }
 
+/**
+ * Applies medium border radius for moderate rounding.
+ * @example
+ *   .button {
+ *     @include rounded-medium;
+ *   }
+ */
 @mixin rounded-medium {
   border-radius: theme.$border-radius-md;
 }
 
+/**
+ * Applies large border radius for pronounced rounding.
+ * @example
+ *   .modal {
+ *     @include rounded-large;
+ *   }
+ */
 @mixin rounded-large {
   border-radius: theme.$border-radius-lg;
 }
 
+/**
+ * Creates a circular shape with full border radius.
+ * @example
+ *   .avatar {
+ *     @include rounded-circle;
+ *   }
+ */
 @mixin rounded-circle {
   border-radius: theme.$border-radius-full;
 }
 
+/**
+ * Creates a full overlay positioned absolutely within parent.
+ * @example
+ *   .image-overlay {
+ *     @include overlay-full;
+ *   }
+ */
 @mixin overlay-full {
   position: absolute;
   top: theme.$spacing-0;
@@ -237,6 +437,13 @@
   bottom: theme.$spacing-0;
 }
 
+/**
+ * Creates a fixed overlay covering the entire viewport.
+ * @example
+ *   .modal-backdrop {
+ *     @include fixed-overlay;
+ *   }
+ */
 @mixin fixed-overlay {
   position: fixed;
   top: theme.$spacing-0;
@@ -246,6 +453,13 @@
   z-index: theme.$z-index-tooltip;
 }
 
+/**
+ * Complete modal backdrop with centering and dark background.
+ * @example
+ *   .modal-container {
+ *     @include modal-backdrop;
+ *   }
+ */
 @mixin modal-backdrop {
   @include fixed-overlay;
   @include flex-center;
@@ -254,6 +468,13 @@
   overflow-y: auto;
 }
 
+/**
+ * Custom scrollbar styling that adapts to theme colors.
+ * @example
+ *   .content-area {
+ *     @include theme-scrollbar;
+ *   }
+ */
 @mixin theme-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
@@ -282,6 +503,13 @@
   }
 }
 
+/**
+ * Enhanced scrollbar with borders and shadow effects.
+ * @example
+ *   .data-table {
+ *     @include theme-scrollbar-enhanced;
+ *   }
+ */
 @mixin theme-scrollbar-enhanced {
   scrollbar-width: auto;
   scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
@@ -319,14 +547,35 @@
   }
 }
 
+/**
+ * Applies smooth transition for all properties.
+ * @example
+ *   .hover-element {
+ *     @include smooth-transition;
+ *   }
+ */
 @mixin smooth-transition {
   transition: theme.$transition-all;
 }
 
+/**
+ * Medium-duration transition optimized for button interactions.
+ * @example
+ *   .interactive-button {
+ *     @include button-transition;
+ *   }
+ */
 @mixin button-transition {
   transition: all theme.$transition-medium;
 }
 
+/**
+ * Complex transition for hover effects with different timing.
+ * @example
+ *   .card-hover {
+ *     @include hover-transition;
+ *   }
+ */
 @mixin hover-transition {
   transition:
     background-color theme.$transition-normal,
@@ -334,22 +583,57 @@
     box-shadow theme.$transition-normal ease;
 }
 
+/**
+ * Applies light shadow effect for subtle elevation.
+ * @example
+ *   .floating-button {
+ *     @include shadow-light;
+ *   }
+ */
 @mixin shadow-light {
   box-shadow: theme.$shadow-button;
 }
 
+/**
+ * Applies medium shadow effect for moderate elevation.
+ * @example
+ *   .card {
+ *     @include shadow-medium;
+ *   }
+ */
 @mixin shadow-medium {
   box-shadow: theme.$shadow-card;
 }
 
+/**
+ * Applies heavy shadow effect for strong elevation.
+ * @example
+ *   .modal {
+ *     @include shadow-heavy;
+ *   }
+ */
 @mixin shadow-heavy {
   box-shadow: theme.$shadow-xl;
 }
 
+/**
+ * Applies focus ring shadow with primary color.
+ * @example
+ *   .input:focus {
+ *     @include focus-shadow;
+ *   }
+ */
 @mixin focus-shadow {
   box-shadow: theme.$shadow-focus;
 }
 
+/**
+ * Styling for radio button option containers.
+ * @example
+ *   .radio-choice {
+ *     @include radio-option;
+ *   }
+ */
 @mixin radio-option {
   display: flex;
   align-items: center;
@@ -360,6 +644,13 @@
   padding: theme.$spacing-1 0;
 }
 
+/**
+ * Styling for radio input elements with theme accent color.
+ * @example
+ *   input[type='radio'] {
+ *     @include radio-input;
+ *   }
+ */
 @mixin radio-input {
   width: theme.$spacing-4;
   height: theme.$spacing-4;
@@ -367,12 +658,27 @@
   cursor: pointer;
 }
 
+/**
+ * Truncates text with ellipsis when it overflows.
+ * @example
+ *   .truncated-title {
+ *     @include text-ellipsis;
+ *   }
+ */
 @mixin text-ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/**
+ * Clamps text to specified number of lines with ellipsis.
+ * @param {number} $lines - Number of lines to display before clamping
+ * @example
+ *   .description {
+ *     @include text-clamp(3);
+ *   }
+ */
 @mixin text-clamp($lines: 2) {
   display: -webkit-box;
   -webkit-line-clamp: $lines;
@@ -381,6 +687,13 @@
   overflow: hidden;
 }
 
+/**
+ * Base spinner animation styling with rotating border.
+ * @example
+ *   .loading-spinner {
+ *     @include spinner-base;
+ *   }
+ */
 @mixin spinner-base {
   border: theme.$border-width-thick solid rgba(theme.$color-white, theme.$opacity-10);
   border-top: theme.$border-width-thick solid theme.$color-primary;
@@ -398,6 +711,13 @@
   }
 }
 
+/**
+ * Hides content visually while keeping it accessible to screen readers.
+ * @example
+ *   .sr-only {
+ *     @include visually-hidden;
+ *   }
+ */
 @mixin visually-hidden {
   position: absolute !important;
   width: theme.$spacing-px !important;
@@ -410,6 +730,13 @@
   border: theme.$spacing-0 !important;
 }
 
+/**
+ * Clearfix hack for containing floated elements.
+ * @example
+ *   .float-container {
+ *     @include clearfix;
+ *   }
+ */
 @mixin clearfix {
   &::after {
     content: '';

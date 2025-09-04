@@ -1,3 +1,10 @@
+/**
+ * Style and theming constants for the SynchBoard application.
+ * Defines background color options for chat/board interfaces with internationalization keys,
+ * CSS custom property references, and color values. Used to provide users with customizable
+ * visual themes that integrate with the application's design system.
+ */
+
 export const CHAT_BACKGROUND_OPTIONS = [
   {
     nameKey: 'backgroundColors.default',

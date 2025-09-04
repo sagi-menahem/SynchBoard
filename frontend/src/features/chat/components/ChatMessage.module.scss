@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+/* Main message container with slide-in animation for new messages */
 .messageContainer {
   width: 100%;
   padding: theme.$spacing-1 16px;
@@ -7,6 +8,7 @@
   box-sizing: border-box;
   animation: messageSlideIn theme.$transition-slow ease-out;
 
+  /* Grouped consecutive messages from same user with reduced spacing */
   &.grouped {
     margin-bottom: 4px;
 
@@ -36,6 +38,7 @@
   justify-content: flex-start;
 }
 
+/* Rounded message bubble with word wrapping and responsive width */
 .messageBubble {
   padding: theme.$spacing-3;
   border-radius: 20px;
@@ -56,6 +59,7 @@
   flex: 1;
 }
 
+/* User's own messages styled with primary color and right alignment */
 .myMessage .messageBubble {
   background: theme.$primary;
   color: #ffffff;
@@ -190,6 +194,7 @@
   color: theme.$error-color-alt !important;
 }
 
+/* Smooth slide-in animation for new messages appearing in chat */
 @keyframes messageSlideIn {
   from {
     opacity: 0;
@@ -228,6 +233,7 @@
   }
 }
 
+/* Accessibility: disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .messageContainer {
     animation: none;
@@ -242,6 +248,7 @@
   }
 }
 
+/* Message status indicators for real-time delivery feedback */
 .pending {
   .messageBubble {
     border-color: theme.$status-pending-border !important;

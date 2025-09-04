@@ -1,6 +1,7 @@
 @use './design-tokens' as theme;
 @use './mixins' as *;
 
+// Specialized button styling for board editing controls with compact sizing
 @mixin edit-button {
   @include button-base;
 

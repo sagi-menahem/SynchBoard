@@ -13,13 +13,20 @@ class Logger {
   private isDevelopment: boolean;
   private isProduction: boolean;
   private logHistory: LogEntry[] = [];
-  private maxHistorySize = 100;
+  private maxHistorySize = 100; // Balance memory usage with debugging capability
 
   constructor() {
     this.isDevelopment = import.meta.env.DEV;
     this.isProduction = import.meta.env.PROD;
   }
 
+  /**
+   * Logs debug-level messages. Only outputs to console in development mode.
+   * Used for detailed troubleshooting information that shouldn't appear in production.
+   * 
+   * @param {string} message - The debug message to log
+   * @param {...unknown[]} data - Additional data to include with the message
+   */
   debug(message: string, ...data: unknown[]): void {
     if (this.isDevelopment) {
       console.log(`[DEBUG] ${message}`, ...data);
@@ -27,6 +34,13 @@ class Logger {
     this.addToHistory('debug', message, data);
   }
 
+  /**
+   * Logs informational messages. Only outputs to console in development mode.
+   * Used for general application flow and state information.
+   * 
+   * @param {string} message - The informational message to log
+   * @param {...unknown[]} data - Additional data to include with the message
+   */
   info(message: string, ...data: unknown[]): void {
     if (this.isDevelopment) {
       console.info(`[INFO] ${message}`, ...data);
@@ -34,11 +48,27 @@ class Logger {
     this.addToHistory('info', message, data);
   }
 
+  /**
+   * Logs warning messages. Always outputs to console in both development and production.
+   * Used for non-critical issues that don't break functionality but should be noted.
+   * 
+   * @param {string} message - The warning message to log
+   * @param {...unknown[]} data - Additional data to include with the message
+   */
   warn(message: string, ...data: unknown[]): void {
     console.warn(`[WARN] ${message}`, ...data);
     this.addToHistory('warn', message, data);
   }
 
+  /**
+   * Logs error messages with enhanced error handling and production reporting.
+   * Always outputs to console and stores in session storage for production analysis.
+   * In production, errors are queued for potential external service reporting.
+   * 
+   * @param {string} message - The error message to log
+   * @param {Error | unknown} [error] - Optional error object or additional error data
+   * @param {...unknown[]} data - Additional data to include with the message
+   */
   error(message: string, error?: Error | unknown, ...data: unknown[]): void {
     const errorMessage = `[ERROR] ${message}`;
 
@@ -111,10 +141,20 @@ class Logger {
     }
   }
 
+  /**
+   * Retrieves a copy of the log history for debugging or analysis purposes.
+   * Returns a new array to prevent external modification of internal state.
+   * 
+   * @returns {LogEntry[]} Array of recent log entries
+   */
   getHistory(): LogEntry[] {
     return [...this.logHistory];
   }
 
+  /**
+   * Clears the internal log history buffer.
+   * Used to reset logging state or free memory during long-running sessions.
+   */
   clearHistory(): void {
     this.logHistory = [];
   }
@@ -124,7 +164,7 @@ class Logger {
       level,
       message,
       timestamp: new Date().toISOString(),
-      data: data && data.length > 0 ? data : undefined,
+      data: data && data.length > 0 ? data : undefined, // Only store data if present to minimize memory
     };
 
     this.logHistory.unshift(entry);
@@ -160,7 +200,7 @@ class Logger {
         url: window.location.href,
       });
 
-      if (errors.length > 50) {
+      if (errors.length > 50) { // Prevent session storage bloat in production
         errors.shift();
       }
 

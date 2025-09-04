@@ -6,15 +6,37 @@ import { Button, Input, Textarea } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import logger from 'shared/utils/logger';
 
+/**
+ * Props interface for EditFieldForm component.
+ * Defines the form configuration and event handlers for field editing operations.
+ */
 interface EditFieldFormProps {
+  /** Title displayed in the modal header */
   title: string;
+  /** Label text for the input field */
   label: string;
+  /** Current value to populate the input field */
   initialValue: string;
+  /** Type of input control to render - single line or multi-line text */
   inputType?: 'input' | 'textarea';
+  /** Handler for saving the updated field value with async validation */
   onSave: (value: string) => Promise<void>;
+  /** Handler to close the edit form modal */
   onClose: () => void;
 }
 
+/**
+ * Generic form component for editing single field values in modal dialogs.
+ * This reusable component provides a consistent interface for editing various 
+ * board fields with support for both single-line inputs and multi-line textareas.
+ * 
+ * @param title - Title displayed in the modal header
+ * @param label - Label text for the input field
+ * @param initialValue - Current value to populate the input field
+ * @param inputType - Type of input control to render - single line or multi-line text
+ * @param onSave - Handler for saving the updated field value with async validation
+ * @param onClose - Handler to close the edit form modal
+ */
 const EditFieldForm: React.FC<EditFieldFormProps> = ({
   title,
   label,

@@ -14,21 +14,55 @@ import styles from './CanvasToolSection.module.scss';
 import { LineToolsDropdown } from './LineToolsDropdown';
 import { ShapeToolsDropdown } from './ShapeToolsDropdown';
 
+/**
+ * Props interface for CanvasToolSection component.
+ * Defines the drawing tools state and interaction handlers for the canvas toolbar.
+ */
 interface CanvasToolSectionProps {
+  /** Name of the board for download filename generation */
   boardName: string;
+  /** Current stroke color for drawing operations */
   strokeColor: string;
+  /** Handler for stroke color changes */
   setStrokeColor: (color: string) => void;
+  /** Current stroke width for drawing operations */
   strokeWidth: number;
+  /** Handler for stroke width changes */
   setStrokeWidth: (width: number) => void;
+  /** Currently selected drawing tool */
   tool: Tool;
+  /** Handler for tool selection changes */
   setTool: (tool: Tool) => void;
+  /** Handler for undo operations */
   onUndo: () => void;
+  /** Whether undo functionality is currently available */
   isUndoAvailable: boolean;
+  /** Handler for redo operations */
   onRedo: () => void;
+  /** Whether redo functionality is currently available */
   isRedoAvailable: boolean;
+  /** Canvas configuration for download operations */
   canvasConfig?: CanvasConfig;
 }
 
+/**
+ * Comprehensive toolbar component providing all drawing tools and controls for the canvas.
+ * This component organizes drawing tools into logical groups including colors, sizes, shapes,
+ * lines, text, history controls, and export functionality with responsive behavior.
+ * 
+ * @param boardName - Name of the board for download filename generation
+ * @param strokeColor - Current stroke color for drawing operations
+ * @param setStrokeColor - Handler for stroke color changes
+ * @param strokeWidth - Current stroke width for drawing operations
+ * @param setStrokeWidth - Handler for stroke width changes
+ * @param tool - Currently selected drawing tool
+ * @param setTool - Handler for tool selection changes
+ * @param onUndo - Handler for undo operations
+ * @param isUndoAvailable - Whether undo functionality is currently available
+ * @param onRedo - Handler for redo operations
+ * @param isRedoAvailable - Whether redo functionality is currently available
+ * @param canvasConfig - Canvas configuration for download operations
+ */
 export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
   boardName,
   strokeColor,

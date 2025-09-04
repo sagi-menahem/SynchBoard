@@ -7,12 +7,28 @@ import { validateEmail } from 'shared/utils/validationUtils';
 
 import styles from './MemberInviteInput.module.scss';
 
+/**
+ * Props interface for MemberInviteInput component.
+ * Defines the callback for email changes and component configuration options.
+ */
 interface MemberInviteInputProps {
+  /** Callback function triggered when the list of invite emails changes */
   onMembersChange: (emails: string[]) => void;
+  /** Whether the input controls should be disabled */
   disabled?: boolean;
+  /** Optional HTML id attribute for the component container */
   id?: string;
 }
 
+/**
+ * Interactive input component for managing member email invitations with validation.
+ * This component provides a tag-based interface for adding and removing email addresses
+ * with real-time validation, keyboard shortcuts, and duplicate detection.
+ * 
+ * @param onMembersChange - Callback function triggered when the list of invite emails changes
+ * @param disabled - Whether the input controls should be disabled
+ * @param id - Optional HTML id attribute for the component container
+ */
 const MemberInviteInput: React.FC<MemberInviteInputProps> = ({
   onMembersChange,
   disabled = false,

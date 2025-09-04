@@ -13,11 +13,25 @@ import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './BoardCard.module.scss';
 
+/**
+ * Props interface for BoardCard component.
+ * Defines the board data and display configuration for individual board cards.
+ */
 interface BoardCardProps {
+  /** Board data including name, description, canvas settings, and metadata */
   board: Board;
+  /** Display mode for the card layout - either grid or list view */
   viewMode?: ViewMode;
 }
 
+/**
+ * Displays individual board information as an interactive card with navigation link.
+ * This memoized component renders board details including picture, name, description, 
+ * canvas configuration, and admin status in either grid or list layout modes.
+ * 
+ * @param board - Board data including name, description, canvas settings, and metadata
+ * @param viewMode - Display mode for the card layout - either grid or list view
+ */
 const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'grid' }) => {
   const { t } = useTranslation(['board', 'common']);
 

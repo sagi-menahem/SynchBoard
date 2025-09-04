@@ -5,17 +5,43 @@ import { Textarea } from 'shared/ui';
 
 import styles from './CanvasToolSection.module.scss';
 
+/**
+ * Props interface for TextInputOverlay component.
+ * Defines the positioning, styling, and interaction handlers for the text input overlay.
+ */
 interface TextInputOverlayProps {
+  /** Horizontal position of the overlay in pixels relative to the canvas */
   x: number;
+  /** Vertical position of the overlay in pixels relative to the canvas */
   y: number;
+  /** Width of the text input area in pixels */
   width: number;
+  /** Height of the text input area in pixels */
   height: number;
+  /** Text color for the input and submitted text */
   color: string;
+  /** Font size for the text input and display */
   fontSize: number;
+  /** Handler called when text is submitted (Enter key or blur) */
   onSubmit: (text: string) => void;
+  /** Handler called when text input is cancelled (Escape key or empty submission) */
   onCancel: () => void;
 }
 
+/**
+ * Positioned text input overlay for adding text elements to the canvas.
+ * This component provides an inline text editing experience that appears at specific
+ * canvas coordinates with customizable styling and keyboard shortcuts for submission/cancellation.
+ * 
+ * @param x - Horizontal position of the overlay in pixels relative to the canvas
+ * @param y - Vertical position of the overlay in pixels relative to the canvas
+ * @param width - Width of the text input area in pixels
+ * @param height - Height of the text input area in pixels
+ * @param color - Text color for the input and submitted text
+ * @param fontSize - Font size for the text input and display
+ * @param onSubmit - Handler called when text is submitted (Enter key or blur)
+ * @param onCancel - Handler called when text input is cancelled (Escape key or empty submission)
+ */
 const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
   x,
   y,

@@ -1,3 +1,5 @@
+// --- Primary Color Variables ---
+
 $primary: var(--color-primary);
 $primary-hover: var(--color-primary-hover);
 $primary-light: var(--color-primary-light);
@@ -5,19 +7,27 @@ $primary-light: var(--color-primary-light);
 $secondary: var(--color-secondary);
 $secondary-hover: var(--color-secondary-hover);
 
+// --- Background Variables ---
+
 $background: var(--color-background);
 $surface: var(--color-surface);
 $surface-elevated: var(--color-surface-elevated);
 $surface-hover: var(--color-surface-hover);
 
+// --- Border Variables ---
+
 $border: var(--color-border);
 $border-strong: var(--color-border-strong);
 $border-light: var(--color-border-light);
+
+// --- Text Color Variables ---
 
 $text-primary: var(--color-text-primary);
 $text-secondary: var(--color-text-secondary);
 $text-muted: var(--color-text-muted);
 $text-disabled: var(--color-text-disabled);
+
+// --- Status Color Variables ---
 
 $success: var(--color-success);
 $success-light: var(--color-success-light);
@@ -26,14 +36,20 @@ $warning-light: var(--color-warning-light);
 $error: var(--color-error);
 $error-light: var(--color-error-light);
 
+// --- Overlay Variables ---
+
 $overlay-light: var(--color-overlay-light);
 $overlay-medium: var(--color-overlay-medium);
 $overlay-strong: var(--color-overlay-strong);
+
+// --- Status Indicator Variables ---
 
 $status-pending-border: var(--color-status-pending-border);
 $status-confirmed-border: var(--color-status-confirmed-border);
 $status-failed-border: var(--color-status-failed-border);
 $status-failed-bg: var(--color-status-failed-bg);
+
+// --- Legacy Color Mappings ---
 
 $primary-color: $primary;
 $primary-color-hover: var(--color-primary-hover);
@@ -41,6 +57,8 @@ $primary-blue: $primary;
 $primary-blue-hover: var(--color-primary-hover);
 $primary-blue-dark: var(--color-primary-hover);
 $secondary-color: $secondary;
+
+// --- Background Aliases ---
 
 $background-primary: $background;
 $background-secondary: $surface;
@@ -54,6 +72,8 @@ $background-modal: $surface-elevated;
 $background-modal-alt: $surface-elevated;
 $background-modal-light: $surface-elevated;
 $background-modal-lighter: $surface-hover;
+
+// --- Text Aliases ---
 
 $text-primary: $text-primary;
 $text-secondary: $text-secondary;
@@ -74,6 +94,8 @@ $text-gray-warm: $text-primary;
 $text-gray-light: $text-muted;
 $text-hover: $text-primary;
 
+// --- Border Aliases ---
+
 $border-primary: $border;
 $border-secondary: $border-strong;
 $border-tertiary: $border-strong;
@@ -86,6 +108,8 @@ $border-input: $border;
 $border-input-alt: $border;
 $border-google: $border-light;
 
+// --- Semantic Color Aliases ---
+
 $success-color: $success;
 $error-color: $error;
 $error-color-alt: $error;
@@ -97,6 +121,8 @@ $warning-color: $warning;
 $link-color: $primary;
 $accent-purple: $primary;
 $accent-lavender: $primary-light;
+
+// --- White Overlay Scale ---
 
 $overlay-white-02: $overlay-light;
 $overlay-white-03: $overlay-light;
@@ -119,6 +145,8 @@ $overlay-white-80: $overlay-strong;
 $overlay-white-90: $overlay-strong;
 $overlay-white-95: $overlay-strong;
 
+// --- Black Overlay Scale ---
+
 $overlay-black-05: $overlay-light;
 $overlay-black-10: $overlay-light;
 $overlay-black-15: $overlay-light;
@@ -127,6 +155,8 @@ $overlay-black-30: $overlay-medium;
 $overlay-black-40: $overlay-medium;
 $overlay-black-50: $overlay-strong;
 $overlay-black-70: $overlay-strong;
+
+// --- Primary Overlay Scale ---
 
 $overlay-primary-10: $primary-light;
 $overlay-primary-15: $primary-light;
@@ -137,8 +167,12 @@ $overlay-primary-40: $primary-light;
 $overlay-primary-50: $primary-light;
 $overlay-primary-60: $primary-light;
 
+// --- Status Overlay Variables ---
+
 $overlay-success-40: $success-light;
 $overlay-purple-20: $primary-light;
+
+// --- Error and Warning Overlays ---
 
 $overlay-error-95: $error-light;
 $overlay-warning-95: $warning-light;
@@ -151,9 +185,13 @@ $overlay-danger-brown: $error-light;
 $overlay-warning-brown: $warning-light;
 $overlay-error-light: $error-light;
 
+// --- Surface Overlay Variables ---
+
 $overlay-surface-60: $overlay-medium;
 $overlay-surface-80: $overlay-strong;
 $overlay-modal: $overlay-strong;
+
+// --- Card State Variables ---
 
 $card-empty-bg: $surface;
 $card-empty-border: $border-light;
@@ -162,10 +200,14 @@ $card-empty-hover-border: $border;
 $icon-empty-state: $text-muted;
 $text-secondary-light: $text-secondary;
 
+// --- Activity Indicator Variables ---
+
 $activity-indicator-bg: $surface-elevated;
 $activity-indicator-border: $border-light;
 $activity-indicator-hover: $surface-hover;
 $activity-indicator-hover-border: $border;
+
+// --- Visual Effect Variables ---
 
 $success-glow: $success-light;
 $focus-outline: $primary;
@@ -177,11 +219,15 @@ $warning-border: $warning;
 $error-bg: $error-light;
 $error-border: $error;
 
+// --- Canvas Variables ---
+
 $canvas-background: var(--color-canvas-background);
 $canvas-pattern: var(--color-canvas-pattern);
 $divider-bg: $border;
 $divider-hover: $border-strong;
 $divider-active: $primary;
+
+// --- Tool Interface Variables ---
 
 $tool-button-bg: $surface;
 $tool-button-border: $border;
@@ -201,12 +247,16 @@ $scrollbar-thumb: $border;
 $scrollbar-track: $surface;
 $scrollbar-thumb-hover: $border-strong;
 
+// --- Additional Error Variables ---
+
 $error-dark: $error;
 $error-darker: $error;
 $error-overlay: $error-light;
 
 $overlay-dark: $overlay-strong;
 $overlay-darker: $overlay-strong;
+
+// --- Miscellaneous Variables ---
 
 $brown-accent: $warning;
 $white-rgb: $text-primary;

@@ -4,12 +4,29 @@ import { Moon, Sun } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Props for the ThemeSwitcher component.
+ */
 interface ThemeSwitcherProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
-  showLabel?: boolean;
+  size?: 'sm' | 'md' | 'lg'; // Visual size of the switch
+  showLabel?: boolean; // Whether to display theme label
 }
 
+/**
+ * Theme toggle switch component for switching between light and dark modes.
+ * Provides a visual toggle interface with sun/moon icons and proper RTL support.
+ * Uses Headless UI Switch for keyboard navigation and accessibility.
+ * 
+ * @param {string} className - Optional CSS class to apply to the container
+ * @param {'sm' | 'md' | 'lg'} size - Visual size variant:
+ *   - 'sm': Use in compact toolbars, mobile interfaces, or space-constrained areas
+ *   - 'md': Use in standard form controls and general settings panels
+ *   - 'lg': Use in onboarding flows, user preferences, or prominent UI sections
+ * @param {boolean} showLabel - Whether to display theme name label:
+ *   - true: Use in settings pages where context and clarity are important
+ *   - false: Use in compact toolbars or headers where space is limited
+ */
 const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   className,
   size = 'sm',
@@ -19,6 +36,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const { theme, setTheme } = useTheme();
   const isRTL = i18n.language === 'he';
 
+  // Size configuration for different switch variants
   const sizeConfig = {
     sm: { height: 28, width: 56, iconSize: 14 },
     md: { height: 32, width: 64, iconSize: 16 },
@@ -28,6 +46,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const config = sizeConfig[size];
   const isDark = theme === 'dark';
 
+  // Convert boolean switch state to theme string
   const handleChange = (checked: boolean) => {
     setTheme(checked ? 'dark' : 'light');
   };

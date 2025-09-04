@@ -19,6 +19,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * JPA entity representing a user account in the SynchBoard application. Implements Spring
+ * Security's UserDetails interface for authentication and authorization. Stores user profile
+ * information, preferences, and OAuth2 provider details.
+ * 
+ * @author Sagi Menahem
+ */
 @Entity
 @Table(name = "users")
 @Data
@@ -27,11 +34,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 public class User implements UserDetails {
 
+    /**
+     * Enumeration of supported authentication providers. LOCAL for traditional email/password
+     * authentication, GOOGLE for OAuth2 authentication via Google.
+     */
     public enum AuthProvider {
-        LOCAL,
-        GOOGLE,
+        LOCAL, GOOGLE,
     }
 
+    /** Primary key: unique email address serving as user identifier */
     @Id
     @Column(nullable = false, unique = true)
     private String email;
@@ -48,6 +59,7 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private String gender;
 
+    /** Authentication provider used for this user account */
     @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider", nullable = false)
     @Builder.Default

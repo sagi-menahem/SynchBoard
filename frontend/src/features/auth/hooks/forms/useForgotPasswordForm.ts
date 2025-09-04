@@ -5,6 +5,14 @@ import * as authService from '../../services/authService';
 
 import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
 
+/**
+ * Hook for managing forgot password form submission and validation.
+ * Handles email validation, API call to request password reset, and success callback
+ * with integrated toast notifications and loading states.
+ *
+ * @param onForgotPasswordSuccess - Callback fired when password reset email is successfully sent
+ * @returns Form submission handler and loading state for forgot password functionality
+ */
 export const useForgotPasswordForm = (onForgotPasswordSuccess: (email: string) => void) => {
   const { t } = useTranslation(['auth', 'common']);
 

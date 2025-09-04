@@ -10,12 +10,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object representing user canvas preferences. Contains canvas-specific settings and
+ * layout preferences with validation constraints for proper canvas configuration.
+ * 
+ * @author Sagi Menahem
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CanvasPreferencesDTO {
 
+    /** Canvas to chat split ratio percentage (validated range) */
     @Min(value = CANVAS_CHAT_SPLIT_RATIO_MIN, message = "validation.canvasSplitMin")
     @Max(value = CANVAS_CHAT_SPLIT_RATIO_MAX, message = "validation.canvasSplitMax")
     private Integer canvasChatSplitRatio;

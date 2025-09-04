@@ -1,10 +1,14 @@
 @use '@/styles' as theme;
 
+// --- Search Bar Layout ---
+
+// Form wrapper for search functionality
 .searchForm {
   margin: 0;
   padding: 0;
 }
 
+// Main container with focus-within styling
 .searchContainer {
   position: relative;
   @include theme.flex-start;
@@ -24,11 +28,13 @@
   }
 }
 
+// Search icon styling
 .searchIcon {
   color: theme.$text-muted;
   flex-shrink: 0;
 }
 
+// Input field with flexible sizing
 .searchInput {
   background: none;
   border: none;
@@ -43,6 +49,7 @@
   }
 }
 
+// Clear button with hover effects
 .clearButton {
   @include theme.interactive-button;
   color: theme.$text-muted;

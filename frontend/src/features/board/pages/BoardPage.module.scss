@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Full-viewport layout with dynamic positioning based on banner/toolbar presence
 .pageContent {
   position: absolute;
   top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px));
@@ -12,6 +13,7 @@
   box-sizing: border-box;
 }
 
+// Flexible container for board workspace with overflow handling
 .boardWorkspaceArea {
   flex: 1;
   height: 0;

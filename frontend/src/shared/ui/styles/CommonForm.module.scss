@@ -1,5 +1,7 @@
 @use '@/styles' as theme;
 
+// --- Base Form Elements ---
+
 .form {
   @include theme.form-base;
   max-width: 500px;
@@ -16,9 +18,12 @@
   color: theme.$text-secondary;
 }
 
+// Center-aligned text inputs
 .field input {
   text-align: center;
 }
+
+// --- Specialized Input Fields ---
 
 .imageField {
   @include theme.flex-center;
@@ -34,15 +39,21 @@
   margin-top: 4px;
 }
 
+// --- Form Actions ---
+
 .buttonGroup {
   margin-top: theme.$spacing-2;
   @include theme.button-group;
 }
 
+// --- Form Validation Styling ---
+
 .required {
   color: theme.$error;
   font-weight: bold;
 }
+
+// --- Radio Button Groups ---
 
 .radioGroup {
   @include theme.flex-column;
@@ -63,9 +74,12 @@
   accent-color: theme.$primary;
 }
 
+// Radio label hover state
 .radioLabel:hover {
   color: theme.$text-secondary;
 }
+
+// --- Date Input Styling ---
 
 .dateInput {
   @include theme.input-base;
@@ -85,6 +99,7 @@
   @include theme.focus-shadow;
 }
 
+// Custom styling for WebKit date picker icon
 .dateInput::-webkit-calendar-picker-indicator {
   cursor: pointer;
   filter: invert(1);
@@ -95,6 +110,8 @@
 .dateInput::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
+
+// --- Submit Button ---
 
 .submitButton {
   @include theme.button-base;
@@ -117,6 +134,8 @@
   @include theme.button-disabled;
   background-color: theme.$text-disabled;
 }
+
+// --- Canvas Size Selection ---
 
 .canvasSizeOptions {
   @include theme.flex-column;
@@ -160,6 +179,7 @@
   color: theme.$text-secondary;
 }
 
+// Custom dimension input container with flexible layout
 .customSizeInputs {
   @include theme.flex-start;
   gap: theme.$spacing-2;
@@ -173,15 +193,19 @@
   flex-wrap: wrap;
 }
 
+// Fixed width inputs for dimensions
 .customSizeInputs input {
   width: 90px;
   min-width: 80px;
   flex-shrink: 1;
 }
 
+// Prevent text wrapping in dimension labels
 .customSizeInputs span {
   white-space: nowrap;
 }
+
+// --- Modal Layout Elements ---
 
 .modalContainer {
   @include theme.flex-column;
@@ -227,10 +251,14 @@
   text-align: center;
 }
 
+// --- Error Display ---
+
 .error {
   @include theme.error-message;
   margin-bottom: theme.$spacing-4;
 }
+
+// --- Responsive Design ---
 
 @media (max-width: 768px) {
   .form {

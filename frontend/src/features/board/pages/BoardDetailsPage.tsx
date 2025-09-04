@@ -18,12 +18,21 @@ import { useBoardDetailsPage } from '../hooks/details';
 
 import styles from './BoardDetailsPage.module.scss';
 
+/**
+ * Board Details Page component that provides comprehensive board management functionality.
+ * This page serves as the central hub for board administration, allowing users to view and
+ * modify board settings, manage member permissions, configure canvas properties, and handle
+ * board-level operations. It integrates toolbar navigation, modal dialogs for various operations,
+ * and context menus for member management while providing different permission levels based
+ * on user roles.
+ */
 const BoardDetailsPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const { boardId } = useParams<{ boardId: string }>();
   const numericBoardId = parseInt(boardId ?? '0', 10);
 
+  // Extract board management state and handlers from the dedicated hook
   const {
     isLoading,
     boardDetails,
@@ -53,6 +62,7 @@ const BoardDetailsPage: React.FC = () => {
 
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
+  // Configure toolbar with conditional buttons based on user permissions
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'board-details',

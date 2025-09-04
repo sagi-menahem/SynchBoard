@@ -15,6 +15,7 @@
     gap: theme.$spacing-2;
   }
 
+  /* Progressive tool hiding on smaller screens from right to left */
   @media (max-width: 950px) {
     gap: theme.$spacing-1;
 
@@ -60,6 +61,7 @@
   color: theme.$text-secondary;
 }
 
+/* Gradient separator between tool groups except for the last one */
 .toolGroup:not(:last-child)::after {
   content: '';
   position: absolute;
@@ -77,6 +79,7 @@
   height: 36px;
 }
 
+/* Global overrides for color picker component sizing */
 .colorPickerWrapper :global(.colorPickerContainer) {
   height: 36px;
 }

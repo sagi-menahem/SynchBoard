@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Section Card Base ---
+
+// Main card container with responsive sizing
 .sectionCard {
   background-color: theme.$background-secondary;
   border: 1px solid theme.$border-primary;
@@ -12,17 +15,22 @@
   max-width: 700px;
   flex-shrink: 1;
 
+  // Global form styling override
   :global(.form) {
     min-width: unset !important;
     width: 100% !important;
   }
 
+  // Ensure all child elements respect container bounds
   * {
     max-width: 100%;
     box-sizing: border-box;
   }
 }
 
+// --- Card Variants ---
+
+// Standard card appearance
 .default {
   box-shadow: theme.$shadow-card;
 
@@ -31,6 +39,7 @@
   }
 }
 
+// Enhanced shadow with lift effect
 .elevated {
   box-shadow: theme.$shadow-lg;
 
@@ -40,11 +49,13 @@
   }
 }
 
+// Warning state with accent border
 .warning {
   box-shadow: theme.$shadow-card;
   border: 2px solid theme.$warning;
   background: linear-gradient(to bottom, var(--color-surface), rgba(245, 158, 11, 0.02));
 
+  // Top accent stripe for warning state
   &::before {
     content: '';
     position: absolute;
@@ -57,6 +68,7 @@
   }
 }
 
+// Danger state with destructive styling
 .danger {
   border: 1px solid var(--btn-destructive-bg);
   border-top: 2px solid var(--btn-destructive-bg);
@@ -68,6 +80,9 @@
   );
 }
 
+// --- Header Section ---
+
+// Card header container
 .header {
   margin-bottom: 0;
   padding: theme.$card-padding;
@@ -75,6 +90,7 @@
   border-bottom: 1px solid theme.$border-primary;
 }
 
+// Header content layout
 .headerContent {
   display: flex;
   align-items: flex-start;
@@ -83,10 +99,12 @@
   justify-content: space-between;
 }
 
+// Title and subtitle container
 .titleGroup {
   min-width: 0;
 }
 
+// Main card title
 .title {
   @include theme.section-header;
   margin: 0;
@@ -97,6 +115,7 @@
   line-height: 1.3;
 }
 
+// Secondary descriptive text
 .subtitle {
   margin: theme.$spacing-1 0 0;
   color: theme.$text-secondary;
@@ -105,6 +124,7 @@
   text-align: start;
 }
 
+// Action buttons in header
 .headerActions {
   flex-shrink: 0;
   display: flex;
@@ -112,22 +132,31 @@
   gap: theme.$spacing-2;
 }
 
+// --- Padding Variants ---
+
+// No padding utility
 .padding-none {
   padding: 0;
 }
 
+// Small padding utility
 .padding-sm {
   padding: theme.$spacing-4;
 }
 
+// Medium padding utility
 .padding-md {
   padding: theme.$card-padding;
 }
 
+// Large padding utility
 .padding-lg {
   padding: theme.$spacing-8;
 }
 
+// --- Responsive Design ---
+
+// Mobile responsive adjustments
 @media (max-width: 768px) {
   .sectionCard {
     margin-bottom: 1.5rem;
@@ -160,6 +189,9 @@
   }
 }
 
+// --- Focus States ---
+
+// Form element focus styling
 .sectionCard input:focus,
 .sectionCard textarea:focus,
 .sectionCard select:focus {
@@ -167,15 +199,20 @@
   outline-offset: 2px;
 }
 
+// Card container focus styling
 .sectionCard:focus {
   outline: 2px solid theme.$primary;
   outline-offset: 2px;
 }
 
+// Smooth transitions for all card interactions
 .sectionCard {
   @include theme.smooth-transition;
 }
 
+// --- High Contrast Accessibility ---
+
+// Enhanced borders for high contrast preference
 @media (prefers-contrast: high) {
   .default,
   .elevated {

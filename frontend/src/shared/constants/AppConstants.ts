@@ -1,3 +1,10 @@
+/**
+ * General application configuration constants for SynchBoard.
+ * Defines browser storage keys, validation rules, file upload restrictions, and WebSocket
+ * connection parameters. Values are configurable through environment variables with
+ * sensible defaults for development environments.
+ */
+
 export const LOCAL_STORAGE_KEYS = {
   AUTH_TOKEN: 'authToken',
 } as const;

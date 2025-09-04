@@ -1,11 +1,15 @@
 @use '@/styles' as theme;
 
+// --- Theme Switcher Layout ---
+
+// Main container with label and switch
 .container {
   display: flex;
   align-items: center;
   gap: theme.$spacing-3;
 }
 
+// Theme switcher label
 .label {
   font-size: 0.875rem;
   color: var(--color-text-muted);
@@ -14,10 +18,12 @@
   text-align: start;
 }
 
+// Switch component container
 .switch {
   flex-shrink: 0;
 }
 
+// Icon container for sun/moon icons
 .iconContainer {
   display: flex;
   align-items: center;
@@ -26,6 +32,9 @@
   width: 100%;
 }
 
+// --- RTL Support ---
+
+// RTL layout adjustment
 [dir='rtl'] .container {
   flex-direction: row-reverse;
 }

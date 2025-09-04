@@ -6,13 +6,31 @@ import { Button, Input } from 'shared/ui';
 
 import styles from '../pages/SettingsPage.module.scss';
 
+/**
+ * Properties for the ProfileEditForm component defining form data and event handlers.
+ */
 interface ProfileEditFormProps {
+  /** Current form data state for profile update fields */
   formData: UpdateUserProfileRequest;
+  /** Handler for input field change events with proper form binding */
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Handler for form save operation with validation */
   onSave: () => void;
+  /** Handler for form cancellation and state reset */
   onCancel: () => void;
 }
 
+/**
+ * Profile editing form component with comprehensive field validation and user input handling.
+ * Provides editable form fields for all user profile information with proper accessibility support.
+ * Implements radio group controls for gender selection and date input handling for birth dates.
+ * Includes form validation indicators, required field marking, and intuitive save/cancel operations.
+ * 
+ * @param formData - Current form state data for profile update fields
+ * @param onInputChange - Handler for processing input field change events
+ * @param onSave - Handler for save operation with form validation
+ * @param onCancel - Handler for cancel operation and form state reset
+ */
 const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   formData,
   onInputChange,

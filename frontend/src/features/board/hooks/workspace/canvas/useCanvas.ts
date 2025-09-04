@@ -26,6 +26,25 @@ const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
   height: CANVAS_CONFIG.DEFAULT_HEIGHT,
 };
 
+/**
+ * Custom hook that orchestrates comprehensive canvas functionality for collaborative drawing operations.
+ * This hook serves as the main coordinator for canvas interactions, combining state management, event handling,
+ * drawing tools, and preview functionality into a unified interface. It manages the complex coordination between
+ * multiple specialized canvas hooks including state management, event processing, drawing tools, and live previews.
+ * The hook handles canvas configuration, coordinate calculations, drawing validation, and provides the primary
+ * event handler for canvas interactions. It abstracts the complexity of canvas operations while maintaining
+ * separation of concerns through composition of specialized hooks.
+ * 
+ * @param instanceId - Unique sender identifier for drawing actions and collaboration tracking
+ * @param tool - Currently active drawing tool for canvas operations
+ * @param strokeColor - Color setting for drawing operations and previews
+ * @param strokeWidth - Width setting for stroke-based drawing operations
+ * @param objects - Array of existing canvas objects to render and manage
+ * @param onDraw - Callback function for submitting drawing actions to the collaboration system
+ * @param canvasConfig - Optional canvas configuration including dimensions and background color
+ * @param onTextInputRequest - Optional callback for initiating text input overlay operations
+ * @returns Object containing canvas references, dimensions, and the main mouse event handler for canvas interactions
+ */
 export const useCanvas = ({
   instanceId: senderId,
   tool,

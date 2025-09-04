@@ -5,9 +5,17 @@ import { useTranslation } from 'react-i18next';
 import styles from './PageLoader.module.scss';
 
 interface PageLoaderProps {
+  /** Optional custom loading message, falls back to localized default */
   message?: string;
 }
 
+/**
+ * Inline page loading indicator with smooth fade animations.
+ * Provides non-blocking visual feedback for section-level loading states
+ * without overlaying the entire interface, using internationalized messaging.
+ *
+ * @param message - Optional custom loading message, falls back to localized default
+ */
 export const PageLoader: React.FC<PageLoaderProps> = ({ message }) => {
   const { t } = useTranslation('common');
   return (

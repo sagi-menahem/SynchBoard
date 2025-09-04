@@ -23,6 +23,21 @@ interface RadioGroupProps {
   id?: string;
 }
 
+/**
+ * Accessible radio button group component with Radix UI integration.
+ * Provides keyboard navigation, screen reader support, and consistent styling.
+ * 
+ * @param {string} value - Currently selected option value
+ * @param {string} defaultValue - Initial selected option value for uncontrolled usage
+ * @param {function} onValueChange - Callback when selection changes. Parent should update state and handle business logic based on selected value.
+ * @param {RadioOption[]} options - Array of selectable options with value, label, and optional disabled state
+ * @param {boolean} disabled - Disables entire group when true, individual options can be disabled via options array
+ * @param {string} name - Name attribute for form submission grouping
+ * @param {string} className - Additional CSS classes for customization
+ * @param {'horizontal' | 'vertical'} orientation - Layout direction: 'horizontal' for compact forms, 'vertical' for better readability with many options
+ * @param {boolean} required - Marks the field as required for form validation
+ * @param {string} id - Unique identifier for the radio group element
+ */
 const RadioGroup: React.FC<RadioGroupProps> = ({
   value,
   defaultValue,

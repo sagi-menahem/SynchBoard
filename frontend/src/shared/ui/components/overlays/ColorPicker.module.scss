@@ -1,10 +1,13 @@
 @use '@/styles' as theme;
 
+// --- ColorPicker Layout ---
+
 .colorPickerContainer {
   position: relative;
   @include theme.flex-start;
 }
 
+// Color picker label styling
 .label {
   @include theme.flex-start;
   margin-right: 8px;
@@ -16,6 +19,7 @@
   height: 28px;
 }
 
+// Color swatch button container
 .swatch {
   position: relative;
   display: flex;
@@ -29,6 +33,7 @@
   }
 }
 
+// Color preview circle inside swatch
 .colorFill {
   position: absolute;
   top: 50%;
@@ -39,6 +44,9 @@
   border-radius: 50%;
 }
 
+// --- Popover Positioning ---
+
+// Fixed positioning popover for color picker interface
 .popover {
   position: fixed;
   z-index: theme.$z-index-popover;
@@ -51,6 +59,7 @@
   max-width: none !important;
 }
 
+// Responsive positioning for small viewports
 @media (max-height: 500px) {
   .popover {
     top: 0;
@@ -61,6 +70,7 @@
   }
 }
 
+// Smooth entrance animation for popover
 @keyframes popoverIn {
   from {
     opacity: 0;
@@ -73,11 +83,14 @@
   }
 }
 
+// --- Color Picker Content ---
+
 .colorfulWrapper {
   @include theme.flex-column;
   gap: theme.$spacing-3;
 }
 
+// Preset color palette grid
 .presetColors {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -86,6 +99,7 @@
   justify-content: center;
 }
 
+// Individual preset color swatch
 .presetColor {
   width: 24px;
   height: 24px;
