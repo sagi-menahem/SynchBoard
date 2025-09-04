@@ -1,4 +1,3 @@
-
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';

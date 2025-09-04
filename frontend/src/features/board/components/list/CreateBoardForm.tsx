@@ -1,4 +1,3 @@
-
 import defaultBoardImage from 'assets/default-board-image.png';
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';

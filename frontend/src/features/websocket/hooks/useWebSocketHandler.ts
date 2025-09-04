@@ -1,4 +1,3 @@
-
 import { AxiosError } from 'axios';
 import { useAuth } from 'features/auth/hooks/useAuth';
 import * as boardService from 'features/board/services/boardService';

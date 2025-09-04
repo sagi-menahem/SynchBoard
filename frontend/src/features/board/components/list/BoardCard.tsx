@@ -1,4 +1,3 @@
-
 import defaultBoardImage from 'assets/default-board-image.png';
 import clsx from 'clsx';
 import type { Board } from 'features/board/types/BoardTypes';

@@ -12,7 +12,7 @@ interface ApiCallOptions<T> {
   showErrorToast?: boolean;
 }
 
-interface UseApiCallReturn<T, P extends any[]> {
+interface UseApiCallReturn<T, P extends unknown[]> {
   data: T | null;
   loading: boolean;
   error: AxiosError | null;
@@ -20,7 +20,7 @@ interface UseApiCallReturn<T, P extends any[]> {
   reset: () => void;
 }
 
-export function useApiCall<T = any, P extends any[] = any[]>(
+export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
   apiFunction: (...args: P) => Promise<T>,
   options: ApiCallOptions<T> = {},
 ): UseApiCallReturn<T, P> {
@@ -60,7 +60,9 @@ export function useApiCall<T = any, P extends any[] = any[]>(
 
         if (showErrorToast) {
           const message =
-            errorMessage || (axiosError.response?.data as any)?.message || 'An error occurred';
+            errorMessage ||
+            (axiosError.response?.data as { message?: string })?.message ||
+            'An error occurred';
           toast.error(message);
         }
 
@@ -91,9 +93,9 @@ export function useApiCall<T = any, P extends any[] = any[]>(
 }
 
 // Variant for mutations that don't need to store data
-export function useApiMutation<P extends any[] = any[]>(
-  apiFunction: (...args: P) => Promise<any>,
-  options: Omit<ApiCallOptions<any>, 'onSuccess'> & {
+export function useApiMutation<P extends unknown[] = unknown[]>(
+  apiFunction: (...args: P) => Promise<unknown>,
+  options: Omit<ApiCallOptions<unknown>, 'onSuccess'> & {
     onSuccess?: () => void;
   } = {},
 ) {
@@ -131,7 +133,9 @@ export function useApiMutation<P extends any[] = any[]>(
 
         if (showErrorToast) {
           const message =
-            errorMessage || (axiosError.response?.data as any)?.message || 'An error occurred';
+            errorMessage ||
+            (axiosError.response?.data as { message?: string })?.message ||
+            'An error occurred';
           toast.error(message);
         }
 

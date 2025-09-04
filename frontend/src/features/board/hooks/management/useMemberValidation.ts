@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks/useAuth';
 import { checkUserExists } from 'features/settings/services/userService';
 import { useCallback } from 'react';

@@ -1,4 +1,3 @@
-
 import { AuthProvider } from 'features/auth/AuthProvider';
 import { CanvasPreferencesProvider } from 'features/settings/CanvasPreferencesProvider';
 import { ThemeProvider } from 'features/settings/ThemeProvider';

@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import * as BoardService from 'features/board/services/boardService';
 import type { Board } from 'features/board/types/BoardTypes';

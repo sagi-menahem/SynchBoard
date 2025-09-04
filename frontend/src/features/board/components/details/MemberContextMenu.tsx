@@ -1,4 +1,3 @@
-
 import type { Member } from 'features/board/types/BoardTypes';
 import { Crown, UserMinus } from 'lucide-react';
 import React from 'react';

@@ -1,4 +1,3 @@
-
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';

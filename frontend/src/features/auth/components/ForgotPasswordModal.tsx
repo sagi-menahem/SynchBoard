@@ -1,4 +1,3 @@
-
 import { BaseAuthModal } from 'features/auth/ui';
 import { Mail } from 'lucide-react';
 import React from 'react';

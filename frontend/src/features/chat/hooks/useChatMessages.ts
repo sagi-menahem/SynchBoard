@@ -1,4 +1,3 @@
-
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import WebSocketService from 'features/websocket/services/websocketService';
 import { useCallback } from 'react';

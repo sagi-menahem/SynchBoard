@@ -1,4 +1,3 @@
-
 import defaultUserImage from 'assets/default-user-image.png';
 import type { Member } from 'features/board/types/BoardTypes';
 import { Crown } from 'lucide-react';

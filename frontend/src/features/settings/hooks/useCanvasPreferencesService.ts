@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';

@@ -1,4 +1,3 @@
-
 import clsx from 'clsx';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { Grid3X3, List } from 'lucide-react';

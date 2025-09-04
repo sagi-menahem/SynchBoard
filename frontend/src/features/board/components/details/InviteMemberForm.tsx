@@ -1,4 +1,3 @@
-
 import type { UseBoardMemberActionsReturn } from 'features/board/hooks/details/useBoardMemberActions';
 import type { Member } from 'features/board/types/BoardTypes';
 import { Mail, UserPlus } from 'lucide-react';

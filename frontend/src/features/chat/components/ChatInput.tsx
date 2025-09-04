@@ -1,4 +1,3 @@
-
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { Send } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';

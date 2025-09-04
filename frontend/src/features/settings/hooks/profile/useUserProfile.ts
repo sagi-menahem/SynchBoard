@@ -1,4 +1,3 @@
-
 import * as userService from 'features/settings/services/userService';
 import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/types/UserTypes';
 import { useCallback, useEffect, useState } from 'react';

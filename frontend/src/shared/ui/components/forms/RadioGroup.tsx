@@ -1,7 +1,6 @@
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import React from 'react';
 
-
 import styles from './RadioGroup.module.scss';
 
 export interface RadioOption {

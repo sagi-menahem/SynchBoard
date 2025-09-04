@@ -1,4 +1,3 @@
-
 import { useAuth } from 'features/auth/hooks';
 import { useLanguageSync } from 'features/settings/hooks';
 import React, { useEffect, useState } from 'react';

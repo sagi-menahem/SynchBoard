@@ -1,4 +1,3 @@
-
 import { createBoard } from 'features/board/services/boardService';
 import type { Board } from 'features/board/types/BoardTypes';
 import { useActionState } from 'react';

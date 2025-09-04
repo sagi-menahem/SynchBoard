@@ -1,4 +1,3 @@
-
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { ArrowRight, Minus, MoreHorizontal } from 'lucide-react';
 import React from 'react';
