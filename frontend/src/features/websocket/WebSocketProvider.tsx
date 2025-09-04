@@ -64,7 +64,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
           return;
         }
         wrappedUpdateConnectionState();
-      }, 3000);
+      }, 3000); // 3-second polling interval balances responsiveness with performance
     };
 
     if (token) {

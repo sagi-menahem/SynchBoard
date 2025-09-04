@@ -33,9 +33,10 @@ export const useAuthValidation = () => {
     }
   }, []);
 
+  // Memoized to prevent unnecessary timeout rescheduling on re-renders
   const scheduleExpiryWarning = useCallback(
     (expiryTime: number) => {
-      // Schedule warning 5 minutes before token expires
+      // Schedule warning 5 minutes (300,000ms) before token expires
       const warningTime = expiryTime - 5 * 60 * 1000;
       const timeUntilWarning = warningTime - Date.now();
 

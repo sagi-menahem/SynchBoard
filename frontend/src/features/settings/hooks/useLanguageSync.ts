@@ -26,6 +26,7 @@ export const useLanguageSync = () => {
   const { token, isInitializing: authLoading } = useAuth();
   const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
 
+  // Memoize to prevent unnecessary re-creation when used in useEffect dependencies
   const loadUserLanguage = useCallback(async (): Promise<LanguagePreferences | null> => {
     if (!token) {
       return null;
@@ -63,6 +64,7 @@ export const useLanguageSync = () => {
     }
   }, [token, i18n]);
 
+  // Memoize to maintain stable reference when passed to useEffect dependency array
   const switchToGuestLanguage = useCallback(() => {
     const guestLanguage = localStorage.getItem(GUEST_LANGUAGE_KEY) ?? 'en';
     if (i18n.language !== guestLanguage) {
@@ -99,6 +101,7 @@ export const useLanguageSync = () => {
     }
   };
 
+  // Memoize to prevent function recreation and avoid unnecessary child component re-renders
   const updateLanguagePreference = useCallback(
     async (language: 'en' | 'he') => {
       if (!token) {

@@ -195,11 +195,11 @@ export const isPointInTriangle = (
 
   // Calculate triangle area using cross product determinant
   const denominator = (p2y - p3y) * (p1x - p3x) + (p3x - p2x) * (p1y - p3y);
-  if (Math.abs(denominator) < 1e-10) { // Check for degenerate triangle (collinear points)
+  if (Math.abs(denominator) < 1e-10) { // Numerical precision threshold for degenerate triangle detection (collinear points)
     return false;
   }
 
-  // Calculate barycentric coordinates (area ratios)
+  // Calculate barycentric coordinates using cross products - mathematical approach for point-in-triangle testing
   const a = ((p2y - p3y) * (point.x - p3x) + (p3x - p2x) * (point.y - p3y)) / denominator;
   const b = ((p3y - p1y) * (point.x - p3x) + (p1x - p3x) * (point.y - p3y)) / denominator;
   const c = 1 - a - b; // Third coordinate calculated from constraint that a+b+c=1
@@ -497,6 +497,7 @@ export const detectObjectHit = (
   canvasHeight: number,
 ): HitResult => {
   // Iterate through objects in reverse order (top to bottom) to find topmost hit
+  // Reverse iteration ensures the most recently drawn object (highest z-index) is checked first
   for (let i = objects.length - 1; i >= 0; i--) {
     const obj = objects[i];
 
@@ -518,7 +519,7 @@ export const detectObjectHit = (
           canvasHeight,
         )
       ) {
-        // Prioritize stroke hit over fill hit (border detection takes precedence)
+        // Prioritize stroke hit over fill hit (border detection takes precedence for user interaction)
         if (
           'strokeWidth' in rect &&
           isPointOnRectangleBorder(
@@ -701,7 +702,7 @@ export const detectObjectHit = (
       if ('points' in obj && 'lineWidth' in obj) {
         const line = obj as { points: { x: number; y: number }[]; lineWidth: number };
 
-        // Check each line segment in the brush stroke for hit detection
+        // Check each line segment in the brush stroke for hit detection (sequential segment checking)
         for (let j = 0; j < line.points.length - 1; j++) {
           const p1 = line.points[j];
           const p2 = line.points[j + 1];

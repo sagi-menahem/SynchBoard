@@ -107,7 +107,7 @@ export const isSafeUrl = (url: string): boolean => {
   try {
     const parsed = new URL(url, window.location.origin);
 
-    // Allow only safe HTTP protocols
+    // Allow only safe HTTP protocols - empty string protocol indicates relative URLs
     if (!['http:', 'https:', ''].includes(parsed.protocol)) {
       return false;
     }

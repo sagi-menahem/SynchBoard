@@ -63,7 +63,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
         setMessage('');
       } finally {
         setIsSending(false);
-        // Restore focus to input for continued typing
+        // Restore focus to input for continued typing - immediate scheduling ensures DOM updates complete first
         setTimeout(() => {
           inputRef.current?.focus();
         }, 0);
@@ -72,6 +72,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
     [message, onSendMessage, shouldBlockFunctionality, isSending],
   );
 
+  // Memoized to prevent unnecessary re-renders when parent components update
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   }, []);

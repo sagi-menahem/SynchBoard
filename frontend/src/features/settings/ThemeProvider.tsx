@@ -74,6 +74,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const recentThemeChangeRef = useRef<{ theme: Theme; timestamp: number } | null>(null);
 
+  // Memoize to prevent unnecessary re-renders when theme setter is passed to child components
   const setTheme = useCallback(
     (newTheme: Theme) => {
       // Track recent theme change to prevent server conflicts
@@ -98,6 +99,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
+  // Memoize to provide stable reference for error reset handlers
   const resetError = useCallback(() => {
     setError(null);
   }, []);

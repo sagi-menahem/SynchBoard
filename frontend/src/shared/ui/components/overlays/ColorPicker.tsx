@@ -59,9 +59,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   useEffect(() => {
     if (showPicker && swatchRef.current) {
       const swatchRect = swatchRef.current.getBoundingClientRect();
-      const popoverWidth = 250;
-      const popoverHeight = 300;
-      const margin = 8;
+      const popoverWidth = 250; // Color picker widget standard width
+      const popoverHeight = 300; // Color picker widget standard height with palette and sliders
+      const margin = 8; // Visual spacing between swatch and popover for better UX
 
       let left = swatchRect.left;
       let top = swatchRect.bottom + margin;
@@ -114,7 +114,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   // Close picker when user finishes selecting from color wheel
   const handleMouseUp = useCallback((e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    const isSaturationArea = target.closest('.react-colorful__saturation');
+    const isSaturationArea = target.closest('.react-colorful__saturation'); // CSS class name from react-colorful library for main color selection area
 
     setIsDragging(false);
     if (isSaturationArea) {

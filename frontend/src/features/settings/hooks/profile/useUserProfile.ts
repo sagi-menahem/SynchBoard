@@ -28,11 +28,12 @@ export const useUserProfile = () => {
     phoneNumber: '',
   });
 
+  // Memoize to prevent infinite loops when used in useEffect dependencies
   const fetchUser = useCallback(() => {
     setIsLoading(true);
     // Track timing for minimum loading delay to prevent flashing
     const startTime = Date.now();
-    const minDelay = 200;
+    const minDelay = 200; // Minimum loading time in ms to prevent flashing UI
 
     userService
       .getUserProfile()
@@ -61,6 +62,7 @@ export const useUserProfile = () => {
       });
   }, [t]);
 
+  // Memoize to maintain stable function reference for profile form components
   const handleUpdateProfile = useCallback(
     async (data: UpdateUserProfileRequest) => {
       try {
@@ -79,6 +81,7 @@ export const useUserProfile = () => {
     [t],
   );
 
+  // Memoize to provide stable reference for file upload handlers
   const handlePictureUpload = useCallback(
     async (file: File) => {
       const updatedUser = await toast.promise(userService.uploadProfilePicture(file), {
@@ -92,6 +95,7 @@ export const useUserProfile = () => {
     [t],
   );
 
+  // Memoize to prevent unnecessary re-renders when delete function is passed as prop
   const handlePictureDelete = useCallback(async () => {
     const updatedUser = await toast.promise(userService.deleteProfilePicture(), {
       loading: t('settings:loading.picture.delete'),
@@ -102,12 +106,15 @@ export const useUserProfile = () => {
     return updatedUser;
   }, [t]);
 
+  // Memoize to prevent form input re-renders on every parent component update
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
+  // Memoize to provide stable reference for edit mode activation
   const startEditing = useCallback(() => setIsEditing(true), []);
 
+  // Memoize to avoid recreation when passed to cancel buttons or escape handlers
   const cancelEditing = useCallback(() => {
     // Reset form data to current user values when canceling edit
     if (user) {
@@ -121,6 +128,7 @@ export const useUserProfile = () => {
     setIsEditing(false);
   }, [user]);
 
+  // Memoize to provide stable reference for edit mode deactivation
   const stopEditing = useCallback(() => setIsEditing(false), []);
 
   useEffect(() => {

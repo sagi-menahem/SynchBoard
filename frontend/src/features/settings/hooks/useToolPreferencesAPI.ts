@@ -19,7 +19,7 @@ export interface ToolPreferences {
 const defaultToolPreferences: ToolPreferences = {
   defaultTool: 'brush',
   defaultStrokeColor: '#FFFFFF',
-  defaultStrokeWidth: 3,
+  defaultStrokeWidth: 3, // Default stroke width in pixels for optimal drawing experience
 };
 
 /**
@@ -38,6 +38,7 @@ export const useToolPreferencesAPI = () => {
   const { token } = useAuth();
   const isAuthenticated = !!token;
 
+  // Memoize to prevent infinite loops when used in useEffect dependency array
   const refreshPreferences = useCallback(async () => {
     if (!isAuthenticated) {
       return;
