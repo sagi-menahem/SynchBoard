@@ -6,17 +6,41 @@ import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ChatInput.module.scss';
 
+/**
+ * Properties for the ChatInput component defining message input behavior and customization.
+ */
 interface ChatInputProps {
+  /** Callback function to handle message sending with async processing */
   onSendMessage: (content: string) => Promise<void>;
+  /** Optional flag to disable the input (currently unused in favor of connection-based disabling) */
   disabled?: boolean;
+  /** Optional custom placeholder text for the input field */
   placeholder?: string;
 }
 
+/**
+ * Chat message input component with real-time messaging capabilities and connection awareness.
+ * Provides a user-friendly interface for composing and sending chat messages with automatic
+ * focus management, keyboard shortcuts, and connection status integration.
+ * 
+ * Key features:
+ * - Enter key submission with form validation
+ * - Real-time connection status awareness for functionality blocking
+ * - Automatic input focus management after message sending
+ * - Loading states during message transmission
+ * - Accessibility support with proper ARIA labels
+ * - Message validation to prevent empty submissions
+ * - Visual feedback for sending states
+ * 
+ * @param onSendMessage - Async callback to handle message transmission
+ * @param placeholder - Optional custom placeholder text for input field
+ */
 const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeholder }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { shouldBlockFunctionality } = useConnectionStatus();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  // Ref for programmatic focus management after message sending
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(
@@ -24,6 +48,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
       event.preventDefault();
 
       const messageContent = message.trim();
+      // Prevent submission of empty messages or when connection issues exist
       if (!messageContent || shouldBlockFunctionality || isSending) {
         return;
       }
@@ -34,9 +59,11 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
         await onSendMessage(messageContent);
         setMessage('');
       } catch {
+        // Clear message even on error to prevent resubmission
         setMessage('');
       } finally {
         setIsSending(false);
+        // Restore focus to input for continued typing
         setTimeout(() => {
           inputRef.current?.focus();
         }, 0);
@@ -49,6 +76,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
     setMessage(e.target.value);
   }, []);
 
+  // Handle Enter key to submit message (standard chat behavior)
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -60,6 +88,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
     }
   }, []);
 
+  // Focus input on component mount for immediate typing
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
