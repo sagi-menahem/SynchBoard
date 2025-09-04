@@ -18,7 +18,6 @@ export const useVerifyEmailForm = (
     validateFormData: (formData: FormData) => {
       const verificationCode = extractFormData.verificationCode(formData);
 
-      // Validate verification code
       const codeError = authValidation.validateVerificationCode(verificationCode, t);
       if (codeError) {
         return codeError;

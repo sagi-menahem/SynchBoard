@@ -25,7 +25,7 @@ export const useAuthValidation = () => {
 
   const scheduleExpiryWarning = useCallback(
     (expiryTime: number) => {
-      const warningTime = expiryTime - 5 * 60 * 1000; // 5 minutes before expiry
+      const warningTime = expiryTime - 5 * 60 * 1000;
       const timeUntilWarning = warningTime - Date.now();
 
       if (timeUntilWarning > 0) {
@@ -43,7 +43,6 @@ export const useAuthValidation = () => {
 
   const validateToken = useCallback(
     async (token: string | null): Promise<AuthValidationResult> => {
-      // Clear any existing expiry warnings
       clearExpiryWarning();
 
       if (!token) {
@@ -55,11 +54,9 @@ export const useAuthValidation = () => {
       }
 
       try {
-        // Decode and validate JWT structure
         const decodedToken: { sub: string; exp?: number } = jwtDecode(token);
         const userEmail = decodedToken.sub;
 
-        // Check if token is expired
         const isExpired =
           decodedToken.exp !== undefined ? decodedToken.exp * 1000 < Date.now() : false;
 
@@ -73,10 +70,8 @@ export const useAuthValidation = () => {
         }
 
         try {
-          // Validate token with backend by attempting to get user profile
           await getUserProfile();
 
-          // Schedule expiry warning if token has expiry time
           if (decodedToken.exp !== undefined) {
             const expiryTime = decodedToken.exp * 1000;
             scheduleExpiryWarning(expiryTime);
