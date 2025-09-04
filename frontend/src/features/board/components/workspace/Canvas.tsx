@@ -123,6 +123,12 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     () => `${styles.scrollContainer} ${shouldShowBanner ? styles.disconnected : ''}`,
     [shouldShowBanner],
   );
+  const containerStyle = useMemo(
+    () => ({
+      '--drawing-disabled-text': `"${t('common:connection.drawingDisabled')}"`,
+    } as React.CSSProperties),
+    [t],
+  );
   const canvasClassName = useMemo(
     () => `${styles.canvas} ${shouldBlockFunctionality ? styles.disabled : ''}`,
     [shouldBlockFunctionality],
@@ -133,7 +139,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   );
 
   return (
-    <div ref={containerRef} className={containerClassName}>
+    <div ref={containerRef} className={containerClassName} style={containerStyle}>
       <div className={canvasContainerClassName} style={canvasContainerStyle}>
         <div className={styles.canvasWrapper} style={canvasWrapperStyle}>
           <canvas

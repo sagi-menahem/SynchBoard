@@ -1,6 +1,7 @@
 import { useAuth } from 'features/auth/hooks';
 import { useConnectionStatus } from 'features/websocket/hooks';
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 
 import styles from './ConnectionStatusBanner.module.scss';
@@ -12,6 +13,7 @@ interface ConnectionStatusBannerProps {
 export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
   onHeightChange,
 }) => {
+  const { t } = useTranslation('common');
   const { token } = useAuth();
   const { shouldShowBanner } = useConnectionStatus();
   const bannerRef = useRef<HTMLDivElement>(null);
@@ -117,7 +119,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
         <span className={styles.icon} aria-hidden="true">
           ⚠️
         </span>
-        <span className={styles.message}>Connection lost - limited functionality</span>
+        <span className={styles.message}>{t('connection.lost')}</span>
       </div>
     </div>
   );
