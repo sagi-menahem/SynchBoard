@@ -34,7 +34,6 @@ export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = (
   );
 };
 
-// Hook to use the context
 export const useToolPreferences = (): ToolPreferencesContextType => {
   const context = useContext(ToolPreferencesContext);
   if (context === undefined) {

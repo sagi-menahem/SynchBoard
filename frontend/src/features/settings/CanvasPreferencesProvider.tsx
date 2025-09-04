@@ -32,7 +32,6 @@ export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps>
   );
 };
 
-// Hook to use the context
 export const useCanvasPreferences = (): CanvasPreferencesContextType => {
   const context = useContext(CanvasPreferencesContext);
   if (context === undefined) {

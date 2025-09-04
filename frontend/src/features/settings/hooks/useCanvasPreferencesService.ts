@@ -102,7 +102,6 @@ export function useCanvasPreferencesService() {
         try {
           await CanvasPreferencesService.updateSplitRatio(splitRatio);
         } catch (error) {
-          // Refresh preferences to restore server state
           await refreshPreferences();
           throw error;
         }
@@ -112,7 +111,6 @@ export function useCanvasPreferencesService() {
   );
 
   const updateLayoutMode = async (layoutMode: LayoutMode) => {
-    // Layout mode is client-side only for now
     dispatch({ type: 'UPDATE_LAYOUT_MODE', payload: layoutMode });
   };
 
@@ -140,7 +138,6 @@ export function useCanvasPreferencesService() {
     dispatch({ type: 'RESET_ERROR' });
   };
 
-  // WebSocket subscription for canvas settings updates
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
       if (message.updateType === 'CANVAS_SETTINGS_CHANGED') {
@@ -156,7 +153,6 @@ export function useCanvasPreferencesService() {
     'user',
   );
 
-  // Load preferences on mount and auth change
   useEffect(() => {
     if (isAuthenticated) {
       void refreshPreferences();

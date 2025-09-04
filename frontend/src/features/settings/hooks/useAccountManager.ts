@@ -20,7 +20,6 @@ export const useAccountManager = () => {
       toast.success(t('settings:success.account.delete'));
     } catch (error) {
       toast.dismiss();
-      // Don't show generic error - specific validation errors are already shown by apiClient
       throw error;
     }
   };

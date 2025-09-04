@@ -3,23 +3,20 @@
 .pageContent {
   position: relative;
   padding-block-start: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
-  /* Banner + toolbar + gap */
   min-height: 100vh;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-inline: 24px; // Already using logical properties
+  padding-inline: 24px;
   padding-block-end: 24px;
   box-sizing: border-box;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 
-  // Center content for consistent layout
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-// Responsive adjustments for mobile devices
 @media (max-width: 768px) {
   .pageContent {
     padding-inline: 16px;
@@ -56,7 +53,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 }
 
 .editButton {
