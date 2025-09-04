@@ -10,12 +10,28 @@ import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './CanvasSettingsSection.module.scss';
 
+/**
+ * Props interface for CanvasSettingsSection component.
+ * Defines the board data, permissions, and update handlers for canvas configuration.
+ */
 interface CanvasSettingsSectionProps {
+  /** Board details including current canvas dimensions and background color */
   boardDetails: BoardDetails;
+  /** Whether the current user has admin privileges to modify canvas settings */
   isAdmin: boolean;
+  /** Handler for updating canvas settings with async validation */
   onUpdateSettings: (settings: UpdateCanvasSettingsRequest) => Promise<void>;
 }
 
+/**
+ * Renders canvas configuration interface with background color and size controls.
+ * This component provides a comprehensive settings panel for canvas customization,
+ * supporting both preset dimensions and custom sizing with admin-controlled editing modes.
+ * 
+ * @param boardDetails - Board details including current canvas dimensions and background color
+ * @param isAdmin - Whether the current user has admin privileges to modify canvas settings
+ * @param onUpdateSettings - Handler for updating canvas settings with async validation
+ */
 const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
   boardDetails,
   isAdmin,

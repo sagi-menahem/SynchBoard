@@ -26,6 +26,7 @@
   margin-top: 4px;
 }
 
+/* Admin status badge positioned at the end of the member item with logical margin */
 .adminBadge {
   @include theme.flex-center;
   margin-inline-start: auto;
