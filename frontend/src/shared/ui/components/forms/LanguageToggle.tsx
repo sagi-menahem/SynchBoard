@@ -11,10 +11,10 @@ interface LanguageToggleProps {
   showLabel?: boolean;
 }
 
-const LanguageToggle: React.FC<LanguageToggleProps> = ({ 
+const LanguageToggle: React.FC<LanguageToggleProps> = ({
   value,
   onChange,
-  className, 
+  className,
   size = 'sm',
   showLabel = false,
 }) => {
@@ -38,7 +38,15 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className={className}>
       {showLabel && (
-        <span style={{ fontSize: '14px', color: 'var(--color-text-muted)', fontWeight: '500', whiteSpace: 'nowrap' }} id="language-label">
+        <span
+          style={{
+            fontSize: '14px',
+            color: 'var(--color-text-muted)',
+            fontWeight: '500',
+            whiteSpace: 'nowrap',
+          }}
+          id="language-label"
+        >
           {t('common:language')}
         </span>
       )}
@@ -75,7 +83,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
             transform: (() => {
               if (isHebrew) {
-                return isRTL ? `translateX(-${config.width - config.height}px)` : `translateX(${config.width - config.height}px)`;
+                return isRTL
+                  ? `translateX(-${config.width - config.height}px)`
+                  : `translateX(${config.width - config.height}px)`;
               }
               return 'translateX(0px)';
             })(),
@@ -83,40 +93,50 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             zIndex: 1,
           }}
         />
-        
+
         {/* Background text */}
-        <div style={{
-          position: 'absolute',
-          inset: '2px',
-          display: 'flex',
-          alignItems: 'center',
-          zIndex: 2,
-        }}>
-          <div style={{
-            flex: 1,
+        <div
+          style={{
+            position: 'absolute',
+            inset: '2px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <span style={{
-              fontSize: `${config.fontSize}px`,
-              fontWeight: '700',
-              color: isHebrew ? '#6b7280' : '#374151',
-            }}>
+            zIndex: 2,
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span
+              style={{
+                fontSize: `${config.fontSize}px`,
+                fontWeight: '700',
+                color: isHebrew ? '#6b7280' : '#374151',
+              }}
+            >
               EN
             </span>
           </div>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <span style={{
-              fontSize: `${config.fontSize}px`,
-              fontWeight: '700',
-              color: isHebrew ? '#6b7280' : '#6b7280',
-            }}>
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span
+              style={{
+                fontSize: `${config.fontSize}px`,
+                fontWeight: '700',
+                color: isHebrew ? '#6b7280' : '#6b7280',
+              }}
+            >
               HE
             </span>
           </div>

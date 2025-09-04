@@ -10,7 +10,7 @@ interface PageLoaderProps {
 
 export const PageLoader: React.FC<PageLoaderProps> = ({ message = 'Loading...' }) => {
   return (
-    <motion.div 
+    <motion.div
       className={styles.pageLoader}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

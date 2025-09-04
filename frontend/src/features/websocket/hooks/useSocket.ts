@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 
-
 import WebSocketService from 'features/websocket/services/websocketService';
 import logger from 'shared/utils/logger';
 

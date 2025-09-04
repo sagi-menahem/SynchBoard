@@ -63,13 +63,11 @@
   margin-inline-start: auto;
   position: relative;
 
-
   // Dark theme - deep navy from design tokens
   body[data-theme='dark'] & {
     background: theme.$color-chat-my-message-dark;
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.1);
-
   }
 
   // Light theme - light blue from design tokens
@@ -77,7 +75,6 @@
     background: theme.$color-chat-my-message-light;
     color: #ffffff;
     border-color: rgba(59, 130, 246, 0.2);
-
   }
 }
 
@@ -86,13 +83,11 @@
   color: theme.$text-primary;
   position: relative;
 
-
   // Dark theme - warm dark gray from design tokens
   body[data-theme='dark'] & {
     background: theme.$color-chat-other-message-dark;
     color: #f9fafb;
     border-color: rgba(255, 255, 255, 0.08);
-
   }
 
   // Light theme - soft gray from design tokens
@@ -100,7 +95,6 @@
     background: theme.$color-chat-other-message-light;
     color: #1b1b1b;
     border-color: rgba(0, 0, 0, 0.1);
-
   }
 }
 
@@ -187,7 +181,6 @@
   display: inline-block;
 }
 
-
 .failureIcon {
   position: absolute;
   bottom: theme.$spacing-0-5;
@@ -226,8 +219,6 @@
   outline-offset: 2px;
   border-radius: theme.$border-radius-3xl;
 }
-
-
 
 @media (prefers-contrast: high) {
   .messageBubble {
@@ -270,7 +261,7 @@
   }
 }
 
-// Confirmed status - restore normal styling 
+// Confirmed status - restore normal styling
 .confirmed {
   .messageBubble {
     opacity: 1 !important;

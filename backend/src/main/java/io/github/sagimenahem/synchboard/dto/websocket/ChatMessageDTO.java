@@ -14,6 +14,7 @@ public final class ChatMessageDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+
         private String content;
         private Long boardId;
         private String instanceId;
@@ -37,7 +38,9 @@ public final class ChatMessageDTO {
         private String instanceId;
 
         public enum MessageType {
-            CHAT, JOIN, LEAVE
+            CHAT,
+            JOIN,
+            LEAVE,
         }
     }
 }

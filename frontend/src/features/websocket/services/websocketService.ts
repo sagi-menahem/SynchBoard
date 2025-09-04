@@ -1,4 +1,3 @@
-
 import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
 import {
   type MessageValidationSchema,
@@ -36,8 +35,7 @@ class WebSocketService {
   }
 
   private initializeMessageSchemas(): void {
-    this.messageSchemas.set('board', {
-    });
+    this.messageSchemas.set('board', {});
 
     this.messageSchemas.set('user', {
       requiredFields: ['updateType'],
@@ -49,8 +47,6 @@ class WebSocketService {
       maxLength: 5000,
     });
   }
-
-
 
   private validateMessageWithSchema(data: unknown, schemaKey?: string): boolean {
     const dataObj = data as Record<string, unknown>;
@@ -71,12 +67,12 @@ class WebSocketService {
     return validateMessage(data);
   }
 
-
-
   private parseAndValidateMessage<T>(messageBody: string, schemaKey?: string): T | null {
     try {
       if (messageBody.length > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
-        logger.error(`Message exceeds maximum allowed size: ${messageBody.length} > ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`);
+        logger.error(
+          `Message exceeds maximum allowed size: ${messageBody.length} > ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`,
+        );
         return null;
       }
 
@@ -111,23 +107,24 @@ class WebSocketService {
 
   private attemptReconnection(): void {
     if (this.reconnectionAttempts >= WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS) {
-      logger.warn(`Max reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection.`);
+      logger.warn(
+        `Max reconnection attempts (${WEBSOCKET_CONFIG.MAX_RECONNECTION_ATTEMPTS}) reached. Stopping reconnection.`,
+      );
       this.resetReconnectionState();
       this.connectionState = 'disconnected';
       return;
     }
 
     const baseDelay = WEBSOCKET_CONFIG.BASE_RECONNECTION_DELAY;
-    const delay = Math.min(
-      baseDelay * Math.pow(2, this.reconnectionAttempts),
-      30000,
-    );
+    const delay = Math.min(baseDelay * Math.pow(2, this.reconnectionAttempts), 30000);
     this.reconnectionAttempts++;
 
     this.reconnectionTimer = setTimeout(() => {
-      if (this.currentToken &&
+      if (
+        this.currentToken &&
         this.onConnectedCallback &&
-        this.connectionState === 'disconnected') {
+        this.connectionState === 'disconnected'
+      ) {
         this.connectInternal(this.currentToken, this.onConnectedCallback);
       } else {
         this.resetReconnectionState();
@@ -148,8 +145,10 @@ class WebSocketService {
   }
 
   public connect(token: string, onConnectedCallback: () => void) {
-    if (this.connectionState === 'connecting' ||
-      (this.stompClient?.active && this.connectionState === 'connected')) {
+    if (
+      this.connectionState === 'connecting' ||
+      (this.stompClient?.active && this.connectionState === 'connected')
+    ) {
       if (this.connectionState === 'connected') {
         onConnectedCallback();
       }
@@ -223,7 +222,6 @@ class WebSocketService {
           this.isIntentionalDisconnect = false;
           return;
         }
-
 
         if (this.rollbackCallbacks.size > 0) {
           this.rollbackCallbacks.forEach((callback) => {
@@ -326,7 +324,9 @@ class WebSocketService {
     const messageBody = JSON.stringify(sanitizedBody);
 
     if (messageBody.length > WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE) {
-      const error = new Error(`Cannot send message: size ${messageBody.length} exceeds limit ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`);
+      const error = new Error(
+        `Cannot send message: size ${messageBody.length} exceeds limit ${WEBSOCKET_CONFIG.MAX_MESSAGE_SIZE}`,
+      );
       logger.error(error.message);
       throw error;
     }

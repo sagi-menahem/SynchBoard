@@ -20,13 +20,13 @@
   gap: theme.$spacing-2;
   cursor: pointer;
   @include theme.smooth-transition;
-  
+
   &:hover {
     .radioButton {
       border-color: theme.$primary;
       box-shadow: theme.$shadow-focus-outline theme.$primary-light;
     }
-    
+
     .radioLabel {
       color: theme.$text-primary;
     }
@@ -34,16 +34,16 @@
 }
 
 /* RTL support - radio button appears on the right side of text */
-[dir="rtl"] .radioItem {
+[dir='rtl'] .radioItem {
   flex-direction: row-reverse;
 }
 
 /* Ensure horizontal group also respects RTL flow */
-[dir="rtl"] .radioGroup.horizontal {
+[dir='rtl'] .radioGroup.horizontal {
   direction: rtl;
 }
 
-[dir="rtl"] .radioGroup.horizontal .radioItem {
+[dir='rtl'] .radioGroup.horizontal .radioItem {
   direction: ltr; /* Keep individual items LTR for proper text rendering */
 }
 
@@ -61,24 +61,24 @@
   position: relative;
   @include theme.smooth-transition;
   flex-shrink: 0;
-  
+
   &:focus {
     outline: none;
     border-color: theme.$primary;
     box-shadow: theme.$shadow-focus-ring theme.$primary-light; /* Standard focus ring */
   }
-  
-  &[data-state="checked"] {
+
+  &[data-state='checked'] {
     border-color: theme.$primary;
     background-color: theme.$surface;
   }
-  
+
   &:disabled {
     cursor: not-allowed;
     opacity: theme.$opacity-50;
     border-color: theme.$border-light;
     background-color: theme.$surface-hover;
-    
+
     &:hover {
       border-color: theme.$border-light;
       box-shadow: none;
@@ -93,8 +93,8 @@
   width: 100%;
   height: 100%;
   position: relative;
-  
-  &[data-state="checked"]::after {
+
+  &[data-state='checked']::after {
     content: '';
     display: block;
     width: theme.$spacing-2;
@@ -113,11 +113,11 @@
   @include theme.smooth-transition;
   user-select: none;
   line-height: theme.$line-height-normal;
-  
-  .radioItem:has(.radioButton[data-state="checked"]) & {
+
+  .radioItem:has(.radioButton[data-state='checked']) & {
     color: theme.$text-primary;
   }
-  
+
   .radioItem:has(.radioButton:disabled) & {
     cursor: not-allowed;
     opacity: theme.$opacity-50;
@@ -138,7 +138,7 @@
   .radioGroup.horizontal {
     flex-direction: column;
   }
-  
+
   .radioItem {
     padding: theme.$spacing-1 0;
   }

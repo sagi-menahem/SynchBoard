@@ -11,7 +11,9 @@ public final class BoardActionDTO {
     private BoardActionDTO() {}
 
     public enum ActionType {
-        OBJECT_ADD, OBJECT_UPDATE, OBJECT_DELETE
+        OBJECT_ADD,
+        OBJECT_UPDATE,
+        OBJECT_DELETE,
     }
 
     @Data
@@ -19,6 +21,7 @@ public final class BoardActionDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+
         private Long boardId;
         private ActionType type;
         private JsonNode payload;
@@ -31,6 +34,7 @@ public final class BoardActionDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response {
+
         private ActionType type;
         private JsonNode payload;
         private String sender;

@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { APP_CONFIG } from 'shared/constants/AppConstants';
 import logger from 'shared/utils/logger';
 
-
 interface CreateBoardState {
   success: boolean;
   error?: string;
@@ -17,7 +16,10 @@ interface CreateBoardState {
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {
   const { t } = useTranslation(['board', 'common']);
 
-  const createBoardAction = async (_previousState: CreateBoardState, formData: FormData): Promise<CreateBoardState> => {
+  const createBoardAction = async (
+    _previousState: CreateBoardState,
+    formData: FormData,
+  ): Promise<CreateBoardState> => {
     const name = (formData.get('name') as string)?.trim() ?? '';
     const description = (formData.get('description') as string)?.trim() ?? '';
     const picture = formData.get('picture') as File;

@@ -24,45 +24,41 @@ const LazyPageLoader = () => {
 export function AppRoutes() {
   return (
     <Routes>
-      <Route 
-        path="/" 
-        element={<RootRedirect />}
-      />
-      
-      <Route 
-        path="/auth" 
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        } 
-      />
-      <Route 
-        path={APP_ROUTES.AUTH_CALLBACK} 
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        } 
-      />
-      <Route 
-        path={APP_ROUTES.AUTH_ERROR} 
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        } 
-      />
-      
+      <Route path="/" element={<RootRedirect />} />
 
-      <Route 
-        path={APP_ROUTES.BOARD_LIST} 
+      <Route
+        path="/auth"
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path={APP_ROUTES.AUTH_CALLBACK}
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path={APP_ROUTES.AUTH_ERROR}
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+
+      <Route
+        path={APP_ROUTES.BOARD_LIST}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -71,10 +67,10 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      <Route 
-        path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
+      <Route
+        path={APP_ROUTES.BOARD_DETAIL_PATTERN}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -83,10 +79,10 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      <Route 
-        path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
+      <Route
+        path={APP_ROUTES.BOARD_DETAILS_PATTERN}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -95,10 +91,10 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      <Route 
-        path={APP_ROUTES.SETTINGS} 
+      <Route
+        path={APP_ROUTES.SETTINGS}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -107,9 +103,9 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      
+
       <Route
         element={
           <ProtectedRoute>

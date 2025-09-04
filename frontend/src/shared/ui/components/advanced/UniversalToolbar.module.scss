@@ -23,7 +23,8 @@
   overflow: visible;
   // Remove transform to avoid conflicts with PageTransition
   /* transform: translate3d(0, 0, 0); */
-  transition: background-color theme.$transition-normal theme.$transition-ease,
+  transition:
+    background-color theme.$transition-normal theme.$transition-ease,
     border-color theme.$transition-normal theme.$transition-ease,
     box-shadow theme.$transition-normal theme.$transition-ease;
 
@@ -90,7 +91,6 @@
   @include theme.smooth-transition;
 }
 
-
 // Title button styling overrides
 .titleButton {
   background: transparent !important;
@@ -129,7 +129,7 @@
   gap: theme.$spacing-2;
 }
 
-.toolbarSection>*:not(:last-child)::after {
+.toolbarSection > *:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -8px;
@@ -141,13 +141,13 @@
   pointer-events: none;
 }
 
-.toolbarSection>*:last-child::after {
+.toolbarSection > *:last-child::after {
   display: none;
 }
 
-.toolbarSection>.customItem::after,
-.toolbarSection>*:has(.searchInput)::after,
-.toolbarSection>*:has(.viewToggle)::after {
+.toolbarSection > .customItem::after,
+.toolbarSection > *:has(.searchInput)::after,
+.toolbarSection > *:has(.viewToggle)::after {
   display: none;
 }
 
@@ -162,7 +162,7 @@
   }
 }
 
-// HISTORY (Priority 2) - Hide at 1180px  
+// HISTORY (Priority 2) - Hide at 1180px
 @media (max-width: 870px) {
   .leftSection :global(.toolbar-priority-2) {
     display: none !important;

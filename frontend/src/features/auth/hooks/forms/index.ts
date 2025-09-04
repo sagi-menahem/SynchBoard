@@ -1,5 +1,11 @@
 // Shared auth form utilities
-export { authErrorHandling, authToastMessages, authValidation, extractFormData, useAuthForm } from './useAuthForm';
+export {
+  authErrorHandling,
+  authToastMessages,
+  authValidation,
+  extractFormData,
+  useAuthForm,
+} from './useAuthForm';
 
 // Individual form hooks
 export { useForgotPasswordForm } from './useForgotPasswordForm';

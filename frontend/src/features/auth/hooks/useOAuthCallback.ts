@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
@@ -11,7 +10,6 @@ import { extractErrorFromCallback, extractTokenFromCallback } from '../services/
 
 import { useAuth } from '.';
 
-
 export const useOAuthCallback = () => {
   const { t } = useTranslation(['auth', 'common']);
   const navigate = useNavigate();
@@ -19,7 +17,8 @@ export const useOAuthCallback = () => {
 
   const [isProcessing, setIsProcessing] = useState(() => {
     const isCallback = window.location.pathname === '/auth/callback';
-    const hasParams = new URLSearchParams(window.location.search).has('token') ||
+    const hasParams =
+      new URLSearchParams(window.location.search).has('token') ||
       new URLSearchParams(window.location.search).has('code');
 
     const shouldProcess = isCallback && hasParams;
@@ -49,7 +48,6 @@ export const useOAuthCallback = () => {
     sessionStorage.setItem(processedKey, 'true');
 
     const handleOAuthCallback = async () => {
-
       try {
         const error = extractErrorFromCallback();
         if (error !== null && error !== '') {
@@ -92,7 +90,6 @@ export const useOAuthCallback = () => {
           sessionStorage.removeItem('oauth_success_shown');
           sessionStorage.removeItem('oauth_callback_processed');
         }, 1000);
-
       } catch (error) {
         logger.error('[useOAuthCallback] Error processing OAuth callback', error);
         toast.error(t('auth:oauth.error.processing'));

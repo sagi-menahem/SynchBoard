@@ -8,43 +8,43 @@ import Button from 'shared/ui/components/forms/Button';
 import styles from './ChatInput.module.scss';
 
 interface ChatInputProps {
-    onSendMessage: (content: string) => Promise<void>;
-    disabled?: boolean;
-    placeholder?: string;
+  onSendMessage: (content: string) => Promise<void>;
+  disabled?: boolean;
+  placeholder?: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = React.memo(({ 
-  onSendMessage, 
-  placeholder, 
-}) => {
+const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeholder }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { shouldBlockFunctionality } = useConnectionStatus();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-        
-    const messageContent = message.trim();
-    if (!messageContent || shouldBlockFunctionality || isSending) {
-      return;
-    }
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    setIsSending(true);
-        
-    try {
-      await onSendMessage(messageContent);
-      setMessage('');
-    } catch {
-      setMessage('');
-    } finally {
-      setIsSending(false);
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 0);
-    }
-  }, [message, onSendMessage, shouldBlockFunctionality, isSending]);
+      const messageContent = message.trim();
+      if (!messageContent || shouldBlockFunctionality || isSending) {
+        return;
+      }
+
+      setIsSending(true);
+
+      try {
+        await onSendMessage(messageContent);
+        setMessage('');
+      } catch {
+        setMessage('');
+      } finally {
+        setIsSending(false);
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0);
+      }
+    },
+    [message, onSendMessage, shouldBlockFunctionality, isSending],
+  );
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -84,7 +84,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({
           aria-label={t('chat:window.placeholder')}
         />
         <Button
-          type="submit" 
+          type="submit"
           variant="icon"
           disabled={!hasMessage || isDisabled}
           className={styles.sendButton}

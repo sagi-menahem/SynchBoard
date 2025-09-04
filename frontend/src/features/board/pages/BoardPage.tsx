@@ -65,23 +65,17 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     isRedoAvailable,
   } = useBoardContext();
 
-  const {
-    preferences,
-    updateTool,
-    updateStrokeColor,
-    updateStrokeWidth,
-  } = useToolPreferences();
-  
+  const { preferences, updateTool, updateStrokeColor, updateStrokeWidth } = useToolPreferences();
+
   const tool = preferences.defaultTool;
-  const strokeColor = preferences.defaultStrokeColor;  
+  const strokeColor = preferences.defaultStrokeColor;
   const strokeWidth = preferences.defaultStrokeWidth;
 
   const handleColorPick = (color: string) => {
     void updateStrokeColor(color);
   };
 
-  const { preferences: canvasPreferences, updateSplitRatio } =
-    useCanvasPreferences();
+  const { preferences: canvasPreferences, updateSplitRatio } = useCanvasPreferences();
 
   const handleSplitRatioChange = (newRatio: number) => {
     void updateSplitRatio(newRatio);
@@ -97,18 +91,21 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       : undefined;
   }, [boardDetails]);
 
-  const { handleDownload } = useCanvasDownload({ 
-    boardName: boardName ?? t('board:fallbacks.untitled'), 
+  const { handleDownload } = useCanvasDownload({
+    boardName: boardName ?? t('board:fallbacks.untitled'),
     canvasConfig,
   });
 
-  const handleToolClick = useCallback((toolName: Tool) => {
-    if (toolName === TOOLS.DOWNLOAD) {
-      void handleDownload();
-    } else {
-      void updateTool(toolName);
-    }
-  }, [handleDownload, updateTool]);
+  const handleToolClick = useCallback(
+    (toolName: Tool) => {
+      if (toolName === TOOLS.DOWNLOAD) {
+        void handleDownload();
+      } else {
+        void updateTool(toolName);
+      }
+    },
+    [handleDownload, updateTool],
+  );
 
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
@@ -121,41 +118,44 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           content: (
             <ToolGroup label={t('board:toolbar.label.color')}>
               <div className={`${utilStyles.colorPickerPopupWrapper}`}>
-                <ColorPicker
-                  color={strokeColor}
-                  onChange={updateStrokeColor}
-                />
+                <ColorPicker color={strokeColor} onChange={updateStrokeColor} />
               </div>
             </ToolGroup>
           ),
         },
         // SIZE - Always visible (except for download tool)
-        ...(tool !== TOOLS.DOWNLOAD ? [{
-          type: 'custom' as const,
-          key: 'size-group',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.size')}>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                minWidth: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_MIN_WIDTH,
-                height: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_HEIGHT,
-                padding: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_PADDING,
-                background: 'var(--color-surface-elevated)',
-                border: '1px solid var(--color-border-light)',
-                borderRadius: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_BORDER_RADIUS,
-              }}>
-                <Slider
-                  value={strokeWidth}
-                  min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
-                  max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
-                  onChange={updateStrokeWidth}
-                  aria-label={t('common:accessibility.sizeSlider', { size: strokeWidth })}
-                />
-              </div>
-            </ToolGroup>
-          ),
-        }] : []),
+        ...(tool !== TOOLS.DOWNLOAD
+          ? [
+              {
+                type: 'custom' as const,
+                key: 'size-group',
+                content: (
+                  <ToolGroup label={t('board:toolbar.label.size')}>
+                    <div
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        minWidth: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_MIN_WIDTH,
+                        height: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_HEIGHT,
+                        padding: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_PADDING,
+                        background: 'var(--color-surface-elevated)',
+                        border: '1px solid var(--color-border-light)',
+                        borderRadius: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_BORDER_RADIUS,
+                      }}
+                    >
+                      <Slider
+                        value={strokeWidth}
+                        min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN}
+                        max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX}
+                        onChange={updateStrokeWidth}
+                        aria-label={t('common:accessibility.sizeSlider', { size: strokeWidth })}
+                      />
+                    </div>
+                  </ToolGroup>
+                ),
+              },
+            ]
+          : []),
         // DRAW - Priority 6
         {
           type: 'custom',
@@ -189,10 +189,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           className: 'toolbar-priority-5',
           content: (
             <ToolGroup label={t('board:toolbar.label.shapes')}>
-              <ShapeToolsDropdown
-                currentTool={tool}
-                onToolSelect={updateTool}
-              />
+              <ShapeToolsDropdown currentTool={tool} onToolSelect={updateTool} />
             </ToolGroup>
           ),
         },
@@ -203,10 +200,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           className: 'toolbar-priority-4',
           content: (
             <ToolGroup label={t('board:toolbar.label.lines')}>
-              <LineToolsDropdown
-                currentTool={tool}
-                onToolSelect={updateTool}
-              />
+              <LineToolsDropdown currentTool={tool} onToolSelect={updateTool} />
             </ToolGroup>
           ),
         },
@@ -293,25 +287,32 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         {
           type: 'custom',
           content: (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: UI_CONSTANTS.TOOLBAR_GAP,
-              paddingRight: UI_CONSTANTS.TOOLBAR_PADDING_RIGHT,
-              position: 'relative',
-            }}>
-              <div style={{
-                width: UI_CONSTANTS.SEPARATOR_WIDTH,
-                height: '32px',
-                background: 'linear-gradient(to bottom, transparent, var(--color-border-light), transparent)',
-              }} />
-              <span style={{
-                fontSize: '16px',
-                fontWeight: '600',
-                color: 'var(--color-text-primary)',
-                letterSpacing: '0.02em',
-                whiteSpace: 'nowrap',
-              }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: UI_CONSTANTS.TOOLBAR_GAP,
+                paddingRight: UI_CONSTANTS.TOOLBAR_PADDING_RIGHT,
+                position: 'relative',
+              }}
+            >
+              <div
+                style={{
+                  width: UI_CONSTANTS.SEPARATOR_WIDTH,
+                  height: '32px',
+                  background:
+                    'linear-gradient(to bottom, transparent, var(--color-border-light), transparent)',
+                }}
+              />
+              <span
+                style={{
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: 'var(--color-text-primary)',
+                  letterSpacing: '0.02em',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {boardName ?? t('board:fallbacks.untitled')}
               </span>
             </div>

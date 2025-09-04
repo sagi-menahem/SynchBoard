@@ -1,12 +1,8 @@
-
 import React, { useCallback } from 'react';
 
 import clsx from 'clsx';
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import {
-  ArrowRight,
-  Minus,
-} from 'lucide-react';
+import { ArrowRight, Minus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import Button from 'shared/ui/components/forms/Button';
@@ -18,15 +14,15 @@ interface LineToolsGroupProps {
   onToolSelect: (tool: Tool) => void;
 }
 
-export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
-  currentTool,
-  onToolSelect,
-}) => {
+export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({ currentTool, onToolSelect }) => {
   const { t } = useTranslation(['board', 'common']);
 
-  const handleToolClick = useCallback((tool: Tool) => {
-    onToolSelect(tool);
-  }, [onToolSelect]);
+  const handleToolClick = useCallback(
+    (tool: Tool) => {
+      onToolSelect(tool);
+    },
+    [onToolSelect],
+  );
 
   return (
     <>
@@ -44,10 +40,40 @@ export const LineToolsGroup: React.FC<LineToolsGroupProps> = ({
         onClick={() => handleToolClick(TOOLS.DOTTED_LINE)}
         title={t('board:toolbar.tool.dottedLine')}
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="2" y1="10" x2="5" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <line x1="8" y1="10" x2="11" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <line x1="14" y1="10" x2="17" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="2"
+            y1="10"
+            x2="5"
+            y2="10"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <line
+            x1="8"
+            y1="10"
+            x2="11"
+            y2="10"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <line
+            x1="14"
+            y1="10"
+            x2="17"
+            y2="10"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       </Button>
       <Button

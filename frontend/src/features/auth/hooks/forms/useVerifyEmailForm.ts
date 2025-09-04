@@ -7,7 +7,10 @@ import * as authService from '../../services/authService';
 
 import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
 
-export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token: string) => void) => {
+export const useVerifyEmailForm = (
+  email: string,
+  onVerificationSuccess: (token: string) => void,
+) => {
   const { t } = useTranslation(['auth', 'common']);
 
   return useAuthForm<VerifyEmailRequest, { token: string }>({
@@ -17,7 +20,9 @@ export const useVerifyEmailForm = (email: string, onVerificationSuccess: (token:
 
       // Validate verification code
       const codeError = authValidation.validateVerificationCode(verificationCode, t);
-      if (codeError) { return codeError; }
+      if (codeError) {
+        return codeError;
+      }
 
       return {
         email,
@@ -38,14 +43,11 @@ export const useResendVerificationCode = (email: string) => {
 
   const resendVerificationCode = async (): Promise<{ success: boolean; error?: string }> => {
     try {
-      await toastPromise(
-        authService.resendVerificationCode({ email }),
-        {
-          loading: t('auth:loading.resendVerification'),
-          success: t('auth:success.resendVerification'),
-          error: t('auth:errors.resendVerification'),
-        },
-      );
+      await toastPromise(authService.resendVerificationCode({ email }), {
+        loading: t('auth:loading.resendVerification'),
+        success: t('auth:success.resendVerification'),
+        error: t('auth:errors.resendVerification'),
+      });
       return { success: true };
     } catch (err: unknown) {
       logger.error('Resend verification code failed for user:', err, { email });

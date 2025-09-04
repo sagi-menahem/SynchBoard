@@ -6,14 +6,13 @@ import { Button, Input, Textarea } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import logger from 'shared/utils/logger';
 
-
 interface EditFieldFormProps {
-    title: string;
-    label: string;
-    initialValue: string;
-    inputType?: 'input' | 'textarea';
-    onSave: (value: string) => Promise<void>;
-    onClose: () => void;
+  title: string;
+  label: string;
+  initialValue: string;
+  inputType?: 'input' | 'textarea';
+  onSave: (value: string) => Promise<void>;
+  onClose: () => void;
 }
 
 const EditFieldForm: React.FC<EditFieldFormProps> = ({

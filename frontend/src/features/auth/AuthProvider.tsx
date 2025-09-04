@@ -8,22 +8,22 @@ import { AuthContext } from './AuthContext';
 import { useSyncAuthValidation } from './hooks/useSyncAuthValidation';
 
 interface AuthProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const storedToken = getToken();
-  
+
   const [token, setToken] = useState<string | null>(storedToken);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isInitializing] = useState(false);
   const [needsBackendValidation, setNeedsBackendValidation] = useState(false);
-  
+
   const { validateTokenSync, clearExpiryWarning, clearTokenFromStorage } = useSyncAuthValidation();
 
   useMemo(() => {
     const result = validateTokenSync(token);
-    
+
     if (result.shouldClearToken && token) {
       setToken(null);
       clearTokenFromStorage();
@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUserEmail(null);
       setNeedsBackendValidation(false);
     }
-    
+
     return result;
   }, [token, validateTokenSync, clearTokenFromStorage]);
 
@@ -73,13 +73,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     removeToken();
   }, []);
 
-  const value = useMemo(() => ({
-    token,
-    userEmail,
-    isInitializing,
-    login,
-    logout,
-  }), [token, userEmail, isInitializing, login, logout]);
+  const value = useMemo(
+    () => ({
+      token,
+      userEmail,
+      isInitializing,
+      login,
+      logout,
+    }),
+    [token, userEmail, isInitializing, login, logout],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

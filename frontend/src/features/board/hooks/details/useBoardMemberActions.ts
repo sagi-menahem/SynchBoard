@@ -15,16 +15,19 @@ export interface UseBoardMemberActionsReturn {
   handleRemoveMember: (member: Member) => Promise<void>;
   handleInviteMember: (email: string) => Promise<Member>;
   handleRightClick: (event: React.MouseEvent, member: Member) => void;
-  
+
   // Context menu state
   contextMenu: ReturnType<typeof useContextMenu<Member>>;
-  
+
   // Invite form state
   inviteForm: {
     email: string;
     setEmail: (email: string) => void;
     isSubmitting: boolean;
-    handleSubmit: (event: React.FormEvent<HTMLFormElement>, onSuccess: (newMember: Member) => void) => Promise<void>;
+    handleSubmit: (
+      event: React.FormEvent<HTMLFormElement>,
+      onSuccess: (newMember: Member) => void,
+    ) => Promise<void>;
   };
 }
 
@@ -35,7 +38,7 @@ export const useBoardMemberActions = (
   const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();
   const contextMenu = useContextMenu<Member>();
-  
+
   // Invite form state
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,42 +46,33 @@ export const useBoardMemberActions = (
   // Member management actions
   const handlePromoteMember = useCallback(
     async (member: Member) => {
-      await toastPromise(
-        boardService.promoteMember(boardId, member.email),
-        {
-          loading: t('board:loading.member.promote'),
-          success: t('board:success.member.promote', { userName: member.firstName }),
-          error: t('board:errors.member.promote'),
-        },
-      );
+      await toastPromise(boardService.promoteMember(boardId, member.email), {
+        loading: t('board:loading.member.promote'),
+        success: t('board:success.member.promote', { userName: member.firstName }),
+        error: t('board:errors.member.promote'),
+      });
     },
     [boardId, t],
   );
 
   const handleRemoveMember = useCallback(
     async (member: Member) => {
-      await toastPromise(
-        boardService.removeMember(boardId, member.email),
-        {
-          loading: t('board:loading.member.remove'),
-          success: t('board:success.member.remove', { userName: member.firstName }),
-          error: t('board:errors.member.remove'),
-        },
-      );
+      await toastPromise(boardService.removeMember(boardId, member.email), {
+        loading: t('board:loading.member.remove'),
+        success: t('board:success.member.remove', { userName: member.firstName }),
+        error: t('board:errors.member.remove'),
+      });
     },
     [boardId, t],
   );
 
   const handleInviteMember = useCallback(
     async (inviteEmail: string) => {
-      const newMember = await toastPromise(
-        boardService.inviteMember(boardId, inviteEmail),
-        {
-          loading: t('board:loading.member.invite'),
-          success: t('board:success.member.invite', { email: inviteEmail }),
-          error: t('board:errors.member.invite'),
-        },
-      );
+      const newMember = await toastPromise(boardService.inviteMember(boardId, inviteEmail), {
+        loading: t('board:loading.member.invite'),
+        success: t('board:success.member.invite', { email: inviteEmail }),
+        error: t('board:errors.member.invite'),
+      });
       return newMember;
     },
     [boardId, t],
@@ -98,13 +92,13 @@ export const useBoardMemberActions = (
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>, onSuccess: (newMember: Member) => void) => {
       event.preventDefault();
-      
+
       if (!email.trim()) {
         logger.warn('[useBoardMemberActions] Email validation failed - empty email');
         toast.error(t('board:inviteMemberForm.emailRequiredError'));
         return;
       }
-      
+
       setIsSubmitting(true);
 
       try {

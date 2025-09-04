@@ -6,12 +6,11 @@ import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import logger from 'shared/utils/logger';
 
 interface ProtectedRouteProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { token } = useAuth();
-  
 
   if (!token) {
     logger.warn('[ProtectedRoute] SECURITY: No token found - redirecting to login', {

@@ -1,6 +1,13 @@
-
 import type { CanvasPreferences } from 'features/board/types/BoardTypes';
-import type { ChangePasswordRequest, LanguagePreferences, ThemePreferences, ToolPreferences, UpdateUserProfileRequest, UserPreferences, UserProfile } from 'features/settings/types/UserTypes';
+import type {
+  ChangePasswordRequest,
+  LanguagePreferences,
+  ThemePreferences,
+  ToolPreferences,
+  UpdateUserProfileRequest,
+  UserPreferences,
+  UserProfile,
+} from 'features/settings/types/UserTypes';
 import { API_ENDPOINTS } from 'shared/constants';
 import apiClient from 'shared/lib/apiClient';
 
@@ -21,9 +28,13 @@ export const changePassword = async (data: ChangePasswordRequest): Promise<void>
 export const uploadProfilePicture = async (file: File): Promise<UserProfile> => {
   const formData = new FormData();
   formData.append('file', file);
-  const response = await apiClient.post<UserProfile>(API_ENDPOINTS.UPLOAD_PROFILE_PICTURE, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const response = await apiClient.post<UserProfile>(
+    API_ENDPOINTS.UPLOAD_PROFILE_PICTURE,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+  );
   return response.data;
 };
 
@@ -51,8 +62,13 @@ export const getCanvasPreferences = async (): Promise<CanvasPreferences> => {
   return response.data;
 };
 
-export const updateCanvasPreferences = async (preferences: Partial<CanvasPreferences>): Promise<CanvasPreferences> => {
-  const response = await apiClient.put<CanvasPreferences>(API_ENDPOINTS.UPDATE_CANVAS_PREFERENCES, preferences);
+export const updateCanvasPreferences = async (
+  preferences: Partial<CanvasPreferences>,
+): Promise<CanvasPreferences> => {
+  const response = await apiClient.put<CanvasPreferences>(
+    API_ENDPOINTS.UPDATE_CANVAS_PREFERENCES,
+    preferences,
+  );
   return response.data;
 };
 
@@ -61,8 +77,13 @@ export const getToolPreferences = async (): Promise<ToolPreferences> => {
   return response.data;
 };
 
-export const updateToolPreferences = async (preferences: ToolPreferences): Promise<ToolPreferences> => {
-  const response = await apiClient.put<ToolPreferences>(API_ENDPOINTS.UPDATE_TOOL_PREFERENCES, preferences);
+export const updateToolPreferences = async (
+  preferences: ToolPreferences,
+): Promise<ToolPreferences> => {
+  const response = await apiClient.put<ToolPreferences>(
+    API_ENDPOINTS.UPDATE_TOOL_PREFERENCES,
+    preferences,
+  );
   return response.data;
 };
 
@@ -71,8 +92,13 @@ export const getLanguagePreferences = async (): Promise<LanguagePreferences> => 
   return response.data;
 };
 
-export const updateLanguagePreferences = async (preferences: LanguagePreferences): Promise<LanguagePreferences> => {
-  const response = await apiClient.put<LanguagePreferences>(API_ENDPOINTS.UPDATE_LANGUAGE_PREFERENCES, preferences);
+export const updateLanguagePreferences = async (
+  preferences: LanguagePreferences,
+): Promise<LanguagePreferences> => {
+  const response = await apiClient.put<LanguagePreferences>(
+    API_ENDPOINTS.UPDATE_LANGUAGE_PREFERENCES,
+    preferences,
+  );
   return response.data;
 };
 
@@ -81,7 +107,12 @@ export const getThemePreferences = async (): Promise<ThemePreferences> => {
   return response.data;
 };
 
-export const updateThemePreferences = async (preferences: ThemePreferences): Promise<ThemePreferences> => {
-  const response = await apiClient.put<ThemePreferences>(API_ENDPOINTS.UPDATE_THEME_PREFERENCES, preferences);
+export const updateThemePreferences = async (
+  preferences: ThemePreferences,
+): Promise<ThemePreferences> => {
+  const response = await apiClient.put<ThemePreferences>(
+    API_ENDPOINTS.UPDATE_THEME_PREFERENCES,
+    preferences,
+  );
   return response.data;
 };

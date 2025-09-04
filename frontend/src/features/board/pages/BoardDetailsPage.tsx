@@ -17,7 +17,6 @@ import {
 } from '../components/details';
 import { useBoardDetailsPage } from '../hooks/details';
 
-
 import styles from './BoardDetailsPage.module.scss';
 
 const BoardDetailsPage: React.FC = () => {
@@ -55,53 +54,61 @@ const BoardDetailsPage: React.FC = () => {
 
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
-  const toolbarConfig: ToolbarConfig = useMemo(() => ({
-    pageType: 'board-details',
-    leftSection: [
-      {
-        type: 'title',
-        content: boardDetails?.name ?? t('common:loading'),
-        ...(boardDetails && currentUserIsAdmin ? {
-          clickable: true,
-          onClick: () => setEditingField('name'),
-        } : {}),
-      },
-      ...(currentUserIsAdmin ? [{
-        type: 'button' as const,
-        icon: UserPlus,
-        label: t('board:detailsPage.inviteButton'),
-        onClick: () => setInviteModalOpen(true),
-        variant: 'cta' as const,
-      }] : []),
+  const toolbarConfig: ToolbarConfig = useMemo(
+    () => ({
+      pageType: 'board-details',
+      leftSection: [
+        {
+          type: 'title',
+          content: boardDetails?.name ?? t('common:loading'),
+          ...(boardDetails && currentUserIsAdmin
+            ? {
+                clickable: true,
+                onClick: () => setEditingField('name'),
+              }
+            : {}),
+        },
+        ...(currentUserIsAdmin
+          ? [
+              {
+                type: 'button' as const,
+                icon: UserPlus,
+                label: t('board:detailsPage.inviteButton'),
+                onClick: () => setInviteModalOpen(true),
+                variant: 'cta' as const,
+              },
+            ]
+          : []),
+      ],
+      rightSection: [
+        {
+          type: 'button',
+          icon: LogOut,
+          label: t('board:leaveBoard.button'),
+          onClick: () => setLeaveConfirmOpen(true),
+          variant: 'warning' as const,
+        },
+        {
+          type: 'button',
+          icon: getNavigationArrowIcon(),
+          label: t('board:detailsPage.boardButton'),
+          onClick: () => navigate(`/board/${numericBoardId}`),
+          variant: 'navigation' as const,
+          className: 'iconOnlyButton',
+        },
+      ],
+    }),
+    [
+      boardDetails,
+      currentUserIsAdmin,
+      t,
+      numericBoardId,
+      navigate,
+      setInviteModalOpen,
+      setLeaveConfirmOpen,
+      setEditingField,
     ],
-    rightSection: [
-      {
-        type: 'button',
-        icon: LogOut,
-        label: t('board:leaveBoard.button'),
-        onClick: () => setLeaveConfirmOpen(true),
-        variant: 'warning' as const,
-      },
-      {
-        type: 'button',
-        icon: getNavigationArrowIcon(),
-        label: t('board:detailsPage.boardButton'),
-        onClick: () => navigate(`/board/${numericBoardId}`),
-        variant: 'navigation' as const,
-        className: 'iconOnlyButton',
-      },
-    ],
-  }), [
-    boardDetails,
-    currentUserIsAdmin,
-    t,
-    numericBoardId,
-    navigate,
-    setInviteModalOpen,
-    setLeaveConfirmOpen,
-    setEditingField,
-  ]);
-
+  );
 
   if (isLoading) {
     return (
@@ -141,10 +148,7 @@ const BoardDetailsPage: React.FC = () => {
           onUpdateSettings={handleCanvasSettingsUpdate}
         />
 
-        <SectionCard 
-          title={t('board:detailsPage.membersHeader')}
-          variant="default"
-        >
+        <SectionCard title={t('board:detailsPage.membersHeader')} variant="default">
           <ul className={styles.membersListContainer}>
             <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
           </ul>
@@ -181,7 +185,6 @@ const BoardDetailsPage: React.FC = () => {
         onConfirmLeave={handleLeaveBoard}
         onConfirmDelete={handleConfirmDeletePicture}
       />
-
 
       {isQuickSettingsOpen && (
         <div className={styles.quickSettingsModal}>

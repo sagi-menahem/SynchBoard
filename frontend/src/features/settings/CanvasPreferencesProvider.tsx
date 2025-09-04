@@ -22,10 +22,14 @@ interface CanvasPreferencesProviderProps {
   children: React.ReactNode;
 }
 
-export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps> = ({ children }) => {
+export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps> = ({
+  children,
+}) => {
   const value = useCanvasPreferencesService();
-  
-  return <CanvasPreferencesContext.Provider value={value}>{children}</CanvasPreferencesContext.Provider>;
+
+  return (
+    <CanvasPreferencesContext.Provider value={value}>{children}</CanvasPreferencesContext.Provider>
+  );
 };
 
 // Hook to use the context

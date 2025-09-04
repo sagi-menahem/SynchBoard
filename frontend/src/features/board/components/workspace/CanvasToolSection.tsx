@@ -1,18 +1,8 @@
-
 import React, { useCallback } from 'react';
 
 import { STROKE_WIDTH_RANGE, TOOLS } from 'features/board/constants/BoardConstants';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
-import {
-  Brush,
-  Download,
-  Eraser,
-  PaintBucket,
-  Pipette,
-  Redo,
-  Type,
-  Undo,
-} from 'lucide-react';
+import { Brush, Download, Eraser, PaintBucket, Pipette, Redo, Type, Undo } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ColorPicker, Slider, ToolButton, ToolGroup } from 'shared/ui';
@@ -57,22 +47,22 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
   const { t } = useTranslation(['board', 'common']);
   const { handleDownload } = useCanvasDownload({ boardName, canvasConfig });
 
-  const handleToolClick = useCallback((toolName: Tool) => {
-    if (toolName === TOOLS.DOWNLOAD) {
-      handleDownload();
-    } else {
-      setTool(toolName);
-    }
-  }, [handleDownload, setTool]);
+  const handleToolClick = useCallback(
+    (toolName: Tool) => {
+      if (toolName === TOOLS.DOWNLOAD) {
+        handleDownload();
+      } else {
+        setTool(toolName);
+      }
+    },
+    [handleDownload, setTool],
+  );
 
   return (
     <div className={styles.canvasToolSection}>
       <ToolGroup label={t('board:toolbar.label.color')}>
         <div className={`${styles.colorPickerWrapper} ${utilStyles.colorPickerPopupWrapper}`}>
-          <ColorPicker
-            color={strokeColor}
-            onChange={setStrokeColor}
-          />
+          <ColorPicker color={strokeColor} onChange={setStrokeColor} />
         </div>
       </ToolGroup>
 
@@ -110,17 +100,11 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
       </ToolGroup>
 
       <ToolGroup label={t('board:toolbar.label.shapes')}>
-        <ShapeToolsDropdown
-          currentTool={tool}
-          onToolSelect={setTool}
-        />
+        <ShapeToolsDropdown currentTool={tool} onToolSelect={setTool} />
       </ToolGroup>
 
       <ToolGroup label={t('board:toolbar.label.lines')}>
-        <LineToolsDropdown
-          currentTool={tool}
-          onToolSelect={setTool}
-        />
+        <LineToolsDropdown currentTool={tool} onToolSelect={setTool} />
       </ToolGroup>
 
       <ToolGroup label={t('board:toolbar.label.tools')}>
@@ -170,11 +154,7 @@ export const CanvasToolSection: React.FC<CanvasToolSectionProps> = ({
       </ToolGroup>
 
       <ToolGroup label={t('board:toolbar.label.export')}>
-        <Button
-          variant="icon"
-          onClick={handleDownload}
-          title={t('board:toolbar.tool.download')}
-        >
+        <Button variant="icon" onClick={handleDownload} title={t('board:toolbar.tool.download')}>
           <Download size={20} />
         </Button>
       </ToolGroup>

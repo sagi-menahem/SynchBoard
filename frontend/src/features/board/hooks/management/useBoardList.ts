@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
@@ -13,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES, WEBSOCKET_TOPICS } from 'shared/constants';
 import { useContextMenu } from 'shared/hooks';
 import logger from 'shared/utils/logger';
-
 
 export const useBoardList = () => {
   const { t } = useTranslation(['board', 'common']);
@@ -33,9 +31,7 @@ export const useBoardList = () => {
       return boards;
     }
 
-    return boards.filter((board) =>
-      board.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
+    return boards.filter((board) => board.name.toLowerCase().includes(searchQuery.toLowerCase()));
   }, [boards, searchQuery]);
 
   const handleSearch = useCallback((query: string) => {
@@ -104,7 +100,9 @@ export const useBoardList = () => {
   }, [boardToLeave, t, fetchBoards]);
 
   const handleLeaveClick = () => {
-    if (!contextMenu.data) {return;}
+    if (!contextMenu.data) {
+      return;
+    }
     setBoardToLeave(contextMenu.data);
     setLeaveConfirmOpen(true);
     contextMenu.closeMenu();
@@ -113,29 +111,35 @@ export const useBoardList = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const updateSpecificBoard = useCallback(async (boardId: number) => {
-    try {
-      const updatedBoard = await BoardService.getBoardDetails(boardId);
-      setBoards((prevBoards) => {
-        const updatedBoards = prevBoards.map((board) =>
-          board.id === boardId ? {
-            ...board,
-            canvasBackgroundColor: updatedBoard.canvasBackgroundColor,
-            canvasWidth: updatedBoard.canvasWidth,
-            canvasHeight: updatedBoard.canvasHeight,
-            lastModifiedDate: new Date().toISOString(),
-          } : board,
-        );
+  const updateSpecificBoard = useCallback(
+    async (boardId: number) => {
+      try {
+        const updatedBoard = await BoardService.getBoardDetails(boardId);
+        setBoards((prevBoards) => {
+          const updatedBoards = prevBoards.map((board) =>
+            board.id === boardId
+              ? {
+                  ...board,
+                  canvasBackgroundColor: updatedBoard.canvasBackgroundColor,
+                  canvasWidth: updatedBoard.canvasWidth,
+                  canvasHeight: updatedBoard.canvasHeight,
+                  lastModifiedDate: new Date().toISOString(),
+                }
+              : board,
+          );
 
-        return updatedBoards.sort((a, b) =>
-          new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime(),
-        );
-      });
-    } catch (error) {
-      logger.warn('Failed to update specific board, falling back to full refetch:', error);
-      fetchBoards();
-    }
-  }, [fetchBoards]);
+          return updatedBoards.sort(
+            (a, b) =>
+              new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime(),
+          );
+        });
+      } catch (error) {
+        logger.warn('Failed to update specific board, falling back to full refetch:', error);
+        fetchBoards();
+      }
+    },
+    [fetchBoards],
+  );
 
   const handleUserUpdate = useCallback(
     (message: UserUpdateDTO) => {
@@ -148,7 +152,11 @@ export const useBoardList = () => {
     [fetchBoards, updateSpecificBoard],
   );
 
-  useSocketSubscription(userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '', handleUserUpdate, 'user');
+  useSocketSubscription(
+    userEmail ? WEBSOCKET_TOPICS.USER(userEmail) : '',
+    handleUserUpdate,
+    'user',
+  );
 
   return {
     boards: filteredBoards,

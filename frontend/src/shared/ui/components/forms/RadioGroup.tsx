@@ -59,10 +59,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
           >
             <RadixRadioGroup.Indicator className={styles.radioIndicator} />
           </RadixRadioGroup.Item>
-          <label 
-            className={styles.radioLabel}
-            htmlFor={`radio-${option.value}`}
-          >
+          <label className={styles.radioLabel} htmlFor={`radio-${option.value}`}>
             {option.label}
           </label>
         </div>

@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
-
 export const useBoardDataManager = (boardId: number) => {
   const { t } = useTranslation(['board', 'common']);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +34,7 @@ export const useBoardDataManager = (boardId: number) => {
         setBoardDetails(details);
         const initialObjects = objectActions
           .filter((a) => a.payload)
-          .map((a) => ({ ...(a.payload), instanceId: a.instanceId }) as ActionPayload);
+          .map((a) => ({ ...a.payload, instanceId: a.instanceId }) as ActionPayload);
         setObjects(initialObjects);
         setMessages(messageHistory);
       })

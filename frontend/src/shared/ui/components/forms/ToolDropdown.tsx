@@ -53,31 +53,31 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
       const dropdownWidth = 160; // Min width from CSS
       const dropdownHeight = toolItems.length * 40; // Approximate height per item
       const margin = 8;
-      
+
       // Calculate initial position
       let left = buttonRect.left;
       let top = buttonRect.bottom + margin;
-      
+
       // Check if dropdown would overflow right edge of viewport
       if (left + dropdownWidth > window.innerWidth) {
         left = buttonRect.right - dropdownWidth; // Align to right edge of button
       }
-      
+
       // Ensure dropdown doesn't go beyond left edge
       if (left < margin) {
         left = margin;
       }
-      
+
       // Check if dropdown would overflow bottom edge of viewport
       if (top + dropdownHeight > window.innerHeight) {
         top = buttonRect.top - dropdownHeight - margin; // Position above button
       }
-      
+
       // Ensure dropdown doesn't go beyond top edge
       if (top < margin) {
         top = margin;
       }
-      
+
       setDropdownPosition({ top, left });
       setIsPositioned(true);
     } else if (!isOpen) {
@@ -105,13 +105,20 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
         <currentToolItem.icon size={iconSize} />
         <ChevronDown size={chevronSize} />
       </Button>
-      
-      <div 
-        className={clsx(styles.dropdownContent, (!isOpen || !isPositioned) && (styles.hidden ?? 'hidden'))}
-        style={isOpen && isPositioned ? { 
-          top: `${dropdownPosition.top}px`, 
-          left: `${dropdownPosition.left}px`, 
-        } : undefined}
+
+      <div
+        className={clsx(
+          styles.dropdownContent,
+          (!isOpen || !isPositioned) && (styles.hidden ?? 'hidden'),
+        )}
+        style={
+          isOpen && isPositioned
+            ? {
+                top: `${dropdownPosition.top}px`,
+                left: `${dropdownPosition.left}px`,
+              }
+            : undefined
+        }
       >
         {toolItems.map(({ value, icon: Icon, labelKey }) => (
           <Button

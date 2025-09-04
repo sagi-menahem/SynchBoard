@@ -1,9 +1,9 @@
 package io.github.sagimenahem.synchboard.dto.auth;
 
-import java.time.LocalDate;
 import io.github.sagimenahem.synchboard.validation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data

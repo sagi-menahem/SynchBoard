@@ -5,18 +5,19 @@ import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT
 import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_STROKE_COLOR;
 import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_THEME;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
+
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
@@ -27,7 +28,8 @@ import lombok.NoArgsConstructor;
 public class User implements UserDetails {
 
     public enum AuthProvider {
-        LOCAL, GOOGLE
+        LOCAL,
+        GOOGLE,
     }
 
     @Id
@@ -65,7 +67,6 @@ public class User implements UserDetails {
 
     @Column(name = "board_background_setting")
     private String boardBackgroundSetting;
-
 
     @Column(name = "canvas_chat_split_ratio")
     @Builder.Default

@@ -8,7 +8,7 @@ import { UserBoardPreferencesProvider } from 'features/settings/UserBoardPrefere
 import { WebSocketProvider } from 'features/websocket/WebSocketProvider';
 
 interface AppProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
@@ -18,9 +18,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         <ThemeProvider>
           <ToolPreferencesProvider>
             <CanvasPreferencesProvider>
-              <UserBoardPreferencesProvider>
-                {children}
-              </UserBoardPreferencesProvider>
+              <UserBoardPreferencesProvider>{children}</UserBoardPreferencesProvider>
             </CanvasPreferencesProvider>
           </ToolPreferencesProvider>
         </ThemeProvider>

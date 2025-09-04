@@ -16,16 +16,24 @@ export interface UserBoardPreferencesContextType {
   resetError: () => void;
 }
 
-const UserBoardPreferencesContext = createContext<UserBoardPreferencesContextType | undefined>(undefined);
+const UserBoardPreferencesContext = createContext<UserBoardPreferencesContextType | undefined>(
+  undefined,
+);
 
 interface UserBoardPreferencesProviderProps {
   children: React.ReactNode;
 }
 
-export const UserBoardPreferencesProvider: React.FC<UserBoardPreferencesProviderProps> = ({ children }) => {
+export const UserBoardPreferencesProvider: React.FC<UserBoardPreferencesProviderProps> = ({
+  children,
+}) => {
   const value = useUserBoardPreferencesService();
-  
-  return <UserBoardPreferencesContext.Provider value={value}>{children}</UserBoardPreferencesContext.Provider>;
+
+  return (
+    <UserBoardPreferencesContext.Provider value={value}>
+      {children}
+    </UserBoardPreferencesContext.Provider>
+  );
 };
 
 // Hook to use the context
@@ -36,4 +44,3 @@ export const useUserBoardPreferences = (): UserBoardPreferencesContextType => {
   }
   return context;
 };
-

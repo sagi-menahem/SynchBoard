@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
@@ -19,7 +18,6 @@ import {
 
 import { BoardCard, CreateBoardForm } from '../components/list';
 import { useBoardList } from '../hooks/management';
-
 
 import styles from './BoardListPage.module.scss';
 
@@ -46,49 +44,44 @@ const BoardListPage: React.FC = () => {
   } = useBoardList();
 
   // Toolbar configuration
-  const toolbarConfig: ToolbarConfig = useMemo(() => ({
-    pageType: 'boards',
-    leftSection: [
-      {
-        type: 'title',
-        content: t('board:listPage.heading'),
-      },
-      {
-        type: 'button',
-        icon: Plus,
-        label: t('board:listPage.createNewBoardButton'),
-        onClick: openModal,
-        variant: 'cta',
-      },
-    ],
-    centerSection: [
-      {
-        type: 'search',
-        placeholder: t('board:toolbar.search.boardName'),
-        value: searchQuery,
-        onSearch: handleSearch,
-        onClear: handleClearSearch,
-      },
-    ],
-    rightSection: [
-      {
-        type: 'button',
-        icon: Settings,
-        label: t('board:listPage.setting'),
-        onClick: () => navigate(APP_ROUTES.SETTINGS),
-        variant: 'navigation',
-        className: 'iconOnlyButton',
-      },
-    ],
-  }), [
-    t,
-    openModal,
-    searchQuery,
-    handleSearch,
-    handleClearSearch,
-    navigate,
-  ]);
-
+  const toolbarConfig: ToolbarConfig = useMemo(
+    () => ({
+      pageType: 'boards',
+      leftSection: [
+        {
+          type: 'title',
+          content: t('board:listPage.heading'),
+        },
+        {
+          type: 'button',
+          icon: Plus,
+          label: t('board:listPage.createNewBoardButton'),
+          onClick: openModal,
+          variant: 'cta',
+        },
+      ],
+      centerSection: [
+        {
+          type: 'search',
+          placeholder: t('board:toolbar.search.boardName'),
+          value: searchQuery,
+          onSearch: handleSearch,
+          onClear: handleClearSearch,
+        },
+      ],
+      rightSection: [
+        {
+          type: 'button',
+          icon: Settings,
+          label: t('board:listPage.setting'),
+          onClick: () => navigate(APP_ROUTES.SETTINGS),
+          variant: 'navigation',
+          className: 'iconOnlyButton',
+        },
+      ],
+    }),
+    [t, openModal, searchQuery, handleSearch, handleClearSearch, navigate],
+  );
 
   if (isLoading) {
     return (
@@ -103,12 +96,12 @@ const BoardListPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <main className={styles.pageContent} data-has-toolbar>
-{(() => {
+        {(() => {
           if (boards.length > 0) {
             return (
               <ul className={`${styles.boardList} ${styles[viewMode]}`}>
                 {boards.map((board, index) => (
-                  <li 
+                  <li
                     key={board.id}
                     className={styles.boardListItem}
                     style={{ animationDelay: `${index * 50}ms` }}
@@ -120,7 +113,7 @@ const BoardListPage: React.FC = () => {
               </ul>
             );
           }
-          
+
           if (searchQuery) {
             return (
               <div className={styles.emptyState}>
@@ -128,11 +121,11 @@ const BoardListPage: React.FC = () => {
               </div>
             );
           }
-          
+
           return (
             <div className={styles.emptyState}>
-              <Card 
-                variant="empty-state" 
+              <Card
+                variant="empty-state"
                 hoverable
                 className={styles.emptyStateCard}
                 onClick={openModal}
@@ -141,9 +134,7 @@ const BoardListPage: React.FC = () => {
                   <LayoutDashboard size={48} />
                 </div>
                 <div className={styles.emptyStateContent}>
-                  <h3 className={styles.emptyStateTitle}>
-                    {t('board:listPage.emptyStateTitle')}
-                  </h3>
+                  <h3 className={styles.emptyStateTitle}>{t('board:listPage.emptyStateTitle')}</h3>
                   <p className={styles.emptyStateMessage}>
                     {t('board:listPage.emptyStateMessage')}
                   </p>
@@ -153,9 +144,9 @@ const BoardListPage: React.FC = () => {
           );
         })()}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
-      </Modal>
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
+        </Modal>
       </main>
 
       {contextMenu.isOpen && contextMenu.data && (
@@ -164,8 +155,8 @@ const BoardListPage: React.FC = () => {
           y={contextMenu.anchorPoint.y}
           onClose={contextMenu.closeMenu}
         >
-          <ContextMenuItem 
-            onClick={handleLeaveClick} 
+          <ContextMenuItem
+            onClick={handleLeaveClick}
             variant="destructive"
             icon={<LogOut size={16} />}
           >

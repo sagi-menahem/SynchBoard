@@ -75,7 +75,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
   const togglePasswordVisibility = () => {
     const newShowPassword = !showPassword;
-    
+
     if (onToggleVisibility) {
       onToggleVisibility(newShowPassword);
     } else {
@@ -107,11 +107,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
         className={styles.toggleButton}
         onClick={togglePasswordVisibility}
         disabled={disabled}
-        aria-label={
-          showPassword 
-            ? t('common:form.hidePassword') 
-            : t('common:form.showPassword')
-        }
+        aria-label={showPassword ? t('common:form.hidePassword') : t('common:form.showPassword')}
         tabIndex={0}
       >
         {showPassword ? (

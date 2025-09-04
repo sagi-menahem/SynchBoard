@@ -9,14 +9,20 @@ import Button from '../forms/Button';
 import Modal from './Modal';
 
 interface ConfirmationDialogProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
-    title: string;
-    message: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
 }
 
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onClose, onConfirm, title, message }) => {
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+}) => {
   const { t } = useTranslation(['common']);
 
   const handleConfirm = () => {

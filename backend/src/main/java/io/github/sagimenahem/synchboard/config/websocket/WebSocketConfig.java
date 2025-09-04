@@ -1,6 +1,9 @@
 package io.github.sagimenahem.synchboard.config.websocket;
 
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.*;
+
+import io.github.sagimenahem.synchboard.config.AppProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +15,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
-import io.github.sagimenahem.synchboard.config.AppProperties;
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -31,24 +32,30 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
-                .setRelayHost(appProperties.getStomp().getBrokerHost())
-                .setRelayPort(appProperties.getStomp().getBrokerPort()).setClientLogin(brokerUser)
-                .setClientPasscode(brokerPassword).setSystemLogin(brokerUser)
-                .setSystemPasscode(brokerPassword)
-                .setSystemHeartbeatSendInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
-                .setSystemHeartbeatReceiveInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
-                .setVirtualHost("/");
+        config
+            .enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
+            .setRelayHost(appProperties.getStomp().getBrokerHost())
+            .setRelayPort(appProperties.getStomp().getBrokerPort())
+            .setClientLogin(brokerUser)
+            .setClientPasscode(brokerPassword)
+            .setSystemLogin(brokerUser)
+            .setSystemPasscode(brokerPassword)
+            .setSystemHeartbeatSendInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
+            .setSystemHeartbeatReceiveInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
+            .setVirtualHost("/");
 
         config.setApplicationDestinationPrefixes(WEBSOCKET_APP_PREFIX);
     }
 
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-        registry.addEndpoint(WEBSOCKET_ENDPOINT)
-                .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins()).withSockJS()
-                .setStreamBytesLimit(1024 * 1024).setHttpMessageCacheSize(1000)
-                .setDisconnectDelay(30 * 1000);
+        registry
+            .addEndpoint(WEBSOCKET_ENDPOINT)
+            .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins())
+            .withSockJS()
+            .setStreamBytesLimit(1024 * 1024)
+            .setHttpMessageCacheSize(1000)
+            .setDisconnectDelay(30 * 1000);
     }
 
     @Override

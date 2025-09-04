@@ -17,7 +17,8 @@ if (earlyTheme && (earlyTheme === 'light' || earlyTheme === 'dark')) {
   document.body.setAttribute('data-theme', earlyTheme);
 } else {
   // Check OS preference as fallback
-  const prefersColorScheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const prefersColorScheme =
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const fallbackTheme = prefersColorScheme ? 'dark' : 'light';
   document.body.setAttribute('data-theme', fallbackTheme);
 }

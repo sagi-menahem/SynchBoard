@@ -103,10 +103,12 @@ export const isPrototypePollutionAttempt = (obj: Record<string, unknown>): boole
 
   if (Object.prototype.hasOwnProperty.call(obj, 'constructor')) {
     const constructor = obj['constructor'];
-    if (constructor &&
+    if (
+      constructor &&
       typeof constructor === 'object' &&
       typeof constructor !== 'function' &&
-      Object.prototype.hasOwnProperty.call(constructor as Record<string, unknown>, 'prototype')) {
+      Object.prototype.hasOwnProperty.call(constructor as Record<string, unknown>, 'prototype')
+    ) {
       return true;
     }
   }
@@ -147,7 +149,9 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
     if (schema.maxLength && 'content' in dataObj) {
       const content = String(dataObj.content);
       if (content.length > schema.maxLength) {
-        logger.warn(`Message validation failed: content length ${content.length} exceeds max ${schema.maxLength}`);
+        logger.warn(
+          `Message validation failed: content length ${content.length} exceeds max ${schema.maxLength}`,
+        );
         return false;
       }
     }

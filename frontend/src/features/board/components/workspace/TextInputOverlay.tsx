@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Textarea } from 'shared/ui';
 
-
 import styles from './CanvasToolSection.module.scss';
 
 interface TextInputOverlayProps {
@@ -45,15 +44,18 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
     }
   }, [text, onSubmit, onCancel]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSubmit();
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      onCancel();
-    }
-  }, [handleSubmit, onCancel]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSubmit();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        onCancel();
+      }
+    },
+    [handleSubmit, onCancel],
+  );
 
   return (
     <div

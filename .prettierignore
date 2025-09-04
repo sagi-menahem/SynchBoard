@@ -1,0 +1,82 @@
+# Build outputs
+**/build/
+**/dist/
+**/target/
+**/out/
+**/node_modules/
+**/.gradle/
+
+# Generated files
+**/generated/
+**/coverage/
+*.min.js
+*.min.css
+
+# Vendor files
+**/vendor/
+
+# IDE
+.idea
+.vscode/settings.json
+*.iml
+
+# Git
+.git
+.gitignore
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Backend specific
+backend/gradle/
+backend/gradlew
+backend/gradlew.bat
+backend/.gradle/
+backend/bin/
+
+# Frontend specific
+frontend/.next/
+frontend/.cache/
+
+# Documentation
+*.pdf
+*.docx
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Images (optional - remove if you want to format markdown with images)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files
+.env
+.env.*
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

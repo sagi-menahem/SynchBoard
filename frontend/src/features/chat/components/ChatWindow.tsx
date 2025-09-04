@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { Button, Card } from 'shared/ui';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
 
-
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import styles from './ChatWindow.module.scss';
@@ -22,7 +21,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { userEmail } = useAuth();
   const { registerChatCommitHandler } = useBoardContext();
-  
+
   const {
     messagesEndRef,
     messagesContainerRef,
@@ -40,17 +39,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
   // Register the chat commit handler with the board context
   useEffect(() => {
     registerChatCommitHandler(commitChatTransaction);
-    
+
     return () => {
       registerChatCommitHandler(null);
     };
   }, [registerChatCommitHandler, commitChatTransaction]);
 
   return (
-    <Card
-      className={styles.container}
-      padding="none"
-    >
+    <Card className={styles.container} padding="none">
       {searchVisible && (
         <div className={styles.searchContainer}>
           <input
@@ -62,41 +58,35 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
           />
-          <Button
-            variant="icon"
-            onClick={handleSearchClose}
-            className={styles.searchCloseButton}
-          >
+          <Button variant="icon" onClick={handleSearchClose} className={styles.searchCloseButton}>
             ✕
           </Button>
           {searchTerm && (
-            <div className={styles.searchResults}>
-              {filteredMessages.length} results
-            </div>
+            <div className={styles.searchResults}>{filteredMessages.length} results</div>
           )}
         </div>
       )}
-      
+
       <div className={styles.messageList} ref={messagesContainerRef}>
         {filteredMessages.map((message, index) => {
           const shouldAnimate = isMessageNew(message);
           const prevMessage = filteredMessages[index - 1] ?? null;
-          
+
           // Message grouping logic: group consecutive messages from same user within 5 minutes
-          const isGroupedWithPrevious = prevMessage &&
+          const isGroupedWithPrevious =
+            prevMessage &&
             prevMessage.senderEmail === message.senderEmail &&
             !shouldShowDateSeparator(message, prevMessage) &&
-            (new Date(message.timestamp).getTime() - new Date(prevMessage.timestamp).getTime()) < 300000; // 5 minutes
-          
+            new Date(message.timestamp).getTime() - new Date(prevMessage.timestamp).getTime() <
+              300000; // 5 minutes
+
           return (
             <React.Fragment key={message.instanceId ?? `${message.id}-${message.timestamp}`}>
               {shouldShowDateSeparator(message, prevMessage) && (
-                <div className={styles.dateSeparator}>
-                  {formatDateSeparator(message.timestamp)}
-                </div>
+                <div className={styles.dateSeparator}>{formatDateSeparator(message.timestamp)}</div>
               )}
-              <ChatMessage 
-                message={message} 
+              <ChatMessage
+                message={message}
                 isOwnMessage={message.senderEmail === userEmail}
                 shouldAnimate={shouldAnimate}
                 isGrouped={isGroupedWithPrevious}
@@ -106,11 +96,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         })}
         <div ref={messagesEndRef} />
       </div>
-      
-      <ChatInput 
-        onSendMessage={handleSendMessage}
-        placeholder={t('chat:window.placeholder')}
-      />
+
+      <ChatInput onSendMessage={handleSendMessage} placeholder={t('chat:window.placeholder')} />
     </Card>
   );
 };

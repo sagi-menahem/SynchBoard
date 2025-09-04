@@ -6,40 +6,40 @@
   align-items: stretch;
   flex-wrap: nowrap;
   overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
-  
+
   // Responsive: Reduce gap on smaller screens to fit more content
   @media (max-width: 1200px) {
     gap: theme.$spacing-3;
   }
-  
+
   @media (max-width: 1075px) {
     gap: theme.$spacing-2;
   }
-  
+
   // Progressive tool hiding: Hide tools only when absolutely necessary
   @media (max-width: 950px) {
     gap: theme.$spacing-1;
-    
+
     // Hide export tools first (Download button - least critical during editing)
     > :last-child {
       display: none;
     }
   }
-  
+
   @media (max-width: 850px) {
     // Hide line tools next (Line drawing tools)
     > :nth-last-child(2) {
       display: none;
     }
   }
-  
+
   @media (max-width: 750px) {
-    // Hide shape tools (Shape drawing tools)  
+    // Hide shape tools (Shape drawing tools)
     > :nth-last-child(3) {
       display: none;
     }
   }
-  
+
   @media (max-width: 650px) {
     // Hide additional tools (Text, Color Picker, Recolor tools)
     > :nth-last-child(4) {
@@ -76,8 +76,6 @@
   width: theme.$border-width;
   background: linear-gradient(to bottom, transparent, theme.$tool-separator, transparent);
 }
-
-
 
 .colorPickerWrapper {
   display: inline-flex;
@@ -132,7 +130,7 @@
 .iconButton {
   min-width: 36px; /* Custom canvas tool size */
   min-height: 36px; /* Custom canvas tool size */
-  
+
   &.active {
     background: transparent !important;
     border-color: var(--btn-icon-active-border) !important;
@@ -175,8 +173,6 @@
   width: 100%; // Ensure full width for proper alignment
 }
 
-
-
 .dropdownContent {
   position: fixed;
   background-color: theme.$dropdown-bg;
@@ -196,7 +192,6 @@
   display: none;
 }
 
-
 .textInputOverlay {
   position: absolute;
   background: transparent;
@@ -209,7 +204,10 @@
   background: transparent;
   border: none;
   color: inherit; // Use color from parent (text color)
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   outline: none;
   overflow: hidden; // Hide scrollbars for cleaner look
   resize: none;
@@ -218,4 +216,3 @@
   text-align: left; // Force left alignment regardless of language
   direction: ltr; // Force LTR direction to match canvas text rendering
 }
-

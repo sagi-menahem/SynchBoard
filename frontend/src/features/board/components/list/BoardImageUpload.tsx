@@ -7,8 +7,8 @@ import Button from 'shared/ui/components/forms/Button';
 import styles from './BoardImageUpload.module.scss';
 
 interface BoardImageUploadProps {
-    onImageSelect: (file: File | null) => void;
-    disabled?: boolean;
+  onImageSelect: (file: File | null) => void;
+  disabled?: boolean;
 }
 
 const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disabled = false }) => {
@@ -52,22 +52,28 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
 
   return (
     <div className={styles.container}>
-      <div 
-        className={styles.imageContainer} 
+      <div
+        className={styles.imageContainer}
         onClick={handleImageClick}
         onKeyDown={handleKeyDown}
         tabIndex={disabled ? -1 : 0}
         role="button"
-        aria-label={disabled ? t('board:createForm.boardImageAlt') : t('board:createForm.clickToUpload')}
+        aria-label={
+          disabled ? t('board:createForm.boardImageAlt') : t('board:createForm.clickToUpload')
+        }
       >
-        <img src={previewUrl} alt={t('board:createForm.boardImageAlt')} className={styles.previewImage} />
+        <img
+          src={previewUrl}
+          alt={t('board:createForm.boardImageAlt')}
+          className={styles.previewImage}
+        />
         {!disabled && (
           <div className={styles.overlay}>
             <span className={styles.overlayText}>{t('board:createForm.clickToUpload')}</span>
           </div>
         )}
       </div>
-      
+
       <input
         id="board-image-upload"
         name="boardImage"
@@ -78,7 +84,7 @@ const BoardImageUpload: React.FC<BoardImageUploadProps> = ({ onImageSelect, disa
         className={styles.hiddenInput}
         disabled={disabled}
       />
-      
+
       {previewUrl !== defaultBoardImage && !disabled && (
         <Button
           type="button"

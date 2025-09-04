@@ -7,7 +7,6 @@ import { ToasterConfig } from 'shared/ui/components/ToasterConfig';
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
 import { AppRoutes } from 'shared/ui/routing';
 
-
 function App() {
   const {
     bannerHeight,
@@ -18,11 +17,11 @@ function App() {
     renderOAuthLoading,
     renderInitializingLoading,
   } = useAppConfiguration();
-  
+
   if (isOAuthProcessing) {
     return renderOAuthLoading();
   }
-  
+
   if (isInitializing) {
     return renderInitializingLoading();
   }
@@ -31,14 +30,17 @@ function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <ConnectionStatusBanner onHeightChange={handleBannerHeightChange} />
-        <div 
+        <div
           className="app-content"
-          style={{ 
-            '--banner-height': `${bannerHeight}px`,
-            '--toolbar-height': `${toolbarHeight}px`,
-            '--content-offset': `${bannerHeight + toolbarHeight + 16}px`,
-            minHeight: '100vh',
-          } as React.CSSProperties}>
+          style={
+            {
+              '--banner-height': `${bannerHeight}px`,
+              '--toolbar-height': `${toolbarHeight}px`,
+              '--content-offset': `${bannerHeight + toolbarHeight + 16}px`,
+              minHeight: '100vh',
+            } as React.CSSProperties
+          }
+        >
           <ToasterConfig />
           <AppRoutes />
         </div>

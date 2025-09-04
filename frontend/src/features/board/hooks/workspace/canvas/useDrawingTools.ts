@@ -52,13 +52,17 @@ export const useDrawingTools = ({
   const handleToolMouseDown = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
-      if (!canvas) { return; }
+      if (!canvas) {
+        return;
+      }
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-        currentPath.current = [{
-          x: eventData.startPoint.x / canvas.width,
-          y: eventData.startPoint.y / canvas.height,
-        }];
+        currentPath.current = [
+          {
+            x: eventData.startPoint.x / canvas.width,
+            y: eventData.startPoint.y / canvas.height,
+          },
+        ];
       }
     },
     [canvasRef, tool, currentPath],
@@ -67,7 +71,9 @@ export const useDrawingTools = ({
   const handleToolMouseMove = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
-      if (!canvas) { return; }
+      if (!canvas) {
+        return;
+      }
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
         currentPath.current.push({
@@ -82,7 +88,9 @@ export const useDrawingTools = ({
   const handleToolMouseUp = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
-      if (!canvas) { return; }
+      if (!canvas) {
+        return;
+      }
 
       const { startPoint, currentPoint } = eventData;
 
@@ -239,7 +247,11 @@ export const useDrawingTools = ({
         const rectHeight = Math.abs(currentPoint.y - startPoint.y) / canvas.height;
         const minSize = 0.02; // 2% of canvas dimension
 
-        if (isShapeSizeValid(rectWidth, rectHeight) && rectWidth >= minSize && rectHeight >= minSize) {
+        if (
+          isShapeSizeValid(rectWidth, rectHeight) &&
+          rectWidth >= minSize &&
+          rectHeight >= minSize
+        ) {
           const pixelX = Math.min(startPoint.x, currentPoint.x);
           const pixelY = Math.min(startPoint.y, currentPoint.y);
           const pixelWidth = Math.abs(currentPoint.x - startPoint.x);

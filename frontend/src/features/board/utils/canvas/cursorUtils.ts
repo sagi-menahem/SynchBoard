@@ -25,4 +25,3 @@ export const getRecolorCursor = (
       return 'not-allowed';
   }
 };
-

@@ -6,27 +6,20 @@ export const useEnhancedContextMenu = <T>() => {
   const { showContextMenu, hideContextMenu, isOpen } = useContextMenuProvider();
   const [data, setData] = useState<T | null>(null);
 
-  const handleContextMenu = useCallback((
-    event: React.MouseEvent, 
-    contextData: T,
-    content: React.ReactNode,
-    onClose?: () => void,
-  ) => {
-    event.preventDefault();
-    
-    const handleMenuClose = () => {
-      setData(null);
-      onClose?.();
-    };
+  const handleContextMenu = useCallback(
+    (event: React.MouseEvent, contextData: T, content: React.ReactNode, onClose?: () => void) => {
+      event.preventDefault();
 
-    setData(contextData);
-    showContextMenu(
-      event.clientX,
-      event.clientY,
-      content,
-      handleMenuClose,
-    );
-  }, [showContextMenu]);
+      const handleMenuClose = () => {
+        setData(null);
+        onClose?.();
+      };
+
+      setData(contextData);
+      showContextMenu(event.clientX, event.clientY, content, handleMenuClose);
+    },
+    [showContextMenu],
+  );
 
   const closeMenu = useCallback(() => {
     hideContextMenu();

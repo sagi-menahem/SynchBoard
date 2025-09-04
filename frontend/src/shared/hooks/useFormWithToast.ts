@@ -36,40 +36,40 @@ export const useFormWithToast = <TRequest extends object, TResponse = unknown>(
     logContext = 'Form operation',
   } = options;
 
-  const formAction = useCallback(async (
-    _previousState: FormState<TResponse>,
-    formData: FormData,
-  ): Promise<FormState<TResponse>> => {
-    const validation = validateFormData(formData);
-    
-    if ('error' in validation) {
-      return {
-        success: false,
-      };
-    }
+  const formAction = useCallback(
+    async (
+      _previousState: FormState<TResponse>,
+      formData: FormData,
+    ): Promise<FormState<TResponse>> => {
+      const validation = validateFormData(formData);
 
-    try {
-      const response = await toastPromise(
-        serviceCall(validation),
-        toastMessages,
-      );
-
-      if (onSuccess !== undefined) {
-        onSuccess(response, validation);
+      if ('error' in validation) {
+        return {
+          success: false,
+        };
       }
 
-      return {
-        success: true,
-        data: response,
-      };
-    } catch (err: unknown) {
-      logger.error(`${logContext} failed:`, err, contextInfo);
-      
-      return {
-        success: false,
-      };
-    }
-  }, [validateFormData, serviceCall, toastMessages, onSuccess, logContext, contextInfo]);
+      try {
+        const response = await toastPromise(serviceCall(validation), toastMessages);
+
+        if (onSuccess !== undefined) {
+          onSuccess(response, validation);
+        }
+
+        return {
+          success: true,
+          data: response,
+        };
+      } catch (err: unknown) {
+        logger.error(`${logContext} failed:`, err, contextInfo);
+
+        return {
+          success: false,
+        };
+      }
+    },
+    [validateFormData, serviceCall, toastMessages, onSuccess, logContext, contextInfo],
+  );
 
   const [state, submitAction, isPending] = useActionState(formAction, {
     success: false,

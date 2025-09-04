@@ -1,99 +1,99 @@
 @use '@/styles' as theme;
 
 .form {
-    @include theme.form-base;
-    // Compact spacing for auth forms only
-    gap: theme.$spacing-2; // Much more compact
-    
-    // Create two-column grid for better space utilization
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: theme.$spacing-2;
-    
-    // Remove any negative margins or positioning that might cause edge flush
-    margin: 0;
-    position: relative;
-    width: 100%; // Take full width of parent container
-    max-width: 400px; // But don't exceed reasonable form width
-    
-    // Some fields should span full width
-    .fullWidth {
-        grid-column: 1 / -1;
-    }
+  @include theme.form-base;
+  // Compact spacing for auth forms only
+  gap: theme.$spacing-2; // Much more compact
+
+  // Create two-column grid for better space utilization
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: theme.$spacing-2;
+
+  // Remove any negative margins or positioning that might cause edge flush
+  margin: 0;
+  position: relative;
+  width: 100%; // Take full width of parent container
+  max-width: 400px; // But don't exceed reasonable form width
+
+  // Some fields should span full width
+  .fullWidth {
+    grid-column: 1 / -1;
+  }
 }
 
 .field {
-    @include theme.form-field;
-    // Compact spacing for auth form fields only
-    margin-bottom: 0; // Remove bottom margin since grid handles spacing
-    gap: theme.$spacing-1; // Minimal gap
+  @include theme.form-field;
+  // Compact spacing for auth form fields only
+  margin-bottom: 0; // Remove bottom margin since grid handles spacing
+  gap: theme.$spacing-1; // Minimal gap
 }
 
 .field label {
-    @include theme.form-label;
-    color: theme.$text-muted;
+  @include theme.form-label;
+  color: theme.$text-muted;
 }
 
 .field input {
-    text-align: center;
+  text-align: center;
 }
 
-.field input[type="date"] {
-    text-align: center;
+.field input[type='date'] {
+  text-align: center;
 }
 
 .required {
-    color: theme.$error;
-    font-weight: bold;
+  color: theme.$error;
+  font-weight: bold;
 }
 
 .radioGroup {
-    @include theme.flex-start;
-    gap: theme.$spacing-4;
-    margin-top: theme.$spacing-2;
+  @include theme.flex-start;
+  gap: theme.$spacing-4;
+  margin-top: theme.$spacing-2;
 }
 
 .radioLabel {
-    @include theme.radio-option;
-    font-size: 0.875rem;
+  @include theme.radio-option;
+  font-size: 0.875rem;
 }
 
-.radioLabel input[type="radio"] {
-    @include theme.radio-input;
-    margin: 0;
+.radioLabel input[type='radio'] {
+  @include theme.radio-input;
+  margin: 0;
 }
 
 .error {
-    @include theme.error-message;
-    color: theme.$error;
-    margin-bottom: theme.$spacing-4;
+  @include theme.error-message;
+  color: theme.$error;
+  margin-bottom: theme.$spacing-4;
 }
 
 .submitButton {
-    margin-top: theme.$spacing-1; // Reduced margin
-    margin-bottom: theme.$spacing-1; // Add small bottom margin
-    width: 50%;
-    justify-self: center; // Center within the grid cell (works with CSS Grid)
-    align-self: center; // Center vertically
-    justify-content: center; // Center button content
+  margin-top: theme.$spacing-1; // Reduced margin
+  margin-bottom: theme.$spacing-1; // Add small bottom margin
+  width: 50%;
+  justify-self: center; // Center within the grid cell (works with CSS Grid)
+  align-self: center; // Center vertically
+  justify-content: center; // Center button content
 }
 
 // Mobile responsiveness for grid layout
 @media (max-width: 480px) {
-    .form {
-        // Switch to single column on small screens
-        grid-template-columns: 1fr;
-        gap: theme.$spacing-2;
-    }
+  .form {
+    // Switch to single column on small screens
+    grid-template-columns: 1fr;
+    gap: theme.$spacing-2;
+  }
 
-    .submitButton {
-        width: 100%; // Full width button on mobile
-    }
+  .submitButton {
+    width: 100%; // Full width button on mobile
+  }
 }
 
 @media (max-width: 640px) {
-    .radioGroup {
-        @include theme.flex-column;
-        gap: theme.$spacing-2;
-    }
+  .radioGroup {
+    @include theme.flex-column;
+    gap: theme.$spacing-2;
+  }
 }

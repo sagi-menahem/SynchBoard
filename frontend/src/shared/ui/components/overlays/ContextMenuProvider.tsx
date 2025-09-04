@@ -69,16 +69,14 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
   return (
     <ContextMenuContext.Provider value={contextValue}>
       {children}
-      {menuState.isOpen && menuState.content && createPortal(
-        <EnhancedContextMenu
-          x={menuState.x}
-          y={menuState.y}
-          onClose={menuState.onClose}
-        >
-          {menuState.content}
-        </EnhancedContextMenu>,
-        document.body,
-      )}
+      {menuState.isOpen &&
+        menuState.content &&
+        createPortal(
+          <EnhancedContextMenu x={menuState.x} y={menuState.y} onClose={menuState.onClose}>
+            {menuState.content}
+          </EnhancedContextMenu>,
+          document.body,
+        )}
     </ContextMenuContext.Provider>
   );
 };
