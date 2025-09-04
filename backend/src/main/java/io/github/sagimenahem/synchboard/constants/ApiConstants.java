@@ -12,7 +12,6 @@ public final class ApiConstants {
 
     public static final String API_AUTH_REGISTER_PATH = "/register";
     public static final String API_AUTH_LOGIN_PATH = "/login";
-    public static final String API_AUTH_TEST_PATH = "/test";
 
     public static final String API_AUTH_PATH_PATTERN = "/api/auth/**";
     public static final String API_BOARDS_PATH_PATTERN = "/api/boards/**";
@@ -50,6 +49,4 @@ public final class ApiConstants {
     public static final String API_USER_LANGUAGE_PREFERENCES = "/language-preferences";
     public static final String API_USER_THEME_PREFERENCES = "/theme-preferences";
     public static final String API_USER_EXISTS = "/exists/{email}";
-
-    public static final String AUTH_TEST_ENDPOINT_SUCCESS_MESSAGE = "Hello, authenticated user!";
 }
