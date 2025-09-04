@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Enhanced Context Menu Layout ---
+
+// Main menu container with fixed positioning
 .menu {
   position: fixed;
   z-index: theme.$z-index-popover;
@@ -14,29 +17,39 @@
   pointer-events: auto;
 }
 
+// --- Animation States ---
+
+// Hidden state for entrance animation
 .hidden {
   opacity: 0;
   transform: scale(0.95) translateY(-4px);
   pointer-events: none;
 }
 
+// Visible state after animation completes
 .visible {
   opacity: 1;
   transform: scale(1) translateY(0);
 }
 
+// --- Positioning Variants ---
+
+// Right-aligned menu when near viewport edge
 .flipX {
   transform-origin: top right;
 }
 
+// Bottom-aligned menu when near viewport bottom
 .flipY {
   transform-origin: bottom left;
 }
 
+// Bottom-right aligned menu
 .flipX.flipY {
   transform-origin: bottom right;
 }
 
+// Animation adjustments for flipped positions
 .flipX.hidden {
   transform: scale(0.95) translate(4px, -4px);
 }
@@ -49,11 +62,15 @@
   transform: scale(0.95) translate(4px, 4px);
 }
 
+// --- Focus and Visual Effects ---
+
+// Keyboard focus outline
 .menu:focus-within {
   outline: 2px solid theme.$primary;
   outline-offset: 2px;
 }
 
+// Backdrop blur effect behind menu
 .menu::before {
   content: '';
   position: absolute;
@@ -68,10 +85,14 @@
   opacity: 0.8;
 }
 
+// Dark theme backdrop adjustment
 [data-theme='dark'] .menu::before {
   background: rgba(0, 0, 0, 0.2);
 }
 
+// --- Item Animations ---
+
+// Base animation for all menu items
 .menu > * {
   animation: slideInItem 0.15s ease-out backwards;
 }
@@ -100,10 +121,14 @@
   animation-delay: 125ms;
 }
 
+// Separator animation override
 .separator {
   animation: slideInSeparator 0.2s ease-out backwards;
 }
 
+// --- Keyframe Animations ---
+
+// Separator entrance animation
 @keyframes slideInSeparator {
   from {
     opacity: 0;
@@ -116,6 +141,7 @@
   }
 }
 
+// Menu item entrance animation
 @keyframes slideInItem {
   from {
     opacity: 0;
@@ -128,6 +154,9 @@
   }
 }
 
+// --- Responsive Design ---
+
+// Tablet adjustments
 @media (max-width: 768px) {
   .menu {
     min-width: 160px;
@@ -136,6 +165,7 @@
   }
 }
 
+// Mobile adjustments
 @media (max-width: 480px) {
   .menu {
     min-width: 140px;
@@ -143,6 +173,9 @@
   }
 }
 
+// --- Menu Item Styles ---
+
+// Visual separator between menu groups
 .separator {
   height: 1px;
   background-color: var(--color-border-light);
@@ -150,6 +183,7 @@
   opacity: 0.6;
 }
 
+// Individual menu item styling
 .item {
   padding: theme.$spacing-1-5 theme.$spacing-3;
   @include theme.rounded-small;
@@ -199,6 +233,7 @@
   }
 }
 
+// Menu item content layout
 .itemContent {
   display: flex;
   align-items: center;
@@ -206,6 +241,7 @@
   width: 100%;
 }
 
+// Icon container within menu items
 .itemIcon {
   display: flex;
   align-items: center;
@@ -220,6 +256,7 @@
   }
 }
 
+// Text content within menu items
 .itemText {
   flex: 1;
   min-width: 0;
