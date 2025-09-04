@@ -3,14 +3,28 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Props for the LanguageToggle component.
+ */
 interface LanguageToggleProps {
-  value: 'en' | 'he';
-  onChange: (language: 'en' | 'he') => void;
+  value: 'en' | 'he'; // Currently selected language
+  onChange: (language: 'en' | 'he') => void; // Callback when language changes
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
-  showLabel?: boolean;
+  size?: 'sm' | 'md' | 'lg'; // Visual size of the toggle
+  showLabel?: boolean; // Whether to display language label
 }
 
+/**
+ * Language toggle switch component for switching between English and Hebrew.
+ * Provides a visual toggle interface with proper RTL support and accessibility features.
+ * Uses Headless UI Switch for keyboard navigation and screen reader compatibility.
+ * 
+ * @param {'en' | 'he'} value - Currently selected language code
+ * @param {function} onChange - Callback function called when language selection changes
+ * @param {string} className - Optional CSS class to apply to the toggle container
+ * @param {'sm' | 'md' | 'lg'} size - Visual size variant for the toggle switch
+ * @param {boolean} showLabel - Whether to display the language label alongside the toggle
+ */
 const LanguageToggle: React.FC<LanguageToggleProps> = ({
   value,
   onChange,
@@ -21,6 +35,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
   const { t, i18n } = useTranslation(['common']);
   const isRTL = i18n.language === 'he';
 
+  // Size configuration for different toggle variants
   const sizeConfig = {
     sm: { height: 28, width: 56, fontSize: 11 },
     md: { height: 32, width: 64, fontSize: 12 },
@@ -30,6 +45,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
   const config = sizeConfig[size];
   const isHebrew = value === 'he';
 
+  // Convert boolean switch state to language code
   const handleChange = (checked: boolean) => {
     onChange(checked ? 'he' : 'en');
   };
@@ -79,6 +95,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             borderRadius: '9999px',
             backgroundColor: 'white',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+            // Calculate transform based on language and RTL direction
             transform: (() => {
               if (isHebrew) {
                 return isRTL

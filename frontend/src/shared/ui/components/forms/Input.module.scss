@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Base input field styling
 .input {
   @include theme.input-base;
   @include theme.input-focus;
@@ -7,6 +8,7 @@
   padding: theme.$input-padding;
 }
 
+// Date input specific styling for better UX
 .input[type='date'] {
   text-align: center;
   direction: ltr;
@@ -14,6 +16,7 @@
   position: relative;
 }
 
+// Webkit calendar picker styling
 .input[type='date']::-webkit-calendar-picker-indicator {
   position: absolute;
   inset-inline-end: theme.$spacing-2-5;
@@ -22,10 +25,12 @@
   @include theme.smooth-transition;
 }
 
+// Hover state for webkit calendar picker
 .input[type='date']::-webkit-calendar-picker-indicator:hover {
   opacity: theme.$opacity-100;
 }
 
+// Firefox calendar picker styling
 .input[type='date']::-moz-calendar-picker-indicator {
   position: absolute;
   inset-inline-end: theme.$spacing-2-5;

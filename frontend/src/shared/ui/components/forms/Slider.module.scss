@@ -1,11 +1,15 @@
 @use '@/styles' as theme;
 
+// --- Slider Layout ---
+
+// Main container for slider with label
 .sliderContainer {
   @include theme.flex-start;
   gap: 0;
   padding: 0;
 }
 
+// Slider label styling
 .label {
   font-size: theme.$font-size-xs;
   font-weight: 300;
@@ -17,12 +21,14 @@
   white-space: nowrap;
 }
 
+// Container for slider and value display
 .sliderWrapper {
   @include theme.flex-start;
   gap: theme.$spacing-3;
   align-items: center;
 }
 
+// Root slider track container
 .sliderRoot {
   position: relative;
   display: flex;
@@ -38,6 +44,7 @@
   }
 }
 
+// Background track styling
 .sliderTrack {
   background-color: theme.$border-light;
   position: relative;
@@ -47,6 +54,7 @@
   @include theme.smooth-transition;
 }
 
+// Active range indicator
 .sliderRange {
   position: absolute;
   background-color: theme.$primary;
@@ -55,6 +63,7 @@
   @include theme.smooth-transition;
 }
 
+// Draggable thumb control
 .sliderThumb {
   display: block;
   width: 14px;
@@ -87,6 +96,7 @@
   }
 }
 
+// Current value display
 .value {
   font-size: theme.$font-size-xs;
   font-weight: 400;
