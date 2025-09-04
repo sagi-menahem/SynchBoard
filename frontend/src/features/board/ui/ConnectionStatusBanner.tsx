@@ -10,6 +10,15 @@ interface ConnectionStatusBannerProps {
   onHeightChange?: (height: number) => void;
 }
 
+/**
+ * Connection status banner component that displays network connectivity warnings.
+ * This component monitors WebSocket connection status and displays a fixed warning banner
+ * when the connection is lost. It automatically manages its height measurements and updates
+ * CSS custom properties for layout adjustment, ensuring other page elements can properly
+ * account for the banner's presence. The banner is only shown to authenticated users.
+ * 
+ * @param onHeightChange - Optional callback fired when banner height changes for external layout adjustments
+ */
 export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
   onHeightChange,
 }) => {
@@ -18,6 +27,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
   const { shouldShowBanner } = useConnectionStatus();
   const bannerRef = useRef<HTMLDivElement>(null);
 
+  // Set up height measurement and CSS variable management
   useEffect(() => {
     if (!bannerRef.current) {
       return;
@@ -30,6 +40,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
         const height = rect.height;
         const computedHeight = parseFloat(computedStyle.height);
 
+        // Use the maximum height value for accurate layout calculations
         const finalHeight = Math.max(height, computedHeight);
 
         if (onHeightChange && finalHeight > 0) {
@@ -69,6 +80,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
     };
   }, [onHeightChange]);
 
+  // Handle banner visibility and height updates based on connection state
   useEffect(() => {
     if (!token || !shouldShowBanner) {
       if (onHeightChange) {
@@ -76,6 +88,7 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
       }
       document.documentElement.style.setProperty('--banner-height', '0px');
     } else {
+      // Retry mechanism for accurate height measurement after banner becomes visible
       const measureWithRetry = (attempt = 1, maxAttempts = 5) => {
         if (!bannerRef.current) {
           return;
@@ -95,8 +108,10 @@ export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({
           }
           document.documentElement.style.setProperty('--banner-height', `${finalHeight}px`);
         } else if (attempt < maxAttempts) {
+          // Retry with increasing delay
           setTimeout(() => measureWithRetry(attempt + 1, maxAttempts), attempt * 50);
         } else {
+          // Use fallback height if measurement fails after all retries
           const fallbackHeight = 60;
           if (onHeightChange) {
             onHeightChange(fallbackHeight);
