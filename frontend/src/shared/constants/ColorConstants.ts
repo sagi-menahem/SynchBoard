@@ -1,3 +1,10 @@
+/**
+ * Color palette constants for the SynchBoard drawing application.
+ * Provides a curated collection of preset colors optimized for digital drawing and design.
+ * Colors are ordered to provide good visual contrast and include both neutral tones
+ * and vibrant colors from Google's Material Design color palette.
+ */
+
 export const PRESET_COLORS = [
   '#FFFFFF',
   '#000000',

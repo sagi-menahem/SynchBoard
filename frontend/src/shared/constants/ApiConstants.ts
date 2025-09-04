@@ -1,3 +1,11 @@
+/**
+ * API configuration constants for the SynchBoard application.
+ * Contains base URLs, endpoint definitions, WebSocket destinations, and authentication headers
+ * used throughout the application for communicating with the backend REST API and WebSocket services.
+ * Endpoints are organized by feature (auth, boards, user) and include both static paths and
+ * dynamic path generators that accept parameters like board IDs and user emails.
+ */
+
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api';
 export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL ?? 'http://localhost:8080/ws';
 
