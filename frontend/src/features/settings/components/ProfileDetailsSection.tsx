@@ -9,11 +9,25 @@ import logger from 'shared/utils/logger';
 
 import styles from '../pages/SettingsPage.module.scss';
 
+/**
+ * Properties for the ProfileDetailsSection component defining user data and update handlers.
+ */
 interface ProfileDetailsSectionProps {
+  /** User profile data to display and edit */
   user: UserProfile;
+  /** Async function to handle profile update submission with validation */
   onUpdateProfile: (data: UpdateUserProfileRequest) => Promise<void>;
 }
 
+/**
+ * Profile details management section with inline editing capabilities.
+ * Provides a toggle between display and edit modes for user profile information.
+ * Integrates form state management with validation and error handling for profile updates.
+ * Implements contextual edit controls with save/cancel operations and proper form isolation.
+ * 
+ * @param user - User profile data containing current information to display
+ * @param onUpdateProfile - Async function to handle validated profile update requests
+ */
 const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onUpdateProfile }) => {
   const { t } = useTranslation(['settings', 'common']);
   const { isEditing, formData, onInputChange, startEditing, cancelEditing, stopEditing } =

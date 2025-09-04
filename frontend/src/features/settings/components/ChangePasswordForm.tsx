@@ -9,10 +9,22 @@ import logger from 'shared/utils/logger';
 
 import styles from './ChangePasswordForm.module.scss';
 
+/**
+ * Properties for the ChangePasswordForm component defining form submission handler.
+ */
 interface ChangePasswordFormProps {
+  /** Async function to handle password change submission with validation data */
   onSubmit: (data: ChangePasswordRequest) => Promise<void>;
 }
 
+/**
+ * Secure password change form component with comprehensive validation and user feedback.
+ * Implements client-side password validation, confirmation matching, and secure submission handling.
+ * Provides synchronized password visibility toggle across all fields for enhanced user experience.
+ * Includes proper form validation, error handling, and loading states for security operations.
+ * 
+ * @param onSubmit - Async function to handle validated password change data submission
+ */
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => {
   const { t } = useTranslation(['settings', 'common']);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -24,12 +36,14 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
   const handlePasswordFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Validate password length against application security requirements
     if (newPassword.length < APP_CONFIG.MIN_PASSWORD_LENGTH) {
       logger.warn('[ChangePasswordForm] Password validation failed - too short');
       toast.error(t('settings:page.passwordTooShort'));
       return;
     }
 
+    // Ensure password confirmation matches to prevent user input errors
     if (newPassword !== confirmPassword) {
       logger.warn('[ChangePasswordForm] Password validation failed - passwords do not match');
       toast.error(t('settings:page.passwordsDoNotMatch'));
