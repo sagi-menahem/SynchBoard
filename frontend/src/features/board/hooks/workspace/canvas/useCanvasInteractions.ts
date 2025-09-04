@@ -4,8 +4,8 @@ import type {
   SendBoardActionRequest,
   TextBoxPayload,
 } from 'features/board/types/BoardObjectTypes';
-import { getRecolorCursor } from 'features/board/utils/canvas/cursorUtils';
-import { processRecolorClick } from 'features/board/utils/canvas/recolorLogic';
+import { getRecolorCursor } from 'features/board/utils/cursorUtils';
+import { processRecolorClick } from 'features/board/utils/recolorLogic';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useCallback, useState } from 'react';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
