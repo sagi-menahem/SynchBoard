@@ -236,6 +236,8 @@ public class BoardMemberService {
 
         long adminCount = context.getAllMembers().stream().filter(GroupMember::getIsAdmin).count();
 
+        // Return true if this admin leaving would result in no remaining admins (adminCount <= 1)
+        // AND there are other non-admin members who would be left without board management rights
         return adminCount <= 1 && context.getAllMembers().size() > 1;
     }
 

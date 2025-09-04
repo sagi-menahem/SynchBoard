@@ -182,10 +182,13 @@ public class UserService {
     private void broadcastUserUpdateToSharedBoards(String userEmail) {
         log.debug(WEBSOCKET_PREFIX + " Broadcasting user update for: {}", userEmail);
 
+        // Find all boards where this user is a member to notify about profile changes
         List<GroupMember> memberships = groupMemberRepository.findAllByUserEmail(userEmail);
         List<Long> boardIds = memberships.stream().map(GroupMember::getBoardGroupId).toList();
 
         if (!boardIds.isEmpty()) {
+            // Broadcast user profile changes to all shared boards for real-time UI updates
+            // This ensures member avatars, names, etc. are updated immediately across all boards
             log.debug(WEBSOCKET_PREFIX + " Broadcasting to {} boards for user: {}", boardIds.size(),
                     userEmail);
             notificationService.broadcastBoardUpdatesToMultipleBoards(boardIds,
@@ -274,6 +277,8 @@ public class UserService {
         log.debug("Fetching {} preferences for user: {}", preferenceType, userEmail);
 
         User user = findUserOrThrow(userEmail);
+        // Use functional mapper to convert User entity to specific preference DTO
+        // This pattern eliminates code duplication across different preference types
         return mapper.map(user);
     }
 
@@ -282,13 +287,17 @@ public class UserService {
         log.debug("Updating {} preferences for user: {}", preferenceType, userEmail);
 
         User user = findUserOrThrow(userEmail);
+        // Use functional updater to apply changes - allows null-safe partial updates
+        // This pattern ensures consistent validation and persistence across preference types
         updater.update(user, preferences);
         userRepository.save(user);
 
+        // Capitalize first letter for consistent logging format
         log.info("{} preferences updated for user: {}",
                 preferenceType.substring(0, 1).toUpperCase() + preferenceType.substring(1),
                 userEmail);
 
+        // Return updated preferences using the same mapper for consistency
         return mapper.map(user);
     }
 

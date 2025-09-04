@@ -226,6 +226,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         if (pictureUrl != null) {
             if (StringUtils.hasText(user.getProfilePictureUrl())) {
+                // Extract filename from stored URL by removing the base path prefix
+                // This assumes the stored URL format is consistent: IMAGES_BASE_PATH + filename
                 String existingFilename =
                         user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
                 if (existingFilename != null && !existingFilename.isBlank()) {

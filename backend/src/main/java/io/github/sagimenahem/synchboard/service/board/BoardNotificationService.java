@@ -123,6 +123,8 @@ public class BoardNotificationService {
         log.info("Broadcasting {} updates to {} boards from user {}", updateType, boardIds.size(),
                 sourceUserEmail);
 
+        // Use parallel processing for multiple board notifications to improve performance
+        // Order doesn't matter for independent board notifications, so parallelization is safe
         boardIds.parallelStream().forEach((boardId) -> {
             String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + boardId;
             messagingTemplate.convertAndSend(destination, payload);
@@ -160,6 +162,8 @@ public class BoardNotificationService {
         UserUpdateDTO payload = new UserUpdateDTO(updateType);
         log.info("Broadcasting {} to {} users", operation, userEmails.size());
 
+        // Use parallel processing for multiple user notifications to improve performance
+        // Each user notification is independent, so parallel execution is safe and faster
         userEmails.parallelStream().forEach((email) -> {
             String destination = WEBSOCKET_USER_TOPIC_PREFIX + email;
             messagingTemplate.convertAndSend(destination, payload);

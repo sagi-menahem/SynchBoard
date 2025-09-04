@@ -237,12 +237,17 @@ public class BoardService {
     private void deleteExistingPicture(GroupBoard board) {
         String pictureUrl = board.getGroupPictureUrl();
         if (pictureUrl != null && !pictureUrl.isBlank()) {
+            // Extract just the filename from the full URL to avoid path traversal issues
             String filename = extractFilenameFromPictureUrl(pictureUrl);
             if (filename != null && !filename.isBlank()) {
                 try {
+                    // Delete the physical file from storage while maintaining transaction integrity
+                    // Failure to delete file doesn't rollback DB transaction to prevent orphaned records
                     fileStorageService.delete(filename);
                     log.debug("Existing board picture deleted: {}", filename);
                 } catch (Exception e) {
+                    // Log file deletion failures but continue with database update
+                    // This prevents storage cleanup issues from blocking board operations
                     log.warn(FILE_DELETE_FAILED, filename, e.getMessage());
                 }
             }
@@ -254,11 +259,15 @@ public class BoardService {
             return null;
         }
 
+        // Extract filename from URL using last slash as delimiter
+        // This prevents directory traversal attacks by ensuring we only get the filename
         int lastSlashIndex = pictureUrl.lastIndexOf("/");
         if (lastSlashIndex != -1 && lastSlashIndex < pictureUrl.length() - 1) {
+            // Return only the filename portion after the last slash
             return pictureUrl.substring(lastSlashIndex + 1);
         }
 
+        // Return null if URL doesn't contain valid path structure
         return null;
     }
 
@@ -285,9 +294,12 @@ public class BoardService {
             return;
         }
 
+        // Track invitation results for batch operation reporting
         int successfulInvites = 0;
         int failedInvites = 0;
 
+        // Process each invitation independently - partial failures don't block other invitations
+        // This ensures maximum board accessibility even if some email addresses are invalid
         for (String email : inviteEmails) {
             if (email != null && !email.trim().isEmpty()) {
                 try {
@@ -295,6 +307,8 @@ public class BoardService {
                     successfulInvites++;
                     log.debug("Successfully invited {} to board {}", email, boardId);
                 } catch (Exception e) {
+                    // Log individual invitation failures but continue processing
+                    // This prevents one invalid email from blocking all other invitations
                     failedInvites++;
                     log.warn("Failed to invite {} to board {}: {}", email, boardId, e.getMessage());
                 }

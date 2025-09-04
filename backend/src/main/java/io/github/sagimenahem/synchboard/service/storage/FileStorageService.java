@@ -259,9 +259,12 @@ public class FileStorageService {
                     return false;
                 }
 
+                // WebP format starts with RIFF signature at bytes 0-3: "RIFF" (0x52494646)
                 boolean isRiff = Arrays.equals(Arrays.copyOfRange(fileHeader, 0, 4),
                         new byte[] {0x52, 0x49, 0x46, 0x46});
                 if (isRiff) {
+                    // WebP marker appears at bytes 8-11: "WEBP" (0x57454250)
+                    // Bytes 4-7 contain file size, so WebP marker is offset by 8 bytes
                     boolean hasWebpMarker = Arrays.equals(Arrays.copyOfRange(fileHeader, 8, 12),
                             new byte[] {0x57, 0x45, 0x42, 0x50});
                     return hasWebpMarker;
@@ -376,6 +379,8 @@ public class FileStorageService {
 
             String contentType = connection.getContentType();
             if (contentType != null) {
+                // Handle malformed Content-Type headers that include charset parameters
+                // Split on semicolon and take only the media type part (before charset/boundary)
                 contentType = contentType.split(";")[0].toLowerCase().trim();
             }
 

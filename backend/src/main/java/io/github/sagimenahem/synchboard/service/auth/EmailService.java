@@ -187,6 +187,8 @@ public class EmailService {
      * @return a 6-digit numerical verification code as a string
      */
     public String generateVerificationCode() {
+        // Generate random 6-digit code: Math.random() * 1000000 produces 0-999999
+        // %06d format ensures leading zeros for codes less than 100000 (e.g., "000123")
         return String.format("%06d", (int) (Math.random() * 1000000));
     }
 }

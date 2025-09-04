@@ -183,12 +183,15 @@ public class AuthService {
 
     private void validateVerificationAttempt(PendingRegistration pendingRegistration,
             String verificationCode, String email) {
+        // Check expiration first - expired codes are immediately deleted to prevent reuse
         if (pendingRegistration.isExpired()) {
             log.warn(SECURITY_PREFIX + " Verification code expired for email: {}", email);
             pendingRegistrationRepository.delete(pendingRegistration);
             throw new InvalidRequestException("Verification code has expired");
         }
 
+        // Enforce attempt limits to prevent brute force attacks on verification codes
+        // Max attempts reached triggers immediate cleanup to block further attempts
         if (pendingRegistration.isMaxAttemptsReached()) {
             log.warn(SECURITY_PREFIX + " Max verification attempts exceeded for email: {}", email);
             pendingRegistrationRepository.delete(pendingRegistration);
@@ -196,6 +199,8 @@ public class AuthService {
                     "Too many verification attempts. Please register again.");
         }
 
+        // Validate verification code and increment attempt counter on failure
+        // This provides rate limiting while maintaining security audit trail
         if (!pendingRegistration.getVerificationCode().equals(verificationCode)) {
             pendingRegistration.incrementAttempts();
             pendingRegistrationRepository.save(pendingRegistration);
