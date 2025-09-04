@@ -9,7 +9,6 @@ import { Layout } from 'shared/ui/layout';
 import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
 import RootRedirect from 'shared/ui/routing/RootRedirect';
 
-// Lazy load all page components for optimal bundle splitting
 const AuthPage = lazy(() => import('features/auth/pages/AuthPage'));
 const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));

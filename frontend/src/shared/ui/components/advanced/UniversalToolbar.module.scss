@@ -119,7 +119,7 @@
   gap: theme.$spacing-2;
 }
 
-.toolbarSection>*:not(:last-child)::after {
+.toolbarSection > *:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -8px;
@@ -131,13 +131,13 @@
   pointer-events: none;
 }
 
-.toolbarSection>*:last-child::after {
+.toolbarSection > *:last-child::after {
   display: none;
 }
 
-.toolbarSection>.customItem::after,
-.toolbarSection>*:has(.searchInput)::after,
-.toolbarSection>*:has(.viewToggle)::after {
+.toolbarSection > .customItem::after,
+.toolbarSection > *:has(.searchInput)::after,
+.toolbarSection > *:has(.viewToggle)::after {
   display: none;
 }
 

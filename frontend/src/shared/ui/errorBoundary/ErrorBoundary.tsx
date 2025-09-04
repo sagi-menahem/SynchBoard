@@ -46,7 +46,6 @@ export class ErrorBoundary extends Component<Props, State> {
   private handleRetry = async () => {
     this.setState({ isRetrying: true });
 
-    // Add a small delay to show loading state
     await new Promise((resolve) => setTimeout(resolve, TIMING_CONSTANTS.ERROR_RECOVERY_DELAY));
 
     this.setState({ hasError: false, error: null, isRetrying: false });
@@ -64,7 +63,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      // Use a functional component wrapper to access hooks
       return (
         <ErrorBoundaryUI
           onRetry={this.handleRetry}
@@ -78,7 +76,6 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-// Functional component to use hooks
 const ErrorBoundaryUI: React.FC<{
   onRetry: () => void;
   onGoHome: () => void;
