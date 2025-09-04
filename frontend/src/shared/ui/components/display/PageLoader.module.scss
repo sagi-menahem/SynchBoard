@@ -1,11 +1,17 @@
 @use '@/styles' as theme;
 
+// --- Page Loading Container ---
+
+// Centered loading state container with minimum height for inline page sections
 .pageLoader {
   @include theme.flex-column-center;
   min-height: 200px;
   padding: theme.$spacing-8;
 }
 
+// --- Loading Indicator ---
+
+// Page-level spinner with subtle coloring for non-blocking loading states
 .spinner {
   width: 40px;
   height: 40px;
@@ -15,12 +21,17 @@
   margin-bottom: theme.$spacing-4;
 }
 
+// --- Status Message ---
+
+// Loading message with centered alignment for inline page loading states
 .message {
   color: theme.$text-secondary;
   font-size: theme.$font-size-base;
   margin: 0;
   text-align: center;
 }
+
+// --- Animations ---
 
 @keyframes spin {
   0% {

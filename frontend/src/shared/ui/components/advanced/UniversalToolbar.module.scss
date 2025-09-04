@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Main Toolbar Container ---
+
+// Fixed header toolbar with advanced responsive behavior and backdrop blur
 .universalToolbar {
   position: fixed;
   top: var(--banner-height, 0px);
@@ -33,11 +36,17 @@
   }
 }
 
+// --- Section Base Styles ---
+
+// Foundation styles for all toolbar sections with flexible alignment
 .toolbarSection {
   @include theme.flex-start;
   gap: theme.$spacing-3;
 }
 
+// --- Layout Sections ---
+
+// Left-aligned section with priority-based responsive hiding
 .leftSection {
   justify-content: start;
   min-width: min-content;
@@ -45,6 +54,7 @@
   gap: theme.$spacing-0;
 }
 
+// Center section with intelligent sizing and auto-collapse when empty
 .centerSection {
   justify-content: center;
   min-width: 200px;
@@ -58,6 +68,7 @@
   }
 }
 
+// Right-aligned section with compact mobile layout
 .rightSection {
   justify-content: end;
 
@@ -67,6 +78,9 @@
   }
 }
 
+// --- Title and Interactive Elements ---
+
+// Main toolbar title with text truncation and size constraints
 .toolbarTitle {
   color: theme.$text-primary;
   font-size: theme.$font-size-md;
@@ -83,6 +97,7 @@
   @include theme.smooth-transition;
 }
 
+// Enhanced button styling for clickable titles with hover effects
 .titleButton {
   background: transparent !important;
   border: none !important;
@@ -114,11 +129,17 @@
   }
 }
 
+// --- Custom Components ---
+
+// Container for custom toolbar items with consistent spacing
 .customItem {
   @include theme.flex-start;
   gap: theme.$spacing-2;
 }
 
+// --- Section Separators ---
+
+// Dynamic separator lines between toolbar items with gradient effect
 .toolbarSection > *:not(:last-child)::after {
   content: '';
   position: absolute;
@@ -141,6 +162,9 @@
   display: none;
 }
 
+// --- Responsive Priority System ---
+
+// Progressive hiding of toolbar items based on screen width priorities
 @media (max-width: 935px) {
   .leftSection :global(.toolbar-priority-1) {
     display: none !important;
