@@ -24,6 +24,7 @@
   border: 2px solid theme.$border-primary;
 }
 
+/* Overlay covers entire image with logical positioning and starts hidden */
 .overlay {
   position: absolute;
   top: 0;
@@ -53,6 +54,7 @@
   display: none;
 }
 
+/* Remove button with gradient background using error theme colors */
 .removeButton {
   @include theme.button-base;
   background: linear-gradient(135deg, theme.$error-color 0%, theme.$error-dark 100%);

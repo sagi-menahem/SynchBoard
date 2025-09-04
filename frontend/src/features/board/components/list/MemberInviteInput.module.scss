@@ -17,6 +17,7 @@
   height: 2.5rem;
 }
 
+/* Scrollable container for email tags with custom scrollbar styling */
 .emailTags {
   @include theme.flex-column;
   @include theme.theme-scrollbar;
@@ -41,6 +42,7 @@
   box-sizing: border-box;
 }
 
+/* Circular remove button with precise sizing and hover effects */
 .removeTag {
   @include theme.button-base;
   background: none;
