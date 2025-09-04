@@ -17,18 +17,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ToolPreferencesDTO {
 
-    @NotBlank(message = "validation.toolRequired")
-    @Pattern(
-            regexp = "brush|eraser|square|rectangle|circle|triangle|pentagon|hexagon|star|line|dottedLine|arrow|text|colorPicker|recolor",
-            message = "validation.toolPattern")
-    private String defaultTool;
+        @NotBlank(message = "validation.toolRequired")
+        @Pattern(regexp = "brush|eraser|square|rectangle|circle|triangle|pentagon|hexagon|star|line|dottedLine|arrow|text|colorPicker|recolor",
+                        message = "validation.toolPattern")
+        private String defaultTool;
 
-    @NotBlank(message = "validation.strokeColorRequired")
-    @Pattern(regexp = "^#[0-9A-Fa-f]{6}$",
-            message = "validation.strokeColorPattern")
-    private String defaultStrokeColor;
+        @NotBlank(message = "validation.strokeColorRequired")
+        @Pattern(regexp = "^#[0-9A-Fa-f]{6}$", message = "validation.strokeColorPattern")
+        private String defaultStrokeColor;
 
-    @Min(value = DEFAULT_STROKE_WIDTH_MIN, message = "validation.strokeWidthMin")
-    @Max(value = DEFAULT_STROKE_WIDTH_MAX, message = "validation.strokeWidthMax")
-    private Integer defaultStrokeWidth;
+        @Min(value = DEFAULT_STROKE_WIDTH_MIN, message = "validation.strokeWidthMin")
+        @Max(value = DEFAULT_STROKE_WIDTH_MAX, message = "validation.strokeWidthMax")
+        private Integer defaultStrokeWidth;
 }
