@@ -193,14 +193,16 @@ export const isPointInTriangle = (
   const p3x = x3 * canvasWidth;
   const p3y = y3 * canvasHeight;
 
+  // Calculate triangle area using cross product determinant
   const denominator = (p2y - p3y) * (p1x - p3x) + (p3x - p2x) * (p1y - p3y);
-  if (Math.abs(denominator) < 1e-10) {
+  if (Math.abs(denominator) < 1e-10) { // Check for degenerate triangle (collinear points)
     return false;
   }
 
+  // Calculate barycentric coordinates (area ratios)
   const a = ((p2y - p3y) * (point.x - p3x) + (p3x - p2x) * (point.y - p3y)) / denominator;
   const b = ((p3y - p1y) * (point.x - p3x) + (p1x - p3x) * (point.y - p3y)) / denominator;
-  const c = 1 - a - b;
+  const c = 1 - a - b; // Third coordinate calculated from constraint that a+b+c=1
 
   return a >= 0 && b >= 0 && c >= 0;
 };
@@ -382,15 +384,18 @@ export const distanceToLineSegment = (
   const C = x2 - x1;
   const D = y2 - y1;
 
+  // Calculate dot product for vector projection
   const dot = A * C + B * D;
   const lenSq = C * C + D * D;
 
+  // Handle degenerate case where line segment has zero length
   if (lenSq === 0) {
     return Math.sqrt(A * A + B * B);
   }
 
+  // Calculate projection parameter and clamp to segment bounds [0,1]
   let param = dot / lenSq;
-  param = Math.max(0, Math.min(1, param));
+  param = Math.max(0, Math.min(1, param)); // Clamp to prevent extrapolation beyond segment endpoints
 
   const xx = x1 + param * C;
   const yy = y1 + param * D;

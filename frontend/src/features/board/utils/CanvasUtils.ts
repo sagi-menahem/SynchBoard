@@ -419,14 +419,17 @@ export const drawArrowPayload = (
   const endX = x2 * targetCanvas.width;
   const endY = y2 * targetCanvas.height;
 
+  // Calculate arrow direction and length from line endpoints
   const angle = Math.atan2(endY - startY, endX - startX);
   const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
+  // Scale arrowhead proportionally to stroke width with min/max bounds
   const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
-  const arrowWidth = arrowLength * 0.6;
-  const arrowAngle = Math.atan(arrowWidth / arrowLength);
+  const arrowWidth = arrowLength * 0.6; // Width is 60% of length for proper proportions
+  const arrowAngle = Math.atan(arrowWidth / arrowLength); // Half-angle of arrowhead triangle
 
-  const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle);
+  // Adjust line endpoint to prevent overlap with arrowhead
+  const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle); // 30% overlap for visual continuity
   const lineEndY = endY - arrowLength * 0.3 * Math.sin(angle);
 
   targetCtx.strokeStyle = color;
@@ -568,16 +571,18 @@ export const optimizeDrawingPoints = (
     return points;
   }
 
+  // Apply decimation while preserving critical points
   const optimizedPoints = points.filter((_, index) => {
     if (PRESERVE_ENDPOINTS && (index === 0 || index === points.length - 1)) {
-      return true;
+      return true; // Always keep start and end points for stroke integrity
     }
 
-    return index % DECIMATION_FACTOR === 0;
+    return index % DECIMATION_FACTOR === 0; // Keep every Nth point for density reduction
   });
 
+  // Fallback for over-aggressive optimization
   if (optimizedPoints.length < 2 && points.length >= 2) {
-    return [points[0], points[points.length - 1]];
+    return [points[0], points[points.length - 1]]; // Minimum viable stroke
   }
 
   return optimizedPoints;

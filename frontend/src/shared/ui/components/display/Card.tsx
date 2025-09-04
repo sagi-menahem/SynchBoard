@@ -19,8 +19,16 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * through different shadow depths, borders, and interactive states.
  *
  * @param children - Content to be displayed within the card container
- * @param variant - Visual style variant determining shadow and border appearance
- * @param padding - Internal spacing size for consistent content positioning  
+ * @param variant - Visual style variant:
+ *   - 'default': Use for standard content grouping with subtle shadow and background
+ *   - 'elevated': Use for modal content, floating elements, or components requiring visual emphasis
+ *   - 'outlined': Use when subtle background contrast is needed or borders are preferred over shadows
+ *   - 'empty-state': Use for placeholder content when no data is available to display
+ * @param padding - Internal spacing size:
+ *   - 'none': Use when child components handle their own spacing and layout
+ *   - 'sm': Use for compact content, lists, or minimal information display
+ *   - 'md': Use for standard content sections and general-purpose containers
+ *   - 'lg': Use for primary content areas, hero sections, or prominent information displays  
  * @param hoverable - Whether card should respond to hover interactions with visual feedback
  * @param className - Additional CSS classes for custom styling
  */

@@ -17,7 +17,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  * Provides consistent styling across the application while supporting all standard HTML button features.
  * Uses forwardRef for proper ref handling in complex component hierarchies.
  * 
- * @param {ButtonVariant} variant - Visual styling variant (primary, secondary, destructive, icon, cta, warning, link)
+ * @param {ButtonVariant} variant - Visual styling variant:
+ *   - 'primary': Use for main actions (submit, save, create new)
+ *   - 'secondary': Use for alternative actions (cancel, back, edit)
+ *   - 'destructive': Use for dangerous actions requiring confirmation (delete, remove)
+ *   - 'icon': Use for icon-only buttons in toolbars and compact interfaces
+ *   - 'cta': Use for call-to-action buttons in marketing or onboarding contexts
+ *   - 'warning': Use for potentially risky actions requiring user caution
+ *   - 'link': Use for text-based navigation or secondary non-prominent actions
  * @param {React.ReactNode} children - Button content (text, icons, or other elements)
  * @param {string} className - Optional CSS class to extend button styling
  */
