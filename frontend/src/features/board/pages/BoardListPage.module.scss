@@ -79,8 +79,10 @@
 }
 
 .boardList.grid {
-  grid-template-columns: repeat(auto-fit,
-      minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px)));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px))
+  );
   justify-content: center;
 }
 

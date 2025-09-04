@@ -69,10 +69,10 @@ export const useCanvasInteractions = ({
             const normalizedColor =
               backgroundColor.length === 4
                 ? `#${backgroundColor
-                  .slice(1)
-                  .split('')
-                  .map((c) => c + c)
-                  .join('')}`
+                    .slice(1)
+                    .split('')
+                    .map((c) => c + c)
+                    .join('')}`
                 : backgroundColor;
             onColorPick?.(normalizedColor);
           } else {

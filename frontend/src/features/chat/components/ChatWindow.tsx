@@ -4,6 +4,7 @@ import { useChatWindowLogic } from 'features/chat/hooks/useChatWindowLogic';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import { Button, Card } from 'shared/ui';
 import { formatDateSeparator } from 'shared/utils/DateUtils';
 
@@ -35,7 +36,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
     isMessageNew,
   } = useChatWindowLogic({ boardId, messages });
 
-  // Register the chat commit handler with the board context
   useEffect(() => {
     registerChatCommitHandler(commitChatTransaction);
 
@@ -71,13 +71,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
           const shouldAnimate = isMessageNew(message);
           const prevMessage = filteredMessages[index - 1] ?? null;
 
-          // Message grouping logic: group consecutive messages from same user within 5 minutes
           const isGroupedWithPrevious =
             prevMessage &&
             prevMessage.senderEmail === message.senderEmail &&
             !shouldShowDateSeparator(message, prevMessage) &&
             new Date(message.timestamp).getTime() - new Date(prevMessage.timestamp).getTime() <
-              300000; // 5 minutes
+              TIMING_CONSTANTS.CHAT_MESSAGE_GROUPING_WINDOW;
 
           return (
             <React.Fragment key={message.instanceId ?? `${message.id}-${message.timestamp}`}>

@@ -124,9 +124,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     [shouldShowBanner],
   );
   const containerStyle = useMemo(
-    () => ({
-      '--drawing-disabled-text': `"${t('common:connection.drawingDisabled')}"`,
-    } as React.CSSProperties),
+    () =>
+      ({
+        '--drawing-disabled-text': `"${t('common:connection.drawingDisabled')}"`,
+      }) as React.CSSProperties,
     [t],
   );
   const canvasClassName = useMemo(

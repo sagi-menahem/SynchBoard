@@ -15,7 +15,7 @@
     }
 
     &.otherMessage {
-      padding-inline-start: 48px; // Align with avatar width + gap
+      padding-inline-start: 48px;
     }
   }
 }
@@ -54,7 +54,6 @@
 
 .otherMessage .messageBubble {
   flex: 1;
-  /* Takes remaining width after avatar */
 }
 
 .myMessage .messageBubble {
@@ -63,14 +62,12 @@
   margin-inline-start: auto;
   position: relative;
 
-  // Dark theme - deep navy from design tokens
   body[data-theme='dark'] & {
     background: theme.$color-chat-my-message-dark;
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  // Light theme - light blue from design tokens
   body[data-theme='light'] & {
     background: theme.$color-chat-my-message-light;
     color: #ffffff;
@@ -83,14 +80,12 @@
   color: theme.$text-primary;
   position: relative;
 
-  // Dark theme - warm dark gray from design tokens
   body[data-theme='dark'] & {
     background: theme.$color-chat-other-message-dark;
     color: #f9fafb;
     border-color: rgba(255, 255, 255, 0.08);
   }
 
-  // Light theme - soft gray from design tokens
   body[data-theme='light'] & {
     background: theme.$color-chat-other-message-light;
     color: #1b1b1b;
@@ -113,11 +108,11 @@
 }
 
 .otherMessage .messageHeader {
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 }
 
 .myMessage .messageHeader {
-  text-align: end; // CSS logical property - automatically RTL aware
+  text-align: end;
 }
 
 .senderName {
@@ -139,11 +134,11 @@
 }
 
 .otherMessage .timestampContainer {
-  justify-content: end; // CSS logical property - automatically RTL aware
+  justify-content: end;
 }
 
 .myMessage .timestampContainer {
-  justify-content: start; // CSS logical property - automatically RTL aware
+  justify-content: start;
 }
 
 .messageText {
@@ -161,9 +156,8 @@
 
 .myMessage .messageText {
   color: theme.$primary;
-  text-align: end; // CSS logical property - automatically RTL aware
+  text-align: end;
 
-  // Override for dark theme to use white text
   body[data-theme='dark'] & {
     color: #ffffff;
   }
@@ -171,7 +165,7 @@
 
 .otherMessage .messageText {
   color: theme.$text-primary;
-  text-align: start; // CSS logical property - automatically RTL aware
+  text-align: start;
 }
 
 .timestamp {
@@ -248,11 +242,6 @@
   }
 }
 
-// ========================================
-// MESSAGE STATUS STYLING
-// ========================================
-
-// Pending status - warm orange border with transparency
 .pending {
   .messageBubble {
     border-color: theme.$status-pending-border !important;
@@ -261,7 +250,6 @@
   }
 }
 
-// Confirmed status - restore normal styling
 .confirmed {
   .messageBubble {
     opacity: 1 !important;
@@ -269,7 +257,6 @@
   }
 }
 
-// Failed status - red border with subtle error background
 .failed {
   .messageBubble {
     border-color: theme.$status-failed-border !important;
