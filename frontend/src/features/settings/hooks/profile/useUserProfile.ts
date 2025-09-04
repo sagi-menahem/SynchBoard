@@ -5,6 +5,15 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
+/**
+ * Custom hook for comprehensive user profile management with editing capabilities and media handling.
+ * Provides complete profile lifecycle management including fetching, editing, updating, and media operations.
+ * Implements inline editing state management with form validation, optimistic updates, and proper error handling.
+ * Handles profile picture upload and deletion with proper loading states and user feedback through toast notifications.
+ * Includes minimum loading delays for better perceived performance and smooth user experience transitions.
+ * 
+ * @returns Object containing user profile data, editing state, form handlers, and media management functions
+ */
 export const useUserProfile = () => {
   const { t } = useTranslation(['settings', 'common']);
 
@@ -21,6 +30,7 @@ export const useUserProfile = () => {
 
   const fetchUser = useCallback(() => {
     setIsLoading(true);
+    // Track timing for minimum loading delay to prevent flashing
     const startTime = Date.now();
     const minDelay = 200;
 
@@ -28,6 +38,7 @@ export const useUserProfile = () => {
       .getUserProfile()
       .then((userData: UserProfile) => {
         setUser(userData);
+        // Initialize form data with current user profile values
         setFormData({
           firstName: userData.firstName,
           lastName: userData.lastName ?? '',
@@ -40,6 +51,7 @@ export const useUserProfile = () => {
         toast.error(t('settings:errors.profile.fetch'));
       })
       .finally(() => {
+        // Ensure minimum loading time for smooth UX
         const elapsed = Date.now() - startTime;
         const remainingDelay = Math.max(0, minDelay - elapsed);
 
@@ -97,6 +109,7 @@ export const useUserProfile = () => {
   const startEditing = useCallback(() => setIsEditing(true), []);
 
   const cancelEditing = useCallback(() => {
+    // Reset form data to current user values when canceling edit
     if (user) {
       setFormData({
         firstName: user.firstName,

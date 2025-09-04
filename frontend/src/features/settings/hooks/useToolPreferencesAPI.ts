@@ -4,9 +4,15 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 import logger from 'shared/utils/logger';
 
+/**
+ * Interface defining user tool preferences for drawing and canvas operations.
+ */
 export interface ToolPreferences {
+  // Default drawing tool selection for new canvas sessions
   defaultTool: Tool;
+  // Default stroke color in hex format for drawing operations
   defaultStrokeColor: string;
+  // Default stroke width in pixels for drawing tools
   defaultStrokeWidth: number;
 }
 
@@ -16,6 +22,15 @@ const defaultToolPreferences: ToolPreferences = {
   defaultStrokeWidth: 3,
 };
 
+/**
+ * Custom hook for managing user drawing tool preferences with optimistic updates and error handling.
+ * Provides comprehensive tool preference management including default tool selection, stroke properties,
+ * and canvas drawing settings with persistent storage for authenticated users.
+ * Implements optimistic UI updates with rollback functionality for failed operations and proper error states.
+ * Offers granular preference updates as well as batch preference modification capabilities.
+ * 
+ * @returns Object containing current tool preferences, loading states, and preference update functions
+ */
 export const useToolPreferencesAPI = () => {
   const [preferences, setPreferences] = useState<ToolPreferences>(defaultToolPreferences);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +65,7 @@ export const useToolPreferencesAPI = () => {
       return;
     }
 
+    // Store previous value for potential rollback
     const previousValue = preferences[key];
     setPreferences((prev) => ({ ...prev, [key]: value }));
     setError(null);
@@ -59,6 +75,7 @@ export const useToolPreferencesAPI = () => {
       await userService.updateToolPreferences(updatedPrefs);
     } catch (error) {
       logger.error(`Failed to update ${key}:`, error);
+      // Rollback to previous value on failure
       setPreferences((prev) => ({ ...prev, [key]: previousValue }));
       setError(`Failed to save ${key} preference`);
       throw error;
@@ -74,6 +91,7 @@ export const useToolPreferencesAPI = () => {
       return;
     }
 
+    // Store current state for rollback capability
     const oldPrefs = preferences;
     setPreferences((prev) => ({ ...prev, ...newPrefs }));
     setError(null);
@@ -83,6 +101,7 @@ export const useToolPreferencesAPI = () => {
       await userService.updateToolPreferences(updatedPrefs);
     } catch (error) {
       logger.error('Failed to save tool preferences:', error);
+      // Restore previous state on failure
       setPreferences(oldPrefs);
       setError('Failed to save tool preferences');
       throw error;

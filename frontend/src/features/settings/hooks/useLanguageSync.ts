@@ -7,10 +7,20 @@ import logger from 'shared/utils/logger';
 
 const GUEST_LANGUAGE_KEY = 'guest-language';
 
+// Module-level state for caching and preventing concurrent requests
 let isLoadingLanguagePrefs = false;
 let languagePrefsCache: LanguagePreferences | null = null;
 let languagePrefsPromise: Promise<LanguagePreferences> | null = null;
 
+/**
+ * Custom hook for synchronizing language preferences between authenticated and guest states.
+ * Manages language preference persistence across authentication state changes with proper caching.
+ * Handles both authenticated user language preferences stored on the server and guest preferences in localStorage.
+ * Integrates with i18n system to provide seamless language switching with immediate UI updates.
+ * Implements module-level caching to prevent duplicate API calls and ensure consistent language state.
+ * 
+ * @returns Object containing language synchronization functions and loading state indicators
+ */
 export const useLanguageSync = () => {
   const { i18n } = useTranslation(['common']);
   const { token, isInitializing: authLoading } = useAuth();
@@ -21,10 +31,12 @@ export const useLanguageSync = () => {
       return null;
     }
 
+    // Return cached preferences if available to avoid redundant API calls
     if (languagePrefsCache) {
       return languagePrefsCache;
     }
 
+    // Handle concurrent calls by reusing existing promise
     if (isLoadingLanguagePrefs && languagePrefsPromise) {
       return await languagePrefsPromise;
     }
@@ -36,6 +48,7 @@ export const useLanguageSync = () => {
 
       languagePrefsCache = languagePrefs;
 
+      // Apply language preference to i18n if different from current setting
       if (languagePrefs.preferredLanguage && i18n.language !== languagePrefs.preferredLanguage) {
         await i18n.changeLanguage(languagePrefs.preferredLanguage);
       }
@@ -58,6 +71,7 @@ export const useLanguageSync = () => {
   }, [i18n]);
 
   useEffect(() => {
+    // Clear cache and reset state when user logs out
     if (!token) {
       languagePrefsCache = null;
       languagePrefsPromise = null;
@@ -92,14 +106,17 @@ export const useLanguageSync = () => {
       }
 
       try {
+        // Clear cache to ensure fresh data after update
         languagePrefsCache = null;
 
         const updatedPrefs = await userService.updateLanguagePreferences({
           preferredLanguage: language,
         });
 
+        // Update cache with new preferences
         languagePrefsCache = updatedPrefs;
 
+        // Apply language change immediately if different
         if (i18n.language !== language) {
           await i18n.changeLanguage(language);
         }

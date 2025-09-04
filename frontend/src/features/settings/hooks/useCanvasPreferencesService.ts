@@ -10,9 +10,15 @@ import {
   type LayoutMode,
 } from '../services/canvasPreferencesService';
 
+/**
+ * State interface for managing canvas preferences with loading and error states.
+ */
 export interface CanvasPreferencesState {
+  // Current canvas preferences configuration
   preferences: CanvasPreferences;
+  // Loading state indicator for asynchronous preference operations
   isLoading: boolean;
+  // Error message string for failed preference operations, null when no error
   error: string | null;
 }
 
@@ -72,6 +78,15 @@ const canvasPreferencesReducer = (
   }
 };
 
+/**
+ * Custom hook for managing canvas layout preferences with real-time synchronization and error handling.
+ * Provides comprehensive state management for canvas split ratios, layout modes, and preference persistence.
+ * Integrates with WebSocket subscriptions for real-time preference updates across multiple clients.
+ * Implements optimistic updates with rollback functionality and proper authentication-aware operations.
+ * Uses reducer pattern for complex state management and provides automatic preference loading on authentication.
+ * 
+ * @returns Object containing current preferences, loading states, and preference update functions
+ */
 export function useCanvasPreferencesService() {
   const [state, dispatch] = useReducer(canvasPreferencesReducer, initialState);
   const { token, userEmail } = useAuth();
@@ -96,12 +111,14 @@ export function useCanvasPreferencesService() {
 
   const updateSplitRatio = useCallback(
     async (splitRatio: number) => {
+      // Optimistically update local state for immediate UI feedback
       dispatch({ type: 'UPDATE_SPLIT_RATIO', payload: splitRatio });
 
       if (isAuthenticated) {
         try {
           await CanvasPreferencesService.updateSplitRatio(splitRatio);
         } catch (error) {
+          // Refresh from server on failure to ensure state consistency
           await refreshPreferences();
           throw error;
         }
@@ -120,12 +137,14 @@ export function useCanvasPreferencesService() {
         return;
       }
 
+      // Store previous state for potential rollback on error
       const oldPrefs = state.preferences;
       dispatch({ type: 'UPDATE_PREFERENCES', payload: newPrefs });
 
       try {
         await CanvasPreferencesService.updatePreferences(newPrefs);
       } catch (error) {
+        // Rollback to previous state and set error on failure
         dispatch({ type: 'UPDATE_PREFERENCES', payload: oldPrefs });
         dispatch({ type: 'LOAD_ERROR', payload: 'Failed to save canvas preferences' });
         throw error;
@@ -140,6 +159,7 @@ export function useCanvasPreferencesService() {
 
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
+      // Handle real-time canvas settings changes from other clients
       if (message.updateType === 'CANVAS_SETTINGS_CHANGED') {
         void refreshPreferences();
       }

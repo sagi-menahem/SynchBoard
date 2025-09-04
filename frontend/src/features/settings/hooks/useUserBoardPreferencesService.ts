@@ -9,9 +9,15 @@ import {
   type UserBoardPreferences,
 } from '../services/userPreferencesService';
 
+/**
+ * State interface for managing user board preferences with loading and error states.
+ */
 export interface UserBoardPreferencesState {
+  // Current user board preferences configuration
   preferences: UserBoardPreferences;
+  // Loading state indicator for asynchronous preference operations
   isLoading: boolean;
+  // Error message string for failed preference operations, null when no error
   error: string | null;
 }
 
@@ -64,6 +70,15 @@ const userBoardPreferencesReducer = (
   }
 };
 
+/**
+ * Custom hook for managing user board preferences with optimistic updates and comprehensive error handling.
+ * Provides board-specific preference management including background settings, visual customizations,
+ * and user interface preferences with persistent storage for authenticated users.
+ * Implements reducer pattern for complex state management with optimistic UI updates and rollback functionality.
+ * Includes both explicit toast notifications and silent update modes for different user interaction contexts.
+ * 
+ * @returns Object containing current board preferences, loading states, and preference update functions
+ */
 export function useUserBoardPreferencesService() {
   const [state, dispatch] = useReducer(userBoardPreferencesReducer, initialState);
   const { t } = useTranslation(['settings']);
@@ -85,6 +100,7 @@ export function useUserBoardPreferencesService() {
         error instanceof Error ? error.message : 'Failed to load board preferences';
       dispatch({ type: 'LOAD_ERROR', payload: errorMessage });
 
+      // Only show toast error if user is actively on settings page
       if (document.location.pathname.includes('/settings')) {
         toast.error(t('settings:errors.preferences.fetch'));
       }
@@ -93,6 +109,7 @@ export function useUserBoardPreferencesService() {
 
   const updateBoardBackground = useCallback(
     async (background: string) => {
+      // Store previous state for potential rollback
       const oldPrefs = state.preferences;
       dispatch({ type: 'UPDATE_BOARD_BACKGROUND', payload: background });
 
@@ -101,6 +118,7 @@ export function useUserBoardPreferencesService() {
           await UserPreferencesService.updateBoardBackground(background);
           toast.success(t('settings:success.preferences.update'));
         } catch (error) {
+          // Rollback to previous state and show error
           dispatch({ type: 'UPDATE_PREFERENCES', payload: oldPrefs });
           toast.error(t('settings:errors.preferences.update'));
           throw error;
@@ -116,6 +134,7 @@ export function useUserBoardPreferencesService() {
         return;
       }
 
+      // Store current state for rollback on failure
       const oldPrefs = state.preferences;
       dispatch({ type: 'UPDATE_PREFERENCES', payload: newPrefs });
 
@@ -123,6 +142,7 @@ export function useUserBoardPreferencesService() {
         await UserPreferencesService.updatePreferences(newPrefs);
         toast.success(t('settings:success.preferences.update'));
       } catch (error) {
+        // Restore previous state and notify user of failure
         dispatch({ type: 'UPDATE_PREFERENCES', payload: oldPrefs });
         toast.error(t('settings:errors.preferences.update'));
         throw error;
@@ -137,12 +157,14 @@ export function useUserBoardPreferencesService() {
         return;
       }
 
+      // Store current state for silent rollback on failure
       const oldPrefs = state.preferences;
       dispatch({ type: 'UPDATE_PREFERENCES', payload: newPrefs });
 
       try {
         await UserPreferencesService.updatePreferences(newPrefs);
       } catch (error) {
+        // Silently restore previous state without user notification
         dispatch({ type: 'UPDATE_PREFERENCES', payload: oldPrefs });
         throw error;
       }
