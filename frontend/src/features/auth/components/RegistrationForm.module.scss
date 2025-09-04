@@ -2,21 +2,17 @@
 
 .form {
   @include theme.form-base;
-  // Compact spacing for auth forms only
-  gap: theme.$spacing-2; // Much more compact
+  gap: theme.$spacing-2;
 
-  // Create two-column grid for better space utilization
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: theme.$spacing-2;
 
-  // Remove any negative margins or positioning that might cause edge flush
   margin: 0;
   position: relative;
-  width: 100%; // Take full width of parent container
-  max-width: 400px; // But don't exceed reasonable form width
+  width: 100%;
+  max-width: 400px;
 
-  // Some fields should span full width
   .fullWidth {
     grid-column: 1 / -1;
   }
@@ -24,9 +20,8 @@
 
 .field {
   @include theme.form-field;
-  // Compact spacing for auth form fields only
-  margin-bottom: 0; // Remove bottom margin since grid handles spacing
-  gap: theme.$spacing-1; // Minimal gap
+  margin-bottom: 0;
+  gap: theme.$spacing-1;
 }
 
 .field label {
@@ -70,24 +65,22 @@
 }
 
 .submitButton {
-  margin-top: theme.$spacing-1; // Reduced margin
-  margin-bottom: theme.$spacing-1; // Add small bottom margin
+  margin-top: theme.$spacing-1;
+  margin-bottom: theme.$spacing-1;
   width: 50%;
-  justify-self: center; // Center within the grid cell (works with CSS Grid)
-  align-self: center; // Center vertically
-  justify-content: center; // Center button content
+  justify-self: center;
+  align-self: center;
+  justify-content: center;
 }
 
-// Mobile responsiveness for grid layout
 @media (max-width: 480px) {
   .form {
-    // Switch to single column on small screens
     grid-template-columns: 1fr;
     gap: theme.$spacing-2;
   }
 
   .submitButton {
-    width: 100%; // Full width button on mobile
+    width: 100%;
   }
 }
 

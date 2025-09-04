@@ -75,27 +75,22 @@
   display: inline-flex;
   align-items: center;
   height: 36px;
-  /* Custom canvas tool size */
 }
 
 .colorPickerWrapper :global(.colorPickerContainer) {
   height: 36px;
-  /* Custom canvas tool size */
 }
 
 .colorPickerWrapper :global(.swatch) {
   width: 36px;
   height: 36px;
-  /* Custom canvas tool size - matches other toolbar buttons */
 }
 
 .strokeControl {
   display: inline-flex;
   align-items: center;
   min-width: 120px;
-  /* No direct token available */
   height: 36px;
-  /* Custom canvas tool size */
   padding: 0 theme.$spacing-2;
   background: theme.$tool-control-bg;
   border: 1px solid theme.$tool-button-border;
@@ -109,7 +104,6 @@
   white-space: nowrap;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  /* No direct token available */
   margin-top: theme.$spacing-1-5;
   @include theme.smooth-transition;
   text-shadow: 0 1px 2px theme.$text-shadow;
@@ -124,16 +118,12 @@
 
 .toolButton {
   min-width: 36px;
-  /* Custom canvas tool size */
   min-height: 36px;
-  /* Custom canvas tool size */
 }
 
 .iconButton {
   min-width: 36px;
-  /* Custom canvas tool size */
   min-height: 36px;
-  /* Custom canvas tool size */
 
   &.active {
     background: transparent !important;

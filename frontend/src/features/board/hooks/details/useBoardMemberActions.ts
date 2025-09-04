@@ -9,7 +9,6 @@ import logger from 'shared/utils/logger';
 import { toastPromise } from 'shared/utils/toastUtils';
 
 export interface UseBoardMemberActionsReturn {
-  // Member management actions
   handlePromoteMember: (member: Member) => Promise<void>;
   handleRemoveMember: (member: Member) => Promise<void>;
   handleInviteMember: (email: string) => Promise<Member>;

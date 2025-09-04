@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useClickOutside } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
@@ -45,34 +45,28 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
 
   useClickOutside(dropdownRef, () => setIsOpen(false));
 
-  // Calculate dropdown position when opening
   useEffect(() => {
     if (isOpen && buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
-      const dropdownWidth = 160; // Min width from CSS
-      const dropdownHeight = toolItems.length * 40; // Approximate height per item
+      const dropdownWidth = 160;
+      const dropdownHeight = toolItems.length * 40;
       const margin = 8;
 
-      // Calculate initial position
       let left = buttonRect.left;
       let top = buttonRect.bottom + margin;
 
-      // Check if dropdown would overflow right edge of viewport
       if (left + dropdownWidth > window.innerWidth) {
-        left = buttonRect.right - dropdownWidth; // Align to right edge of button
+        left = buttonRect.right - dropdownWidth;
       }
 
-      // Ensure dropdown doesn't go beyond left edge
       if (left < margin) {
         left = margin;
       }
 
-      // Check if dropdown would overflow bottom edge of viewport
       if (top + dropdownHeight > window.innerHeight) {
-        top = buttonRect.top - dropdownHeight - margin; // Position above button
+        top = buttonRect.top - dropdownHeight - margin;
       }
 
-      // Ensure dropdown doesn't go beyond top edge
       if (top < margin) {
         top = margin;
       }

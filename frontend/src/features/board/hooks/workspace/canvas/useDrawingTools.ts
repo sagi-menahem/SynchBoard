@@ -244,7 +244,7 @@ export const useDrawingTools = ({
       } else if (tool === TOOLS.TEXT) {
         const rectWidth = Math.abs(currentPoint.x - startPoint.x) / canvas.width;
         const rectHeight = Math.abs(currentPoint.y - startPoint.y) / canvas.height;
-        const minSize = 0.02; // 2% of canvas dimension
+        const minSize = 0.02;
 
         if (
           isShapeSizeValid(rectWidth, rectHeight) &&

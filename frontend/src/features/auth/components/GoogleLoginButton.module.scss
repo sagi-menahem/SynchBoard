@@ -1,12 +1,11 @@
 @use '@/styles' as theme;
 
-/* Google branding guidelines - theme aware while maintaining brand consistency */
 .googleButton {
   @include theme.flex-center;
   @include theme.button-transition;
   @include theme.rounded-large;
-  width: theme.$google-button-width-ratio; // Increased from 50% to accommodate text better
-  max-width: theme.$google-button-max-width; // Add max-width to prevent it getting too wide
+  width: theme.$google-button-width-ratio;
+  max-width: theme.$google-button-max-width;
   margin: 0 auto;
   padding: theme.$spacing-3 theme.$spacing-4;
   border: 1px solid var(--google-button-border);
