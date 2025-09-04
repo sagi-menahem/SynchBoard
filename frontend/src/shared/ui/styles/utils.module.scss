@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Background Utilities ---
+
+// Dynamic background with user-customizable color and pattern overlay
 .unifiedDotBackground {
   background-color: var(--user-chosen-color, var(--color-random-shapes-bg));
 
@@ -12,6 +15,8 @@
   -webkit-backdrop-filter: blur(var(--background-blur, theme.$background-blur-none));
 }
 
+// --- Settings UI Utilities ---
+
 .settingRow {
   display: flex;
   align-items: center;
@@ -23,6 +28,9 @@
   font-size: 0.9rem;
 }
 
+// --- Color Picker Styling ---
+
+// Custom popover positioning and styling for color picker
 .colorPickerPopupWrapper :global(.popover) {
   position: absolute;
   top: calc(100% + 8px);
@@ -37,6 +45,7 @@
   min-width: theme.$color-picker-width !important;
 }
 
+// Force consistent width for nested color picker containers
 .colorPickerPopupWrapper :global([class*='colorPickerContainer']) :global([class*='popover']) {
   width: theme.$color-picker-width !important;
   min-width: theme.$color-picker-width !important;
@@ -56,6 +65,7 @@
   padding: 0;
 }
 
+// Saturation area styling with rounded top corners
 .colorPickerPopupWrapper :global(.react-colorful__saturation) {
   @include theme.rounded-small;
   border-radius: theme.$border-radius-sm theme.$border-radius-sm 0 0;
@@ -65,6 +75,7 @@
   padding: 0;
 }
 
+// Hue slider with rounded bottom corners
 .colorPickerPopupWrapper :global(.react-colorful__hue) {
   height: theme.$color-picker-slider-height;
   border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
@@ -74,6 +85,7 @@
   box-sizing: border-box;
 }
 
+// Alpha slider styling matching hue slider
 .colorPickerPopupWrapper :global(.react-colorful__alpha) {
   height: theme.$color-picker-slider-height;
   border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
@@ -83,6 +95,7 @@
   box-sizing: border-box;
 }
 
+// Custom pointer styling for color picker interactions
 .colorPickerPopupWrapper :global(.react-colorful__pointer) {
   width: theme.$color-picker-pointer-size;
   height: theme.$color-picker-pointer-size;
