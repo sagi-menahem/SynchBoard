@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Fixed position banner for connection status notifications
 .banner {
   position: fixed;
   top: 0;
@@ -44,6 +45,7 @@
   animation: pulse theme.$transition-very-slow ease-in-out infinite;
 }
 
+// Rotation animation for loading states
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -54,6 +56,7 @@
   }
 }
 
+// Pulsing animation for disconnected state indicator
 @keyframes pulse {
   0% {
     opacity: 1;
