@@ -5,10 +5,20 @@ import { useTranslation } from 'react-i18next';
 import styles from './GoogleLoginButton.module.scss';
 
 interface GoogleLoginButtonProps {
+  /** Callback fired when button is clicked to initiate OAuth flow */
   onClick: () => void;
+  /** Whether button should be disabled during loading states */
   disabled?: boolean;
 }
 
+/**
+ * Google OAuth login button with official branding and styling.
+ * Displays the Google logo and appropriate text based on loading state,
+ * following Google's OAuth branding guidelines.
+ *
+ * @param onClick - Callback fired when button is clicked to initiate OAuth flow
+ * @param disabled - Whether button should be disabled during loading states
+ */
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onClick, disabled = false }) => {
   const { t } = useTranslation(['auth', 'common']);
 

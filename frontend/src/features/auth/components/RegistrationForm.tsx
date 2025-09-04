@@ -9,9 +9,17 @@ import { useRegisterForm } from '../hooks/forms';
 import styles from './RegistrationForm.module.scss';
 
 interface RegistrationFormProps {
+  /** Callback fired when user registration is successful, receives the registered email */
   onRegistrationSuccess: (email: string) => void;
 }
 
+/**
+ * User registration form with comprehensive profile fields.
+ * Collects user information in a two-column responsive grid layout and handles
+ * form submission with validation and loading states.
+ *
+ * @param onRegistrationSuccess - Callback fired when user registration is successful, receives the registered email
+ */
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSuccess }) => {
   const { t } = useTranslation(['auth', 'common']);
   const { submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
@@ -79,6 +87,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
             { value: 'female', label: t('common:form.option.female') },
           ]}
         />
+        {/* Hidden input to ensure gender value is submitted with form */}
         <input type="hidden" name="gender" value={gender} />
       </div>
 

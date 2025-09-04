@@ -9,12 +9,26 @@ import styles from 'shared/ui/styles/CommonForm.module.scss';
 import { useResendVerificationCode, useVerifyEmailForm } from '../hooks/forms';
 
 interface EmailVerificationModalProps {
+  /** Whether the modal is currently visible */
   isOpen: boolean;
+  /** Callback fired when modal should be closed */
   onClose: () => void;
+  /** Email address that verification code was sent to */
   email: string;
+  /** Callback fired when verification succeeds with the JWT token */
   onSuccess: (token: string) => void;
 }
 
+/**
+ * Modal component for email verification during user registration.
+ * Displays a form for entering a 6-digit verification code and handles code resending
+ * with cooldown period to prevent abuse.
+ *
+ * @param isOpen - Whether the modal is currently visible
+ * @param onClose - Callback fired when modal should be closed
+ * @param email - Email address that verification code was sent to
+ * @param onSuccess - Callback fired when verification succeeds with the JWT token
+ */
 const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   isOpen,
   onClose,
@@ -30,6 +44,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (resendCooldown > 0) {
+      // Decrement cooldown timer every second
       timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
     }
     return () => clearTimeout(timer);
@@ -42,6 +57,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
 
     const result = await resendVerificationCode();
     if (result.success) {
+      // Start 60-second cooldown after successful resend
       setResendCooldown(60);
     }
   };

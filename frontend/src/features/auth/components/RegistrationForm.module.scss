@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Two-column grid layout for registration form fields
 .form {
   @include theme.form-base;
   gap: theme.$spacing-2;
@@ -13,6 +14,7 @@
   width: 100%;
   max-width: 400px;
 
+  // Utility class to span full width across grid columns
   .fullWidth {
     grid-column: 1 / -1;
   }
@@ -33,6 +35,7 @@
   text-align: center;
 }
 
+// Center-aligned date input styling
 .field input[type='date'] {
   text-align: center;
 }
@@ -42,6 +45,7 @@
   font-weight: bold;
 }
 
+// Horizontal layout for gender selection radio buttons
 .radioGroup {
   @include theme.flex-start;
   gap: theme.$spacing-4;
@@ -64,6 +68,7 @@
   margin-bottom: theme.$spacing-4;
 }
 
+// Centered submit button with reduced width
 .submitButton {
   margin-top: theme.$spacing-1;
   margin-bottom: theme.$spacing-1;
@@ -73,6 +78,7 @@
   justify-content: center;
 }
 
+// Mobile layout: single column grid
 @media (max-width: 480px) {
   .form {
     grid-template-columns: 1fr;
@@ -84,6 +90,7 @@
   }
 }
 
+// Tablet layout: vertical radio button alignment
 @media (max-width: 640px) {
   .radioGroup {
     @include theme.flex-column;

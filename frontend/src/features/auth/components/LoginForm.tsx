@@ -11,9 +11,17 @@ import GoogleLoginButton from './GoogleLoginButton';
 import styles from './LoginForm.module.scss';
 
 interface LoginFormProps {
+  /** Callback fired when forgot password link is clicked */
   onForgotPassword: () => void;
 }
 
+/**
+ * Login form component with email/password authentication and Google OAuth integration.
+ * Provides a complete login experience with form validation, loading states,
+ * and fallback to forgot password functionality.
+ *
+ * @param onForgotPassword - Callback fired when forgot password link is clicked
+ */
 const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
   const { t } = useTranslation(['auth', 'common']);
   const { redirectToGoogle } = useAuth();
@@ -21,6 +29,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleGoogleLogin = () => {
+    // Set loading state before redirecting to prevent multiple clicks
     setIsGoogleLoading(true);
     redirectToGoogle();
   };
