@@ -15,9 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CanvasPreferencesDTO {
 
-    @Min(value = CANVAS_CHAT_SPLIT_RATIO_MIN,
-            message = "validation.canvasSplitMin")
-    @Max(value = CANVAS_CHAT_SPLIT_RATIO_MAX,
-            message = "validation.canvasSplitMax")
-    private Integer canvasChatSplitRatio;
+        @Min(value = CANVAS_CHAT_SPLIT_RATIO_MIN, message = "validation.canvasSplitMin")
+        @Max(value = CANVAS_CHAT_SPLIT_RATIO_MAX, message = "validation.canvasSplitMax")
+        private Integer canvasChatSplitRatio;
 }

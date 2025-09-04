@@ -26,6 +26,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User implements UserDetails {
 
+    public enum AuthProvider {
+        LOCAL, GOOGLE
+    }
+
     @Id
     @Column(nullable = false, unique = true)
     private String email;

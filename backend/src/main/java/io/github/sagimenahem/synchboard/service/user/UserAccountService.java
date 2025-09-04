@@ -84,7 +84,6 @@ public class UserAccountService {
                 userRepository.delete(user);
                 log.warn(USER_ACCOUNT_DELETED, userEmail);
 
-                // Verify deletion
                 boolean userStillExists = userRepository.existsById(userEmail);
                 log.info("User deletion verification for {}: still exists in DB = {}", userEmail,
                                 userStillExists);

@@ -17,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-        private ResponseEntity<ErrorResponseDTO> buildErrorResponse(HttpStatus status, String message) {
+        private ResponseEntity<ErrorResponseDTO> buildErrorResponse(HttpStatus status,
+                        String message) {
                 ErrorResponseDTO errorResponse = new ErrorResponseDTO(status.value(), message);
                 return new ResponseEntity<>(errorResponse, status);
         }
@@ -26,7 +27,8 @@ public class GlobalExceptionHandler {
         public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(
                         BadCredentialsException ex) {
                 log.warn(LoggingConstants.AUTH_LOGIN_FAILED, "unknown", ex.getMessage());
-                return buildErrorResponse(HttpStatus.UNAUTHORIZED, MessageConstants.AUTH_BAD_CREDENTIALS);
+                return buildErrorResponse(HttpStatus.UNAUTHORIZED,
+                                MessageConstants.AUTH_BAD_CREDENTIALS);
         }
 
         @ExceptionHandler(ResourceNotFoundException.class)
@@ -70,6 +72,7 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(Exception.class)
         public ResponseEntity<ErrorResponseDTO> handleAllExceptions(Exception ex) {
                 log.error("An unexpected error occurred", ex);
-                return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, MessageConstants.UNEXPECTED_ERROR);
+                return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                                MessageConstants.UNEXPECTED_ERROR);
         }
 }
