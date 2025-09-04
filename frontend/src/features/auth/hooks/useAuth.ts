@@ -17,7 +17,6 @@ export const useAuth = () => {
     throw error;
   }
 
-
   return {
     ...context,
     redirectToGoogle: authService.redirectToGoogle,

@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import {
   ActionType,
@@ -14,6 +12,7 @@ import {
   type TrianglePayload,
 } from 'features/board/types/BoardObjectTypes';
 import { optimizeDrawingPoints } from 'features/board/utils/CanvasUtils';
+import { useCallback } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import type { CanvasEventData } from './useCanvasEvents';
@@ -52,13 +51,17 @@ export const useDrawingTools = ({
   const handleToolMouseDown = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
-      if (!canvas) { return; }
+      if (!canvas) {
+        return;
+      }
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-        currentPath.current = [{
-          x: eventData.startPoint.x / canvas.width,
-          y: eventData.startPoint.y / canvas.height,
-        }];
+        currentPath.current = [
+          {
+            x: eventData.startPoint.x / canvas.width,
+            y: eventData.startPoint.y / canvas.height,
+          },
+        ];
       }
     },
     [canvasRef, tool, currentPath],
@@ -67,7 +70,9 @@ export const useDrawingTools = ({
   const handleToolMouseMove = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
-      if (!canvas) { return; }
+      if (!canvas) {
+        return;
+      }
 
       if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
         currentPath.current.push({
@@ -82,7 +87,9 @@ export const useDrawingTools = ({
   const handleToolMouseUp = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
-      if (!canvas) { return; }
+      if (!canvas) {
+        return;
+      }
 
       const { startPoint, currentPoint } = eventData;
 
@@ -237,9 +244,13 @@ export const useDrawingTools = ({
       } else if (tool === TOOLS.TEXT) {
         const rectWidth = Math.abs(currentPoint.x - startPoint.x) / canvas.width;
         const rectHeight = Math.abs(currentPoint.y - startPoint.y) / canvas.height;
-        const minSize = 0.02; // 2% of canvas dimension
+        const minSize = 0.02;
 
-        if (isShapeSizeValid(rectWidth, rectHeight) && rectWidth >= minSize && rectHeight >= minSize) {
+        if (
+          isShapeSizeValid(rectWidth, rectHeight) &&
+          rectWidth >= minSize &&
+          rectHeight >= minSize
+        ) {
           const pixelX = Math.min(startPoint.x, currentPoint.x);
           const pixelY = Math.min(startPoint.y, currentPoint.y);
           const pixelWidth = Math.abs(currentPoint.x - startPoint.x);
@@ -249,7 +260,6 @@ export const useDrawingTools = ({
         }
       }
 
-      // Clean up drawing state
       currentPath.current = [];
     },
     [

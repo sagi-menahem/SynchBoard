@@ -1,11 +1,11 @@
 @use 'styles/design-tokens' as dt;
 .app-content {
-    padding-top: var(--banner-height, 0px);
-    transition: padding-top var(--transition-duration-slow, 0.3s) ease-in-out;
-    
-    [data-auth-page] {
-        margin-top: calc(-1 * var(--banner-height, 0px));
-    }
+  padding-top: var(--banner-height, 0px);
+  transition: padding-top var(--transition-duration-slow, 0.3s) ease-in-out;
+
+  [data-auth-page] {
+    margin-top: calc(-1 * var(--banner-height, 0px));
+  }
 }
 
 :root,
@@ -21,7 +21,6 @@ body[data-theme='light'] {
   -moz-osx-font-smoothing: grayscale;
 
   --banner-height: 0px;
-
 
   --transition-duration-fast: #{dt.$transition-fast};
   --transition-duration-normal: #{dt.$transition-normal};
@@ -79,32 +78,56 @@ body[data-theme='light'] {
   --color-canvas-background: #{dt.$color-board-light-default};
   --color-canvas-pattern: rgba(0, 0, 0, 0.03);
 
+  --color-random-shapes-bg: #{dt.$color-random-shapes-bg-light};
+  --color-random-shapes-pattern: #{dt.$color-random-shapes-pattern-light};
+
   --color-status-pending-border: #{dt.$color-status-pending-border-light};
   --color-status-confirmed-border: #{dt.$color-status-confirmed-border-light};
   --color-status-failed-border: #{dt.$color-status-failed-border-light};
   --color-status-failed-bg: #{dt.$color-status-failed-bg-light};
 
-  --toolbar-background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.98) 100%);
+  --toolbar-background: linear-gradient(
+    135deg,
+    rgba(248, 250, 252, 0.95) 0%,
+    rgba(241, 245, 249, 0.98) 100%
+  );
   --toolbar-border: rgba(226, 232, 240, 0.6);
   --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
 
-  --nav-button-background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.9) 100%);
+  --nav-button-background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(248, 250, 252, 0.9) 100%
+  );
   --nav-button-border: rgba(226, 232, 240, 0.6);
   --nav-button-text: #{dt.$color-gray-600};
   --nav-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-  --nav-button-hover-background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 1) 100%);
+  --nav-button-hover-background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(241, 245, 249, 1) 100%
+  );
   --nav-button-hover-border: #{dt.$color-black};
   --nav-button-hover-text: #{dt.$color-black};
   --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 1) inset;
 
-  --destructive-button-background: linear-gradient(135deg, rgba(254, 242, 242, 0.9) 0%, rgba(255, 237, 237, 0.95) 100%);
+  --destructive-button-background: linear-gradient(
+    135deg,
+    rgba(254, 242, 242, 0.9) 0%,
+    rgba(255, 237, 237, 0.95) 100%
+  );
   --destructive-button-border: rgba(252, 165, 165, 0.4);
   --destructive-button-text: #{dt.$color-error-hover};
   --destructive-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(254, 226, 226, 0.8) inset;
-  --destructive-button-hover-background: linear-gradient(135deg, rgba(254, 226, 226, 0.95) 0%, rgba(252, 165, 165, 0.2) 100%);
+  --destructive-button-hover-background: linear-gradient(
+    135deg,
+    rgba(254, 226, 226, 0.95) 0%,
+    rgba(252, 165, 165, 0.2) 100%
+  );
   --destructive-button-hover-border: #{dt.$color-error-light};
   --destructive-button-hover-text: #{dt.$color-error-hover};
-  --destructive-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 202, 202, 1) inset;
+  --destructive-button-hover-shadow:
+    #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 202, 202, 1) inset;
 
   --language-toggle-bg: #e5e7eb;
 
@@ -137,6 +160,15 @@ body[data-theme='light'] {
   --scrollbar-thumb-bg: #{dt.$color-gray-400};
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-500};
   --scrollbar-corner-bg: #{dt.$color-gray-100};
+
+  --google-button-bg: #{dt.$google-button-bg-light};
+  --google-button-text: #{dt.$google-button-text-light};
+  --google-button-border: #{dt.$google-button-border-light};
+  --google-button-hover-bg: #{dt.$google-button-hover-bg-light};
+  --google-button-hover-border: #{dt.$google-button-hover-border-light};
+  --google-button-active-bg: #{dt.$google-button-active-bg-light};
+  --google-button-disabled-text: #{dt.$google-button-disabled-text-light};
+  --google-button-disabled-border: #{dt.$google-button-disabled-border-light};
 
   color: var(--color-text-primary);
   background-color: var(--color-background);
@@ -178,32 +210,56 @@ body[data-theme='dark'] {
   --color-canvas-background: #{dt.$color-board-dark-default};
   --color-canvas-pattern: rgba(255, 255, 255, 0.02);
 
+  --color-random-shapes-bg: #{dt.$color-random-shapes-bg-dark};
+  --color-random-shapes-pattern: #{dt.$color-random-shapes-pattern-dark};
+
   --color-status-pending-border: #{dt.$color-status-pending-border-dark};
   --color-status-confirmed-border: #{dt.$color-status-confirmed-border-dark};
   --color-status-failed-border: #{dt.$color-status-failed-border-dark};
   --color-status-failed-bg: #{dt.$color-status-failed-bg-dark};
 
-  --toolbar-background: linear-gradient(135deg, rgba(24, 24, 27, 0.95) 0%, rgba(39, 39, 42, 0.98) 100%);
+  --toolbar-background: linear-gradient(
+    135deg,
+    rgba(24, 24, 27, 0.95) 0%,
+    rgba(39, 39, 42, 0.98) 100%
+  );
   --toolbar-border: rgba(63, 63, 70, 0.4);
   --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 
-  --nav-button-background: linear-gradient(135deg, rgba(39, 39, 42, 0.8) 0%, rgba(52, 52, 55, 0.9) 100%);
+  --nav-button-background: linear-gradient(
+    135deg,
+    rgba(39, 39, 42, 0.8) 0%,
+    rgba(52, 52, 55, 0.9) 100%
+  );
   --nav-button-border: rgba(82, 82, 91, 0.4);
   --nav-button-text: #{dt.$color-gray-300};
   --nav-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-  --nav-button-hover-background: linear-gradient(135deg, rgba(52, 52, 55, 0.95) 0%, rgba(63, 63, 70, 1) 100%);
+  --nav-button-hover-background: linear-gradient(
+    135deg,
+    rgba(52, 52, 55, 0.95) 0%,
+    rgba(63, 63, 70, 1) 100%
+  );
   --nav-button-hover-border: #{dt.$color-gray-50};
   --nav-button-hover-text: #{dt.$color-white};
   --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 
-  --destructive-button-background: linear-gradient(135deg, rgba(69, 26, 26, 0.6) 0%, rgba(87, 13, 13, 0.7) 100%);
+  --destructive-button-background: linear-gradient(
+    135deg,
+    rgba(69, 26, 26, 0.6) 0%,
+    rgba(87, 13, 13, 0.7) 100%
+  );
   --destructive-button-border: rgba(153, 27, 27, 0.4);
   --destructive-button-text: #{dt.$color-error-light};
   --destructive-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(254, 226, 226, 0.06) inset;
-  --destructive-button-hover-background: linear-gradient(135deg, rgba(87, 13, 13, 0.8) 0%, rgba(127, 29, 29, 0.9) 100%);
+  --destructive-button-hover-background: linear-gradient(
+    135deg,
+    rgba(87, 13, 13, 0.8) 0%,
+    rgba(127, 29, 29, 0.9) 100%
+  );
   --destructive-button-hover-border: #{dt.$color-error-light};
   --destructive-button-hover-text: #{dt.$color-error-light};
-  --destructive-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 226, 226, 0.1) inset;
+  --destructive-button-hover-shadow:
+    #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 226, 226, 0.1) inset;
 
   --language-toggle-bg: #374151;
 
@@ -236,6 +292,15 @@ body[data-theme='dark'] {
   --scrollbar-thumb-bg: #{dt.$color-gray-700};
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-600};
   --scrollbar-corner-bg: #{dt.$color-gray-900};
+
+  --google-button-bg: #{dt.$google-button-bg-dark};
+  --google-button-text: #{dt.$google-button-text-dark};
+  --google-button-border: #{dt.$google-button-border-dark};
+  --google-button-hover-bg: #{dt.$google-button-hover-bg-dark};
+  --google-button-hover-border: #{dt.$google-button-hover-border-dark};
+  --google-button-active-bg: #{dt.$google-button-active-bg-dark};
+  --google-button-disabled-text: #{dt.$google-button-disabled-text-dark};
+  --google-button-disabled-border: #{dt.$google-button-disabled-border-dark};
 
   color: var(--color-text-primary);
   background-color: var(--color-background);

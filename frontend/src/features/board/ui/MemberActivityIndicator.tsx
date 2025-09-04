@@ -1,6 +1,6 @@
+import { Users } from 'lucide-react';
 import React from 'react';
 
-import { Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './MemberActivityIndicator.module.scss';

@@ -1,14 +1,13 @@
-import React, { type ReactNode } from 'react';
-
 import { AuthProvider } from 'features/auth/AuthProvider';
 import { CanvasPreferencesProvider } from 'features/settings/CanvasPreferencesProvider';
 import { ThemeProvider } from 'features/settings/ThemeProvider';
 import { ToolPreferencesProvider } from 'features/settings/ToolPreferencesProvider';
 import { UserBoardPreferencesProvider } from 'features/settings/UserBoardPreferencesProvider';
 import { WebSocketProvider } from 'features/websocket/WebSocketProvider';
+import React, { type ReactNode } from 'react';
 
 interface AppProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
@@ -18,9 +17,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         <ThemeProvider>
           <ToolPreferencesProvider>
             <CanvasPreferencesProvider>
-              <UserBoardPreferencesProvider>
-                {children}
-              </UserBoardPreferencesProvider>
+              <UserBoardPreferencesProvider>{children}</UserBoardPreferencesProvider>
             </CanvasPreferencesProvider>
           </ToolPreferencesProvider>
         </ThemeProvider>

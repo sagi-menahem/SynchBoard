@@ -14,27 +14,25 @@ interface SectionCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const SectionCard = React.forwardRef<HTMLDivElement, SectionCardProps>(
-  ({ 
-    children, 
-    title,
-    subtitle,
-    variant = 'default', 
-    padding = 'md', 
-    showHeader = true,
-    headerActions,
-    className,
-    ...props 
-  }, ref) => {
-    const cardClasses = [
-      styles.sectionCard,
-      styles[variant],
+  (
+    {
+      children,
+      title,
+      subtitle,
+      variant = 'default',
+      padding = 'md',
+      showHeader = true,
+      headerActions,
       className,
-    ].filter(Boolean).join(' ');
+      ...props
+    },
+    ref,
+  ) => {
+    const cardClasses = [styles.sectionCard, styles[variant], className].filter(Boolean).join(' ');
 
-    const contentWrapperClasses = [
-      styles.contentWrapper,
-      styles[`padding-${padding}`],
-    ].filter(Boolean).join(' ');
+    const contentWrapperClasses = [styles.contentWrapper, styles[`padding-${padding}`]]
+      .filter(Boolean)
+      .join(' ');
 
     const shouldShowHeader = showHeader && (title ?? headerActions);
 
@@ -49,18 +47,12 @@ const SectionCard = React.forwardRef<HTMLDivElement, SectionCardProps>(
                   {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
                 </div>
               )}
-              {headerActions && (
-                <div className={styles.headerActions}>
-                  {headerActions}
-                </div>
-              )}
+              {headerActions && <div className={styles.headerActions}>{headerActions}</div>}
             </div>
           </header>
         )}
         <div className={contentWrapperClasses}>
-          <div className={styles.content}>
-            {children}
-          </div>
+          <div className={styles.content}>{children}</div>
         </div>
       </section>
     );

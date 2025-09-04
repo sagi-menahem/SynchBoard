@@ -9,7 +9,6 @@ import { Layout } from 'shared/ui/layout';
 import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
 import RootRedirect from 'shared/ui/routing/RootRedirect';
 
-// Lazy load all page components for optimal bundle splitting
 const AuthPage = lazy(() => import('features/auth/pages/AuthPage'));
 const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
@@ -24,45 +23,41 @@ const LazyPageLoader = () => {
 export function AppRoutes() {
   return (
     <Routes>
-      <Route 
-        path="/" 
-        element={<RootRedirect />}
-      />
-      
-      <Route 
-        path="/auth" 
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        } 
-      />
-      <Route 
-        path={APP_ROUTES.AUTH_CALLBACK} 
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        } 
-      />
-      <Route 
-        path={APP_ROUTES.AUTH_ERROR} 
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        } 
-      />
-      
+      <Route path="/" element={<RootRedirect />} />
 
-      <Route 
-        path={APP_ROUTES.BOARD_LIST} 
+      <Route
+        path="/auth"
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path={APP_ROUTES.AUTH_CALLBACK}
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path={APP_ROUTES.AUTH_ERROR}
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LazyPageLoader />}>
+              <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+
+      <Route
+        path={APP_ROUTES.BOARD_LIST}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -71,10 +66,10 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      <Route 
-        path={APP_ROUTES.BOARD_DETAIL_PATTERN} 
+      <Route
+        path={APP_ROUTES.BOARD_DETAIL_PATTERN}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -83,10 +78,10 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      <Route 
-        path={APP_ROUTES.BOARD_DETAILS_PATTERN} 
+      <Route
+        path={APP_ROUTES.BOARD_DETAILS_PATTERN}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -95,10 +90,10 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      <Route 
-        path={APP_ROUTES.SETTINGS} 
+      <Route
+        path={APP_ROUTES.SETTINGS}
         element={
           <ProtectedRoute>
             <ErrorBoundary>
@@ -107,9 +102,9 @@ export function AppRoutes() {
               </Suspense>
             </ErrorBoundary>
           </ProtectedRoute>
-        } 
+        }
       />
-      
+
       <Route
         element={
           <ProtectedRoute>

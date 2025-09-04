@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
 import { useAuth } from 'features/auth/hooks';
 import { useChatMessages } from 'features/chat/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
@@ -27,35 +26,33 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
 
   const { sendMessage } = useChatMessages();
 
-  const addOptimisticMessage = useCallback((message: ChatMessageResponse & { transactionId: string }) => {
-    // Track this as a new message for animation
-    const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
-    setNewMessageIds((prev) => new Set([...prev, messageKey]));
+  const addOptimisticMessage = useCallback(
+    (message: ChatMessageResponse & { transactionId: string }) => {
+      const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
+      setNewMessageIds((prev) => new Set([...prev, messageKey]));
 
-    // Track this message as pending for the configured timeout
-    if (message.instanceId) {
-      setPendingMessageIds((prev) => new Set([...prev, message.instanceId!]));
+      if (message.instanceId) {
+        setPendingMessageIds((prev) => new Set([...prev, message.instanceId!]));
 
-      setTimeout(() => {
-        setPendingMessageIds((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(message.instanceId!);
-          return newSet;
-        });
+        setTimeout(() => {
+          setPendingMessageIds((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(message.instanceId!);
+            return newSet;
+          });
 
-        // Also clean up animation tracking after animation completes
-        setNewMessageIds((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(messageKey);
-          return newSet;
-        });
-      }, TIMING_CONSTANTS.CHAT_PENDING_MESSAGE_TIMEOUT);
-    }
-  }, []);
+          setNewMessageIds((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(messageKey);
+            return newSet;
+          });
+        }, TIMING_CONSTANTS.CHAT_PENDING_MESSAGE_TIMEOUT);
+      }
+    },
+    [],
+  );
 
-  const startPendingTimer = useCallback((_transactionId: string) => {
-    // This is now just for compatibility with useChatMessages
-  }, []);
+  const startPendingTimer = useCallback((_transactionId: string) => {}, []);
 
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
@@ -93,14 +90,20 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
       userProfilePictureUrl: undefined,
     };
 
-    return await sendMessage(content, boardId, userEmail, userInfo, addOptimisticMessage, startPendingTimer);
+    return await sendMessage(
+      content,
+      boardId,
+      userEmail,
+      userInfo,
+      addOptimisticMessage,
+      startPendingTimer,
+    );
   };
 
   const allMessages = useMemo((): EnhancedChatMessage[] => {
     return messages.map((msg): EnhancedChatMessage => {
       const enhancedMsg = msg as EnhancedChatMessage;
 
-      // Simple pending check: if instanceId is in pendingMessageIds, show as pending
       const isPending = msg.instanceId && pendingMessageIds.has(msg.instanceId);
       const status = isPending ? 'pending' : 'confirmed';
 
@@ -125,9 +128,10 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     }
 
     const lowercaseSearch = searchTerm.toLowerCase();
-    return allMessages.filter((msg) =>
-      msg.content.toLowerCase().includes(lowercaseSearch) ||
-      msg.senderEmail.toLowerCase().includes(lowercaseSearch),
+    return allMessages.filter(
+      (msg) =>
+        msg.content.toLowerCase().includes(lowercaseSearch) ||
+        msg.senderEmail.toLowerCase().includes(lowercaseSearch),
     );
   }, [allMessages, searchTerm]);
 
@@ -169,38 +173,33 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
     return { backgroundColor: savedColor };
   };
 
-  const commitChatTransaction = useCallback((_instanceId: string) => {
-    // The pending state will automatically clear after the configured timeout
-    // via the setTimeout in addOptimisticMessage
-    // No complex timing logic needed anymore!
-  }, []);
+  const commitChatTransaction = useCallback((_instanceId: string) => {}, []);
 
   const handleSearchClose = () => {
     setSearchVisible(false);
     setSearchTerm('');
   };
 
-  const isMessageNew = useCallback((message: EnhancedChatMessage): boolean => {
-    const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
-    return newMessageIds.has(messageKey);
-  }, [newMessageIds]);
+  const isMessageNew = useCallback(
+    (message: EnhancedChatMessage): boolean => {
+      const messageKey = message.transactionId ?? `${message.instanceId}-${message.timestamp}`;
+      return newMessageIds.has(messageKey);
+    },
+    [newMessageIds],
+  );
 
   return {
-    // Refs
     messagesEndRef,
     messagesContainerRef,
 
-    // State
     searchTerm,
     setSearchTerm,
     searchVisible,
     setSearchVisible,
     previousMessageCount,
 
-    // Computed values
     filteredMessages,
 
-    // Handlers
     handleSendMessage,
     handleSearchClose,
     shouldShowDateSeparator,

@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-
 import type { ChangePasswordRequest } from 'features/settings/types/UserTypes';
 import { Save } from 'lucide-react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { APP_CONFIG } from 'shared/constants/AppConstants';
 import { Button, PasswordInput } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
-
 import styles from './ChangePasswordForm.module.scss';
 
 interface ChangePasswordFormProps {
-    onSubmit: (data: ChangePasswordRequest) => Promise<void>;
+  onSubmit: (data: ChangePasswordRequest) => Promise<void>;
 }
 
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => {

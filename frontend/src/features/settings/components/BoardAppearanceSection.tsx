@@ -1,6 +1,6 @@
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import React from 'react';
 
-import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { useTranslation } from 'react-i18next';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { Button, SectionCard } from 'shared/ui';
@@ -12,10 +12,7 @@ const BoardAppearanceSection: React.FC = () => {
   const { preferences, updatePreferences } = useUserBoardPreferences();
 
   return (
-    <SectionCard 
-      title={t('settings:page.boardAppearanceHeader')}
-      variant="default"
-    >
+    <SectionCard title={t('settings:page.boardAppearanceHeader')} variant="default">
       <div className={styles.field}>
         <label>{t('settings:page.boardBackgroundColorLabel')}</label>
         <ul className={styles.colorSwatchContainer}>

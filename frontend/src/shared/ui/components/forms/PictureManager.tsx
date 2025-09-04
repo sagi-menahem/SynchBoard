@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 
 import { useTranslation } from 'react-i18next';
@@ -36,9 +35,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
   const { t } = useTranslation(['common']);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const imageSource = imageUrl 
-    ? `${API_BASE_URL.replace('/api', '')}${imageUrl}` 
-    : defaultImage;
+  const imageSource = imageUrl ? `${API_BASE_URL.replace('/api', '')}${imageUrl}` : defaultImage;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -54,13 +51,9 @@ const PictureManager: React.FC<PictureManagerProps> = ({
   return (
     <div className={`${styles.container} ${className}`}>
       <div className={styles.imageContainer}>
-        <img
-          src={imageSource}
-          alt={altText}
-          className={`${styles.image} ${imageClassName}`}
-        />
+        <img src={imageSource} alt={altText} className={`${styles.image} ${imageClassName}`} />
       </div>
-      
+
       <input
         type="file"
         ref={fileInputRef}
@@ -68,20 +61,14 @@ const PictureManager: React.FC<PictureManagerProps> = ({
         style={{ display: 'none' }}
         accept={APP_CONFIG.ALLOWED_IMAGE_TYPES}
       />
-      
+
       <div className={styles.buttonGroup}>
-        <Button 
-          onClick={triggerFileInput} 
-          variant="secondary"
-        >
+        <Button onClick={triggerFileInput} variant="secondary">
           {uploadButtonText ?? t('common:pictureManager.changeButton')}
         </Button>
-        
+
         {showDeleteButton && onDelete && imageUrl && (
-          <Button 
-            onClick={onDelete} 
-            variant="destructive"
-          >
+          <Button onClick={onDelete} variant="destructive">
             {deleteButtonText ?? t('common:pictureManager.deleteButton')}
           </Button>
         )}

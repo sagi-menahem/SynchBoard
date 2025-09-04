@@ -12,4 +12,3 @@ export const toastPromise = async <T>(
 ): Promise<T> => {
   return await toast.promise(promise, messages);
 };
-

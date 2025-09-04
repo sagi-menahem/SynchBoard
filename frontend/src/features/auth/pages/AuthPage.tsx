@@ -1,10 +1,8 @@
-
-import React, { useState } from 'react';
-
 import { useAuth } from 'features/auth/hooks';
 import { useOAuthCallback } from 'features/auth/hooks/useOAuthCallback';
 import { GuestLanguageSwitcher } from 'features/settings/ui';
 import { LogIn, UserPlus, Users } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
@@ -18,7 +16,6 @@ import {
   RegistrationForm,
 } from '../components';
 
-
 import styles from './AuthPage.module.scss';
 
 const AuthPage: React.FC = () => {
@@ -26,7 +23,7 @@ const AuthPage: React.FC = () => {
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
   const [isLoginView, setIsLoginView] = useState(true);
-  
+
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [pendingEmail, setPendingEmail] = useState('');
@@ -56,18 +53,15 @@ const AuthPage: React.FC = () => {
   return (
     <PageTransition>
       <div className={styles.pageContent} data-auth-page>
-        
         <div className={styles.switchersCorner}>
           <GuestLanguageSwitcher />
           <ThemeSwitcher />
         </div>
-        
+
         {isProcessing && <PageLoader message={t('auth:signingInMessage')} />}
-        
+
         {!isProcessing && (
           <div className={styles.splitContainer}>
-            
-            {/* Left Hero Section */}
             <div className={styles.heroSection}>
               <div className={styles.heroContent}>
                 <h1 className={styles.pageTitle}>
@@ -75,10 +69,15 @@ const AuthPage: React.FC = () => {
                   {t('auth:authPage.pageTitle')}
                 </h1>
                 <p className={styles.heroSubtitle}>
-                  {isLoginView 
-                    ? t('auth:authPage.loginSubtitle', 'Welcome back! Sign in to access your collaborative workspace.')
-                    : t('auth:authPage.registerSubtitle', 'Join thousands of teams collaborating in real-time on SynchBoard.')
-                  }
+                  {isLoginView
+                    ? t(
+                        'auth:authPage.loginSubtitle',
+                        'Welcome back! Sign in to access your collaborative workspace.',
+                      )
+                    : t(
+                        'auth:authPage.registerSubtitle',
+                        'Join thousands of teams collaborating in real-time on SynchBoard.',
+                      )}
                 </p>
                 <div className={styles.heroFeatures}>
                   <div className={styles.featureItem}>
@@ -97,12 +96,8 @@ const AuthPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Form Section */}
             <div className={styles.formSection}>
-              <Card 
-                variant="default"
-                className={styles.authCard}
-              >
+              <Card variant="default" className={styles.authCard}>
                 <div className={styles.authContainer}>
                   {isLoginView ? (
                     <>
@@ -114,7 +109,9 @@ const AuthPage: React.FC = () => {
                       </div>
                       <LoginForm onForgotPassword={() => setShowForgotPassword(true)} />
                       <div className={styles.authActions}>
-                        <span className={styles.toggleText}>{t('auth:authPage.promptToRegister')}</span>
+                        <span className={styles.toggleText}>
+                          {t('auth:authPage.promptToRegister')}
+                        </span>
                         <Button variant="secondary" onClick={toggleAuthMode}>
                           <UserPlus size={16} />
                           {t('auth:authPage.switchToRegisterButton')}
@@ -131,7 +128,9 @@ const AuthPage: React.FC = () => {
                       </div>
                       <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
                       <div className={styles.authActions}>
-                        <span className={styles.toggleText}>{t('auth:authPage.promptToLogin')}</span>
+                        <span className={styles.toggleText}>
+                          {t('auth:authPage.promptToLogin')}
+                        </span>
                         <Button variant="secondary" onClick={toggleAuthMode}>
                           <LogIn size={16} />
                           {t('auth:authPage.switchToLoginButton')}
@@ -142,26 +141,24 @@ const AuthPage: React.FC = () => {
                 </div>
               </Card>
             </div>
-            
           </div>
         )}
 
-      <ForgotPasswordModal
-        isOpen={showForgotPassword}
-        onClose={() => setShowForgotPassword(false)}
-        onSuccess={handleForgotPasswordSuccess}
-      />
+        <ForgotPasswordModal
+          isOpen={showForgotPassword}
+          onClose={() => setShowForgotPassword(false)}
+          onSuccess={handleForgotPasswordSuccess}
+        />
 
-      <EmailVerificationModal
-        isOpen={showEmailVerification}
-        onClose={() => {
-          setShowEmailVerification(false);
-          setPendingEmail('');
-        }}
-        email={pendingEmail}
-        onSuccess={handleEmailVerificationSuccess}
-      />
-
+        <EmailVerificationModal
+          isOpen={showEmailVerification}
+          onClose={() => {
+            setShowEmailVerification(false);
+            setPendingEmail('');
+          }}
+          email={pendingEmail}
+          onSuccess={handleEmailVerificationSuccess}
+        />
       </div>
     </PageTransition>
   );

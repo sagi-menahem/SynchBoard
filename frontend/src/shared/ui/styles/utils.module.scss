@@ -1,20 +1,13 @@
 @use '@/styles' as theme;
 
 .unifiedDotBackground {
-  /* 1. The user's chosen background color */
-  background-color: var(--user-chosen-color, var(--color-surface));
+  background-color: var(--user-chosen-color, var(--color-random-shapes-bg));
 
-  /* 2. The new SVG logo pattern file */
   background-image: url('../../../assets/RandomShapes.svg');
   background-size: 400px 400px;
-  /* Controls the pattern density */
 
-  /* 3. This color will be inherited by the SVG's "currentColor" - high contrast */
-  color: color-mix(in srgb, var(--user-chosen-color, var(--color-surface)) 20%, var(--color-text) 80%);
+  color: var(--color-random-shapes-pattern);
 
-  /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
-
-  /* 5. Background blur effect - controlled by CSS variable */
   backdrop-filter: blur(var(--background-blur, theme.$background-blur-sm));
   -webkit-backdrop-filter: blur(var(--background-blur, theme.$background-blur-none));
 }
@@ -30,10 +23,6 @@
   font-size: 0.9rem;
 }
 
-.colorPickerPopupWrapper {
-  /* Don't override the flex direction - let the parent container decide */
-}
-
 .colorPickerPopupWrapper :global(.popover) {
   position: absolute;
   top: calc(100% + 8px);
@@ -44,27 +33,25 @@
   background-color: theme.$surface-elevated;
   animation: popoverIn theme.$transition-normal ease-out;
   padding: theme.$spacing-3;
-  width: 250px !important;
-  min-width: 250px !important;
+  width: theme.$color-picker-width !important;
+  min-width: theme.$color-picker-width !important;
 }
 
-/* Highly specific rule to override any library defaults */
-.colorPickerPopupWrapper :global([class*="colorPickerContainer"]) :global([class*="popover"]) {
-  width: 250px !important;
-  min-width: 250px !important;
+.colorPickerPopupWrapper :global([class*='colorPickerContainer']) :global([class*='popover']) {
+  width: theme.$color-picker-width !important;
+  min-width: theme.$color-picker-width !important;
   max-width: none !important;
 }
 
-/* Even more specific - target by attribute and class combination */
-.colorPickerPopupWrapper :global(div[class*="popover"]) {
-  width: 250px !important;
-  min-width: 250px !important;
+.colorPickerPopupWrapper :global(div[class*='popover']) {
+  width: theme.$color-picker-width !important;
+  min-width: theme.$color-picker-width !important;
   max-width: none !important;
 }
 
 .colorPickerPopupWrapper :global(.react-colorful) {
   width: 100%;
-  height: 150px;
+  height: theme.$color-picker-height;
   margin: 0;
   padding: 0;
 }
@@ -79,7 +66,7 @@
 }
 
 .colorPickerPopupWrapper :global(.react-colorful__hue) {
-  height: 20px;
+  height: theme.$color-picker-slider-height;
   border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
   width: 100% !important;
   margin: 0 !important;
@@ -88,7 +75,7 @@
 }
 
 .colorPickerPopupWrapper :global(.react-colorful__alpha) {
-  height: 20px;
+  height: theme.$color-picker-slider-height;
   border-radius: 0 0 theme.$border-radius-sm theme.$border-radius-sm;
   width: 100% !important;
   margin: 0 !important;
@@ -97,8 +84,8 @@
 }
 
 .colorPickerPopupWrapper :global(.react-colorful__pointer) {
-  width: 16px;
-  height: 16px;
-  border: 2px solid theme.$text-primary;
+  width: theme.$color-picker-pointer-size;
+  height: theme.$color-picker-pointer-size;
+  border: theme.$border-width-thick solid theme.$text-primary;
   @include theme.shadow-light;
 }

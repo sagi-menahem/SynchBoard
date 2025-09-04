@@ -1,8 +1,8 @@
 @use '@/styles' as theme;
 
 .aside {
-    background: theme.$background-secondary;
-    padding: theme.$spacing-4;
-    color: theme.$text-primary;
-    width: 200px;
+  background: theme.$background-secondary;
+  padding: theme.$spacing-4;
+  color: theme.$text-primary;
+  width: 200px;
 }

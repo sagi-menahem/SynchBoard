@@ -25,7 +25,7 @@ const SCROLLBAR_THEMES: Record<Theme, ScrollbarColors> = {
 export const applyScrollbarTheme = (theme: Theme): void => {
   const colors = SCROLLBAR_THEMES[theme];
   const documentElement = document.documentElement;
-  
+
   documentElement.style.setProperty('--scrollbar-track-bg', colors.track);
   documentElement.style.setProperty('--scrollbar-thumb-bg', colors.thumb);
   documentElement.style.setProperty('--scrollbar-thumb-hover-bg', colors.thumbHover);

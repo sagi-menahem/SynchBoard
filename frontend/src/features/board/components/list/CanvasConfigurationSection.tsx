@@ -1,7 +1,6 @@
-import React from 'react';
-
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { Monitor } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
@@ -35,20 +34,16 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
 
   const getTranslationKey = (sizeKey: string): string => {
     const keyMap: Record<string, string> = {
-      'WIDESCREEN': 'widescreen',
-      'SQUARE': 'square',
-      'PORTRAIT': 'portrait',
-      'DOCUMENT': 'document',
+      WIDESCREEN: 'widescreen',
+      SQUARE: 'square',
+      PORTRAIT: 'portrait',
+      DOCUMENT: 'document',
     };
     return keyMap[sizeKey] ?? sizeKey.toLowerCase();
   };
 
   return (
-    <SectionCard 
-      title={t('board:createForm.label.canvasSettings')}
-      variant="default"
-      padding="md"
-    >
+    <SectionCard title={t('board:createForm.label.canvasSettings')} variant="default" padding="md">
       <div className={styles.field}>
         <label htmlFor="board-canvas-background">
           <Monitor size={14} />
@@ -107,9 +102,7 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
                 value: 'custom',
                 label: (
                   <div className={styles.presetLabel}>
-                    <span className={styles.presetName}>
-                      {t('board:canvasSize.custom.label')}
-                    </span>
+                    <span className={styles.presetName}>{t('board:canvasSize.custom.label')}</span>
                     <span className={styles.presetInfo} />
                   </div>
                 ),
@@ -126,7 +119,9 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
               name="customWidth"
               type="number"
               value={customWidth}
-              onChange={(e) => onCustomWidthChange(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_WIDTH)}
+              onChange={(e) =>
+                onCustomWidthChange(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_WIDTH)
+              }
               min={CANVAS_CONFIG.MIN_WIDTH}
               max={CANVAS_CONFIG.MAX_WIDTH}
               disabled={disabled}
@@ -138,7 +133,9 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
               name="customHeight"
               type="number"
               value={customHeight}
-              onChange={(e) => onCustomHeightChange(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_HEIGHT)}
+              onChange={(e) =>
+                onCustomHeightChange(parseInt(e.target.value) ?? CANVAS_CONFIG.DEFAULT_HEIGHT)
+              }
               min={CANVAS_CONFIG.MIN_HEIGHT}
               max={CANVAS_CONFIG.MAX_HEIGHT}
               disabled={disabled}

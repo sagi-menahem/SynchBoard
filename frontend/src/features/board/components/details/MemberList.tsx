@@ -1,24 +1,23 @@
-import React from 'react';
-
 import type { Member } from 'features/board/types/BoardTypes';
+import React from 'react';
 
 import MemberListItem from './MemberListItem';
 
 interface MemberListProps {
-    members: Member[];
-    onMemberContextMenu: (event: React.MouseEvent, member: Member) => void;
+  members: Member[];
+  onMemberContextMenu: (event: React.MouseEvent, member: Member) => void;
 }
 
 const MemberList: React.FC<MemberListProps> = ({ members, onMemberContextMenu }) => {
-    return (
-        <>
-            {members.map((member) => (
-                <li key={member.email}>
-                    <MemberListItem member={member} onContextMenu={onMemberContextMenu} />
-                </li>
-            ))}
-        </>
-    );
+  return (
+    <>
+      {members.map((member) => (
+        <li key={member.email}>
+          <MemberListItem member={member} onContextMenu={onMemberContextMenu} />
+        </li>
+      ))}
+    </>
+  );
 };
 
 export default MemberList;

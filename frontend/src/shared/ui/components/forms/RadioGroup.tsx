@@ -1,6 +1,5 @@
-import React from 'react';
-
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
+import React from 'react';
 
 import styles from './RadioGroup.module.scss';
 
@@ -59,10 +58,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
           >
             <RadixRadioGroup.Indicator className={styles.radioIndicator} />
           </RadixRadioGroup.Item>
-          <label 
-            className={styles.radioLabel}
-            htmlFor={`radio-${option.value}`}
-          >
+          <label className={styles.radioLabel} htmlFor={`radio-${option.value}`}>
             {option.label}
           </label>
         </div>

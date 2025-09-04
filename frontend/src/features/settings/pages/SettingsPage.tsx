@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
-
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
 import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { LogOut } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
@@ -29,30 +28,21 @@ import {
 import { useAccountActions } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
 
-
 import styles from './SettingsPage.module.scss';
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
-  
-  // Local modal states
+
   const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
   const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
 
-  // Consolidated profile hook - no more coordination needed
-  const { 
-    user, 
-    isLoading, 
-    handleUpdateProfile, 
-    handlePictureUpload, 
-    handlePictureDelete,
-  } = useUserProfile();
-  
+  const { user, isLoading, handleUpdateProfile, handlePictureUpload, handlePictureDelete } =
+    useUserProfile();
+
   const { handleChangePassword, handleDeleteAccount } = useAccountActions();
 
-  // Simplified handler functions with cleanup
   const handlePictureUploadWithCleanup = async (file: File) => {
     try {
       await handlePictureUpload(file);
@@ -138,17 +128,11 @@ const SettingsPage: React.FC = () => {
 
         <BoardAppearanceSection />
 
-        <SectionCard 
-          title={t('settings:page.passwordSectionHeader')} 
-          variant="default"
-        >
+        <SectionCard title={t('settings:page.passwordSectionHeader')} variant="default">
           <ChangePasswordForm onSubmit={handleChangePassword} />
         </SectionCard>
 
-        <SectionCard 
-          title={t('settings:page.changePicture')} 
-          variant="default"
-        >
+        <SectionCard title={t('settings:page.changePicture')} variant="default">
           <PictureManager
             imageUrl={user.profilePictureUrl}
             defaultImage={defaultUserImage}
@@ -167,9 +151,7 @@ const SettingsPage: React.FC = () => {
           }}
         />
 
-        <DangerZoneSection
-          onDeleteAccount={() => setAccountDeleteConfirmOpen(true)}
-        />
+        <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
 
         <ConfirmationDialog
           isOpen={isPicDeleteConfirmOpen}

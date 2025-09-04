@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
+import { useCallback, useEffect, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 import logger from 'shared/utils/logger';
 
@@ -31,7 +30,7 @@ export const useToolPreferencesAPI = () => {
 
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const toolPrefs = await userService.getToolPreferences();
       setPreferences(toolPrefs);

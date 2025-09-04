@@ -16,30 +16,29 @@ interface MenuPosition {
   flipY: boolean;
 }
 
-export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({ 
-  x, 
-  y, 
-  onClose, 
-  children, 
+export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
+  x,
+  y,
+  onClose,
+  children,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<MenuPosition>({ x, y, flipX: false, flipY: false });
   const [isVisible, setIsVisible] = useState(false);
 
-  // Calculate smart positioning with boundary detection
   useEffect(() => {
-    if (!menuRef.current) {return;}
+    if (!menuRef.current) {
+      return;
+    }
 
     const menu = menuRef.current;
     const menuRect = menu.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    
-    // Calculate if menu would overflow viewport
-    const wouldOverflowRight = x + menuRect.width > viewportWidth - 10; // 10px margin
+
+    const wouldOverflowRight = x + menuRect.width > viewportWidth - 10;
     const wouldOverflowBottom = y + menuRect.height > viewportHeight - 10;
-    
-    // Calculate adjusted position
+
     let adjustedX = x;
     let adjustedY = y;
     let flipX = false;
@@ -55,17 +54,14 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
       flipY = true;
     }
 
-    // Ensure menu doesn't go off the left/top edges
     adjustedX = Math.max(10, adjustedX);
     adjustedY = Math.max(10, adjustedY);
 
     setPosition({ x: adjustedX, y: adjustedY, flipX, flipY });
-    
-    // Trigger fade-in animation
+
     setTimeout(() => setIsVisible(true), 10);
   }, [x, y]);
 
-  // Handle click outside to close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -79,7 +75,6 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
       }
     };
 
-    // Add slight delay to prevent immediate closure on the same click that opened the menu
     const timeoutId = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscape);
@@ -97,7 +92,9 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
     isVisible ? styles.visible : styles.hidden,
     position.flipX ? styles.flipX : '',
     position.flipY ? styles.flipY : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const style = {
     left: `${position.x}px`,
@@ -105,13 +102,7 @@ export const EnhancedContextMenu: React.FC<EnhancedContextMenuProps> = ({
   };
 
   return (
-    <div 
-      ref={menuRef} 
-      className={menuClasses} 
-      style={style}
-      role="menu"
-      aria-hidden={!isVisible}
-    >
+    <div ref={menuRef} className={menuClasses} style={style} role="menu" aria-hidden={!isVisible}>
       {children}
     </div>
   );

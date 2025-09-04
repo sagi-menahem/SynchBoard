@@ -10,9 +10,7 @@ interface ToolGroupProps {
 export const ToolGroup: React.FC<ToolGroupProps> = ({ label, children }) => {
   return (
     <div className={styles.toolGroup}>
-      <div className={styles.toolControls}>
-        {children}
-      </div>
+      <div className={styles.toolControls}>{children}</div>
       <span className={styles.toolLabel}>{label}</span>
     </div>
   );

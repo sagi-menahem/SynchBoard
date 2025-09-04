@@ -1,7 +1,6 @@
-import { useCallback, useRef } from 'react';
-
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { Point } from 'features/board/types/BoardObjectTypes';
+import { useCallback, useRef } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import type { CanvasEventData } from './useCanvasEvents';
@@ -28,7 +27,9 @@ export const useCanvasPreview = ({
   const saveCanvasState = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = contextRef.current;
-    if (!canvas || !ctx) { return; }
+    if (!canvas || !ctx) {
+      return;
+    }
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     originalImageData.current = imageData;
@@ -36,7 +37,9 @@ export const useCanvasPreview = ({
 
   const restoreCanvasState = useCallback(() => {
     const ctx = contextRef.current;
-    if (!ctx || !originalImageData.current) { return; }
+    if (!ctx || !originalImageData.current) {
+      return;
+    }
 
     ctx.putImageData(originalImageData.current, 0, 0);
   }, [contextRef]);
@@ -45,33 +48,38 @@ export const useCanvasPreview = ({
     originalImageData.current = null;
   }, []);
 
-  const setupCanvasStyle = useCallback((ctx: CanvasRenderingContext2D, alpha = 0.8) => {
-    ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = strokeWidth;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.globalAlpha = alpha;
-  }, [strokeColor, strokeWidth]);
+  const setupCanvasStyle = useCallback(
+    (ctx: CanvasRenderingContext2D, alpha = 0.8) => {
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = strokeWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.globalAlpha = alpha;
+    },
+    [strokeColor, strokeWidth],
+  );
 
-  const renderBrushPreview = useCallback((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-    if (currentPath.current.length <= 1) { return; }
+  const renderBrushPreview = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      if (currentPath.current.length <= 1) {
+        return;
+      }
 
-    ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
+      ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
 
-    ctx.beginPath();
-    ctx.moveTo(
-      currentPath.current[0].x * canvas.width,
-      currentPath.current[0].y * canvas.height,
-    );
+      ctx.beginPath();
+      ctx.moveTo(currentPath.current[0].x * canvas.width, currentPath.current[0].y * canvas.height);
 
-    for (let i = 1; i < currentPath.current.length; i++) {
-      ctx.lineTo(
-        currentPath.current[i].x * canvas.width,
-        currentPath.current[i].y * canvas.height,
-      );
-    }
-    ctx.stroke();
-  }, [currentPath, tool]);
+      for (let i = 1; i < currentPath.current.length; i++) {
+        ctx.lineTo(
+          currentPath.current[i].x * canvas.width,
+          currentPath.current[i].y * canvas.height,
+        );
+      }
+      ctx.stroke();
+    },
+    [currentPath, tool],
+  );
 
   const renderShapePreview = useCallback(
     (ctx: CanvasRenderingContext2D, startPoint: Point, currentPoint: Point) => {
@@ -165,19 +173,17 @@ export const useCanvasPreview = ({
         const arrowWidth = arrowLength * 0.6;
         const arrowAngle = Math.atan(arrowWidth / arrowLength);
 
-        const lineEndX = currentPoint.x - (arrowLength * 0.3) * Math.cos(angle);
-        const lineEndY = currentPoint.y - (arrowLength * 0.3) * Math.sin(angle);
+        const lineEndX = currentPoint.x - arrowLength * 0.3 * Math.cos(angle);
+        const lineEndY = currentPoint.y - arrowLength * 0.3 * Math.sin(angle);
 
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Draw line
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
         ctx.lineTo(lineEndX, lineEndY);
         ctx.stroke();
 
-        // Draw arrowhead
         const arrowPoint1X = currentPoint.x - arrowLength * Math.cos(angle - arrowAngle);
         const arrowPoint1Y = currentPoint.y - arrowLength * Math.sin(angle - arrowAngle);
         const arrowPoint2X = currentPoint.x - arrowLength * Math.cos(angle + arrowAngle);
@@ -195,7 +201,6 @@ export const useCanvasPreview = ({
         ctx.lineWidth = Math.max(1, strokeWidth * 0.5);
         ctx.stroke();
       } else if (tool === TOOLS.TEXT) {
-        // Text preview with dashed border and semi-transparent fill
         ctx.setLineDash([5, 5]);
         ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 1;
@@ -223,12 +228,12 @@ export const useCanvasPreview = ({
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
       const ctx = contextRef.current;
-      if (!canvas || !ctx || !originalImageData.current) { return; }
+      if (!canvas || !ctx || !originalImageData.current) {
+        return;
+      }
 
-      // Restore original state
       restoreCanvasState();
 
-      // Set up preview style
       setupCanvasStyle(ctx, 0.8);
       const originalAlpha = ctx.globalAlpha;
 
@@ -238,27 +243,38 @@ export const useCanvasPreview = ({
         renderShapePreview(ctx, eventData.startPoint, eventData.currentPoint);
       }
 
-      // Restore original alpha
       ctx.globalAlpha = originalAlpha;
     },
-    [canvasRef, contextRef, tool, restoreCanvasState, setupCanvasStyle, renderBrushPreview, renderShapePreview],
+    [
+      canvasRef,
+      contextRef,
+      tool,
+      restoreCanvasState,
+      setupCanvasStyle,
+      renderBrushPreview,
+      renderShapePreview,
+    ],
   );
 
-  const handlePreviewStart = useCallback((eventData: CanvasEventData) => {
-    const ctx = contextRef.current;
-    if (!ctx) { return; }
+  const handlePreviewStart = useCallback(
+    (eventData: CanvasEventData) => {
+      const ctx = contextRef.current;
+      if (!ctx) {
+        return;
+      }
 
-    saveCanvasState();
+      saveCanvasState();
 
-    // Set up canvas context for drawing tools
-    setupCanvasStyle(ctx, 1.0);
+      setupCanvasStyle(ctx, 1.0);
 
-    if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
-      ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
-      ctx.beginPath();
-      ctx.moveTo(eventData.startPoint.x, eventData.startPoint.y);
-    }
-  }, [contextRef, saveCanvasState, setupCanvasStyle, tool]);
+      if (tool === TOOLS.BRUSH || tool === TOOLS.ERASER) {
+        ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
+        ctx.beginPath();
+        ctx.moveTo(eventData.startPoint.x, eventData.startPoint.y);
+      }
+    },
+    [contextRef, saveCanvasState, setupCanvasStyle, tool],
+  );
 
   const handlePreviewMove = useCallback(
     (eventData: CanvasEventData) => {

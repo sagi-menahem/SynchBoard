@@ -1,13 +1,11 @@
-import React from 'react';
-
 import defaultUserImage from 'assets/default-user-image.png';
 import { isSafeUrl, sanitizeUserContent } from 'features/auth/utils/SecurityUtils';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
 import { RelativeTimestamp } from 'shared/ui';
 import { formatDetailedTimestamp } from 'shared/utils/DateUtils';
-
 
 import styles from './ChatMessage.module.scss';
 
@@ -18,9 +16,9 @@ interface ChatMessageProps {
   isGrouped?: boolean;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ 
-  message, 
-  isOwnMessage = false, 
+const ChatMessage: React.FC<ChatMessageProps> = ({
+  message,
+  isOwnMessage = false,
   shouldAnimate = true,
   isGrouped = false,
 }) => {
@@ -38,7 +36,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const statusClass = messageStatus !== 'confirmed' ? styles[messageStatus] : '';
 
   const detailedTimestamp = formatDetailedTimestamp(message.timestamp);
-  
 
   const classNames = [
     styles.messageContainer,
@@ -46,28 +43,30 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     statusClass,
     !shouldAnimate && styles.noAnimation,
     isGrouped && styles.grouped,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={classNames}>
       {!isOwnMessage && !isGrouped && (
-        <img src={imageSource} alt={t('common:accessibility.userAvatar', { email: senderEmail })} className={styles.avatar} />
+        <img
+          src={imageSource}
+          alt={t('common:accessibility.userAvatar', { email: senderEmail })}
+          className={styles.avatar}
+        />
       )}
-      
+
       <div className={styles.messageBubble}>
         {!isGrouped && !isOwnMessage && (
           <div className={styles.messageHeader}>
-            <strong className={styles.senderName}>
-              {senderEmail}
-            </strong>
+            <strong className={styles.senderName}>{senderEmail}</strong>
           </div>
         )}
-        
+
         <div className={styles.messageBody}>
-          <div className={styles.messageText}>
-            {messageContent}
-          </div>
-          
+          <div className={styles.messageText}>{messageContent}</div>
+
           <div className={styles.timestampContainer}>
             <RelativeTimestamp
               timestamp={message.timestamp}
@@ -75,12 +74,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
               title={detailedTimestamp}
             />
           </div>
-          
+
           {messageStatus === 'failed' && (
-            <span 
-              className={styles.failureIcon} 
-              title={t('chat:message.failedToSendTooltip')}
-            >
+            <span className={styles.failureIcon} title={t('chat:message.failedToSendTooltip')}>
               ❗
             </span>
           )}

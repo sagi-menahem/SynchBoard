@@ -1,6 +1,6 @@
+import { Lock, LogIn, Mail } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Lock, LogIn, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput } from 'shared/ui';
 
@@ -32,13 +32,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
           <Mail size={14} />
           {t('common:form.label.email')}
         </label>
-        <Input
-          id="login-email"
-          name="email"
-          type="email"
-          required
-          disabled={isPending}
-        />
+        <Input id="login-email" name="email" type="email" required disabled={isPending} />
       </div>
 
       <div className={styles.field}>
@@ -61,15 +55,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
       </Button>
 
       <div className={styles.divider}>
-        <span className={styles.dividerText}>
-          {t('auth:loginForm.orContinueWith')}
-        </span>
+        <span className={styles.dividerText}>{t('auth:loginForm.orContinueWith')}</span>
       </div>
 
-      <GoogleLoginButton 
-        onClick={handleGoogleLogin} 
-        disabled={isPending ?? isGoogleLoading} 
-      />
+      <GoogleLoginButton onClick={handleGoogleLogin} disabled={isPending ?? isGoogleLoading} />
 
       <div className={styles.secondaryActionsContainer}>
         <Button

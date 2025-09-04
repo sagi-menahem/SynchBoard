@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
-
-
 import { useAuth } from 'features/auth/hooks';
 import websocketService from 'features/websocket/services/websocketService';
+import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
 import logger from 'shared/utils/logger';
 
 import { WebSocketContext } from './WebSocketContext';
 
 interface WebSocketProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const { token, userEmail } = useAuth();
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
+  const [connectionState, setConnectionState] = useState<
+    'disconnected' | 'connecting' | 'connected'
+  >('disconnected');
 
   const updateConnectionState = useCallback(() => {
     const currentState = websocketService.getConnectionState();
@@ -25,15 +25,19 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   useEffect(() => {
     let pollInterval: ReturnType<typeof setInterval>;
     let isEffectActive = true;
-    
+
     const wrappedUpdateConnectionState = () => {
-      if (!isEffectActive) {return;}
+      if (!isEffectActive) {
+        return;
+      }
       updateConnectionState();
     };
 
     const startPolling = () => {
       pollInterval = setInterval(() => {
-        if (!isEffectActive) {return;}
+        if (!isEffectActive) {
+          return;
+        }
         wrappedUpdateConnectionState();
       }, 3000);
     };
@@ -41,18 +45,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     if (token) {
       setConnectionState('connecting');
       websocketService.connect(token, () => {
-        if (!isEffectActive) {return;}
-        
+        if (!isEffectActive) {
+          return;
+        }
+
         setIsSocketConnected(true);
         setConnectionState('connected');
-                
+
         if (userEmail) {
-          websocketService.subscribe(
-            '/user/queue/errors',
-            (errorMessage: unknown) => {
-              logger.error('Server error received:', errorMessage);
-            },
-          );
+          websocketService.subscribe('/user/queue/errors', (errorMessage: unknown) => {
+            logger.error('Server error received:', errorMessage);
+          });
         }
       });
     } else {
@@ -71,10 +74,13 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     };
   }, [token, userEmail, updateConnectionState]);
 
-  const value = useMemo(() => ({
-    isSocketConnected,
-    connectionState,
-  }), [isSocketConnected, connectionState]);
+  const value = useMemo(
+    () => ({
+      isSocketConnected,
+      connectionState,
+    }),
+    [isSocketConnected, connectionState],
+  );
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>;
 };

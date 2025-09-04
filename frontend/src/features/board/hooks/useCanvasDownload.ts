@@ -1,6 +1,5 @@
-import { useCallback } from 'react';
-
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
+import { useCallback } from 'react';
 
 export interface UseCanvasDownloadProps {
   boardName: string;
@@ -13,7 +12,7 @@ export function useCanvasDownload({ boardName, canvasConfig }: UseCanvasDownload
     if (!canvas) {
       return;
     }
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       return;
@@ -23,7 +22,7 @@ export function useCanvasDownload({ boardName, canvasConfig }: UseCanvasDownload
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
     const tempCtx = tempCanvas.getContext('2d');
-    
+
     if (!tempCtx) {
       return;
     }
@@ -31,9 +30,9 @@ export function useCanvasDownload({ boardName, canvasConfig }: UseCanvasDownload
     const backgroundColor = canvasConfig?.backgroundColor ?? '#FFFFFF';
     tempCtx.fillStyle = backgroundColor;
     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    
+
     tempCtx.drawImage(canvas, 0, 0);
-    
+
     const link = document.createElement('a');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
     link.download = `${boardName}-${timestamp}.png`;

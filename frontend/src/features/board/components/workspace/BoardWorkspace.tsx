@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from 'react';
-
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { ResizableSplitPanel } from 'features/board/ui';
 import { ChatWindow } from 'features/chat/components';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
+import React, { useCallback, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import styles from './BoardWorkspace.module.scss';
@@ -14,20 +13,20 @@ import { Canvas } from '.';
 export type LayoutMode = 'focus-canvas' | 'balanced' | 'focus-chat';
 
 interface BoardWorkspaceProps {
-    boardId: number;
-    instanceId: string;
-    objects: ActionPayload[];
-    messages: ChatMessageResponse[];
-    tool: Tool;
-    strokeColor: string;
-    strokeWidth: number;
-    fontSize: number;
-    canvasConfig?: CanvasConfig;
-    splitRatio?: number;
-    onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
-    onSplitRatioChange?: (ratio: number) => void;
-    onColorPick?: (color: string) => void;
-    isLoading?: boolean;
+  boardId: number;
+  instanceId: string;
+  objects: ActionPayload[];
+  messages: ChatMessageResponse[];
+  tool: Tool;
+  strokeColor: string;
+  strokeWidth: number;
+  fontSize: number;
+  canvasConfig?: CanvasConfig;
+  splitRatio?: number;
+  onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
+  onSplitRatioChange?: (ratio: number) => void;
+  onColorPick?: (color: string) => void;
+  isLoading?: boolean;
 }
 
 const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
@@ -52,10 +51,13 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     return currentSplitRatio;
   }, [currentSplitRatio]);
 
-  const handleSplitChange = useCallback((ratio: number) => {
-    setCurrentSplitRatio(ratio);
-    onSplitRatioChange?.(ratio);
-  }, [onSplitRatioChange]);
+  const handleSplitChange = useCallback(
+    (ratio: number) => {
+      setCurrentSplitRatio(ratio);
+      onSplitRatioChange?.(ratio);
+    },
+    [onSplitRatioChange],
+  );
 
   const effectiveSplitRatio = getLayoutSplitRatio();
 
@@ -74,9 +76,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     />
   );
 
-  const chatComponent = (
-    <ChatWindow boardId={boardId} messages={messages} />
-  );
+  const chatComponent = <ChatWindow boardId={boardId} messages={messages} />;
 
   return (
     <div className={styles.mainContent}>

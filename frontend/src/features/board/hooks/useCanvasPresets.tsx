@@ -1,5 +1,3 @@
-
-
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
 import { useTranslation } from 'react-i18next';
@@ -12,13 +10,12 @@ interface UseCanvasPresetsOptions {
   };
 }
 
-// Translation key mapping utility
 const getTranslationKey = (sizeKey: string): string => {
   const keyMap: Record<string, string> = {
-    'WIDESCREEN': 'widescreen',
-    'SQUARE': 'square',
-    'PORTRAIT': 'portrait',
-    'DOCUMENT': 'document',
+    WIDESCREEN: 'widescreen',
+    SQUARE: 'square',
+    PORTRAIT: 'portrait',
+    DOCUMENT: 'document',
   };
   return keyMap[sizeKey] ?? sizeKey.toLowerCase();
 };
@@ -26,18 +23,21 @@ const getTranslationKey = (sizeKey: string): string => {
 export const useCanvasPresets = ({ styles }: UseCanvasPresetsOptions = {}) => {
   const { t } = useTranslation(['board']);
 
-  // Detect current canvas size preset or custom
-  const detectCurrentSizePreset = (boardDetails: BoardDetails): keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom' => {
+  const detectCurrentSizePreset = (
+    boardDetails: BoardDetails,
+  ): keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS | 'custom' => {
     const presets = CANVAS_CONFIG.CANVAS_SIZE_PRESETS;
     for (const [key, preset] of Object.entries(presets)) {
-      if (boardDetails.canvasWidth === preset.width && boardDetails.canvasHeight === preset.height) {
+      if (
+        boardDetails.canvasWidth === preset.width &&
+        boardDetails.canvasHeight === preset.height
+      ) {
         return key as keyof typeof CANVAS_CONFIG.CANVAS_SIZE_PRESETS;
       }
     }
     return 'custom';
   };
 
-  // Generate preset options for RadioGroup
   const generatePresetOptions = () => [
     ...CANVAS_CONFIG.PRESET_ORDER.map((size) => {
       const preset = CANVAS_CONFIG.CANVAS_SIZE_PRESETS[size];
@@ -60,9 +60,7 @@ export const useCanvasPresets = ({ styles }: UseCanvasPresetsOptions = {}) => {
       value: 'custom',
       label: (
         <div className={styles?.presetLabel}>
-          <span className={styles?.presetName}>
-            {t('board:canvasSize.custom.label')}
-          </span>
+          <span className={styles?.presetName}>{t('board:canvasSize.custom.label')}</span>
           <span className={styles?.presetInfo} />
         </div>
       ),

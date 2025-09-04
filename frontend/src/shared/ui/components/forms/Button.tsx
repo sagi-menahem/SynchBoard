@@ -5,7 +5,7 @@ import type { ButtonVariant } from 'shared/types/CommonTypes';
 import styles from './Button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: ButtonVariant;
+  variant?: ButtonVariant;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

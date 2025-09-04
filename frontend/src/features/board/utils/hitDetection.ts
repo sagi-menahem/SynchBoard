@@ -1,7 +1,4 @@
-import type {
-  ActionPayload,
-  Point,
-} from 'features/board/types/BoardObjectTypes';
+import type { ActionPayload, Point } from 'features/board/types/BoardObjectTypes';
 
 export interface HitResult {
   hit: boolean;
@@ -11,25 +8,35 @@ export interface HitResult {
 
 export const isPointInRectangle = (
   point: Point,
-  x: number, y: number, width: number, height: number,
-  canvasWidth: number, canvasHeight: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const rectX = x * canvasWidth;
   const rectY = y * canvasHeight;
   const rectWidth = width * canvasWidth;
   const rectHeight = height * canvasHeight;
 
-  return point.x >= rectX &&
+  return (
+    point.x >= rectX &&
     point.x <= rectX + rectWidth &&
     point.y >= rectY &&
-    point.y <= rectY + rectHeight;
+    point.y <= rectY + rectHeight
+  );
 };
 
 export const isPointOnRectangleBorder = (
   point: Point,
-  x: number, y: number, width: number, height: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
   strokeWidth: number,
-  canvasWidth: number, canvasHeight: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const rectX = x * canvasWidth;
   const rectY = y * canvasHeight;
@@ -37,27 +44,33 @@ export const isPointOnRectangleBorder = (
   const rectHeight = height * canvasHeight;
   const tolerance = Math.max(strokeWidth / 2, 3);
 
-  const nearLeftEdge = Math.abs(point.x - rectX) <= tolerance &&
+  const nearLeftEdge =
+    Math.abs(point.x - rectX) <= tolerance &&
     point.y >= rectY - tolerance &&
     point.y <= rectY + rectHeight + tolerance;
-  const nearRightEdge = Math.abs(point.x - (rectX + rectWidth)) <= tolerance &&
+  const nearRightEdge =
+    Math.abs(point.x - (rectX + rectWidth)) <= tolerance &&
     point.y >= rectY - tolerance &&
     point.y <= rectY + rectHeight + tolerance;
-  const nearTopEdge = Math.abs(point.y - rectY) <= tolerance &&
+  const nearTopEdge =
+    Math.abs(point.y - rectY) <= tolerance &&
     point.x >= rectX - tolerance &&
     point.x <= rectX + rectWidth + tolerance;
-  const nearBottomEdge = Math.abs(point.y - (rectY + rectHeight)) <= tolerance &&
+  const nearBottomEdge =
+    Math.abs(point.y - (rectY + rectHeight)) <= tolerance &&
     point.x >= rectX - tolerance &&
     point.x <= rectX + rectWidth + tolerance;
 
   return nearLeftEdge || nearRightEdge || nearTopEdge || nearBottomEdge;
 };
 
-
 export const isPointInCircle = (
   point: Point,
-  centerX: number, centerY: number, radius: number,
-  canvasWidth: number, canvasHeight: number,
+  centerX: number,
+  centerY: number,
+  radius: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const circleX = centerX * canvasWidth;
   const circleY = centerY * canvasHeight;
@@ -69,14 +82,17 @@ export const isPointInCircle = (
 
 export const isPointOnCircleBorder = (
   point: Point,
-  centerX: number, centerY: number, radius: number,
+  centerX: number,
+  centerY: number,
+  radius: number,
   strokeWidth: number,
-  canvasWidth: number, canvasHeight: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const circleX = centerX * canvasWidth;
   const circleY = centerY * canvasHeight;
   const circleRadius = radius * canvasWidth;
-  const tolerance = Math.max(strokeWidth / 2, 3); // At least 3px tolerance
+  const tolerance = Math.max(strokeWidth / 2, 3);
 
   const distance = Math.sqrt(Math.pow(point.x - circleX, 2) + Math.pow(point.y - circleY, 2));
   return Math.abs(distance - circleRadius) <= tolerance;
@@ -84,8 +100,14 @@ export const isPointOnCircleBorder = (
 
 export const isPointInTriangle = (
   point: Point,
-  x1: number, y1: number, x2: number, y2: number, x3: number, y3: number,
-  canvasWidth: number, canvasHeight: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  x3: number,
+  y3: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const p1x = x1 * canvasWidth;
   const p1y = y1 * canvasHeight;
@@ -95,7 +117,9 @@ export const isPointInTriangle = (
   const p3y = y3 * canvasHeight;
 
   const denominator = (p2y - p3y) * (p1x - p3x) + (p3x - p2x) * (p1y - p3y);
-  if (Math.abs(denominator) < 1e-10) {return false;} // Degenerate triangle
+  if (Math.abs(denominator) < 1e-10) {
+    return false;
+  }
 
   const a = ((p2y - p3y) * (point.x - p3x) + (p3x - p2x) * (point.y - p3y)) / denominator;
   const b = ((p3y - p1y) * (point.x - p3x) + (p1x - p3x) * (point.y - p3y)) / denominator;
@@ -106,9 +130,15 @@ export const isPointInTriangle = (
 
 export const isPointOnTriangleBorder = (
   point: Point,
-  x1: number, y1: number, x2: number, y2: number, x3: number, y3: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  x3: number,
+  y3: number,
   strokeWidth: number,
-  canvasWidth: number, canvasHeight: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const tolerance = Math.max(strokeWidth / 2, 3);
 
@@ -118,13 +148,19 @@ export const isPointOnTriangleBorder = (
     { x1: x3 * canvasWidth, y1: y3 * canvasHeight, x2: x1 * canvasWidth, y2: y1 * canvasHeight },
   ];
 
-  return edges.some((edge) => distanceToLineSegment(point, edge.x1, edge.y1, edge.x2, edge.y2) <= tolerance);
+  return edges.some(
+    (edge) => distanceToLineSegment(point, edge.x1, edge.y1, edge.x2, edge.y2) <= tolerance,
+  );
 };
 
 export const isPointInPolygon = (
   point: Point,
-  centerX: number, centerY: number, radius: number, sides: number,
-  canvasWidth: number, canvasHeight: number,
+  centerX: number,
+  centerY: number,
+  radius: number,
+  sides: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const radiusScale = Math.min(canvasWidth, canvasHeight);
   const actualRadius = radius * radiusScale;
@@ -142,9 +178,13 @@ export const isPointInPolygon = (
 
   let inside = false;
   for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
-    if (((vertices[i].y > point.y) !== (vertices[j].y > point.y)) &&
-      (point.x < (vertices[j].x - vertices[i].x) * (point.y - vertices[i].y) /
-        (vertices[j].y - vertices[i].y) + vertices[i].x)) {
+    if (
+      vertices[i].y > point.y !== vertices[j].y > point.y &&
+      point.x <
+        ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
+          (vertices[j].y - vertices[i].y) +
+          vertices[i].x
+    ) {
       inside = !inside;
     }
   }
@@ -154,8 +194,11 @@ export const isPointInPolygon = (
 
 export const isPointInStar = (
   point: Point,
-  centerX: number, centerY: number, radius: number,
-  canvasWidth: number, canvasHeight: number,
+  centerX: number,
+  centerY: number,
+  radius: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const radiusScale = Math.min(canvasWidth, canvasHeight);
   const outerRadius = radius * radiusScale;
@@ -176,9 +219,13 @@ export const isPointInStar = (
 
   let inside = false;
   for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
-    if (((vertices[i].y > point.y) !== (vertices[j].y > point.y)) &&
-      (point.x < (vertices[j].x - vertices[i].x) * (point.y - vertices[i].y) /
-        (vertices[j].y - vertices[i].y) + vertices[i].x)) {
+    if (
+      vertices[i].y > point.y !== vertices[j].y > point.y &&
+      point.x <
+        ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
+          (vertices[j].y - vertices[i].y) +
+          vertices[i].x
+    ) {
       inside = !inside;
     }
   }
@@ -188,7 +235,10 @@ export const isPointInStar = (
 
 export const distanceToLineSegment = (
   point: Point,
-  x1: number, y1: number, x2: number, y2: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
 ): number => {
   const A = point.x - x1;
   const B = point.y - y1;
@@ -198,7 +248,9 @@ export const distanceToLineSegment = (
   const dot = A * C + B * D;
   const lenSq = C * C + D * D;
 
-  if (lenSq === 0) {return Math.sqrt(A * A + B * B);}
+  if (lenSq === 0) {
+    return Math.sqrt(A * A + B * B);
+  }
 
   let param = dot / lenSq;
   param = Math.max(0, Math.min(1, param));
@@ -214,9 +266,13 @@ export const distanceToLineSegment = (
 
 export const isPointOnLine = (
   point: Point,
-  x1: number, y1: number, x2: number, y2: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
   strokeWidth: number,
-  canvasWidth: number, canvasHeight: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   const tolerance = Math.max(strokeWidth / 2, 3);
   const lineX1 = x1 * canvasWidth;
@@ -230,8 +286,12 @@ export const isPointOnLine = (
 
 export const isPointInTextBox = (
   point: Point,
-  x: number, y: number, width: number, height: number,
-  canvasWidth: number, canvasHeight: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  canvasWidth: number,
+  canvasHeight: number,
 ): boolean => {
   return isPointInRectangle(point, x, y, width, height, canvasWidth, canvasHeight);
 };
@@ -248,10 +308,34 @@ export const detectObjectHit = (
     if (obj.tool === 'square' || obj.tool === 'rectangle') {
       const rect = obj;
 
-      if ('x' in rect && 'y' in rect && 'width' in rect && 'height' in rect && isPointInRectangle(clickPoint, rect.x, rect.y, rect.width, rect.height, canvasWidth, canvasHeight)) {
-        if ('strokeWidth' in rect && isPointOnRectangleBorder(
-          clickPoint, rect.x, rect.y, rect.width, rect.height, rect.strokeWidth, canvasWidth, canvasHeight,
-        )) {
+      if (
+        'x' in rect &&
+        'y' in rect &&
+        'width' in rect &&
+        'height' in rect &&
+        isPointInRectangle(
+          clickPoint,
+          rect.x,
+          rect.y,
+          rect.width,
+          rect.height,
+          canvasWidth,
+          canvasHeight,
+        )
+      ) {
+        if (
+          'strokeWidth' in rect &&
+          isPointOnRectangleBorder(
+            clickPoint,
+            rect.x,
+            rect.y,
+            rect.width,
+            rect.height,
+            rect.strokeWidth,
+            canvasWidth,
+            canvasHeight,
+          )
+        ) {
           return { hit: true, object: obj, hitType: 'stroke' };
         }
         return { hit: true, object: obj, hitType: 'fill' };
@@ -259,10 +343,24 @@ export const detectObjectHit = (
     } else if (obj.tool === 'circle') {
       const circle = obj;
 
-      if ('x' in circle && 'y' in circle && 'radius' in circle && isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)) {
-        if ('strokeWidth' in circle && isPointOnCircleBorder(
-          clickPoint, circle.x, circle.y, circle.radius, circle.strokeWidth, canvasWidth, canvasHeight,
-        )) {
+      if (
+        'x' in circle &&
+        'y' in circle &&
+        'radius' in circle &&
+        isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)
+      ) {
+        if (
+          'strokeWidth' in circle &&
+          isPointOnCircleBorder(
+            clickPoint,
+            circle.x,
+            circle.y,
+            circle.radius,
+            circle.strokeWidth,
+            canvasWidth,
+            canvasHeight,
+          )
+        ) {
           return { hit: true, object: obj, hitType: 'stroke' };
         }
         return { hit: true, object: obj, hitType: 'fill' };
@@ -270,18 +368,14 @@ export const detectObjectHit = (
     } else if (obj.tool === 'triangle') {
       const triangle = obj;
 
-      if ('x1' in triangle && 'y1' in triangle && 'x2' in triangle && 'y2' in triangle && 'x3' in triangle && 'y3' in triangle && isPointInTriangle(
-        clickPoint,
-        triangle.x1,
-        triangle.y1,
-        triangle.x2,
-        triangle.y2,
-        triangle.x3,
-        triangle.y3,
-        canvasWidth,
-        canvasHeight,
-      )) {
-        if ('strokeWidth' in triangle && isPointOnTriangleBorder(
+      if (
+        'x1' in triangle &&
+        'y1' in triangle &&
+        'x2' in triangle &&
+        'y2' in triangle &&
+        'x3' in triangle &&
+        'y3' in triangle &&
+        isPointInTriangle(
           clickPoint,
           triangle.x1,
           triangle.y1,
@@ -289,10 +383,25 @@ export const detectObjectHit = (
           triangle.y2,
           triangle.x3,
           triangle.y3,
-          triangle.strokeWidth,
           canvasWidth,
           canvasHeight,
-        )) {
+        )
+      ) {
+        if (
+          'strokeWidth' in triangle &&
+          isPointOnTriangleBorder(
+            clickPoint,
+            triangle.x1,
+            triangle.y1,
+            triangle.x2,
+            triangle.y2,
+            triangle.x3,
+            triangle.y3,
+            triangle.strokeWidth,
+            canvasWidth,
+            canvasHeight,
+          )
+        ) {
           return { hit: true, object: obj, hitType: 'stroke' };
         }
         return { hit: true, object: obj, hitType: 'fill' };
@@ -300,52 +409,120 @@ export const detectObjectHit = (
     } else if (obj.tool === 'pentagon' || obj.tool === 'hexagon') {
       const polygon = obj;
 
-      if ('x' in polygon && 'y' in polygon && 'radius' in polygon && 'sides' in polygon && isPointInPolygon(
-        clickPoint, polygon.x, polygon.y, polygon.radius, polygon.sides, canvasWidth, canvasHeight,
-      )) {
+      if (
+        'x' in polygon &&
+        'y' in polygon &&
+        'radius' in polygon &&
+        'sides' in polygon &&
+        isPointInPolygon(
+          clickPoint,
+          polygon.x,
+          polygon.y,
+          polygon.radius,
+          polygon.sides,
+          canvasWidth,
+          canvasHeight,
+        )
+      ) {
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'star') {
       const star = obj;
 
-      if ('x' in star && 'y' in star && 'radius' in star && isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)) {
+      if (
+        'x' in star &&
+        'y' in star &&
+        'radius' in star &&
+        isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)
+      ) {
         return { hit: true, object: obj, hitType: 'fill' };
       }
     } else if (obj.tool === 'line' || obj.tool === 'dottedLine') {
       const line = obj;
 
-      if ('x1' in line && 'y1' in line && 'x2' in line && 'y2' in line && 'strokeWidth' in line && isPointOnLine(
-        clickPoint, line.x1, line.y1, line.x2, line.y2, line.strokeWidth, canvasWidth, canvasHeight,
-      )) {
+      if (
+        'x1' in line &&
+        'y1' in line &&
+        'x2' in line &&
+        'y2' in line &&
+        'strokeWidth' in line &&
+        isPointOnLine(
+          clickPoint,
+          line.x1,
+          line.y1,
+          line.x2,
+          line.y2,
+          line.strokeWidth,
+          canvasWidth,
+          canvasHeight,
+        )
+      ) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'arrow') {
       const arrow = obj;
 
-      if ('x1' in arrow && 'y1' in arrow && 'x2' in arrow && 'y2' in arrow && 'strokeWidth' in arrow && isPointOnLine(
-        clickPoint, arrow.x1, arrow.y1, arrow.x2, arrow.y2, arrow.strokeWidth, canvasWidth, canvasHeight,
-      )) {
+      if (
+        'x1' in arrow &&
+        'y1' in arrow &&
+        'x2' in arrow &&
+        'y2' in arrow &&
+        'strokeWidth' in arrow &&
+        isPointOnLine(
+          clickPoint,
+          arrow.x1,
+          arrow.y1,
+          arrow.x2,
+          arrow.y2,
+          arrow.strokeWidth,
+          canvasWidth,
+          canvasHeight,
+        )
+      ) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'text') {
       const textBox = obj;
 
-      if ('x' in textBox && 'y' in textBox && 'width' in textBox && 'height' in textBox && isPointInTextBox(
-        clickPoint, textBox.x, textBox.y, textBox.width, textBox.height, canvasWidth, canvasHeight,
-      )) {
+      if (
+        'x' in textBox &&
+        'y' in textBox &&
+        'width' in textBox &&
+        'height' in textBox &&
+        isPointInTextBox(
+          clickPoint,
+          textBox.x,
+          textBox.y,
+          textBox.width,
+          textBox.height,
+          canvasWidth,
+          canvasHeight,
+        )
+      ) {
         return { hit: true, object: obj, hitType: 'object' };
       }
     } else if (obj.tool === 'brush' || obj.tool === 'eraser') {
       if ('points' in obj && 'lineWidth' in obj) {
-      const line = obj as { points: { x: number; y: number }[]; lineWidth: number };
+        const line = obj as { points: { x: number; y: number }[]; lineWidth: number };
 
-      for (let j = 0; j < line.points.length - 1; j++) {
-        const p1 = line.points[j];
-        const p2 = line.points[j + 1];
-        if (isPointOnLine(clickPoint, p1.x, p1.y, p2.x, p2.y, line.lineWidth, canvasWidth, canvasHeight)) {
-          return { hit: true, object: obj, hitType: 'object' };
+        for (let j = 0; j < line.points.length - 1; j++) {
+          const p1 = line.points[j];
+          const p2 = line.points[j + 1];
+          if (
+            isPointOnLine(
+              clickPoint,
+              p1.x,
+              p1.y,
+              p2.x,
+              p2.y,
+              line.lineWidth,
+              canvasWidth,
+              canvasHeight,
+            )
+          ) {
+            return { hit: true, object: obj, hitType: 'object' };
+          }
         }
-      }
       }
     }
   }

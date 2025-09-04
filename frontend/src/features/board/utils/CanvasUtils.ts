@@ -25,7 +25,10 @@ export const getMouseCoordinates = (
 };
 
 export const isShapeSizeValid = (width: number, height: number): boolean => {
-  return width > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD || height > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD;
+  return (
+    width > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD ||
+    height > CANVAS_CONFIG.MIN_SHAPE_SIZE_THRESHOLD
+  );
 };
 
 export const isRadiusValid = (radius: number): boolean => {
@@ -38,7 +41,9 @@ export const drawLinePayload = (
   targetCanvas: HTMLCanvasElement,
 ): void => {
   const { points, color, lineWidth } = payload;
-  if (points.length < 2) {return;}
+  if (points.length < 2) {
+    return;
+  }
 
   targetCtx.strokeStyle = color;
   targetCtx.lineWidth = lineWidth;
@@ -225,7 +230,6 @@ export const drawTextPayload = (
   targetCtx.restore();
 };
 
-
 export const drawStarPayload = (
   payload: PolygonPayload,
   targetCtx: CanvasRenderingContext2D,
@@ -305,11 +309,11 @@ export const drawArrowPayload = (
   const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
   const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
-  const arrowWidth = arrowLength * 0.6; // Width of arrowhead base
+  const arrowWidth = arrowLength * 0.6;
   const arrowAngle = Math.atan(arrowWidth / arrowLength);
 
-  const lineEndX = endX - (arrowLength * 0.3) * Math.cos(angle);
-  const lineEndY = endY - (arrowLength * 0.3) * Math.sin(angle);
+  const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle);
+  const lineEndY = endY - arrowLength * 0.3 * Math.sin(angle);
 
   targetCtx.strokeStyle = color;
   targetCtx.lineWidth = strokeWidth;
@@ -339,8 +343,12 @@ export const drawArrowPayload = (
   targetCtx.stroke();
 };
 
-export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRenderingContext2D | null => {
-  if (!canvas) {return null;}
+export const setupCanvasContext = (
+  canvas: HTMLCanvasElement | null,
+): CanvasRenderingContext2D | null => {
+  if (!canvas) {
+    return null;
+  }
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (ctx) {
@@ -352,7 +360,9 @@ export const setupCanvasContext = (canvas: HTMLCanvasElement | null): CanvasRend
 };
 
 const getTransactionOpacity = (payload: EnhancedActionPayload): number => {
-  if (!payload.transactionId) {return 1.0;}
+  if (!payload.transactionId) {
+    return 1.0;
+  }
 
   switch (payload.transactionStatus) {
     case 'pending' as const:
@@ -405,7 +415,8 @@ export const optimizeDrawingPoints = (
   points: Point[],
   enabled: boolean = CANVAS_CONFIG.OPTIMIZATION.ENABLED,
 ): Point[] => {
-  const { MIN_POINTS_THRESHOLD, DECIMATION_FACTOR, PRESERVE_ENDPOINTS } = CANVAS_CONFIG.OPTIMIZATION;
+  const { MIN_POINTS_THRESHOLD, DECIMATION_FACTOR, PRESERVE_ENDPOINTS } =
+    CANVAS_CONFIG.OPTIMIZATION;
 
   if (!enabled || points.length < MIN_POINTS_THRESHOLD) {
     return points;
@@ -454,7 +465,11 @@ export const getCanvasPresetInfo = (width: number, height: number): CanvasPreset
   };
 };
 
-export const formatCanvasResolution = (width: number, height: number, t: (key: string) => string): string => {
+export const formatCanvasResolution = (
+  width: number,
+  height: number,
+  t: (key: string) => string,
+): string => {
   const presetInfo = getCanvasPresetInfo(width, height);
 
   if (presetInfo.isCustom) {

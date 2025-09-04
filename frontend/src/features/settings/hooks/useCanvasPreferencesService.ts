@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useReducer } from 'react';
-
 import { useAuth } from 'features/auth/hooks';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
+import { useCallback, useEffect, useReducer } from 'react';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
 
-import { CanvasPreferencesService, type CanvasPreferences, type LayoutMode } from '../services/canvasPreferencesService';
+import {
+  CanvasPreferencesService,
+  type CanvasPreferences,
+  type LayoutMode,
+} from '../services/canvasPreferencesService';
 
 export interface CanvasPreferencesState {
   preferences: CanvasPreferences;
@@ -80,12 +83,13 @@ export function useCanvasPreferencesService() {
     }
 
     dispatch({ type: 'LOAD_START' });
-    
+
     try {
       const preferences = await CanvasPreferencesService.fetchPreferences();
       dispatch({ type: 'LOAD_SUCCESS', payload: preferences });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load canvas preferences';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to load canvas preferences';
       dispatch({ type: 'LOAD_ERROR', payload: errorMessage });
     }
   }, [isAuthenticated]);
@@ -98,7 +102,6 @@ export function useCanvasPreferencesService() {
         try {
           await CanvasPreferencesService.updateSplitRatio(splitRatio);
         } catch (error) {
-          // Refresh preferences to restore server state
           await refreshPreferences();
           throw error;
         }
@@ -108,7 +111,6 @@ export function useCanvasPreferencesService() {
   );
 
   const updateLayoutMode = async (layoutMode: LayoutMode) => {
-    // Layout mode is client-side only for now
     dispatch({ type: 'UPDATE_LAYOUT_MODE', payload: layoutMode });
   };
 
@@ -136,7 +138,6 @@ export function useCanvasPreferencesService() {
     dispatch({ type: 'RESET_ERROR' });
   };
 
-  // WebSocket subscription for canvas settings updates
   const handleCanvasSettingsUpdate = useCallback(
     (message: UserUpdateDTO) => {
       if (message.updateType === 'CANVAS_SETTINGS_CHANGED') {
@@ -152,7 +153,6 @@ export function useCanvasPreferencesService() {
     'user',
   );
 
-  // Load preferences on mount and auth change
   useEffect(() => {
     if (isAuthenticated) {
       void refreshPreferences();
