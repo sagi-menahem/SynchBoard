@@ -1,34 +1,24 @@
-// SCSS Variables - Professional Dual-Theme Design Tokens
-// This file contains semantic color variables that reference CSS custom properties
-// Theme switching is handled via data-theme attributes in the global CSS
-
-// ===== PRIMARY COLORS =====
 $primary: var(--color-primary);
 $primary-hover: var(--color-primary-hover);
 $primary-light: var(--color-primary-light);
 
-// ===== SECONDARY COLORS =====
 $secondary: var(--color-secondary);
 $secondary-hover: var(--color-secondary-hover);
 
-// ===== SURFACE COLORS =====
 $background: var(--color-background);
 $surface: var(--color-surface);
 $surface-elevated: var(--color-surface-elevated);
 $surface-hover: var(--color-surface-hover);
 
-// ===== BORDER COLORS =====
 $border: var(--color-border);
 $border-strong: var(--color-border-strong);
 $border-light: var(--color-border-light);
 
-// ===== TEXT COLORS =====
 $text-primary: var(--color-text-primary);
 $text-secondary: var(--color-text-secondary);
 $text-muted: var(--color-text-muted);
 $text-disabled: var(--color-text-disabled);
 
-// ===== FEEDBACK COLORS =====
 $success: var(--color-success);
 $success-light: var(--color-success-light);
 $warning: var(--color-warning);
@@ -36,21 +26,15 @@ $warning-light: var(--color-warning-light);
 $error: var(--color-error);
 $error-light: var(--color-error-light);
 
-// ===== OVERLAY COLORS =====
 $overlay-light: var(--color-overlay-light);
 $overlay-medium: var(--color-overlay-medium);
 $overlay-strong: var(--color-overlay-strong);
 
-// ===== MESSAGE STATUS COLORS =====
 $status-pending-border: var(--color-status-pending-border);
 $status-confirmed-border: var(--color-status-confirmed-border);
 $status-failed-border: var(--color-status-failed-border);
 $status-failed-bg: var(--color-status-failed-bg);
 
-// ===== LEGACY ALIASES (for gradual migration) =====
-// These can be removed once all components are updated
-
-// Primary color aliases
 $primary-color: $primary;
 $primary-color-hover: var(--color-primary-hover);
 $primary-blue: $primary;
@@ -58,7 +42,6 @@ $primary-blue-hover: var(--color-primary-hover);
 $primary-blue-dark: var(--color-primary-hover);
 $secondary-color: $secondary;
 
-// Background aliases
 $background-primary: $background;
 $background-secondary: $surface;
 $background-tertiary: $surface;
@@ -72,7 +55,6 @@ $background-modal-alt: $surface-elevated;
 $background-modal-light: $surface-elevated;
 $background-modal-lighter: $surface-hover;
 
-// Text color aliases
 $text-primary: $text-primary;
 $text-secondary: $text-secondary;
 $text-muted: $text-muted;
@@ -92,7 +74,6 @@ $text-gray-warm: $text-primary;
 $text-gray-light: $text-muted;
 $text-hover: $text-primary;
 
-// Border color aliases
 $border-primary: $border;
 $border-secondary: $border-strong;
 $border-tertiary: $border-strong;
@@ -105,7 +86,6 @@ $border-input: $border;
 $border-input-alt: $border;
 $border-google: $border-light;
 
-// Feedback color aliases
 $success-color: $success;
 $error-color: $error;
 $error-color-alt: $error;
@@ -118,7 +98,6 @@ $link-color: $primary;
 $accent-purple: $primary;
 $accent-lavender: $primary-light;
 
-// Overlay color aliases - using semantic overlays
 $overlay-white-02: $overlay-light;
 $overlay-white-03: $overlay-light;
 $overlay-white-04: $overlay-light;
@@ -176,7 +155,6 @@ $overlay-surface-60: $overlay-medium;
 $overlay-surface-80: $overlay-strong;
 $overlay-modal: $overlay-strong;
 
-// Card empty state colors
 $card-empty-bg: $surface;
 $card-empty-border: $border-light;
 $card-empty-hover-bg: $surface-hover;
@@ -184,13 +162,11 @@ $card-empty-hover-border: $border;
 $icon-empty-state: $text-muted;
 $text-secondary-light: $text-secondary;
 
-// Activity Indicator Variables
 $activity-indicator-bg: $surface-elevated;
 $activity-indicator-border: $border-light;
 $activity-indicator-hover: $surface-hover;
 $activity-indicator-hover-border: $border;
 
-// Visual Effect Variables
 $success-glow: $success-light;
 $focus-outline: $primary;
 $primary-shadow: $primary-light;
@@ -201,14 +177,12 @@ $warning-border: $warning;
 $error-bg: $error-light;
 $error-border: $error;
 
-// Canvas Variables
 $canvas-background: var(--color-canvas-background);
 $canvas-pattern: var(--color-canvas-pattern);
 $divider-bg: $border;
 $divider-hover: $border-strong;
 $divider-active: $primary;
 
-// Tool Button Variables
 $tool-button-bg: $surface;
 $tool-button-border: $border;
 $tool-button-text: $text-primary;
@@ -227,15 +201,12 @@ $scrollbar-thumb: $border;
 $scrollbar-track: $surface;
 $scrollbar-thumb-hover: $border-strong;
 
-// Error Color Variants (additional)
 $error-dark: $error;
 $error-darker: $error;
 $error-overlay: $error-light;
 
-// Background/Overlay Variants (additional)
 $overlay-dark: $overlay-strong;
 $overlay-darker: $overlay-strong;
 
-// Custom RGB aliases
 $brown-accent: $warning;
 $white-rgb: $text-primary;

@@ -1,25 +1,19 @@
 @use './design-tokens' as theme;
 @use './mixins' as *;
 
-// Specialized edit button mixin for consistent editing actions
-// Used for: Profile edit, Board description edit, Canvas settings edit
 @mixin edit-button {
   @include button-base;
 
-  // Smaller size for less prominence
   padding: theme.$spacing-2 theme.$spacing-3 !important;
   font-size: theme.$font-size-sm !important;
 
-  // Ensure button reaches the edge when in headerActions
   margin-right: 0 !important;
   margin-left: 0 !important;
 
-  // Secondary styling with design system colors
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-color);
   border: 1px solid var(--btn-secondary-border);
 
-  // Interactive states
   &:hover:not(:disabled) {
     background: var(--btn-secondary-hover-bg);
     color: var(--btn-secondary-hover-color);
@@ -37,19 +31,15 @@
     cursor: not-allowed;
   }
 
-  // Icon spacing (for PencilLine, Settings2 icons) - using logical properties
   svg {
-    margin-inline-end: theme.$spacing-1; // CSS logical property - automatically RTL aware
+    margin-inline-end: theme.$spacing-1;
   }
 
-  // Ensure consistent height
   min-height: theme.$edit-button-height;
 
-  // Smooth transitions
   transition: all 0.2s ease;
 }
 
-// Edit button group class for components that need it
 .editButton {
   @include edit-button;
 }

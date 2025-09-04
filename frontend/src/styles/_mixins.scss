@@ -1,9 +1,5 @@
-// SCSS Mixins - Reusable CSS Patterns
-// This file contains reusable mixins for common CSS patterns found across components
 @use 'design-tokens' as theme;
 @use 'variables' as vars;
-
-// ===== FLEXBOX LAYOUT PATTERNS =====
 
 @mixin flex-center {
   display: flex;
@@ -30,17 +26,15 @@
 
 @mixin flex-end {
   display: flex;
-  justify-content: end; // Already using logical property
+  justify-content: end;
   align-items: center;
 }
 
 @mixin flex-start {
   display: flex;
-  justify-content: start; // CSS logical property
+  justify-content: start;
   align-items: center;
 }
-
-// ===== BUTTON/INTERACTIVE PATTERNS =====
 
 @mixin interactive-button {
   cursor: pointer;
@@ -87,10 +81,8 @@
 @mixin button-group {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: end; // CSS logical property - automatically handles RTL
+  justify-content: end;
 }
-
-// ===== INPUT FIELD PATTERNS =====
 
 @mixin input-base {
   width: 100%;
@@ -106,7 +98,6 @@
     border-color theme.$transition-normal ease,
     box-shadow theme.$transition-normal ease;
 
-  // Autofill overrides for browser compatibility
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus {
@@ -146,8 +137,6 @@
   box-sizing: border-box;
 }
 
-// ===== CARD/SECTION PATTERNS =====
-
 @mixin card-base {
   background-color: var(--color-surface-elevated);
   border: theme.$card-border-width solid var(--color-border);
@@ -175,8 +164,6 @@
   margin-bottom: theme.$spacing-6;
 }
 
-// ===== FORM PATTERNS =====
-
 @mixin form-base {
   display: flex;
   flex-direction: column;
@@ -203,12 +190,10 @@
 @mixin form-actions {
   display: flex;
   gap: theme.$spacing-3;
-  justify-content: end; // CSS logical property - automatically handles RTL
-  padding-block-start: theme.$spacing-2; // Logical property for padding-top
-  border-block-start: theme.$border-width solid var(--color-border); // Logical property for border-top
+  justify-content: end;
+  padding-block-start: theme.$spacing-2;
+  border-block-start: theme.$border-width solid var(--color-border);
 }
-
-// ===== ERROR/STATUS PATTERNS =====
 
 @mixin error-message {
   background-color: theme.$color-error-light;
@@ -228,8 +213,6 @@
   font-size: theme.$font-size-sm;
 }
 
-// ===== BORDER RADIUS PATTERNS =====
-
 @mixin rounded-small {
   border-radius: theme.$border-radius-sm;
 }
@@ -245,8 +228,6 @@
 @mixin rounded-circle {
   border-radius: theme.$border-radius-full;
 }
-
-// ===== POSITION/OVERLAY PATTERNS =====
 
 @mixin overlay-full {
   position: absolute;
@@ -273,14 +254,10 @@
   overflow-y: auto;
 }
 
-// ===== SCROLLBAR PATTERNS =====
-
 @mixin theme-scrollbar {
-  // Firefox scrollbar
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
 
-  // WebKit scrollbar
   &::-webkit-scrollbar {
     width: theme.$spacing-2;
     height: theme.$spacing-2;
@@ -306,11 +283,9 @@
 }
 
 @mixin theme-scrollbar-enhanced {
-  // Firefox scrollbar - enhanced
   scrollbar-width: auto;
   scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
 
-  // WebKit scrollbar - enhanced
   &::-webkit-scrollbar {
     width: theme.$spacing-3;
     height: theme.$spacing-3;
@@ -344,8 +319,6 @@
   }
 }
 
-// ===== TRANSITION PATTERNS =====
-
 @mixin smooth-transition {
   transition: theme.$transition-all;
 }
@@ -360,8 +333,6 @@
     transform theme.$transition-slow ease-out,
     box-shadow theme.$transition-normal ease;
 }
-
-// ===== BOX SHADOW PATTERNS =====
 
 @mixin shadow-light {
   box-shadow: theme.$shadow-button;
@@ -378,8 +349,6 @@
 @mixin focus-shadow {
   box-shadow: theme.$shadow-focus;
 }
-
-// ===== RADIO BUTTON PATTERNS =====
 
 @mixin radio-option {
   display: flex;
@@ -398,8 +367,6 @@
   cursor: pointer;
 }
 
-// ===== TEXT PATTERNS =====
-
 @mixin text-ellipsis {
   white-space: nowrap;
   overflow: hidden;
@@ -414,8 +381,6 @@
   overflow: hidden;
 }
 
-// ===== LOADING/SPINNER PATTERNS =====
-
 @mixin spinner-base {
   border: theme.$border-width-thick solid rgba(theme.$color-white, theme.$opacity-10);
   border-top: theme.$border-width-thick solid theme.$color-primary;
@@ -427,12 +392,11 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
-
-// ===== UTILITY PATTERNS =====
 
 @mixin visually-hidden {
   position: absolute !important;

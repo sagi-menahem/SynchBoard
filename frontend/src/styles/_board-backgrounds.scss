@@ -1,61 +1,40 @@
-// Board Background Dual-Theme System
-// Each background has a dark and light variant that automatically switches with the theme
-
-// Define the conceptual background colors with theme-aware variants
 :root,
 body[data-theme='light'] {
-  // Default Gray
   --board-bg-default: #f5f5f5;
 
-  // Midnight Blue
   --board-bg-midnight-blue: #e8eaf6;
 
-  // Warm Ember
   --board-bg-warm-ember: #fbe9e7;
 
-  // Forest Green
   --board-bg-forest-green: #e8f5e9;
 
-  // Deep Purple
   --board-bg-deep-purple: #f3e5f5;
 
-  // Ocean Teal
   --board-bg-ocean-teal: #e0f2f1;
 
-  // Crimson Red
   --board-bg-crimson-red: #ffebee;
 
-  // Golden Brown
   --board-bg-golden-brown: #fff3e0;
 }
 
 body[data-theme='dark'] {
-  // Default Gray
   --board-bg-default: #282828;
 
-  // Midnight Blue
   --board-bg-midnight-blue: #2a2d35;
 
-  // Warm Ember
   --board-bg-warm-ember: #332f2f;
 
-  // Forest Green
   --board-bg-forest-green: #2f3d30;
 
-  // Deep Purple
   --board-bg-deep-purple: #302a35;
 
-  // Ocean Teal
   --board-bg-ocean-teal: #2a3538;
 
-  // Crimson Red
   --board-bg-crimson-red: #3a2b2b;
 
-  // Golden Brown
   --board-bg-golden-brown: #3d3429;
 }
 
-// SCSS variables that map conceptual colors to CSS custom properties
 $board-bg-default: var(--board-bg-default);
 $board-bg-midnight-blue: var(--board-bg-midnight-blue);
 $board-bg-warm-ember: var(--board-bg-warm-ember);
@@ -65,25 +44,40 @@ $board-bg-ocean-teal: var(--board-bg-ocean-teal);
 $board-bg-crimson-red: var(--board-bg-crimson-red);
 $board-bg-golden-brown: var(--board-bg-golden-brown);
 
-// Helper mixin to apply board background based on saved color key
 @mixin apply-board-background($color-key) {
-  @if $color-key == '#282828' {
+  @if $color-key =='#282828' {
     background-color: $board-bg-default;
-  } @else if $color-key == '#2a2d35' {
+  }
+
+  @else if $color-key =='#2a2d35' {
     background-color: $board-bg-midnight-blue;
-  } @else if $color-key == '#332f2f' {
+  }
+
+  @else if $color-key =='#332f2f' {
     background-color: $board-bg-warm-ember;
-  } @else if $color-key == '#2f3d30' {
+  }
+
+  @else if $color-key =='#2f3d30' {
     background-color: $board-bg-forest-green;
-  } @else if $color-key == '#302a35' {
+  }
+
+  @else if $color-key =='#302a35' {
     background-color: $board-bg-deep-purple;
-  } @else if $color-key == '#2a3538' {
+  }
+
+  @else if $color-key =='#2a3538' {
     background-color: $board-bg-ocean-teal;
-  } @else if $color-key == '#3a2b2b' {
+  }
+
+  @else if $color-key =='#3a2b2b' {
     background-color: $board-bg-crimson-red;
-  } @else if $color-key == '#3d3429' {
+  }
+
+  @else if $color-key =='#3d3429' {
     background-color: $board-bg-golden-brown;
-  } @else {
+  }
+
+  @else {
     background-color: $board-bg-default;
   }
 }
