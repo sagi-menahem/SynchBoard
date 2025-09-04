@@ -1,20 +1,16 @@
 @use '@/styles' as theme;
 
 .unifiedDotBackground {
-  /* 1. The user's chosen background color */
-  background-color: var(--user-chosen-color, var(--color-surface));
+  /* 1. RandomShapes dedicated background color */
+  background-color: var(--user-chosen-color, var(--color-random-shapes-bg));
 
   /* 2. The new SVG logo pattern file */
   background-image: url('../../../assets/RandomShapes.svg');
   background-size: 400px 400px;
   /* Controls the pattern density */
 
-  /* 3. This color will be inherited by the SVG's "currentColor" - high contrast */
-  color: color-mix(
-    in srgb,
-    var(--user-chosen-color, var(--color-surface)) 20%,
-    var(--color-text) 80%
-  );
+  /* 3. RandomShapes dedicated pattern color - inherited by SVG's "currentColor" */
+  color: var(--color-random-shapes-pattern);
 
   /* 4. Pattern visibility controlled by SVG opacity, not container opacity */
 
