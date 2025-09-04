@@ -36,7 +36,6 @@ export const UserBoardPreferencesProvider: React.FC<UserBoardPreferencesProvider
   );
 };
 
-// Hook to use the context
 export const useUserBoardPreferences = (): UserBoardPreferencesContextType => {
   const context = useContext(UserBoardPreferencesContext);
   if (context === undefined) {

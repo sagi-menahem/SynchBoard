@@ -62,7 +62,6 @@ const AuthPage: React.FC = () => {
 
         {!isProcessing && (
           <div className={styles.splitContainer}>
-            {/* Left Hero Section */}
             <div className={styles.heroSection}>
               <div className={styles.heroContent}>
                 <h1 className={styles.pageTitle}>
@@ -97,7 +96,6 @@ const AuthPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Form Section */}
             <div className={styles.formSection}>
               <Card variant="default" className={styles.authCard}>
                 <div className={styles.authContainer}>

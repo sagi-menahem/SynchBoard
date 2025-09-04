@@ -19,7 +19,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
 
   return (
     <form action={submitAction} className={styles.form}>
-      {/* Email and Password - full width for security fields */}
       <div className={`${styles.field} ${styles.fullWidth}`}>
         <label htmlFor="register-email">
           <Mail size={14} />
@@ -44,7 +43,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         />
       </div>
 
-      {/* Name fields - two columns */}
       <div className={styles.field}>
         <label htmlFor="register-firstName">
           <User size={14} />
@@ -62,7 +60,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <Input id="register-lastName" name="lastName" type="text" disabled={isPending} />
       </div>
 
-      {/* Gender - full width for radio buttons */}
       <div className={`${styles.field} ${styles.fullWidth}`}>
         <label htmlFor="register-gender">
           <User size={14} />
@@ -85,7 +82,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <input type="hidden" name="gender" value={gender} />
       </div>
 
-      {/* Date and Phone - two columns */}
       <div className={styles.field}>
         <label htmlFor="register-dateOfBirth">
           <Calendar size={14} />

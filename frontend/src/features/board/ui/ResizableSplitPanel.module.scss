@@ -57,7 +57,6 @@
   }
 }
 
-// More visible separator line
 .dividerLine {
   position: absolute;
   left: 50%;
@@ -67,7 +66,7 @@
   background: var(--color-border-strong);
   transform: translateX(-50%);
   @include theme.hover-transition;
-  border-radius: 1px; // Original radius restored
+  border-radius: 1px;
 }
 
 .dividerHandle {

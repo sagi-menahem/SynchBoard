@@ -309,7 +309,7 @@ export const drawArrowPayload = (
   const lineLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
   const arrowLength = Math.max(strokeWidth * 3, Math.min(strokeWidth * 6, lineLength * 0.15));
-  const arrowWidth = arrowLength * 0.6; // Width of arrowhead base
+  const arrowWidth = arrowLength * 0.6;
   const arrowAngle = Math.atan(arrowWidth / arrowLength);
 
   const lineEndX = endX - arrowLength * 0.3 * Math.cos(angle);

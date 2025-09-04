@@ -153,7 +153,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               },
             ]
           : []),
-        // DRAW - Priority 6
         {
           type: 'custom',
           key: 'draw-group',
