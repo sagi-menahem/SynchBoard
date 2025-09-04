@@ -5,20 +5,26 @@ import { useTranslation } from 'react-i18next';
 import Button from './Button';
 import styles from './PasswordInput.module.scss';
 
+/**
+ * Props for the PasswordInput component.
+ */
 interface PasswordInputProps {
-  id: string;
-  name?: string;
-  value?: string;
-  placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  id: string; // HTML id attribute for the input
+  name?: string; // HTML name attribute for form submission
+  value?: string; // Current input value
+  placeholder?: string; // Placeholder text to display
+  required?: boolean; // Whether the field is required
+  disabled?: boolean; // Whether the input is disabled
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Change event handler
   className?: string;
-  autoComplete?: string;
-  showPassword?: boolean;
-  onToggleVisibility?: (show: boolean) => void;
+  autoComplete?: string; // Browser autocomplete attribute
+  showPassword?: boolean; // External control for password visibility
+  onToggleVisibility?: (show: boolean) => void; // Callback when visibility toggles
 }
 
+/**
+ * Eye icon component for showing password visibility state.
+ */
 const EyeIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     className={className}
@@ -36,6 +42,9 @@ const EyeIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+/**
+ * Eye-off icon component for hiding password visibility state.
+ */
 const EyeOffIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     className={className}
@@ -55,6 +64,23 @@ const EyeOffIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+/**
+ * Password input field with toggle visibility functionality.
+ * Provides a secure way to enter passwords while allowing users to verify their input.
+ * Supports both controlled and uncontrolled visibility state management.
+ * 
+ * @param {string} id - HTML id attribute for the input element
+ * @param {string} name - HTML name attribute for form submission
+ * @param {string} value - Current input value for controlled components
+ * @param {string} placeholder - Placeholder text to display when empty
+ * @param {boolean} required - Whether the field is required for form validation
+ * @param {boolean} disabled - Whether the input is disabled and non-interactive
+ * @param {function} onChange - Change event handler for input updates
+ * @param {string} className - Optional CSS class to apply to the container
+ * @param {string} autoComplete - Browser autocomplete behavior
+ * @param {boolean} showPassword - External control for password visibility state
+ * @param {function} onToggleVisibility - Callback when visibility state changes
+ */
 export const PasswordInput: React.FC<PasswordInputProps> = ({
   id,
   name,
@@ -71,8 +97,10 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   const { t } = useTranslation(['common']);
   const [internalShowPassword, setInternalShowPassword] = useState(false);
 
+  // Use external state if provided, otherwise use internal state
   const showPassword = externalShowPassword ?? internalShowPassword;
 
+  // Toggle visibility using external callback or internal state
   const togglePasswordVisibility = () => {
     const newShowPassword = !showPassword;
 

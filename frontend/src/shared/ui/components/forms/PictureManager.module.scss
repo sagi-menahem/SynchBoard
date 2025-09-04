@@ -1,14 +1,19 @@
 @use '@/styles' as theme;
 
+// --- Picture Manager Layout ---
+
+// Main container with centered layout
 .container {
   @include theme.flex-column-center;
   gap: theme.$spacing-6;
 }
 
+// Container for profile image display
 .imageContainer {
   @include theme.flex-center;
 }
 
+// Profile image styling with circular crop
 .image {
   width: 168px;
   height: 168px;
@@ -16,6 +21,7 @@
   object-fit: cover;
 }
 
+// Action buttons container
 .buttonGroup {
   @include theme.button-group;
 }

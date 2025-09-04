@@ -1,19 +1,25 @@
 @use '@/styles' as theme;
 
+// --- Radio Group Layout ---
+
+// Base radio group container
 .radioGroup {
   display: flex;
   gap: theme.$spacing-3;
 }
 
+// Vertical layout variant
 .radioGroup.vertical {
   flex-direction: column;
 }
 
+// Horizontal layout variant
 .radioGroup.horizontal {
   flex-direction: row;
   flex-wrap: wrap;
 }
 
+// Individual radio item container
 .radioItem {
   display: flex;
   align-items: center;
@@ -33,6 +39,9 @@
   }
 }
 
+// --- RTL Support ---
+
+// RTL direction for radio items
 [dir='rtl'] .radioItem {
   flex-direction: row-reverse;
 }
@@ -45,6 +54,7 @@
   direction: ltr;
 }
 
+// Radio button styling
 .radioButton {
   all: unset;
   width: theme.$spacing-4-5;
@@ -84,6 +94,7 @@
   }
 }
 
+// Radio button indicator dot
 .radioIndicator {
   display: flex;
   align-items: center;
@@ -103,6 +114,7 @@
   }
 }
 
+// Radio label text styling
 .radioLabel {
   color: theme.$text-secondary;
   font-size: theme.$font-size-sm;
@@ -122,6 +134,9 @@
   }
 }
 
+// --- Animations ---
+
+// Scale animation for radio selection
 @keyframes radioScale {
   0% {
     transform: scale(0);
@@ -132,6 +147,9 @@
   }
 }
 
+// --- Responsive Design ---
+
+// Mobile responsive adjustments
 @media (max-width: 640px) {
   .radioGroup.horizontal {
     flex-direction: column;

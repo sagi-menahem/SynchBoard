@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Multi-line text input with resizable height
 .textarea {
   @include theme.input-base;
   @include theme.input-focus;
