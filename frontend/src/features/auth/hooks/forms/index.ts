@@ -4,11 +4,11 @@ export {
   authToastMessages,
   authValidation,
   extractFormData,
-  useAuthForm,
+  useAuthForm
 } from './useAuthForm';
 
-// Individual form hooks
 export { useForgotPasswordForm } from './useForgotPasswordForm';
 export { useLoginForm } from './useLoginForm';
 export { useRegisterForm } from './useRegisterForm';
 export { useResendVerificationCode, useVerifyEmailForm } from './useVerifyEmailForm';
+

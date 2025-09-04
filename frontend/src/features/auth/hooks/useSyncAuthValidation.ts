@@ -31,7 +31,7 @@ export const useSyncAuthValidation = () => {
 
   const scheduleExpiryWarning = useCallback(
     (expiryTime: number) => {
-      const warningTime = expiryTime - 5 * 60 * 1000; // 5 minutes before expiry
+      const warningTime = expiryTime - 5 * 60 * 1000;
       const timeUntilWarning = warningTime - Date.now();
 
       if (timeUntilWarning > 0) {
@@ -49,7 +49,6 @@ export const useSyncAuthValidation = () => {
 
   const validateTokenSync = useCallback(
     (token: string | null): SyncAuthResult => {
-      // Clear any existing expiry warnings
       clearExpiryWarning();
 
       if (!token) {
@@ -62,11 +61,9 @@ export const useSyncAuthValidation = () => {
       }
 
       try {
-        // Synchronously decode and validate JWT structure
         const decodedToken: TokenPayload = jwtDecode(token);
         const userEmail = decodedToken.sub;
 
-        // Check if token is expired (synchronous check)
         const isExpired =
           decodedToken.exp !== undefined ? decodedToken.exp * 1000 < Date.now() : false;
 
@@ -80,7 +77,6 @@ export const useSyncAuthValidation = () => {
           };
         }
 
-        // Schedule expiry warning if token has expiry time
         if (decodedToken.exp !== undefined) {
           const expiryTime = decodedToken.exp * 1000;
           scheduleExpiryWarning(expiryTime);
@@ -90,7 +86,7 @@ export const useSyncAuthValidation = () => {
           isValid: true,
           userEmail,
           shouldClearToken: false,
-          needsBackendValidation: true, // Validate with backend in background
+          needsBackendValidation: true,
         };
       } catch (error) {
         logger.error('[useSyncAuthValidation] Failed to decode JWT token', error);

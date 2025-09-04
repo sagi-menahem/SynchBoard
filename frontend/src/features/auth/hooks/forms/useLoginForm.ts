@@ -19,13 +19,11 @@ export const useLoginForm = () => {
       const email = extractFormData.email(formData);
       const password = extractFormData.password(formData);
 
-      // Validate email
       const emailError = authValidation.validateEmail(email, t);
       if (emailError) {
         return emailError;
       }
 
-      // Validate password
       const passwordError = authValidation.validatePassword(password, t);
       if (passwordError) {
         return passwordError;

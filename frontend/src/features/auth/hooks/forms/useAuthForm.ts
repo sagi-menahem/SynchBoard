@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useFormWithToast, type UseFormWithToastOptions } from 'shared/hooks/useFormWithToast';
 import { validateEmail } from 'shared/utils/validationUtils';
 
-// Common validation utilities for auth forms
 export const authValidation = {
   validateEmail: (email: string | null, t: (key: string) => string) => {
     if (email === null || email === '') {
@@ -47,7 +46,6 @@ export const authValidation = {
   },
 };
 
-// Common error handling for auth responses
 export const authErrorHandling = {
   standardError: (t: (key: string) => string) => (err: unknown) => {
     if (err !== null && err !== undefined && typeof err === 'object' && 'response' in err) {
@@ -57,9 +55,7 @@ export const authErrorHandling = {
         axiosError.response?.data?.message !== ''
       ) {
         const message = axiosError.response.data.message;
-        // Try to translate backend i18n keys
         if (message.includes('.')) {
-          // Backend sends "auth.badCredentials", convert to "auth:badCredentials"
           const keyWithoutNamespace = message.replace('auth.', '');
           const possibleKeys = [
             `auth:errors.${keyWithoutNamespace}`,
@@ -88,7 +84,6 @@ export const authErrorHandling = {
     typeof msg === 'string' ? msg : t(successKey),
 };
 
-// Common toast message configurations
 export const authToastMessages = {
   login: (t: (key: string) => string) => ({
     loading: t('auth:loading.login'),
@@ -115,7 +110,6 @@ export const authToastMessages = {
   }),
 };
 
-// Base auth form hook that provides common functionality
 export const useAuthForm = <TRequest extends object, TResponse>(
   options: Omit<UseFormWithToastOptions<TRequest, TResponse>, 'toastMessages'> & {
     formType: 'login' | 'register' | 'forgotPassword' | 'verifyEmail';
@@ -132,7 +126,6 @@ export const useAuthForm = <TRequest extends object, TResponse>(
   });
 };
 
-// Form data extraction utilities
 export const extractFormData = {
   email: (formData: FormData) => formData.get('email') as string,
   password: (formData: FormData) => formData.get('password') as string,

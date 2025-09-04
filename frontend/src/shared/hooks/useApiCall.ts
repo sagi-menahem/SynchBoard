@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import logger from 'shared/utils/logger';
 
@@ -92,7 +92,6 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
   return { data, loading, error, execute, reset };
 }
 
-// Variant for mutations that don't need to store data
 export function useApiMutation<P extends unknown[] = unknown[]>(
   apiFunction: (...args: P) => Promise<unknown>,
   options: Omit<ApiCallOptions<unknown>, 'onSuccess'> & {

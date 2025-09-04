@@ -20,7 +20,6 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       const phoneNumber = extractFormData.phoneNumber(formData);
       const dateOfBirth = extractFormData.dateOfBirth(formData);
 
-      // Validate required fields
       const emailError = authValidation.validateEmail(email, t);
       if (emailError) {
         return emailError;
