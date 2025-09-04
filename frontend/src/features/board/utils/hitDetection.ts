@@ -6,6 +6,21 @@ export interface HitResult {
   hitType?: 'fill' | 'stroke' | 'object';
 }
 
+/**
+ * Tests if a point lies within the bounds of a rectangle using normalized coordinates.
+ * Converts normalized rectangle coordinates to pixel coordinates and performs
+ * boundary checking to determine if the point falls inside the rectangular area.
+ * Essential for hit detection on rectangular shapes and UI elements.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param x - Rectangle left edge in normalized coordinates (0-1)
+ * @param y - Rectangle top edge in normalized coordinates (0-1)
+ * @param width - Rectangle width in normalized coordinates (0-1)
+ * @param height - Rectangle height in normalized coordinates (0-1)
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is inside the rectangle bounds
+ */
 export const isPointInRectangle = (
   point: Point,
   x: number,
@@ -28,6 +43,22 @@ export const isPointInRectangle = (
   );
 };
 
+/**
+ * Tests if a point lies on the border/stroke of a rectangle with tolerance for stroke width.
+ * Uses stroke width to create a tolerance zone around each edge of the rectangle,
+ * allowing for accurate hit detection on rectangle borders even with thick strokes.
+ * Checks all four edges (left, right, top, bottom) for proximity to the point.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param x - Rectangle left edge in normalized coordinates (0-1)
+ * @param y - Rectangle top edge in normalized coordinates (0-1)
+ * @param width - Rectangle width in normalized coordinates (0-1)
+ * @param height - Rectangle height in normalized coordinates (0-1)
+ * @param strokeWidth - Stroke thickness for tolerance calculation
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is within stroke tolerance of rectangle border
+ */
 export const isPointOnRectangleBorder = (
   point: Point,
   x: number,
@@ -64,6 +95,20 @@ export const isPointOnRectangleBorder = (
   return nearLeftEdge || nearRightEdge || nearTopEdge || nearBottomEdge;
 };
 
+/**
+ * Tests if a point lies within the bounds of a circle using normalized coordinates.
+ * Calculates the distance from the point to the circle center and compares it
+ * to the circle radius to determine if the point is inside the circular area.
+ * Uses Euclidean distance formula for precise circular boundary detection.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param centerX - Circle center X coordinate in normalized coordinates (0-1)
+ * @param centerY - Circle center Y coordinate in normalized coordinates (0-1)
+ * @param radius - Circle radius in normalized coordinates (0-1)
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is inside the circle bounds
+ */
 export const isPointInCircle = (
   point: Point,
   centerX: number,
@@ -80,6 +125,21 @@ export const isPointInCircle = (
   return distance <= circleRadius;
 };
 
+/**
+ * Tests if a point lies on the border/stroke of a circle with tolerance for stroke width.
+ * Calculates the distance from the point to the circle center and checks if it's
+ * approximately equal to the radius within the stroke width tolerance. Essential
+ * for detecting clicks on circle outlines and borders in drawing applications.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param centerX - Circle center X coordinate in normalized coordinates (0-1)
+ * @param centerY - Circle center Y coordinate in normalized coordinates (0-1)
+ * @param radius - Circle radius in normalized coordinates (0-1)
+ * @param strokeWidth - Stroke thickness for tolerance calculation
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is within stroke tolerance of circle border
+ */
 export const isPointOnCircleBorder = (
   point: Point,
   centerX: number,
@@ -98,6 +158,23 @@ export const isPointOnCircleBorder = (
   return Math.abs(distance - circleRadius) <= tolerance;
 };
 
+/**
+ * Tests if a point lies within the bounds of a triangle using barycentric coordinates.
+ * Uses mathematical barycentric coordinate calculation to determine if a point
+ * is inside the triangle formed by three vertices. Handles degenerate triangles
+ * by checking for near-zero denominators and returns false for invalid triangles.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param x1 - First vertex X coordinate in normalized coordinates (0-1)
+ * @param y1 - First vertex Y coordinate in normalized coordinates (0-1)
+ * @param x2 - Second vertex X coordinate in normalized coordinates (0-1)
+ * @param y2 - Second vertex Y coordinate in normalized coordinates (0-1)
+ * @param x3 - Third vertex X coordinate in normalized coordinates (0-1)
+ * @param y3 - Third vertex Y coordinate in normalized coordinates (0-1)
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is inside the triangle bounds
+ */
 export const isPointInTriangle = (
   point: Point,
   x1: number,
@@ -128,6 +205,24 @@ export const isPointInTriangle = (
   return a >= 0 && b >= 0 && c >= 0;
 };
 
+/**
+ * Tests if a point lies on the border/stroke of a triangle with tolerance for stroke width.
+ * Checks the distance from the point to each of the three triangle edges,
+ * using line segment distance calculation to determine if the point is close
+ * enough to any edge to be considered a hit on the triangle border.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param x1 - First vertex X coordinate in normalized coordinates (0-1)
+ * @param y1 - First vertex Y coordinate in normalized coordinates (0-1)
+ * @param x2 - Second vertex X coordinate in normalized coordinates (0-1)
+ * @param y2 - Second vertex Y coordinate in normalized coordinates (0-1)
+ * @param x3 - Third vertex X coordinate in normalized coordinates (0-1)
+ * @param y3 - Third vertex Y coordinate in normalized coordinates (0-1)
+ * @param strokeWidth - Stroke thickness for tolerance calculation
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is within stroke tolerance of triangle border
+ */
 export const isPointOnTriangleBorder = (
   point: Point,
   x1: number,
@@ -153,6 +248,21 @@ export const isPointOnTriangleBorder = (
   );
 };
 
+/**
+ * Tests if a point lies within the bounds of a regular polygon using ray casting algorithm.
+ * Generates polygon vertices mathematically based on center, radius, and side count,
+ * then uses the ray casting algorithm to determine if the point is inside the polygon.
+ * Works with any regular polygon (pentagon, hexagon, octagon, etc.).
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param centerX - Polygon center X coordinate in normalized coordinates (0-1)
+ * @param centerY - Polygon center Y coordinate in normalized coordinates (0-1)
+ * @param radius - Polygon radius in normalized coordinates (0-1)
+ * @param sides - Number of polygon sides (e.g., 5 for pentagon, 6 for hexagon)
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is inside the polygon bounds
+ */
 export const isPointInPolygon = (
   point: Point,
   centerX: number,
@@ -192,6 +302,20 @@ export const isPointInPolygon = (
   return inside;
 };
 
+/**
+ * Tests if a point lies within the bounds of a five-pointed star using ray casting algorithm.
+ * Generates star vertices with alternating outer and inner radii to create the classic
+ * star shape, then uses ray casting to determine point inclusion. The inner radius
+ * is calculated as 40% of the outer radius for proper star proportions.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param centerX - Star center X coordinate in normalized coordinates (0-1)
+ * @param centerY - Star center Y coordinate in normalized coordinates (0-1)
+ * @param radius - Star outer radius in normalized coordinates (0-1)
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is inside the star bounds
+ */
 export const isPointInStar = (
   point: Point,
   centerX: number,
@@ -233,6 +357,19 @@ export const isPointInStar = (
   return inside;
 };
 
+/**
+ * Calculates the minimum distance from a point to a line segment.
+ * Uses vector projection to find the closest point on the line segment,
+ * handling cases where the closest point is beyond the segment endpoints
+ * by clamping to the segment bounds. Essential for line hit detection.
+ * 
+ * @param point - Point coordinates in pixels
+ * @param x1 - Line segment start X coordinate in pixels
+ * @param y1 - Line segment start Y coordinate in pixels
+ * @param x2 - Line segment end X coordinate in pixels
+ * @param y2 - Line segment end Y coordinate in pixels
+ * @returns Minimum distance from point to line segment in pixels
+ */
 export const distanceToLineSegment = (
   point: Point,
   x1: number,
@@ -264,6 +401,22 @@ export const distanceToLineSegment = (
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+/**
+ * Tests if a point lies on a line segment with tolerance for stroke width.
+ * Converts normalized line coordinates to pixels and calculates the distance
+ * from the point to the line segment. Returns true if the distance is within
+ * the stroke width tolerance, enabling accurate line hit detection.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param x1 - Line start X coordinate in normalized coordinates (0-1)
+ * @param y1 - Line start Y coordinate in normalized coordinates (0-1)
+ * @param x2 - Line end X coordinate in normalized coordinates (0-1)
+ * @param y2 - Line end Y coordinate in normalized coordinates (0-1)
+ * @param strokeWidth - Line stroke thickness for tolerance calculation
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is within stroke tolerance of the line
+ */
 export const isPointOnLine = (
   point: Point,
   x1: number,
@@ -284,6 +437,21 @@ export const isPointOnLine = (
   return distance <= tolerance;
 };
 
+/**
+ * Tests if a point lies within the bounds of a text box using rectangle hit detection.
+ * Delegates to the rectangle hit detection function since text boxes are rectangular
+ * in nature. Provides a semantic wrapper for text-specific hit detection while
+ * leveraging the existing rectangle boundary checking logic.
+ * 
+ * @param point - Point coordinates in pixels to test
+ * @param x - Text box left edge in normalized coordinates (0-1)
+ * @param y - Text box top edge in normalized coordinates (0-1)
+ * @param width - Text box width in normalized coordinates (0-1)
+ * @param height - Text box height in normalized coordinates (0-1)
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns True if point is inside the text box bounds
+ */
 export const isPointInTextBox = (
   point: Point,
   x: number,
@@ -296,6 +464,19 @@ export const isPointInTextBox = (
   return isPointInRectangle(point, x, y, width, height, canvasWidth, canvasHeight);
 };
 
+/**
+ * Detects which canvas object (if any) was clicked at a given point.
+ * Iterates through canvas objects in reverse order (top to bottom) to find
+ * the topmost object that intersects with the click point. Distinguishes between
+ * fill hits, stroke hits, and object hits for different types of drawing elements.
+ * This is the main entry point for object interaction and selection logic.
+ * 
+ * @param clickPoint - Mouse click coordinates in pixels
+ * @param objects - Array of canvas objects to test for hit detection
+ * @param canvasWidth - Canvas width in pixels for coordinate conversion
+ * @param canvasHeight - Canvas height in pixels for coordinate conversion
+ * @returns Hit result containing hit status, object reference, and hit type
+ */
 export const detectObjectHit = (
   clickPoint: Point,
   objects: ActionPayload[],
