@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useLanguageSync } from 'features/settings/hooks';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateDocumentDirection } from 'shared/lib/i18n';
 import { PageLoader, PageTransition } from 'shared/ui';

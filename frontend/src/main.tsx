@@ -1,7 +1,7 @@
-import React from 'react';
 
 import App from 'App';
 import { AppProvider } from 'AppProvider';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import logger from 'shared/utils/logger';
 import { setupScrollbarThemeManager } from 'shared/utils/scrollbarTheme';

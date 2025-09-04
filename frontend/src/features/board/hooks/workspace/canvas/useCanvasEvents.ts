@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react';
 
 import type { Point } from 'features/board/types/BoardObjectTypes';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
+import { useCallback, useEffect, useRef } from 'react';
 
 export interface CanvasEventData {
   startPoint: Point;

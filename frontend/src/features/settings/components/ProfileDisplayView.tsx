@@ -1,6 +1,6 @@
+import type { UserProfile } from 'features/settings/types/UserTypes';
 import React from 'react';
 
-import type { UserProfile } from 'features/settings/types/UserTypes';
 import { useTranslation } from 'react-i18next';
 
 import styles from '../pages/SettingsPage.module.scss';

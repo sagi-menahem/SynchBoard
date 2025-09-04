@@ -1,6 +1,6 @@
+import { getUserProfile } from 'features/settings/services/userService';
 import React, { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { getUserProfile } from 'features/settings/services/userService';
 import { getToken, setToken as saveToken, removeToken } from 'shared/utils/authUtils';
 import logger from 'shared/utils/logger';
 

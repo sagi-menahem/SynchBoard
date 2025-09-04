@@ -1,6 +1,6 @@
+import { Calendar, Lock, Mail, Phone, User, UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Calendar, Lock, Mail, Phone, User, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
 

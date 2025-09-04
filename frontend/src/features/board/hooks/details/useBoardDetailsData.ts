@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useOptimistic, useState } from 'react';
 
 import { AxiosError } from 'axios';
 import { useAuth } from 'features/auth/hooks/useAuth';
@@ -6,6 +5,7 @@ import * as boardService from 'features/board/services/boardService';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { BoardUpdateDTO } from 'features/websocket/types/WebSocketTypes';
+import { useCallback, useEffect, useOptimistic, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

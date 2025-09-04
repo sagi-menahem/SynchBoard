@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import {
@@ -14,6 +13,7 @@ import {
   type TrianglePayload,
 } from 'features/board/types/BoardObjectTypes';
 import { optimizeDrawingPoints } from 'features/board/utils/CanvasUtils';
+import { useCallback } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import type { CanvasEventData } from './useCanvasEvents';

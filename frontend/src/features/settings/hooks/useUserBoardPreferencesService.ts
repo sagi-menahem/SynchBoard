@@ -1,6 +1,6 @@
+import { useAuth } from 'features/auth/hooks';
 import { useCallback, useEffect, useReducer } from 'react';
 
-import { useAuth } from 'features/auth/hooks';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 

@@ -1,7 +1,7 @@
-import React from 'react';
 
 import type { UseBoardMemberActionsReturn } from 'features/board/hooks/details/useBoardMemberActions';
 import type { Member } from 'features/board/types/BoardTypes';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'shared/ui';
 

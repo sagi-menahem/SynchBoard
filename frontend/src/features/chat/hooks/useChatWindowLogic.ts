@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useChatMessages } from 'features/chat/hooks';
 import type { EnhancedChatMessage } from 'features/chat/types/ChatTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CHAT_BACKGROUND_OPTIONS } from 'shared/constants';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';

@@ -1,7 +1,7 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
 import { applyScrollbarTheme } from 'shared/utils/scrollbarTheme';

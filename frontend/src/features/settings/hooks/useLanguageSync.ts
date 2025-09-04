@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
 import type { LanguagePreferences } from 'features/settings/types/UserTypes';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 

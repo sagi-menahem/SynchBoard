@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
 
 import * as boardService from 'features/board/services/boardService';
 import type { Member, UpdateCanvasSettingsRequest } from 'features/board/types/BoardTypes';
+import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

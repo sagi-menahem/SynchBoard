@@ -1,8 +1,8 @@
-import React from 'react';
 
 import defaultUserImage from 'assets/default-user-image.png';
 import type { Member } from 'features/board/types/BoardTypes';
 import { Crown } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
 import { Card } from 'shared/ui';
@@ -21,7 +21,7 @@ const MemberListItem: React.FC<MemberListItemProps> = React.memo(({ member, onCo
     : defaultUserImage;
 
   return (
-    <div onContextMenu={(e) => onContextMenu(e, member)}>
+    <div onContextMenu={(e) => onContextMenu(e, member)} role="button" tabIndex={0}>
       <Card variant="default" padding="sm" className={styles.memberItem}>
         <img
           src={imageSource}

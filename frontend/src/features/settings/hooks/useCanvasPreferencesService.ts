@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useReducer } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
+import { useCallback, useEffect, useReducer } from 'react';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
 
 import {

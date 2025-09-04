@@ -1,7 +1,7 @@
-import React, { useCallback, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 

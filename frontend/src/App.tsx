@@ -1,6 +1,6 @@
+import { ConnectionStatusBanner } from 'features/board/ui';
 import React from 'react';
 
-import { ConnectionStatusBanner } from 'features/board/ui';
 import { BrowserRouter } from 'react-router-dom';
 import { useAppConfiguration } from 'shared/hooks/useAppConfiguration';
 import { ToasterConfig } from 'shared/ui/components/ToasterConfig';

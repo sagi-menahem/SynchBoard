@@ -1,4 +1,3 @@
-import React, { useMemo, useRef, useCallback } from 'react';
 
 import { BoardProvider } from 'features/board';
 import { BoardWorkspace } from 'features/board/components/workspace';
@@ -18,6 +17,7 @@ import {
   Type,
   Undo,
 } from 'lucide-react';
+import React, { useMemo, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';

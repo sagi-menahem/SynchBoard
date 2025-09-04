@@ -1,6 +1,6 @@
+import { AxiosError } from 'axios';
 import { useState, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
-import { AxiosError } from 'axios';
 import logger from 'shared/utils/logger';
 
 interface ApiCallOptions<T> {

@@ -1,7 +1,7 @@
-import React from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { Monitor } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';

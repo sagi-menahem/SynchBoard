@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 
 import { AxiosError } from 'axios';
 import { useAuth } from 'features/auth/hooks/useAuth';
@@ -10,6 +9,7 @@ import {
 } from 'features/board/types/BoardObjectTypes';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import type { BoardUpdateDTO } from 'features/websocket/types/WebSocketTypes';
+import { useCallback } from 'react';
 import { WEBSOCKET_TOPICS } from 'shared/constants/ApiConstants';
 import logger from 'shared/utils/logger';
 

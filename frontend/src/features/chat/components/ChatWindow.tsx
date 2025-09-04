@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
 
 import { useAuth } from 'features/auth/hooks';
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useChatWindowLogic } from 'features/chat/hooks/useChatWindowLogic';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Card } from 'shared/ui';
 import { formatDateSeparator } from 'shared/utils/DateUtils';

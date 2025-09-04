@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 
 import defaultBoardImage from 'assets/default-board-image.png';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
 import { PencilLine, Save, X } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, PictureManager, SectionCard, Textarea } from 'shared/ui';
 

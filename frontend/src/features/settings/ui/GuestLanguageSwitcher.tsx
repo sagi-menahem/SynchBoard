@@ -1,6 +1,6 @@
+import { useLanguageSync } from 'features/settings/hooks';
 import React from 'react';
 
-import { useLanguageSync } from 'features/settings/hooks';
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from 'shared/ui/components/forms/LanguageToggle';
 

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 
 import type { ChangePasswordRequest } from 'features/settings/types/UserTypes';
 import { Save } from 'lucide-react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { APP_CONFIG } from 'shared/constants/AppConstants';

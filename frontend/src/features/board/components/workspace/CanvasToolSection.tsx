@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
 
 import { STROKE_WIDTH_RANGE, TOOLS } from 'features/board/constants/BoardConstants';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { Brush, Download, Eraser, PaintBucket, Pipette, Redo, Type, Undo } from 'lucide-react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import { ColorPicker, Slider, ToolButton, ToolGroup } from 'shared/ui';

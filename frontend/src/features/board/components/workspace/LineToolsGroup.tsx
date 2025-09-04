@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
 
 import clsx from 'clsx';
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { ArrowRight, Minus } from 'lucide-react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 import Button from 'shared/ui/components/forms/Button';

@@ -1,7 +1,7 @@
-import React from 'react';
 
 import type { UpdateUserProfileRequest } from 'features/settings/types/UserTypes';
 import { Save, X } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 

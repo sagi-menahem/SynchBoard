@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
 
 import * as userService from 'features/settings/services/userService';
 import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/types/UserTypes';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';

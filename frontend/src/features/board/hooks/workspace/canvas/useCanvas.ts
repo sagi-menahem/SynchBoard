@@ -1,8 +1,8 @@
-import { useCallback, useMemo } from 'react';
 
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
+import { useCallback, useMemo } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import { useCanvasEvents, type CanvasEventData } from './useCanvasEvents';

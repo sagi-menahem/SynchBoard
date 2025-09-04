@@ -1,6 +1,6 @@
+import { useMemberValidation } from 'features/board/hooks/management/useMemberValidation';
 import React, { useState, type KeyboardEvent } from 'react';
 
-import { useMemberValidation } from 'features/board/hooks/management/useMemberValidation';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from 'shared/ui';
 import { validateEmail } from 'shared/utils/validationUtils';
