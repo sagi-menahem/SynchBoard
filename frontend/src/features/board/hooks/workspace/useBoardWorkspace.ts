@@ -30,6 +30,19 @@ import {
 } from 'shared/constants';
 import logger from 'shared/utils/logger';
 
+/**
+ * Custom hook that orchestrates the complete board workspace functionality including real-time collaboration.
+ * This hook serves as the central coordinator for board workspace operations, combining data management,
+ * WebSocket communication, optimistic updates, action history, and transaction handling. It manages the
+ * complex state synchronization between local optimistic actions and server confirmations, handles drawing
+ * action submissions with size validation, and coordinates chat and drawing transaction commits. The hook
+ * integrates multiple WebSocket subscriptions for real-time collaboration and provides comprehensive error
+ * handling and access control management for collaborative whiteboard sessions.
+ * 
+ * @param boardId - ID of the board workspace to manage and coordinate operations for
+ * @returns Object containing workspace state, drawing objects with optimistic updates, action handlers,
+ *   undo/redo functionality, pending transaction counts, and chat transaction management
+ */
 export const useBoardWorkspace = (boardId: number) => {
   const navigate = useNavigate();
   const sessionInstanceId = useRef(Date.now().toString());

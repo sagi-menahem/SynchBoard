@@ -12,6 +12,18 @@ interface CreateBoardState {
   data?: Board;
 }
 
+/**
+ * Custom hook that manages board creation form state and submission logic.
+ * This hook provides a complete form management solution for creating new boards including
+ * form validation, file uploads, member invitations, and canvas settings. It utilizes React's
+ * useActionState for form state management and provides comprehensive error handling with
+ * toast notifications. The hook handles complex form data including board details, picture uploads,
+ * member email invitations, and canvas configuration settings, ensuring all data is properly
+ * validated and formatted before submission to the backend API.
+ * 
+ * @param onBoardCreated - Callback function invoked when a board is successfully created
+ * @returns Object containing form state, submission action, and pending state for UI feedback
+ */
 export const useCreateBoardForm = (onBoardCreated: (newBoard: Board) => void) => {
   const { t } = useTranslation(['board', 'common']);
 

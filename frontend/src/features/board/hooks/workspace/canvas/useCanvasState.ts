@@ -20,6 +20,19 @@ interface UseCanvasStateProps {
   canvasConfig?: CanvasConfig;
 }
 
+/**
+ * Custom hook that manages core canvas state, rendering context, and drawing utilities for collaborative whiteboard.
+ * This hook provides the foundational canvas management functionality including canvas element references,
+ * rendering context initialization, dimension management, and drawing state tracking. It handles the complex
+ * coordination between canvas configuration, object rendering, and state synchronization while providing
+ * access to essential drawing utilities and validation functions. The hook manages canvas lifecycle including
+ * context setup, dimension updates, and object replay for maintaining visual consistency across collaborative
+ * sessions and provides comprehensive drawing utilities for various shape and object types.
+ * 
+ * @param objects - Array of canvas objects to render and maintain on the canvas surface
+ * @param canvasConfig - Optional configuration object containing canvas dimensions and background settings
+ * @returns Object containing canvas references, drawing state, dimension management, utility functions, and drawing tools
+ */
 export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
