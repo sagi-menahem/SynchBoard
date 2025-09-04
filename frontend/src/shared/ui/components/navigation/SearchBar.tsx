@@ -48,8 +48,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     [inputValue, onSearch],
   );
 
-  // Handle Enter key press for immediate search
-  const handleKeyPress = useCallback(
+  // Handle Enter key down for immediate search
+  const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -81,7 +81,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           className={styles.searchInput}
         />
