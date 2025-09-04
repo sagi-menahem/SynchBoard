@@ -27,6 +27,18 @@ export interface UseBoardMemberActionsReturn {
   };
 }
 
+/**
+ * Custom hook that manages board member operations including promotion, removal, and invitation.
+ * This hook provides a complete interface for board member management operations with proper
+ * permission handling, form state management for member invitations, and context menu functionality
+ * for member actions. It handles the complex business logic of member operations while providing
+ * a clean API with integrated toast notifications and error handling. The hook ensures that only
+ * admin users can perform privileged operations and prevents users from acting on themselves.
+ * 
+ * @param boardId - ID of the board for which to manage members
+ * @param currentUserIsAdmin - Whether the current user has admin privileges for member operations
+ * @returns Object containing member action handlers, context menu controls, and invite form state management
+ */
 export const useBoardMemberActions = (
   boardId: number,
   currentUserIsAdmin: boolean,

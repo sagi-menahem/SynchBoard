@@ -34,6 +34,28 @@ interface UseDrawingToolsProps {
   onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
 }
 
+/**
+ * Custom hook that manages comprehensive drawing tool implementations for collaborative canvas operations.
+ * This hook provides the core drawing functionality for all canvas tools including brushes, shapes, lines,
+ * and text input areas. It handles the complex logic for converting canvas interactions into drawing actions
+ * with proper coordinate normalization, validation, and optimization. The hook manages tool-specific behaviors
+ * including path optimization for brush and eraser tools, geometric calculations for shapes and polygons,
+ * and coordinate transformations for consistent cross-device collaboration. It integrates validation functions
+ * to ensure drawing quality and provides specialized handling for different tool types while maintaining
+ * consistent action format for the collaboration system.
+ * 
+ * @param canvasRef - Reference to the HTML canvas element for coordinate calculations and validation
+ * @param tool - Currently active drawing tool that determines action generation behavior
+ * @param strokeWidth - Width setting for strokes and shape borders in drawing actions
+ * @param strokeColor - Color setting for all drawing operations and action payloads
+ * @param onDraw - Callback function for submitting generated drawing actions to the collaboration system
+ * @param senderId - Unique identifier for the current user session for action attribution
+ * @param drawingState - Object containing current path data and drawing state for brush/eraser tools
+ * @param isShapeSizeValid - Validation function for ensuring shape dimensions meet minimum requirements
+ * @param isRadiusValid - Validation function for ensuring circular shape radii meet minimum requirements
+ * @param onTextInputRequest - Optional callback for initiating text input overlay when using text tool
+ * @returns Object containing mouse event handlers for tool-specific drawing operations
+ */
 export const useDrawingTools = ({
   canvasRef,
   tool,

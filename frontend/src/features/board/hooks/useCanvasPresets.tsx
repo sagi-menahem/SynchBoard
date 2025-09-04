@@ -2,14 +2,26 @@ import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Options interface for useCanvasPresets hook.
+ * Defines CSS class styles for rendering preset options with proper styling.
+ */
 interface UseCanvasPresetsOptions {
+  /** CSS class names for styling preset display components */
   styles?: {
+    /** Style class for the preset label container */
     presetLabel?: string;
+    /** Style class for the preset name text */
     presetName?: string;
+    /** Style class for the preset info text (dimensions and ratio) */
     presetInfo?: string;
   };
 }
 
+/**
+ * Utility function to map canvas size preset keys to translation keys.
+ * Converts internal constant keys to lowercase translation keys for i18n.
+ */
 const getTranslationKey = (sizeKey: string): string => {
   const keyMap: Record<string, string> = {
     WIDESCREEN: 'widescreen',
@@ -20,6 +32,15 @@ const getTranslationKey = (sizeKey: string): string => {
   return keyMap[sizeKey] ?? sizeKey.toLowerCase();
 };
 
+/**
+ * Custom hook that manages canvas size presets and preset detection functionality.
+ * This hook provides utilities for working with predefined canvas sizes, detecting current
+ * preset from board dimensions, generating preset options for UI components, and handling
+ * internationalization for preset labels.
+ * 
+ * @param styles - CSS class names for styling preset display components
+ * @returns Object containing preset detection, option generation, and utility functions
+ */
 export const useCanvasPresets = ({ styles }: UseCanvasPresetsOptions = {}) => {
   const { t } = useTranslation(['board']);
 

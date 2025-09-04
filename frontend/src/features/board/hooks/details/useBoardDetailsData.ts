@@ -11,28 +11,59 @@ import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES, WEBSOCKET_TOPICS } from 'shared/constants';
 import logger from 'shared/utils/logger';
 
+/**
+ * Local state interface for board edit operations.
+ * Tracks optimistic updates for board name and description changes.
+ */
 interface BoardEditState {
+  /** Optimistic board name during editing */
   name?: string;
+  /** Optimistic board description during editing */
   description?: string;
 }
 
+/**
+ * User permissions interface for board access control.
+ * Determines what actions the current user can perform on the board.
+ */
 interface BoardPermissions {
+  /** Whether the current user has admin privileges for this board */
   currentUserIsAdmin: boolean;
+  /** Email of the current authenticated user */
   userEmail: string | null;
 }
 
+/**
+ * Return type interface for useBoardDetailsData hook.
+ * Defines the complete set of board details data and management functions.
+ */
 export interface UseBoardDetailsDataReturn {
+  /** Current board details data or null if not loaded */
   boardDetails: BoardDetails | null;
+  /** Whether board details are currently being loaded */
   isLoading: boolean;
+  /** Function to manually refetch board details */
   refetch: () => void;
 
+  /** User permissions for the current board */
   permissions: BoardPermissions;
 
+  /** Optimistic state for board edits (name and description) */
   optimisticState: BoardEditState;
+  /** Handler for updating board name with optimistic updates */
   handleUpdateName: (newName: string) => Promise<void>;
+  /** Handler for updating board description with optimistic updates */
   handleUpdateDescription: (newDescription: string) => Promise<void>;
 }
 
+/**
+ * Custom hook that manages board details data fetching, caching, and real-time updates.
+ * This hook handles loading board details, managing user permissions, providing optimistic
+ * updates for name/description edits, and subscribing to real-time board changes via WebSocket.
+ * 
+ * @param boardId - ID of the board to fetch details for, undefined if no board selected
+ * @returns Complete board details management interface with data, permissions, and update handlers
+ */
 export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetailsDataReturn => {
   const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();

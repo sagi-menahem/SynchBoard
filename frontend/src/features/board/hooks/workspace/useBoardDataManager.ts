@@ -8,6 +8,17 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import logger from 'shared/utils/logger';
 
+/**
+ * Custom hook that manages board workspace data fetching, state management, and error handling.
+ * This hook orchestrates the loading of comprehensive board data including board details, canvas objects,
+ * and chat message history. It provides centralized state management for the board workspace with proper
+ * error handling for access control violations and network failures. The hook implements a minimum loading
+ * delay for better user experience and manages access permissions by detecting 403 errors and setting
+ * appropriate access loss states. It serves as the primary data layer for board workspace functionality.
+ * 
+ * @param boardId - ID of the board to load and manage data for
+ * @returns Object containing board state data, loading states, error flags, state setters, and data fetching functions
+ */
 export const useBoardDataManager = (boardId: number) => {
   const { t } = useTranslation(['board', 'common']);
   const [isLoading, setIsLoading] = useState(true);

@@ -14,6 +14,23 @@ interface UseCanvasPreviewProps {
   currentPath: React.RefObject<Point[]>;
 }
 
+/**
+ * Custom hook that provides real-time canvas drawing preview functionality with comprehensive shape support.
+ * This hook manages the complex preview system for collaborative drawing, handling canvas state preservation
+ * and restoration to enable non-destructive preview rendering. It supports a wide range of drawing tools
+ * including brushes, shapes, lines, arrows, and text selection areas with appropriate visual feedback.
+ * The hook implements sophisticated rendering logic for various geometric shapes, maintains proper canvas
+ * styling and transparency during previews, and provides optimized state management for smooth real-time
+ * drawing feedback without affecting the underlying canvas content until actions are committed.
+ * 
+ * @param canvasRef - Reference to the HTML canvas element for preview rendering operations
+ * @param contextRef - Reference to the 2D canvas rendering context for drawing operations
+ * @param tool - Currently active drawing tool that determines preview rendering behavior
+ * @param strokeWidth - Width setting for strokes and line-based previews
+ * @param strokeColor - Color setting for preview rendering and shape styling
+ * @param currentPath - Reference to current path data for brush and eraser preview rendering
+ * @returns Object containing preview event handlers for start, move, and end interactions
+ */
 export const useCanvasPreview = ({
   canvasRef,
   contextRef,
