@@ -30,6 +30,13 @@ import { useUserProfile } from '../hooks/profile';
 
 import styles from './SettingsPage.module.scss';
 
+/**
+ * Comprehensive settings page component providing user account and preference management interface.
+ * Integrates multiple settings sections including theme, language, board appearance, password management,
+ * profile picture handling, personal details editing, and account deletion functionality.
+ * Implements proper loading states, error handling, and confirmation dialogs for destructive actions.
+ * Features responsive design with universal toolbar integration and proper navigation patterns.
+ */
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
@@ -64,6 +71,7 @@ const SettingsPage: React.FC = () => {
     try {
       await handleDeleteAccount();
     } finally {
+      // Always close dialog regardless of success or failure
       setAccountDeleteConfirmOpen(false);
     }
   };
