@@ -181,9 +181,9 @@ export const isPointInPolygon = (
     if (
       vertices[i].y > point.y !== vertices[j].y > point.y &&
       point.x <
-      ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
-      (vertices[j].y - vertices[i].y) +
-      vertices[i].x
+        ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
+          (vertices[j].y - vertices[i].y) +
+          vertices[i].x
     ) {
       inside = !inside;
     }
@@ -222,9 +222,9 @@ export const isPointInStar = (
     if (
       vertices[i].y > point.y !== vertices[j].y > point.y &&
       point.x <
-      ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
-      (vertices[j].y - vertices[i].y) +
-      vertices[i].x
+        ((vertices[j].x - vertices[i].x) * (point.y - vertices[i].y)) /
+          (vertices[j].y - vertices[i].y) +
+          vertices[i].x
     ) {
       inside = !inside;
     }

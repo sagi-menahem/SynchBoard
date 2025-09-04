@@ -106,7 +106,6 @@ export const useChatMessages = () => {
       const optimisticMessage = createOptimisticMessage(content, instanceId, userEmail, userInfo);
 
       startPendingTimer?.(instanceId);
-      // Force immediate render to ensure pending state is visible
       flushSync(() => {
         addOptimisticMessage(optimisticMessage);
       });

@@ -2,6 +2,7 @@ export const TIMING_CONSTANTS = {
   // Chat message timing
   CHAT_PENDING_MESSAGE_TIMEOUT: 750,
   CHAT_SCROLL_DELAY: 100,
+  CHAT_MESSAGE_GROUPING_WINDOW: 300000, // 5 minutes - messages within this time are grouped together
 
   // WebSocket connection timeout
   WEBSOCKET_CONNECTION_TIMEOUT: 10000,

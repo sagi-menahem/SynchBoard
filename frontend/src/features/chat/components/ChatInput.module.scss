@@ -66,7 +66,6 @@
     }
   }
 
-  /* Remove default input styling */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -74,13 +73,12 @@
   }
 
   &[type='number'] {
+    appearance: textfield;
     -moz-appearance: textfield;
   }
 }
 
-/* === Definitive Send Button Styles === */
 .sendButton {
-  /* Basic setup */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,27 +87,20 @@
   border: none;
   transition: all 0.2s ease-in-out;
 
-  /* --- DARK THEME STYLES (DEFAULT) --- */
 
-  /* Disabled State - Dark Theme */
   background-color: #3a3a3a;
-  /* A clear dark gray */
   cursor: not-allowed;
 
   svg {
     stroke: #707070;
-    /* A visible muted gray for the icon */
   }
 
-  /* Enabled State - Dark Theme */
   &:not(:disabled) {
     background-color: #adb5bd;
-    /* A nice, vibrant blue */
     cursor: pointer;
 
     svg {
       stroke: #ffffff;
-      /* A pure white icon */
     }
 
     &:hover {
@@ -118,32 +109,24 @@
   }
 }
 
-/* --- LIGHT THEME OVERRIDES --- */
 :global([data-theme='light']) {
   .sendButton {
-    /* Disabled State - Light Theme */
     background-color: #e9ecef;
-    /* A clear light gray */
 
     svg {
       stroke: #adb5bd;
-      /* A visible muted dark gray for the icon */
     }
 
-    /* Enabled State - Light Theme */
     &:not(:disabled) {
       background-color: #adb5bd;
-      /* The same vibrant blue */
 
       svg {
         stroke: #ffffff;
-        /* A pure white icon */
       }
     }
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .form {
     padding: theme.$spacing-3 theme.$spacing-4;
@@ -166,8 +149,8 @@
   }
 }
 
-/* Accessibility and reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   .inputContainer,
   .input,
   .sendButton,
@@ -180,7 +163,6 @@
   }
 }
 
-/* High contrast mode */
 @media (prefers-contrast: high) {
   .inputContainer {
     border-width: 3px;

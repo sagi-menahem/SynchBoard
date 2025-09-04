@@ -81,10 +81,12 @@ $color-status-failed-border-light: #f87171; // Based on $color-error-light - sof
 $color-status-failed-border-dark: #fca5a5; // Lighter red for dark theme visibility
 
 // Failed status background colors for subtle error indication
-$color-status-failed-bg-light: rgba(254,
-    242,
-    242,
-    0.3); // Very subtle red background for light theme
+$color-status-failed-bg-light: rgba(
+  254,
+  242,
+  242,
+  0.3
+); // Very subtle red background for light theme
 $color-status-failed-bg-dark: rgba(69, 26, 26, 0.2); // Very subtle red background for dark theme
 
 // === OVERLAY COLORS ===
@@ -221,7 +223,7 @@ $shadow-none: none;
 // These are isolated and do not affect other components
 
 $color-random-shapes-bg-light: #fafafa; // Light theme background for RandomShapes
-$color-random-shapes-bg-dark: #2d3748; // Dark theme background for RandomShapes  
+$color-random-shapes-bg-dark: #2d3748; // Dark theme background for RandomShapes
 $color-random-shapes-pattern-light: #1a202c; // Light theme pattern color
 $color-random-shapes-pattern-dark: #f7fafc; // Dark theme pattern color
 
@@ -269,7 +271,8 @@ $transition-ease-in-out: ease-in-out;
 
 // === COMMON PATTERNS ===
 $transition-all: all $transition-normal $transition-ease;
-$transition-colors: background-color $transition-normal $transition-ease,
+$transition-colors:
+  background-color $transition-normal $transition-ease,
   border-color $transition-normal $transition-ease,
   color $transition-normal $transition-ease;
 $transition-transform: transform $transition-normal $transition-ease;

@@ -14,7 +14,7 @@
   direction: rtl;
 }
 
-[dir='ltr'] .scrollContainer>* {
+[dir='ltr'] .scrollContainer > * {
   direction: ltr;
 }
 
@@ -22,7 +22,7 @@
   direction: ltr;
 }
 
-[dir='rtl'] .scrollContainer>* {
+[dir='rtl'] .scrollContainer > * {
   direction: ltr;
 }
 
