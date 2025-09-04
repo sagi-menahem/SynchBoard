@@ -19,8 +19,13 @@ interface ThemeSwitcherProps {
  * Uses Headless UI Switch for keyboard navigation and accessibility.
  * 
  * @param {string} className - Optional CSS class to apply to the container
- * @param {'sm' | 'md' | 'lg'} size - Visual size variant for the toggle switch
- * @param {boolean} showLabel - Whether to display the theme label alongside the switch
+ * @param {'sm' | 'md' | 'lg'} size - Visual size variant:
+ *   - 'sm': Use in compact toolbars, mobile interfaces, or space-constrained areas
+ *   - 'md': Use in standard form controls and general settings panels
+ *   - 'lg': Use in onboarding flows, user preferences, or prominent UI sections
+ * @param {boolean} showLabel - Whether to display theme name label:
+ *   - true: Use in settings pages where context and clarity are important
+ *   - false: Use in compact toolbars or headers where space is limited
  */
 const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   className,

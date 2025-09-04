@@ -12,12 +12,12 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
   }
 
   let r, g, b;
-  // Handle 3-digit hex shorthand by duplicating each digit
-  if (hex.length === 4) {
-    r = parseInt(result[1] + result[1], 16);
-    g = parseInt(result[2] + result[2], 16);
-    b = parseInt(result[3] + result[3], 16);
-  } else {
+  // Handle 3-digit hex shorthand by duplicating each digit (#ABC -> #AABBCC)
+  if (hex.length === 4) { // 3-digit format like #ABC
+    r = parseInt(result[1] + result[1], 16); // A -> AA
+    g = parseInt(result[2] + result[2], 16); // B -> BB
+    b = parseInt(result[3] + result[3], 16); // C -> CC
+  } else { // 6-digit format like #AABBCC
     r = parseInt(result[1], 16);
     g = parseInt(result[2], 16);
     b = parseInt(result[3], 16);

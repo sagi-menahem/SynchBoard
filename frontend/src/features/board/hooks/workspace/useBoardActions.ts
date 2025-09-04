@@ -14,7 +14,7 @@ import logger from 'shared/utils/logger';
  * user feedback through toast notifications and handles error scenarios gracefully while maintaining
  * action history consistency across collaborative sessions.
  * 
- * @param boardId - ID of the board for which to manage action operations
+ * @param {number} boardId - ID of the board for which to manage action operations and history tracking
  * @returns Object containing action counts, availability flags, undo/redo handlers, and counter management functions
  */
 export const useBoardActions = (boardId: number) => {

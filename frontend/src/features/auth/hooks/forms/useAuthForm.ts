@@ -115,7 +115,7 @@ export const authToastMessages = {
  * Provides consistent form behavior across login, registration, password reset, and email verification flows
  * with integrated validation utilities and localized messaging.
  *
- * @param options - Form configuration including API service, validation, and form type
+ * @param {Object} options - Form configuration including API service, validation schema, and form type specification
  * @returns Form handlers and state management for authentication operations
  */
 export const useAuthForm = <TRequest extends object, TResponse>(

@@ -85,19 +85,23 @@ export const useCanvasInteractions = ({
           const imageData = ctx.getImageData(x, y, 1, 1);
           const data = imageData.data;
 
+          // Check for transparent pixel (alpha channel = 0)
           if (data[3] === 0) {
             const backgroundColor = canvasBackgroundColor ?? '#FFFFFF';
+            // Expand 3-digit hex shorthand to 6-digit format (#ABC -> #AABBCC)
             const normalizedColor =
               backgroundColor.length === 4
                 ? `#${backgroundColor
                     .slice(1)
                     .split('')
-                    .map((c) => c + c)
+                    .map((c) => c + c) // Duplicate each character
                     .join('')}`
                 : backgroundColor;
             onColorPick?.(normalizedColor);
           } else {
+            // Convert RGB pixel data to hexadecimal color string
             const hex = `#${((1 << 24) + (data[0] << 16) + (data[1] << 8) + data[2]).toString(16).slice(1)}`;
+            // Bit manipulation: (1 << 24) ensures 6-digit hex by setting bit 24, then slice(1) removes leading '1'
             onColorPick?.(hex);
           }
         }
