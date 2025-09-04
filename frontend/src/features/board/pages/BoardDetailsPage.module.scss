@@ -1,5 +1,6 @@
 @use '@/styles' as theme;
 
+// Dynamic padding calculation to account for banner and toolbar heights
 .pageContent {
   position: relative;
   padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
@@ -58,6 +59,7 @@
   margin: 0;
 }
 
+// Full-screen modal overlay with backdrop blur effect
 .quickSettingsModal {
   position: fixed;
   top: 0;

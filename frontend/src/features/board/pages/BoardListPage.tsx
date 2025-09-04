@@ -20,6 +20,14 @@ import { useBoardList } from '../hooks/management';
 
 import styles from './BoardListPage.module.scss';
 
+/**
+ * Board List Page component that displays and manages the user's board collection.
+ * This page serves as the main dashboard for board overview, providing board search functionality,
+ * creation capabilities, and board management operations. It handles different display states including
+ * loading, empty states, search results, and populated board lists with staggered animations.
+ * The component integrates context menus for board operations and modal dialogs for board creation
+ * and confirmation workflows.
+ */
 const BoardListPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
@@ -42,6 +50,7 @@ const BoardListPage: React.FC = () => {
     viewMode,
   } = useBoardList();
 
+  // Configure toolbar with search functionality and navigation
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
       pageType: 'boards',
@@ -95,6 +104,7 @@ const BoardListPage: React.FC = () => {
       <UniversalToolbar config={toolbarConfig} />
       <main className={styles.pageContent} data-has-toolbar>
         {(() => {
+          // Render board grid with staggered animation when boards are available
           if (boards.length > 0) {
             return (
               <ul className={`${styles.boardList} ${styles[viewMode]}`}>
