@@ -22,7 +22,6 @@ Most endpoints require authentication except for auth endpoints and user existen
 | `POST /api/auth/resend-verification` | Resend email verification code | Email address | Success message |
 | `POST /api/auth/forgot-password` | Initiate password reset process | Email address | Success message |
 | `POST /api/auth/reset-password` | Reset password with reset code | Email, reset code, new password | Success message |
-| `GET /api/auth/test` | Test authentication endpoint | N/A | Success message |
 
 ---
 
