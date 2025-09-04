@@ -7,6 +7,15 @@ import * as authService from '../../services/authService';
 
 import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
 
+/**
+ * Hook for managing email verification form submission with code validation.
+ * Handles 6-digit verification code validation, API call to verify email,
+ * and authentication token receipt upon successful verification.
+ *
+ * @param email - Email address that verification code was sent to
+ * @param onVerificationSuccess - Callback fired when verification is successful, receives JWT token
+ * @returns Form submission handler and loading state for email verification functionality
+ */
 export const useVerifyEmailForm = (
   email: string,
   onVerificationSuccess: (token: string) => void,
@@ -37,6 +46,14 @@ export const useVerifyEmailForm = (
   });
 };
 
+/**
+ * Hook for resending email verification codes with rate limiting and error handling.
+ * Provides functionality to request a new verification code be sent to the user's email
+ * with integrated toast notifications and comprehensive error handling.
+ *
+ * @param email - Email address to resend verification code to
+ * @returns Object containing the resend function that returns success/error status
+ */
 export const useResendVerificationCode = (email: string) => {
   const { t } = useTranslation(['auth', 'common']);
 
