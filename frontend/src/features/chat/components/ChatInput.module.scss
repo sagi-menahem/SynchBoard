@@ -87,7 +87,6 @@
   border: none;
   transition: all 0.2s ease-in-out;
 
-
   background-color: #3a3a3a;
   cursor: not-allowed;
 
@@ -150,7 +149,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .inputContainer,
   .input,
   .sendButton,

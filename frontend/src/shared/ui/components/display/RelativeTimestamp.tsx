@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import { formatSmartTimestamp } from 'shared/utils/DateUtils';
 
 interface RelativeTimestampProps {
@@ -16,7 +16,7 @@ const RelativeTimestamp: React.FC<RelativeTimestampProps> = ({ timestamp, classN
 
     const interval = setInterval(() => {
       setDisplayTime(formatSmartTimestamp(timestamp));
-    }, 55000);
+    }, TIMING_CONSTANTS.TIMESTAMP_UPDATE_INTERVAL);
 
     return () => clearInterval(interval);
   }, [timestamp]);

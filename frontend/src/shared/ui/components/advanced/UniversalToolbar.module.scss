@@ -9,9 +9,7 @@
   height: 72px;
   box-sizing: border-box;
   background: var(--toolbar-background, rgba(255, 255, 255, 0.95));
-  /* Temporarily disable backdrop-filter for testing */
   backdrop-filter: blur(20px) saturate(180%);
-  /* -webkit-backdrop-filter: blur(20px) saturate(180%); */
   border-bottom: 1px solid var(--toolbar-border, rgba(226, 232, 240, 0.6));
   box-shadow: var(--toolbar-shadow, 0 1px 3px rgba(15, 23, 42, 0.08));
   display: grid;
@@ -21,14 +19,11 @@
   z-index: theme.$z-index-dropdown;
   user-select: none;
   overflow: visible;
-  // Remove transform to avoid conflicts with PageTransition
-  /* transform: translate3d(0, 0, 0); */
   transition:
     background-color theme.$transition-normal theme.$transition-ease,
     border-color theme.$transition-normal theme.$transition-ease,
     box-shadow theme.$transition-normal theme.$transition-ease;
 
-  // Responsive: Reduce padding on smaller screens to maximize content space
   @media (max-width: 1200px) {
     padding: 0 theme.$spacing-4;
   }
@@ -44,19 +39,18 @@
 }
 
 .leftSection {
-  justify-content: start; // CSS logical property - automatically RTL aware
-  min-width: min-content; // Prevent shrinking below content size
-  overflow: visible; // Allow dropdowns to extend beyond toolbar boundaries
-  gap: theme.$spacing-0; // Smaller gap between title and create button
+  justify-content: start;
+  min-width: min-content;
+  overflow: visible;
+  gap: theme.$spacing-0;
 }
 
 .centerSection {
   justify-content: center;
-  min-width: 200px; // Ensure enough space for search bar
-  max-width: 400px; // Limit maximum width
-  margin: 0 auto; // Center within the grid column
+  min-width: 200px;
+  max-width: 400px;
+  margin: 0 auto;
 
-  // Hide center section when empty (no children)
   &:empty {
     min-width: 0;
     max-width: 0;
@@ -65,13 +59,11 @@
 }
 
 .rightSection {
-  justify-content: end; // CSS logical property - automatically RTL aware
-  // Remove min-width to allow right section to get closer to left section
+  justify-content: end;
 
-  // Only set minimum width for very small screens to ensure buttons remain accessible
   @media (max-width: 500px) {
-    min-width: 80px; // Ultra-compact but still functional
-    gap: theme.$spacing-1; // Reduce gap between navigation buttons
+    min-width: 80px;
+    gap: theme.$spacing-1;
   }
 }
 
@@ -82,7 +74,7 @@
   margin: 0;
   padding: 0;
   @include theme.text-ellipsis;
-  min-width: 150px; // Reserve consistent space to prevent layout shifts
+  min-width: 150px;
   max-width: 300px;
 }
 
@@ -91,7 +83,6 @@
   @include theme.smooth-transition;
 }
 
-// Title button styling overrides
 .titleButton {
   background: transparent !important;
   border: none !important;
@@ -99,7 +90,6 @@
   padding: theme.$spacing-0-5 theme.$spacing-1 !important;
   border-radius: theme.$border-radius-sm !important;
 
-  // Remove Button component hover styles and use toolbar title hover styles
   &:hover:not(:disabled) {
     background: theme.$surface-elevated !important;
     border: none !important;
@@ -129,7 +119,7 @@
   gap: theme.$spacing-2;
 }
 
-.toolbarSection > *:not(:last-child)::after {
+.toolbarSection>*:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -8px;
@@ -141,56 +131,46 @@
   pointer-events: none;
 }
 
-.toolbarSection > *:last-child::after {
+.toolbarSection>*:last-child::after {
   display: none;
 }
 
-.toolbarSection > .customItem::after,
-.toolbarSection > *:has(.searchInput)::after,
-.toolbarSection > *:has(.viewToggle)::after {
+.toolbarSection>.customItem::after,
+.toolbarSection>*:has(.searchInput)::after,
+.toolbarSection>*:has(.viewToggle)::after {
   display: none;
 }
 
-// Priority-based tool hiding for canvas toolbar
-// Hide tools in order: EXPORT → HISTORY → TOOLS → LINES → SHAPES → DRAW → SIZE → COLOR
-// Lower priority numbers hide first
-
-// EXPORT (Priority 1) - Hide first at 1280px
 @media (max-width: 935px) {
   .leftSection :global(.toolbar-priority-1) {
     display: none !important;
   }
 }
 
-// HISTORY (Priority 2) - Hide at 1180px
 @media (max-width: 870px) {
   .leftSection :global(.toolbar-priority-2) {
     display: none !important;
   }
 }
 
-// TOOLS (Priority 3) - Hide at 1080px
 @media (max-width: 770px) {
   .leftSection :global(.toolbar-priority-3) {
     display: none !important;
   }
 }
 
-// LINES (Priority 4) - Hide at 980px
 @media (max-width: 630px) {
   .leftSection :global(.toolbar-priority-4) {
     display: none !important;
   }
 }
 
-// SHAPES (Priority 5) - Hide at 880px
 @media (max-width: 570px) {
   .leftSection :global(.toolbar-priority-5) {
     display: none !important;
   }
 }
 
-// DRAW (Priority 6) - Hide at 780px
 @media (max-width: 500px) {
   .leftSection :global(.toolbar-priority-6) {
     display: none !important;

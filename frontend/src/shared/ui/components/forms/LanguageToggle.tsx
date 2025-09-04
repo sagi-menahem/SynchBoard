@@ -21,7 +21,6 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
   const { t, i18n } = useTranslation(['common']);
   const isRTL = i18n.language === 'he';
 
-  // Size configurations to match ThemeSwitcher
   const sizeConfig = {
     sm: { height: 28, width: 56, fontSize: 11 },
     md: { height: 32, width: 64, fontSize: 12 },
@@ -71,7 +70,6 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
         aria-labelledby={showLabel ? 'language-label' : undefined}
         aria-label={!showLabel ? t('common:language') : undefined}
       >
-        {/* Handle */}
         <span
           style={{
             position: 'relative',
@@ -94,7 +92,6 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           }}
         />
 
-        {/* Background text */}
         <div
           style={{
             position: 'absolute',
