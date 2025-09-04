@@ -4,6 +4,11 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './Sidebar.module.scss';
 
+/**
+ * Application sidebar component providing navigation and status information.
+ * Currently displays localized board-related information and user presence indicators
+ * as a foundation for future sidebar functionality expansion.
+ */
 const Sidebar: React.FC = () => {
   const { t } = useTranslation(['board']);
 

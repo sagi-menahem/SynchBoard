@@ -1,5 +1,8 @@
 @use '@/styles' as theme;
 
+// --- Application Layout Container ---
+
+// Full-height application wrapper with vertical layout structure
 .container {
   @include theme.flex-column;
   height: 100vh;
@@ -8,6 +11,9 @@
   background-color: theme.$background;
 }
 
+// --- Main Content Area ---
+
+// Flexible content area with smart padding based on page type
 .mainContent {
   flex: 1;
   @include theme.flex-center;
@@ -15,15 +21,18 @@
   box-sizing: border-box;
   background-color: theme.$background;
 
+  // Board pages require no overflow for canvas interactions
   &:has([data-board-page]) {
     overflow: hidden;
   }
 
+  // Default padding for regular pages without toolbar
   & > *:not([data-board-page]):not([data-has-toolbar]) {
     padding: theme.$spacing-8;
     width: 100%;
   }
 
+  // Full-width layout for toolbar-enabled pages
   & > [data-has-toolbar] {
     width: 100%;
     padding: 0;
