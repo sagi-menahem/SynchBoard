@@ -1,13 +1,22 @@
+/**
+ * Main stylesheet for SynchBoard application.
+ * Imports design tokens and defines the global CSS custom properties theme system
+ * for both light and dark modes, along with foundational styles.
+ * Import order: design tokens first, then component-specific styles.
+ */
 @use 'styles/design-tokens' as dt;
+
 .app-content {
   padding-top: var(--banner-height, 0px);
   transition: padding-top var(--transition-duration-slow, 0.3s) ease-in-out;
 
+  // Auth page needs to offset banner height to maintain full viewport coverage
   [data-auth-page] {
     margin-top: calc(-1 * var(--banner-height, 0px));
   }
 }
 
+/* --- Light Theme Variables --- */
 :root,
 body[data-theme='light'] {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -20,19 +29,23 @@ body[data-theme='light'] {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  // Dynamic layout properties
   --banner-height: 0px;
 
+  // Transitions
   --transition-duration-fast: #{dt.$transition-fast};
   --transition-duration-normal: #{dt.$transition-normal};
   --transition-duration-slow: #{dt.$transition-slow};
   --transition-slow: #{dt.$transition-slow};
   --transition-ease-in-out: #{dt.$transition-ease-in-out};
 
+  // Spacing
   --spacing-0-5: #{dt.$spacing-0-5};
   --spacing-1: #{dt.$spacing-1};
   --spacing-2: #{dt.$spacing-2};
   --spacing-3: #{dt.$spacing-3};
 
+  // Z-index layers
   --z-index-base: #{dt.$z-index-base};
   --z-index-elevated: #{dt.$z-index-elevated};
   --z-index-dropdown: #{dt.$z-index-dropdown};
@@ -174,6 +187,7 @@ body[data-theme='light'] {
   background-color: var(--color-background);
 }
 
+/* --- Dark Theme Variables --- */
 body[data-theme='dark'] {
   --color-primary: #{dt.$color-primary};
   --color-primary-hover: #{dt.$color-primary-hover};
@@ -362,6 +376,7 @@ button:focus-visible {
   background: var(--scrollbar-corner-bg);
 }
 
+// Screen reader only utility class - hides elements visually but keeps them accessible
 .sr-only {
   position: absolute !important;
   width: 1px !important;
