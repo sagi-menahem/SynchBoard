@@ -231,6 +231,10 @@
     "yesterday": "אתמול",
     "today": "היום"
   },
+  "connection": {
+    "lost": "החיבור אבד - פונקציונליות מוגבלת",
+    "drawingDisabled": "הציור מושבת - אין חיבור לשרת"
+  },
   "errorHandler": {
     "unexpectedError": "אירעה שגיאה בלתי צפויה"
   }
