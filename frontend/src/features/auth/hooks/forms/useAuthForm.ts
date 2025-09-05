@@ -87,7 +87,7 @@ export const authErrorHandling = {
   },
 
   dynamicMessageHandler: (successKey: string, t: (key: string) => string) => (msg: unknown) =>
-    typeof msg === 'string' ? msg : t(successKey),
+    t(successKey),
 };
 
 export const authToastMessages = {
