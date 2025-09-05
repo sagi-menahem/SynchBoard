@@ -149,9 +149,9 @@ apiClient.interceptors.response.use(
         }
       }
 
-      // Fallback to raw backend message if no translation found
+      // Fallback to generic error message if no translation found
       if (!translated) {
-        toast.error(backendKey, { id: backendKey });
+        toast.error(i18n.t('common:errors.common.unexpected'), { id: 'unexpected-error' });
       }
     } else {
       // Handle unexpected errors without structured backend messages

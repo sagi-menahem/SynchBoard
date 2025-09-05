@@ -62,7 +62,7 @@ export const useOAuthCallback = () => {
         const error = extractErrorFromCallback();
         if (error !== null && error !== '') {
           logger.error('[useOAuthCallback] OAuth error extracted from callback:', error);
-          toast.error(error);
+          toast.error(t('auth:oauth.error.processing'));
           void window.history.replaceState({}, document.title, '/auth');
           void navigate(APP_ROUTES.AUTH, { replace: true });
           setIsProcessing(false);

@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import i18n from 'shared/lib/i18n';
 import logger from 'shared/utils/logger';
 
 /**
@@ -90,7 +91,7 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
           const message =
             errorMessage ||
             (axiosError.response?.data as { message?: string })?.message ||
-            'An error occurred';
+            i18n.t('common:errors.common.unexpected');
           toast.error(message);
         }
 
@@ -174,7 +175,7 @@ export function useApiMutation<P extends unknown[] = unknown[]>(
           const message =
             errorMessage ||
             (axiosError.response?.data as { message?: string })?.message ||
-            'An error occurred';
+            i18n.t('common:errors.common.unexpected');
           toast.error(message);
         }
 
