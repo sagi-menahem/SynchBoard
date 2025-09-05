@@ -21,6 +21,10 @@ cp .env.example .env
 # 3. Start all services
 docker-compose up --build
 
+# For updates or configuration changes, do a complete rebuild:
+# docker-compose down -v --rmi all
+# docker-compose up --build
+
 # 4. Access the application
 # Frontend: http://localhost
 # Backend API: http://localhost:8080
@@ -42,14 +46,12 @@ docker-compose up -d postgres activemq
 
 # 2. Configure backend
 cd backend
-cp ../.env.example .env
-# Edit .env: change DB_URL to localhost, CLIENT_ORIGIN_URL to http://localhost:5173
-./gradlew bootRun  # Or run from IDE
+cp .env.example .env
+# Edit .env with your credentials (OAuth, SendGrid, etc.)
+./gradlew bootRun  # Or run from IDE with -Dspring.profiles.active=dev
 
 # 3. Configure frontend (in new terminal)
 cd frontend
-cp ../.env.example .env
-# Edit .env: set VITE_API_BASE_URL=http://localhost:8080/api
 npm install
 npm run dev
 
@@ -60,6 +62,13 @@ npm run dev
 
 ### 📝 Configuration Notes
 
+- **Environment Files**: 
+  - Root `.env` - Used by Docker Compose for production deployment
+  - `backend/.env` - Used by Spring Boot for local development
+- **OAuth2 Setup**: 
+  - Development: OAuth redirects to `http://localhost:8080/login/oauth2/code/google`
+  - Docker/Production: OAuth redirects to `http://localhost/api/login/oauth2/code/google`
+  - Both URIs must be added to Google Cloud Console
 - **Email Features**: Optional. Leave `SENDGRID_API_KEY` empty to disable email verification
 - **Google Login**: Optional. Leave `GOOGLE_CLIENT_ID` empty to disable OAuth2
 - **Default Credentials**: The `.env.example` includes working defaults for development
@@ -211,11 +220,28 @@ When the application is running, API documentation is available at:
 
 **Docker Issues:**
 - Run `docker-compose down -v` to clean up volumes
-- Rebuild with `docker-compose build --no-cache`
+- For complete rebuild after configuration changes:
+  ```bash
+  docker-compose down -v --rmi all  # Remove containers, volumes, AND images
+  docker-compose up --build         # Rebuild everything from scratch
+  ```
+- For quick rebuild without removing volumes: `docker-compose build --no-cache`
+- View backend logs: `docker logs -f synchboard-backend`
 
 **Database Connection:**
 - Verify PostgreSQL is healthy: `docker-compose ps`
 - Check logs: `docker-compose logs postgres`
+
+**OAuth2 Authentication:**
+- Ensure both redirect URIs are configured in Google Cloud Console:
+  - Development: `http://localhost:8080/login/oauth2/code/google`
+  - Production: `http://localhost/api/login/oauth2/code/google`
+- Check that `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set in `.env`
+- Clear browser cookies if authentication fails after configuration changes
+
+**Backend Logging:**
+- Docker: Logs visible with `docker logs synchboard-backend`
+- Development: Logs appear in console when using `spring.profiles.active=dev`
 
 ## 📄 License
 

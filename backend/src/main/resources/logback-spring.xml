@@ -112,4 +112,27 @@
         <logger name="org.springframework" level="WARN"/>
         <logger name="org.hibernate" level="WARN"/>
     </springProfile>
+
+    <springProfile name="docker">
+        <!-- Docker container logging configuration -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+        
+        <!-- Application specific logging -->
+        <logger name="io.github.sagimenahem.synchboard" level="INFO"/>
+        
+        <!-- Spring framework logging -->
+        <logger name="org.springframework.web" level="INFO"/>
+        <logger name="org.springframework.security" level="INFO"/>
+        <logger name="org.springframework.messaging" level="INFO"/>
+        
+        <!-- Database logging - moderate for Docker -->
+        <logger name="org.hibernate.SQL" level="WARN"/>
+        
+        <!-- ActiveMQ logging -->
+        <logger name="org.apache.activemq" level="INFO"/>
+    </springProfile>
 </configuration>

@@ -86,7 +86,7 @@ export const authErrorHandling = {
     return t('auth:errors.unknown');
   },
 
-  dynamicMessageHandler: (successKey: string, t: (key: string) => string) => (msg: unknown) =>
+  dynamicMessageHandler: (successKey: string, t: (key: string) => string) => () =>
     t(successKey),
 };
 
