@@ -1,14 +1,21 @@
+# =====================================================
 # Operating System Files
+# =====================================================
 .DS_Store
 Thumbs.db
 *.swp
 *.swo
+*~
 
+# =====================================================
 # IDE & Editor Files
+# =====================================================
 .idea/
 *.iml
 .vscode/
 !.vscode/extensions.json
+!.vscode/settings.json.example
+*.sublime-*
 .apt_generated
 .classpath
 .factorypath
@@ -16,47 +23,156 @@ Thumbs.db
 .settings/
 .springBeans
 .sts4-cache
+.metals/
+.bloop/
 
+# =====================================================
+# Environment Variables & Secrets
+# =====================================================
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.keystore
+*.truststore
+
+# =====================================================
 # Backend - Java/Spring Boot/Gradle
+# =====================================================
 backend/build/
 backend/bin/
+backend/out/
 backend/.gradle/
+backend/target/
 *.class
 *.jar
 *.war
+*.ear
+*.nar
 !gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Application uploads and logs
+# =====================================================
+# Frontend - React/TypeScript/Vite
+# =====================================================
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/*.local
+node_modules/
+dist/
+*.local
+
+# =====================================================
+# Build & Dependency Files
+# =====================================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json.backup
+yarn.lock.backup
+
+# =====================================================
+# Application Generated Files
+# =====================================================
 backend/uploads/
 backend/logs/
 uploads/
 logs/
 *.log
+*.log.*
+*.pid
+*.seed
+*.pid.lock
 
-# Frontend - React/TypeScript/Vite
-frontend/node_modules/
-frontend/dist/
-node_modules/
-dist/
-
+# =====================================================
 # Testing & Coverage
+# =====================================================
 coverage/
 .nyc_output/
+*.lcov
+test-results/
+junit.xml
+*.test.js.map
+*.spec.js.map
 
-# Database files (local development)
+# =====================================================
+# Database Files
+# =====================================================
 *.db
 *.sqlite
 *.sqlite3
 *.session.sql
+*.h2.db
+*.mv.db
+*.trace.db
 
-# Temporary files
+# =====================================================
+# Docker Files (keep Dockerfile)
+# =====================================================
+docker-compose.override.yml
+.dockerignore.local
+
+# =====================================================
+# Temporary & Cache Files
+# =====================================================
 tmp/
+temp/
 .cache/
 *.tmp
+*.temp
+*.bak
+*.backup
+*.old
 
-# Security files
-*.pem
-*.key
-*.crt
-*.p12
+# =====================================================
+# Documentation (keep essential docs)
+# =====================================================
+# Keep CLAUDE.md as it's essential for development
+# Remove personal project notes
+personal-notes/
+todo.txt
+TODO.md
+NOTES.md
+
+# =====================================================
+# OS Generated Files
+# =====================================================
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# =====================================================
+# Project Specific
+# =====================================================
+# Exclude cleanup scripts from submission
+cleanup-project.sh
+cleanup-project.bat
+PROJECT_CLEANUP_REPORT.md
+
+# Keep important files
+!README.md
+!.env.example
+!docker-compose.yml
+!Dockerfile
+!nginx.conf
+
 CLAUDE.md
+Synchboard Local.session.sql

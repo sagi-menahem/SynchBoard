@@ -8,7 +8,26 @@ The SynchBoard API uses JWT (JSON Web Token) based authentication. Include the J
 Authorization: Bearer <your-jwt-token>
 ```
 
-Most endpoints require authentication except for auth endpoints and user existence checks.
+Most endpoints require authentication except for auth endpoints, user existence checks, and configuration endpoints.
+
+---
+
+## Configuration Endpoints
+
+| Endpoint | Description | Request Body | Success Response |
+| --- | --- | --- | --- |
+| `GET /api/config/features` | Get available feature configuration | None | Feature availability flags |
+
+### Feature Configuration Response
+```json
+{
+  "emailVerificationEnabled": true,
+  "passwordResetEnabled": true,
+  "googleLoginEnabled": false
+}
+```
+
+This endpoint allows the frontend to determine which optional features are available based on backend configuration (API keys, etc.).
 
 ---
 

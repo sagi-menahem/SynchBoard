@@ -47,7 +47,8 @@ public class AuthService {
 
     /**
      * Registers a new user account with email verification process. Creates a pending registration
-     * record and sends verification code to user's email.
+     * record and sends verification code to user's email. If email service is disabled, 
+     * automatically creates and verifies the user account.
      * 
      * @param request the user registration details including email, password, and personal
      *        information
@@ -59,15 +60,25 @@ public class AuthService {
 
         // Ensure email is not already registered
         validateUserRegistration(request.getEmail());
-        // Remove any existing incomplete registration attempts
-        cleanupExistingPendingRegistration(request.getEmail());
-        // Create new pending registration with verification code
-        PendingRegistration pendingRegistration = createPendingRegistration(request);
-        // Send verification email to complete registration
-        sendVerificationEmail(pendingRegistration);
-
-        log.info(SECURITY_PREFIX + " User registration process completed for email: {}",
-                request.getEmail());
+        
+        if (!emailService.isEmailEnabled()) {
+            // Email service disabled - create user directly
+            log.info(SECURITY_PREFIX + " Email service disabled - auto-verifying user: {}", request.getEmail());
+            User user = createUserDirectly(request);
+            userRepository.save(user);
+            log.info(SECURITY_PREFIX + " User registration completed without email verification for: {}", 
+                    request.getEmail());
+        } else {
+            // Normal email verification flow
+            // Remove any existing incomplete registration attempts
+            cleanupExistingPendingRegistration(request.getEmail());
+            // Create new pending registration with verification code
+            PendingRegistration pendingRegistration = createPendingRegistration(request);
+            // Send verification email to complete registration
+            sendVerificationEmail(pendingRegistration);
+            log.info(SECURITY_PREFIX + " User registration process completed for email: {}",
+                    request.getEmail());
+        }
     }
 
     /**
@@ -279,6 +290,24 @@ public class AuthService {
                 .lastName(pendingRegistration.getLastName()).gender(pendingRegistration.getGender())
                 .phoneNumber(pendingRegistration.getPhoneNumber())
                 .dateOfBirth(pendingRegistration.getDateOfBirth()).build();
+    }
+
+    /**
+     * Creates a user directly from registration request when email verification is disabled.
+     * 
+     * @param request the registration request containing user details
+     * @return the created User entity (auto-verified since email service is disabled)
+     */
+    private User createUserDirectly(RegisterRequest request) {
+        return User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .gender(request.getGender())
+                .phoneNumber(request.getPhoneNumber())
+                .dateOfBirth(request.getDateOfBirth())
+                .build();
     }
 
     /**
