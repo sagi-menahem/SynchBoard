@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput } from 'shared/ui';
+import { useFeatureConfig } from 'shared/hooks/useFeatureConfig';
 
 import { useLoginForm } from '../hooks/forms';
 import { useAuth } from '../hooks/useAuth';
@@ -27,6 +28,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
   const { redirectToGoogle } = useAuth();
   const { submitAction, isPending } = useLoginForm();
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const featureConfig = useFeatureConfig();
 
   const handleGoogleLogin = () => {
     // Set loading state before redirecting to prevent multiple clicks
@@ -63,21 +65,28 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         {isPending ? t('common:button.loggingIn') : t('auth:loginForm.button')}
       </Button>
 
-      <div className={styles.divider}>
-        <span className={styles.dividerText}>{t('auth:loginForm.orContinueWith')}</span>
-      </div>
-
-      <GoogleLoginButton onClick={handleGoogleLogin} disabled={isPending ?? isGoogleLoading} />
+      {/* Only show Google login if enabled */}
+      {featureConfig?.googleLoginEnabled && (
+        <>
+          <div className={styles.divider}>
+            <span className={styles.dividerText}>{t('auth:loginForm.orContinueWith')}</span>
+          </div>
+          <GoogleLoginButton onClick={handleGoogleLogin} disabled={isPending ?? isGoogleLoading} />
+        </>
+      )}
 
       <div className={styles.secondaryActionsContainer}>
-        <Button
-          type="button"
-          variant="link"
-          onClick={onForgotPassword}
-          className={styles.forgotPasswordButton}
-        >
-          {t('auth:loginForm.forgotPassword')}
-        </Button>
+        {/* Only show forgot password if password reset is enabled */}
+        {featureConfig?.passwordResetEnabled && (
+          <Button
+            type="button"
+            variant="link"
+            onClick={onForgotPassword}
+            className={styles.forgotPasswordButton}
+          >
+            {t('auth:loginForm.forgotPassword')}
+          </Button>
+        )}
       </div>
     </form>
   );
