@@ -10,6 +10,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import java.io.IOException;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import org.thymeleaf.context.Context;
  * 
  * @author Sagi Menahem
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -39,32 +41,41 @@ public class EmailService {
     /**
      * SendGrid API key for authentication
      */
-    @Value("${sendgrid.api-key}")
+    @Value("${SENDGRID_API_KEY:}")
     private String sendGridApiKey;
 
     /**
      * Sender email address
      */
-    @Value("${sendgrid.from-email:noreply@synchboard.com}")
+    @Value("${SENDGRID_FROM_EMAIL:noreply@synchboard.com}")
     private String fromEmail;
 
     /**
      * Sender display name
      */
-    @Value("${sendgrid.from-name:SynchBoard Team}")
+    @Value("${SENDGRID_FROM_NAME:SynchBoard Team}")
     private String fromName;
 
     /**
      * Email verification code expiry time in minutes
      */
-    @Value("${email.verification.expiry-minutes:15}")
+    @Value("${VERIFICATION_EXPIRY_MINUTES:15}")
     private int verificationExpiryMinutes;
 
     /**
      * Password reset code expiry time in hours
      */
-    @Value("${email.password-reset.expiry-hours:1}")
-    private int passwordResetExpiryHours;
+    @Value("${PASSWORD_RESET_EXPIRY_MINUTES:60}")
+    private int passwordResetExpiryMinutes;
+
+    /**
+     * Checks if email functionality is enabled by verifying the SendGrid API key is configured.
+     * 
+     * @return true if SendGrid API key is available and not empty, false otherwise
+     */
+    public boolean isEmailEnabled() {
+        return sendGridApiKey != null && !sendGridApiKey.trim().isEmpty();
+    }
 
     /**
      * Sends an email verification code using the default locale (English).
@@ -86,6 +97,10 @@ public class EmailService {
      * @return true if the email was sent successfully, false otherwise
      */
     public boolean sendVerificationCode(String toEmail, String verificationCode, Locale locale) {
+        if (!isEmailEnabled()) {
+            log.warn("Email service disabled - SendGrid API key not configured. Skipping verification email to: {}", toEmail);
+            return false;
+        }
         String subject = messageSource.getMessage("email.verification.subject", null, locale);
         String body = buildVerificationEmailBody(verificationCode, locale);
         return sendEmail(toEmail, subject, body);
@@ -111,6 +126,10 @@ public class EmailService {
      * @return true if the email was sent successfully, false otherwise
      */
     public boolean sendPasswordResetCode(String toEmail, String resetCode, Locale locale) {
+        if (!isEmailEnabled()) {
+            log.warn("Email service disabled - SendGrid API key not configured. Skipping password reset email to: {}", toEmail);
+            return false;
+        }
         String subject = messageSource.getMessage("email.passwordReset.subject", null, locale);
         String body = buildPasswordResetEmailBody(resetCode, locale);
         return sendEmail(toEmail, subject, body);
@@ -177,7 +196,7 @@ public class EmailService {
     private String buildPasswordResetEmailBody(String resetCode, Locale locale) {
         Context context = new Context(locale);
         context.setVariable("resetCode", resetCode);
-        context.setVariable("expiryHours", passwordResetExpiryHours);
+        context.setVariable("expiryMinutes", passwordResetExpiryMinutes);
         return templateEngine.process("email/password-reset", context);
     }
 

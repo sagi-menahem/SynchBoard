@@ -6,8 +6,10 @@
  * dynamic path generators that accept parameters like board IDs and user emails.
  */
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api';
-export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL ?? 'http://localhost:8080/ws';
+// In Docker, these will be proxied through Nginx, so we use relative URLs
+// In development, these will use the environment variables or default to localhost
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
+export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL ?? '/ws';
 
 export const API_ENDPOINTS = {
   LOGIN: '/auth/login',

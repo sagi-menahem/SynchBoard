@@ -8,6 +8,7 @@ import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBS
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,6 +41,9 @@ public class SecurityConfig {
     private final AppProperties appProperties;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
+    
+    @Value("${GOOGLE_CLIENT_ID:}")
+    private String googleClientId;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,14 +53,19 @@ public class SecurityConfig {
                         .permitAll().requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
                         .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN).permitAll()
                         .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/api/config/**").permitAll()
                         .requestMatchers(API_USER_PATH_PATTERN).authenticated().anyRequest()
                         .authenticated())
                 .sessionManagement(
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login((oauth2) -> oauth2.successHandler(oAuth2SuccessHandler)
-                        .failureHandler(oAuth2FailureHandler));
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // Conditionally enable OAuth2 if Google Client ID is configured
+        if (googleClientId != null && !googleClientId.trim().isEmpty()) {
+            http.oauth2Login((oauth2) -> oauth2.successHandler(oAuth2SuccessHandler)
+                    .failureHandler(oAuth2FailureHandler));
+        }
 
         return http.build();
     }

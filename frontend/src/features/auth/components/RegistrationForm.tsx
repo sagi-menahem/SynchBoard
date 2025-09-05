@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
+import { useFeatureConfig } from 'shared/hooks/useFeatureConfig';
 
 import { useRegisterForm } from '../hooks/forms';
 
@@ -24,6 +25,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
   const { t } = useTranslation(['auth', 'common']);
   const { submitAction, isPending } = useRegisterForm(onRegistrationSuccess);
   const [gender, setGender] = useState<string>('');
+  const featureConfig = useFeatureConfig();
 
   return (
     <form action={submitAction} className={styles.form}>
@@ -106,6 +108,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         </label>
         <Input id="register-phoneNumber" name="phoneNumber" type="tel" disabled={isPending} />
       </div>
+
+      {/* Show notice if email verification is disabled */}
+      {featureConfig && !featureConfig.emailVerificationEnabled && (
+        <div className={styles.notice}>
+          <p>{t('auth:registerForm.noEmailVerificationNotice', 'Email verification is disabled - you will be logged in immediately after registration.')}</p>
+        </div>
+      )}
 
       <Button
         type="submit"
