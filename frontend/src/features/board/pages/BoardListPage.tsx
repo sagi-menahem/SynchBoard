@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import {
-  Card,
-  ConfirmationDialog,
-  ContextMenuItem,
-  EnhancedContextMenu,
-  Modal,
-  PageLoader,
-  PageTransition,
-  UniversalToolbar,
+    Card,
+    ConfirmationDialog,
+    ContextMenuItem,
+    EnhancedContextMenu,
+    Modal,
+    PageLoader,
+    PageTransition,
+    UniversalToolbar,
 } from 'shared/ui';
 
 import { BoardCard, CreateBoardForm } from '../components/list';
@@ -152,7 +152,7 @@ const BoardListPage: React.FC = () => {
           );
         })()}
 
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <Modal isOpen={isModalOpen} onClose={closeModal} className="modal-wide">
           <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
         </Modal>
       </main>

@@ -14,6 +14,7 @@ interface ModalProps {
   isOpen: boolean; // Controls modal visibility
   onClose: () => void; // Callback when modal should be closed
   children: React.ReactNode; // Modal content to display
+  className?: string; // Optional CSS class to apply to the modal overlay
 }
 
 /**
@@ -24,8 +25,9 @@ interface ModalProps {
  * @param {boolean} isOpen - Controls whether the modal is visible
  * @param {function} onClose - Callback function called when modal should be closed
  * @param {React.ReactNode} children - Content to display inside the modal
+ * @param {string} className - Optional CSS class to apply to the modal overlay
  */
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) => {
   const { t } = useTranslation(['common']);
   if (!isOpen) {
     return null;
@@ -39,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   };
 
   return (
-    <div className={styles.overlay} onKeyDown={handleOverlayKeyDown} role="presentation">
+    <div className={`${styles.overlay} ${className || ''}`} onKeyDown={handleOverlayKeyDown} role="presentation">
       <button
         className={styles.backdrop}
         onClick={onClose}

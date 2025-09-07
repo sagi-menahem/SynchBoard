@@ -3,11 +3,12 @@
 .modalContainer {
   @include theme.flex-column;
   gap: theme.$spacing-6;
-  max-width: 1050px;
+  max-width: 650px;
   width: 100%;
   overflow: visible;
   padding: theme.$spacing-4;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .modalHeader {
@@ -106,7 +107,7 @@
 
 @media (max-width: 1200px) {
   .modalContainer {
-    max-width: 95vw;
+    max-width: 1000px;
     padding: theme.$spacing-3;
   }
 }
