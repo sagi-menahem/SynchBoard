@@ -32,7 +32,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'io.projectreactor.netty:reactor-netty' // Required for STOMP broker relay
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.projectreactor.netty:reactor-netty'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
