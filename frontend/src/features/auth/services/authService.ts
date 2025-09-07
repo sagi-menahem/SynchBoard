@@ -10,14 +10,14 @@ import { API_BASE_URL, API_ENDPOINTS } from 'shared/constants/ApiConstants';
 import apiClient from 'shared/lib/apiClient';
 
 /**
- * Registers a new user account with the backend and initiates email verification flow.
- * Creates user record with provided profile information and triggers verification email.
+ * Registers a new user account with the backend and handles both email verification and direct login flows.
+ * When email verification is enabled, returns a message to check email. When disabled, returns auth token for immediate login.
  * 
  * @param userData - User registration data including email, password, and profile fields
- * @returns Success message indicating verification email has been sent
+ * @returns Either AuthResponse with token (when email verification disabled) or string message (when enabled)
  */
-export const register = async (userData: RegisterRequest): Promise<string> => {
-  const response = await apiClient.post<string>(API_ENDPOINTS.REGISTER, userData);
+export const register = async (userData: RegisterRequest): Promise<AuthResponse | string> => {
+  const response = await apiClient.post<AuthResponse | string>(API_ENDPOINTS.REGISTER, userData);
   return response.data;
 };
 

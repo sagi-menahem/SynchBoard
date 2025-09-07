@@ -32,19 +32,27 @@ public class AuthController {
 
     /**
      * Registers a new user account and initiates email verification process. Creates a pending
-     * registration entry and sends a verification code to the provided email address.
+     * registration entry and sends a verification code to the provided email address. If email
+     * verification is disabled, returns authentication token for immediate login.
      * 
      * @param request the registration details including email, password, and user information
-     * @return ResponseEntity containing success message about verification email being sent
+     * @return ResponseEntity containing either success message for email verification or
+     *         AuthResponseDTO for immediate login
      */
     @PostMapping(API_AUTH_REGISTER_PATH)
-    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         // Execute registration with comprehensive logging for security audit trail
         return apiLoggingService.executeWithLogging("POST",
                 API_AUTH_BASE_PATH + API_AUTH_REGISTER_PATH, request.getEmail(), () -> {
-                    authService.registerUser(request);
-                    return ResponseEntity.ok(
-                            "Verification email sent. Please check your email and enter the verification code.");
+                    AuthResponseDTO authResponse = authService.registerUser(request);
+                    if (authResponse != null) {
+                        // Email verification disabled - return auth token for immediate login
+                        return ResponseEntity.ok(authResponse);
+                    } else {
+                        // Email verification enabled - return message to check email
+                        return ResponseEntity.ok(
+                                "Verification email sent. Please check your email and enter the verification code.");
+                    }
                 });
     }
 

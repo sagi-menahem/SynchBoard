@@ -1,17 +1,18 @@
+import type { AuthResponse } from 'features/settings/types/UserTypes';
 import { Calendar, Lock, Mail, Phone, User, UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
 import { useFeatureConfig } from 'shared/hooks/useFeatureConfig';
+import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
 
 import { useRegisterForm } from '../hooks/forms';
 
 import styles from './RegistrationForm.module.scss';
 
 interface RegistrationFormProps {
-  /** Callback fired when user registration is successful, receives the registered email */
-  onRegistrationSuccess: (email: string) => void;
+  /** Callback fired when user registration is successful, receives either email for verification or auth token for immediate login */
+  onRegistrationSuccess: (emailOrToken: string | AuthResponse) => void;
 }
 
 /**
@@ -112,7 +113,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       {/* Show notice if email verification is disabled */}
       {featureConfig && !featureConfig.emailVerificationEnabled && (
         <div className={styles.notice}>
-          <p>{t('auth:registerForm.noEmailVerificationNotice', 'Email verification is disabled - you will be logged in immediately after registration.')}</p>
+          <p>{t('auth:registerForm.noEmailVerificationNotice', 'Email verification is disabled. You will be automatically logged in after registration.')}</p>
         </div>
       )}
 

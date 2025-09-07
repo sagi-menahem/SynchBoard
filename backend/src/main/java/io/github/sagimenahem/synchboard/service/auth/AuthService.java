@@ -5,7 +5,12 @@ import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURI
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.USER_NOT_FOUND;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.EMAIL_VERIFICATION_TIMEOUT_MINUTES;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.PASSWORD_RESET_TIMEOUT_MINUTES;
-
+import java.time.LocalDateTime;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.auth.AuthResponseDTO;
 import io.github.sagimenahem.synchboard.dto.auth.LoginRequest;
@@ -17,14 +22,8 @@ import io.github.sagimenahem.synchboard.exception.ResourceConflictException;
 import io.github.sagimenahem.synchboard.exception.ResourceNotFoundException;
 import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service layer for handling user authentication and account management operations. Provides secure
@@ -47,27 +46,33 @@ public class AuthService {
 
     /**
      * Registers a new user account with email verification process. Creates a pending registration
-     * record and sends verification code to user's email. If email service is disabled, 
+     * record and sends verification code to user's email. If email service is disabled,
      * automatically creates and verifies the user account.
      * 
      * @param request the user registration details including email, password, and personal
      *        information
+     * @return AuthResponseDTO with JWT token if email verification is disabled, null if email
+     *         verification is required
      * @throws ResourceConflictException if email is already in use
      */
     @Transactional
-    public void registerUser(RegisterRequest request) {
+    public AuthResponseDTO registerUser(RegisterRequest request) {
         log.info("[SECURITY] Registration attempt for email: {}", request.getEmail());
 
         // Ensure email is not already registered
         validateUserRegistration(request.getEmail());
-        
+
         if (!emailService.isEmailEnabled()) {
-            // Email service disabled - create user directly
-            log.info(SECURITY_PREFIX + " Email service disabled - auto-verifying user: {}", request.getEmail());
+            // Email service disabled - create user directly and return auth token
+            log.info(SECURITY_PREFIX + " Email service disabled - auto-verifying user: {}",
+                    request.getEmail());
             User user = createUserDirectly(request);
             userRepository.save(user);
-            log.info(SECURITY_PREFIX + " User registration completed without email verification for: {}", 
+            log.info(
+                    SECURITY_PREFIX
+                            + " User registration completed without email verification for: {}",
                     request.getEmail());
+            return generateAuthResponse(user);
         } else {
             // Normal email verification flow
             // Remove any existing incomplete registration attempts
@@ -78,6 +83,7 @@ public class AuthService {
             sendVerificationEmail(pendingRegistration);
             log.info(SECURITY_PREFIX + " User registration process completed for email: {}",
                     request.getEmail());
+            return null;
         }
     }
 
@@ -299,15 +305,11 @@ public class AuthService {
      * @return the created User entity (auto-verified since email service is disabled)
      */
     private User createUserDirectly(RegisterRequest request) {
-        return User.builder()
-                .email(request.getEmail())
+        return User.builder().email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .gender(request.getGender())
-                .phoneNumber(request.getPhoneNumber())
-                .dateOfBirth(request.getDateOfBirth())
-                .build();
+                .firstName(request.getFirstName()).lastName(request.getLastName())
+                .gender(request.getGender()).phoneNumber(request.getPhoneNumber())
+                .dateOfBirth(request.getDateOfBirth()).build();
     }
 
     /**

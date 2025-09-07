@@ -1,5 +1,6 @@
 import { useAuth } from 'features/auth/hooks';
 import { useOAuthCallback } from 'features/auth/hooks/useOAuthCallback';
+import type { AuthResponse } from 'features/settings/types/UserTypes';
 import { GuestLanguageSwitcher } from 'features/settings/ui';
 import { LogIn, UserPlus, Users } from 'lucide-react';
 import React, { useState } from 'react';
@@ -45,10 +46,17 @@ const AuthPage: React.FC = () => {
 
   const { isProcessing } = useOAuthCallback();
 
-  // Transition from registration completion to email verification modal
-  const handleRegistrationSuccess = (email: string) => {
-    setPendingEmail(email);
-    setShowEmailVerification(true);
+  // Transition from registration completion to either email verification modal or immediate login
+  const handleRegistrationSuccess = (emailOrToken: string | AuthResponse) => {
+    if (typeof emailOrToken === 'string') {
+      // Email verification enabled - open verification modal
+      setPendingEmail(emailOrToken);
+      setShowEmailVerification(true);
+    } else {
+      // Email verification disabled - log in immediately with token
+      authLogin(emailOrToken.token);
+      void navigate(APP_ROUTES.BOARD_LIST);
+    }
   };
 
   // Reset password flow completion brings user back to login form

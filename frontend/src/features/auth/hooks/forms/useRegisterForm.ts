@@ -1,4 +1,4 @@
-import type { RegisterRequest } from 'features/settings/types/UserTypes';
+import type { AuthResponse, RegisterRequest } from 'features/settings/types/UserTypes';
 import { useTranslation } from 'react-i18next';
 
 import * as authService from '../../services/authService';
@@ -8,15 +8,15 @@ import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
 /**
  * Hook for managing user registration form submission with comprehensive validation.
  * Handles validation of required fields (email, password, firstName, gender) and optional fields,
- * processes registration API call, and triggers email verification flow upon success.
+ * processes registration API call, and triggers either email verification flow or immediate login.
  *
- * @param onRegistrationSuccess - Callback fired when registration is successful, receives the registered email
+ * @param onRegistrationSuccess - Callback fired when registration is successful, receives either email for verification or auth token for immediate login
  * @returns Form submission handler and loading state for registration functionality
  */
-export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) => {
+export const useRegisterForm = (onRegistrationSuccess: (emailOrToken: string | AuthResponse) => void) => {
   const { t } = useTranslation(['auth', 'common']);
 
-  return useAuthForm<RegisterRequest, string>({
+  return useAuthForm<RegisterRequest, AuthResponse | string>({
     formType: 'register',
     validateFormData: (formData: FormData) => {
       const email = extractFormData.email(formData);
@@ -68,8 +68,15 @@ export const useRegisterForm = (onRegistrationSuccess: (email: string) => void) 
       };
     },
     serviceCall: authService.register,
-    onSuccess: (_, requestData) => {
-      onRegistrationSuccess(requestData.email);
+    onSuccess: (response, requestData) => {
+      // Check if response is AuthResponse (has token) or string message
+      if (typeof response === 'string') {
+        // Email verification enabled - pass email for verification modal
+        onRegistrationSuccess(requestData.email);
+      } else {
+        // Email verification disabled - pass auth token for immediate login
+        onRegistrationSuccess(response);
+      }
     },
     logContext: 'Registration',
   });
