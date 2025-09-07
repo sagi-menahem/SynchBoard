@@ -2,8 +2,8 @@ import { Lock, LogIn, Mail } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { Button, Input, PasswordInput } from 'shared/ui';
 import { useFeatureConfig } from 'shared/hooks/useFeatureConfig';
+import { Button, Input, PasswordInput } from 'shared/ui';
 
 import { useLoginForm } from '../hooks/forms';
 import { useAuth } from '../hooks/useAuth';
@@ -75,6 +75,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         </>
       )}
 
+      {/* Show notice if Google login is disabled */}
+      {featureConfig && !featureConfig.googleLoginEnabled && (
+        <div className={styles.infoNotice}>
+          <p>
+            {t('auth:loginForm.googleLoginDisabledNotice', 
+            'Google login requires additional configuration.')}
+          </p>
+        </div>
+      )}
+
       <div className={styles.secondaryActionsContainer}>
         {/* Only show forgot password if password reset is enabled */}
         {featureConfig?.passwordResetEnabled && (
@@ -86,6 +96,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
           >
             {t('auth:loginForm.forgotPassword')}
           </Button>
+        )}
+
+        {/* Show notice if password reset is disabled */}
+        {featureConfig && !featureConfig.passwordResetEnabled && (
+          <div className={styles.infoNotice}>
+            <p>
+              {t('auth:loginForm.passwordResetDisabledNotice', 
+              'Password reset unavailable. Please contact support if you need assistance.')}
+            </p>
+          </div>
         )}
       </div>
     </form>
