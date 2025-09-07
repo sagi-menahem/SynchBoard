@@ -113,7 +113,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       {/* Show notice if email verification is disabled */}
       {featureConfig && !featureConfig.emailVerificationEnabled && (
         <div className={styles.notice}>
-          <p>{t('auth:registerForm.noEmailVerificationNotice', 'Email verification is disabled. You will be automatically logged in after registration.')}</p>
+          <p>
+            {t('auth:registerForm.noEmailVerificationNotice', 
+            'Quick registration enabled! You will be automatically logged in after creating your account.')}
+          </p>
         </div>
       )}
 
