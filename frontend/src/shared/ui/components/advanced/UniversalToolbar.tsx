@@ -1,15 +1,15 @@
 import type {
-  ButtonToolbarItem,
-  CustomToolbarItem,
-  MemberActivityToolbarItem,
-  SearchToolbarItem,
-  TitleToolbarItem,
-  ToolbarItem,
-  UniversalToolbarProps,
-  ViewToggleToolbarItem,
+    ButtonToolbarItem,
+    CustomToolbarItem,
+    MemberActivityToolbarItem,
+    SearchToolbarItem,
+    TitleToolbarItem,
+    ToolbarItem,
+    UniversalToolbarProps,
+    ViewToggleToolbarItem,
 } from 'features/board/types/ToolbarTypes';
 import { MemberActivityIndicator } from 'features/board/ui';
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import Button from '../forms/Button';
 import { SearchBar } from '../navigation/SearchBar';
@@ -208,7 +208,7 @@ ToolbarSection.displayName = 'ToolbarSection';
  */
 export const UniversalToolbar: React.FC<UniversalToolbarProps> = React.memo(
   ({ config, className }) => {
-    const { leftSection = [], centerSection = [], rightSection = [] } = config;
+    const { leftSection = [], centerSection = [], rightSection = [], pageType } = config;
     const toolbarRef = React.useRef<HTMLElement>(null);
 
     const toolbarClasses = useMemo(
@@ -217,7 +217,7 @@ export const UniversalToolbar: React.FC<UniversalToolbarProps> = React.memo(
     );
 
     return (
-      <header ref={toolbarRef} className={toolbarClasses}>
+      <header ref={toolbarRef} className={toolbarClasses} data-page-type={pageType}>
         <ToolbarSection items={leftSection} className={styles.leftSection} />
         <ToolbarSection items={centerSection} className={styles.centerSection} />
         <ToolbarSection items={rightSection} className={styles.rightSection} />
