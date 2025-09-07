@@ -101,85 +101,92 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
 
       <form onSubmit={handleFormSubmit}>
         <div className={styles.formContainer}>
-          <SectionCard title={t('board:createForm.label.basicInfo')} variant="default" padding="md">
-            <div className={styles.field}>
-              <label htmlFor="board-name">
-                <Pencil size={14} />
-                {t('board:createForm.label.boardName')}
-              </label>
-              <Input
-                id="board-name"
-                name="name"
-                type="text"
-                placeholder={t('board:createForm.placeholder.name')}
-                required
-                disabled={isPending}
-              />
-            </div>
+          {/* Left Column - Basic Info & Members */}
+          <div className={styles.leftColumn}>
+            <SectionCard title={t('board:createForm.label.basicInfo')} variant="default" padding="md">
+              <div className={styles.field}>
+                <label htmlFor="board-name">
+                  <Pencil size={14} />
+                  {t('board:createForm.label.boardName')}
+                </label>
+                <Input
+                  id="board-name"
+                  name="name"
+                  type="text"
+                  placeholder={t('board:createForm.placeholder.name')}
+                  required
+                  disabled={isPending}
+                />
+              </div>
 
-            <div className={styles.field}>
-              <label htmlFor="board-description">
-                <FileText size={14} />
-                {t('board:createForm.label.description')}
-              </label>
-              <Textarea
-                id="board-description"
-                name="description"
-                placeholder={t('board:createForm.placeholder.description')}
-                rows={3}
-                className={styles.description}
-                disabled={isPending}
-              />
-            </div>
-          </SectionCard>
+              <div className={styles.field}>
+                <label htmlFor="board-description">
+                  <FileText size={14} />
+                  {t('board:createForm.label.description')}
+                </label>
+                <Textarea
+                  id="board-description"
+                  name="description"
+                  placeholder={t('board:createForm.placeholder.description')}
+                  rows={3}
+                  className={styles.description}
+                  disabled={isPending}
+                />
+              </div>
+            </SectionCard>
 
-          <SectionCard
-            title={t('board:createForm.label.inviteMembers')}
-            variant="default"
-            padding="md"
-          >
-            <div className={styles.field}>
-              <label htmlFor="board-invite-members">
-                <Users size={14} />
-                {t('board:createForm.label.inviteMembersDescription')}
-              </label>
-              <MemberInviteInput
-                id="board-invite-members"
-                onMembersChange={setInviteEmails}
-                disabled={isPending}
-              />
-            </div>
-          </SectionCard>
+            <SectionCard
+              title={t('board:createForm.label.inviteMembers')}
+              variant="default"
+              padding="md"
+            >
+              <div className={styles.field}>
+                <label htmlFor="board-invite-members">
+                  <Users size={14} />
+                  {t('board:createForm.label.inviteMembersDescription')}
+                </label>
+                <MemberInviteInput
+                  id="board-invite-members"
+                  onMembersChange={setInviteEmails}
+                  disabled={isPending}
+                />
+              </div>
+            </SectionCard>
+          </div>
 
-          <CanvasConfigurationSection
-            canvasBackgroundColor={canvasBackgroundColor}
-            onCanvasBackgroundColorChange={setCanvasBackgroundColor}
-            canvasSize={canvasSize}
-            onCanvasSizeChange={setCanvasSize}
-            customWidth={customWidth}
-            onCustomWidthChange={setCustomWidth}
-            customHeight={customHeight}
-            onCustomHeightChange={setCustomHeight}
-            disabled={isPending}
-          />
-
-          <SectionCard
-            title={t('board:createForm.label.boardImage')}
-            variant="default"
-            padding="md"
-          >
-            <PictureManager
-              imageUrl={previewImageUrl}
-              defaultImage={defaultBoardImage}
-              altText={t('board:createForm.boardImageAlt')}
-              onUpload={handleImageUpload}
-              onDelete={selectedImage ? handleImageDelete : undefined}
-              showDeleteButton={!!selectedImage}
-              uploadButtonText={t('board:createForm.uploadImage')}
-              deleteButtonText={t('board:createForm.removeImage')}
+          {/* Right Column - Canvas & Image */}
+          <div className={styles.rightColumn}>
+            <CanvasConfigurationSection
+              canvasBackgroundColor={canvasBackgroundColor}
+              onCanvasBackgroundColorChange={setCanvasBackgroundColor}
+              canvasSize={canvasSize}
+              onCanvasSizeChange={setCanvasSize}
+              customWidth={customWidth}
+              onCustomWidthChange={setCustomWidth}
+              customHeight={customHeight}
+              onCustomHeightChange={setCustomHeight}
+              disabled={isPending}
             />
-          </SectionCard>
 
+            <SectionCard
+              title={t('board:createForm.label.boardImage')}
+              variant="default"
+              padding="md"
+            >
+              <PictureManager
+                imageUrl={previewImageUrl}
+                defaultImage={defaultBoardImage}
+                altText={t('board:createForm.boardImageAlt')}
+                onUpload={handleImageUpload}
+                onDelete={selectedImage ? handleImageDelete : undefined}
+                showDeleteButton={!!selectedImage}
+                uploadButtonText={t('board:createForm.uploadImage')}
+                deleteButtonText={t('board:createForm.removeImage')}
+              />
+            </SectionCard>
+          </div>
+
+          {/* Button Group - Full Width */}
           <div className={styles.buttonGroup}>
             <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
               {t('common:button.cancel')}

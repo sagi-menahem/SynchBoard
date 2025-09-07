@@ -3,7 +3,7 @@
 .modalContainer {
   @include theme.flex-column;
   gap: theme.$spacing-6;
-  max-width: 650px;
+  max-width: 1000px; // Increased width to accommodate grid layout
   width: 100%;
   overflow: visible;
   padding: theme.$spacing-4;
@@ -27,9 +27,11 @@
 }
 
 .formContainer {
-  @include theme.flex-column;
-  gap: theme.$spacing-6;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   width: 100%;
+  align-items: start;
 
   /* Global override for section cards to ensure full width in form context */
   :global(.sectionCard) {
@@ -37,6 +39,19 @@
     max-width: 100% !important;
     flex-shrink: 1 !important;
   }
+}
+
+// Column wrappers for grid layout
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Button group spans full width at bottom
+.buttonGroup {
+  grid-column: 1 / -1;
 }
 
 .error {
@@ -90,6 +105,7 @@
   justify-content: end;
   padding-top: theme.$spacing-4;
   border-top: 1px solid theme.$border-primary;
+  grid-column: 1 / -1; // Ensure it spans full width in grid
 }
 
 /* Global overrides for image upload component sizing within create board form */
@@ -107,7 +123,7 @@
 
 @media (max-width: 1200px) {
   .modalContainer {
-    max-width: 1000px;
+    max-width: 900px;
     padding: theme.$spacing-3;
   }
 }
@@ -117,6 +133,16 @@
     max-width: 95vw;
     padding: theme.$spacing-2;
     gap: theme.$spacing-4;
+  }
+
+  .formContainer {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 1.25rem;
   }
 
   .modalTitle {
@@ -138,5 +164,10 @@
   .modalContainer {
     padding: theme.$spacing-1;
     gap: theme.$spacing-3;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 1rem;
   }
 }
