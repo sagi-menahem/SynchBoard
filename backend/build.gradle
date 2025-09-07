@@ -36,6 +36,9 @@ dependencies {
     implementation 'io.projectreactor.netty:reactor-netty'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
+    // Environment variables support (.env file loading)
+    implementation 'io.github.cdimascio:dotenv-java:3.1.0'
+
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
