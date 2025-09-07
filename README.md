@@ -200,11 +200,6 @@ npm run dev
 3. Invite team members via email
 4. Start collaborating in real-time!
 
-## 📝 API Documentation
-
-When the application is running, API documentation is available at:
-`http://localhost:8080/swagger-ui.html`
-
 ## 🐛 Troubleshooting
 
 **Port Conflicts:**
