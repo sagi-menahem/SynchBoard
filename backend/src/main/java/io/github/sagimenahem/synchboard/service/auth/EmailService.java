@@ -1,5 +1,12 @@
 package io.github.sagimenahem.synchboard.service.auth;
 
+import java.io.IOException;
+import java.util.Locale;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -7,15 +14,8 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
-import java.io.IOException;
-import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 /**
  * Service for sending emails using SendGrid API. Handles email verification codes, password reset
@@ -98,7 +98,9 @@ public class EmailService {
      */
     public boolean sendVerificationCode(String toEmail, String verificationCode, Locale locale) {
         if (!isEmailEnabled()) {
-            log.warn("Email service disabled - SendGrid API key not configured. Skipping verification email to: {}", toEmail);
+            log.warn(
+                    "Email service disabled - SendGrid API key not configured. Skipping verification email to: {}",
+                    toEmail);
             return false;
         }
         String subject = messageSource.getMessage("email.verification.subject", null, locale);
@@ -127,7 +129,9 @@ public class EmailService {
      */
     public boolean sendPasswordResetCode(String toEmail, String resetCode, Locale locale) {
         if (!isEmailEnabled()) {
-            log.warn("Email service disabled - SendGrid API key not configured. Skipping password reset email to: {}", toEmail);
+            log.warn(
+                    "Email service disabled - SendGrid API key not configured. Skipping password reset email to: {}",
+                    toEmail);
             return false;
         }
         String subject = messageSource.getMessage("email.passwordReset.subject", null, locale);
@@ -183,7 +187,11 @@ public class EmailService {
         Context context = new Context(locale);
         context.setVariable("verificationCode", verificationCode);
         context.setVariable("expiryMinutes", verificationExpiryMinutes);
-        return templateEngine.process("email/verification", context);
+
+        // Use locale-specific template if available
+        String templateName =
+                isHebrewLocale(locale) ? "email/verification_he" : "email/verification";
+        return templateEngine.process(templateName, context);
     }
 
     /**
@@ -197,7 +205,21 @@ public class EmailService {
         Context context = new Context(locale);
         context.setVariable("resetCode", resetCode);
         context.setVariable("expiryMinutes", passwordResetExpiryMinutes);
-        return templateEngine.process("email/password-reset", context);
+
+        // Use locale-specific template if available
+        String templateName =
+                isHebrewLocale(locale) ? "email/password-reset_he" : "email/password-reset";
+        return templateEngine.process(templateName, context);
+    }
+
+    /**
+     * Checks if the given locale is Hebrew.
+     * 
+     * @param locale the locale to check
+     * @return true if the locale is Hebrew, false otherwise
+     */
+    private boolean isHebrewLocale(Locale locale) {
+        return locale != null && "he".equals(locale.getLanguage());
     }
 
     /**

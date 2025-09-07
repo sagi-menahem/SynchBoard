@@ -6,6 +6,7 @@ import static io.github.sagimenahem.synchboard.constants.LoggingConstants.USER_N
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.EMAIL_VERIFICATION_TIMEOUT_MINUTES;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.PASSWORD_RESET_TIMEOUT_MINUTES;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -263,8 +264,10 @@ public class AuthService {
     }
 
     private void sendVerificationEmail(PendingRegistration pendingRegistration) {
+        // For initial verification email, use default locale since we don't store language
+        // preference in PendingRegistration
         boolean emailSent = emailService.sendVerificationCode(pendingRegistration.getEmail(),
-                pendingRegistration.getVerificationCode());
+                pendingRegistration.getVerificationCode(), Locale.ENGLISH);
         if (!emailSent) {
             log.error(SECURITY_PREFIX + " Failed to send verification email to: {}",
                     pendingRegistration.getEmail());
@@ -333,7 +336,10 @@ public class AuthService {
 
         pendingRegistrationRepository.save(pendingRegistration);
 
-        boolean emailSent = emailService.sendVerificationCode(email, newVerificationCode);
+        // For resend verification, use default locale since we don't store language preference in
+        // PendingRegistration
+        boolean emailSent =
+                emailService.sendVerificationCode(email, newVerificationCode, Locale.ENGLISH);
         if (!emailSent) {
             log.error(SECURITY_PREFIX + " Failed to resend verification email to: {}", email);
         }
@@ -364,7 +370,9 @@ public class AuthService {
         user.setResetExpiry(resetExpiry);
         userRepository.save(user);
 
-        boolean emailSent = emailService.sendPasswordResetCode(email, resetCode);
+        // Get user's preferred language and send localized email
+        Locale userLocale = getUserLocale(user);
+        boolean emailSent = emailService.sendPasswordResetCode(email, resetCode, userLocale);
         if (!emailSent) {
             log.error(SECURITY_PREFIX + " Failed to send password reset email to: {}", email);
         }
@@ -408,5 +416,24 @@ public class AuthService {
         userRepository.save(user);
 
         log.info(SECURITY_PREFIX + " Password reset successful for: {}", email);
+    }
+
+    /**
+     * Converts user's preferred language string to Locale object.
+     * 
+     * @param user the user entity containing language preference
+     * @return Locale based on user's preferred language, defaults to English if not set
+     */
+    private Locale getUserLocale(User user) {
+        if (user == null || user.getPreferredLanguage() == null) {
+            return Locale.ENGLISH;
+        }
+
+        String lang = user.getPreferredLanguage();
+        if ("he".equals(lang)) {
+            return Locale.of("he");
+        }
+
+        return Locale.ENGLISH; // Default fallback
     }
 }
