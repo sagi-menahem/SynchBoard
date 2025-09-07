@@ -205,13 +205,6 @@ npm run dev
 When the application is running, API documentation is available at:
 `http://localhost:8080/swagger-ui.html`
 
-## 🔒 Security Notes
-
-- Never commit `.env` files with real credentials
-- Always use HTTPS in production
-- Rotate JWT secret keys regularly
-- Configure CORS appropriately for your domain
-
 ## 🐛 Troubleshooting
 
 **Port Conflicts:**
@@ -242,10 +235,6 @@ When the application is running, API documentation is available at:
 **Backend Logging:**
 - Docker: Logs visible with `docker logs synchboard-backend`
 - Development: Logs appear in console when using `spring.profiles.active=dev`
-
-## 📄 License
-
-This project is submitted as part of university coursework.
 
 ## 👥 Contributors
 
