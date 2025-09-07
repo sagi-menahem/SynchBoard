@@ -7,23 +7,23 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import {
-  ConfirmationDialog,
-  PageLoader,
-  PageTransition,
-  PictureManager,
-  SectionCard,
-  UniversalToolbar,
+    ConfirmationDialog,
+    PageLoader,
+    PageTransition,
+    PictureManager,
+    SectionCard,
+    UniversalToolbar,
 } from 'shared/ui';
 import logger from 'shared/utils/logger';
 import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
-  BoardAppearanceSection,
-  ChangePasswordForm,
-  DangerZoneSection,
-  LanguageSection,
-  ProfileDetailsSection,
-  ThemeSection,
+    BoardAppearanceSection,
+    ChangePasswordForm,
+    DangerZoneSection,
+    LanguageSection,
+    ProfileDetailsSection,
+    ThemeSection,
 } from '../components';
 import { useAccountActions } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
@@ -130,36 +130,41 @@ const SettingsPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <main className={styles.pageContent} data-has-toolbar>
-        <ThemeSection />
-
-        <LanguageSection />
-
-        <BoardAppearanceSection />
-
-        <SectionCard title={t('settings:page.passwordSectionHeader')} variant="default">
-          <ChangePasswordForm onSubmit={handleChangePassword} />
-        </SectionCard>
-
-        <SectionCard title={t('settings:page.changePicture')} variant="default">
-          <PictureManager
-            imageUrl={user.profilePictureUrl}
-            defaultImage={defaultUserImage}
-            altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
-            onUpload={handlePictureUploadWithCleanup}
-            onDelete={() => setPicDeleteConfirmOpen(true)}
-            uploadButtonText={t('settings:page.changePicture')}
-            deleteButtonText={t('settings:page.deletePicture')}
+        {/* Left Column - Appearance & Preferences */}
+        <div className={styles.leftColumn}>
+          <ThemeSection />
+          <LanguageSection />
+          <BoardAppearanceSection />
+          <ProfileDetailsSection
+            user={user}
+            onUpdateProfile={async (data) => {
+              await handleUpdateProfile(data);
+            }}
           />
-        </SectionCard>
+        </div>
 
-        <ProfileDetailsSection
-          user={user}
-          onUpdateProfile={async (data) => {
-            await handleUpdateProfile(data);
-          }}
-        />
+        {/* Right Column - Security & Account Management */}
+        <div className={styles.rightColumn}>
+          <SectionCard title={t('settings:page.passwordSectionHeader')} variant="default">
+            <ChangePasswordForm onSubmit={handleChangePassword} />
+          </SectionCard>
 
-        <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
+          <SectionCard title={t('settings:page.changePicture')} variant="default">
+            <PictureManager
+              imageUrl={user.profilePictureUrl}
+              defaultImage={defaultUserImage}
+              altText={t('settings:page.profilePictureAlt', { userName: user.firstName })}
+              onUpload={handlePictureUploadWithCleanup}
+              onDelete={() => setPicDeleteConfirmOpen(true)}
+              uploadButtonText={t('settings:page.changePicture')}
+              deleteButtonText={t('settings:page.deletePicture')}
+            />
+          </SectionCard>
+
+          <div className={styles.dangerZone}>
+            <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
+          </div>
+        </div>
 
         <ConfirmationDialog
           isOpen={isPicDeleteConfirmOpen}

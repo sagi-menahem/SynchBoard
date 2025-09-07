@@ -7,12 +7,12 @@ import { Button, PageLoader, PageTransition, SectionCard, UniversalToolbar } fro
 import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
-  BoardConfirmDialogs,
-  BoardDetailsHeader,
-  BoardEditModals,
-  CanvasSettingsSection,
-  MemberContextMenu,
-  MemberList,
+    BoardConfirmDialogs,
+    BoardDetailsHeader,
+    BoardEditModals,
+    CanvasSettingsSection,
+    MemberContextMenu,
+    MemberList,
 } from '../components/details';
 import { useBoardDetailsPage } from '../hooks/details';
 
@@ -143,25 +143,31 @@ const BoardDetailsPage: React.FC = () => {
     <PageTransition>
       <UniversalToolbar config={toolbarConfig} />
       <main className={styles.pageContent} data-has-toolbar>
-        <BoardDetailsHeader
-          boardDetails={boardDetails}
-          currentUserIsAdmin={currentUserIsAdmin}
-          onPictureUpload={handlePictureUpload}
-          onUpdateDescription={handleUpdateDescription}
-          onDeletePicture={promptPictureDelete}
-        />
+        {/* Left Column - Board Visual & Description */}
+        <div className={styles.leftColumn}>
+          <BoardDetailsHeader
+            boardDetails={boardDetails}
+            currentUserIsAdmin={currentUserIsAdmin}
+            onPictureUpload={handlePictureUpload}
+            onUpdateDescription={handleUpdateDescription}
+            onDeletePicture={promptPictureDelete}
+          />
+        </div>
 
-        <CanvasSettingsSection
-          boardDetails={boardDetails}
-          isAdmin={currentUserIsAdmin}
-          onUpdateSettings={handleCanvasSettingsUpdate}
-        />
+        {/* Right Column - Settings & Members */}
+        <div className={styles.rightColumn}>
+          <CanvasSettingsSection
+            boardDetails={boardDetails}
+            isAdmin={currentUserIsAdmin}
+            onUpdateSettings={handleCanvasSettingsUpdate}
+          />
 
-        <SectionCard title={t('board:detailsPage.membersHeader')} variant="default">
-          <ul className={styles.membersListContainer}>
-            <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
-          </ul>
-        </SectionCard>
+          <SectionCard title={t('board:detailsPage.membersHeader')} variant="default">
+            <ul className={styles.membersListContainer}>
+              <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
+            </ul>
+          </SectionCard>
+        </div>
       </main>
 
       <MemberContextMenu

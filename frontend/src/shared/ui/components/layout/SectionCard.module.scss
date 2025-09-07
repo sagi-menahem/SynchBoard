@@ -7,12 +7,12 @@
   background-color: theme.$background-secondary;
   border: 1px solid theme.$border-primary;
   border-radius: theme.$card-border-radius;
-  margin-bottom: 2rem;
+  margin-bottom: 0; // Remove margin since we're using gap in grid/flex containers
   position: relative;
   @include theme.smooth-transition;
 
-  width: min(700px, 100%) !important;
-  max-width: 700px;
+  width: 100%;
+  max-width: 100%;
   flex-shrink: 1;
 
   // Global form styling override
@@ -73,11 +73,9 @@
   border: 1px solid var(--btn-destructive-bg);
   border-top: 2px solid var(--btn-destructive-bg);
   box-shadow: theme.$shadow-glow-md var(--btn-destructive-bg);
-  background: linear-gradient(
-    to bottom,
-    var(--color-surface),
-    color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent)
-  );
+  background: linear-gradient(to bottom,
+      var(--color-surface),
+      color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent));
 }
 
 // --- Header Section ---
@@ -159,9 +157,9 @@
 // Mobile responsive adjustments
 @media (max-width: 768px) {
   .sectionCard {
-    margin-bottom: 1.5rem;
-    width: min(700px, 100%) !important;
-    max-width: 700px;
+    margin-bottom: 0; // Keep consistent with grid layout
+    width: 100%;
+    max-width: 100%;
     flex-shrink: 1;
   }
 
@@ -214,6 +212,7 @@
 
 // Enhanced borders for high contrast preference
 @media (prefers-contrast: high) {
+
   .default,
   .elevated {
     border-width: 2px;

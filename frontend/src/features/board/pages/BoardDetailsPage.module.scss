@@ -14,15 +14,19 @@
   box-sizing: border-box;
   text-align: start;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
   .pageContent {
     padding-inline-start: 16px;
     padding-inline-end: 16px;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 
@@ -30,6 +34,7 @@
   .pageContent {
     padding-inline-start: 12px;
     padding-inline-end: 12px;
+    gap: 1rem;
   }
 }
 
@@ -38,6 +43,32 @@
   padding: theme.$spacing-12;
   color: theme.$text-secondary;
   font-size: 16px;
+  grid-column: 1 / -1; // Span across both columns
+}
+
+// Column wrappers for grid layout
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// Reduce gap between cards on smaller screens
+@media (max-width: 768px) {
+
+  .leftColumn,
+  .rightColumn {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .leftColumn,
+  .rightColumn {
+    gap: 1rem;
+  }
 }
 
 .membersSection {
