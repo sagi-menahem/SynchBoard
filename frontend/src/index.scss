@@ -99,48 +99,42 @@ body[data-theme='light'] {
   --color-status-failed-border: #{dt.$color-status-failed-border-light};
   --color-status-failed-bg: #{dt.$color-status-failed-bg-light};
 
-  --toolbar-background: linear-gradient(
-    135deg,
-    rgba(248, 250, 252, 0.95) 0%,
-    rgba(241, 245, 249, 0.98) 100%
-  );
+  --toolbar-background: linear-gradient(135deg,
+      rgba(248, 250, 252, 0.95) 0%,
+      rgba(241, 245, 249, 0.98) 100%);
   --toolbar-border: rgba(226, 232, 240, 0.6);
-  --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  --toolbar-shadow: #{dt.$shadow-sm},
+  0 0 0 1px rgba(255, 255, 255, 0.4) inset;
 
-  --nav-button-background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(248, 250, 252, 0.9) 100%
-  );
+  --nav-button-background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(248, 250, 252, 0.9) 100%);
   --nav-button-border: rgba(226, 232, 240, 0.6);
   --nav-button-text: #{dt.$color-gray-600};
-  --nav-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-  --nav-button-hover-background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(241, 245, 249, 1) 100%
-  );
+  --nav-button-shadow: #{dt.$shadow-sm},
+  0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  --nav-button-hover-background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(241, 245, 249, 1) 100%);
   --nav-button-hover-border: #{dt.$color-black};
   --nav-button-hover-text: #{dt.$color-black};
-  --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 1) inset;
+  --nav-button-hover-shadow: #{dt.$shadow-button-hover},
+  0 0 0 1px rgba(255, 255, 255, 1) inset;
 
-  --destructive-button-background: linear-gradient(
-    135deg,
-    rgba(254, 242, 242, 0.9) 0%,
-    rgba(255, 237, 237, 0.95) 100%
-  );
+  --destructive-button-background: linear-gradient(135deg,
+      rgba(254, 242, 242, 0.9) 0%,
+      rgba(255, 237, 237, 0.95) 100%);
   --destructive-button-border: rgba(252, 165, 165, 0.4);
   --destructive-button-text: #{dt.$color-error-hover};
-  --destructive-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(254, 226, 226, 0.8) inset;
-  --destructive-button-hover-background: linear-gradient(
-    135deg,
-    rgba(254, 226, 226, 0.95) 0%,
-    rgba(252, 165, 165, 0.2) 100%
-  );
+  --destructive-button-shadow: #{dt.$shadow-sm},
+  0 0 0 1px rgba(254, 226, 226, 0.8) inset;
+  --destructive-button-hover-background: linear-gradient(135deg,
+      rgba(254, 226, 226, 0.95) 0%,
+      rgba(252, 165, 165, 0.2) 100%);
   --destructive-button-hover-border: #{dt.$color-error-light};
   --destructive-button-hover-text: #{dt.$color-error-hover};
-  --destructive-button-hover-shadow:
-    #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 202, 202, 1) inset;
+  --destructive-button-hover-shadow: #{dt.$shadow-button-hover},
+  0 0 0 1px rgba(254, 202, 202, 1) inset;
 
   --language-toggle-bg: #e5e7eb;
 
@@ -211,7 +205,7 @@ body[data-theme='dark'] {
   --color-text-disabled: #{dt.$color-gray-500};
 
   --color-success: #{dt.$color-success};
-  --color-success-light: #{dt.$color-success-light};
+  --color-success-light: rgba(16, 185, 129, 0.15);
   --color-warning: #{dt.$color-warning};
   --color-warning-light: #{dt.$color-warning-light};
   --color-error: #{dt.$color-error};
@@ -232,48 +226,42 @@ body[data-theme='dark'] {
   --color-status-failed-border: #{dt.$color-status-failed-border-dark};
   --color-status-failed-bg: #{dt.$color-status-failed-bg-dark};
 
-  --toolbar-background: linear-gradient(
-    135deg,
-    rgba(24, 24, 27, 0.95) 0%,
-    rgba(39, 39, 42, 0.98) 100%
-  );
+  --toolbar-background: linear-gradient(135deg,
+      rgba(24, 24, 27, 0.95) 0%,
+      rgba(39, 39, 42, 0.98) 100%);
   --toolbar-border: rgba(63, 63, 70, 0.4);
-  --toolbar-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --toolbar-shadow: #{dt.$shadow-sm},
+  0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 
-  --nav-button-background: linear-gradient(
-    135deg,
-    rgba(39, 39, 42, 0.8) 0%,
-    rgba(52, 52, 55, 0.9) 100%
-  );
+  --nav-button-background: linear-gradient(135deg,
+      rgba(39, 39, 42, 0.8) 0%,
+      rgba(52, 52, 55, 0.9) 100%);
   --nav-button-border: rgba(82, 82, 91, 0.4);
   --nav-button-text: #{dt.$color-gray-300};
-  --nav-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-  --nav-button-hover-background: linear-gradient(
-    135deg,
-    rgba(52, 52, 55, 0.95) 0%,
-    rgba(63, 63, 70, 1) 100%
-  );
+  --nav-button-shadow: #{dt.$shadow-sm},
+  0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --nav-button-hover-background: linear-gradient(135deg,
+      rgba(52, 52, 55, 0.95) 0%,
+      rgba(63, 63, 70, 1) 100%);
   --nav-button-hover-border: #{dt.$color-gray-50};
   --nav-button-hover-text: #{dt.$color-white};
-  --nav-button-hover-shadow: #{dt.$shadow-button-hover}, 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  --nav-button-hover-shadow: #{dt.$shadow-button-hover},
+  0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 
-  --destructive-button-background: linear-gradient(
-    135deg,
-    rgba(69, 26, 26, 0.6) 0%,
-    rgba(87, 13, 13, 0.7) 100%
-  );
+  --destructive-button-background: linear-gradient(135deg,
+      rgba(69, 26, 26, 0.6) 0%,
+      rgba(87, 13, 13, 0.7) 100%);
   --destructive-button-border: rgba(153, 27, 27, 0.4);
   --destructive-button-text: #{dt.$color-error-light};
-  --destructive-button-shadow: #{dt.$shadow-sm}, 0 0 0 1px rgba(254, 226, 226, 0.06) inset;
-  --destructive-button-hover-background: linear-gradient(
-    135deg,
-    rgba(87, 13, 13, 0.8) 0%,
-    rgba(127, 29, 29, 0.9) 100%
-  );
+  --destructive-button-shadow: #{dt.$shadow-sm},
+  0 0 0 1px rgba(254, 226, 226, 0.06) inset;
+  --destructive-button-hover-background: linear-gradient(135deg,
+      rgba(87, 13, 13, 0.8) 0%,
+      rgba(127, 29, 29, 0.9) 100%);
   --destructive-button-hover-border: #{dt.$color-error-light};
   --destructive-button-hover-text: #{dt.$color-error-light};
-  --destructive-button-hover-shadow:
-    #{dt.$shadow-button-hover}, 0 0 0 1px rgba(254, 226, 226, 0.1) inset;
+  --destructive-button-hover-shadow: #{dt.$shadow-button-hover},
+  0 0 0 1px rgba(254, 226, 226, 0.1) inset;
 
   --language-toggle-bg: #374151;
 
