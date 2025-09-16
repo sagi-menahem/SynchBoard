@@ -63,7 +63,7 @@
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/sagi-menahem/SynchBoard.git](https://github.com/sagi-menahem/SynchBoard.git)
+    git clone https://github.com/sagi-menahem/SynchBoard.git
     cd SynchBoard
     ```
 
