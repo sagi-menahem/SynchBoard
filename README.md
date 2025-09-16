@@ -1,6 +1,15 @@
 <div align="center">
+  <img src="assets/logo.png" alt="SynchBoard Logo" width="150"/>
   <h1>SynchBoard - Real-time Collaborative Whiteboard</h1>
   <p>A full-stack collaborative whiteboard application featuring real-time synchronization, user authentication, and team collaboration tools.</p>
+</div>
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Java-24-blue?logo=openjdk" alt="Java">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.5.5-green?logo=spring" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/React-19.1.1-blue?logo=react" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-5.9.2-blue?logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Docker-gray?logo=docker" alt="Docker">
 </div>
 
 ---
@@ -82,6 +91,12 @@
 -   **[Functional Document](docs/Functional_Document.pdf)** - Screen-by-screen feature walkthrough with visual examples.
 -   **[API Documentation](docs/API_DOCUMENTATION.md)** - Detailed API endpoint guide for developers.
 -   **[Installation Guide](docs/INSTALLATION.md)** - Advanced setup instructions and local development guide.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
