@@ -1,240 +1,78 @@
-# SynchBoard - Real-time Collaborative Whiteboard
+<div align="center">
+  <img src="assets/logo.png" alt="SynchBoard Logo" width="150">
+  <h1>SynchBoard - Real-time Collaborative Whiteboard</h1>
+  <p>A full-stack collaborative whiteboard application featuring real-time synchronization, user authentication, and team collaboration tools.</p>
+</div>
 
-A full-stack collaborative whiteboard application built with Spring Boot backend and React frontend, featuring real-time synchronization, user authentication, and team collaboration tools.
+## ✨ Preview
 
-## 🚀 Running the Application
+<div align="center">
+  <img src="assets/preview.png" alt="SynchBoard Application Preview">
+  <p><i>SynchBoard workspace showing real-time collaborative drawing and team chat functionality</i></p>
+</div>
 
-This project supports two deployment modes:
+## 🌟 Features Showcase
 
-### Option 1: Docker Deployment (Recommended for Quick Start)
+<div align="center">
+  <img src="assets/features-showcase.png" alt="Features Showcase">
+  <p><i>Multiple screens showcasing different themes, languages, and collaborative features</i></p>
+</div>
 
-Perfect for testing and evaluation - everything runs with a single command.
+## 🚀 Key Features
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/sagi-menahem/SynchBoard.git
-cd synchboard
-
-# 2. Copy the example environment file
-cp .env.example .env
-
-# 3. Start all services
-docker-compose up --build
-
-# For updates or configuration changes, do a complete rebuild:
-# docker-compose down -v --rmi all
-# docker-compose up --build
-
-# 4. Access the application
-# Frontend: http://localhost
-# Backend API: http://localhost:8080
-# ActiveMQ Console: http://localhost:8161 (admin/admin)
-```
-
-### Option 2: Local Development Mode
-
-For development and debugging with IDE support.
-
-**Prerequisites:**
-- PostgreSQL 17+ running locally
-- ActiveMQ Artemis 2.37+ running locally
-- Java 24+ and Node.js 20+
-
-```bash
-# 1. Set up infrastructure (using Docker for databases only)
-docker-compose up -d postgres activemq
-
-# 2. Configure backend
-cd backend
-cp .env.example .env
-# Edit .env with your credentials (OAuth, SendGrid, etc.)
-./gradlew bootRun  # Or run from IDE with -Dspring.profiles.active=dev
-
-# 3. Configure frontend (in new terminal)
-cd frontend
-npm install
-npm run dev
-
-# 4. Access the application
-# Frontend: http://localhost:5173
-# Backend API: http://localhost:8080
-```
-
-### 📝 Configuration Notes
-
-- **Environment Files**: 
-  - Root `.env` - Used by Docker Compose for production deployment
-  - `backend/.env` - Used by Spring Boot for local development
-- **OAuth2 Setup**: 
-  - Development: OAuth redirects to `http://localhost:8080/login/oauth2/code/google`
-  - Docker/Production: OAuth redirects to `http://localhost/api/login/oauth2/code/google`
-  - Both URIs must be added to Google Cloud Console
-- **Email Features**: Optional. Leave `SENDGRID_API_KEY` empty to disable email verification
-- **Google Login**: Optional. Leave `GOOGLE_CLIENT_ID` empty to disable OAuth2
-- **Default Credentials**: The `.env.example` includes working defaults for development
-- **Security**: Never use the default `JWT_SECRET_KEY` in production!
-
-### 🔧 Feature Availability
-
-The application gracefully handles missing API keys:
-- Without SendGrid: Registration works without email verification
-- Without Google OAuth: Traditional email/password login only
-- Check `/api/config/features` to see which features are enabled
-
-## 🏗️ Architecture
-
-### Technology Stack
-
-**Backend:**
-- Java 24 with Spring Boot 3.5.5
-- Spring Security with JWT authentication
-- Spring WebSocket with STOMP protocol
-- PostgreSQL 17 for data persistence
-- ActiveMQ Artemis for message brokering
-- SendGrid for email services
-- OAuth2 with Google provider
-
-**Frontend:**
-- React 19.1.1 with TypeScript 5.9.2
-- Vite 7.0.0 build tool
-- SCSS modules for styling
-- @stomp/stompjs for WebSocket communication
-- React Router for navigation
-- i18next for internationalization
-- Axios for HTTP requests
-
-**Infrastructure:**
-- Docker & Docker Compose for containerization
-- Nginx for serving frontend and proxying API requests
-- Multi-stage Docker builds for optimized images
-
-## 📁 Project Structure
-
-```
-synchboard/
-├── backend/               # Spring Boot backend application
-│   ├── src/              # Source code
-│   ├── build.gradle      # Gradle build configuration
-│   └── Dockerfile        # Backend container configuration
-├── frontend/             # React frontend application
-│   ├── src/              # Source code
-│   ├── package.json      # NPM dependencies
-│   ├── nginx.conf        # Nginx configuration for production
-│   └── Dockerfile        # Frontend container configuration
-├── docker-compose.yml    # Docker services orchestration
-├── .env.example         # Environment variables template
-└── README.md           # This file
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-The application uses environment variables for configuration. See `.env.example` for all available options:
-
-- **Database**: PostgreSQL connection settings
-- **Message Broker**: ActiveMQ configuration
-- **JWT Security**: Secret key for token signing
-- **Email Service**: SendGrid API configuration (optional)
-- **OAuth2**: Google OAuth credentials (optional)
-
-### Default Credentials
-
-For development/testing with default configuration:
-- PostgreSQL: `synchboard_user` / `test12345`
-- ActiveMQ: `admin` / `admin`
-- pgAdmin: `admin@synchboard.local` / `admin`
-
-## 🛠️ Development
-
-### Running Without Docker
-
-**Backend:**
-```bash
-cd backend
-./gradlew bootRun  # Unix/Mac
-gradlew.bat bootRun # Windows
-```
-
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Available Scripts
-
-**Backend:**
-- `./gradlew test` - Run tests
-- `./gradlew build` - Build the application
-- `./gradlew bootJar` - Create executable JAR
-
-**Frontend:**
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
-
-**Root Level:**
-- `npm run format:all` - Format entire project
-- `npm run build:backend` - Build backend
-- `npm run build:frontend` - Build frontend
-
-## 📋 Features
-
-- **Real-time Collaboration**: Multiple users can draw and edit simultaneously
-- **User Authentication**: JWT-based authentication with email verification
-- **OAuth2 Integration**: Sign in with Google
-- **Board Management**: Create, share, and manage collaborative boards
-- **Drawing Tools**: Various shapes, lines, text, and colors
-- **Chat System**: Real-time messaging within boards
-- **Member Management**: Invite users, manage permissions
-- **Responsive Design**: Works on desktop and tablet devices
+- **Real-time Collaboration**: Multiple users can draw and edit simultaneously with instant synchronization
+- **User Authentication**: Secure JWT-based authentication with email verification
+- **OAuth2 Integration**: Sign in with Google for seamless access
+- **Board Management**: Create, share, and manage collaborative boards with team members
+- **Drawing Tools**: Comprehensive set of drawing tools including shapes, lines, text, and colors
+- **Chat System**: Real-time messaging within boards for effective team communication
+- **Member Management**: Invite users via email and manage board permissions
+- **Responsive Design**: Optimized for desktop and tablet devices
 - **Internationalization**: Support for multiple languages (English, Hebrew)
+- **Theme Support**: Multiple visual themes for personalized experience
 
-## 🧪 Testing the Application
+## �️ Tech Stack
 
-1. Register a new account or use OAuth2 (Google) login
-2. Create a new board or join an existing one
-3. Invite team members via email
-4. Start collaborating in real-time!
+| **Backend** | **Frontend** | **Infrastructure** |
+|-------------|--------------|-------------------|
+| Java 24 + Spring Boot 3.5.5 | React 19.1.1 + TypeScript 5.9.2 | Docker & Docker Compose |
+| Spring Security + JWT | Vite 7.0.0 + SCSS Modules | Nginx Reverse Proxy |
+| Spring WebSocket + STOMP | @stomp/stompjs WebSocket | PostgreSQL 17 Database |
+| PostgreSQL + ActiveMQ Artemis | React Router + i18next | ActiveMQ Message Broker |
+| SendGrid Email + OAuth2 Google | Axios HTTP Client | Multi-stage Docker Builds |
 
-## 🐛 Troubleshooting
+## 🏁 Getting Started
 
-**Port Conflicts:**
-- Ensure ports 80, 8080, 5432, 61613, 61616, 8161 are free
-- Modify port mappings in `.env` if needed
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sagi-menahem/SynchBoard.git
+   cd SynchBoard
+   ```
 
-**Docker Issues:**
-- Run `docker-compose down -v` to clean up volumes
-- For complete rebuild after configuration changes:
-  ```bash
-  docker-compose down -v --rmi all  # Remove containers, volumes, AND images
-  docker-compose up --build         # Rebuild everything from scratch
-  ```
-- For quick rebuild without removing volumes: `docker-compose build --no-cache`
-- View backend logs: `docker logs -f synchboard-backend`
+2. **Copy environment file**
+   ```bash
+   cp .env.example .env
+   ```
+   *Note: The .env file includes optional API keys for email and Google login features*
 
-**Database Connection:**
-- Verify PostgreSQL is healthy: `docker-compose ps`
-- Check logs: `docker-compose logs postgres`
+3. **Start the application**
+   ```bash
+   docker-compose up --build
+   ```
 
-**OAuth2 Authentication:**
-- Ensure both redirect URIs are configured in Google Cloud Console:
-  - Development: `http://localhost:8080/login/oauth2/code/google`
-  - Production: `http://localhost/api/login/oauth2/code/google`
-- Check that `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set in `.env`
-- Clear browser cookies if authentication fails after configuration changes
+4. **Access the application**
+   - **Frontend**: http://localhost
+   - **Backend API**: http://localhost:8080
+   - **ActiveMQ Console**: http://localhost:8161 (admin/admin)
 
-**Backend Logging:**
-- Docker: Logs visible with `docker logs synchboard-backend`
-- Development: Logs appear in console when using `spring.profiles.active=dev`
+## � Full Documentation
 
-## 👥 Contributors
+- **[User Manual](docs/User_Manual.pdf)** - Comprehensive technical guide covering all features and functionality
+- **[Functional Document](docs/Functional_Document.pdf)** - Screen-by-screen feature walkthrough with visual examples
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Detailed API endpoint guide for developers
+- **[Installation Guide](docs/INSTALLATION.md)** - Advanced setup instructions and local development guide
 
-- Sagi Menahem - Full Stack Developer
+## � Author
 
----
-
-For any issues or questions, please open an issue in the GitHub repository.
+**Sagi Menahem** - Full Stack Developer  
+GitHub: [@sagi-menahem](https://github.com/sagi-menahem)
