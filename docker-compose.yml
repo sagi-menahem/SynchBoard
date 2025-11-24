@@ -117,6 +117,11 @@ services:
       - ${FRONTEND_BINDING:-80:80}
     depends_on:
       - backend
+    volumes:
+      - type: volume
+        source: backend_uploads
+        target: /app/uploads
+        read_only: true
     networks:
       - synchboard-network
 
