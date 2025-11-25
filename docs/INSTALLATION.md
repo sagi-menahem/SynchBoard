@@ -1,8 +1,264 @@
 # Installation Guide
 
-This guide provides detailed installation instructions for developers who want to set up SynchBoard for local development or advanced configuration.
+This guide provides detailed installation instructions for developers who want to set up SynchBoard for local development or production deployment.
 
-## Option 2: Local Development Mode
+---
+
+## Production Deployment (VPS)
+
+This section covers deploying SynchBoard to a production VPS environment with SSL/TLS encryption and proper security configurations.
+
+### Prerequisites
+
+- **VPS Server**: Ubuntu 22.04+ (or similar Linux distribution)
+- **Docker**: Docker Engine 24+ and Docker Compose v2
+- **Nginx**: Installed on the host machine (not containerized)
+- **Domain**: A registered domain pointing to your server's IP address
+- **SSH Keys**: GitHub SSH key configured on the server for repository access
+
+### Architecture Overview
+
+In production, the architecture differs from local development:
+
+```
+Internet → Nginx (Host) → Docker Network → Services
+                ↓
+         Port 443 (HTTPS)
+         Port 80 (HTTP redirect)
+                ↓
+         Proxy to localhost:8080
+                ↓
+         ┌─────────────────────────────────────┐
+         │     Docker Internal Network         │
+         │  ┌─────────┐  ┌─────────┐          │
+         │  │ Backend │←→│ Frontend│          │
+         │  │ :8080   │  │ (Nginx) │          │
+         │  └────┬────┘  └─────────┘          │
+         │       ↓                             │
+         │  ┌─────────┐  ┌─────────┐          │
+         │  │PostgreSQL│  │ActiveMQ │          │
+         │  │ :5432   │  │ :61613  │          │
+         │  └─────────┘  └─────────┘          │
+         └─────────────────────────────────────┘
+```
+
+**Key Security Features:**
+- `docker-compose.prod.yml` removes all external port bindings for PostgreSQL, ActiveMQ, and the backend
+- Only the frontend Nginx container exposes port 8080 to the host
+- Host Nginx handles SSL termination and proxies requests to the Docker network
+
+### Step 1: Server Setup
+
+```bash
+# Update system packages
+sudo apt update && sudo apt upgrade -y
+
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+
+# Install Nginx
+sudo apt install nginx -y
+
+# Install Certbot for SSL certificates
+sudo apt install certbot python3-certbot-nginx -y
+```
+
+### Step 2: Clone Repository
+
+```bash
+# Navigate to deployment directory
+cd /root  # or your preferred location
+
+# Clone using SSH (requires SSH key configured with GitHub)
+git clone git@github.com:sagi-menahem/SynchBoard.git
+cd SynchBoard
+
+# Set executable permissions
+chmod +x backend/gradlew
+chmod +x deploy.sh
+```
+
+### Step 3: Configure Environment
+
+```bash
+# Create production environment file
+cp .env.example .env
+nano .env
+```
+
+**Critical Production Settings:**
+
+```bash
+# Generate a secure JWT secret (required!)
+JWT_SECRET_KEY=$(openssl rand -base64 64)
+
+# Update URLs for your domain
+CLIENT_ORIGIN_URL=https://yourdomain.com
+GOOGLE_REDIRECT_URI=https://yourdomain.com/api/login/oauth2/code/google
+OAUTH2_FRONTEND_BASE_URL=https://yourdomain.com
+
+# Use strong database credentials
+POSTGRES_PASSWORD=<generate-strong-password>
+ACTIVEMQ_PASSWORD=<generate-strong-password>
+
+# Configure email (optional but recommended for production)
+SENDGRID_API_KEY=your-sendgrid-api-key
+SENDGRID_FROM_EMAIL=noreply@yourdomain.com
+```
+
+### Step 4: Configure Nginx
+
+The repository includes a production Nginx configuration at `server-config/synchboard.conf`.
+
+```bash
+# Create symlink to enable the site
+sudo ln -s /root/SynchBoard/server-config/synchboard.conf /etc/nginx/sites-enabled/synchboard.conf
+
+# Remove default site (optional)
+sudo rm /etc/nginx/sites-enabled/default
+
+# Update server_name in the config to match your domain
+sudo nano /root/SynchBoard/server-config/synchboard.conf
+# Change: server_name synchboard.com www.synchboard.com;
+# To:     server_name yourdomain.com www.yourdomain.com;
+
+# Test Nginx configuration
+sudo nginx -t
+
+# Reload Nginx
+sudo systemctl reload nginx
+```
+
+### Step 5: Obtain SSL Certificate
+
+```bash
+# Obtain certificate (Certbot will auto-configure Nginx)
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+
+# Certbot automatically:
+# - Obtains Let's Encrypt certificate
+# - Updates Nginx config with SSL settings
+# - Sets up auto-renewal
+```
+
+### Step 6: Initial Deployment
+
+```bash
+# Build and start all services
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+
+# Verify services are running
+docker compose ps
+
+# Check logs if needed
+docker compose logs -f backend
+```
+
+### Step 7: Automated Updates with deploy.sh
+
+The `deploy.sh` script automates the update process:
+
+```bash
+# Make the script executable (if not already)
+chmod +x deploy.sh
+
+# Run deployment
+./deploy.sh
+```
+
+**What `deploy.sh` does:**
+1. Navigates to `/root/SynchBoard`
+2. Reverts any local file changes (`git checkout .`)
+3. Pulls the latest code from GitHub
+4. Sets executable permissions on scripts
+5. Rebuilds and restarts Docker containers with production overrides
+6. Reloads Nginx to apply any configuration changes
+
+### Understanding docker-compose.prod.yml
+
+The production override file enhances security by removing external port bindings:
+
+```yaml
+services:
+  postgres:
+    ports: !reset []  # Removes port 5432 exposure
+
+  activemq:
+    ports: !reset []  # Removes ports 8161, 61616, 61613 exposure
+
+  backend:
+    ports: !reset []  # Backend only accessible via Docker network
+```
+
+This ensures:
+- PostgreSQL is not accessible from the internet
+- ActiveMQ management console is not exposed
+- All traffic must flow through the host Nginx reverse proxy
+
+### Nginx Configuration Details
+
+The `server-config/synchboard.conf` provides:
+
+- **SSL/TLS termination** with Let's Encrypt certificates
+- **WebSocket support** via Upgrade headers (required for real-time features)
+- **Reverse proxy** to Docker containers on localhost:8080
+- **HTTP to HTTPS redirect** for all traffic
+- **Extended timeouts** (3600s) for long-lived WebSocket connections
+
+### Firewall Configuration
+
+```bash
+# Allow only necessary ports
+sudo ufw allow 22/tcp    # SSH
+sudo ufw allow 80/tcp    # HTTP (for Let's Encrypt and redirect)
+sudo ufw allow 443/tcp   # HTTPS
+sudo ufw enable
+```
+
+### Maintenance Commands
+
+```bash
+# View running containers
+docker compose ps
+
+# View logs
+docker compose logs -f              # All services
+docker compose logs -f backend      # Backend only
+
+# Restart services
+docker compose restart
+
+# Stop all services
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+
+# Full rebuild (after major changes)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down -v
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+
+# Renew SSL certificate (usually automatic)
+sudo certbot renew
+```
+
+### Troubleshooting Production
+
+**502 Bad Gateway:**
+- Verify Docker containers are running: `docker compose ps`
+- Check backend logs: `docker compose logs backend`
+- Ensure Nginx can reach localhost:8080
+
+**WebSocket Connection Failed:**
+- Verify Nginx has WebSocket headers configured
+- Check browser console for connection errors
+- Ensure firewall allows port 443
+
+**SSL Certificate Issues:**
+- Run `sudo certbot renew --dry-run` to test renewal
+- Check certificate expiration: `sudo certbot certificates`
+
+---
+
+## Local Development Mode
 
 For development and debugging with IDE support.
 
@@ -83,18 +339,25 @@ The application gracefully handles missing API keys:
 
 ```
 synchboard/
-├── backend/               # Spring Boot backend application
-│   ├── src/              # Source code
-│   ├── build.gradle      # Gradle build configuration
-│   └── Dockerfile        # Backend container configuration
-├── frontend/             # React frontend application
-│   ├── src/              # Source code
-│   ├── package.json      # NPM dependencies
-│   ├── nginx.conf        # Nginx configuration for production
-│   └── Dockerfile        # Frontend container configuration
-├── docker-compose.yml    # Docker services orchestration
-├── .env.example         # Environment variables template
-└── README.md           # This file
+├── backend/                   # Spring Boot backend application
+│   ├── src/                  # Source code
+│   ├── build.gradle          # Gradle build configuration
+│   └── Dockerfile            # Backend container configuration
+├── frontend/                  # React frontend application
+│   ├── src/                  # Source code
+│   ├── package.json          # NPM dependencies
+│   ├── nginx.conf            # Nginx configuration for Docker container
+│   └── Dockerfile            # Frontend container configuration
+├── server-config/             # Host server configuration files
+│   └── synchboard.conf       # Nginx reverse proxy config (SSL, WebSocket)
+├── docs/                      # Documentation
+│   ├── INSTALLATION.md       # This file
+│   └── API_DOCUMENTATION.md  # REST API reference
+├── docker-compose.yml         # Docker services orchestration (development)
+├── docker-compose.prod.yml    # Production overrides (secured ports)
+├── deploy.sh                  # Automated deployment script for VPS
+├── .env.example              # Environment variables template
+└── README.md                 # Project overview
 ```
 
 ## 🔧 Configuration
@@ -173,9 +436,10 @@ npm run dev
 - Check logs: `docker-compose logs postgres`
 
 **OAuth2 Authentication:**
-- Ensure both redirect URIs are configured in Google Cloud Console:
-  - Development: `http://localhost:8080/login/oauth2/code/google`
-  - Production: `http://localhost/api/login/oauth2/code/google`
+- Ensure redirect URIs are configured in Google Cloud Console for your environment:
+  - Local Development: `http://localhost:8080/login/oauth2/code/google`
+  - Docker Development: `http://localhost/api/login/oauth2/code/google`
+  - Production: `https://yourdomain.com/api/login/oauth2/code/google`
 - Check that `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set in `.env`
 - Clear browser cookies if authentication fails after configuration changes
 

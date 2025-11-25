@@ -1,5 +1,17 @@
 # SynchBoard API Documentation
 
+## Base URL
+
+| Environment | Base URL |
+| --- | --- |
+| Production | `https://synchboard.com/api` |
+| Docker Development | `http://localhost/api` |
+| Local Development | `http://localhost:8080/api` |
+
+All endpoints documented below are relative to the base URL (e.g., `/auth/login` becomes `https://synchboard.com/api/auth/login` in production).
+
+---
+
 ## Authentication
 
 The SynchBoard API uses JWT (JSON Web Token) based authentication. Include the JWT token in the Authorization header for protected endpoints:
@@ -94,7 +106,15 @@ This endpoint allows the frontend to determine which optional features are avail
 
 The API supports real-time communication through WebSocket endpoints using STOMP protocol.
 
-**Connection**: `ws://localhost:8080/ws` (requires JWT authentication)
+**Connection Endpoints:**
+
+| Environment | WebSocket URL |
+| --- | --- |
+| Production | `wss://synchboard.com/ws` |
+| Docker Development | `ws://localhost/ws` |
+| Local Development | `ws://localhost:8080/ws` |
+
+All WebSocket connections require JWT authentication via STOMP headers.
 
 ### Real-time Endpoints
 

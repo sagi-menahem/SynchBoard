@@ -2,14 +2,30 @@
   <img src="assets/logo.png" alt="SynchBoard Logo" width="150"/>
   <h1>SynchBoard - Real-time Collaborative Whiteboard</h1>
   <p>A full-stack collaborative whiteboard application featuring real-time synchronization, user authentication, and team collaboration tools.</p>
+
+  <a href="https://synchboard.com">
+    <img src="https://img.shields.io/badge/Live_Demo-synchboard.com-blue?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
+  </a>
 </div>
 
+---
+
 <div align="center">
-  <img src="https://img.shields.io/badge/Java-24-blue?logo=openjdk" alt="Java">
-  <img src="https://img.shields.io/badge/Spring_Boot-3.5.5-green?logo=spring" alt="Spring Boot">
-  <img src="https://img.shields.io/badge/React-19.1.1-blue?logo=react" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-5.9.2-blue?logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Docker-gray?logo=docker" alt="Docker">
+
+### Tech Stack
+
+![Java](https://img.shields.io/badge/Java-24-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.5-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7.0.0-646CFF?style=flat-square&logo=vite&logoColor=white)
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![ActiveMQ](https://img.shields.io/badge/ActiveMQ_Artemis-2.37-D22128?style=flat-square&logo=apache&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-Reverse_Proxy-009639?style=flat-square&logo=nginx&logoColor=white)
+![Google OAuth](https://img.shields.io/badge/Google-OAuth2-4285F4?style=flat-square&logo=google&logoColor=white)
+
 </div>
 
 ---
@@ -25,16 +41,84 @@
 
 ## 🚀 Key Features
 
-- **Real-time Collaboration**: Multiple users can draw and edit simultaneously with instant synchronization.
-- **User Authentication**: Secure JWT-based authentication with email verification and password reset.
-- **OAuth2 Integration**: Sign in with Google for seamless access.
-- **Board Management**: Create, share, and manage collaborative boards with team members.
-- **Drawing Tools**: Comprehensive set of drawing tools including shapes, lines, text, and colors.
-- **Chat System**: Real-time messaging within boards for effective team communication.
-- **Member Management**: Invite users via email and manage board permissions (Admin/Member).
-- **Responsive Design**: Optimized for desktop and tablet devices.
-- **Internationalization**: Full support for English and Hebrew (RTL).
-- **Theme Support**: Light and Dark visual themes for a personalized experience.
+| Feature | Description |
+|---------|-------------|
+| **Real-time Collaboration** | Multiple users can draw and edit simultaneously with instant WebSocket synchronization via STOMP protocol |
+| **User Authentication** | Secure JWT-based authentication with email verification and password reset functionality |
+| **OAuth2 Integration** | Sign in with Google for seamless, passwordless access |
+| **Board Management** | Create, share, and manage collaborative boards with granular team permissions |
+| **Drawing Tools** | Comprehensive toolset including shapes, freehand drawing, lines, text, and customizable colors |
+| **Live Chat** | Real-time messaging within boards for effective team communication |
+| **Member Management** | Invite users via email and manage board permissions (Admin/Member roles) |
+| **Undo/Redo History** | Full action history tracking per user with undo/redo support |
+| **Internationalization** | Full support for English and Hebrew (RTL) with i18next |
+| **Theme Support** | Light and Dark visual themes for a personalized experience |
+| **Responsive Design** | Optimized for desktop and tablet devices |
+
+---
+
+## 🏗️ Architecture
+
+The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
+
+```mermaid
+flowchart LR
+    subgraph Internet
+        User[/"👤 User (Browser)"/]
+    end
+
+    subgraph Host["Host Server"]
+        Nginx["🔒 Nginx\n(SSL Termination)\nPort 443"]
+    end
+
+    subgraph Docker["Docker Network"]
+        Frontend["⚛️ Frontend\n(Nginx Container)\nPort 80 → 8080"]
+        Backend["☕ Backend\n(Spring Boot)\nPort 8080"]
+        Postgres[("🐘 PostgreSQL\nPort 5432")]
+        ActiveMQ["📨 ActiveMQ\nArtemis\nPort 61613"]
+    end
+
+    User -->|HTTPS :443| Nginx
+    Nginx -->|HTTP :8080| Frontend
+    Frontend -->|Proxy /api, /ws| Backend
+    Backend -->|JDBC| Postgres
+    Backend -->|STOMP| ActiveMQ
+```
+
+**Traffic Flow:**
+1. User connects via HTTPS (port 443) with SSL/TLS encryption
+2. Host Nginx terminates SSL and proxies to Docker network (port 8080)
+3. Frontend Nginx container serves static assets and proxies API/WebSocket requests
+4. Backend handles business logic, persists data to PostgreSQL, and broadcasts real-time updates via ActiveMQ
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="assets/screenshots/dashboard.png" alt="Dashboard" width="400"/>
+        <br/><i>Board Dashboard</i>
+      </td>
+      <td align="center">
+        <img src="assets/screenshots/whiteboard.png" alt="Whiteboard" width="400"/>
+        <br/><i>Collaborative Whiteboard</i>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="assets/screenshots/chat.png" alt="Chat" width="400"/>
+        <br/><i>Real-time Chat</i>
+      </td>
+      <td align="center">
+        <img src="assets/screenshots/settings.png" alt="Settings" width="400"/>
+        <br/><i>User Settings</i>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
@@ -61,6 +145,8 @@
 
 ## 🏁 Getting Started
 
+### Local Development (Docker)
+
 1.  **Clone the repository**
     ```bash
     git clone https://github.com/sagi-menahem/SynchBoard.git
@@ -82,6 +168,16 @@
     -   **Frontend**: http://localhost
     -   **Backend API**: http://localhost:8080
     -   **ActiveMQ Console**: http://localhost:8161 (admin/admin)
+
+### Production Deployment
+
+SynchBoard includes production-ready infrastructure for VPS deployment:
+
+-   **`deploy.sh`** - Automated deployment script for pulling updates and rebuilding containers
+-   **`docker-compose.prod.yml`** - Production overrides that secure internal services (PostgreSQL, ActiveMQ, Backend) by removing external port bindings
+-   **`server-config/synchboard.conf`** - Nginx reverse proxy configuration with SSL/TLS support
+
+For detailed production setup instructions, see the [Installation Guide](docs/INSTALLATION.md#production-deployment-vps).
 
 ---
 
