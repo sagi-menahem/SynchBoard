@@ -62,39 +62,40 @@
 The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
 
 ```mermaid
-flowchart LR
+flowchart TD
     %% Minimalist theme optimized for GitHub Dark Mode
     classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3
     classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff
     classDef external fill:#21262d,stroke:#58a6ff,stroke-width:1px,color:#e6edf3,stroke-dasharray:5 5
 
     Client["Client"]:::accent
-    Nginx["Nginx · SSL"]
+    Nginx["Nginx · SSL Termination"]
+    Frontend["Frontend · React"]
+    Backend["Backend · Spring Boot"]
 
-    subgraph docker ["Docker Network"]
-        direction TB
-        Frontend["Frontend"]
-        Backend["Spring Boot"]
+    subgraph data ["Data Layer"]
         Postgres[("PostgreSQL")]
         ActiveMQ["ActiveMQ"]
     end
 
-    subgraph ext ["External APIs"]
-        direction TB
+    subgraph cloud ["External Cloud"]
         Google["Google OAuth2"]:::external
         SendGrid["SendGrid"]:::external
     end
 
-    Client -->|HTTPS| Nginx
-    Nginx -->|:8080| Frontend
-    Frontend -->|REST / WS| Backend
-    Backend --> Postgres
-    Backend --> ActiveMQ
+    Client -->|HTTPS :443| Nginx
+    Nginx -->|Proxy :8080| Frontend
+    Frontend -->|REST / WebSocket| Backend
+    Backend -->|JDBC| Postgres
+    Backend -->|STOMP| ActiveMQ
     Backend -.->|OAuth2| Google
-    Backend -.->|SMTP| SendGrid
+    Backend -.->|SMTP API| SendGrid
 
-    style docker fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
-    style ext fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
+    %% Force external services to align horizontally with data layer
+    data ~~~ cloud
+
+    style data fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
+    style cloud fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
 
     linkStyle 0,1,2,3,4 stroke:#58a6ff,stroke-width:1.5px
     linkStyle 5,6 stroke:#6e7681,stroke-width:1px
