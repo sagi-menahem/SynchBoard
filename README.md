@@ -62,7 +62,7 @@
 The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'edgeLabelBackground':'transparent', 'primaryTextColor': '#e6edf3'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': { 'edgeLabelBackground':'none', 'tertiaryTextColor': '#ffffff', 'lineColor': '#58a6ff'}}}%%
 flowchart TD
     classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3
     classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff
@@ -99,8 +99,8 @@ flowchart TD
     style data fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
     style external fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
 
-    linkStyle 0,1,2,3,4 stroke:#58a6ff,stroke-width:1.5px
-    linkStyle 5,6 stroke:#6e7681,stroke-width:1px
+    linkStyle default stroke:#58a6ff,stroke-width:1.5px
+    linkStyle 5,6 stroke:#6e7681,stroke-width:1px,stroke-dasharray:5 5
 ```
 
 **Traffic Flow:**
