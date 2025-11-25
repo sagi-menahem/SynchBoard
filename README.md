@@ -63,30 +63,27 @@ The production deployment uses a multi-layer architecture with SSL termination a
 
 ```mermaid
 flowchart TD
-    %% Minimalist monochrome theme with slate accent
-    classDef default fill:#f8fafc,stroke:#334155,stroke-width:1px,color:#1e293b
-    classDef accent fill:#334155,stroke:#1e293b,stroke-width:1px,color:#f8fafc
+    %% Minimalist theme optimized for GitHub Dark Mode
+    classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3,rx:6,ry:6
+    classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff,rx:6,ry:6
 
-    User(["Client"]):::accent
+    Client["Client"]:::accent
+    Nginx["Nginx · SSL termination"]
+    Frontend["Frontend · Static assets"]
+    Backend["Backend · Spring Boot"]
+    Postgres["PostgreSQL"]
+    ActiveMQ["ActiveMQ"]
 
-    subgraph host [" "]
-        Nginx["Nginx · SSL termination"]
-    end
-
-    subgraph docker [" "]
-        Frontend["Frontend · Static assets"]
-        Backend["Backend · Spring Boot"]
-        Postgres["PostgreSQL"]
-        ActiveMQ["ActiveMQ"]
-    end
-
-    User -- "HTTPS :443" --> Nginx
-    Nginx -- ":8080" --> Frontend
-    Frontend -- "/api  /ws" --> Backend
+    Client --> Nginx
+    Nginx --> Frontend
+    Frontend --> Backend
     Backend --> Postgres & ActiveMQ
 
-    style host fill:none,stroke:#94a3b8,stroke-width:1px,stroke-dasharray:4
-    style docker fill:none,stroke:#94a3b8,stroke-width:1px,stroke-dasharray:4
+    linkStyle 0 stroke:#58a6ff,stroke-width:1.5px
+    linkStyle 1 stroke:#58a6ff,stroke-width:1.5px
+    linkStyle 2 stroke:#58a6ff,stroke-width:1.5px
+    linkStyle 3 stroke:#58a6ff,stroke-width:1.5px
+    linkStyle 4 stroke:#58a6ff,stroke-width:1.5px
 ```
 
 **Traffic Flow:**
