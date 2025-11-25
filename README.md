@@ -84,13 +84,13 @@ flowchart TD
         SendGrid["SendGrid"]:::external
     end
 
-    Client --> Nginx
-    Nginx --> Frontend
-    Frontend --> Backend
-    Backend --> Postgres
-    Backend --> ActiveMQ
-    Backend -.-> Google
-    Backend -.-> SendGrid
+    Client -->|HTTPS| Nginx
+    Nginx -->|Proxy| Frontend
+    Frontend -->|REST / WS| Backend
+    Backend -->|JDBC| Postgres
+    Backend -->|STOMP| ActiveMQ
+    Backend -.->|OAuth2| Google
+    Backend -.->|SMTP| SendGrid
 
     data ~~~ external
 
