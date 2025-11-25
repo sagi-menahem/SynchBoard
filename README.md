@@ -63,33 +63,30 @@ The production deployment uses a multi-layer architecture with SSL termination a
 
 ```mermaid
 flowchart TD
-    %% Style definitions for high contrast on light/dark themes
-    classDef userStyle fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#ffffff
-    classDef nginxStyle fill:#22c55e,stroke:#15803d,stroke-width:2px,color:#ffffff
-    classDef frontendStyle fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#ffffff
-    classDef backendStyle fill:#f97316,stroke:#c2410c,stroke-width:2px,color:#ffffff
-    classDef dbStyle fill:#a855f7,stroke:#7e22ce,stroke-width:2px,color:#ffffff
-    classDef mqStyle fill:#ec4899,stroke:#be185d,stroke-width:2px,color:#ffffff
-    classDef subgraphStyle fill:#1e293b,stroke:#475569,stroke-width:2px,color:#f8fafc
+    %% Minimalist monochrome theme with slate accent
+    classDef default fill:#f8fafc,stroke:#334155,stroke-width:1px,color:#1e293b
+    classDef accent fill:#334155,stroke:#1e293b,stroke-width:1px,color:#f8fafc
 
-    User["User Browser"]:::userStyle
+    User(["Client"]):::accent
 
-    subgraph Host["HOST SERVER"]
-        Nginx["Nginx - SSL :443"]:::nginxStyle
+    subgraph host [" "]
+        Nginx["Nginx · SSL termination"]
     end
 
-    subgraph Docker["DOCKER NETWORK"]
-        Frontend["Frontend Nginx :8080"]:::frontendStyle
-        Backend["Spring Boot API"]:::backendStyle
-        Postgres[("PostgreSQL :5432")]:::dbStyle
-        ActiveMQ["ActiveMQ STOMP"]:::mqStyle
+    subgraph docker [" "]
+        Frontend["Frontend · Static assets"]
+        Backend["Backend · Spring Boot"]
+        Postgres["PostgreSQL"]
+        ActiveMQ["ActiveMQ"]
     end
 
-    User -->|"HTTPS"| Nginx
-    Nginx -->|"HTTP"| Frontend
-    Frontend -->|"/api /ws"| Backend
-    Backend -->|"JDBC"| Postgres
-    Backend -->|"STOMP"| ActiveMQ
+    User -- "HTTPS :443" --> Nginx
+    Nginx -- ":8080" --> Frontend
+    Frontend -- "/api  /ws" --> Backend
+    Backend --> Postgres & ActiveMQ
+
+    style host fill:none,stroke:#94a3b8,stroke-width:1px,stroke-dasharray:4
+    style docker fill:none,stroke:#94a3b8,stroke-width:1px,stroke-dasharray:4
 ```
 
 **Traffic Flow:**
