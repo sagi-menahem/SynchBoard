@@ -64,26 +64,35 @@ The production deployment uses a multi-layer architecture with SSL termination a
 ```mermaid
 flowchart TD
     %% Minimalist theme optimized for GitHub Dark Mode
-    classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3,rx:6,ry:6
-    classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff,rx:6,ry:6
+    classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3
+    classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff
+    classDef external fill:#21262d,stroke:#58a6ff,stroke-width:1px,color:#e6edf3,stroke-dasharray:5 5
 
     Client["Client"]:::accent
-    Nginx["Nginx · SSL termination"]
-    Frontend["Frontend · Static assets"]
-    Backend["Backend · Spring Boot"]
-    Postgres["PostgreSQL"]
-    ActiveMQ["ActiveMQ"]
+    Nginx["Nginx · SSL Termination"]
 
-    Client --> Nginx
-    Nginx --> Frontend
-    Frontend --> Backend
-    Backend --> Postgres & ActiveMQ
+    subgraph docker ["Docker Network (Internal)"]
+        Frontend["Frontend · Static Assets"]
+        Backend["Backend · Spring Boot"]
+        Postgres[("PostgreSQL")]
+        ActiveMQ["ActiveMQ Artemis"]
+    end
 
-    linkStyle 0 stroke:#58a6ff,stroke-width:1.5px
-    linkStyle 1 stroke:#58a6ff,stroke-width:1.5px
-    linkStyle 2 stroke:#58a6ff,stroke-width:1.5px
-    linkStyle 3 stroke:#58a6ff,stroke-width:1.5px
-    linkStyle 4 stroke:#58a6ff,stroke-width:1.5px
+    Google["Google OAuth2"]:::external
+    SendGrid["SendGrid Email"]:::external
+
+    Client -->|HTTPS :443| Nginx
+    Nginx -->|Proxy :8080| Frontend
+    Frontend -->|REST / WebSocket| Backend
+    Backend -->|JDBC| Postgres
+    Backend -->|STOMP| ActiveMQ
+    Backend -.->|OAuth2| Google
+    Backend -.->|SMTP API| SendGrid
+
+    style docker fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
+
+    linkStyle 0,1,2,3,4 stroke:#58a6ff,stroke-width:1.5px
+    linkStyle 5,6 stroke:#6e7681,stroke-width:1px
 ```
 
 **Traffic Flow:**
