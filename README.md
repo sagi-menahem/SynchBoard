@@ -93,35 +93,6 @@ flowchart LR
 
 ---
 
-## 📸 Screenshots
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="assets/screenshots/dashboard.png" alt="Dashboard" width="400"/>
-        <br/><i>Board Dashboard</i>
-      </td>
-      <td align="center">
-        <img src="assets/screenshots/whiteboard.png" alt="Whiteboard" width="400"/>
-        <br/><i>Collaborative Whiteboard</i>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img src="assets/screenshots/chat.png" alt="Chat" width="400"/>
-        <br/><i>Real-time Chat</i>
-      </td>
-      <td align="center">
-        <img src="assets/screenshots/settings.png" alt="Settings" width="400"/>
-        <br/><i>User Settings</i>
-      </td>
-    </tr>
-  </table>
-</div>
-
----
-
 ## 🌟 Features Showcase
 
 <div align="center">
