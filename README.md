@@ -62,27 +62,34 @@
 The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
 
 ```mermaid
-flowchart LR
-    subgraph Internet
-        User[/"👤 User (Browser)"/]
+flowchart TD
+    %% Style definitions for high contrast on light/dark themes
+    classDef userStyle fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#ffffff
+    classDef nginxStyle fill:#22c55e,stroke:#15803d,stroke-width:2px,color:#ffffff
+    classDef frontendStyle fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#ffffff
+    classDef backendStyle fill:#f97316,stroke:#c2410c,stroke-width:2px,color:#ffffff
+    classDef dbStyle fill:#a855f7,stroke:#7e22ce,stroke-width:2px,color:#ffffff
+    classDef mqStyle fill:#ec4899,stroke:#be185d,stroke-width:2px,color:#ffffff
+    classDef subgraphStyle fill:#1e293b,stroke:#475569,stroke-width:2px,color:#f8fafc
+
+    User["User Browser"]:::userStyle
+
+    subgraph Host["HOST SERVER"]
+        Nginx["Nginx - SSL :443"]:::nginxStyle
     end
 
-    subgraph Host["Host Server"]
-        Nginx["🔒 Nginx\n(SSL Termination)\nPort 443"]
+    subgraph Docker["DOCKER NETWORK"]
+        Frontend["Frontend Nginx :8080"]:::frontendStyle
+        Backend["Spring Boot API"]:::backendStyle
+        Postgres[("PostgreSQL :5432")]:::dbStyle
+        ActiveMQ["ActiveMQ STOMP"]:::mqStyle
     end
 
-    subgraph Docker["Docker Network"]
-        Frontend["⚛️ Frontend\n(Nginx Container)\nPort 80 → 8080"]
-        Backend["☕ Backend\n(Spring Boot)\nPort 8080"]
-        Postgres[("🐘 PostgreSQL\nPort 5432")]
-        ActiveMQ["📨 ActiveMQ\nArtemis\nPort 61613"]
-    end
-
-    User -->|HTTPS :443| Nginx
-    Nginx -->|HTTP :8080| Frontend
-    Frontend -->|Proxy /api, /ws| Backend
-    Backend -->|JDBC| Postgres
-    Backend -->|STOMP| ActiveMQ
+    User -->|"HTTPS"| Nginx
+    Nginx -->|"HTTP"| Frontend
+    Frontend -->|"/api /ws"| Backend
+    Backend -->|"JDBC"| Postgres
+    Backend -->|"STOMP"| ActiveMQ
 ```
 
 **Traffic Flow:**
