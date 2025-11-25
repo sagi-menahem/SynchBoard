@@ -62,43 +62,62 @@
 The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#21262d',
+    'primaryTextColor': '#e6edf3',
+    'primaryBorderColor': '#30363d',
+    'lineColor': '#58a6ff',
+    'secondaryColor': '#161b22',
+    'tertiaryColor': '#0d1117',
+    'tertiaryTextColor': '#ffffff',
+    'edgeLabelBackground': 'transparent',
+    'nodeTextColor': '#e6edf3',
+    'clusterBkg': 'transparent',
+    'clusterBorder': '#30363d'
+  }
+}}%%
 flowchart TD
-    classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3
-    classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff
-    classDef external fill:#21262d,stroke:#58a6ff,stroke-width:1px,color:#e6edf3,stroke-dasharray:5 5
+    classDef default fill:#21262d,stroke:#30363d,stroke-width:1.5px,color:#e6edf3,rx:8,ry:8
+    classDef client fill:#388bfd,stroke:#58a6ff,stroke-width:2px,color:#ffffff,rx:8,ry:8
+    classDef infra fill:#238636,stroke:#2ea043,stroke-width:1.5px,color:#ffffff,rx:8,ry:8
+    classDef app fill:#8957e5,stroke:#a371f7,stroke-width:1.5px,color:#ffffff,rx:8,ry:8
+    classDef data fill:#bf4b8a,stroke:#db61a2,stroke-width:1.5px,color:#ffffff,rx:8,ry:8
+    classDef external fill:#21262d,stroke:#58a6ff,stroke-width:1.5px,color:#e6edf3,rx:8,ry:8,stroke-dasharray:5 5
 
-    Client["Client"]:::accent
-    Nginx["Nginx · SSL Termination"]
-    Frontend["Frontend · React"]
-    Backend["Backend · Spring Boot"]
+    Client["🌐 Client"]:::client
+    Nginx["Nginx · SSL"]:::infra
+    Frontend["Frontend · React"]:::app
+    Backend["Backend · Spring Boot"]:::app
 
-    subgraph data ["Data Layer"]
+    subgraph dataLayer ["  Data Layer  "]
         direction LR
-        Postgres[("PostgreSQL")]
-        ActiveMQ["ActiveMQ"]
+        Postgres[("PostgreSQL")]:::data
+        ActiveMQ["ActiveMQ"]:::data
     end
 
-    subgraph external ["External Services"]
+    subgraph externalLayer ["  External Services  "]
         direction LR
         Google["Google OAuth2"]:::external
         SendGrid["SendGrid"]:::external
     end
 
-    Client -->|HTTPS| Nginx
-    Nginx -->|Proxy| Frontend
-    Frontend -->|REST / WS| Backend
-    Backend -->|JDBC| Postgres
-    Backend -->|STOMP| ActiveMQ
-    Backend -.->|OAuth2| Google
-    Backend -.->|SMTP| SendGrid
+    Client -->|"HTTPS :443"| Nginx
+    Nginx -->|"Proxy :8080"| Frontend
+    Frontend -->|"REST / WebSocket"| Backend
+    Backend -->|"JDBC"| Postgres
+    Backend -->|"STOMP"| ActiveMQ
+    Backend -.->|"OAuth2"| Google
+    Backend -.->|"SMTP API"| SendGrid
 
-    data ~~~ external
+    dataLayer ~~~ externalLayer
 
-    style data fill:#0d111700,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
-    style external fill:#0d111700,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
+    style dataLayer fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
+    style externalLayer fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
 
-    linkStyle 0,1,2,3,4 stroke:#58a6ff,stroke-width:1.5px
-    linkStyle 5,6 stroke:#6e7681,stroke-width:1px,stroke-dasharray:5 5
+    linkStyle 0,1,2,3,4 stroke:#58a6ff,stroke-width:2px
+    linkStyle 5,6 stroke:#6e7681,stroke-width:1.5px,stroke-dasharray:5 5
 ```
 
 **Traffic Flow:**
