@@ -62,7 +62,10 @@
 The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
 
 <div align="center">
-  <img src="assets/architecture.png" alt="System Architecture" />
+
+![System Architecture Dark](assets/architecture-dark.svg#gh-dark-mode-only)
+![System Architecture Light](assets/architecture-light.svg#gh-light-mode-only)
+
 </div>
 
 **Traffic Flow:**
