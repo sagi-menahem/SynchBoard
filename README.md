@@ -62,34 +62,39 @@
 The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
 
 ```mermaid
-flowchart TD
+flowchart LR
     %% Minimalist theme optimized for GitHub Dark Mode
     classDef default fill:#21262d,stroke:#30363d,stroke-width:1px,color:#e6edf3
     classDef accent fill:#388bfd,stroke:#58a6ff,stroke-width:1px,color:#ffffff
     classDef external fill:#21262d,stroke:#58a6ff,stroke-width:1px,color:#e6edf3,stroke-dasharray:5 5
 
     Client["Client"]:::accent
-    Nginx["Nginx · SSL Termination"]
+    Nginx["Nginx · SSL"]
 
-    subgraph docker ["Docker Network (Internal)"]
-        Frontend["Frontend · Static Assets"]
-        Backend["Backend · Spring Boot"]
+    subgraph docker ["Docker Network"]
+        direction TB
+        Frontend["Frontend"]
+        Backend["Spring Boot"]
         Postgres[("PostgreSQL")]
-        ActiveMQ["ActiveMQ Artemis"]
+        ActiveMQ["ActiveMQ"]
     end
 
-    Google["Google OAuth2"]:::external
-    SendGrid["SendGrid Email"]:::external
+    subgraph ext ["External APIs"]
+        direction TB
+        Google["Google OAuth2"]:::external
+        SendGrid["SendGrid"]:::external
+    end
 
-    Client -->|HTTPS :443| Nginx
-    Nginx -->|Proxy :8080| Frontend
-    Frontend -->|REST / WebSocket| Backend
-    Backend -->|JDBC| Postgres
-    Backend -->|STOMP| ActiveMQ
+    Client -->|HTTPS| Nginx
+    Nginx -->|:8080| Frontend
+    Frontend -->|REST / WS| Backend
+    Backend --> Postgres
+    Backend --> ActiveMQ
     Backend -.->|OAuth2| Google
-    Backend -.->|SMTP API| SendGrid
+    Backend -.->|SMTP| SendGrid
 
     style docker fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
+    style ext fill:transparent,stroke:#30363d,stroke-width:1px,stroke-dasharray:5 5
 
     linkStyle 0,1,2,3,4 stroke:#58a6ff,stroke-width:1.5px
     linkStyle 5,6 stroke:#6e7681,stroke-width:1px
