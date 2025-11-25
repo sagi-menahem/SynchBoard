@@ -120,7 +120,7 @@ services:
     volumes:
       - type: volume
         source: backend_uploads
-        target: /app/uploads
+        target: /usr/share/nginx/html/images
         read_only: true
     networks:
       - synchboard-network
