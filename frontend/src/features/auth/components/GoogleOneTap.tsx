@@ -149,12 +149,12 @@ const GoogleOneTap: React.FC = () => {
     logger.info('[GoogleOneTap] Received credential, processing...');
 
     try {
-      const toastId = toast.loading(t('auth:oauth.processing', 'Signing in with Google...'));
+      const toastId = toast.loading(t('oauth.loading'));
 
       const authResponse = await authService.googleOneTap(response.credential);
 
       toast.dismiss(toastId);
-      toast.success(t('auth:oauth.success', 'Successfully signed in with Google!'));
+      toast.success(t('oauth.success'));
 
       authLogin(authResponse.token);
       logger.info('[GoogleOneTap] Authentication successful, navigating to boards');
@@ -162,7 +162,7 @@ const GoogleOneTap: React.FC = () => {
       navigate(APP_ROUTES.BOARD_LIST, { replace: true });
     } catch (error) {
       logger.error('[GoogleOneTap] Authentication failed:', error);
-      toast.error(t('auth:oauth.error.processing', 'Failed to sign in with Google. Please try again.'));
+      toast.error(t('oauth.error.processing'));
     } finally {
       setIsProcessing(false);
     }
