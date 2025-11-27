@@ -146,3 +146,15 @@ export interface ForgotPasswordRequest {
   // Email address for password reset instructions
   email: string;
 }
+
+/**
+ * Password reset completion request interface for setting new password with reset code.
+ */
+export interface ResetPasswordRequest {
+  // Email address of the account being reset
+  email: string;
+  // 6-digit reset code sent to email
+  resetCode: string;
+  // New password to set for the account
+  newPassword: string;
+}

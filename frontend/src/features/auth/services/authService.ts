@@ -4,6 +4,7 @@ import type {
   LoginRequest,
   RegisterRequest,
   ResendVerificationRequest,
+  ResetPasswordRequest,
   VerifyEmailRequest,
 } from 'features/settings/types/UserTypes';
 import { API_BASE_URL, API_ENDPOINTS } from 'shared/constants/ApiConstants';
@@ -60,12 +61,24 @@ export const resendVerificationCode = async (data: ResendVerificationRequest): P
 /**
  * Initiates password reset process by sending reset instructions to user's registered email address.
  * Generates secure reset token and sends email with reset link for account password recovery.
- * 
+ *
  * @param data - Password reset request containing email address for account recovery
  * @returns Success message confirming password reset instructions have been sent
  */
 export const forgotPassword = async (data: ForgotPasswordRequest): Promise<string> => {
   const response = await apiClient.post<string>(API_ENDPOINTS.FORGOT_PASSWORD, data);
+  return response.data;
+};
+
+/**
+ * Completes password reset process using the reset code sent to user's email.
+ * Validates the reset code and updates the user's password with the new one.
+ *
+ * @param data - Reset password request containing email, reset code, and new password
+ * @returns Success message confirming password has been reset
+ */
+export const resetPassword = async (data: ResetPasswordRequest): Promise<string> => {
+  const response = await apiClient.post<string>(API_ENDPOINTS.RESET_PASSWORD, data);
   return response.data;
 };
 
