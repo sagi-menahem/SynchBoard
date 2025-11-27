@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom/client';
 import logger from 'shared/utils/logger';
 import { setupScrollbarThemeManager } from 'shared/utils/scrollbarTheme';
 
-import 'index.scss';
+import './index.scss';
 import 'shared/lib/i18n';
 
 const THEME_STORAGE_KEY = 'user-theme';

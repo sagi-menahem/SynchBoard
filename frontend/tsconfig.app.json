@@ -24,7 +24,14 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": "src"
+    "paths": {
+      "features/*": ["./src/features/*"],
+      "shared/*": ["./src/shared/*"],
+      "locales/*": ["./src/locales/*"],
+      "assets/*": ["./src/assets/*"],
+      "App": ["./src/App.tsx"],
+      "AppProvider": ["./src/AppProvider.tsx"]
+    }
   },
   "include": [
     "src",
