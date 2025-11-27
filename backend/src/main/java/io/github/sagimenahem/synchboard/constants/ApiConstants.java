@@ -19,6 +19,7 @@ public final class ApiConstants {
 
     public static final String API_AUTH_REGISTER_PATH = "/register";
     public static final String API_AUTH_LOGIN_PATH = "/login";
+    public static final String API_AUTH_GOOGLE_ONE_TAP_PATH = "/google-one-tap";
 
     public static final String API_AUTH_PATH_PATTERN = "/api/auth/**";
     public static final String API_BOARDS_PATH_PATTERN = "/api/boards/**";

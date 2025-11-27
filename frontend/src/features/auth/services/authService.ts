@@ -91,6 +91,20 @@ export const redirectToGoogle = (): void => {
 };
 
 /**
+ * Authenticates user via Google One Tap using the ID Token from Google Identity Services SDK.
+ * Sends the credential to backend for verification and user processing (create, update, or merge).
+ *
+ * @param credential - The Google ID Token (JWT) received from Google One Tap
+ * @returns Authentication response containing JWT token for session management
+ */
+export const googleOneTap = async (credential: string): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.GOOGLE_ONE_TAP, {
+    credential,
+  });
+  return response.data;
+};
+
+/**
  * Extracts JWT token from OAuth callback URL query parameters after successful third-party authentication.
  * Parses 'token' query parameter containing authentication token from OAuth provider redirect.
  * 

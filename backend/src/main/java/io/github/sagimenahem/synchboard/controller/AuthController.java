@@ -1,18 +1,22 @@
 package io.github.sagimenahem.synchboard.controller;
 
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_AUTH_BASE_PATH;
+import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_AUTH_GOOGLE_ONE_TAP_PATH;
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_AUTH_LOGIN_PATH;
 import static io.github.sagimenahem.synchboard.constants.ApiConstants.API_AUTH_REGISTER_PATH;
+
+import io.github.sagimenahem.synchboard.dto.auth.*;
+import io.github.sagimenahem.synchboard.service.auth.AuthService;
+import io.github.sagimenahem.synchboard.service.auth.GoogleAuthService;
+import io.github.sagimenahem.synchboard.service.util.ApiLoggingService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.github.sagimenahem.synchboard.dto.auth.*;
-import io.github.sagimenahem.synchboard.service.auth.AuthService;
-import io.github.sagimenahem.synchboard.service.util.ApiLoggingService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * REST controller responsible for handling authentication-related HTTP requests. Manages user
@@ -28,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthController {
 
     private final AuthService authService;
+    private final GoogleAuthService googleAuthService;
     private final ApiLoggingService apiLoggingService;
 
     /**
@@ -139,6 +144,32 @@ public class AuthController {
                 request.getEmail(), () -> {
                     AuthResponseDTO response = authService.resetPassword(request.getEmail(),
                             request.getResetCode(), request.getNewPassword());
+                    return ResponseEntity.ok(response);
+                });
+    }
+
+    /**
+     * Authenticates a user via Google One Tap. Verifies the Google ID Token from the Google Identity
+     * Services SDK and processes user creation or login. Supports account merging for existing LOCAL
+     * users who sign in with Google.
+     *
+     * @param request the Google One Tap request containing the credential (ID Token)
+     * @return ResponseEntity containing authentication response with JWT token and user details
+     */
+    @PostMapping(API_AUTH_GOOGLE_ONE_TAP_PATH)
+    public ResponseEntity<AuthResponseDTO> googleOneTap(
+            @Valid @RequestBody GoogleOneTapRequest request) {
+        return apiLoggingService.executeWithLogging("POST",
+                API_AUTH_BASE_PATH + API_AUTH_GOOGLE_ONE_TAP_PATH, "google-one-tap", () -> {
+                    // Verify Google ID Token and extract user info
+                    GoogleUserInfo googleUserInfo =
+                            googleAuthService.verifyIdToken(request.getCredential());
+
+                    // Process Google user (create, update, or merge)
+                    String jwt = googleAuthService.processGoogleUser(googleUserInfo);
+
+                    // Return JWT token in response
+                    AuthResponseDTO response = AuthResponseDTO.builder().token(jwt).build();
                     return ResponseEntity.ok(response);
                 });
     }

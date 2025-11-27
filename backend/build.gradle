@@ -45,6 +45,9 @@ dependencies {
 
     // SendGrid for email
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
+
+    // Google API Client for ID Token verification (Google One Tap)
+    implementation 'com.google.api-client:google-api-client:2.7.2'
     
     // Thymeleaf for email templates
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

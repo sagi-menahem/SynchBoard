@@ -1,24 +1,17 @@
 package io.github.sagimenahem.synchboard.config.security;
 
-import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
 
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
-import io.github.sagimenahem.synchboard.entity.PendingRegistration;
-import io.github.sagimenahem.synchboard.entity.User;
-import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository;
-import io.github.sagimenahem.synchboard.repository.UserRepository;
-import io.github.sagimenahem.synchboard.service.auth.JwtService;
-import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
+import io.github.sagimenahem.synchboard.dto.auth.GoogleUserInfo;
+import io.github.sagimenahem.synchboard.service.auth.GoogleAuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -26,14 +19,11 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 /**
- * OAuth2 authentication success handler for processing Google OAuth2 login. Handles user creation,
- * account merging, JWT token generation, and frontend redirection after successful OAuth2
- * authentication. Supports merging existing LOCAL accounts with Google OAuth2 login while
- * preserving password credentials. Includes profile picture download and proper error handling
- * with user-friendly messages.
+ * OAuth2 authentication success handler for processing Google OAuth2 login via redirect flow.
+ * Extracts user information from the OAuth2 token and delegates to GoogleAuthService for user
+ * processing and JWT generation. Handles frontend redirection after successful authentication.
  *
  * @author Sagi Menahem
  */
@@ -42,22 +32,15 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    /** Repository for user data operations */
-    private final UserRepository userRepository;
-    /** Repository for pending registration cleanup */
-    private final PendingRegistrationRepository pendingRegistrationRepository;
-    /** Service for JWT token generation */
-    private final JwtService jwtService;
-    /** Service for profile picture download and storage */
-    private final FileStorageService fileStorageService;
+    /** Service for processing Google authentication */
+    private final GoogleAuthService googleAuthService;
     /** Application configuration properties */
     private final AppProperties appProperties;
 
     /**
-     * Handles successful OAuth2 authentication by processing user data and generating JWT tokens.
-     * Creates new users or updates existing users, downloads profile pictures, and redirects to the
-     * frontend with a JWT token or error message.
-     * 
+     * Handles successful OAuth2 authentication by extracting user data, processing authentication,
+     * and redirecting to the frontend with a JWT token.
+     *
      * @param request The HTTP servlet request
      * @param response The HTTP servlet response
      * @param authentication The OAuth2 authentication object
@@ -75,96 +58,21 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 registrationId);
 
         try {
-            String email = oAuth2User.getAttribute("email");
-            String providerId = oAuth2User.getAttribute("sub");
-            String name = oAuth2User.getAttribute("name");
-            String pictureUrl = oAuth2User.getAttribute("picture");
+            // Extract user info from OAuth2 token
+            GoogleUserInfo googleUserInfo = GoogleUserInfo.builder()
+                    .email(oAuth2User.getAttribute("email"))
+                    .providerId(oAuth2User.getAttribute("sub"))
+                    .name(oAuth2User.getAttribute("name"))
+                    .pictureUrl(oAuth2User.getAttribute("picture")).build();
 
-            if (email == null || providerId == null) {
-                log.error(
-                        SECURITY_PREFIX
-                                + " Missing required OAuth2 user data - email: {}, providerId: {}",
-                        email != null, providerId != null);
-                handleAuthenticationFailure(response,
-                        "Missing required user information from Google");
-                return;
-            }
-
-            Optional<User> existingUser;
-            try {
-                existingUser = userRepository.findById(email);
-                log.info(SECURITY_PREFIX + " OAuth2 user lookup result for {}: exists={}", email,
-                        existingUser.isPresent());
-            } catch (Exception dbException) {
-                log.error(SECURITY_PREFIX + " Database error during OAuth2 user lookup for {}: {}",
-                        email, dbException.getMessage());
-                handleAuthenticationFailure(response,
-                        "Database is not available. Please try again later.");
-                return;
-            }
-
-            User userForToken;
-
-            if (existingUser.isPresent()) {
-                User user = existingUser.get();
-                log.info(SECURITY_PREFIX
-                        + " Found existing user: email={}, authProvider={}, creationDate={}", email,
-                        user.getAuthProvider(), user.getCreationDate());
-
-                // Account merging: Allow Google OAuth2 login for existing accounts
-                // regardless of their original auth provider
-                if (user.getAuthProvider() == User.AuthProvider.GOOGLE) {
-                    // Pure OAuth2 user - update all fields from Google
-                    log.info(SECURITY_PREFIX + " Updating existing OAuth2 user data for: {}", email);
-                    updateUserFromOAuth2(user, name, pictureUrl, providerId);
-                } else {
-                    // LOCAL user - merge account safely (preserve password)
-                    log.info(SECURITY_PREFIX
-                            + " Merging LOCAL account with Google OAuth2 for: {}", email);
-                    mergeLocalUserWithOAuth2(user, name, pictureUrl, providerId);
-                }
-
-                try {
-                    userForToken = userRepository.save(user);
-                    log.info(SECURITY_PREFIX + " Updated/merged user: {} (provider: {})", email,
-                            user.getAuthProvider());
-                } catch (Exception dbException) {
-                    log.error(
-                            SECURITY_PREFIX
-                                    + " Database error during OAuth2 user update for {}: {}",
-                            email, dbException.getMessage());
-                    handleAuthenticationFailure(response,
-                            "Database is not available. Please try again later.");
-                    return;
-                }
-            } else {
-                // Check if there's a pending registration for this email
-                // If so, Google OAuth2 login verifies the email - clean up pending registration
-                cleanupPendingRegistration(email);
-                log.info(SECURITY_PREFIX + " Creating new OAuth2 user for: {}", email);
-                User newUser = createUserFromOAuth2(email, name, pictureUrl, providerId);
-                try {
-                    userForToken = userRepository.save(newUser);
-                    log.info(
-                            SECURITY_PREFIX + " Created new OAuth2 user: {} with creation date: {}",
-                            email, newUser.getCreationDate());
-                } catch (Exception dbException) {
-                    log.error(
-                            SECURITY_PREFIX
-                                    + " Database error during OAuth2 user creation for {}: {}",
-                            email, dbException.getMessage());
-                    handleAuthenticationFailure(response,
-                            "Database is not available. Please try again later.");
-                    return;
-                }
-            }
-
-            String jwt = jwtService.generateToken(userForToken);
+            // Delegate to shared service for user processing
+            String jwt = googleAuthService.processGoogleUser(googleUserInfo);
 
             String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl()
                     + "/auth/callback?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
 
-            log.info(SECURITY_PREFIX + " OAuth2 authentication successful for: {}", email);
+            log.info(SECURITY_PREFIX + " OAuth2 authentication successful for: {}",
+                    googleUserInfo.getEmail());
             response.sendRedirect(frontendUrl);
         } catch (Exception e) {
             log.error(SECURITY_PREFIX + " Error processing OAuth2 authentication", e);
@@ -174,7 +82,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     /**
      * Handles OAuth2 authentication failures by redirecting to frontend error page.
-     * 
+     *
      * @param response The HTTP servlet response
      * @param message The error message to display to user
      * @throws IOException if redirect fails
@@ -184,181 +92,5 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl() + "/auth/error?message="
                 + URLEncoder.encode(message, StandardCharsets.UTF_8);
         response.sendRedirect(frontendUrl);
-    }
-
-    /**
-     * Creates a new User entity from OAuth2 user data. Downloads and stores the profile picture if
-     * provided.
-     * 
-     * @param email The user's email address
-     * @param name The user's full name
-     * @param pictureUrl The URL of the user's profile picture
-     * @param providerId The OAuth provider's user identifier
-     * @return A new User entity with OAuth2 data
-     */
-    private User createUserFromOAuth2(String email, String name, String pictureUrl,
-            String providerId) {
-        String[] nameParts = splitName(name);
-
-        String localPicturePath = null;
-        if (pictureUrl != null) {
-            localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
-            if (localPicturePath != null) {
-                log.info(
-                        SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}",
-                        email);
-            } else {
-                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
-                        pictureUrl);
-            }
-        }
-
-        return User.builder().email(email).firstName(nameParts[0]).lastName(nameParts[1])
-                .authProvider(User.AuthProvider.GOOGLE).providerId(providerId)
-                .profilePictureUrl(localPicturePath).creationDate(LocalDateTime.now()).build();
-    }
-
-    /**
-     * Updates an existing User entity with fresh OAuth2 data. Replaces the profile picture if a new
-     * one is provided. This method is for users who originally registered via Google OAuth2.
-     *
-     * @param user The existing user to update
-     * @param name The updated full name
-     * @param pictureUrl The updated profile picture URL
-     * @param providerId The OAuth provider's user identifier
-     */
-    private void updateUserFromOAuth2(User user, String name, String pictureUrl,
-            String providerId) {
-        if (name != null) {
-            String[] nameParts = splitName(name);
-            user.setFirstName(nameParts[0]);
-            user.setLastName(nameParts[1]);
-        }
-
-        if (pictureUrl != null) {
-            if (StringUtils.hasText(user.getProfilePictureUrl())) {
-                // Extract filename from stored URL by removing the base path prefix
-                // This assumes the stored URL format is consistent: IMAGES_BASE_PATH + filename
-                String existingFilename =
-                        user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
-                if (existingFilename != null && !existingFilename.isBlank()) {
-                    log.debug(SECURITY_PREFIX + " Deleting existing OAuth profile picture: {}",
-                            existingFilename);
-                    try {
-                        fileStorageService.delete(existingFilename);
-                        log.debug(SECURITY_PREFIX
-                                + " Successfully deleted existing OAuth profile picture: {}",
-                                existingFilename);
-                    } catch (Exception e) {
-                        log.warn(SECURITY_PREFIX
-                                + " Failed to delete existing OAuth profile picture: {} - {}",
-                                existingFilename, e.getMessage());
-                    }
-                }
-            }
-
-            String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
-            if (localPicturePath != null) {
-                user.setProfilePictureUrl(localPicturePath);
-                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for user: {}",
-                        user.getEmail());
-            } else {
-                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
-                        pictureUrl);
-                user.setProfilePictureUrl(null);
-            }
-        }
-
-        user.setProviderId(providerId);
-    }
-
-    /**
-     * Merges an existing LOCAL user account with Google OAuth2 authentication. This method
-     * implements strict safety rules to preserve the user's existing password and provider type
-     * while selectively updating profile data from Google.
-     *
-     * <p>Safety rules:
-     * <ul>
-     *   <li>Password field is NEVER modified - user can still log in with email/password</li>
-     *   <li>AuthProvider remains LOCAL - preserves original registration method</li>
-     *   <li>Profile picture is only updated if current one is null/empty</li>
-     *   <li>ProviderId is set to link the Google account for future reference</li>
-     *   <li>Email verification token is cleared (Google verified the email)</li>
-     * </ul>
-     *
-     * @param user The existing LOCAL user to merge with OAuth2
-     * @param name The user's name from Google (not used - preserve existing name)
-     * @param pictureUrl The profile picture URL from Google
-     * @param providerId The Google provider's user identifier
-     */
-    private void mergeLocalUserWithOAuth2(User user, String name, String pictureUrl,
-            String providerId) {
-        // SAFETY: Do NOT change authProvider - keep as LOCAL so password login still works
-        // SAFETY: Do NOT modify password field - it must remain untouched
-
-        // Store the Google provider ID for account linking reference
-        user.setProviderId(providerId);
-
-        // Clear email verification token since Google has verified this email
-        if (StringUtils.hasText(user.getEmailVerificationToken())) {
-            log.info(SECURITY_PREFIX
-                    + " Clearing email verification token for merged user: {} (Google verified)",
-                    user.getEmail());
-            user.setEmailVerificationToken(null);
-        }
-
-        // Only update profile picture if the user doesn't have one
-        if (!StringUtils.hasText(user.getProfilePictureUrl()) && pictureUrl != null) {
-            String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
-            if (localPicturePath != null) {
-                user.setProfilePictureUrl(localPicturePath);
-                log.info(SECURITY_PREFIX
-                        + " Downloaded and stored profile picture for merged user: {}",
-                        user.getEmail());
-            } else {
-                log.warn(SECURITY_PREFIX
-                        + " Failed to download profile picture from Google for merged user: {}",
-                        user.getEmail());
-            }
-        }
-
-        log.info(SECURITY_PREFIX
-                + " Account merge complete for: {} - password preserved, authProvider remains LOCAL",
-                user.getEmail());
-    }
-
-    /**
-     * Cleans up any pending registration for the given email address. This is called when a user
-     * signs in with Google OAuth2 before completing email verification - the Google login
-     * effectively verifies ownership of the email address.
-     *
-     * @param email The email address to check for pending registrations
-     */
-    private void cleanupPendingRegistration(String email) {
-        Optional<PendingRegistration> pending = pendingRegistrationRepository.findByEmail(email);
-        if (pending.isPresent()) {
-            log.info(SECURITY_PREFIX
-                    + " Cleaning up pending registration for: {} (Google OAuth2 verifies email)",
-                    email);
-            pendingRegistrationRepository.delete(pending.get());
-        }
-    }
-
-    /**
-     * Splits a full name into first and last name components.
-     * 
-     * @param fullName The full name to split
-     * @return Array containing [firstName, lastName], with lastName possibly null
-     */
-    private String[] splitName(String fullName) {
-        if (fullName == null || fullName.trim().isEmpty()) {
-            return new String[] {"Unknown", null};
-        }
-
-        String[] parts = fullName.trim().split("\\s+", 2);
-        String firstName = parts[0];
-        String lastName = parts.length > 1 ? parts[1] : null;
-
-        return new String[] {firstName, lastName};
     }
 }

@@ -111,6 +111,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_WEBSOCKET_URL: /ws
+        VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     container_name: synchboard-frontend
     restart: unless-stopped
     ports:

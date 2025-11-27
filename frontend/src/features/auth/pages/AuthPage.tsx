@@ -13,6 +13,7 @@ import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
 import {
   EmailVerificationModal,
   ForgotPasswordModal,
+  GoogleOneTap,
   LoginForm,
   RegistrationForm,
 } from '../components';
@@ -79,6 +80,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <PageTransition>
+      <GoogleOneTap />
       <div className={styles.pageContent} data-auth-page>
         <div className={styles.switchersCorner}>
           <GuestLanguageSwitcher />

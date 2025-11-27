@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   RESEND_VERIFICATION: '/auth/resend-verification',
   FORGOT_PASSWORD: '/auth/forgot-password',
   RESET_PASSWORD: '/auth/reset-password',
+  GOOGLE_ONE_TAP: '/auth/google-one-tap',
 
   BOARDS: '/boards',
   BOARD_OBJECTS: (boardId: number) => `/boards/${boardId}/objects`,
@@ -62,6 +63,7 @@ export const PUBLIC_API_ENDPOINTS: readonly string[] = [
   API_ENDPOINTS.RESEND_VERIFICATION,
   API_ENDPOINTS.FORGOT_PASSWORD,
   API_ENDPOINTS.RESET_PASSWORD,
+  API_ENDPOINTS.GOOGLE_ONE_TAP,
 ];
 
 export const WEBSOCKET_DESTINATIONS = {
