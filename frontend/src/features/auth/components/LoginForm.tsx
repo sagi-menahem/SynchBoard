@@ -1,5 +1,5 @@
 import { Lock, LogIn, Mail } from 'lucide-react';
-import React, { startTransition, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
@@ -41,9 +41,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
-      startTransition(() => {
-        submitAction(formData);
-      });
+      submitAction(formData);
     },
     [submitAction],
   );

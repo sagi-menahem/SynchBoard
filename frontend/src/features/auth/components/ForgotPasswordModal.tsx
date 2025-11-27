@@ -1,6 +1,6 @@
 import { BaseAuthModal } from 'features/auth/ui';
 import { KeyRound, Lock, Mail } from 'lucide-react';
-import React, { startTransition, useActionState, useState } from 'react';
+import React, { useCallback, useState, useTransition } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Input } from 'shared/ui';
@@ -37,6 +37,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   const { t } = useTranslation(['auth', 'common']);
   const [step, setStep] = useState<ModalStep>('STEP_EMAIL');
   const [email, setEmail] = useState('');
+  const [resetError, setResetError] = useState<string | null>(null);
+  const [isResetPending, startResetTransition] = useTransition();
 
   // Step 1: Send reset code
   const handleEmailSuccess = (submittedEmail: string) => {
@@ -48,61 +50,63 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     useForgotPasswordForm(handleEmailSuccess);
 
   // Step 2: Reset password with code
-  const [resetError, submitResetAction, isResetPending] = useActionState(
-    async (_prevState: string | null, formData: FormData) => {
-      const resetCode = formData.get('resetCode') as string;
-      const newPassword = formData.get('newPassword') as string;
-      const confirmPassword = formData.get('confirmPassword') as string;
+  const submitResetAction = useCallback(
+    (formData: FormData) => {
+      startResetTransition(async () => {
+        const resetCode = formData.get('resetCode') as string;
+        const newPassword = formData.get('newPassword') as string;
+        const confirmPassword = formData.get('confirmPassword') as string;
 
-      if (!resetCode || resetCode.length !== 6) {
-        toast.error(t('auth:resetPassword.validation.codeRequired'));
-        return t('auth:resetPassword.validation.codeRequired');
-      }
+        if (!resetCode || resetCode.length !== 6) {
+          toast.error(t('auth:resetPassword.validation.codeRequired'));
+          setResetError(t('auth:resetPassword.validation.codeRequired'));
+          return;
+        }
 
-      if (!newPassword || newPassword.length < 6) {
-        toast.error(t('auth:validation.passwordMinLength'));
-        return t('auth:validation.passwordMinLength');
-      }
+        if (!newPassword || newPassword.length < 6) {
+          toast.error(t('auth:validation.passwordMinLength'));
+          setResetError(t('auth:validation.passwordMinLength'));
+          return;
+        }
 
-      if (newPassword !== confirmPassword) {
-        toast.error(t('auth:validation.passwordMismatch'));
-        return t('auth:validation.passwordMismatch');
-      }
+        if (newPassword !== confirmPassword) {
+          toast.error(t('auth:validation.passwordMismatch'));
+          setResetError(t('auth:validation.passwordMismatch'));
+          return;
+        }
 
-      try {
-        const response = await authService.resetPassword({ email, resetCode, newPassword });
-        toast.success(t('auth:success.resetPassword'));
-        onSuccess(response.token);
-        handleClose();
-        return null;
-      } catch {
-        toast.error(t('auth:errors.resetPassword'));
-        return t('auth:errors.resetPassword');
-      }
+        try {
+          const response = await authService.resetPassword({ email, resetCode, newPassword });
+          toast.success(t('auth:success.resetPassword'));
+          setResetError(null);
+          onSuccess(response.token);
+          handleClose();
+        } catch {
+          toast.error(t('auth:errors.resetPassword'));
+          setResetError(t('auth:errors.resetPassword'));
+        }
+      });
     },
-    null,
+    [email, onSuccess, t],
   );
 
   const handleClose = () => {
     setStep('STEP_EMAIL');
     setEmail('');
+    setResetError(null);
     onClose();
   };
 
   const handleEmailSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    startTransition(() => {
-      submitEmailAction(formData);
-    });
+    submitEmailAction(formData);
   };
 
   const handleResetSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    startTransition(() => {
-      submitResetAction(formData);
-    });
+    submitResetAction(formData);
   };
 
   if (step === 'STEP_EMAIL') {

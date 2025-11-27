@@ -129,14 +129,22 @@ export const authToastMessages = {
 
   register: (t: (key: string) => string) => ({
     loading: t('auth:loading.register'),
-    success: authErrorHandling.dynamicMessageHandler('auth:success.register', t),
-    error: t('auth:errors.register'),
+    // Dynamic success message based on response type:
+    // - String response = email verification enabled, show "check your email"
+    // - AuthResponse (object with token) = no verification, show "you can log in"
+    success: (response?: unknown) => {
+      if (typeof response === 'string') {
+        return t('auth:success.registerWithVerification');
+      }
+      return t('auth:success.register');
+    },
+    error: authErrorHandling.standardError(t),
   }),
 
   forgotPassword: (t: (key: string) => string) => ({
     loading: t('auth:loading.forgotPassword'),
     success: authErrorHandling.dynamicMessageHandler('auth:success.forgotPassword', t),
-    error: t('auth:errors.forgotPassword'),
+    error: authErrorHandling.standardError(t),
   }),
 
   verifyEmail: (t: (key: string) => string) => ({

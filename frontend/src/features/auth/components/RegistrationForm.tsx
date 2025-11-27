@@ -1,6 +1,6 @@
 import type { AuthResponse } from 'features/settings/types/UserTypes';
 import { Calendar, Lock, Mail, Phone, User, UserPlus } from 'lucide-react';
-import React, { startTransition, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
@@ -71,9 +71,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
-      startTransition(() => {
-        submitAction(formData);
-      });
+      submitAction(formData);
     },
     [submitAction],
   );
