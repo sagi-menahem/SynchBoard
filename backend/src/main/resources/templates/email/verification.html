@@ -27,6 +27,14 @@
         background-color: #f9fafb;
         padding: 30px;
         border-radius: 0 0 8px 8px;
+        text-align: center;
+      }
+      .content h2 {
+        text-align: center;
+        margin-top: 0;
+      }
+      .content p {
+        text-align: center;
       }
       .code {
         background-color: #1f2937;
@@ -45,11 +53,16 @@
         font-size: 12px;
         color: #666;
       }
-      ul {
-        padding-left: 20px;
+      .info-box {
+        background-color: #e0f2fe;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
       }
-      li {
-        margin: 5px 0;
+      .info-box p {
+        margin: 8px 0;
+        text-align: center;
       }
     </style>
   </head>
@@ -67,16 +80,16 @@
 
         <div class="code" th:text="${verificationCode}">123456</div>
 
-        <p><strong th:text="#{email.verification.important}">Important:</strong></p>
-        <ul>
-          <li th:utext="#{email.verification.expiry(${expiryMinutes})}">
+        <div class="info-box">
+          <p><strong th:text="#{email.verification.important}">Important:</strong></p>
+          <p th:utext="#{email.verification.expiry(${expiryMinutes})}">
             This code will expire in <strong>15 minutes</strong>
-          </li>
-          <li th:text="#{email.verification.exactCode}">Enter the code exactly as shown above</li>
-          <li th:text="#{email.verification.ignore}">
+          </p>
+          <p th:text="#{email.verification.exactCode}">Enter the code exactly as shown above</p>
+          <p th:text="#{email.verification.ignore}">
             If you didn't request this, please ignore this email
-          </li>
-        </ul>
+          </p>
+        </div>
       </div>
       <div class="footer">
         <p th:text="#{email.footer.automated}">
