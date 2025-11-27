@@ -5,7 +5,9 @@ import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURI
 
 import io.github.sagimenahem.synchboard.config.AppProperties;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
+import io.github.sagimenahem.synchboard.entity.PendingRegistration;
 import io.github.sagimenahem.synchboard.entity.User;
+import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
 import io.github.sagimenahem.synchboard.service.auth.JwtService;
 import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
@@ -28,9 +30,11 @@ import org.springframework.util.StringUtils;
 
 /**
  * OAuth2 authentication success handler for processing Google OAuth2 login. Handles user creation,
- * updates, JWT token generation, and frontend redirection after successful OAuth2 authentication.
- * Includes profile picture download and proper error handling with user-friendly messages.
- * 
+ * account merging, JWT token generation, and frontend redirection after successful OAuth2
+ * authentication. Supports merging existing LOCAL accounts with Google OAuth2 login while
+ * preserving password credentials. Includes profile picture download and proper error handling
+ * with user-friendly messages.
+ *
  * @author Sagi Menahem
  */
 @Slf4j
@@ -40,6 +44,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     /** Repository for user data operations */
     private final UserRepository userRepository;
+    /** Repository for pending registration cleanup */
+    private final PendingRegistrationRepository pendingRegistrationRepository;
     /** Service for JWT token generation */
     private final JwtService jwtService;
     /** Service for profile picture download and storage */
@@ -105,21 +111,23 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                         + " Found existing user: email={}, authProvider={}, creationDate={}", email,
                         user.getAuthProvider(), user.getCreationDate());
 
-                if (user.getAuthProvider() != User.AuthProvider.GOOGLE) {
-                    log.warn(
-                            SECURITY_PREFIX
-                                    + " OAuth2 login attempted for existing non-OAuth user: {}",
-                            email);
-                    handleAuthenticationFailure(response,
-                            MessageConstants.AUTH_EMAIL_ALREADY_REGISTERED);
-                    return;
+                // Account merging: Allow Google OAuth2 login for existing accounts
+                // regardless of their original auth provider
+                if (user.getAuthProvider() == User.AuthProvider.GOOGLE) {
+                    // Pure OAuth2 user - update all fields from Google
+                    log.info(SECURITY_PREFIX + " Updating existing OAuth2 user data for: {}", email);
+                    updateUserFromOAuth2(user, name, pictureUrl, providerId);
+                } else {
+                    // LOCAL user - merge account safely (preserve password)
+                    log.info(SECURITY_PREFIX
+                            + " Merging LOCAL account with Google OAuth2 for: {}", email);
+                    mergeLocalUserWithOAuth2(user, name, pictureUrl, providerId);
                 }
 
-                log.info(SECURITY_PREFIX + " Updating existing OAuth2 user data for: {}", email);
-                updateUserFromOAuth2(user, name, pictureUrl, providerId);
                 try {
                     userForToken = userRepository.save(user);
-                    log.info(SECURITY_PREFIX + " Updated existing OAuth2 user: {}", email);
+                    log.info(SECURITY_PREFIX + " Updated/merged user: {} (provider: {})", email,
+                            user.getAuthProvider());
                 } catch (Exception dbException) {
                     log.error(
                             SECURITY_PREFIX
@@ -130,6 +138,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     return;
                 }
             } else {
+                // Check if there's a pending registration for this email
+                // If so, Google OAuth2 login verifies the email - clean up pending registration
+                cleanupPendingRegistration(email);
                 log.info(SECURITY_PREFIX + " Creating new OAuth2 user for: {}", email);
                 User newUser = createUserFromOAuth2(email, name, pictureUrl, providerId);
                 try {
@@ -209,8 +220,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     /**
      * Updates an existing User entity with fresh OAuth2 data. Replaces the profile picture if a new
-     * one is provided.
-     * 
+     * one is provided. This method is for users who originally registered via Google OAuth2.
+     *
      * @param user The existing user to update
      * @param name The updated full name
      * @param pictureUrl The updated profile picture URL
@@ -259,6 +270,78 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
 
         user.setProviderId(providerId);
+    }
+
+    /**
+     * Merges an existing LOCAL user account with Google OAuth2 authentication. This method
+     * implements strict safety rules to preserve the user's existing password and provider type
+     * while selectively updating profile data from Google.
+     *
+     * <p>Safety rules:
+     * <ul>
+     *   <li>Password field is NEVER modified - user can still log in with email/password</li>
+     *   <li>AuthProvider remains LOCAL - preserves original registration method</li>
+     *   <li>Profile picture is only updated if current one is null/empty</li>
+     *   <li>ProviderId is set to link the Google account for future reference</li>
+     *   <li>Email verification token is cleared (Google verified the email)</li>
+     * </ul>
+     *
+     * @param user The existing LOCAL user to merge with OAuth2
+     * @param name The user's name from Google (not used - preserve existing name)
+     * @param pictureUrl The profile picture URL from Google
+     * @param providerId The Google provider's user identifier
+     */
+    private void mergeLocalUserWithOAuth2(User user, String name, String pictureUrl,
+            String providerId) {
+        // SAFETY: Do NOT change authProvider - keep as LOCAL so password login still works
+        // SAFETY: Do NOT modify password field - it must remain untouched
+
+        // Store the Google provider ID for account linking reference
+        user.setProviderId(providerId);
+
+        // Clear email verification token since Google has verified this email
+        if (StringUtils.hasText(user.getEmailVerificationToken())) {
+            log.info(SECURITY_PREFIX
+                    + " Clearing email verification token for merged user: {} (Google verified)",
+                    user.getEmail());
+            user.setEmailVerificationToken(null);
+        }
+
+        // Only update profile picture if the user doesn't have one
+        if (!StringUtils.hasText(user.getProfilePictureUrl()) && pictureUrl != null) {
+            String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
+            if (localPicturePath != null) {
+                user.setProfilePictureUrl(localPicturePath);
+                log.info(SECURITY_PREFIX
+                        + " Downloaded and stored profile picture for merged user: {}",
+                        user.getEmail());
+            } else {
+                log.warn(SECURITY_PREFIX
+                        + " Failed to download profile picture from Google for merged user: {}",
+                        user.getEmail());
+            }
+        }
+
+        log.info(SECURITY_PREFIX
+                + " Account merge complete for: {} - password preserved, authProvider remains LOCAL",
+                user.getEmail());
+    }
+
+    /**
+     * Cleans up any pending registration for the given email address. This is called when a user
+     * signs in with Google OAuth2 before completing email verification - the Google login
+     * effectively verifies ownership of the email address.
+     *
+     * @param email The email address to check for pending registrations
+     */
+    private void cleanupPendingRegistration(String email) {
+        Optional<PendingRegistration> pending = pendingRegistrationRepository.findByEmail(email);
+        if (pending.isPresent()) {
+            log.info(SECURITY_PREFIX
+                    + " Cleaning up pending registration for: {} (Google OAuth2 verifies email)",
+                    email);
+            pendingRegistrationRepository.delete(pending.get());
+        }
     }
 
     /**

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Navigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
+import { getToken, isTokenValid } from 'shared/utils/authUtils';
 import logger from 'shared/utils/logger';
 
 interface ProtectedRouteProps {
@@ -13,24 +14,32 @@ interface ProtectedRouteProps {
 /**
  * Route protection wrapper that enforces authentication requirements.
  * Validates user authentication state and redirects unauthenticated users to login.
- * Provides comprehensive security logging for unauthorized access attempts.
+ * Checks both React context state and localStorage to handle race conditions during
+ * OAuth callbacks where navigation may occur before context state updates.
  *
  * @param children - Child components to render when user is authenticated
  */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { token } = useAuth();
+  const { token: contextToken } = useAuth();
 
-  if (!token) {
+  // Check both context token AND localStorage to handle race condition during OAuth callback
+  // When authLogin(token) is called, localStorage is updated synchronously but React state
+  // updates asynchronously. This fallback prevents redirect loops during OAuth flow.
+  const localStorageToken = getToken();
+  const hasValidToken = contextToken ?? (localStorageToken && isTokenValid(localStorageToken));
+
+  if (!hasValidToken) {
     // Log security event for unauthorized access attempt
-    logger.warn('[ProtectedRoute] SECURITY: No token found - redirecting to login', {
+    logger.warn('[ProtectedRoute] SECURITY: No valid token found - redirecting to login', {
       attemptedPath: window.location.pathname,
-      localStorageHasToken: !!localStorage.getItem('AUTH_TOKEN'), // Different key used for debugging - actual token key is in LOCAL_STORAGE_KEYS
+      hasContextToken: !!contextToken,
+      hasLocalStorageToken: !!localStorageToken,
       timestamp: new Date().toISOString(),
     });
     return <Navigate to={APP_ROUTES.AUTH} replace />;
   }
 
-  return <>{children};</>;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
