@@ -381,17 +381,18 @@ public class AuthService {
     }
 
     /**
-     * Resets user password using valid reset code. Validates reset code and expiration before
-     * updating user's password.
-     * 
+     * Resets user password using valid reset code and returns authentication token for auto-login.
+     * Validates reset code and expiration before updating user's password.
+     *
      * @param email the email address of user resetting password
      * @param resetCode the reset code sent to user's email
      * @param newPassword the new password to set
+     * @return AuthResponseDTO containing JWT token for automatic login after password reset
      * @throws ResourceNotFoundException if user account does not exist
      * @throws InvalidRequestException if reset code is invalid or expired
      */
     @Transactional
-    public void resetPassword(String email, String resetCode, String newPassword) {
+    public AuthResponseDTO resetPassword(String email, String resetCode, String newPassword) {
         log.info(SECURITY_PREFIX + " Password reset attempt for: {}", email);
 
         User user = userRepository.findById(email).orElseThrow(() -> {
@@ -416,6 +417,7 @@ public class AuthService {
         userRepository.save(user);
 
         log.info(SECURITY_PREFIX + " Password reset successful for: {}", email);
+        return generateAuthResponse(user);
     }
 
     /**

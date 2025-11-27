@@ -59,10 +59,11 @@ const AuthPage: React.FC = () => {
     }
   };
 
-  // Reset password flow completion brings user back to login form
-  const handleForgotPasswordSuccess = () => {
+  // Reset password flow completion authenticates user and navigates to main app
+  const handleForgotPasswordSuccess = (token: string) => {
+    authLogin(token);
     setShowForgotPassword(false);
-    setIsLoginView(true);
+    void navigate(APP_ROUTES.BOARD_LIST);
   };
 
   // Email verification completion authenticates user and navigates to main app

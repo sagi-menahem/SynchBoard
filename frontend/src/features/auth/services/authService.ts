@@ -72,13 +72,13 @@ export const forgotPassword = async (data: ForgotPasswordRequest): Promise<strin
 
 /**
  * Completes password reset process using the reset code sent to user's email.
- * Validates the reset code and updates the user's password with the new one.
+ * Validates the reset code, updates the user's password, and returns authentication token for auto-login.
  *
  * @param data - Reset password request containing email, reset code, and new password
- * @returns Success message confirming password has been reset
+ * @returns Authentication response with JWT token for automatic login after password reset
  */
-export const resetPassword = async (data: ResetPasswordRequest): Promise<string> => {
-  const response = await apiClient.post<string>(API_ENDPOINTS.RESET_PASSWORD, data);
+export const resetPassword = async (data: ResetPasswordRequest): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>(API_ENDPOINTS.RESET_PASSWORD, data);
   return response.data;
 };
 

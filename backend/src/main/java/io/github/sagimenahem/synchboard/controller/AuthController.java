@@ -126,21 +126,20 @@ public class AuthController {
     }
 
     /**
-     * Resets user password using the provided reset code and new password. Validates the reset code
-     * and updates the user's password with the new one.
-     * 
+     * Resets user password using the provided reset code and new password. Validates the reset code,
+     * updates the user's password, and returns authentication token for automatic login.
+     *
      * @param request the password reset details containing email, reset code, and new password
-     * @return ResponseEntity containing success message about password being reset
+     * @return ResponseEntity containing authentication response with JWT token for auto-login
      */
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<AuthResponseDTO> resetPassword(@RequestBody ResetPasswordRequest request) {
         // Execute password reset with logging for security monitoring
         return apiLoggingService.executeWithLogging("POST", API_AUTH_BASE_PATH + "/reset-password",
                 request.getEmail(), () -> {
-                    authService.resetPassword(request.getEmail(), request.getResetCode(),
-                            request.getNewPassword());
-                    return ResponseEntity.ok(
-                            "Password reset successful. You can now log in with your new password.");
+                    AuthResponseDTO response = authService.resetPassword(request.getEmail(),
+                            request.getResetCode(), request.getNewPassword());
+                    return ResponseEntity.ok(response);
                 });
     }
 }

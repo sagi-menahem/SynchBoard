@@ -16,8 +16,8 @@ interface ForgotPasswordModalProps {
   isOpen: boolean;
   /** Callback fired when modal should be closed */
   onClose: () => void;
-  /** Callback fired when password has been successfully reset */
-  onSuccess: () => void;
+  /** Callback fired when password has been successfully reset, receives JWT token for auto-login */
+  onSuccess: (token: string) => void;
 }
 
 /**
@@ -70,9 +70,9 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
       }
 
       try {
-        await authService.resetPassword({ email, resetCode, newPassword });
+        const response = await authService.resetPassword({ email, resetCode, newPassword });
         toast.success(t('auth:success.resetPassword'));
-        onSuccess();
+        onSuccess(response.token);
         handleClose();
         return null;
       } catch {
