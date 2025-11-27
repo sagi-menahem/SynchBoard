@@ -49,9 +49,9 @@ public class PendingRegistration {
     private String hashedPassword;
 
     /**
-     * User's gender
+     * User's gender (optional)
      */
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String gender;
 
     /**

@@ -3,6 +3,7 @@ package io.github.sagimenahem.synchboard.dto.auth;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,6 @@ public class ResetPasswordRequest {
 
     /** The new password to set for the user account */
     @NotBlank(message = "validation.newPassword")
+    @Size(min = 6, message = "validation.passwordMinLength")
     private String newPassword;
 }

@@ -21,9 +21,9 @@ export const useRegisterForm = (onRegistrationSuccess: (emailOrToken: string | A
     validateFormData: (formData: FormData) => {
       const email = extractFormData.email(formData);
       const password = extractFormData.password(formData);
+      const confirmPassword = extractFormData.confirmPassword(formData);
       const firstName = extractFormData.firstName(formData);
       const lastName = extractFormData.lastName(formData);
-      const genderValue = formData.get('gender');
       const gender = extractFormData.gender(formData);
       const phoneNumber = extractFormData.phoneNumber(formData);
       const dateOfBirth = extractFormData.dateOfBirth(formData);
@@ -38,6 +38,11 @@ export const useRegisterForm = (onRegistrationSuccess: (emailOrToken: string | A
         return passwordError;
       }
 
+      const confirmPasswordError = authValidation.validateConfirmPassword(password, confirmPassword, t);
+      if (confirmPasswordError) {
+        return confirmPasswordError;
+      }
+
       const firstNameError = authValidation.validateRequiredField(
         firstName,
         t('auth:registerForm.fields.firstName'),
@@ -47,24 +52,16 @@ export const useRegisterForm = (onRegistrationSuccess: (emailOrToken: string | A
         return firstNameError;
       }
 
-      const genderError = authValidation.validateRequiredField(
-        genderValue as string,
-        t('auth:registerForm.fields.gender'),
-        t,
-      );
-      if (genderError) {
-        return genderError;
-      }
-
+      // Gender is now optional - include only if provided
       // Include optional fields only if they have values
       return {
         email,
         password,
         firstName,
-        gender,
-        ...(lastName !== null && lastName !== '' && { lastName }),
-        ...(phoneNumber !== null && phoneNumber !== '' && { phoneNumber }),
-        ...(dateOfBirth !== null && dateOfBirth !== '' && { dateOfBirth }),
+        ...(gender && { gender }),
+        ...(lastName && { lastName }),
+        ...(phoneNumber && { phoneNumber }),
+        ...(dateOfBirth && { dateOfBirth }),
       };
     },
     serviceCall: authService.register,

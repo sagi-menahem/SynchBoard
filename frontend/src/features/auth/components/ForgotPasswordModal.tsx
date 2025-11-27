@@ -1,6 +1,6 @@
 import { BaseAuthModal } from 'features/auth/ui';
 import { KeyRound, Lock, Mail } from 'lucide-react';
-import React, { useActionState, useState } from 'react';
+import React, { startTransition, useActionState, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Input } from 'shared/ui';
@@ -52,6 +52,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     async (_prevState: string | null, formData: FormData) => {
       const resetCode = formData.get('resetCode') as string;
       const newPassword = formData.get('newPassword') as string;
+      const confirmPassword = formData.get('confirmPassword') as string;
 
       if (!resetCode || resetCode.length !== 6) {
         toast.error(t('auth:resetPassword.validation.codeRequired'));
@@ -59,8 +60,13 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
       }
 
       if (!newPassword || newPassword.length < 6) {
-        toast.error(t('auth:resetPassword.validation.passwordRequired'));
-        return t('auth:resetPassword.validation.passwordRequired');
+        toast.error(t('auth:validation.passwordMinLength'));
+        return t('auth:validation.passwordMinLength');
+      }
+
+      if (newPassword !== confirmPassword) {
+        toast.error(t('auth:validation.passwordMismatch'));
+        return t('auth:validation.passwordMismatch');
       }
 
       try {
@@ -86,13 +92,17 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   const handleEmailSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    submitEmailAction(formData);
+    startTransition(() => {
+      submitEmailAction(formData);
+    });
   };
 
   const handleResetSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    submitResetAction(formData);
+    startTransition(() => {
+      submitResetAction(formData);
+    });
   };
 
   if (step === 'STEP_EMAIL') {
@@ -180,6 +190,25 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
           required
           disabled={isResetPending}
           placeholder={t('auth:resetPassword.placeholder.password')}
+          autoComplete="new-password"
+        />
+        <span className={styles.hint}>{t('auth:validation.passwordHint')}</span>
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="confirm-password">
+          <Lock size={14} />
+          {t('auth:resetPassword.label.confirmPassword')}
+          <span className={styles.required}> *</span>
+        </label>
+        <Input
+          id="confirm-password"
+          name="confirmPassword"
+          type="password"
+          minLength={6}
+          required
+          disabled={isResetPending}
+          placeholder={t('auth:resetPassword.placeholder.confirmPassword')}
           autoComplete="new-password"
         />
       </div>

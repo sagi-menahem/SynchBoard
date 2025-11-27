@@ -65,7 +65,14 @@
 .error {
   @include theme.error-message;
   color: theme.$error;
-  margin-bottom: theme.$spacing-4;
+  font-size: 0.75rem;
+  margin-top: theme.$spacing-1;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: theme.$text-muted;
+  margin-top: theme.$spacing-1;
 }
 
 // Centered submit button with reduced width

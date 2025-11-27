@@ -1,6 +1,7 @@
 package io.github.sagimenahem.synchboard.dto.user;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,8 @@ public class ChangePasswordRequest {
     @NotEmpty(message = "validation.password")
     private String currentPassword;
 
-    /** New password to set (required) */
+    /** New password to set (required, min 6 characters) */
     @NotEmpty(message = "validation.newPassword")
+    @Size(min = 6, message = "validation.passwordMinLength")
     private String newPassword;
 }

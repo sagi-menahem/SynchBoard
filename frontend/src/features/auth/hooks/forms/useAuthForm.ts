@@ -16,10 +16,40 @@ export const authValidation = {
     return null;
   },
 
+  // For login: only check if password is non-empty (server validates credentials)
+  validatePasswordNotEmpty: (password: string | null, t: (key: string) => string) => {
+    if (password === null || password === '') {
+      toast.error(t('auth:validation.passwordRequired'));
+      return { error: t('auth:validation.passwordRequired') };
+    }
+    return null;
+  },
+
+  // For registration: check non-empty AND minimum length
   validatePassword: (password: string | null, t: (key: string) => string) => {
     if (password === null || password === '') {
       toast.error(t('auth:validation.passwordRequired'));
       return { error: t('auth:validation.passwordRequired') };
+    }
+    if (password.length < 6) {
+      toast.error(t('auth:validation.passwordMinLength'));
+      return { error: t('auth:validation.passwordMinLength') };
+    }
+    return null;
+  },
+
+  validateConfirmPassword: (
+    password: string | null,
+    confirmPassword: string | null,
+    t: (key: string) => string,
+  ) => {
+    if (confirmPassword === null || confirmPassword === '') {
+      toast.error(t('auth:validation.confirmPasswordRequired'));
+      return { error: t('auth:validation.confirmPasswordRequired') };
+    }
+    if (password !== confirmPassword) {
+      toast.error(t('auth:validation.passwordMismatch'));
+      return { error: t('auth:validation.passwordMismatch') };
     }
     return null;
   },
@@ -143,9 +173,10 @@ export const useAuthForm = <TRequest extends object, TResponse>(
 export const extractFormData = {
   email: (formData: FormData) => formData.get('email') as string,
   password: (formData: FormData) => formData.get('password') as string,
+  confirmPassword: (formData: FormData) => formData.get('confirmPassword') as string,
   firstName: (formData: FormData) => formData.get('firstName') as string,
   lastName: (formData: FormData) => formData.get('lastName') as string,
-  gender: (formData: FormData) => formData.get('gender') as 'male' | 'female',
+  gender: (formData: FormData) => formData.get('gender') as 'male' | 'female' | null,
   phoneNumber: (formData: FormData) => formData.get('phoneNumber') as string,
   dateOfBirth: (formData: FormData) => formData.get('dateOfBirth') as string,
   verificationCode: (formData: FormData) => formData.get('verificationCode') as string,

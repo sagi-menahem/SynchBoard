@@ -10,8 +10,8 @@ export interface RegisterRequest {
   firstName: string;
   // Optional last name for complete profile information
   lastName?: string;
-  // Gender selection for profile customization
-  gender: 'male' | 'female';
+  // Optional gender selection for profile customization
+  gender?: 'male' | 'female';
   // Optional phone number for contact information
   phoneNumber?: string;
   // Optional date of birth in ISO string format

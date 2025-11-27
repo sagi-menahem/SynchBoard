@@ -20,6 +20,7 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "validation.password")
+    @jakarta.validation.constraints.Size(min = 6, message = "validation.passwordMinLength")
     private String password;
 
     @NotBlank(message = "validation.firstName")
@@ -27,8 +28,7 @@ public class RegisterRequest {
 
     private String lastName;
 
-    @NotBlank(message = "validation.genderRequired")
-    @Pattern(regexp = "^(male|female)$", message = "validation.genderPattern")
+    @Pattern(regexp = "^(male|female)?$", message = "validation.genderPattern")
     private String gender;
 
     private String phoneNumber;

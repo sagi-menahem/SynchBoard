@@ -31,7 +31,8 @@ export const useLoginForm = () => {
         return emailError;
       }
 
-      const passwordError = authValidation.validatePassword(password, t);
+      // Login only checks if password is non-empty (server validates credentials)
+      const passwordError = authValidation.validatePasswordNotEmpty(password, t);
       if (passwordError) {
         return passwordError;
       }

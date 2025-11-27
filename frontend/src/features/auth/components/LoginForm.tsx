@@ -1,5 +1,5 @@
 import { Lock, LogIn, Mail } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { startTransition, useCallback, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
@@ -36,8 +36,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
     redirectToGoogle();
   };
 
+  // Use onSubmit to prevent form reset on error
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      startTransition(() => {
+        submitAction(formData);
+      });
+    },
+    [submitAction],
+  );
+
   return (
-    <form action={submitAction} className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.field}>
         <label htmlFor="login-email">
           <Mail size={14} />

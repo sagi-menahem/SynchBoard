@@ -9,7 +9,6 @@ import axios, { type AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import {
   API_BASE_URL,
-  API_ENDPOINTS,
   AUTH_HEADER_CONFIG,
   PUBLIC_API_ENDPOINTS,
 } from 'shared/constants/ApiConstants';
@@ -64,7 +63,10 @@ apiClient.interceptors.response.use(
       errorData: error.response?.data,
     });
 
-    const isLoginAttempt = error.config?.url === API_ENDPOINTS.LOGIN;
+    // Check if this is an auth form request (these have their own error handling)
+    const isAuthFormRequest = error.config?.url
+      ? PUBLIC_API_ENDPOINTS.includes(error.config.url)
+      : false;
 
     // Analyze error context to determine if session has expired
     const isBoardRequest = error.config?.url?.includes('/boards/');
@@ -84,9 +86,9 @@ apiClient.interceptors.response.use(
       getToken();
       
     const isHttpUnauthorized =
-      error.response && [401, 403].includes(error.response.status) && !isLoginAttempt; // 401 Unauthorized/403 Forbidden - invalid or expired credentials
-    const isUserNotFoundErrorTimeout = isUserNotFoundError && !isLoginAttempt;
-    const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isLoginAttempt;
+      error.response && [401, 403].includes(error.response.status) && !isAuthFormRequest; // 401 Unauthorized/403 Forbidden - invalid or expired credentials
+    const isUserNotFoundErrorTimeout = isUserNotFoundError && !isAuthFormRequest;
+    const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isAuthFormRequest;
     
     // Determine if this is a session timeout requiring user reauthentication
     const isSessionTimeout =
@@ -129,7 +131,8 @@ apiClient.interceptors.response.use(
     }
 
     // Handle structured backend errors with internationalized messages
-    if (error.response && isBackendError(error.response.data) && !isLoginAttempt) {
+    // Skip for auth form requests as they have their own error handling
+    if (error.response && isBackendError(error.response.data) && !isAuthFormRequest) {
       const backendKey = error.response.data.message;
 
       // Try multiple i18n key patterns to find appropriate translation
@@ -155,7 +158,8 @@ apiClient.interceptors.response.use(
       }
     } else {
       // Handle unexpected errors without structured backend messages
-      if (!isLoginAttempt) {
+      // Skip for auth form requests as they have their own error handling
+      if (!isAuthFormRequest) {
         logger.error('Unexpected error without backend message', error);
         toast.error(i18n.t('common:errors.common.unexpected'), { id: 'unexpected-error' });
       }
