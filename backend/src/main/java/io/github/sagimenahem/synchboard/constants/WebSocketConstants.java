@@ -83,9 +83,9 @@ public final class WebSocketConstants {
     // Connection Management
 
     /**
-     * WebSocket heartbeat interval in milliseconds (15 seconds). Ensures connection health and
+     * WebSocket heartbeat interval in milliseconds (10 seconds). Ensures connection health and
      * detects disconnected clients. Used for both client-to-server and server-to-client heartbeat
      * pings.
      */
-    public static final long WEBSOCKET_HEARTBEAT_INTERVAL_MS = 15000;
+    public static final long WEBSOCKET_HEARTBEAT_INTERVAL_MS = 10000;
 }

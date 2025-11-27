@@ -251,8 +251,8 @@ class WebSocketService {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },
       reconnectDelay: 0, // Disable STOMP's built-in reconnection to use custom exponential backoff
-      heartbeatIncoming: 30000, // Server heartbeat interval for connection health monitoring
-      heartbeatOutgoing: 30000, // Client heartbeat interval to keep connection alive through firewalls
+      heartbeatIncoming: 10000, // Server heartbeat interval for connection health monitoring
+      heartbeatOutgoing: 10000, // Client heartbeat interval to keep connection alive through firewalls
       onConnect: async () => {
         this.connectionState = 'connected';
         this.resetReconnectionState();
