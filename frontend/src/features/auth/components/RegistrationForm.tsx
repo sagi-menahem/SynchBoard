@@ -3,7 +3,7 @@ import { Calendar, Lock, Mail, Phone, User, UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useFeatureConfig } from 'shared/hooks/useFeatureConfig';
+import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
 import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
 
 import { useRegisterForm } from '../hooks/forms';
@@ -110,12 +110,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <Input id="register-phoneNumber" name="phoneNumber" type="tel" disabled={isPending} />
       </div>
 
-      {/* Show notice if email verification is disabled */}
-      {featureConfig && !featureConfig.emailVerificationEnabled && (
+      {/* Show notice if email verification is disabled - config is guaranteed by FeatureConfigProvider */}
+      {!featureConfig.emailVerificationEnabled && (
         <div className={styles.notice}>
           <p>
-            {t('auth:registerForm.noEmailVerificationNotice', 
-            'Quick registration enabled! You will be automatically logged in after creating your account.')}
+            {t(
+              'auth:registerForm.noEmailVerificationNotice',
+              'Quick registration enabled! You will be automatically logged in after creating your account.',
+            )}
           </p>
         </div>
       )}

@@ -2,7 +2,7 @@ import { Lock, LogIn, Mail } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useFeatureConfig } from 'shared/hooks/useFeatureConfig';
+import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
 import { Button, Input, PasswordInput } from 'shared/ui';
 
 import { useLoginForm } from '../hooks/forms';
@@ -65,29 +65,31 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         {isPending ? t('common:button.loggingIn') : t('auth:loginForm.button')}
       </Button>
 
-      {/* Only show Google login if enabled */}
-      {featureConfig?.googleLoginEnabled && (
+      {/* Only show Google login if enabled - config is guaranteed by FeatureConfigProvider */}
+      {featureConfig.googleLoginEnabled && (
         <>
           <div className={styles.divider}>
             <span className={styles.dividerText}>{t('auth:loginForm.orContinueWith')}</span>
           </div>
-          <GoogleLoginButton onClick={handleGoogleLogin} disabled={isPending ?? isGoogleLoading} />
+          <GoogleLoginButton onClick={handleGoogleLogin} disabled={isPending || isGoogleLoading} />
         </>
       )}
 
       {/* Show notice if Google login is disabled */}
-      {featureConfig && !featureConfig.googleLoginEnabled && (
+      {!featureConfig.googleLoginEnabled && (
         <div className={styles.infoNotice}>
           <p>
-            {t('auth:loginForm.googleLoginDisabledNotice', 
-            'Google login requires additional configuration.')}
+            {t(
+              'auth:loginForm.googleLoginDisabledNotice',
+              'Google login requires additional configuration.',
+            )}
           </p>
         </div>
       )}
 
       <div className={styles.secondaryActionsContainer}>
         {/* Only show forgot password if password reset is enabled */}
-        {featureConfig?.passwordResetEnabled && (
+        {featureConfig.passwordResetEnabled && (
           <Button
             type="button"
             variant="link"
@@ -99,11 +101,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         )}
 
         {/* Show notice if password reset is disabled */}
-        {featureConfig && !featureConfig.passwordResetEnabled && (
+        {!featureConfig.passwordResetEnabled && (
           <div className={styles.infoNotice}>
             <p>
-              {t('auth:loginForm.passwordResetDisabledNotice', 
-              'Password reset unavailable. Please contact support if you need assistance.')}
+              {t(
+                'auth:loginForm.passwordResetDisabledNotice',
+                'Password reset unavailable. Please contact support if you need assistance.',
+              )}
             </p>
           </div>
         )}
