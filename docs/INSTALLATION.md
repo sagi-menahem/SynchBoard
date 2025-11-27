@@ -322,8 +322,8 @@ The application gracefully handles missing API keys:
 - OAuth2 with Google provider
 
 **Frontend:**
-- React 19.1.1 with TypeScript 5.9.2
-- Vite 7.0.0 build tool
+- React 19.2.0 with TypeScript 5.9.2
+- Vite 7.2.4 build tool
 - SCSS modules for styling
 - @stomp/stompjs for WebSocket communication
 - React Router for navigation

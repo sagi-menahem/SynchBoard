@@ -16,9 +16,9 @@
 
 ![Java](https://img.shields.io/badge/Java-24-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.5-6DB33F?style=flat-square&logo=springboot&logoColor=white)
-![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=flat-square&logo=react&logoColor=black)
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat-square&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7.0.0-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF?style=flat-square&logo=vite&logoColor=white)
 
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![ActiveMQ](https://img.shields.io/badge/ActiveMQ_Artemis-2.37-D22128?style=flat-square&logo=apache&logoColor=white)
@@ -89,8 +89,8 @@ The production deployment uses a multi-layer architecture with SSL termination a
 
 | Backend | Frontend | Infrastructure |
 |:-----------------------------:|:-----------------------------------:|:---------------------------:|
-| Java 24 + Spring Boot 3.5.5 | React 19.1.1 + TypeScript 5.9.2 | Docker & Docker Compose |
-| Spring Security + JWT | Vite 7.0.0 + SCSS Modules | Nginx Reverse Proxy |
+| Java 24 + Spring Boot 3.5.5 | React 19.2.0 + TypeScript 5.9.2 | Docker & Docker Compose |
+| Spring Security + JWT | Vite 7.2.4 + SCSS Modules | Nginx Reverse Proxy |
 | Spring WebSocket + STOMP | @stomp/stompjs WebSocket | PostgreSQL 17 Database |
 | PostgreSQL + ActiveMQ Artemis | React Router + i18next | ActiveMQ Message Broker |
 | SendGrid Email + OAuth2 Google| Axios HTTP Client | Multi-stage Docker Builds |
