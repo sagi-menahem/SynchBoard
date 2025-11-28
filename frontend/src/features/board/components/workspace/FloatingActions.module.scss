@@ -1,0 +1,135 @@
+@use '@/styles' as theme;
+
+// FloatingActions - Fixed corner position with RTL/LTR awareness
+// LTR (English): Bottom-left | RTL (Hebrew): Bottom-right
+
+.container {
+  // Fixed position - corner varies by language direction
+  position: fixed;
+  bottom: 20px;
+  z-index: 1000;
+
+  // Vertical stack of pills
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-3;
+}
+
+// LTR (English): Bottom-left, align to left
+.ltr {
+  left: 20px;
+  right: auto;
+  align-items: flex-start;
+}
+
+// RTL (Hebrew): Bottom-right, align to right
+.rtl {
+  right: 20px;
+  left: auto;
+  align-items: flex-end;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: theme.$border-radius-pill;
+  padding: theme.$spacing-1;
+  box-shadow: theme.$shadow-md;
+
+  // Glass effect
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  // Glass highlight
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+.actionButton {
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: theme.$spacing-1-5 !important;
+  border-radius: theme.$border-radius-full !important;
+  background: transparent !important;
+  border: none !important;
+
+  &:hover:not(:disabled) {
+    background: var(--color-surface-hover) !important;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.pillSeparator {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+  margin: 0 theme.$spacing-0-5;
+}
+
+.zoomIndicator {
+  padding: theme.$spacing-1 theme.$spacing-2;
+  font-size: theme.$font-size-xs;
+  font-weight: theme.$font-weight-medium;
+  color: var(--color-text-muted);
+  min-width: 44px;
+  text-align: center;
+  user-select: none;
+  cursor: default;
+}
+
+// Mobile styles
+@media (max-width: theme.$breakpoint-md) {
+  .container {
+    bottom: 80px; // Above the dock
+  }
+
+  .ltr {
+    left: 16px;
+  }
+
+  .rtl {
+    right: 16px;
+  }
+
+  .pill {
+    padding: theme.$spacing-0-5;
+  }
+
+  .actionButton {
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+
+  .zoomIndicator {
+    font-size: theme.$font-size-2xs;
+    padding: theme.$spacing-0-5 theme.$spacing-1-5;
+    min-width: 36px;
+  }
+
+  .pillSeparator {
+    height: 16px;
+  }
+}
+
+// Very small screens - hide zoom controls
+@media (max-width: 400px) {
+  .pill:nth-child(2) {
+    display: none;
+  }
+}

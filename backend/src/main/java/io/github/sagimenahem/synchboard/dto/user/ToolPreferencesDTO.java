@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 
 /**
  * Data Transfer Object representing user tool preferences. Contains default settings for drawing
- * tools including tool selection, colors, and stroke properties with validation constraints.
- * 
+ * tools including tool selection, colors, stroke properties, and dock UI preferences with
+ * validation constraints.
+ *
  * @author Sagi Menahem
  */
 @Data
@@ -42,4 +43,13 @@ public class ToolPreferencesDTO {
     @Min(value = DEFAULT_STROKE_WIDTH_MIN, message = "validation.strokeWidthMin")
     @Max(value = DEFAULT_STROKE_WIDTH_MAX, message = "validation.strokeWidthMax")
     private Integer defaultStrokeWidth;
+
+    /** Dock anchor position for floating toolbar placement */
+    @Pattern(
+            regexp = "top-left|top-center|top-right|bottom-left|bottom-center|bottom-right|left-center|right-center",
+            message = "validation.dockAnchorPattern")
+    private String dockAnchor;
+
+    /** Whether the floating dock is minimized/collapsed */
+    private Boolean isDockMinimized;
 }

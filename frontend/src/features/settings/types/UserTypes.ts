@@ -102,6 +102,21 @@ export interface LanguagePreferences {
 }
 
 /**
+ * Dock anchor positions for floating toolbar placement.
+ * Controls where the floating dock is positioned on the canvas.
+ * Note: bottom-right is reserved for FloatingActions and not allowed for dock.
+ */
+export type DockAnchor =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
+  | 'left-center'
+  | 'right-center';
+
+/**
  * Drawing tool preferences interface for canvas and drawing operations.
  */
 export interface ToolPreferences {
@@ -111,6 +126,10 @@ export interface ToolPreferences {
   defaultStrokeColor: string;
   // Default stroke width for drawing tools in pixels
   defaultStrokeWidth: number;
+  // Dock anchor position for floating toolbar placement
+  dockAnchor: DockAnchor;
+  // Whether the floating dock is minimized/collapsed
+  isDockMinimized: boolean;
 }
 
 /**

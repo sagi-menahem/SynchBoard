@@ -167,8 +167,28 @@
     "nothingToUndo": "אין פעולות לביטול.",
     "nothingToRedo": "אין פעולות לביצוע מחדש."
   },
+  "dock": {
+    "minimize": "מזער סרגל כלים",
+    "expand": "הרחב סרגל כלים",
+    "dragHint": "גרור למיקום מחדש"
+  },
+  "zoom": {
+    "in": "הגדל תצוגה",
+    "out": "הקטן תצוגה",
+    "reset": "אפס תצוגה",
+    "comingSoon": "זום יגיע בקרוב"
+  },
+  "actions": {
+    "undo": "בטל",
+    "redo": "בצע שנית"
+  },
+  "header": {
+    "export": "ייצא קנבס",
+    "info": "פרטי לוח"
+  },
   "toolbar": {
     "ariaLabel": "סרגל כלי ציור",
+    "strokeWidth": "עובי",
     "label": {
       "color": "צבע",
       "size": "גודל",

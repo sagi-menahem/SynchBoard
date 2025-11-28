@@ -1,0 +1,203 @@
+@use '@/styles' as theme;
+
+// FloatingDock - Always horizontal toolbar
+// Position is controlled by Framer Motion via x/y animation
+
+.dock {
+  // CRITICAL: Fixed positioning with high z-index
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  // Always horizontal layout
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  // Visual styling
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: theme.$border-radius-xl;
+  padding: theme.$spacing-2;
+  box-shadow: theme.$shadow-lg;
+
+  // Glass effect
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  // Interaction
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+
+  // Glass highlight overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    pointer-events: none;
+  }
+
+  &.dragging {
+    cursor: grabbing;
+    box-shadow: theme.$shadow-xl;
+    transform: scale(1.02);
+  }
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: theme.$spacing-1;
+  margin-right: theme.$spacing-2;
+  color: var(--color-text-muted);
+  cursor: grab;
+  border-radius: theme.$border-radius-sm;
+  transition: all theme.$transition-fast;
+
+  &:hover {
+    color: var(--color-text-secondary);
+    background: var(--color-surface-hover);
+  }
+
+  &:active {
+    cursor: grabbing;
+    color: var(--color-text-primary);
+  }
+}
+
+.toolsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: theme.$spacing-2;
+}
+
+.toolGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: theme.$spacing-1-5;
+}
+
+.separator {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-border),
+    transparent
+  );
+}
+
+.colorPickerWrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+
+  :global(.colorPickerContainer) {
+    height: 36px;
+  }
+
+  :global(.swatch) {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.strokeControl {
+  display: inline-flex;
+  align-items: center;
+  min-width: 100px;
+  max-width: 120px;
+  height: 36px;
+  padding: 0 theme.$spacing-2;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: theme.$border-radius-sm;
+}
+
+.minimizeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: theme.$spacing-1;
+  margin-left: theme.$spacing-1;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: theme.$border-radius-sm;
+  cursor: pointer;
+  transition: all theme.$transition-fast;
+
+  &:hover {
+    color: var(--color-text-secondary);
+    background: var(--color-surface-hover);
+  }
+}
+
+.minimizedTrigger {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-1;
+  padding: theme.$spacing-2 theme.$spacing-3;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  border-radius: theme.$border-radius-lg;
+  cursor: pointer;
+  transition: all theme.$transition-fast;
+
+  &:hover {
+    background: var(--color-surface-hover);
+  }
+}
+
+// Mobile styles
+@media (max-width: theme.$breakpoint-md) {
+  .dock {
+    max-width: calc(100vw - 40px);
+    cursor: default;
+    overflow-x: auto;
+  }
+
+  .dragHandle {
+    display: none;
+  }
+
+  .toolsContainer {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .strokeControl {
+    min-width: 80px;
+    max-width: 100px;
+  }
+}
+
+// Very small screens - hide some tools
+@media (max-width: 480px) {
+  .toolGroup:nth-child(5) {
+    display: none;
+  }
+
+  .strokeControl {
+    min-width: 60px;
+    max-width: 80px;
+  }
+}

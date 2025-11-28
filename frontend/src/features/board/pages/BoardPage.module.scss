@@ -1,9 +1,9 @@
 @use '@/styles' as theme;
 
-// Full-viewport layout with dynamic positioning based on banner/toolbar presence
+// Full-viewport layout with dynamic positioning based on header presence
 .pageContent {
   position: absolute;
-  top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px));
+  top: calc(var(--banner-height, 0px) + #{theme.$header-height});
   left: 0;
   right: 0;
   bottom: 0;
@@ -22,4 +22,23 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+// Board title in header
+.boardTitle {
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+
+  @media (min-width: theme.$breakpoint-md) {
+    max-width: 300px;
+  }
+
+  @media (min-width: theme.$breakpoint-lg) {
+    max-width: 400px;
+  }
 }

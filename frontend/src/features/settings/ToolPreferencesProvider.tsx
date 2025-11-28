@@ -2,6 +2,7 @@ import {
   useToolPreferencesAPI,
   type ToolPreferences,
 } from 'features/settings/hooks/useToolPreferencesAPI';
+import type { DockAnchor } from 'features/settings/types/UserTypes';
 import React, { createContext, useContext } from 'react';
 
 import type { Tool } from 'shared/types/CommonTypes';
@@ -22,6 +23,10 @@ export interface ToolPreferencesContextType {
   updateStrokeColor: (color: string) => Promise<void>;
   // Function to update the default stroke width for drawing tools
   updateStrokeWidth: (width: number) => Promise<void>;
+  // Function to update the dock anchor position
+  updateDockAnchor: (anchor: DockAnchor) => Promise<void>;
+  // Function to update the dock minimized state
+  updateDockMinimized: (minimized: boolean) => Promise<void>;
   // Function to update multiple tool preferences in a single operation
   updateToolPreferences: (preferences: Partial<ToolPreferences>) => Promise<void>;
   // Function to refresh preferences from server storage

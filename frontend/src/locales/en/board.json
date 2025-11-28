@@ -167,8 +167,28 @@
     "nothingToUndo": "Nothing to undo.",
     "nothingToRedo": "Nothing to redo."
   },
+  "dock": {
+    "minimize": "Minimize toolbar",
+    "expand": "Expand toolbar",
+    "dragHint": "Drag to reposition"
+  },
+  "zoom": {
+    "in": "Zoom in",
+    "out": "Zoom out",
+    "reset": "Reset zoom",
+    "comingSoon": "Zoom coming soon"
+  },
+  "actions": {
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "header": {
+    "export": "Export canvas",
+    "info": "Board details"
+  },
   "toolbar": {
     "ariaLabel": "Drawing toolbar",
+    "strokeWidth": "Stroke",
     "label": {
       "color": "Color",
       "size": "Size",

@@ -1,5 +1,6 @@
 import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
+import type { DockAnchor } from 'features/settings/types/UserTypes';
 import { useCallback, useEffect, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 import logger from 'shared/utils/logger';
@@ -14,12 +15,18 @@ export interface ToolPreferences {
   defaultStrokeColor: string;
   // Default stroke width in pixels for drawing tools
   defaultStrokeWidth: number;
+  // Dock anchor position for floating toolbar placement
+  dockAnchor: DockAnchor;
+  // Whether the floating dock is minimized/collapsed
+  isDockMinimized: boolean;
 }
 
 const defaultToolPreferences: ToolPreferences = {
   defaultTool: 'brush',
   defaultStrokeColor: '#FFFFFF',
-  defaultStrokeWidth: 3, // Default stroke width in pixels for optimal drawing experience
+  defaultStrokeWidth: 3,
+  dockAnchor: 'bottom-center',
+  isDockMinimized: false,
 };
 
 /**
@@ -86,6 +93,8 @@ export const useToolPreferencesAPI = () => {
   const updateTool = (tool: Tool) => updatePreference('defaultTool', tool);
   const updateStrokeColor = (color: string) => updatePreference('defaultStrokeColor', color);
   const updateStrokeWidth = (width: number) => updatePreference('defaultStrokeWidth', width);
+  const updateDockAnchor = (anchor: DockAnchor) => updatePreference('dockAnchor', anchor);
+  const updateDockMinimized = (minimized: boolean) => updatePreference('isDockMinimized', minimized);
 
   const updateToolPreferences = async (newPrefs: Partial<ToolPreferences>) => {
     if (!isAuthenticated) {
@@ -124,6 +133,8 @@ export const useToolPreferencesAPI = () => {
     updateTool,
     updateStrokeColor,
     updateStrokeWidth,
+    updateDockAnchor,
+    updateDockMinimized,
     updateToolPreferences,
     refreshPreferences,
     resetError,

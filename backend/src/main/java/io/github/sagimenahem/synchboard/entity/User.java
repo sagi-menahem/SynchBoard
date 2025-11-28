@@ -101,6 +101,16 @@ public class User implements UserDetails {
     @Builder.Default
     private Integer defaultStrokeWidth = 3;
 
+    /** Dock anchor position for floating toolbar (bottom-center, bottom-left, bottom-right, left-center, right-center) */
+    @Column(name = "dock_anchor", length = 20)
+    @Builder.Default
+    private String dockAnchor = "bottom-center";
+
+    /** Whether the floating dock is minimized/collapsed */
+    @Column(name = "is_dock_minimized")
+    @Builder.Default
+    private Boolean isDockMinimized = false;
+
     @Column(name = "preferred_language")
     @Builder.Default
     private String preferredLanguage = DEFAULT_LANGUAGE;

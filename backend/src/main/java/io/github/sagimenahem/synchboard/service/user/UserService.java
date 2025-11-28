@@ -224,7 +224,9 @@ public class UserService {
         return getPreferences(userEmail, "tool",
                 (user) -> ToolPreferencesDTO.builder().defaultTool(user.getDefaultTool())
                         .defaultStrokeColor(user.getDefaultStrokeColor())
-                        .defaultStrokeWidth(user.getDefaultStrokeWidth()).build());
+                        .defaultStrokeWidth(user.getDefaultStrokeWidth())
+                        .dockAnchor(user.getDockAnchor())
+                        .isDockMinimized(user.getIsDockMinimized()).build());
     }
 
     @Transactional
@@ -240,9 +242,17 @@ public class UserService {
             if (prefs.getDefaultStrokeWidth() != null) {
                 user.setDefaultStrokeWidth(prefs.getDefaultStrokeWidth());
             }
+            if (prefs.getDockAnchor() != null) {
+                user.setDockAnchor(prefs.getDockAnchor());
+            }
+            if (prefs.getIsDockMinimized() != null) {
+                user.setIsDockMinimized(prefs.getIsDockMinimized());
+            }
         }, (user) -> ToolPreferencesDTO.builder().defaultTool(user.getDefaultTool())
                 .defaultStrokeColor(user.getDefaultStrokeColor())
-                .defaultStrokeWidth(user.getDefaultStrokeWidth()).build());
+                .defaultStrokeWidth(user.getDefaultStrokeWidth())
+                .dockAnchor(user.getDockAnchor())
+                .isDockMinimized(user.getIsDockMinimized()).build());
     }
 
     @Transactional(readOnly = true)

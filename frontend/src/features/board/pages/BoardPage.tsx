@@ -1,42 +1,19 @@
 import { BoardProvider } from 'features/board';
 import { BoardWorkspace } from 'features/board/components/workspace';
-import { STROKE_WIDTH_RANGE, TOOLS } from 'features/board/constants/BoardConstants';
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
-import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
-import {
-  Brush,
-  Download,
-  Eraser,
-  Info,
-  PaintBucket,
-  Pipette,
-  Redo,
-  Type,
-  Undo,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Info } from 'lucide-react';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
-import type { Tool } from 'shared/types/CommonTypes';
-import {
-  ColorPicker,
-  PageLoader,
-  PageTransition,
-  Slider,
-  ToolButton,
-  ToolGroup,
-  UniversalToolbar,
-} from 'shared/ui';
-import Button from 'shared/ui/components/forms/Button';
-import utilStyles from 'shared/ui/styles/utils.module.scss';
-import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
+import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
+import { isRTL } from 'shared/utils/rtlUtils';
 
-import { LineToolsDropdown } from '../components/workspace/LineToolsDropdown';
-import { ShapeToolsDropdown } from '../components/workspace/ShapeToolsDropdown';
+import { FloatingActions } from '../components/workspace/FloatingActions';
+import { FloatingDock } from '../components/workspace/FloatingDock';
 import { useCanvasDownload } from '../hooks/useCanvasDownload';
 
 import styles from './BoardPage.module.scss';
@@ -51,15 +28,15 @@ interface BoardPageContentProps {
 
 /**
  * Board Page Content component that provides the complete collaborative whiteboard workspace.
- * This component serves as the main drawing and collaboration interface, integrating a comprehensive
- * toolbar with all drawing tools, canvas workspace, chat functionality, and real-time collaboration
- * features. It manages tool state, canvas preferences, drawing actions, and provides full-featured
- * whiteboard functionality with undo/redo, export capabilities, and multi-user interaction support.
+ * This component serves as the main drawing and collaboration interface with a slimmed-down
+ * header and floating tool dock. It manages tool state, canvas preferences, drawing actions,
+ * and provides full-featured whiteboard functionality with undo/redo, export capabilities,
+ * and multi-user interaction support.
  *
  * @param boardId - ID of the board to render and manage in the workspace
  */
 const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
-  const { t } = useTranslation(['board', 'common']);
+  const { t, i18n } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
 
@@ -71,22 +48,19 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     messages,
     instanceId,
     handleDrawAction,
-    handleUndo,
-    handleRedo,
-    isUndoAvailable,
-    isRedoAvailable,
   } = useBoardContext();
 
-  const { preferences, updateTool, updateStrokeColor, updateStrokeWidth } = useToolPreferences();
+  const { preferences } = useToolPreferences();
 
   // Extract current tool settings from user preferences
   const tool = preferences.defaultTool;
   const strokeColor = preferences.defaultStrokeColor;
   const strokeWidth = preferences.defaultStrokeWidth;
 
-  const handleColorPick = (color: string) => {
-    void updateStrokeColor(color);
-  };
+  const handleColorPick = useCallback((color: string) => {
+    // Color picking is now handled internally by FloatingDock
+    // This is kept for BoardWorkspace compatibility
+  }, []);
 
   const { preferences: canvasPreferences, updateSplitRatio } = useCanvasPreferences();
 
@@ -110,263 +84,29 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     canvasConfig,
   });
 
-  const handleToolClick = useCallback(
-    (toolName: Tool) => {
-      if (toolName === TOOLS.DOWNLOAD) {
-        void handleDownload();
-      } else {
-        void updateTool(toolName);
-      }
-    },
-    [handleDownload, updateTool],
-  );
+  // Navigation handlers
+  const handleGoToDetails = useCallback(() => {
+    navigate(APP_ROUTES.getBoardDetailsRoute(boardId));
+  }, [navigate, boardId]);
 
-  // Configure comprehensive toolbar with all drawing tools and actions - memoized due to expensive toolbar creation
-  const toolbarConfig: ToolbarConfig = useMemo(
-    () => ({
-      pageType: 'canvas',
-      leftSection: [
-        {
-          type: 'custom',
-          key: 'color-group',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.color')}>
-              <div className={`${utilStyles.colorPickerPopupWrapper}`}>
-                <ColorPicker color={strokeColor} onChange={updateStrokeColor} />
-              </div>
-            </ToolGroup>
-          ),
-        },
-        ...(tool !== TOOLS.DOWNLOAD
-          ? [
-              {
-                type: 'custom' as const,
-                key: 'size-group',
-                content: (
-                  <ToolGroup label={t('board:toolbar.label.size')}>
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        minWidth: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_MIN_WIDTH,
-                        height: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_HEIGHT,
-                        padding: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_PADDING,
-                        background: 'var(--color-surface-elevated)',
-                        border: '1px solid var(--color-border-light)',
-                        borderRadius: UI_CONSTANTS.TOOLBAR_SIZE_CONTROL_BORDER_RADIUS,
-                      }}
-                    >
-                      <Slider
-                        value={strokeWidth}
-                        min={tool === TOOLS.TEXT ? 12 : STROKE_WIDTH_RANGE.MIN} // Text tool minimum ensures readable font size
-                        max={tool === TOOLS.TEXT ? 48 : STROKE_WIDTH_RANGE.MAX} // Text tool maximum prevents oversized fonts that break layout
-                        onChange={updateStrokeWidth}
-                        aria-label={t('common:accessibility.sizeSlider', { size: strokeWidth })}
-                      />
-                    </div>
-                  </ToolGroup>
-                ),
-              },
-            ]
-          : []),
-        {
-          type: 'custom',
-          key: 'draw-group',
-          className: 'toolbar-priority-6',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.draw')}>
-              <ToolButton
-                tool={TOOLS.BRUSH}
-                currentTool={tool}
-                onClick={handleToolClick}
-                title={t('board:toolbar.tool.brush')}
-              >
-                <Brush size={20} />
-              </ToolButton>
-              <ToolButton
-                tool={TOOLS.ERASER}
-                currentTool={tool}
-                onClick={handleToolClick}
-                title={t('board:toolbar.tool.eraser')}
-              >
-                <Eraser size={20} />
-              </ToolButton>
-            </ToolGroup>
-          ),
-        },
-        {
-          type: 'custom',
-          key: 'shapes-group',
-          className: 'toolbar-priority-5',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.shapes')}>
-              <ShapeToolsDropdown currentTool={tool} onToolSelect={updateTool} />
-            </ToolGroup>
-          ),
-        },
-        {
-          type: 'custom',
-          key: 'lines-group',
-          className: 'toolbar-priority-4',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.lines')}>
-              <LineToolsDropdown currentTool={tool} onToolSelect={updateTool} />
-            </ToolGroup>
-          ),
-        },
-        {
-          type: 'custom',
-          key: 'tools-group',
-          className: 'toolbar-priority-3',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.tools')}>
-              <ToolButton
-                tool={TOOLS.TEXT}
-                currentTool={tool}
-                onClick={handleToolClick}
-                title={t('board:toolbar.tool.text')}
-              >
-                <Type size={20} />
-              </ToolButton>
-              <ToolButton
-                tool={TOOLS.COLOR_PICKER}
-                currentTool={tool}
-                onClick={handleToolClick}
-                title={t('board:toolbar.tool.colorPicker')}
-              >
-                <Pipette size={20} />
-              </ToolButton>
-              <ToolButton
-                tool={TOOLS.RECOLOR}
-                currentTool={tool}
-                onClick={handleToolClick}
-                title={t('board:toolbar.tool.recolor')}
-              >
-                <PaintBucket size={20} />
-              </ToolButton>
-            </ToolGroup>
-          ),
-        },
-        {
-          type: 'custom',
-          key: 'history-group',
-          className: 'toolbar-priority-2',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.history')}>
-              <Button
-                variant="icon"
-                onClick={handleUndo}
-                disabled={!isUndoAvailable}
-                title={t('board:toolbar.tool.undo')}
-              >
-                <Undo size={20} />
-              </Button>
-              <Button
-                variant="icon"
-                onClick={handleRedo}
-                disabled={!isRedoAvailable}
-                title={t('board:toolbar.tool.redo')}
-              >
-                <Redo size={20} />
-              </Button>
-            </ToolGroup>
-          ),
-        },
-        {
-          type: 'custom',
-          key: 'export-group',
-          className: 'toolbar-priority-1',
-          content: (
-            <ToolGroup label={t('board:toolbar.label.export')}>
-              <Button
-                variant="icon"
-                onClick={handleDownload}
-                title={t('board:toolbar.tool.download')}
-              >
-                <Download size={20} />
-              </Button>
-            </ToolGroup>
-          ),
-        },
-      ],
-      centerSection: [],
-      rightSection: [
-        {
-          type: 'custom',
-          content: (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: UI_CONSTANTS.TOOLBAR_GAP,
-                paddingRight: UI_CONSTANTS.TOOLBAR_PADDING_RIGHT,
-                position: 'relative',
-              }}
-            >
-              <div
-                style={{
-                  width: UI_CONSTANTS.SEPARATOR_WIDTH,
-                  height: '32px',
-                  background:
-                    'linear-gradient(to bottom, transparent, var(--color-border-light), transparent)',
-                }}
-              />
-              <span
-                style={{
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: 'var(--color-text-primary)',
-                  letterSpacing: '0.02em',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {boardName ?? t('board:fallbacks.untitled')}
-              </span>
-            </div>
-          ),
-        },
-        {
-          type: 'button',
-          icon: Info,
-          label: t('board:page.boardDetailsButton'),
-          onClick: () => navigate(APP_ROUTES.getBoardDetailsRoute(boardId)),
-          variant: 'navigation',
-          className: 'iconOnlyButton',
-        },
-        {
-          type: 'button',
-          icon: getNavigationArrowIcon(),
-          label: t('board:page.boardListButton'),
-          onClick: () => navigate(APP_ROUTES.BOARD_LIST),
-          variant: 'navigation',
-          className: 'iconOnlyButton',
-        },
-      ],
-    }),
-    [
-      boardName,
-      strokeColor,
-      updateStrokeColor,
-      strokeWidth,
-      updateStrokeWidth,
-      tool,
-      updateTool,
-      handleUndo,
-      isUndoAvailable,
-      handleRedo,
-      isRedoAvailable,
-      handleToolClick,
-      handleDownload,
-      navigate,
-      boardId,
-      t,
-    ],
-  );
+  const handleGoToList = useCallback(() => {
+    navigate(APP_ROUTES.BOARD_LIST);
+  }, [navigate]);
+
+  // RTL-aware back arrow
+  const BackArrow = isRTL(i18n.language) ? ArrowRight : ArrowLeft;
 
   if (isLoading) {
     return (
       <PageTransition>
-        <UniversalToolbar config={toolbarConfig} />
+        <AppHeader
+          leading={
+            <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
+              <BackArrow size={20} />
+            </Button>
+          }
+          title={<span>{t('board:page.loading')}</span>}
+        />
         <PageLoader message={t('board:page.loading')} />
       </PageTransition>
     );
@@ -374,7 +114,35 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   return (
     <PageTransition>
-      <UniversalToolbar config={toolbarConfig} />
+      {/* Slim Header with navigation, title, info, and export only */}
+      <AppHeader
+        leading={
+          <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
+            <BackArrow size={20} />
+          </Button>
+        }
+        title={<span className={styles.boardTitle}>{boardName ?? t('board:fallbacks.untitled')}</span>}
+        trailing={
+          <>
+            <Button
+              variant="icon"
+              onClick={handleDownload}
+              title={t('board:header.export')}
+            >
+              <Download size={20} />
+            </Button>
+            <Button
+              variant="icon"
+              onClick={handleGoToDetails}
+              title={t('board:header.info')}
+            >
+              <Info size={20} />
+            </Button>
+          </>
+        }
+      />
+
+      {/* Main Content Area */}
       <main className={styles.pageContent} ref={pageRef} data-board-page>
         <div className={styles.boardWorkspaceArea}>
           <BoardWorkspace
@@ -394,6 +162,10 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             isLoading={isLoading}
           />
         </div>
+
+        {/* Floating UI Components */}
+        <FloatingDock />
+        <FloatingActions />
       </main>
     </PageTransition>
   );
