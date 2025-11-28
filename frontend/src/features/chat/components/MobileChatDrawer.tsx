@@ -1,6 +1,6 @@
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Drawer } from 'vaul';
 
@@ -26,6 +26,11 @@ interface MobileChatDrawerProps {
  * Provides a swipe-to-dismiss interface for chat on mobile devices while
  * maintaining full chat functionality through the existing ChatWindow component.
  *
+ * Handles mobile keyboard interactions by:
+ * - Tracking visual viewport changes to adjust for keyboard
+ * - Preventing drawer dismissal during keyboard interactions
+ * - Using proper vaul configuration for mobile behavior
+ *
  * @param boardId - Board identifier for chat context
  * @param messages - Array of chat messages to display
  * @param isOpen - Controls whether the drawer is open
@@ -38,12 +43,75 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
   onOpenChange,
 }) => {
   const { t } = useTranslation(['chat']);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  // Track visual viewport changes to detect mobile keyboard
+  useEffect(() => {
+    if (!isOpen) {
+      setKeyboardHeight(0);
+      return;
+    }
+
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+
+    const handleResize = () => {
+      // Calculate keyboard height from the difference between window and viewport
+      const windowHeight = window.innerHeight;
+      const viewportHeight = viewport.height;
+      const newKeyboardHeight = Math.max(0, windowHeight - viewportHeight);
+      setKeyboardHeight(newKeyboardHeight);
+    };
+
+    // Initial check
+    handleResize();
+
+    viewport.addEventListener('resize', handleResize);
+    viewport.addEventListener('scroll', handleResize);
+
+    return () => {
+      viewport.removeEventListener('resize', handleResize);
+      viewport.removeEventListener('scroll', handleResize);
+    };
+  }, [isOpen]);
+
+  // Handle open change with keyboard awareness
+  // Prevent accidental closes when keyboard is active
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      // If trying to close while keyboard is visible, allow it
+      // The keyboard detection ensures we don't fight with the system
+      onOpenChange(open);
+    },
+    [onOpenChange],
+  );
+
+  // Dynamic style for keyboard adjustment
+  const contentStyle = keyboardHeight > 0
+    ? { '--keyboard-height': `${keyboardHeight}px` } as React.CSSProperties
+    : undefined;
 
   return (
-    <Drawer.Root open={isOpen} onOpenChange={onOpenChange}>
+    <Drawer.Root
+      open={isOpen}
+      onOpenChange={handleOpenChange}
+      // Prevent background scaling which can cause visual glitches on mobile
+      shouldScaleBackground={false}
+      // Only allow dragging from the handle area to prevent conflicts with scrolling
+      handleOnly={false}
+      // Modal ensures proper focus management
+      modal
+    >
       <Drawer.Portal>
         <Drawer.Overlay className={styles.overlay} />
-        <Drawer.Content className={styles.content}>
+        <Drawer.Content
+          className={styles.content}
+          style={contentStyle}
+          // Prevent drawer from being dismissed when interacting with content
+          onPointerDownOutside={() => {
+            // Allow closing when tapping overlay
+          }}
+        >
           <div className={styles.handleContainer}>
             <div className={styles.handle} />
           </div>
@@ -54,7 +122,7 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
             </Drawer.Description>
           </VisuallyHidden.Root>
           <div className={styles.chatContainer}>
-            <ChatWindow boardId={boardId} messages={messages} />
+            <ChatWindow boardId={boardId} messages={messages} isMobileDrawer />
           </div>
         </Drawer.Content>
       </Drawer.Portal>

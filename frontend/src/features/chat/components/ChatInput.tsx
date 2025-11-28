@@ -16,6 +16,8 @@ interface ChatInputProps {
   disabled?: boolean;
   /** Optional custom placeholder text for the input field */
   placeholder?: string;
+  /** Disable auto-focus on mount (useful for mobile drawers where keyboard should not open immediately) */
+  disableAutoFocus?: boolean;
 }
 
 /**
@@ -35,7 +37,7 @@ interface ChatInputProps {
  * @param onSendMessage - Async callback to handle message transmission
  * @param placeholder - Optional custom placeholder text for input field
  */
-const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeholder }) => {
+const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeholder, disableAutoFocus = false }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { shouldBlockFunctionality } = useConnectionStatus();
   const [message, setMessage] = useState('');
@@ -89,10 +91,12 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
     }
   }, []);
 
-  // Focus input on component mount for immediate typing
+  // Focus input on component mount for immediate typing (disabled for mobile drawers)
   useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+    if (!disableAutoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [disableAutoFocus]);
 
   const hasMessage = message.trim().length > 0;
   const isDisabled = shouldBlockFunctionality || isSending;

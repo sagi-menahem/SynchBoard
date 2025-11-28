@@ -20,6 +20,8 @@ interface ChatWindowProps {
   boardId: number;
   /** Array of chat messages to display and manage in the window */
   messages: ChatMessageResponse[];
+  /** Whether this chat window is rendered inside a mobile drawer (affects focus behavior) */
+  isMobileDrawer?: boolean;
 }
 
 /**
@@ -41,7 +43,7 @@ interface ChatWindowProps {
  * @param boardId - Board identifier for chat context
  * @param messages - Array of chat messages to display
  */
-const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDrawer = false }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { userEmail } = useAuth();
   const { registerChatCommitHandler } = useBoardContext();
@@ -125,7 +127,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      <ChatInput onSendMessage={handleSendMessage} placeholder={t('chat:window.placeholder')} />
+      <ChatInput
+        onSendMessage={handleSendMessage}
+        placeholder={t('chat:window.placeholder')}
+        disableAutoFocus={isMobileDrawer}
+      />
     </Card>
   );
 };

@@ -127,10 +127,21 @@
   .container {
     border-radius: theme.$border-radius-none;
     box-shadow: none;
+    // Ensure proper flex behavior in mobile drawer
+    min-height: 0;
+    // Prevent container from overflowing
+    overflow: hidden;
   }
 
   .messageList {
     padding: theme.$spacing-3;
+    // Allow message list to shrink when keyboard appears
+    flex: 1 1 auto;
+    min-height: 0;
+    // Smooth scroll for mobile
+    -webkit-overflow-scrolling: touch;
+    // Prevent pull-to-refresh interference
+    overscroll-behavior: contain;
   }
 
   .dateSeparator {

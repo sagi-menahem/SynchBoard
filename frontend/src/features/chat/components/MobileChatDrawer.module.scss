@@ -18,12 +18,18 @@
   z-index: theme.$z-index-modal;
   display: flex;
   flex-direction: column;
-  height: 85vh;
-  max-height: 85vh;
+  // Use dynamic height that accounts for keyboard
+  // Falls back to 85vh when no keyboard is present
+  height: calc(85vh - var(--keyboard-height, 0px));
+  max-height: calc(100vh - var(--keyboard-height, 0px) - env(safe-area-inset-top, 0px));
   background: var(--color-surface);
   border-top-left-radius: theme.$border-radius-xl;
   border-top-right-radius: theme.$border-radius-xl;
   outline: none;
+  // Smooth transition when keyboard appears/disappears
+  transition: height 0.15s ease-out, max-height 0.15s ease-out;
+  // Prevent content from being pushed off screen
+  overflow: hidden;
 
   // Safe area padding for notched devices
   padding-bottom: env(safe-area-inset-bottom, 0);
@@ -65,11 +71,13 @@
 
 // Chat content container - fills remaining space
 .chatContainer {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  // Ensure container adapts to keyboard
+  position: relative;
 
   // Override ChatWindow Card styles for drawer context
   :global(.card) {
@@ -77,5 +85,15 @@
     border-radius: 0;
     height: 100%;
     box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+}
+
+// Ensure smooth animations don't interfere with keyboard
+@media (prefers-reduced-motion: reduce) {
+  .content {
+    transition: none;
   }
 }

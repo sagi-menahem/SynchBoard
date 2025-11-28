@@ -133,6 +133,10 @@
 @media (max-width: 768px) {
   .form {
     padding: theme.$spacing-3 theme.$spacing-4;
+    // Ensure form stays above keyboard on mobile
+    flex-shrink: 0;
+    // Prevent iOS zoom on input focus (requires 16px minimum)
+    font-size: 16px;
   }
 
   .inputContainer {
@@ -142,13 +146,19 @@
 
   .input {
     padding: 8px 6px;
-    font-size: 0.9rem;
+    // Minimum 16px to prevent iOS auto-zoom on focus
+    font-size: 16px;
+    // Prevent text selection issues on mobile
+    -webkit-user-select: text;
+    user-select: text;
+    // Ensure touch targets are large enough
+    min-height: 44px;
   }
 
   .sendButton {
-    min-width: 32px;
-    min-height: 32px;
-    margin-left: 6px;
+    min-width: 44px;
+    min-height: 44px;
+    margin-inline-start: 6px;
   }
 }
 
