@@ -22,6 +22,8 @@ interface FloatingActionButtonProps {
   className?: string;
   /** Whether the button is disabled */
   disabled?: boolean;
+  /** Whether the button is hidden (uses CSS for smooth animation) */
+  hidden?: boolean;
 }
 
 /**
@@ -46,14 +48,16 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   position = 'bottom-right',
   className,
   disabled = false,
+  hidden = false,
 }) => {
   return (
     <button
       type="button"
-      className={clsx(styles.fab, styles[position], className)}
+      className={clsx(styles.fab, styles[position], hidden && styles.hidden, className)}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || hidden}
       aria-label={ariaLabel}
+      aria-hidden={hidden}
     >
       <Icon size={24} />
       {badge !== undefined && badge > 0 && (
