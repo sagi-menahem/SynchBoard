@@ -16,6 +16,8 @@ interface UseChatWindowLogicProps {
   boardId: number;
   /** Array of chat messages to display and manage in the window */
   messages: ChatMessageResponse[];
+  /** Whether this is rendered in a mobile drawer (affects scroll behavior) */
+  isMobileDrawer?: boolean;
 }
 
 /**
@@ -38,7 +40,7 @@ interface UseChatWindowLogicProps {
  * @param messages - Array of chat messages to display and manage
  * @returns Object containing chat window state, handlers, and UI utilities
  */
-export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProps) => {
+export const useChatWindowLogic = ({ boardId, messages, isMobileDrawer = false }: UseChatWindowLogicProps) => {
   const { preferences } = useUserBoardPreferences();
   const { userEmail } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -84,18 +86,25 @@ export const useChatWindowLogic = ({ boardId, messages }: UseChatWindowLogicProp
 
   // Memoized to prevent unnecessary re-renders when scrolling chat to bottom
   // Avoids creating new function references that could trigger effect dependencies
+  // On mobile, use instant scroll to prevent layout jumps with keyboard
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
-    const endElement = messagesEndRef.current;
 
     if (container) {
+      // Use instant scroll - smooth scrolling on mobile causes layout issues
+      // when the keyboard is open, creating a gap between input and keyboard
       container.scrollTop = container.scrollHeight;
     }
 
-    if (endElement) {
-      endElement.scrollIntoView({ behavior: 'smooth' });
+    // Don't use scrollIntoView on mobile - it can cause the viewport to shift
+    // and create gaps with the keyboard. The container.scrollTop is sufficient.
+    if (!isMobileDrawer) {
+      const endElement = messagesEndRef.current;
+      if (endElement) {
+        endElement.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, []);
+  }, [isMobileDrawer]);
 
   // Manages keyboard event listeners for chat search functionality
   // Handles Ctrl/Cmd+F to open search and Escape to close search

@@ -61,7 +61,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDraw
     shouldShowDateSeparator,
     commitChatTransaction,
     isMessageNew,
-  } = useChatWindowLogic({ boardId, messages });
+  } = useChatWindowLogic({ boardId, messages, isMobileDrawer });
 
   // Register chat transaction handler with board context for WebSocket integration
   useEffect(() => {
@@ -97,7 +97,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDraw
 
       <div className={styles.messageList} ref={messagesContainerRef}>
         {filteredMessages.map((message, index) => {
-          const shouldAnimate = isMessageNew(message);
+          // Disable animation on mobile drawer to prevent layout jumps with keyboard
+          const shouldAnimate = !isMobileDrawer && isMessageNew(message);
           const prevMessage = filteredMessages[index - 1] ?? null;
 
           // Complex message grouping logic: consecutive messages from same user within time window receive visual grouping
