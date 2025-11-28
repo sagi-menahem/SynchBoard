@@ -38,11 +38,23 @@ export const useCanvasPanning = ({
   const [isPanning, setIsPanning] = useState(false);
 
   // Track active pointers for multi-touch detection
+  // Using ref to avoid re-renders on pointer changes
   const activePointers = useRef<Map<number, ActivePointer>>(new Map());
   const lastPanPosition = useRef<{ x: number; y: number } | null>(null);
   const lastCentroid = useRef<{ x: number; y: number } | null>(null);
   // Track which pointer initiated middle-mouse panning
   const middleMousePointerId = useRef<number | null>(null);
+
+  /**
+   * Clears all tracked pointers and resets panning state.
+   * Called when panning ends or when state needs to be reset.
+   */
+  const clearAllPointers = useCallback(() => {
+    activePointers.current.clear();
+    lastPanPosition.current = null;
+    lastCentroid.current = null;
+    middleMousePointerId.current = null;
+  }, []);
 
   /**
    * Calculate the centroid (center point) of all active pointers.
@@ -150,6 +162,7 @@ export const useCanvasPanning = ({
 
   /**
    * Handles pointer up/cancel events to end panning when appropriate.
+   * Clears all tracked pointers to prevent stale pointer issues on subsequent touches.
    */
   const handlePanEnd = useCallback(
     (event: PointerEvent) => {
@@ -164,29 +177,24 @@ export const useCanvasPanning = ({
         return;
       }
 
-      // End panning when no pointers left
-      if (pointerCount === 0) {
+      // End panning when no pointers left or only one remains
+      // Clear ALL pointers when transitioning out of panning to prevent stale pointer issues
+      // This is critical for mobile: after two-finger pan ends, we must not have any
+      // stale pointers that would cause the next single-finger touch to be counted as 2 pointers
+      if (pointerCount <= 1) {
         setIsPanning(false);
-        lastPanPosition.current = null;
-        lastCentroid.current = null;
-      } else if (pointerCount === 1) {
-        // Transition from two-finger pan to potential single-finger draw
-        setIsPanning(false);
-        lastCentroid.current = null;
+        clearAllPointers();
       }
     },
-    []
+    [clearAllPointers]
   );
 
-  // Clean up all pointers on unmount or when panning state changes unexpectedly
+  // Clean up all pointers on unmount
   useEffect(() => {
     return () => {
-      activePointers.current.clear();
-      lastPanPosition.current = null;
-      lastCentroid.current = null;
-      middleMousePointerId.current = null;
+      clearAllPointers();
     };
-  }, []);
+  }, [clearAllPointers]);
 
   return {
     isPanning,

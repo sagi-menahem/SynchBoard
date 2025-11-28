@@ -6,6 +6,10 @@
   height: 100%;
   overflow: auto;
   display: flex;
+  // Prevent browser from intercepting touch events for native scrolling
+  // This is critical for mobile: without this, the browser may take over
+  // touch handling after two-finger gestures, breaking subsequent single-finger drawing
+  touch-action: none;
 
   @include theme.theme-scrollbar-enhanced;
 }

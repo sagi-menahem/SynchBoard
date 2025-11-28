@@ -39,8 +39,8 @@ interface UseCanvasEventsProps {
  * through the Pointer Events API.
  *
  * Panning support:
- * - Desktop: Hold SPACE + drag or use middle mouse button to pan
- * - Mobile: Use two fingers to pan (single finger draws)
+ * - Desktop: Middle mouse button drag to pan
+ * - Mobile: Two-finger drag to pan (single finger draws)
  *
  * @param canvasRef - Reference to the HTML canvas element for event attachment and coordinate calculations
  * @param containerRef - Reference to the scrollable container element for panning operations
@@ -176,11 +176,10 @@ export const useCanvasEvents = ({
     };
 
     const handleGlobalPointerUp = (event: PointerEvent) => {
-      // Handle panning end
-      if (isPanning) {
-        handlePanEnd(event);
-        // Don't return - also check if drawing needs cleanup
-      }
+      // ALWAYS notify panning system of pointer up to clean up tracked pointers
+      // This is critical: even during drawing, we track pointers for multi-touch detection
+      // If we don't clean them up, stale pointers cause bugs on subsequent touches
+      handlePanEnd(event);
 
       // Handle drawing end
       if (!isDrawing || !startPoint.current) {
