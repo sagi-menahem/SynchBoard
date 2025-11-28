@@ -160,7 +160,6 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     PANEL_CONSTRAINTS.SAVE_DEBOUNCE_MS,
   );
 
-  // Get user's chosen background color from preferences (moved from ResizableSplitPanel)
   const getUserChosenColor = useCallback(() => {
     const savedVariable = preferences.boardBackgroundSetting;
     if (!savedVariable) {
