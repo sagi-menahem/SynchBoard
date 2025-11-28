@@ -26,4 +26,7 @@ public class CanvasPreferencesDTO {
     @Min(value = CANVAS_CHAT_SPLIT_RATIO_MIN, message = "validation.canvasSplitMin")
     @Max(value = CANVAS_CHAT_SPLIT_RATIO_MAX, message = "validation.canvasSplitMax")
     private Integer canvasChatSplitRatio;
+
+    /** Whether the chat panel is open (visible) or collapsed */
+    private Boolean isChatOpen;
 }

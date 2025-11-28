@@ -8,10 +8,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow: hidden; // Prevent page-level scrolling - scrolling happens inside panels only
   @include theme.flex-column;
 }
 
-// Chat toggle button - floats in top-right corner
+// Chat toggle button - floats in top-right corner (or top-left in RTL)
 .chatToggleButton {
   position: absolute;
   top: theme.$spacing-3;
@@ -25,6 +26,11 @@
   &:hover {
     background: var(--color-surface-hover);
     border-color: var(--color-primary);
+  }
+
+  // Flip icons in RTL mode since panel direction is reversed
+  [dir='rtl'] & svg {
+    transform: scaleX(-1);
   }
 }
 

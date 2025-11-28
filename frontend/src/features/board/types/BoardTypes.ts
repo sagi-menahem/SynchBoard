@@ -120,6 +120,8 @@ export interface UpdateCanvasSettingsRequest {
  * Stores user-specific settings for the canvas workspace experience.
  */
 export interface CanvasPreferences {
-  // Ratio for split view between canvas and chat panel (0-1)
+  // Ratio for split view between canvas and chat panel (0-100 percentage)
   canvasChatSplitRatio: number;
+  // Whether the chat panel is open (visible) or collapsed
+  isChatOpen?: boolean;
 }

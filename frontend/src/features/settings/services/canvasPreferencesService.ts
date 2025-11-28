@@ -12,11 +12,14 @@ export interface CanvasPreferences {
   canvasChatSplitRatio: number;
   // Layout mode determining canvas/chat area focus and arrangement
   layoutMode: LayoutMode;
+  // Whether the chat panel is open (visible) or collapsed
+  isChatOpen: boolean;
 }
 
 const DEFAULT_CANVAS_PREFERENCES: CanvasPreferences = {
   canvasChatSplitRatio: 70, // Default canvas to chat area ratio: 70% canvas, 30% chat
   layoutMode: 'balanced',
+  isChatOpen: true, // Chat panel visible by default
 };
 
 export const CanvasPreferencesService = {
@@ -32,6 +35,7 @@ export const CanvasPreferencesService = {
       return {
         canvasChatSplitRatio: canvasPrefs.canvasChatSplitRatio,
         layoutMode: 'balanced',
+        isChatOpen: canvasPrefs.isChatOpen ?? true,
       };
     } catch (error) {
       logger.error('Failed to fetch canvas preferences:', error);
@@ -62,11 +66,17 @@ export const CanvasPreferencesService = {
    */
   async updatePreferences(preferences: Partial<CanvasPreferences>): Promise<void> {
     try {
-      // Only update split ratio if provided (layout mode not yet supported server-side)
+      const updatePayload: Parameters<typeof userService.updateCanvasPreferences>[0] = {};
+
       if (preferences.canvasChatSplitRatio !== undefined) {
-        await userService.updateCanvasPreferences({
-          canvasChatSplitRatio: preferences.canvasChatSplitRatio,
-        });
+        updatePayload.canvasChatSplitRatio = preferences.canvasChatSplitRatio;
+      }
+      if (preferences.isChatOpen !== undefined) {
+        updatePayload.isChatOpen = preferences.isChatOpen;
+      }
+
+      if (Object.keys(updatePayload).length > 0) {
+        await userService.updateCanvasPreferences(updatePayload);
       }
     } catch (error) {
       logger.error('Failed to update canvas preferences:', error);

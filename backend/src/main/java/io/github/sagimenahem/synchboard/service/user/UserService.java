@@ -198,8 +198,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public CanvasPreferencesDTO getCanvasPreferences(String userEmail) {
-        return getPreferences(userEmail, "canvas", (user) -> CanvasPreferencesDTO.builder()
-                .canvasChatSplitRatio(user.getCanvasChatSplitRatio()).build());
+        return getPreferences(userEmail, "canvas",
+                (user) -> CanvasPreferencesDTO.builder()
+                        .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
+                        .isChatOpen(user.getIsChatOpen()).build());
     }
 
     @Transactional
@@ -209,8 +211,12 @@ public class UserService {
             if (prefs.getCanvasChatSplitRatio() != null) {
                 user.setCanvasChatSplitRatio(prefs.getCanvasChatSplitRatio());
             }
+            if (prefs.getIsChatOpen() != null) {
+                user.setIsChatOpen(prefs.getIsChatOpen());
+            }
         }, (user) -> CanvasPreferencesDTO.builder()
-                .canvasChatSplitRatio(user.getCanvasChatSplitRatio()).build());
+                .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
+                .isChatOpen(user.getIsChatOpen()).build());
     }
 
     @Transactional(readOnly = true)

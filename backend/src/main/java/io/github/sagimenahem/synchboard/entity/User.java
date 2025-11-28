@@ -84,6 +84,11 @@ public class User implements UserDetails {
     @Builder.Default
     private Integer canvasChatSplitRatio = (int) DEFAULT_CANVAS_CHAT_SPLIT_RATIO;
 
+    /** Whether the chat panel is open (visible) or collapsed */
+    @Column(name = "is_chat_open")
+    @Builder.Default
+    private Boolean isChatOpen = true;
+
     @Column(name = "default_tool")
     @Builder.Default
     private String defaultTool = "brush";

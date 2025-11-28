@@ -3,6 +3,7 @@ import type { ActionPayload, SendBoardActionRequest } from 'features/board/types
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { ChatWindow, MobileChatDrawer } from 'features/chat/components';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
+import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { MessageCircle, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -114,13 +115,15 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   const { t } = useTranslation(['board', 'chat']);
   const isMobile = useIsMobile();
   const { preferences } = useUserBoardPreferences();
+  const { preferences: canvasPreferences, updateCanvasPreferences } = useCanvasPreferences();
 
   // Mobile chat drawer state
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
 
   // Desktop chat panel ref for programmatic collapse/expand
   const chatPanelRef = useRef<ImperativePanelHandle>(null);
   const [isChatCollapsed, setIsChatCollapsed] = useState(false);
+  const [hasInitializedChatState, setHasInitializedChatState] = useState(false);
 
   // Local state for immediate UI feedback during resize
   const [localCanvasSize, setLocalCanvasSize] = useState(splitRatio);
@@ -129,6 +132,25 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   useEffect(() => {
     setLocalCanvasSize(splitRatio);
   }, [splitRatio]);
+
+  // Initialize chat panel state from backend preferences on mount
+  useEffect(() => {
+    if (hasInitializedChatState || isMobile) return;
+
+    const panel = chatPanelRef.current;
+    if (!panel) return;
+
+    // Read isChatOpen from backend preferences (defaults to true)
+    const shouldBeClosed = canvasPreferences.isChatOpen === false;
+
+    if (shouldBeClosed) {
+      // Collapse the panel if user had it closed
+      panel.collapse();
+      setIsChatCollapsed(true);
+    }
+
+    setHasInitializedChatState(true);
+  }, [canvasPreferences.isChatOpen, hasInitializedChatState, isMobile]);
 
   // Debounced save to prevent API flooding during resize
   const debouncedSave = useDebouncedCallback(
@@ -185,10 +207,14 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     const isCurrentlyCollapsed = panel.isCollapsed();
     if (isCurrentlyCollapsed) {
       panel.expand();
+      // Persist "open" state to backend
+      void updateCanvasPreferences({ isChatOpen: true });
     } else {
       panel.collapse();
+      // Persist "closed" state to backend
+      void updateCanvasPreferences({ isChatOpen: false });
     }
-  }, []);
+  }, [updateCanvasPreferences]);
 
   // CSS variables for background styling
   const containerStyle = useMemo(
@@ -227,7 +253,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
 
         <FloatingActionButton
           icon={MessageCircle}
-          onClick={() => setIsChatOpen(true)}
+          onClick={() => setIsMobileChatOpen(true)}
           aria-label={t('chat:window.title')}
           badge={messages.length > 0 ? undefined : undefined}
           position="bottom-right"
@@ -236,8 +262,8 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         <MobileChatDrawer
           boardId={boardId}
           messages={messages}
-          isOpen={isChatOpen}
-          onOpenChange={setIsChatOpen}
+          isOpen={isMobileChatOpen}
+          onOpenChange={setIsMobileChatOpen}
         />
       </div>
     );
