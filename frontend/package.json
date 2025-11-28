@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "kill-port 5173 && vite --host",
+    "dev": "kill-port 5173 && vite",
     "kill-port": "kill-port 8080",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
