@@ -14,16 +14,17 @@ import type {
 } from 'features/board/types/BoardObjectTypes';
 
 /**
- * Converts browser mouse coordinates to canvas-relative pixel coordinates.
+ * Converts browser pointer coordinates to canvas-relative pixel coordinates.
  * This function accounts for the canvas element's position and size within the viewport
- * to provide accurate coordinate mapping for drawing operations.
- * 
- * @param event - Mouse event containing browser-relative coordinates
+ * to provide accurate coordinate mapping for drawing operations. Supports mouse, touch,
+ * and stylus input through the Pointer Events API.
+ *
+ * @param event - Pointer event containing browser-relative coordinates
  * @param canvas - Target canvas element for coordinate calculation
  * @returns Canvas-relative coordinates or null if invalid
  */
-export const getMouseCoordinates = (
-  event: MouseEvent,
+export const getPointerCoordinates = (
+  event: PointerEvent,
   canvas: HTMLCanvasElement,
 ): { x: number; y: number } | null => {
   const rect = canvas.getBoundingClientRect();

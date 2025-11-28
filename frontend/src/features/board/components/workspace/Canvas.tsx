@@ -72,7 +72,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     ((x: number, y: number, width: number, height: number) => void) | null
   >(null);
 
-  const { canvasRef, containerRef, handleMouseDown } = useCanvas({
+  const { canvasRef, containerRef, handlePointerDown } = useCanvas({
     ...props,
     onTextInputRequest: (x: number, y: number, width: number, height: number) => {
       textInputRequestRef.current?.(x, y, width, height);
@@ -90,7 +90,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       onDraw: props.onDraw,
       onColorPick: props.onColorPick,
       canvasBackgroundColor: props.canvasConfig?.backgroundColor,
-      handleMouseDown,
+      handlePointerDown,
     }),
     [
       props.tool,
@@ -102,7 +102,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       props.onDraw,
       props.onColorPick,
       props.canvasConfig?.backgroundColor,
-      handleMouseDown,
+      handlePointerDown,
     ],
   );
 
@@ -110,8 +110,8 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     textInput,
     recolorCursor,
     handleTextInputRequest,
-    handleCanvasClick,
-    handleCanvasMouseMove,
+    handleCanvasPointerDown,
+    handleCanvasPointerMove,
     handleTextSubmit,
     handleTextCancel,
   } = useCanvasInteractions(canvasInteractionsConfig);
@@ -148,6 +148,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     () => ({
       backgroundColor: canvasConfig.backgroundColor,
       cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
+      touchAction: 'none' as const, // Prevent browser scroll/zoom gestures to enable touch drawing
     }),
     [canvasConfig.backgroundColor, props.tool, recolorCursor],
   );
@@ -181,8 +182,8 @@ const Canvas: React.FC<CanvasProps> = (props) => {
             ref={canvasRef}
             width={canvasWidth}
             height={canvasHeight}
-            onMouseDown={handleCanvasClick}
-            onMouseMove={handleCanvasMouseMove}
+            onPointerDown={handleCanvasPointerDown}
+            onPointerMove={handleCanvasPointerMove}
             className={canvasClassName}
             style={canvasStyle}
           />

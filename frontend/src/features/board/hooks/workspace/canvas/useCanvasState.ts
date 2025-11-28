@@ -7,7 +7,7 @@ import {
   drawRectanglePayload,
   drawTextPayload,
   drawTrianglePayload,
-  getMouseCoordinates,
+  getPointerCoordinates,
   isRadiusValid,
   isShapeSizeValid,
   replayDrawAction,
@@ -102,7 +102,7 @@ export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) =
     drawPolygonPayload,
     drawTextPayload,
     setupCanvasContext,
-    getMouseCoordinates,
+    getPointerCoordinates,
     isShapeSizeValid,
     isRadiusValid,
   };

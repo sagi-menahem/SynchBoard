@@ -21,7 +21,7 @@ interface UseCanvasInteractionsProps {
   onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
   onColorPick?: (color: string) => void;
   canvasBackgroundColor?: string;
-  handleMouseDown: (e: React.MouseEvent<HTMLCanvasElement>) => void;
+  handlePointerDown: (e: React.PointerEvent<HTMLCanvasElement>) => void;
 }
 
 /**
@@ -42,7 +42,7 @@ interface UseCanvasInteractionsProps {
  * @param onDraw - Callback function for submitting drawing actions to the collaboration system
  * @param onColorPick - Optional callback for color picker tool results
  * @param canvasBackgroundColor - Optional canvas background color for transparent pixel handling
- * @param handleMouseDown - Fallback mouse down handler for standard drawing operations
+ * @param handlePointerDown - Fallback pointer down handler for standard drawing operations
  * @returns Object containing text input state, cursor styles, and specialized interaction handlers
  */
 export const useCanvasInteractions = ({
@@ -55,7 +55,7 @@ export const useCanvasInteractions = ({
   onDraw,
   onColorPick,
   canvasBackgroundColor,
-  handleMouseDown,
+  handlePointerDown,
 }: UseCanvasInteractionsProps) => {
   const { preferences } = useUserBoardPreferences();
   const [textInput, setTextInput] = useState<{
@@ -73,8 +73,8 @@ export const useCanvasInteractions = ({
     [],
   );
 
-  const handleCanvasClick = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleCanvasPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
       if (tool === TOOLS.COLOR_PICKER && canvasRef.current) {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -130,7 +130,7 @@ export const useCanvasInteractions = ({
         e.preventDefault();
         return;
       }
-      handleMouseDown(e);
+      handlePointerDown(e);
     },
     [
       tool,
@@ -141,23 +141,23 @@ export const useCanvasInteractions = ({
       strokeColor,
       instanceId,
       onDraw,
-      handleMouseDown,
+      handlePointerDown,
     ],
   );
 
-  const handleCanvasMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleCanvasPointerMove = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
       if (tool !== TOOLS.RECOLOR || canvasRef.current === null) {
         return;
       }
 
       const canvas = canvasRef.current;
       const rect = canvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
+      const pointerX = e.clientX - rect.left;
+      const pointerY = e.clientY - rect.top;
 
       const cursor = getRecolorCursor(
-        { x: mouseX, y: mouseY },
+        { x: pointerX, y: pointerY },
         objects,
         canvas.width,
         canvas.height,
@@ -215,8 +215,8 @@ export const useCanvasInteractions = ({
     recolorCursor,
 
     handleTextInputRequest,
-    handleCanvasClick,
-    handleCanvasMouseMove,
+    handleCanvasPointerDown,
+    handleCanvasPointerMove,
     handleTextSubmit,
     handleTextCancel,
     getBackgroundStyle,

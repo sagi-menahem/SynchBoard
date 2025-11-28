@@ -70,7 +70,7 @@ export const useDrawingTools = ({
 }: UseDrawingToolsProps) => {
   const { currentPath } = drawingState;
 
-  const handleToolMouseDown = useCallback(
+  const handleToolPointerDown = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
       if (!canvas) {
@@ -89,7 +89,7 @@ export const useDrawingTools = ({
     [canvasRef, tool, currentPath],
   );
 
-  const handleToolMouseMove = useCallback(
+  const handleToolPointerMove = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
       if (!canvas) {
@@ -106,7 +106,7 @@ export const useDrawingTools = ({
     [canvasRef, tool, currentPath],
   );
 
-  const handleToolMouseUp = useCallback(
+  const handleToolPointerUp = useCallback(
     (eventData: CanvasEventData) => {
       const canvas = canvasRef.current;
       if (!canvas) {
@@ -313,8 +313,8 @@ export const useDrawingTools = ({
   );
 
   return {
-    handleToolMouseDown,
-    handleToolMouseMove,
-    handleToolMouseUp,
+    handleToolPointerDown,
+    handleToolPointerMove,
+    handleToolPointerUp,
   };
 };

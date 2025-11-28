@@ -67,7 +67,7 @@ export const useCanvas = ({
     startPoint,
     currentPath,
     resetDrawingState,
-    getMouseCoordinates,
+    getPointerCoordinates,
     isShapeSizeValid,
     isRadiusValid,
   } = useCanvasState({
@@ -133,31 +133,31 @@ export const useCanvas = ({
 
   const { handlePreviewStart, handlePreviewMove, handlePreviewEnd } =
     useCanvasPreview(previewConfig);
-  const { handleToolMouseDown, handleToolMouseMove, handleToolMouseUp } =
+  const { handleToolPointerDown, handleToolPointerMove, handleToolPointerUp } =
     useDrawingTools(drawingToolsConfig);
 
-  const handleMouseDown = useCallback(
+  const handlePointerDown = useCallback(
     (eventData: CanvasEventData) => {
       handlePreviewStart(eventData);
-      handleToolMouseDown(eventData);
+      handleToolPointerDown(eventData);
     },
-    [handlePreviewStart, handleToolMouseDown],
+    [handlePreviewStart, handleToolPointerDown],
   );
 
-  const handleMouseMove = useCallback(
+  const handlePointerMove = useCallback(
     (eventData: CanvasEventData) => {
       handlePreviewMove(eventData);
-      handleToolMouseMove(eventData);
+      handleToolPointerMove(eventData);
     },
-    [handlePreviewMove, handleToolMouseMove],
+    [handlePreviewMove, handleToolPointerMove],
   );
 
-  const handleMouseUp = useCallback(
+  const handlePointerUp = useCallback(
     (eventData: CanvasEventData) => {
       handlePreviewEnd();
-      handleToolMouseUp(eventData);
+      handleToolPointerUp(eventData);
     },
-    [handlePreviewEnd, handleToolMouseUp],
+    [handlePreviewEnd, handleToolPointerUp],
   );
 
   const canvasEventsConfig = useMemo(
@@ -165,28 +165,28 @@ export const useCanvas = ({
       canvasRef,
       contextRef,
       drawingState: canvasEventsState,
-      getMouseCoordinates,
-      onMouseDown: handleMouseDown,
-      onMouseMove: handleMouseMove,
-      onMouseUp: handleMouseUp,
+      getPointerCoordinates,
+      onPointerDown: handlePointerDown,
+      onPointerMove: handlePointerMove,
+      onPointerUp: handlePointerUp,
     }),
     [
       canvasRef,
       contextRef,
       canvasEventsState,
-      getMouseCoordinates,
-      handleMouseDown,
-      handleMouseMove,
-      handleMouseUp,
+      getPointerCoordinates,
+      handlePointerDown,
+      handlePointerMove,
+      handlePointerUp,
     ],
   );
 
-  const { handleMouseDown: canvasMouseDown } = useCanvasEvents(canvasEventsConfig);
+  const { handlePointerDown: canvasPointerDown } = useCanvasEvents(canvasEventsConfig);
 
   return {
     canvasRef,
     containerRef,
     dimensions,
-    handleMouseDown: canvasMouseDown,
+    handlePointerDown: canvasPointerDown,
   };
 };
