@@ -44,14 +44,16 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const chatWindowRef = useRef<ChatWindowHandle>(null);
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
-  const previousViewportHeight = useRef<number | null>(null);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const initialViewportHeight = useRef<number | null>(null);
 
   // Track visual viewport to handle keyboard appearance
   // This adjusts the drawer height when the keyboard opens/closes
   useEffect(() => {
     if (!isOpen) {
       setViewportHeight(null);
-      previousViewportHeight.current = null;
+      setIsKeyboardOpen(false);
+      initialViewportHeight.current = null;
       return;
     }
 
@@ -60,19 +62,24 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
 
     const updateHeight = () => {
       const newHeight = viewport.height;
-      const prevHeight = previousViewportHeight.current;
 
-      // Detect keyboard opening: viewport got significantly smaller (keyboard appeared)
-      // Threshold of 100px accounts for small UI changes vs keyboard
-      if (prevHeight !== null && prevHeight - newHeight > 100) {
-        // Keyboard opened - scroll messages to bottom after a short delay
-        // to allow the drawer to resize first
+      // Store the initial viewport height (before keyboard opens)
+      if (initialViewportHeight.current === null) {
+        initialViewportHeight.current = newHeight;
+      }
+
+      // Detect keyboard state by comparing to initial height
+      // Keyboard is open if viewport is significantly smaller than initial (>150px accounts for browser UI)
+      const keyboardNowOpen = initialViewportHeight.current - newHeight > 150;
+
+      // Keyboard just opened - scroll messages to bottom
+      if (keyboardNowOpen && !isKeyboardOpen) {
         setTimeout(() => {
           chatWindowRef.current?.scrollToBottom();
         }, 50);
       }
 
-      previousViewportHeight.current = newHeight;
+      setIsKeyboardOpen(keyboardNowOpen);
       setViewportHeight(newHeight);
     };
 
@@ -86,12 +93,17 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
       viewport.removeEventListener('resize', updateHeight);
       viewport.removeEventListener('scroll', updateHeight);
     };
-  }, [isOpen]);
+  }, [isOpen, isKeyboardOpen]);
 
-  // Calculate the drawer height based on visual viewport
-  // When keyboard is open, viewport.height is smaller, so we use that
+  // Calculate the drawer height based on visual viewport and keyboard state
+  // When keyboard is OPEN: use almost full viewport height (minus small top margin)
+  // When keyboard is CLOSED: use 85% of viewport for a nice bottom sheet look
   const contentStyle = viewportHeight
-    ? { height: `${Math.min(viewportHeight * 0.85, viewportHeight - 50)}px` }
+    ? {
+        height: isKeyboardOpen
+          ? `${viewportHeight - 20}px` // Keyboard open: fill viewport minus small top gap
+          : `${viewportHeight * 0.85}px`, // Keyboard closed: 85% for bottom sheet look
+      }
     : undefined;
 
   return (
