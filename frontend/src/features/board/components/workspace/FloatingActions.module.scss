@@ -31,10 +31,11 @@
   // Align pills to the right edge of the container
   align-items: flex-end;
 
-  // Direct child selector to force right alignment on all pills
-  // Using margin-inline-start: auto pushes items to the end of the flex container
-  > div {
-    margin-inline-start: auto;
+  // Force all direct children (motion.div pills) to align right
+  // margin-left: auto in a column flex pushes items to the right
+  > * {
+    margin-left: auto !important;
+    margin-right: 0 !important;
   }
 }
 
@@ -75,13 +76,6 @@
       rgba(255, 255, 255, 0.02) 100%
     );
     pointer-events: none;
-  }
-
-  // RTL: Ensure pill aligns to the right edge of the container
-  // The parent .rtl class sets align-items: flex-end, but we also need
-  // to explicitly set align-self to override any potential framer-motion styles
-  .rtl & {
-    align-self: flex-end;
   }
 }
 
