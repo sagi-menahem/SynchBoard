@@ -2,6 +2,8 @@ import type { Point } from 'features/board/types/BoardObjectTypes';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import { useCallback, useEffect, useRef } from 'react';
 
+import { useCanvasPanning } from './useCanvasPanning';
+
 export interface CanvasEventData {
   startPoint: Point;
   currentPoint: Point;
@@ -17,6 +19,7 @@ export interface CanvasEventsState {
 
 interface UseCanvasEventsProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  containerRef: React.RefObject<HTMLElement | null>;
   contextRef: React.RefObject<CanvasRenderingContext2D | null>;
   drawingState: CanvasEventsState;
   getPointerCoordinates: (event: PointerEvent, canvas: HTMLCanvasElement) => Point | null;
@@ -35,17 +38,23 @@ interface UseCanvasEventsProps {
  * proper drawing state consistency throughout interaction sessions. Supports mouse, touch, and stylus input
  * through the Pointer Events API.
  *
+ * Panning support:
+ * - Desktop: Hold SPACE + drag or use middle mouse button to pan
+ * - Mobile: Use two fingers to pan (single finger draws)
+ *
  * @param canvasRef - Reference to the HTML canvas element for event attachment and coordinate calculations
+ * @param containerRef - Reference to the scrollable container element for panning operations
  * @param contextRef - Reference to the 2D canvas rendering context for drawing operations validation
  * @param drawingState - Object containing drawing state management functions and current drawing status
  * @param getPointerCoordinates - Function for converting pointer events to canvas coordinate system
  * @param onPointerDown - Optional callback for handling pointer down events with structured event data
  * @param onPointerMove - Optional callback for handling pointer move events during drawing operations
  * @param onPointerUp - Optional callback for handling pointer up events to complete drawing operations
- * @returns Object containing the primary pointer down handler and current drawing status for canvas interactions
+ * @returns Object containing the primary pointer down handler, drawing status, and panning state for canvas interactions
  */
 export const useCanvasEvents = ({
   canvasRef,
+  containerRef,
   contextRef,
   drawingState,
   getPointerCoordinates,
@@ -57,12 +66,35 @@ export const useCanvasEvents = ({
   const { shouldBlockFunctionality } = useConnectionStatus();
   const lastPointerPosition = useRef<Point | null>(null);
 
+  // Initialize panning functionality
+  const {
+    isPanning,
+    handlePanStart,
+    handlePanMove,
+    handlePanEnd,
+  } = useCanvasPanning({ containerRef, canvasRef });
+
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
       const ctx = contextRef.current;
 
-      if (!canvas || !ctx || isDrawing) {
+      if (!canvas || !ctx) {
+        return;
+      }
+
+      // Check if this should initiate panning instead of drawing
+      const shouldPan = handlePanStart(event);
+      if (shouldPan) {
+        // Cancel any ongoing drawing if panning starts (e.g., second finger added)
+        if (isDrawing) {
+          resetDrawingState();
+        }
+        return;
+      }
+
+      // Skip drawing if already drawing or panning
+      if (isDrawing || isPanning) {
         return;
       }
 
@@ -92,23 +124,33 @@ export const useCanvasEvents = ({
       canvasRef,
       contextRef,
       isDrawing,
+      isPanning,
       setIsDrawing,
       startPoint,
       resetDrawingState,
       getPointerCoordinates,
       shouldBlockFunctionality,
       onPointerDown,
+      handlePanStart,
     ],
   );
 
-  // Manage global pointer event listeners during drawing operations - global listeners needed to track pointer outside canvas bounds
+  // Manage global pointer event listeners during drawing and panning operations
+  // Global listeners needed to track pointer outside canvas bounds
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) {
       return;
     }
 
-    const handlePointerMove = (event: PointerEvent) => {
+    const handleGlobalPointerMove = (event: PointerEvent) => {
+      // Handle panning movement
+      if (isPanning) {
+        handlePanMove(event);
+        return;
+      }
+
+      // Handle drawing movement
       if (!isDrawing || !startPoint.current) {
         return;
       }
@@ -133,7 +175,14 @@ export const useCanvasEvents = ({
       onPointerMove?.(eventData);
     };
 
-    const handlePointerUp = (event: PointerEvent) => {
+    const handleGlobalPointerUp = (event: PointerEvent) => {
+      // Handle panning end
+      if (isPanning) {
+        handlePanEnd(event);
+        // Don't return - also check if drawing needs cleanup
+      }
+
+      // Handle drawing end
       if (!isDrawing || !startPoint.current) {
         return;
       }
@@ -156,21 +205,34 @@ export const useCanvasEvents = ({
       lastPointerPosition.current = null;
     };
 
-    if (isDrawing) {
-      window.addEventListener('pointermove', handlePointerMove);
-      window.addEventListener('pointerup', handlePointerUp);
-      window.addEventListener('pointercancel', handlePointerUp);
+    // Listen when either drawing or panning is active
+    if (isDrawing || isPanning) {
+      window.addEventListener('pointermove', handleGlobalPointerMove);
+      window.addEventListener('pointerup', handleGlobalPointerUp);
+      window.addEventListener('pointercancel', handleGlobalPointerUp);
     }
 
     return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerup', handlePointerUp);
-      window.removeEventListener('pointercancel', handlePointerUp);
+      window.removeEventListener('pointermove', handleGlobalPointerMove);
+      window.removeEventListener('pointerup', handleGlobalPointerUp);
+      window.removeEventListener('pointercancel', handleGlobalPointerUp);
     };
-  }, [isDrawing, canvasRef, getPointerCoordinates, startPoint, setIsDrawing, onPointerMove, onPointerUp]);
+  }, [
+    isDrawing,
+    isPanning,
+    canvasRef,
+    getPointerCoordinates,
+    startPoint,
+    setIsDrawing,
+    onPointerMove,
+    onPointerUp,
+    handlePanMove,
+    handlePanEnd,
+  ]);
 
   return {
     handlePointerDown,
     isDrawing,
+    isPanning,
   };
 };

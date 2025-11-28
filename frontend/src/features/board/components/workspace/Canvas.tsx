@@ -4,7 +4,7 @@ import { useCanvasInteractions } from 'features/board/hooks/workspace/canvas/use
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
-import React, { useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 
@@ -72,7 +72,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     ((x: number, y: number, width: number, height: number) => void) | null
   >(null);
 
-  const { canvasRef, containerRef, handlePointerDown } = useCanvas({
+  const { canvasRef, containerRef, handlePointerDown, isPanning } = useCanvas({
     ...props,
     onTextInputRequest: (x: number, y: number, width: number, height: number) => {
       textInputRequestRef.current?.(x, y, width, height);
@@ -144,13 +144,22 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     [canvasWidth, canvasHeight],
   );
 
+  // Determine cursor based on panning state, tool, and recolor hover
+  const getCursor = useCallback(() => {
+    // Panning state takes priority
+    if (isPanning) return 'grabbing';
+    // Tool-specific cursors
+    if (props.tool === TOOLS.RECOLOR) return recolorCursor;
+    return 'crosshair';
+  }, [isPanning, props.tool, recolorCursor]);
+
   const canvasStyle = useMemo(
     () => ({
       backgroundColor: canvasConfig.backgroundColor,
-      cursor: props.tool === TOOLS.RECOLOR ? recolorCursor : 'crosshair',
+      cursor: getCursor(),
       touchAction: 'none' as const, // Prevent browser scroll/zoom gestures to enable touch drawing
     }),
-    [canvasConfig.backgroundColor, props.tool, recolorCursor],
+    [canvasConfig.backgroundColor, getCursor],
   );
 
   const shouldShowLoading = props.isLoading ?? false;

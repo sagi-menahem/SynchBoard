@@ -75,6 +75,12 @@ export const useCanvasInteractions = ({
 
   const handleCanvasPointerDown = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
+      // Middle mouse button (button === 1) is reserved for panning - skip all tool logic
+      if (e.button === 1) {
+        handlePointerDown(e);
+        return;
+      }
+
       if (tool === TOOLS.COLOR_PICKER && canvasRef.current) {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');

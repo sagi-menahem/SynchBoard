@@ -163,6 +163,7 @@ export const useCanvas = ({
   const canvasEventsConfig = useMemo(
     () => ({
       canvasRef,
+      containerRef,
       contextRef,
       drawingState: canvasEventsState,
       getPointerCoordinates,
@@ -172,6 +173,7 @@ export const useCanvas = ({
     }),
     [
       canvasRef,
+      containerRef,
       contextRef,
       canvasEventsState,
       getPointerCoordinates,
@@ -181,12 +183,16 @@ export const useCanvas = ({
     ],
   );
 
-  const { handlePointerDown: canvasPointerDown } = useCanvasEvents(canvasEventsConfig);
+  const {
+    handlePointerDown: canvasPointerDown,
+    isPanning,
+  } = useCanvasEvents(canvasEventsConfig);
 
   return {
     canvasRef,
     containerRef,
     dimensions,
     handlePointerDown: canvasPointerDown,
+    isPanning,
   };
 };
