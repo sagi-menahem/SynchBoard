@@ -10,74 +10,75 @@
 }
 
 // Main drawer content container
+// Important: Vaul transforms the drawer, so we set initial position at bottom
 .content {
+  // Fixed positioning at bottom of viewport
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: theme.$z-index-modal;
+
+  // Flex layout for internal content
   display: flex;
   flex-direction: column;
-  // Use dynamic height that accounts for keyboard
-  // Falls back to 85vh when no keyboard is present
-  height: calc(85vh - var(--keyboard-height, 0px));
-  max-height: calc(100vh - var(--keyboard-height, 0px) - env(safe-area-inset-top, 0px));
-  background: var(--color-surface);
-  border-top-left-radius: theme.$border-radius-xl;
-  border-top-right-radius: theme.$border-radius-xl;
+
+  // Height: 85% of viewport, with fallback
+  height: 85vh;
+  height: 85dvh;
+  max-height: 90vh;
+
+  // Visual styling
+  background: var(--color-surface, #ffffff);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   outline: none;
-  // Smooth transition when keyboard appears/disappears
-  transition: height 0.15s ease-out, max-height 0.15s ease-out;
-  // Prevent content from being pushed off screen
-  overflow: hidden;
 
-  // Safe area padding for notched devices
+  // Safe area padding for notched devices (iOS)
   padding-bottom: env(safe-area-inset-bottom, 0);
-}
 
-// Drag handle container
-.handleContainer {
-  display: flex;
-  justify-content: center;
-  padding: theme.$spacing-3 0;
-  flex-shrink: 0;
-}
+  // Vaul uses transform for animations - ensure it's not overridden
+  will-change: transform;
 
-// Visual drag handle indicator
-.handle {
-  width: 48px;
-  height: 4px;
-  background: var(--color-border-strong);
-  border-radius: theme.$border-radius-full;
-  opacity: 0.6;
-  @include theme.hover-transition;
-
-  &:hover {
-    opacity: 1;
+  // Fix for Safari - ensure drawer appears above keyboard
+  // The keyboard pushes the viewport up, so we stay at bottom: 0
+  @supports (-webkit-touch-callout: none) {
+    // iOS specific
+    height: 85svh;
   }
+}
+
+// Vaul's built-in handle - style it to look like a proper drag indicator
+.handle {
+  // Override vaul's default handle styles
+  display: block !important;
+  width: 48px !important;
+  height: 5px !important;
+  background: var(--color-border-strong, #d1d5db) !important;
+  border-radius: 9999px !important;
+  margin: 12px auto 8px !important;
+  flex-shrink: 0;
 }
 
 // Drawer title styling
 .title {
-  font-size: theme.$font-size-lg;
-  font-weight: theme.$font-weight-semibold;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--color-text-primary);
   text-align: center;
-  padding: 0 theme.$spacing-4 theme.$spacing-2;
+  padding: 0 16px 12px;
   margin: 0;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light, #e5e7eb);
 }
 
 // Chat content container - fills remaining space
 .chatContainer {
-  flex: 1 1 auto;
+  flex: 1;
   min-height: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  // Ensure container adapts to keyboard
-  position: relative;
 
   // Override ChatWindow Card styles for drawer context
   :global(.card) {
@@ -88,12 +89,6 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-  }
-}
-
-// Ensure smooth animations don't interfere with keyboard
-@media (prefers-reduced-motion: reduce) {
-  .content {
-    transition: none;
+    overflow: hidden;
   }
 }

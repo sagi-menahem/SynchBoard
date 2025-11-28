@@ -376,3 +376,25 @@ button:focus-visible {
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+// Vaul drawer styles - prevent body scroll when drawer is open
+// Vaul adds data-vaul-drawer-visible attribute when drawer opens
+body[data-vaul-drawer-visible='true'] {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+// Ensure proper viewport behavior on mobile when keyboard opens
+// This prevents the page from scrolling/jumping when input is focused
+@supports (-webkit-touch-callout: none) {
+  // iOS Safari specific
+  html {
+    // Use the small viewport height which doesn't include the URL bar
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
