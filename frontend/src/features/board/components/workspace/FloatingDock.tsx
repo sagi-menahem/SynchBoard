@@ -730,7 +730,6 @@ export const FloatingDock: React.FC = () => {
                   max={50}
                   step={1}
                   label={t('board:toolbar.strokeWidth')}
-                  showValue
                 />
               </div>
             </motion.div>

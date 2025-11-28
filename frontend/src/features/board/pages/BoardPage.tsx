@@ -57,7 +57,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const strokeColor = preferences.defaultStrokeColor;
   const strokeWidth = preferences.defaultStrokeWidth;
 
-  const handleColorPick = useCallback((color: string) => {
+  const handleColorPick = useCallback((_color: string) => {
     // Color picking is now handled internally by FloatingDock
     // This is kept for BoardWorkspace compatibility
   }, []);
