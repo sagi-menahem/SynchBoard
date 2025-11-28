@@ -33,6 +33,8 @@
 
   &:active:not(:disabled) {
     transform: scale(0.95);
+    // Ensure transform resets immediately when touch ends
+    transition: transform 0.05s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
   }
 
   // Remove the white border on focus - use subtle shadow instead

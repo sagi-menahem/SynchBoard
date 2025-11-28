@@ -250,13 +250,16 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       >
         <div className={styles.mobileCanvasContainer}>{canvasComponent}</div>
 
-        <FloatingActionButton
-          icon={MessageCircle}
-          onClick={() => setIsMobileChatOpen(true)}
-          aria-label={t('chat:window.title')}
-          badge={messages.length > 0 ? undefined : undefined}
-          position="bottom-right"
-        />
+        {/* Hide FAB when drawer is open to prevent animation glitches on re-render */}
+        {!isMobileChatOpen && (
+          <FloatingActionButton
+            icon={MessageCircle}
+            onClick={() => setIsMobileChatOpen(true)}
+            aria-label={t('chat:window.title')}
+            badge={messages.length > 0 ? undefined : undefined}
+            position="bottom-right"
+          />
+        )}
 
         <MobileChatDrawer
           boardId={boardId}

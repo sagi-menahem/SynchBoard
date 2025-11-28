@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Drawer } from 'vaul';
 
-import ChatWindow from './ChatWindow';
+import ChatWindow, { type ChatWindowHandle } from './ChatWindow';
 import styles from './MobileChatDrawer.module.scss';
 
 /**
@@ -42,13 +42,16 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
 }) => {
   const { t } = useTranslation(['chat']);
   const contentRef = useRef<HTMLDivElement>(null);
+  const chatWindowRef = useRef<ChatWindowHandle>(null);
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
+  const previousViewportHeight = useRef<number | null>(null);
 
   // Track visual viewport to handle keyboard appearance
   // This adjusts the drawer height when the keyboard opens/closes
   useEffect(() => {
     if (!isOpen) {
       setViewportHeight(null);
+      previousViewportHeight.current = null;
       return;
     }
 
@@ -56,8 +59,21 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
     if (!viewport) return;
 
     const updateHeight = () => {
-      // Use the visual viewport height which accounts for keyboard
-      setViewportHeight(viewport.height);
+      const newHeight = viewport.height;
+      const prevHeight = previousViewportHeight.current;
+
+      // Detect keyboard opening: viewport got significantly smaller (keyboard appeared)
+      // Threshold of 100px accounts for small UI changes vs keyboard
+      if (prevHeight !== null && prevHeight - newHeight > 100) {
+        // Keyboard opened - scroll messages to bottom after a short delay
+        // to allow the drawer to resize first
+        setTimeout(() => {
+          chatWindowRef.current?.scrollToBottom();
+        }, 50);
+      }
+
+      previousViewportHeight.current = newHeight;
+      setViewportHeight(newHeight);
     };
 
     // Initial measurement
@@ -103,7 +119,7 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
             </Drawer.Description>
           </VisuallyHidden.Root>
           <div className={styles.chatContainer}>
-            <ChatWindow boardId={boardId} messages={messages} isMobileDrawer />
+            <ChatWindow boardId={boardId} messages={messages} isMobileDrawer chatRef={chatWindowRef} />
           </div>
         </Drawer.Content>
       </Drawer.Portal>

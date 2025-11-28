@@ -2,7 +2,7 @@ import { useAuth } from 'features/auth/hooks';
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useChatWindowLogic } from 'features/chat/hooks/useChatWindowLogic';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import { Button, Card } from 'shared/ui';
@@ -11,6 +11,14 @@ import { formatDateSeparator } from 'shared/utils/DateUtils';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import styles from './ChatWindow.module.scss';
+
+/**
+ * Imperative handle for ChatWindow to allow parent components to trigger actions.
+ */
+export interface ChatWindowHandle {
+  /** Scrolls the message list to the bottom */
+  scrollToBottom: () => void;
+}
 
 /**
  * Properties for the ChatWindow component defining board association and message data.
@@ -22,6 +30,8 @@ interface ChatWindowProps {
   messages: ChatMessageResponse[];
   /** Whether this chat window is rendered inside a mobile drawer (affects focus behavior) */
   isMobileDrawer?: boolean;
+  /** Optional ref to expose imperative methods like scrollToBottom */
+  chatRef?: React.Ref<ChatWindowHandle>;
 }
 
 /**
@@ -43,7 +53,7 @@ interface ChatWindowProps {
  * @param boardId - Board identifier for chat context
  * @param messages - Array of chat messages to display
  */
-const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDrawer = false }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDrawer = false, chatRef }) => {
   const { t } = useTranslation(['chat', 'common']);
   const { userEmail } = useAuth();
   const { registerChatCommitHandler } = useBoardContext();
@@ -61,7 +71,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDraw
     shouldShowDateSeparator,
     commitChatTransaction,
     isMessageNew,
+    scrollToBottom,
   } = useChatWindowLogic({ boardId, messages, isMobileDrawer });
+
+  // Expose scrollToBottom to parent components via ref
+  useImperativeHandle(chatRef, () => ({
+    scrollToBottom,
+  }), [scrollToBottom]);
 
   // Register chat transaction handler with board context for WebSocket integration
   useEffect(() => {

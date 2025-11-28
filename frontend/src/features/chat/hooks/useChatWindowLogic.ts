@@ -255,5 +255,6 @@ export const useChatWindowLogic = ({ boardId, messages, isMobileDrawer = false }
     getBackgroundStyle,
     commitChatTransaction,
     isMessageNew,
+    scrollToBottom,
   };
 };
