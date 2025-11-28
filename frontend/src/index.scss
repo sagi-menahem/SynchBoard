@@ -322,6 +322,8 @@ a {
 body {
   margin: 0;
   min-width: 320px;
+  // Prevent unwanted body scroll - page content handles its own scrolling
+  overflow: hidden;
 }
 
 h1 {

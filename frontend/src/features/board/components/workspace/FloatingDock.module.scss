@@ -162,42 +162,106 @@
   }
 }
 
-// Mobile styles
+// Mobile styles - VERTICAL layout for better space usage
 @media (max-width: theme.$breakpoint-md) {
   .dock {
-    max-width: calc(100vw - 40px);
+    // Vertical layout on mobile - use !important to ensure override
+    flex-direction: column !important;
+    align-items: stretch !important;
+    max-width: none !important;
+    max-height: calc(100vh - 160px); // Leave space for header and bottom UI
+    width: auto !important;
     cursor: default;
-    overflow-x: auto;
+    overflow: visible; // Prevent page scroll issues
+    padding: theme.$spacing-1-5;
+    border-radius: theme.$border-radius-lg;
   }
 
   .dragHandle {
-    display: none;
+    display: none !important;
   }
 
   .toolsContainer {
-    overflow-x: auto;
+    // Vertical layout - use !important to ensure override
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: theme.$spacing-1-5;
+    overflow-y: auto;
+    overflow-x: visible;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    max-height: calc(100vh - 200px);
 
     &::-webkit-scrollbar {
       display: none;
     }
   }
 
+  .toolGroup {
+    // Keep tools horizontal within each group
+    flex-direction: row !important;
+    justify-content: center !important;
+    flex-wrap: wrap;
+    gap: theme.$spacing-1;
+  }
+
+  .separator {
+    // Horizontal separator for vertical layout
+    width: 100% !important;
+    height: 1px !important;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-border),
+      transparent
+    ) !important;
+  }
+
   .strokeControl {
-    min-width: 80px;
-    max-width: 100px;
+    min-width: 70px;
+    max-width: 90px;
+    height: 32px;
+    padding: 0 theme.$spacing-1;
+  }
+
+  .colorPickerWrapper {
+    height: 32px;
+
+    :global(.colorPickerContainer) {
+      height: 32px;
+    }
+
+    :global(.swatch) {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .minimizeButton {
+    margin-left: 0;
+    margin-top: theme.$spacing-1;
+    align-self: center;
+  }
+
+  .minimizedTrigger {
+    flex-direction: column !important;
+    padding: theme.$spacing-2;
   }
 }
 
-// Very small screens - hide some tools
+// Very small screens - simplify tools further
 @media (max-width: 480px) {
+  .dock {
+    max-height: calc(100vh - 140px);
+  }
+
   .toolGroup:nth-child(5) {
+    // Hide color/stroke controls on very small screens
     display: none;
   }
 
   .strokeControl {
-    min-width: 60px;
-    max-width: 80px;
+    min-width: 50px;
+    max-width: 70px;
   }
 }
