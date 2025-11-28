@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import React from 'react';
 
@@ -27,7 +26,9 @@ interface FloatingActionButtonProps {
 
 /**
  * Floating Action Button (FAB) component for mobile interfaces.
- * Provides a prominent, animated button for primary actions with optional badge support.
+ * Provides a prominent button for primary actions with optional badge support.
+ * Uses CSS transitions instead of framer-motion to avoid animation glitches
+ * when the button re-renders after drawer close.
  *
  * @param icon - Lucide icon component to render
  * @param onClick - Click event handler
@@ -47,24 +48,18 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   disabled = false,
 }) => {
   return (
-    <motion.button
+    <button
       type="button"
       className={clsx(styles.fab, styles[position], className)}
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
     >
       <Icon size={24} />
       {badge !== undefined && badge > 0 && (
         <span className={styles.badge}>{badge > 99 ? '99+' : badge}</span>
       )}
-    </motion.button>
+    </button>
   );
 };
 

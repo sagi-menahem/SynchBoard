@@ -65,17 +65,15 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
         setMessage('');
       } finally {
         setIsSending(false);
-        // On mobile, don't refocus as the keyboard is already open and refocusing can cause layout jumps
-        // On desktop, restore focus for continued typing
-        if (!disableAutoFocus) {
-          // Use requestAnimationFrame to ensure DOM is stable before refocusing
-          requestAnimationFrame(() => {
-            inputRef.current?.focus();
-          });
-        }
+        // Always refocus to keep keyboard open after sending
+        // The key is to refocus synchronously before the browser can close the keyboard
+        // Using a microtask (queueMicrotask) is faster than setTimeout/requestAnimationFrame
+        queueMicrotask(() => {
+          inputRef.current?.focus();
+        });
       }
     },
-    [message, onSendMessage, shouldBlockFunctionality, isSending, disableAutoFocus],
+    [message, onSendMessage, shouldBlockFunctionality, isSending],
   );
 
   // Memoized to prevent unnecessary re-renders when parent components update

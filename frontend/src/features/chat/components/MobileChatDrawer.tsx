@@ -1,6 +1,6 @@
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Drawer } from 'vaul';
 
@@ -26,6 +26,9 @@ interface MobileChatDrawerProps {
  * Provides a swipe-to-dismiss interface for chat on mobile devices while
  * maintaining full chat functionality through the existing ChatWindow component.
  *
+ * Handles mobile keyboard by tracking visual viewport height and adjusting
+ * the drawer content area accordingly.
+ *
  * @param boardId - Board identifier for chat context
  * @param messages - Array of chat messages to display
  * @param isOpen - Controls whether the drawer is open
@@ -38,6 +41,42 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
   onOpenChange,
 }) => {
   const { t } = useTranslation(['chat']);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
+
+  // Track visual viewport to handle keyboard appearance
+  // This adjusts the drawer height when the keyboard opens/closes
+  useEffect(() => {
+    if (!isOpen) {
+      setViewportHeight(null);
+      return;
+    }
+
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+
+    const updateHeight = () => {
+      // Use the visual viewport height which accounts for keyboard
+      setViewportHeight(viewport.height);
+    };
+
+    // Initial measurement
+    updateHeight();
+
+    viewport.addEventListener('resize', updateHeight);
+    viewport.addEventListener('scroll', updateHeight);
+
+    return () => {
+      viewport.removeEventListener('resize', updateHeight);
+      viewport.removeEventListener('scroll', updateHeight);
+    };
+  }, [isOpen]);
+
+  // Calculate the drawer height based on visual viewport
+  // When keyboard is open, viewport.height is smaller, so we use that
+  const contentStyle = viewportHeight
+    ? { height: `${Math.min(viewportHeight * 0.85, viewportHeight - 50)}px` }
+    : undefined;
 
   return (
     <Drawer.Root
@@ -45,13 +84,16 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
       onOpenChange={onOpenChange}
       // Prevent background scaling which can cause visual glitches on mobile
       shouldScaleBackground={false}
-      // Disable the default spring animation for smoother feel
       // Allow dismissing by swiping down
       dismissible
     >
       <Drawer.Portal>
         <Drawer.Overlay className={styles.overlay} />
-        <Drawer.Content className={styles.content}>
+        <Drawer.Content
+          ref={contentRef}
+          className={styles.content}
+          style={contentStyle}
+        >
           {/* Vaul's built-in handle component for proper drag behavior */}
           <Drawer.Handle className={styles.handle} />
           <Drawer.Title className={styles.title}>{t('chat:window.title')}</Drawer.Title>

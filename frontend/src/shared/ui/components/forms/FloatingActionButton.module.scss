@@ -17,7 +17,8 @@
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.15),
     0 2px 4px rgba(0, 0, 0, 0.1);
-  @include theme.hover-transition;
+  // Use CSS transitions instead of framer-motion
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
 
   // Safe area margins
   margin-bottom: env(safe-area-inset-bottom, 0);
@@ -27,11 +28,24 @@
     box-shadow:
       0 6px 16px rgba(0, 0, 0, 0.2),
       0 3px 6px rgba(0, 0, 0, 0.12);
+    transform: scale(1.05);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  // Remove the white border on focus - use subtle shadow instead
+  &:focus {
+    outline: none;
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 3px;
+    outline: none;
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 0 0 3px var(--color-primary-light, rgba(99, 102, 241, 0.3));
   }
 
   &:disabled {
@@ -39,6 +53,7 @@
     color: var(--color-text-disabled);
     cursor: not-allowed;
     box-shadow: none;
+    transform: none;
   }
 
   // Touch target enhancement for mobile

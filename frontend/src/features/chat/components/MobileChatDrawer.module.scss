@@ -23,10 +23,10 @@
   display: flex;
   flex-direction: column;
 
-  // Height: 85% of viewport, with fallback
-  height: 85vh;
+  // Default height - will be overridden by JS when keyboard opens
+  // Using dvh for better mobile support (accounts for browser UI)
   height: 85dvh;
-  max-height: 90vh;
+  max-height: 90dvh;
 
   // Visual styling
   background: var(--color-surface, #ffffff);
@@ -40,11 +40,13 @@
   // Vaul uses transform for animations - ensure it's not overridden
   will-change: transform;
 
-  // Fix for Safari - ensure drawer appears above keyboard
-  // The keyboard pushes the viewport up, so we stay at bottom: 0
-  @supports (-webkit-touch-callout: none) {
-    // iOS specific
-    height: 85svh;
+  // Smooth height transition when keyboard appears/disappears
+  transition: height 0.1s ease-out;
+
+  // Fallback for browsers without dvh support
+  @supports not (height: 1dvh) {
+    height: 85vh;
+    max-height: 90vh;
   }
 }
 
