@@ -9,6 +9,7 @@
   padding-inline: theme.$spacing-4;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border-light);
+  // Use sticky positioning (acts as relative for child absolute positioning)
   position: sticky;
   top: 0;
   z-index: theme.$z-index-sticky;
@@ -42,6 +43,11 @@
 }
 
 .title {
+  // Absolutely center the title in the header
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
   font-size: theme.$font-size-lg;
   font-weight: theme.$font-weight-semibold;
   color: var(--color-text-primary);
@@ -49,6 +55,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+  text-align: center;
+
+  // Prevent title from overlapping leading/trailing content
+  pointer-events: none;
 
   @media (min-width: theme.$breakpoint-md) {
     max-width: 300px;

@@ -76,6 +76,12 @@
   background: var(--color-border);
   @include theme.hover-transition;
 
+  // Hidden when chat panel is collapsed
+  &.resizeHandleHidden {
+    display: none;
+    pointer-events: none;
+  }
+
   // Extended hit area for easier interaction
   &::before {
     content: '';

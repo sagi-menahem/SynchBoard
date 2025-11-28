@@ -1,7 +1,13 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import type { DockAnchor } from 'features/settings/types/UserTypes';
-import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useMotionValue,
+  type PanInfo,
+} from 'framer-motion';
 import { Brush, ChevronDown, ChevronUp, Eraser, GripVertical, Pipette, Type } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,13 +20,62 @@ import { ShapeToolsDropdown } from './ShapeToolsDropdown';
 
 import styles from './FloatingDock.module.scss';
 
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
 /**
- * Resize debounce delay in milliseconds.
+ * Margin from viewport edges in pixels.
+ * This creates a buffer zone so the dock never touches the screen edge.
  */
-const RESIZE_DEBOUNCE_MS = 100;
+const EDGE_MARGIN = 20;
+
+/**
+ * Mobile breakpoint width in pixels.
+ * Below this width, the dock is locked to bottom-center and drag is disabled.
+ */
+const MOBILE_BREAKPOINT = 768;
+
+/**
+ * Minimum drag distance (px) to differentiate drag from click.
+ * Prevents accidental expansion when user clicks the minimized dock.
+ */
+const DRAG_THRESHOLD = 5;
+
+/**
+ * Header height offset for top anchors.
+ * Ensures dock doesn't overlap with the AppHeader.
+ */
+const HEADER_HEIGHT = 56;
+
+/**
+ * Default dock dimensions used before actual measurement.
+ * These are conservative estimates to prevent initial positioning errors.
+ */
+const DEFAULT_DOCK_SIZE = { width: 500, height: 56 };
+
+/**
+ * Spring animation configuration for snapping.
+ * Tuned for a slow, highly visible animation (~500ms feel).
+ * Creates a sense of the dock being "pulled" into place.
+ * - stiffness: 120 = soft, slow movement
+ * - damping: 22 = minimal wobble, smooth settle
+ * - mass: 1 = natural weight/inertia
+ */
+const SNAP_SPRING = {
+  type: 'spring' as const,
+  stiffness: 120,
+  damping: 22,
+  mass: 1,
+};
+
+// =============================================================================
+// TYPES
+// =============================================================================
 
 /**
  * Allowed dock anchors - 5 positions, dynamically excluding one based on RTL/LTR.
+ * The excluded position is where FloatingActions is located.
  */
 type AllowedDockAnchor =
   | 'top-left'
@@ -30,25 +85,9 @@ type AllowedDockAnchor =
   | 'bottom-center'
   | 'bottom-right';
 
-/**
- * Margin from viewport edges in pixels.
- */
-const EDGE_MARGIN = 20;
-
-/**
- * Mobile breakpoint width in pixels.
- */
-const MOBILE_BREAKPOINT = 768;
-
-/**
- * Minimum drag distance (px) to differentiate drag from click.
- */
-const DRAG_THRESHOLD = 5;
-
-/**
- * Header height offset for top anchors.
- */
-const HEADER_HEIGHT = 56;
+// =============================================================================
+// HELPER FUNCTIONS (Pure, no side effects)
+// =============================================================================
 
 /**
  * Get allowed anchors based on language direction.
@@ -57,21 +96,19 @@ const HEADER_HEIGHT = 56;
  */
 const getAllowedAnchors = (isRTLMode: boolean): AllowedDockAnchor[] => {
   if (isRTLMode) {
-    // RTL: FloatingActions at bottom-right, so exclude bottom-right for dock
     return ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center'];
-  } else {
-    // LTR: FloatingActions at bottom-left, so exclude bottom-left for dock
-    return ['top-left', 'top-center', 'top-right', 'bottom-center', 'bottom-right'];
   }
+  return ['top-left', 'top-center', 'top-right', 'bottom-center', 'bottom-right'];
 };
 
 /**
  * Calculate pixel position for an anchor.
+ * All calculations use fresh viewport/dock dimensions passed as parameters.
  */
 const getAnchorPosition = (
   anchor: AllowedDockAnchor,
-  containerWidth: number,
-  containerHeight: number,
+  viewportWidth: number,
+  viewportHeight: number,
   dockWidth: number,
   dockHeight: number,
 ): { x: number; y: number } => {
@@ -81,24 +118,24 @@ const getAnchorPosition = (
       y: EDGE_MARGIN + HEADER_HEIGHT,
     },
     'top-center': {
-      x: Math.max(EDGE_MARGIN, (containerWidth - dockWidth) / 2),
+      x: Math.max(EDGE_MARGIN, (viewportWidth - dockWidth) / 2),
       y: EDGE_MARGIN + HEADER_HEIGHT,
     },
     'top-right': {
-      x: Math.max(EDGE_MARGIN, containerWidth - dockWidth - EDGE_MARGIN),
+      x: Math.max(EDGE_MARGIN, viewportWidth - dockWidth - EDGE_MARGIN),
       y: EDGE_MARGIN + HEADER_HEIGHT,
     },
     'bottom-left': {
       x: EDGE_MARGIN,
-      y: Math.max(EDGE_MARGIN, containerHeight - dockHeight - EDGE_MARGIN),
+      y: Math.max(EDGE_MARGIN + HEADER_HEIGHT, viewportHeight - dockHeight - EDGE_MARGIN),
     },
     'bottom-center': {
-      x: Math.max(EDGE_MARGIN, (containerWidth - dockWidth) / 2),
-      y: Math.max(EDGE_MARGIN, containerHeight - dockHeight - EDGE_MARGIN),
+      x: Math.max(EDGE_MARGIN, (viewportWidth - dockWidth) / 2),
+      y: Math.max(EDGE_MARGIN + HEADER_HEIGHT, viewportHeight - dockHeight - EDGE_MARGIN),
     },
     'bottom-right': {
-      x: Math.max(EDGE_MARGIN, containerWidth - dockWidth - EDGE_MARGIN),
-      y: Math.max(EDGE_MARGIN, containerHeight - dockHeight - EDGE_MARGIN),
+      x: Math.max(EDGE_MARGIN, viewportWidth - dockWidth - EDGE_MARGIN),
+      y: Math.max(EDGE_MARGIN + HEADER_HEIGHT, viewportHeight - dockHeight - EDGE_MARGIN),
     },
   };
 
@@ -106,35 +143,8 @@ const getAnchorPosition = (
 };
 
 /**
- * Find the nearest allowed anchor from a given position.
- */
-const findNearestAnchor = (
-  x: number,
-  y: number,
-  containerWidth: number,
-  containerHeight: number,
-  dockWidth: number,
-  dockHeight: number,
-  allowedAnchors: AllowedDockAnchor[],
-): AllowedDockAnchor => {
-  let nearestAnchor: AllowedDockAnchor = 'bottom-center';
-  let minDistance = Infinity;
-
-  for (const anchor of allowedAnchors) {
-    const pos = getAnchorPosition(anchor, containerWidth, containerHeight, dockWidth, dockHeight);
-    const distance = Math.hypot(x - pos.x, y - pos.y);
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      nearestAnchor = anchor;
-    }
-  }
-
-  return nearestAnchor;
-};
-
-/**
  * Map any anchor to a valid allowed anchor based on RTL mode.
+ * Handles legacy anchors and forbidden positions.
  */
 const mapToAllowedAnchor = (
   anchor: DockAnchor | undefined,
@@ -145,18 +155,13 @@ const mapToAllowedAnchor = (
 
   if (!anchor) return defaultAnchor;
 
-  // Check if anchor is in allowed list
   if (allowedAnchors.includes(anchor as AllowedDockAnchor)) {
     return anchor as AllowedDockAnchor;
   }
 
   // Map forbidden anchors to nearest allowed
-  if (isRTLMode && anchor === 'bottom-right') {
-    return 'bottom-center';
-  }
-  if (!isRTLMode && anchor === 'bottom-left') {
-    return 'bottom-center';
-  }
+  if (isRTLMode && anchor === 'bottom-right') return 'bottom-center';
+  if (!isRTLMode && anchor === 'bottom-left') return 'bottom-center';
 
   // Map legacy side anchors
   if (anchor === 'left-center') return 'bottom-left';
@@ -166,13 +171,68 @@ const mapToAllowedAnchor = (
 };
 
 /**
- * FloatingDock component - Always-horizontal draggable toolbar for drawing tools.
+ * Calculate explicit drag constraints from fresh viewport dimensions.
+ * CRITICAL: Always use fresh measurements to prevent stale constraint bugs.
+ */
+const calculateConstraints = (
+  viewportWidth: number,
+  viewportHeight: number,
+  dockWidth: number,
+  dockHeight: number,
+) => ({
+  left: EDGE_MARGIN,
+  right: Math.max(EDGE_MARGIN, viewportWidth - dockWidth - EDGE_MARGIN),
+  top: EDGE_MARGIN + HEADER_HEIGHT,
+  bottom: Math.max(EDGE_MARGIN + HEADER_HEIGHT, viewportHeight - dockHeight - EDGE_MARGIN),
+});
+
+/**
+ * Find the nearest anchor using Euclidean distance.
+ * "Winner Takes All" - always returns the closest anchor, no exceptions.
+ */
+const findNearestAnchor = (
+  x: number,
+  y: number,
+  viewportWidth: number,
+  viewportHeight: number,
+  dockWidth: number,
+  dockHeight: number,
+  allowedAnchors: AllowedDockAnchor[],
+): AllowedDockAnchor => {
+  let nearestAnchor: AllowedDockAnchor = 'bottom-center';
+  let minDistance = Infinity;
+
+  for (const anchor of allowedAnchors) {
+    const anchorPos = getAnchorPosition(anchor, viewportWidth, viewportHeight, dockWidth, dockHeight);
+    const distance = Math.hypot(x - anchorPos.x, y - anchorPos.y);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestAnchor = anchor;
+    }
+  }
+
+  return nearestAnchor;
+};
+
+// =============================================================================
+// COMPONENT
+// =============================================================================
+
+/**
+ * FloatingDock component - Production-stable draggable toolbar.
  *
- * Features:
- * - Draggable with strict snapping to allowed anchors (RTL/LTR aware)
- * - Always horizontal layout
- * - Minimize/expand with drag-vs-click detection
- * - Mobile: locked to bottom-center, drag disabled
+ * ARCHITECTURE:
+ * - Uses `useMotionValue` for x/y coordinates to decouple drag from React state
+ * - Uses `useAnimationControls` for programmatic snap animations
+ * - All constraint calculations use fresh viewport measurements
+ * - "Winner Takes All" snapping ensures dock NEVER floats in no-man's land
+ *
+ * STABILITY FEATURES:
+ * - Motion values operate outside React's update cycle for smooth 60fps drag
+ * - Fresh measurements taken at drag-end for accurate snapping
+ * - ResizeObserver for reliable viewport tracking
+ * - Explicit pixel constraints (not ref-based) prevent stale data bugs
  */
 export const FloatingDock: React.FC = () => {
   const { t, i18n } = useTranslation(['board', 'common']);
@@ -185,198 +245,237 @@ export const FloatingDock: React.FC = () => {
     updateDockMinimized,
   } = useToolPreferences();
 
+  // =========================================================================
+  // REFS
+  // =========================================================================
+
   const dockRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLElement | null>(null);
   const dragStartPos = useRef<{ x: number; y: number } | null>(null);
   const hasDragged = useRef(false);
-  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Use refs for values that don't need to trigger re-renders
-  const dockSizeRef = useRef({ width: 500, height: 56 });
-  const containerSizeRef = useRef({ width: window.innerWidth, height: window.innerHeight });
+  // Store current dock size in ref for instant access during drag
+  // This avoids stale closure issues in event handlers
+  const dockSizeRef = useRef(DEFAULT_DOCK_SIZE);
+
+  // =========================================================================
+  // MOTION VALUES (Direct control for smooth drag + snap)
+  // =========================================================================
+
+  /**
+   * Motion values for x/y coordinates.
+   * Using motion values with the `animate()` function (not `animate` prop)
+   * gives us direct control over animations without conflicts with drag.
+   *
+   * KEY INSIGHT: The `animate()` function from framer-motion animates motion
+   * values directly, separate from the component's animate prop. This allows
+   * drag to work smoothly (updating motion values) and then we can animate
+   * those same values to snap positions after drag ends.
+   */
+  const motionX = useMotionValue(0);
+  const motionY = useMotionValue(0);
+
+  // =========================================================================
+  // STATE
+  // =========================================================================
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(preferences.isDockMinimized || false);
 
-  // RTL detection - memoized to prevent unnecessary recalculations
+  // Track dock size in state for constraint reactivity
+  const [dockSize, setDockSize] = useState(DEFAULT_DOCK_SIZE);
+
+  // Track viewport size for constraint calculations
+  const [viewportSize, setViewportSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // =========================================================================
+  // DERIVED VALUES
+  // =========================================================================
+
   const isRTLMode = useMemo(() => isRTL(i18n.language), [i18n.language]);
   const allowedAnchors = useMemo(() => getAllowedAnchors(isRTLMode), [isRTLMode]);
 
-  // Current anchor position
   const [currentAnchor, setCurrentAnchor] = useState<AllowedDockAnchor>(() =>
     mapToAllowedAnchor(preferences.dockAnchor, isRTL(i18n.language)),
   );
 
-  // Minimized state
-  const [isMinimized, setIsMinimized] = useState(preferences.isDockMinimized || false);
+  // =========================================================================
+  // CONSTRAINT CALCULATION (Always fresh)
+  // =========================================================================
 
-  // Calculated position based on anchor
-  const [position, setPosition] = useState(() => {
-    const rtl = isRTL(i18n.language);
-    const anchor = mapToAllowedAnchor(preferences.dockAnchor, rtl);
-    return getAnchorPosition(anchor, window.innerWidth, window.innerHeight, 500, 56);
-  });
-
-  // Calculate position for a given anchor - stable function
-  const calculatePosition = useCallback(
-    (anchor: AllowedDockAnchor, width: number, height: number, dockW: number, dockH: number) => {
-      return getAnchorPosition(anchor, width, height, dockW, dockH);
-    },
-    [],
+  /**
+   * Explicit drag constraints calculated from current viewport and dock size.
+   * Memoized but dependencies ensure it updates when dimensions change.
+   */
+  const dragConstraints = useMemo(
+    () => calculateConstraints(viewportSize.width, viewportSize.height, dockSize.width, dockSize.height),
+    [viewportSize, dockSize],
   );
 
-  // Update position only if it actually changed
-  const updatePositionIfChanged = useCallback(
-    (newPos: { x: number; y: number }) => {
-      setPosition((prev) => {
-        if (prev.x === newPos.x && prev.y === newPos.y) {
-          return prev; // No change, don't trigger re-render
-        }
-        return newPos;
-      });
-    },
-    [],
-  );
+  // =========================================================================
+  // SNAP TO ANCHOR (Core positioning logic)
+  // =========================================================================
 
-  // Find the workspace container for drag constraints (runs once)
-  useEffect(() => {
-    const container = document.querySelector('[data-board-page]') as HTMLElement;
-    if (container) {
-      containerRef.current = container;
-      const rect = container.getBoundingClientRect();
-      containerSizeRef.current = { width: rect.width, height: rect.height };
-    }
-  }, []);
+  /**
+   * Move dock to a specific anchor position.
+   * Uses the `animate()` function to directly animate motion values.
+   *
+   * @param anchor - Target anchor position
+   * @param shouldAnimate - If true, use spring animation; if false, jump instantly
+   */
+  const snapToAnchor = useCallback(
+    (anchor: AllowedDockAnchor, shouldAnimate = true) => {
+      // Get fresh viewport dimensions
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const dw = dockSizeRef.current.width;
+      const dh = dockSizeRef.current.height;
 
-  // Sync with preferences changes
-  useEffect(() => {
-    const newAnchor = mapToAllowedAnchor(preferences.dockAnchor, isRTLMode);
-    setCurrentAnchor((prev) => (prev === newAnchor ? prev : newAnchor));
-    setIsMinimized(preferences.isDockMinimized || false);
-  }, [preferences.dockAnchor, preferences.isDockMinimized, isRTLMode]);
+      const targetPos = getAnchorPosition(anchor, vw, vh, dw, dh);
 
-  // Handle viewport resize and mobile detection - debounced
-  useEffect(() => {
-    const handleResize = () => {
-      // Clear any pending debounce
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
+      if (shouldAnimate) {
+        // Use the `animate()` function to animate motion values directly
+        // This is the KEY to consistent spring animations - it bypasses
+        // any conflicts with the component's animate prop
+        void animate(motionX, targetPos.x, SNAP_SPRING);
+        void animate(motionY, targetPos.y, SNAP_SPRING);
+      } else {
+        // Instant jump (used for initial positioning)
+        motionX.set(targetPos.x);
+        motionY.set(targetPos.y);
       }
+    },
+    [motionX, motionY],
+  );
 
-      resizeTimeoutRef.current = setTimeout(() => {
-        const mobile = window.innerWidth < MOBILE_BREAKPOINT;
+  // =========================================================================
+  // INITIALIZATION & SYNC
+  // =========================================================================
 
-        // Update container size ref
-        if (containerRef.current) {
-          const rect = containerRef.current.getBoundingClientRect();
-          containerSizeRef.current = { width: rect.width, height: rect.height };
-        } else {
-          containerSizeRef.current = { width: window.innerWidth, height: window.innerHeight };
-        }
+  /**
+   * Initialize position on mount and when anchor changes.
+   */
+  useEffect(() => {
+    const anchor = mapToAllowedAnchor(preferences.dockAnchor, isRTLMode);
+    setCurrentAnchor(anchor);
+    void snapToAnchor(anchor, false);
+  }, [preferences.dockAnchor, isRTLMode, snapToAnchor]);
 
-        // Only update mobile state if it changed
-        setIsMobile((prevMobile) => {
-          if (prevMobile === mobile) return prevMobile;
-          return mobile;
-        });
+  /**
+   * Sync minimized state with preferences.
+   */
+  useEffect(() => {
+    setIsMinimized(preferences.isDockMinimized || false);
+  }, [preferences.isDockMinimized]);
 
-        // Recalculate position
-        setCurrentAnchor((prevAnchor) => {
-          const effectiveAnchor = mobile ? 'bottom-center' : prevAnchor;
-          const newPos = calculatePosition(
-            effectiveAnchor,
-            containerSizeRef.current.width,
-            containerSizeRef.current.height,
-            dockSizeRef.current.width,
-            dockSizeRef.current.height,
-          );
-          updatePositionIfChanged(newPos);
-          return prevAnchor; // Don't change anchor
-        });
-      }, RESIZE_DEBOUNCE_MS);
+  // =========================================================================
+  // VIEWPORT RESIZE HANDLING
+  // =========================================================================
+
+  /**
+   * Handle viewport resize using ResizeObserver for reliability.
+   * Updates viewport size state and re-positions dock to current anchor.
+   */
+  useEffect(() => {
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const handleResize = () => {
+      // Debounce resize events to prevent excessive updates
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+
+      resizeTimeout = setTimeout(() => {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+        const mobile = newWidth < MOBILE_BREAKPOINT;
+
+        setViewportSize({ width: newWidth, height: newHeight });
+        setIsMobile(mobile);
+
+        // Re-snap to current anchor with new dimensions
+        const effectiveAnchor = mobile ? 'bottom-center' : currentAnchor;
+        void snapToAnchor(effectiveAnchor, true);
+      }, 100);
     };
 
-    // Initial calculation without debounce
-    const initialMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    setIsMobile(initialMobile);
-
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      containerSizeRef.current = { width: rect.width, height: rect.height };
-    }
-
-    const effectiveAnchor = initialMobile ? 'bottom-center' : currentAnchor;
-    const initialPos = calculatePosition(
-      effectiveAnchor,
-      containerSizeRef.current.width,
-      containerSizeRef.current.height,
-      dockSizeRef.current.width,
-      dockSizeRef.current.height,
-    );
-    updatePositionIfChanged(initialPos);
+    // Initial setup
+    handleResize();
 
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
-      }
+      if (resizeTimeout) clearTimeout(resizeTimeout);
     };
-    // Only re-bind listener if anchor changes (needed for correct position calc)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentAnchor]);
+  }, [currentAnchor, snapToAnchor]);
 
-  // Measure dock size after render - only when minimized state changes
+  // =========================================================================
+  // DOCK SIZE MEASUREMENT
+  // =========================================================================
+
+  /**
+   * Measure dock size after render and update position.
+   * Uses ResizeObserver for reliable size tracking.
+   */
   useEffect(() => {
-    // Use requestAnimationFrame to measure after paint
-    const rafId = requestAnimationFrame(() => {
-      if (dockRef.current) {
-        const rect = dockRef.current.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          const sizeChanged =
-            dockSizeRef.current.width !== rect.width || dockSizeRef.current.height !== rect.height;
+    if (!dockRef.current) return;
 
-          if (sizeChanged) {
-            dockSizeRef.current = { width: rect.width, height: rect.height };
+    const measureAndUpdate = () => {
+      if (!dockRef.current) return;
 
-            // Update position with actual size
-            const effectiveAnchor = isMobile ? 'bottom-center' : currentAnchor;
-            const newPos = calculatePosition(
-              effectiveAnchor,
-              containerSizeRef.current.width,
-              containerSizeRef.current.height,
-              rect.width,
-              rect.height,
-            );
-            updatePositionIfChanged(newPos);
-          }
+      const rect = dockRef.current.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const newSize = { width: rect.width, height: rect.height };
+
+        // Check if size actually changed
+        if (dockSizeRef.current.width !== newSize.width || dockSizeRef.current.height !== newSize.height) {
+          dockSizeRef.current = newSize;
+          setDockSize(newSize);
+
+          // Re-snap to anchor with new size
+          const effectiveAnchor = isMobile ? 'bottom-center' : currentAnchor;
+          void snapToAnchor(effectiveAnchor, true);
         }
       }
+    };
+
+    // Use ResizeObserver for reliable size tracking
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(measureAndUpdate);
     });
 
-    return () => cancelAnimationFrame(rafId);
-  }, [isMinimized, currentAnchor, isMobile, calculatePosition, updatePositionIfChanged]);
+    resizeObserver.observe(dockRef.current);
 
-  // Re-validate anchor when RTL mode changes
+    // Initial measurement
+    requestAnimationFrame(measureAndUpdate);
+
+    return () => resizeObserver.disconnect();
+  }, [isMinimized, currentAnchor, isMobile, snapToAnchor]);
+
+  // =========================================================================
+  // RTL MODE CHANGE HANDLING
+  // =========================================================================
+
+  /**
+   * Re-validate anchor when RTL mode changes.
+   */
   useEffect(() => {
     const validAnchor = mapToAllowedAnchor(currentAnchor, isRTLMode);
     if (validAnchor !== currentAnchor) {
       setCurrentAnchor(validAnchor);
-      const newPos = calculatePosition(
-        validAnchor,
-        containerSizeRef.current.width,
-        containerSizeRef.current.height,
-        dockSizeRef.current.width,
-        dockSizeRef.current.height,
-      );
-      updatePositionIfChanged(newPos);
+      void snapToAnchor(validAnchor, true);
       void updateDockAnchor(validAnchor as DockAnchor);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRTLMode]);
 
+  // =========================================================================
+  // DRAG HANDLERS
+  // =========================================================================
+
   /**
-   * Handle drag start - record starting position.
+   * Handle drag start - record starting position for click detection.
    */
   const handleDragStart = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -404,55 +503,57 @@ export const FloatingDock: React.FC = () => {
   );
 
   /**
-   * Handle drag end - snap to nearest allowed anchor.
+   * Handle drag end - MANDATORY SNAPPING to nearest anchor.
+   *
+   * CRITICAL: This reads the current position from motion values (not state)
+   * and uses the `animate()` function for consistent spring animation.
    */
   const handleDragEnd = useCallback(
-    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    (_event: MouseEvent | TouchEvent | PointerEvent, _info: PanInfo) => {
       setIsDragging(false);
       dragStartPos.current = null;
 
       if (isMobile) return;
 
-      // Calculate where the dock ended up
-      const finalX = position.x + info.offset.x;
-      const finalY = position.y + info.offset.y;
+      // Read current position from motion values - this is where the drag left us
+      const currentX = motionX.get();
+      const currentY = motionY.get();
 
-      const width = containerSizeRef.current.width;
-      const height = containerSizeRef.current.height;
+      // Get FRESH viewport dimensions at this exact moment
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const dw = dockSizeRef.current.width;
+      const dh = dockSizeRef.current.height;
 
-      // Find nearest allowed anchor
-      const newAnchor = findNearestAnchor(
-        finalX,
-        finalY,
-        width,
-        height,
-        dockSizeRef.current.width,
-        dockSizeRef.current.height,
-        allowedAnchors,
-      );
+      // WINNER TAKES ALL: Find nearest anchor using Euclidean distance
+      const nearestAnchor = findNearestAnchor(currentX, currentY, vw, vh, dw, dh, allowedAnchors);
 
-      // Update state and animate to anchor
-      setCurrentAnchor(newAnchor);
-      const newPos = getAnchorPosition(
-        newAnchor,
-        width,
-        height,
-        dockSizeRef.current.width,
-        dockSizeRef.current.height,
-      );
-      updatePositionIfChanged(newPos);
+      // FORCE SNAP - animate to anchor position, no exceptions
+      setCurrentAnchor(nearestAnchor);
+
+      // Calculate snap position
+      const snapPos = getAnchorPosition(nearestAnchor, vw, vh, dw, dh);
+
+      // Use `animate()` function to animate motion values with spring
+      // This is the CRITICAL fix - animate() works consistently every time
+      // regardless of drag state or previous animations
+      void animate(motionX, snapPos.x, SNAP_SPRING);
+      void animate(motionY, snapPos.y, SNAP_SPRING);
 
       // Persist to backend
-      void updateDockAnchor(newAnchor as DockAnchor);
+      void updateDockAnchor(nearestAnchor as DockAnchor);
     },
-    [isMobile, position, allowedAnchors, updateDockAnchor, updatePositionIfChanged],
+    [isMobile, motionX, motionY, allowedAnchors, updateDockAnchor],
   );
+
+  // =========================================================================
+  // MINIMIZE TOGGLE
+  // =========================================================================
 
   /**
    * Toggle minimized state - only if not dragging.
    */
   const handleToggleMinimize = useCallback(() => {
-    // Block expand if user was dragging
     if (hasDragged.current) {
       hasDragged.current = false;
       return;
@@ -462,6 +563,10 @@ export const FloatingDock: React.FC = () => {
     setIsMinimized(newMinimized);
     void updateDockMinimized(newMinimized);
   }, [isMinimized, updateDockMinimized]);
+
+  // =========================================================================
+  // TOOL HANDLERS
+  // =========================================================================
 
   const handleToolSelect = useCallback(
     (tool: Tool) => {
@@ -486,23 +591,10 @@ export const FloatingDock: React.FC = () => {
 
   const currentTool = preferences.defaultTool;
 
-  // Drag constraints - keep dock fully visible (memoized to prevent recreation)
-  const dragConstraints = useMemo(
-    () => ({
-      left: EDGE_MARGIN,
-      right: Math.max(0, containerSizeRef.current.width - dockSizeRef.current.width - EDGE_MARGIN),
-      top: EDGE_MARGIN + HEADER_HEIGHT,
-      bottom: Math.max(
-        0,
-        containerSizeRef.current.height - dockSizeRef.current.height - EDGE_MARGIN,
-      ),
-    }),
-    // Recalculate when position changes (which happens after resize)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [position],
-  );
+  // =========================================================================
+  // ANIMATION VARIANTS
+  // =========================================================================
 
-  // Animation variants for tools
   const toolsVariants = {
     visible: {
       opacity: 1,
@@ -518,26 +610,27 @@ export const FloatingDock: React.FC = () => {
     hidden: { opacity: 0, scale: 0.9 },
   };
 
+  // =========================================================================
+  // RENDER
+  // =========================================================================
+
   return (
     <motion.div
       ref={dockRef}
       className={`${styles.dock} ${isDragging ? styles.dragging : ''}`}
+      // Drag configuration
       drag={!isMobile}
       dragMomentum={false}
       dragElastic={0}
       dragConstraints={dragConstraints}
+      // Event handlers
       onDragStart={handleDragStart}
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
-      animate={{
-        x: position.x,
-        y: position.y,
-      }}
-      transition={{
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
-      }}
+      // Use style prop with motion values for position
+      // This allows drag to update motion values directly,
+      // and we use animate() function to spring-animate them after drag
+      style={{ x: motionX, y: motionY }}
     >
       {/* Drag Handle - desktop only */}
       {!isMobile && !isMinimized && (

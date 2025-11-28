@@ -305,8 +305,10 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
           {canvasComponent}
         </Panel>
 
-        {/* Resize Handle */}
-        <PanelResizeHandle className={styles.resizeHandle}>
+        {/* Resize Handle - hidden when chat is collapsed */}
+        <PanelResizeHandle
+          className={clsx(styles.resizeHandle, isChatCollapsed && styles.resizeHandleHidden)}
+        >
           <div className={styles.resizeHandleInner}>
             <div className={styles.handleDot} />
             <div className={styles.handleDot} />
