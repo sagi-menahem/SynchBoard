@@ -50,7 +50,6 @@ export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ ch
       try {
         const response = await apiClient.get<FeatureConfig>('/config/features');
         setConfig(response.data);
-        logger.info('Feature configuration loaded:', response.data);
       } catch (error) {
         logger.error('Failed to load feature configuration:', error);
         // Use default config on error to allow app to function

@@ -155,30 +155,40 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       const canvasSize = sizes[0];
       const chatSize = sizes[1];
 
+      // Track collapsed state based on chat panel size
+      const isCollapsed = chatSize !== undefined && chatSize < 5;
+      setIsChatCollapsed(isCollapsed);
+
+      // CRITICAL: Never save collapsed state (0%) to the backend.
+      // This ensures when user expands chat, it restores their preferred size
+      // instead of resetting to minSize. Only save valid sizes (30-70).
+      if (isCollapsed) {
+        return;
+      }
+
       if (canvasSize !== undefined) {
         // Update local state immediately for smooth UI
         setLocalCanvasSize(canvasSize);
         // Debounce the actual save to prevent API flooding
         debouncedSave(canvasSize);
       }
-
-      // Track collapsed state based on chat panel size
-      setIsChatCollapsed(chatSize !== undefined && chatSize < 5);
     },
     [debouncedSave],
   );
 
-  // Toggle chat panel collapse/expand
+  // Toggle chat panel collapse/expand using the panel's API directly
   const handleToggleChat = useCallback(() => {
     const panel = chatPanelRef.current;
     if (!panel) return;
 
-    if (isChatCollapsed) {
+    // Use the panel's isCollapsed() method for accurate state
+    const isCurrentlyCollapsed = panel.isCollapsed();
+    if (isCurrentlyCollapsed) {
       panel.expand();
     } else {
       panel.collapse();
     }
-  }, [isChatCollapsed]);
+  }, []);
 
   // CSS variables for background styling
   const containerStyle = useMemo(
@@ -257,11 +267,12 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         className={styles.panelGroup}
       >
         {/* Canvas Panel (Left in LTR, Right in RTL - CSS handles this) */}
-        {/* Canvas size = 100% - chat size, so min=30% (when chat=70%), max=70% (when chat=30%) */}
+        {/* minSize=30 ensures canvas never shrinks below 30% (when chat is at max 70%) */}
+        {/* NO maxSize - allows canvas to expand to 100% when chat collapses to 0% */}
+        {/* Chat's minSize=30 naturally prevents canvas from exceeding 70% during normal drag */}
         <Panel
           defaultSize={localCanvasSize}
           minSize={100 - PANEL_CONSTRAINTS.CHAT_MAX_SIZE}
-          maxSize={100 - PANEL_CONSTRAINTS.CHAT_MIN_SIZE}
           className={styles.canvasPanel}
         >
           {canvasComponent}

@@ -56,7 +56,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Validate token with backend to ensure it's still accepted by server
       getUserProfile()
         .then(() => {
-          logger.info('[AuthProvider] Backend validation successful');
           setNeedsBackendValidation(false);
         })
         .catch((error) => {
