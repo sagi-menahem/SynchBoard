@@ -41,6 +41,10 @@
     "boardDetailsButton": "Board Details",
     "boardListButton": "Board List"
   },
+  "workspace": {
+    "showChat": "Show Chat",
+    "hideChat": "Hide Chat"
+  },
   "createForm": {
     "heading": "Create a New Board",
     "nameLengthError": "Board name must be at least 3 characters long.",

@@ -4,6 +4,8 @@
   "messageTooLong": "ההודעה ארוכה מדי (מקסימום 5000 תווים)",
   "sending": "שולח...",
   "window": {
+    "title": "צ'אט",
+    "description": "ממשק צ'אט להודעות בזמן אמת עם משתפי הלוח",
     "placeholder": "הקלד הודעה..."
   },
   "message": {

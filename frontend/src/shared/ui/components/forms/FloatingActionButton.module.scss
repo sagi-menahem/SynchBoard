@@ -1,0 +1,98 @@
+@use '@/styles' as theme;
+
+// Floating Action Button base styles
+.fab {
+  position: fixed;
+  z-index: theme.$z-index-toolbar;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  cursor: pointer;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  @include theme.hover-transition;
+
+  // Safe area margins
+  margin-bottom: env(safe-area-inset-bottom, 0);
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+    box-shadow:
+      0 6px 16px rgba(0, 0, 0, 0.2),
+      0 3px 6px rgba(0, 0, 0, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  // Touch target enhancement for mobile
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+  }
+}
+
+// Position variants
+.bottom-left {
+  bottom: theme.$spacing-6;
+  inset-inline-start: theme.$spacing-6;
+}
+
+.bottom-right {
+  bottom: theme.$spacing-6;
+  inset-inline-end: theme.$spacing-6;
+}
+
+// Notification badge
+.badge {
+  position: absolute;
+  top: -4px;
+  inset-inline-end: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 theme.$spacing-1-5;
+  font-size: theme.$font-size-xs;
+  font-weight: theme.$font-weight-bold;
+  line-height: 20px;
+  text-align: center;
+  color: var(--color-text-on-primary);
+  background: var(--color-error);
+  border-radius: theme.$border-radius-full;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+// Responsive adjustments
+@media (max-width: theme.$breakpoint-sm) {
+  .fab {
+    width: 52px;
+    height: 52px;
+  }
+
+  .bottom-left {
+    bottom: theme.$spacing-4;
+    inset-inline-start: theme.$spacing-4;
+  }
+
+  .bottom-right {
+    bottom: theme.$spacing-4;
+    inset-inline-end: theme.$spacing-4;
+  }
+}

@@ -1,10 +1,177 @@
 @use '@/styles' as theme;
 
+// Main content container - shared between mobile and desktop
 .mainContent {
+  position: relative;
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   @include theme.flex-column;
+}
+
+// Chat toggle button - floats in top-right corner
+.chatToggleButton {
+  position: absolute;
+  top: theme.$spacing-3;
+  inset-inline-end: theme.$spacing-3;
+  z-index: theme.$z-index-elevated;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  box-shadow: theme.$shadow-sm;
+  @include theme.hover-transition;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-primary);
+  }
+}
+
+// === DESKTOP LAYOUT (react-resizable-panels) ===
+
+.panelGroup {
+  height: 100%;
+  width: 100%;
+}
+
+// Canvas panel styling
+.canvasPanel {
+  overflow: auto;
+  min-width: 200px;
+  border: 1px solid theme.$border-light;
+  @include theme.rounded-medium;
+  background: transparent;
+}
+
+// Chat panel styling
+.chatPanel {
+  overflow: hidden;
+  min-width: 0;
+  border: 1px solid theme.$border-light;
+  border-radius: 0;
+  background: transparent;
+  @include theme.flex-column;
+  @include theme.hover-transition;
+
+  // When collapsed via class
+  &.collapsed {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+// Resize handle - visual divider between panels
+.resizeHandle {
+  position: relative;
+  width: 8px;
+  cursor: col-resize;
+  @include theme.flex-center;
+  background: var(--color-border);
+  @include theme.hover-transition;
+
+  // Extended hit area for easier interaction
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 16px;
+    background: transparent;
+    transform: translateX(-50%);
+  }
+
+  &:hover {
+    background: var(--color-border-strong);
+
+    .resizeHandleInner {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      border-color: var(--color-primary);
+      background: var(--color-surface);
+    }
+
+    .handleDot {
+      background: var(--color-primary);
+      width: 3px;
+      height: 3px;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid theme.$primary;
+    outline-offset: 2px;
+  }
+
+  // Active state when dragging
+  &[data-resize-handle-active] {
+    background: var(--color-surface-hover);
+
+    .resizeHandleInner {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.05);
+      border-color: var(--color-primary);
+    }
+
+    .handleDot {
+      background: var(--color-primary);
+    }
+  }
+}
+
+// Handle grip indicator
+.resizeHandleInner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: theme.$spacing-2 theme.$spacing-1;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: theme.$border-radius-lg;
+  @include theme.hover-transition;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.handleDot {
+  width: 2px;
+  height: 2px;
+  background: var(--color-text-muted);
+  border-radius: 50%;
+  @include theme.hover-transition;
+}
+
+// === MOBILE LAYOUT ===
+
+.mobileLayout {
+  position: relative;
+}
+
+// Full-screen canvas container for mobile
+.mobileCanvasContainer {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid theme.$border-light;
+  @include theme.rounded-medium;
+  background: transparent;
+}
+
+// Responsive adjustments
+@media (max-width: theme.$breakpoint-md) {
+  .canvasPanel,
+  .chatPanel {
+    border-radius: theme.$border-radius-sm;
+  }
+
+  .resizeHandle {
+    width: 6px;
+  }
 }

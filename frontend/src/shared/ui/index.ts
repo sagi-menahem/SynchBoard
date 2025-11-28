@@ -1,4 +1,5 @@
 export { default as Button } from './components/forms/Button';
+export { default as FloatingActionButton } from './components/forms/FloatingActionButton';
 export { default as Input } from './components/forms/Input';
 export { default as LanguageToggle } from './components/forms/LanguageToggle';
 export { default as PasswordInput } from './components/forms/PasswordInput';

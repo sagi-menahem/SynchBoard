@@ -1,0 +1,81 @@
+@use '@/styles' as theme;
+
+// Drawer overlay with backdrop blur
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: theme.$z-index-overlay;
+}
+
+// Main drawer content container
+.content {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: theme.$z-index-modal;
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+  max-height: 85vh;
+  background: var(--color-surface);
+  border-top-left-radius: theme.$border-radius-xl;
+  border-top-right-radius: theme.$border-radius-xl;
+  outline: none;
+
+  // Safe area padding for notched devices
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+// Drag handle container
+.handleContainer {
+  display: flex;
+  justify-content: center;
+  padding: theme.$spacing-3 0;
+  flex-shrink: 0;
+}
+
+// Visual drag handle indicator
+.handle {
+  width: 48px;
+  height: 4px;
+  background: var(--color-border-strong);
+  border-radius: theme.$border-radius-full;
+  opacity: 0.6;
+  @include theme.hover-transition;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// Drawer title styling
+.title {
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
+  color: var(--color-text-primary);
+  text-align: center;
+  padding: 0 theme.$spacing-4 theme.$spacing-2;
+  margin: 0;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+// Chat content container - fills remaining space
+.chatContainer {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  // Override ChatWindow Card styles for drawer context
+  :global(.card) {
+    border: none;
+    border-radius: 0;
+    height: 100%;
+    box-shadow: none;
+  }
+}

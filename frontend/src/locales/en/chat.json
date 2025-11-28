@@ -4,6 +4,8 @@
   "messageTooLong": "Message is too long (maximum 5000 characters)",
   "sending": "Sending...",
   "window": {
+    "title": "Chat",
+    "description": "Chat interface for real-time messaging with board collaborators",
     "placeholder": "Type a message..."
   },
   "message": {

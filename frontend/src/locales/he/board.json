@@ -41,6 +41,10 @@
     "boardDetailsButton": "פרטי לוח",
     "boardListButton": "רשימת לוחות"
   },
+  "workspace": {
+    "showChat": "הצג צ'אט",
+    "hideChat": "הסתר צ'אט"
+  },
   "createForm": {
     "heading": "צור לוח חדש",
     "nameLengthError": "שם הלוח חייב להכיל לפחות 3 תווים.",
