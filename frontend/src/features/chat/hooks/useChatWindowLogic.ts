@@ -158,13 +158,24 @@ export const useChatWindowLogic = ({ boardId, messages, isMobileDrawer = false }
 
   // Handles automatic scrolling when new messages arrive
   // Delays scroll to ensure DOM updates are complete before scrolling
+  // On mobile drawer, we skip automatic scroll to prevent viewport jumping issues
+  // The parent MobileChatDrawer handles scrolling when keyboard state changes
   useEffect(() => {
+    // Skip automatic scroll on mobile drawer - it causes viewport issues with keyboard
+    // The scroll will be triggered by the parent when appropriate
+    if (isMobileDrawer) {
+      if (allMessages.length !== previousMessageCount) {
+        setPreviousMessageCount(allMessages.length);
+      }
+      return;
+    }
+
     const timeoutId = setTimeout(scrollToBottom, TIMING_CONSTANTS.CHAT_SCROLL_DELAY); // Delay allows message rendering to complete
     if (allMessages.length !== previousMessageCount) {
       setPreviousMessageCount(allMessages.length);
     }
     return () => clearTimeout(timeoutId);
-  }, [allMessages, scrollToBottom, previousMessageCount]);
+  }, [allMessages, scrollToBottom, previousMessageCount, isMobileDrawer]);
 
   // Memoized to avoid recalculating filtered messages when search term or messages haven't changed
   const filteredMessages = useMemo(() => {

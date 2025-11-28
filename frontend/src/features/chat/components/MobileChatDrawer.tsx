@@ -46,6 +46,7 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const initialViewportHeight = useRef<number | null>(null);
+  const previousMessageCount = useRef<number>(messages.length);
 
   // Track visual viewport to handle keyboard appearance
   // This adjusts the drawer height when the keyboard opens/closes
@@ -60,6 +61,9 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
     const viewport = window.visualViewport;
     if (!viewport) return;
 
+    // Use a ref to track keyboard state inside the callback to avoid stale closure
+    let wasKeyboardOpen = false;
+
     const updateHeight = () => {
       const newHeight = viewport.height;
 
@@ -73,12 +77,13 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
       const keyboardNowOpen = initialViewportHeight.current - newHeight > 150;
 
       // Keyboard just opened - scroll messages to bottom
-      if (keyboardNowOpen && !isKeyboardOpen) {
+      if (keyboardNowOpen && !wasKeyboardOpen) {
         setTimeout(() => {
           chatWindowRef.current?.scrollToBottom();
         }, 50);
       }
 
+      wasKeyboardOpen = keyboardNowOpen;
       setIsKeyboardOpen(keyboardNowOpen);
       setViewportHeight(newHeight);
     };
@@ -93,7 +98,24 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
       viewport.removeEventListener('resize', updateHeight);
       viewport.removeEventListener('scroll', updateHeight);
     };
-  }, [isOpen, isKeyboardOpen]);
+  }, [isOpen]);
+
+  // Handle scrolling when new messages arrive on mobile
+  // Uses requestAnimationFrame to ensure DOM has updated before scrolling
+  // This avoids the race condition with keyboard/viewport that causes gaps
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const messageCount = messages.length;
+    if (messageCount > previousMessageCount.current) {
+      // New message arrived - scroll to bottom using rAF to ensure DOM is ready
+      // This is safer than setTimeout as it syncs with the browser's render cycle
+      requestAnimationFrame(() => {
+        chatWindowRef.current?.scrollToBottom();
+      });
+    }
+    previousMessageCount.current = messageCount;
+  }, [messages.length, isOpen]);
 
   // Calculate the drawer height based on visual viewport and keyboard state
   // When keyboard is OPEN: use almost full viewport height (minus small top margin)
