@@ -34,7 +34,7 @@
 
   // Force all direct children (motion.div pills) to align right
   // margin-left: auto in a column flex pushes items to the right
-  > * {
+  >* {
     margin-left: auto !important;
     margin-right: 0 !important;
   }
@@ -71,11 +71,9 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    );
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.02) 100%);
     pointer-events: none;
   }
 }
@@ -147,12 +145,5 @@
 
   .pillSeparator {
     height: 16px;
-  }
-}
-
-// Very small screens - hide zoom controls
-@media (max-width: 400px) {
-  .pill:nth-child(2) {
-    display: none;
   }
 }

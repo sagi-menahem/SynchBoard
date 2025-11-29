@@ -45,6 +45,15 @@ export const FloatingActions: React.FC = () => {
     },
   };
 
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <motion.div
       className={`${styles.container} ${isRTLMode ? styles.rtl : styles.ltr}`}
@@ -85,9 +94,15 @@ export const FloatingActions: React.FC = () => {
         >
           <Minus size={18} />
         </Button>
-        <div className={styles.zoomIndicator} title={t('board:zoom.comingSoon')}>
-          100%
-        </div>
+
+        {isMobile ? (
+          <div className={styles.pillSeparator} />
+        ) : (
+          <div className={styles.zoomIndicator} title={t('board:zoom.comingSoon')}>
+            100%
+          </div>
+        )}
+
         <Button
           variant="icon"
           disabled
@@ -96,15 +111,20 @@ export const FloatingActions: React.FC = () => {
         >
           <Plus size={18} />
         </Button>
-        <div className={styles.pillSeparator} />
-        <Button
-          variant="icon"
-          disabled
-          title={t('board:zoom.comingSoon')}
-          className={styles.actionButton}
-        >
-          <RotateCcw size={16} />
-        </Button>
+
+        {!isMobile && (
+          <>
+            <div className={styles.pillSeparator} />
+            <Button
+              variant="icon"
+              disabled
+              title={t('board:zoom.comingSoon')}
+              className={styles.actionButton}
+            >
+              <RotateCcw size={16} />
+            </Button>
+          </>
+        )}
       </motion.div>
     </motion.div>
   );
