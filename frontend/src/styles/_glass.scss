@@ -1,0 +1,20 @@
+// Glassmorphism Mixin
+// Creates a frosted glass effect with subtle border and shadow
+@mixin glass-panel($opacity: 0.75, $blur: 12px) {
+    background: rgba(255, 255, 255, $opacity);
+    backdrop-filter: blur($blur);
+    -webkit-backdrop-filter: blur($blur);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    // Dark mode support (if applicable in future)
+    @media (prefers-color-scheme: dark) {
+        background: rgba(30, 30, 30, $opacity);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+// Pill Shape Mixin
+@mixin pill-shape {
+    border-radius: 9999px;
+}

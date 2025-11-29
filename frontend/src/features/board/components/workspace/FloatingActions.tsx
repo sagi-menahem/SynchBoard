@@ -1,6 +1,7 @@
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
+import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { motion } from 'framer-motion';
-import { Minus, Plus, Redo2, RotateCcw, Undo2 } from 'lucide-react';
+import { MessageSquare, Minus, Plus, Redo2, RotateCcw, Undo2 } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
@@ -14,6 +15,7 @@ import styles from './FloatingActions.module.scss';
  * Features:
  * - LTR (English): Positioned at bottom-left
  * - RTL (Hebrew): Positioned at bottom-right
+ * - Chat pill: Toggle chat panel
  * - History pill: Undo/Redo (functional)
  * - Zoom pill: ZoomIn/Out/Reset (UI only, disabled until Phase 3)
  * - Dock cannot be in the same corner as FloatingActions
@@ -21,6 +23,7 @@ import styles from './FloatingActions.module.scss';
 export const FloatingActions: React.FC = () => {
   const { t, i18n } = useTranslation(['board', 'common']);
   const { handleUndo, handleRedo, isUndoAvailable, isRedoAvailable } = useBoardContext();
+  const { preferences, updateCanvasPreferences } = useCanvasPreferences();
   const isRTLMode = isRTL(i18n.language);
 
   // Animation variants
@@ -54,6 +57,10 @@ export const FloatingActions: React.FC = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  const handleToggleChat = () => {
+    void updateCanvasPreferences({ isChatOpen: !preferences.isChatOpen });
+  };
+
   return (
     <motion.div
       className={`${styles.container} ${isRTLMode ? styles.rtl : styles.ltr}`}
@@ -61,6 +68,19 @@ export const FloatingActions: React.FC = () => {
       initial="hidden"
       animate="visible"
     >
+      {/* Chat Toggle Pill - Visible on both Desktop and Mobile */}
+      <motion.div className={styles.pill} variants={pillVariants}>
+        <Button
+          variant="icon"
+          onClick={handleToggleChat}
+          title={preferences.isChatOpen ? t('board:workspace.hideChat') : t('board:workspace.showChat')}
+          className={styles.actionButton}
+          aria-pressed={preferences.isChatOpen}
+        >
+          <MessageSquare size={20} className={preferences.isChatOpen ? styles.activeIcon : ''} />
+        </Button>
+      </motion.div>
+
       {/* History Pill - Undo/Redo */}
       <motion.div className={styles.pill} variants={pillVariants}>
         <Button

@@ -1,4 +1,5 @@
 @use '@/styles' as theme;
+@use '@/styles/glass' as glass;
 
 // FloatingActions - Fixed corner position with RTL/LTR awareness
 // LTR (English): Bottom-left | RTL (Hebrew): Bottom-right
@@ -51,31 +52,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: var(--color-surface-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: theme.$border-radius-pill;
   padding: theme.$spacing-1;
-  box-shadow: theme.$shadow-md;
 
-  // Glass effect
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  // Glass effect using shared mixin
+  @include glass.glass-panel;
 
   // Ensure pill hugs content tightly - no extra width
   width: fit-content;
   max-width: calc(100vw - 50px); // Prevent overflow beyond viewport (account for scrollbar + margin)
 
-  // Glass highlight
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.02) 100%);
-    pointer-events: none;
-  }
+  // Override glass mixin border radius for pill shape
+  border-radius: theme.$border-radius-pill;
 }
 
 .actionButton {

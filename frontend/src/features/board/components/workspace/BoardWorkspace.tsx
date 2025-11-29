@@ -5,14 +5,10 @@ import { ChatWindow, MobileChatDrawer } from 'features/chat/components';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
-import { MessageCircle, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { type ImperativePanelHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { useDebouncedCallback, useIsMobile } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
-import { FloatingActionButton } from 'shared/ui';
-import Button from 'shared/ui/components/forms/Button';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './BoardWorkspace.module.scss';
@@ -112,18 +108,12 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   onColorPick,
   isLoading,
 }) => {
-  const { t } = useTranslation(['board', 'chat']);
   const isMobile = useIsMobile();
   const { preferences } = useUserBoardPreferences();
   const { preferences: canvasPreferences, updateCanvasPreferences } = useCanvasPreferences();
 
-  // Mobile chat drawer state
-  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
-
-  // Desktop chat panel ref for programmatic collapse/expand
+  const isChatOpen = canvasPreferences.isChatOpen ?? true;
   const chatPanelRef = useRef<ImperativePanelHandle>(null);
-  const [isChatCollapsed, setIsChatCollapsed] = useState(false);
-  const [hasInitializedChatState, setHasInitializedChatState] = useState(false);
 
   // Local state for immediate UI feedback during resize
   const [localCanvasSize, setLocalCanvasSize] = useState(splitRatio);
@@ -133,24 +123,16 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     setLocalCanvasSize(splitRatio);
   }, [splitRatio]);
 
-  // Initialize chat panel state from backend preferences on mount
+  // Force expand panel when opening if it was collapsed
   useEffect(() => {
-    if (hasInitializedChatState || isMobile) return;
-
-    const panel = chatPanelRef.current;
-    if (!panel) return;
-
-    // Read isChatOpen from backend preferences (defaults to true)
-    const shouldBeClosed = canvasPreferences.isChatOpen === false;
-
-    if (shouldBeClosed) {
-      // Collapse the panel if user had it closed
-      panel.collapse();
-      setIsChatCollapsed(true);
+    if (isChatOpen) {
+      const panel = chatPanelRef.current;
+      if (panel && localCanvasSize > 95) {
+        // Default to 30% width for chat if it was collapsed
+        panel.resize(30);
+      }
     }
-
-    setHasInitializedChatState(true);
-  }, [canvasPreferences.isChatOpen, hasInitializedChatState, isMobile]);
+  }, [isChatOpen, localCanvasSize]);
 
   // Debounced save to prevent API flooding during resize
   const debouncedSave = useDebouncedCallback(
@@ -171,21 +153,13 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   // Handle desktop panel resize - updates local state immediately, debounces API save
   const handlePanelResize = useCallback(
     (sizes: number[]) => {
+      // If chat is closed, we don't want to save the 100% canvas size
+      // as it would overwrite the user's preferred split ratio
+      if (!isChatOpen) return;
+
       // sizes is an array of percentages for each panel
       // Canvas is first panel in LTR (left), Chat is second
       const canvasSize = sizes[0];
-      const chatSize = sizes[1];
-
-      // Track collapsed state based on chat panel size
-      const isCollapsed = chatSize !== undefined && chatSize < 5;
-      setIsChatCollapsed(isCollapsed);
-
-      // CRITICAL: Never save collapsed state (0%) to the backend.
-      // This ensures when user expands chat, it restores their preferred size
-      // instead of resetting to minSize. Only save valid sizes (30-70).
-      if (isCollapsed) {
-        return;
-      }
 
       if (canvasSize !== undefined) {
         // Update local state immediately for smooth UI
@@ -194,26 +168,8 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         debouncedSave(canvasSize);
       }
     },
-    [debouncedSave],
+    [debouncedSave, isChatOpen],
   );
-
-  // Toggle chat panel collapse/expand using the panel's API directly
-  const handleToggleChat = useCallback(() => {
-    const panel = chatPanelRef.current;
-    if (!panel) return;
-
-    // Use the panel's isCollapsed() method for accurate state
-    const isCurrentlyCollapsed = panel.isCollapsed();
-    if (isCurrentlyCollapsed) {
-      panel.expand();
-      // Persist "open" state to backend
-      void updateCanvasPreferences({ isChatOpen: true });
-    } else {
-      panel.collapse();
-      // Persist "closed" state to backend
-      void updateCanvasPreferences({ isChatOpen: false });
-    }
-  }, [updateCanvasPreferences]);
 
   // CSS variables for background styling
   const containerStyle = useMemo(
@@ -250,21 +206,11 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       >
         <div className={styles.mobileCanvasContainer}>{canvasComponent}</div>
 
-        {/* FAB is always in DOM but hidden when drawer is open for smooth CSS animation */}
-        <FloatingActionButton
-          icon={MessageCircle}
-          onClick={() => setIsMobileChatOpen(true)}
-          aria-label={t('chat:window.title')}
-          badge={messages.length > 0 ? undefined : undefined}
-          position="bottom-right"
-          hidden={isMobileChatOpen}
-        />
-
         <MobileChatDrawer
           boardId={boardId}
           messages={messages}
-          isOpen={isMobileChatOpen}
-          onOpenChange={setIsMobileChatOpen}
+          isOpen={isChatOpen}
+          onOpenChange={(isOpen) => void updateCanvasPreferences({ isChatOpen: isOpen })}
         />
       </div>
     );
@@ -276,18 +222,6 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       className={clsx(styles.mainContent, utilStyles.unifiedDotBackground)}
       style={containerStyle}
     >
-      {/* Chat Toggle Button - floats in top-right of workspace */}
-      <Button
-        variant="icon"
-        onClick={handleToggleChat}
-        className={styles.chatToggleButton}
-        title={isChatCollapsed ? t('board:workspace.showChat') : t('board:workspace.hideChat')}
-        aria-label={isChatCollapsed ? t('board:workspace.showChat') : t('board:workspace.hideChat')}
-        aria-expanded={!isChatCollapsed}
-      >
-        {isChatCollapsed ? <PanelRightOpen size={20} /> : <PanelRightClose size={20} />}
-      </Button>
-
       <PanelGroup
         direction="horizontal"
         onLayout={handlePanelResize}
@@ -298,6 +232,8 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         {/* NO maxSize - allows canvas to expand to 100% when chat collapses to 0% */}
         {/* Chat's minSize=30 naturally prevents canvas from exceeding 70% during normal drag */}
         <Panel
+          id="canvas-panel"
+          order={1}
           defaultSize={localCanvasSize}
           minSize={100 - PANEL_CONSTRAINTS.CHAT_MAX_SIZE}
           className={styles.canvasPanel}
@@ -305,32 +241,35 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
           {canvasComponent}
         </Panel>
 
-        {/* Resize Handle - hidden when chat is collapsed */}
-        <PanelResizeHandle
-          className={clsx(styles.resizeHandle, isChatCollapsed && styles.resizeHandleHidden)}
-        >
-          <div className={styles.resizeHandleInner}>
-            <div className={styles.handleDot} />
-            <div className={styles.handleDot} />
-            <div className={styles.handleDot} />
-          </div>
-        </PanelResizeHandle>
+        {isChatOpen && (
+          <>
+            {/* Resize Handle - hidden when chat is collapsed/closed */}
+            <PanelResizeHandle className={styles.resizeHandle}>
+              <div className={styles.resizeHandleInner}>
+                <div className={styles.handleDot} />
+                <div className={styles.handleDot} />
+                <div className={styles.handleDot} />
+              </div>
+            </PanelResizeHandle>
 
-        {/* Chat Panel (Right in LTR, Left in RTL - CSS handles this) */}
-        {/* Chat range: 30%-70% when open, snaps to 0% when collapsed */}
-        <Panel
-          ref={chatPanelRef}
-          defaultSize={100 - localCanvasSize}
-          minSize={PANEL_CONSTRAINTS.CHAT_MIN_SIZE}
-          maxSize={PANEL_CONSTRAINTS.CHAT_MAX_SIZE}
-          collapsible
-          collapsedSize={PANEL_CONSTRAINTS.CHAT_COLLAPSED_SIZE}
-          onCollapse={() => setIsChatCollapsed(true)}
-          onExpand={() => setIsChatCollapsed(false)}
-          className={clsx(styles.chatPanel, isChatCollapsed && styles.collapsed)}
-        >
-          <ChatWindow boardId={boardId} messages={messages} />
-        </Panel>
+            {/* Chat Panel (Right in LTR, Left in RTL - CSS handles this) */}
+            {/* Chat range: 30%-70% when open, snaps to 0% when collapsed */}
+            <Panel
+              ref={chatPanelRef}
+              id="chat-panel"
+              order={2}
+              defaultSize={100 - localCanvasSize}
+              minSize={PANEL_CONSTRAINTS.CHAT_MIN_SIZE}
+              maxSize={PANEL_CONSTRAINTS.CHAT_MAX_SIZE}
+              collapsible
+              collapsedSize={0}
+              onCollapse={() => updateCanvasPreferences({ isChatOpen: false })}
+              className={styles.chatPanel}
+            >
+              <ChatWindow boardId={boardId} messages={messages} />
+            </Panel>
+          </>
+        )}
       </PanelGroup>
     </div>
   );

@@ -1,8 +1,5 @@
 package io.github.sagimenahem.synchboard.dto.user;
 
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_CHAT_SPLIT_RATIO_MAX;
-import static io.github.sagimenahem.synchboard.constants.MessageConstants.CANVAS_CHAT_SPLIT_RATIO_MIN;
-
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -23,8 +20,8 @@ import lombok.NoArgsConstructor;
 public class CanvasPreferencesDTO {
 
     /** Canvas to chat split ratio percentage (validated range) */
-    @Min(value = CANVAS_CHAT_SPLIT_RATIO_MIN, message = "validation.canvasSplitMin")
-    @Max(value = CANVAS_CHAT_SPLIT_RATIO_MAX, message = "validation.canvasSplitMax")
+    @Min(value = 0, message = "validation.canvasSplitMin")
+    @Max(value = 100, message = "validation.canvasSplitMax")
     private Integer canvasChatSplitRatio;
 
     /** Whether the chat panel is open (visible) or collapsed */

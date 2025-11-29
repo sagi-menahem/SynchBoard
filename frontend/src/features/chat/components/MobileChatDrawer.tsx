@@ -76,6 +76,12 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
         <Drawer.Content
           ref={contentRef}
           className={styles.content}
+          onOpenAutoFocus={(e) => {
+            e.preventDefault();
+            contentRef.current?.focus();
+          }}
+          tabIndex={-1}
+          style={{ outline: 'none' }}
         >
           {/* Vaul's built-in handle component for proper drag behavior */}
           <Drawer.Handle className={styles.handle} />
