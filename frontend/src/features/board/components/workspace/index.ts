@@ -5,3 +5,6 @@ export { FloatingActions } from './FloatingActions';
 export { FloatingDock } from './FloatingDock';
 export { LineToolsDropdown } from './LineToolsDropdown';
 export { ShapeToolsDropdown } from './ShapeToolsDropdown';
+
+// Phase 1: Radial Dock (Foundation)
+export { RadialDock } from './radial';

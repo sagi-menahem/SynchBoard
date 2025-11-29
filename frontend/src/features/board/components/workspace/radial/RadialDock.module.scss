@@ -1,0 +1,265 @@
+@use '@/styles' as theme;
+
+// =============================================================================
+// RADIAL DOCK - GLASS MORPHISM CIRCULAR MENU
+// =============================================================================
+// Phase 1: Foundation (Week 1)
+// - Core styling with glass morphism
+// - Radial positioning
+// - Expansion animations
+// - Responsive design
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// CONSTANTS
+// -----------------------------------------------------------------------------
+
+$dock-radius-desktop: 80px; // Reduced from 100px for tighter layout
+$dock-radius-mobile: 64px; // Reduced from 80px for tighter layout
+$center-button-size: 56px;
+$ring-button-size: 48px;
+$ring-button-size-mobile: 44px;
+
+// -----------------------------------------------------------------------------
+// MAIN WRAPPER
+// -----------------------------------------------------------------------------
+
+.dockWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    // Create a square container to hold the circular dock
+    width: calc($dock-radius-desktop * 2 + $ring-button-size);
+    height: calc($dock-radius-desktop * 2 + $ring-button-size);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Interaction
+    user-select: none;
+    touch-action: none;
+
+    // Phase 4: Drag cursor
+    // cursor: grab;
+    // &.dragging {
+    //   cursor: grabbing;
+    //   z-index: 1001;
+    // }
+}
+
+// -----------------------------------------------------------------------------
+// CENTRAL TRIGGER BUTTON
+// -----------------------------------------------------------------------------
+
+.centralTrigger {
+    @include theme.glass-panel;
+
+    position: relative;
+    z-index: 2; // Above the ring
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: $center-button-size;
+    height: $center-button-size;
+
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    color: var(--color-text-primary);
+
+    transition: all theme.$transition-fast;
+
+    // Animation performance
+    will-change: transform;
+
+    &:hover {
+        background: var(--color-surface-hover);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    // Icon container
+    >div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// RADIAL RING CONTAINER
+// -----------------------------------------------------------------------------
+
+.radialRing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    // Make container large enough to hold all buttons
+    width: calc($dock-radius-desktop * 2 + $ring-button-size);
+    height: calc($dock-radius-desktop * 2 + $ring-button-size);
+
+    // Don't block clicks to center button
+    pointer-events: none;
+
+    // Center point for radial positioning
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// -----------------------------------------------------------------------------
+// TOOL BUTTONS
+// -----------------------------------------------------------------------------
+
+.toolButton {
+    @include theme.glass-panel;
+
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: $ring-button-size;
+    height: $ring-button-size;
+
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    color: var(--color-text-secondary);
+
+    // Re-enable clicks for buttons
+    pointer-events: all;
+
+    transition: all theme.$transition-fast;
+
+    // Animation performance
+    will-change: transform;
+
+    &:hover {
+        background: var(--color-surface-hover);
+        color: var(--color-text-primary);
+    }
+
+    &:active {
+        transform: scale(0.9);
+    }
+
+    // Active state
+    &.active {
+        background: var(--color-primary);
+        color: var(--color-on-primary);
+        box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.4);
+    }
+}
+
+// Icon with chevron (for satellite triggers)
+.iconWithChevron {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .chevron {
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        opacity: 0.7;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// SATELLITE BUBBLES (Phase 2)
+// -----------------------------------------------------------------------------
+
+.satelliteBubble {
+    @include theme.glass-panel;
+
+    position: fixed;
+    z-index: 1001; // Above the dock
+
+    min-width: 200px;
+    max-width: 300px;
+    padding: theme.$spacing-3;
+    border-radius: theme.$border-radius-lg;
+
+    pointer-events: all;
+
+    // Animation performance
+    will-change: transform, opacity;
+}
+
+.satelliteContent {
+    display: flex;
+    flex-direction: column;
+    gap: theme.$spacing-2;
+}
+
+.satelliteHeader {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    padding-bottom: theme.$spacing-1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.satellitePlaceholder {
+    padding: theme.$spacing-4;
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    font-style: italic;
+}
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE - MOBILE
+// -----------------------------------------------------------------------------
+
+@media (max-width: theme.$breakpoint-md) {
+    .dockWrapper {
+        width: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
+        height: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
+    }
+
+    .centralTrigger {
+        width: 48px;
+        height: 48px;
+    }
+
+    .radialRing {
+        width: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
+        height: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
+    }
+
+    .toolButton {
+        width: $ring-button-size-mobile;
+        height: $ring-button-size-mobile;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// VERY SMALL SCREENS
+// -----------------------------------------------------------------------------
+
+@media (max-width: 480px) {
+    .centralTrigger {
+        width: 44px;
+        height: 44px;
+    }
+
+    .toolButton {
+        width: 40px;
+        height: 40px;
+    }
+}

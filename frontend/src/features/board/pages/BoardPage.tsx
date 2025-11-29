@@ -13,7 +13,7 @@ import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
 import { isRTL } from 'shared/utils/rtlUtils';
 
 import { FloatingActions } from '../components/workspace/FloatingActions';
-import { FloatingDock } from '../components/workspace/FloatingDock';
+import { RadialDock } from '../components/workspace/radial';
 import { useCanvasDownload } from '../hooks/useCanvasDownload';
 
 import styles from './BoardPage.module.scss';
@@ -72,10 +72,10 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const canvasConfig = useMemo(() => {
     return boardDetails
       ? {
-          backgroundColor: boardDetails.canvasBackgroundColor,
-          width: boardDetails.canvasWidth,
-          height: boardDetails.canvasHeight,
-        }
+        backgroundColor: boardDetails.canvasBackgroundColor,
+        width: boardDetails.canvasWidth,
+        height: boardDetails.canvasHeight,
+      }
       : undefined;
   }, [boardDetails]);
 
@@ -164,7 +164,9 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         </div>
 
         {/* Floating UI Components */}
-        <FloatingDock />
+        {/* Legacy FloatingDock - Temporarily disabled for RadialDock testing */}
+        {/* <FloatingDock /> */}
+        <RadialDock />
         <FloatingActions />
       </main>
     </PageTransition>
