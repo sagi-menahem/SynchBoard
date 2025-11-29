@@ -22,7 +22,7 @@ import styles from './RadialDock.module.scss';
 // CONSTANTS
 // =============================================================================
 
-const EDGE_MARGIN = 20;
+const EDGE_MARGIN = 40;
 const MOBILE_BREAKPOINT = 768;
 const DRAG_THRESHOLD = 5;
 const HEADER_HEIGHT = 56;
