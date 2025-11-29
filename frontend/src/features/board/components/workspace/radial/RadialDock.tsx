@@ -28,7 +28,8 @@ const DRAG_THRESHOLD = 5;
 const HEADER_HEIGHT = 56;
 const DOCK_RADIUS = 80; // Radius of the tool ring (desktop)
 const DOCK_RADIUS_MOBILE = 64; // Radius for mobile (tighter layout)
-// const DOCK_DIAMETER = DOCK_RADIUS * 2; // Total expanded size (Phase 3)
+const BUTTON_SIZE = 48;
+const BUTTON_SIZE_MOBILE = 44;
 
 // Spring animation for snapping
 const SNAP_SPRING = {
@@ -70,31 +71,36 @@ const getAnchorPosition = (
     anchor: AllowedDockAnchor,
     viewportWidth: number,
     viewportHeight: number,
+    radius: number,
+    buttonSize: number,
 ): { x: number; y: number } => {
+    const offset = radius + buttonSize / 2;
+    const safeDistance = radius + EDGE_MARGIN;
+
     const positions: Record<AllowedDockAnchor, { x: number; y: number }> = {
         'top-left': {
-            x: EDGE_MARGIN + DOCK_RADIUS,
-            y: EDGE_MARGIN + HEADER_HEIGHT + DOCK_RADIUS,
+            x: safeDistance - offset,
+            y: safeDistance + HEADER_HEIGHT - offset,
         },
         'top-center': {
-            x: viewportWidth / 2,
-            y: EDGE_MARGIN + HEADER_HEIGHT + DOCK_RADIUS,
+            x: viewportWidth / 2 - offset,
+            y: safeDistance + HEADER_HEIGHT - offset,
         },
         'top-right': {
-            x: viewportWidth - EDGE_MARGIN - DOCK_RADIUS,
-            y: EDGE_MARGIN + HEADER_HEIGHT + DOCK_RADIUS,
+            x: viewportWidth - (safeDistance + offset),
+            y: safeDistance + HEADER_HEIGHT - offset,
         },
         'bottom-left': {
-            x: EDGE_MARGIN + DOCK_RADIUS,
-            y: viewportHeight - EDGE_MARGIN - DOCK_RADIUS,
+            x: safeDistance - offset,
+            y: viewportHeight - (safeDistance + offset),
         },
         'bottom-center': {
-            x: viewportWidth / 2,
-            y: viewportHeight - EDGE_MARGIN - DOCK_RADIUS,
+            x: viewportWidth / 2 - offset,
+            y: viewportHeight - (safeDistance + offset),
         },
         'bottom-right': {
-            x: viewportWidth - EDGE_MARGIN - DOCK_RADIUS,
-            y: viewportHeight - EDGE_MARGIN - DOCK_RADIUS,
+            x: viewportWidth - (safeDistance + offset),
+            y: viewportHeight - (safeDistance + offset),
         },
     };
 
@@ -123,12 +129,19 @@ const mapToAllowedAnchor = (
 const calculateConstraints = (
     viewportWidth: number,
     viewportHeight: number,
-) => ({
-    left: EDGE_MARGIN + DOCK_RADIUS,
-    right: viewportWidth - EDGE_MARGIN - DOCK_RADIUS,
-    top: EDGE_MARGIN + HEADER_HEIGHT + DOCK_RADIUS,
-    bottom: viewportHeight - EDGE_MARGIN - DOCK_RADIUS,
-});
+    radius: number,
+    buttonSize: number,
+) => {
+    const offset = radius + buttonSize / 2;
+    const safeDistance = radius + EDGE_MARGIN;
+
+    return {
+        left: safeDistance - offset,
+        right: viewportWidth - (safeDistance + offset),
+        top: safeDistance + HEADER_HEIGHT - offset,
+        bottom: viewportHeight - (safeDistance + offset),
+    };
+};
 
 const findNearestAnchor = (
     x: number,
@@ -136,12 +149,14 @@ const findNearestAnchor = (
     viewportWidth: number,
     viewportHeight: number,
     allowedAnchors: AllowedDockAnchor[],
+    radius: number,
+    buttonSize: number,
 ): AllowedDockAnchor => {
     let nearestAnchor: AllowedDockAnchor = 'bottom-center';
     let minDistance = Infinity;
 
     for (const anchor of allowedAnchors) {
-        const anchorPos = getAnchorPosition(anchor, viewportWidth, viewportHeight);
+        const anchorPos = getAnchorPosition(anchor, viewportWidth, viewportHeight, radius, buttonSize);
         const distance = Math.hypot(x - anchorPos.x, y - anchorPos.y);
 
         if (distance < minDistance) {
@@ -212,9 +227,12 @@ export const RadialDock: React.FC = () => {
         mapToAllowedAnchor(preferences.dockAnchor, isRTL(i18n.language)),
     );
 
+    const radius = isMobile ? DOCK_RADIUS_MOBILE : DOCK_RADIUS;
+    const buttonSize = isMobile ? BUTTON_SIZE_MOBILE : BUTTON_SIZE;
+
     const dragConstraints = useMemo(
-        () => calculateConstraints(viewportSize.width, viewportSize.height),
-        [viewportSize],
+        () => calculateConstraints(viewportSize.width, viewportSize.height, radius, buttonSize),
+        [viewportSize, radius, buttonSize],
     );
 
     // =========================================================================
@@ -225,8 +243,11 @@ export const RadialDock: React.FC = () => {
         (anchor: AllowedDockAnchor, shouldAnimate = true) => {
             const vw = window.innerWidth;
             const vh = window.innerHeight;
+            const isMobileView = vw < MOBILE_BREAKPOINT;
+            const currentRadius = isMobileView ? DOCK_RADIUS_MOBILE : DOCK_RADIUS;
+            const currentButtonSize = isMobileView ? BUTTON_SIZE_MOBILE : BUTTON_SIZE;
 
-            const targetPos = getAnchorPosition(anchor, vw, vh);
+            const targetPos = getAnchorPosition(anchor, vw, vh, currentRadius, currentButtonSize);
 
             if (shouldAnimate) {
                 void animate(motionX, targetPos.x, SNAP_SPRING);
@@ -333,19 +354,43 @@ export const RadialDock: React.FC = () => {
             setIsDragging(false);
             dragStartPos.current = null;
 
-            if (isMobile) return;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const isMobileView = vw < MOBILE_BREAKPOINT;
+            const currentRadius = isMobileView ? DOCK_RADIUS_MOBILE : DOCK_RADIUS;
+            const currentButtonSize = isMobileView ? BUTTON_SIZE_MOBILE : BUTTON_SIZE;
+
+            if (isMobile) {
+                const currentY = motionY.get();
+                const centerY = vh / 2;
+                const newPosition = currentY < centerY ? 'top' : 'bottom';
+
+                setMobileDockPosition(newPosition);
+
+                const anchor = newPosition === 'bottom' ? 'bottom-center' : 'top-center';
+                const targetPos = getAnchorPosition(anchor, vw, vh, currentRadius, currentButtonSize);
+
+                void animate(motionX, targetPos.x, SNAP_SPRING);
+                void animate(motionY, targetPos.y, SNAP_SPRING);
+                return;
+            }
 
             const currentX = motionX.get();
             const currentY = motionY.get();
 
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-
-            const nearestAnchor = findNearestAnchor(currentX, currentY, vw, vh, allowedAnchors);
+            const nearestAnchor = findNearestAnchor(
+                currentX,
+                currentY,
+                vw,
+                vh,
+                allowedAnchors,
+                currentRadius,
+                currentButtonSize,
+            );
 
             setCurrentAnchor(nearestAnchor);
 
-            const snapPos = getAnchorPosition(nearestAnchor, vw, vh);
+            const snapPos = getAnchorPosition(nearestAnchor, vw, vh, currentRadius, currentButtonSize);
 
             void animate(motionX, snapPos.x, SNAP_SPRING);
             void animate(motionY, snapPos.y, SNAP_SPRING);
@@ -393,7 +438,7 @@ export const RadialDock: React.FC = () => {
     return (
         <motion.div
             className={`${styles.dockWrapper} ${isDragging ? styles.dragging : ''}`}
-            drag={!isMobile}
+            drag={isMobile ? 'y' : true}
             dragMomentum={false}
             dragElastic={0}
             dragConstraints={dragConstraints}
