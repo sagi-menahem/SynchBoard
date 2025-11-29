@@ -264,6 +264,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
               collapsible
               collapsedSize={0}
               onCollapse={() => updateCanvasPreferences({ isChatOpen: false })}
+              onExpand={() => updateCanvasPreferences({ isChatOpen: true })}
               className={styles.chatPanel}
             >
               <ChatWindow boardId={boardId} messages={messages} />
