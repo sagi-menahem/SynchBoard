@@ -117,7 +117,7 @@
 // Mobile styles
 @media (max-width: theme.$breakpoint-md) {
   .container {
-    bottom: 80px; // Above the dock
+    bottom: calc(16px + env(safe-area-inset-bottom));
   }
 
   .ltr {
