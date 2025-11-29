@@ -8,7 +8,7 @@ import {
   useMotionValue,
   type PanInfo,
 } from 'framer-motion';
-import { Brush, ChevronDown, ChevronUp, Eraser, GripVertical, Pipette, Type } from 'lucide-react';
+import { ArrowDown, ArrowUp, Brush, ChevronDown, ChevronUp, Eraser, GripVertical, Pipette, Type } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
@@ -282,6 +282,18 @@ export const FloatingDock: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isMinimized, setIsMinimized] = useState(preferences.isDockMinimized || false);
 
+  // Mobile position state (persisted to localStorage)
+  const [mobileDockPosition, setMobileDockPosition] = useState<'bottom' | 'top'>(() => {
+    if (typeof window === 'undefined') return 'bottom';
+    const saved = localStorage.getItem('synchboard_mobile_dock_position');
+    return saved === 'top' ? 'top' : 'bottom';
+  });
+
+  // Persist mobile position
+  useEffect(() => {
+    localStorage.setItem('synchboard_mobile_dock_position', mobileDockPosition);
+  }, [mobileDockPosition]);
+
   // Track dock size in state for constraint reactivity
   const [dockSize, setDockSize] = useState(DEFAULT_DOCK_SIZE);
 
@@ -395,7 +407,9 @@ export const FloatingDock: React.FC = () => {
         setIsMobile(mobile);
 
         // Re-snap to current anchor with new dimensions
-        const effectiveAnchor = mobile ? 'bottom-center' : currentAnchor;
+        const effectiveAnchor = mobile
+          ? (mobileDockPosition === 'bottom' ? 'bottom-center' : 'top-center')
+          : currentAnchor;
         void snapToAnchor(effectiveAnchor, true);
       }, 100);
     };
@@ -434,7 +448,9 @@ export const FloatingDock: React.FC = () => {
           setDockSize(newSize);
 
           // Re-snap to anchor with new size
-          const effectiveAnchor = isMobile ? 'bottom-center' : currentAnchor;
+          const effectiveAnchor = isMobile
+            ? (mobileDockPosition === 'bottom' ? 'bottom-center' : 'top-center')
+            : currentAnchor;
           void snapToAnchor(effectiveAnchor, true);
         }
       }
@@ -469,6 +485,16 @@ export const FloatingDock: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRTLMode]);
+
+  /**
+   * Re-snap when mobile position preference changes.
+   */
+  useEffect(() => {
+    if (isMobile) {
+      const anchor = mobileDockPosition === 'bottom' ? 'bottom-center' : 'top-center';
+      void snapToAnchor(anchor, true);
+    }
+  }, [mobileDockPosition, isMobile, snapToAnchor]);
 
   // =========================================================================
   // DRAG HANDLERS
@@ -733,6 +759,17 @@ export const FloatingDock: React.FC = () => {
                 />
               </div>
             </motion.div>
+
+            {/* Mobile Position Toggle */}
+            {isMobile && (
+              <button
+                className={styles.positionToggle}
+                onClick={() => setMobileDockPosition((prev) => (prev === 'bottom' ? 'top' : 'bottom'))}
+                title={mobileDockPosition === 'bottom' ? 'Move to Top' : 'Move to Bottom'}
+              >
+                {mobileDockPosition === 'bottom' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+              </button>
+            )}
 
             {/* Minimize Button */}
             <button
