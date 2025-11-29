@@ -4,12 +4,14 @@
  * 1. Design tokens - Base design system values
  * 2. Variables - Semantic color and spacing variables built on tokens
  * 3. Mixins - Reusable style patterns and utilities
- * 4. Board backgrounds - Canvas and board-specific styling
- * 5. Edit buttons - Interactive element styling for board editing
+ * 4. Glass - Glassmorphism effects and styles
+ * 5. Board backgrounds - Canvas and board-specific styling
+ * 6. Edit buttons - Interactive element styling for board editing
  */
 
 @forward 'design-tokens';
 @forward 'variables';
 @forward 'mixins';
+@forward 'glass';
 @forward 'board-backgrounds';
 @forward 'edit-buttons';

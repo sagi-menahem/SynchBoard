@@ -8,7 +8,7 @@ import {
   useMotionValue,
   type PanInfo,
 } from 'framer-motion';
-import { ArrowDown, ArrowUp, Brush, ChevronDown, ChevronUp, Eraser, GripVertical, Pipette, Type } from 'lucide-react';
+import { ArrowDown, ArrowUp, Brush, ChevronDown, Eraser, GripVertical, Pipette, Type } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
@@ -640,10 +640,34 @@ export const FloatingDock: React.FC = () => {
   // RENDER
   // =========================================================================
 
+  // =========================================================================
+  // HELPER: Get Icon for Current Tool
+  // =========================================================================
+  const getCurrentToolIcon = () => {
+    switch (currentTool) {
+      case TOOLS.BRUSH: return <Brush size={24} />;
+      case TOOLS.ERASER: return <Eraser size={24} />;
+      case TOOLS.TEXT: return <Type size={24} />;
+      case TOOLS.COLOR_PICKER: return <Pipette size={24} />;
+      // Shapes
+      case TOOLS.RECTANGLE:
+      case TOOLS.CIRCLE:
+      case TOOLS.TRIANGLE:
+      case TOOLS.STAR:
+      case TOOLS.HEXAGON:
+        return <div style={{ fontWeight: 'bold', fontSize: '24px' }}>□</div>; // Generic shape icon or specific if available
+      // Lines
+      case TOOLS.LINE:
+      case TOOLS.ARROW:
+        return <div style={{ fontWeight: 'bold', fontSize: '24px' }}>/</div>; // Generic line icon
+      default: return <Brush size={24} />;
+    }
+  };
+
   return (
     <motion.div
       ref={dockRef}
-      className={`${styles.dock} ${isDragging ? styles.dragging : ''}`}
+      className={`${styles.dockWrapper} ${isDragging ? styles.dragging : ''}`}
       // Drag configuration
       drag={!isMobile}
       dragMomentum={false}
@@ -654,8 +678,6 @@ export const FloatingDock: React.FC = () => {
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
       // Use style prop with motion values for position
-      // This allows drag to update motion values directly,
-      // and we use animate() function to spring-animate them after drag
       style={{ x: motionX, y: motionY }}
     >
       {/* Drag Handle - desktop only */}
@@ -665,120 +687,130 @@ export const FloatingDock: React.FC = () => {
         </div>
       )}
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         {isMinimized ? (
-          <motion.div
+          <motion.button
+            layoutId="dock-glass"
             key="minimized"
             className={styles.minimizedTrigger}
             onClick={handleToggleMinimize}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
             title={t('board:dock.expand')}
           >
-            <Brush size={20} />
-            <ChevronUp size={14} />
-          </motion.div>
+            {getCurrentToolIcon()}
+          </motion.button>
         ) : (
           <motion.div
+            layoutId="dock-glass"
             key="expanded"
-            className={styles.toolsContainer}
-            variants={toolsVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            className={styles.dock}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
           >
-            {/* Drawing Tools */}
-            <motion.div className={styles.toolGroup} variants={toolItemVariants}>
-              <ToolButton
-                tool={TOOLS.BRUSH}
-                currentTool={currentTool}
-                onClick={handleToolSelect}
-                title={t('board:toolbar.tool.brush')}
-              >
-                <Brush size={20} />
-              </ToolButton>
-              <ToolButton
-                tool={TOOLS.ERASER}
-                currentTool={currentTool}
-                onClick={handleToolSelect}
-                title={t('board:toolbar.tool.eraser')}
-              >
-                <Eraser size={20} />
-              </ToolButton>
-            </motion.div>
-
-            <div className={styles.separator} />
-
-            {/* Shape & Line Tools */}
-            <motion.div className={styles.toolGroup} variants={toolItemVariants}>
-              <ShapeToolsDropdown currentTool={currentTool} onToolSelect={handleToolSelect} />
-              <LineToolsDropdown currentTool={currentTool} onToolSelect={handleToolSelect} />
-            </motion.div>
-
-            <div className={styles.separator} />
-
-            {/* Text & Color Picker Tools */}
-            <motion.div className={styles.toolGroup} variants={toolItemVariants}>
-              <ToolButton
-                tool={TOOLS.TEXT}
-                currentTool={currentTool}
-                onClick={handleToolSelect}
-                title={t('board:toolbar.tool.text')}
-              >
-                <Type size={20} />
-              </ToolButton>
-              <ToolButton
-                tool={TOOLS.COLOR_PICKER}
-                currentTool={currentTool}
-                onClick={handleToolSelect}
-                title={t('board:toolbar.tool.colorPicker')}
-              >
-                <Pipette size={20} />
-              </ToolButton>
-            </motion.div>
-
-            <div className={styles.separator} />
-
-            {/* Color & Stroke Controls */}
-            <motion.div className={styles.toolGroup} variants={toolItemVariants}>
-              <div className={styles.colorPickerWrapper}>
-                <ColorPicker
-                  color={preferences.defaultStrokeColor}
-                  onChange={handleColorChange}
-                />
-              </div>
-              <div className={styles.strokeControl}>
-                <Slider
-                  value={preferences.defaultStrokeWidth}
-                  onChange={handleStrokeWidthChange}
-                  min={1}
-                  max={50}
-                  step={1}
-                  label={t('board:toolbar.strokeWidth')}
-                />
-              </div>
-            </motion.div>
-
-            {/* Mobile Position Toggle */}
-            {isMobile && (
-              <button
-                className={styles.positionToggle}
-                onClick={() => setMobileDockPosition((prev) => (prev === 'bottom' ? 'top' : 'bottom'))}
-                title={mobileDockPosition === 'bottom' ? 'Move to Top' : 'Move to Bottom'}
-              >
-                {mobileDockPosition === 'bottom' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-              </button>
-            )}
-
-            {/* Minimize Button */}
-            <button
-              className={styles.minimizeButton}
-              onClick={handleToggleMinimize}
-              title={t('board:dock.minimize')}
+            <motion.div
+              className={styles.toolsContainer}
+              variants={toolsVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
             >
-              <ChevronDown size={16} />
-            </button>
+              {/* Drawing Tools */}
+              <motion.div className={styles.toolGroup} variants={toolItemVariants}>
+                <ToolButton
+                  tool={TOOLS.BRUSH}
+                  currentTool={currentTool}
+                  onClick={handleToolSelect}
+                  title={t('board:toolbar.tool.brush')}
+                >
+                  <Brush size={20} />
+                </ToolButton>
+                <ToolButton
+                  tool={TOOLS.ERASER}
+                  currentTool={currentTool}
+                  onClick={handleToolSelect}
+                  title={t('board:toolbar.tool.eraser')}
+                >
+                  <Eraser size={20} />
+                </ToolButton>
+              </motion.div>
+
+              <div className={styles.separator} />
+
+              {/* Shape & Line Tools */}
+              <motion.div className={styles.toolGroup} variants={toolItemVariants}>
+                <ShapeToolsDropdown currentTool={currentTool} onToolSelect={handleToolSelect} />
+                <LineToolsDropdown currentTool={currentTool} onToolSelect={handleToolSelect} />
+              </motion.div>
+
+              <div className={styles.separator} />
+
+              {/* Text & Color Picker Tools */}
+              <motion.div className={styles.toolGroup} variants={toolItemVariants}>
+                <ToolButton
+                  tool={TOOLS.TEXT}
+                  currentTool={currentTool}
+                  onClick={handleToolSelect}
+                  title={t('board:toolbar.tool.text')}
+                >
+                  <Type size={20} />
+                </ToolButton>
+                <ToolButton
+                  tool={TOOLS.COLOR_PICKER}
+                  currentTool={currentTool}
+                  onClick={handleToolSelect}
+                  title={t('board:toolbar.tool.colorPicker')}
+                >
+                  <Pipette size={20} />
+                </ToolButton>
+              </motion.div>
+
+              <div className={styles.separator} />
+
+              {/* Color & Stroke Controls */}
+              <motion.div className={styles.toolGroup} variants={toolItemVariants}>
+                <div className={styles.colorPickerWrapper}>
+                  <ColorPicker
+                    color={preferences.defaultStrokeColor}
+                    onChange={handleColorChange}
+                  />
+                </div>
+                <div className={styles.strokeControl}>
+                  <Slider
+                    value={preferences.defaultStrokeWidth}
+                    onChange={handleStrokeWidthChange}
+                    min={1}
+                    max={50}
+                    step={1}
+                    label={t('board:toolbar.strokeWidth')}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Mobile Position Toggle */}
+              {isMobile && (
+                <button
+                  className={styles.positionToggle}
+                  onClick={() => setMobileDockPosition((prev) => (prev === 'bottom' ? 'top' : 'bottom'))}
+                  title={mobileDockPosition === 'bottom' ? 'Move to Top' : 'Move to Bottom'}
+                >
+                  {mobileDockPosition === 'bottom' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+                </button>
+              )}
+
+              {/* Minimize Button */}
+              <button
+                className={styles.minimizeButton}
+                onClick={handleToggleMinimize}
+                title={t('board:dock.minimize')}
+              >
+                <ChevronDown size={16} />
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
