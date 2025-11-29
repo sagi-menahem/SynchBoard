@@ -6,7 +6,13 @@ import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { type ImperativePanelHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import {
+  type ImperativePanelGroupHandle,
+  type ImperativePanelHandle,
+  Panel,
+  PanelGroup,
+  PanelResizeHandle,
+} from 'react-resizable-panels';
 import { useDebouncedCallback, useIsMobile } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
@@ -88,9 +94,6 @@ interface BoardWorkspaceProps {
  * @param canvasConfig - Canvas configuration including dimensions and background
  * @param splitRatio - Initial split ratio between canvas and chat (percentage for left panel)
  * @param onDraw - Handler for drawing actions performed on the canvas
- * @param onSplitRatioChange - Handler for split panel ratio changes
- * @param onColorPick - Handler for color picking interactions on the canvas
- * @param isLoading - Whether the workspace is in a loading state
  */
 const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   boardId,
@@ -102,59 +105,74 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   strokeWidth,
   fontSize,
   canvasConfig,
-  splitRatio = 70,
+  splitRatio,
   onDraw,
   onSplitRatioChange,
   onColorPick,
   isLoading,
 }) => {
   const isMobile = useIsMobile();
-  const { preferences } = useUserBoardPreferences();
   const { preferences: canvasPreferences, updateCanvasPreferences } = useCanvasPreferences();
+  const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
-  const isChatOpen = canvasPreferences.isChatOpen ?? true;
+  const panelGroupRef = useRef<ImperativePanelGroupHandle>(null);
   const chatPanelRef = useRef<ImperativePanelHandle>(null);
 
-  // Local state for immediate UI feedback during resize
-  const [localCanvasSize, setLocalCanvasSize] = useState(splitRatio);
-
-  // Sync local state when prop changes (e.g., from server)
-  useEffect(() => {
-    setLocalCanvasSize(splitRatio);
-  }, [splitRatio]);
-
-  // Force expand panel when opening if it was collapsed
-  useEffect(() => {
-    if (isChatOpen) {
-      const panel = chatPanelRef.current;
-      if (panel && localCanvasSize > 95) {
-        // Default to 30% width for chat if it was collapsed
-        panel.resize(30);
-      }
-    }
-  }, [isChatOpen, localCanvasSize]);
-
-  // Debounced save to prevent API flooding during resize
-  const debouncedSave = useDebouncedCallback(
-    (canvasSize: number) => {
-      onSplitRatioChange?.(canvasSize);
-    },
-    PANEL_CONSTRAINTS.SAVE_DEBOUNCE_MS,
+  // State for the canvas panel size (percentage)
+  const [localCanvasSize, setLocalCanvasSize] = useState(
+    splitRatio ?? canvasPreferences.canvasChatSplitRatio ?? 70,
   );
 
+  // Determine if chat is open based on user preferences
+  const isChatOpen = canvasPreferences.isChatOpen;
+
+  // Effect to update localCanvasSize when splitRatio prop changes
+  useEffect(() => {
+    if (splitRatio !== undefined && splitRatio !== localCanvasSize) {
+      setLocalCanvasSize(splitRatio);
+    }
+  }, [splitRatio, localCanvasSize]);
+
+  // Effect to manage chat panel visibility based on `isChatOpen`
+  useEffect(() => {
+    const chatPanel = chatPanelRef.current;
+    if (chatPanel) {
+      if (isChatOpen) {
+        // Restore chat panel to its last known size or default
+        let lastChatSize = 100 - (canvasPreferences.canvasChatSplitRatio ?? 70);
+        // Safety check: If saved size is too small (e.g. < 10%), force default 30%
+        if (lastChatSize < 10) {
+          lastChatSize = 30;
+        }
+        chatPanel.resize(lastChatSize);
+      } else {
+        // Collapse chat panel
+        chatPanel.collapse();
+      }
+    }
+  }, [isChatOpen, canvasPreferences.canvasChatSplitRatio]);
+
+  // Callback to get the user's chosen color for the background
   const getUserChosenColor = useCallback(() => {
-    const savedVariable = preferences.boardBackgroundSetting;
+    const savedVariable = userBoardPreferences.boardBackgroundSetting;
     if (!savedVariable) {
       return 'var(--color-surface)';
     }
     return `var(${savedVariable})`;
-  }, [preferences.boardBackgroundSetting]);
+  }, [userBoardPreferences.boardBackgroundSetting]);
 
-  // Handle desktop panel resize - updates local state immediately, debounces API save
+  // Debounced save for split ratio to prevent excessive API calls
+  const debouncedSave = useDebouncedCallback((ratio: number) => {
+    updateCanvasPreferences({ canvasChatSplitRatio: ratio });
+    onSplitRatioChange?.(ratio);
+  }, PANEL_CONSTRAINTS.SAVE_DEBOUNCE_MS);
+
+  // Handler for panel resize events
   const handlePanelResize = useCallback(
     (sizes: number[]) => {
-      // If chat is closed, we don't want to save the 100% canvas size
-      // as it would overwrite the user's preferred split ratio
+      // Only save if chat is currently open.
+      // If chat is closed, the canvas will be 100% and chat 0%,
+      // which is handled by the onCollapse event and shouldn't trigger a save here.
       if (!isChatOpen) return;
 
       // sizes is an array of percentages for each panel
@@ -164,8 +182,13 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       if (canvasSize !== undefined) {
         // Update local state immediately for smooth UI
         setLocalCanvasSize(canvasSize);
-        // Debounce the actual save to prevent API flooding
-        debouncedSave(canvasSize);
+
+        // Guard: Don't save if chat panel is collapsed or near-collapsed (< 10%)
+        // This prevents overwriting the user's preferred open size with "0"
+        const chatSize = 100 - canvasSize;
+        if (chatSize >= 10) {
+          debouncedSave(canvasSize);
+        }
       }
     },
     [debouncedSave, isChatOpen],
@@ -223,6 +246,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
       style={containerStyle}
     >
       <PanelGroup
+        ref={panelGroupRef}
         direction="horizontal"
         onLayout={handlePanelResize}
         className={styles.panelGroup}
@@ -241,36 +265,45 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
           {canvasComponent}
         </Panel>
 
-        {isChatOpen && (
-          <>
-            {/* Resize Handle - hidden when chat is collapsed/closed */}
-            <PanelResizeHandle className={styles.resizeHandle}>
-              <div className={styles.resizeHandleInner}>
-                <div className={styles.handleDot} />
-                <div className={styles.handleDot} />
-                <div className={styles.handleDot} />
-              </div>
-            </PanelResizeHandle>
+        {/* Resize Handle - hidden when chat is collapsed/closed */}
+        <PanelResizeHandle
+          className={clsx(styles.resizeHandle, {
+            [styles.hidden]: !isChatOpen,
+          })}
+        >
+          <div className={styles.resizeHandleInner}>
+            <div className={styles.handleDot} />
+            <div className={styles.handleDot} />
+            <div className={styles.handleDot} />
+          </div>
+        </PanelResizeHandle>
 
-            {/* Chat Panel (Right in LTR, Left in RTL - CSS handles this) */}
-            {/* Chat range: 30%-70% when open, snaps to 0% when collapsed */}
-            <Panel
-              ref={chatPanelRef}
-              id="chat-panel"
-              order={2}
-              defaultSize={100 - localCanvasSize}
-              minSize={PANEL_CONSTRAINTS.CHAT_MIN_SIZE}
-              maxSize={PANEL_CONSTRAINTS.CHAT_MAX_SIZE}
-              collapsible
-              collapsedSize={0}
-              onCollapse={() => updateCanvasPreferences({ isChatOpen: false })}
-              onExpand={() => updateCanvasPreferences({ isChatOpen: true })}
-              className={styles.chatPanel}
-            >
-              <ChatWindow boardId={boardId} messages={messages} />
-            </Panel>
-          </>
-        )}
+        {/* Chat Panel (Right in LTR, Left in RTL - CSS handles this) */}
+        <Panel
+          ref={chatPanelRef}
+          id="chat-panel"
+          order={2}
+          defaultSize={100 - localCanvasSize}
+          minSize={PANEL_CONSTRAINTS.CHAT_MIN_SIZE}
+          maxSize={PANEL_CONSTRAINTS.CHAT_MAX_SIZE}
+          collapsedSize={PANEL_CONSTRAINTS.CHAT_COLLAPSED_SIZE}
+          collapsible
+          onCollapse={() => {
+            // When chat collapses, set canvas to 100% and update preference
+            // DO NOT save the split ratio here, to preserve the user's preferred open size
+            setLocalCanvasSize(100);
+            updateCanvasPreferences({ isChatOpen: false });
+          }}
+          onExpand={() => {
+            // When chat expands, update preference
+            updateCanvasPreferences({ isChatOpen: true });
+          }}
+          className={clsx(styles.chatPanel, {
+            [styles.hidden]: !isChatOpen,
+          })}
+        >
+          <ChatWindow boardId={boardId} messages={messages} />
+        </Panel>
       </PanelGroup>
     </div>
   );
