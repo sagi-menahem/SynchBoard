@@ -69,7 +69,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeho
         // The key is to refocus synchronously before the browser can close the keyboard
         // Using a microtask (queueMicrotask) is faster than setTimeout/requestAnimationFrame
         queueMicrotask(() => {
-          inputRef.current?.focus();
+          inputRef.current?.focus({ preventScroll: true });
         });
       }
     },
