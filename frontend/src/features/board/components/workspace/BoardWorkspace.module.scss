@@ -77,7 +77,7 @@
   @include theme.hover-transition;
 
   // Hidden when chat panel is collapsed
-  &.resizeHandleHidden {
+  &.hidden {
     display: none;
     pointer-events: none;
   }
@@ -178,6 +178,7 @@
 
 // Responsive adjustments
 @media (max-width: theme.$breakpoint-md) {
+
   .canvasPanel,
   .chatPanel {
     border-radius: theme.$border-radius-sm;

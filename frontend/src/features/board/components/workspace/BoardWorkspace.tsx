@@ -270,6 +270,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
           className={clsx(styles.resizeHandle, {
             [styles.hidden]: !isChatOpen,
           })}
+          disabled={!isChatOpen}
         >
           <div className={styles.resizeHandleInner}>
             <div className={styles.handleDot} />
