@@ -11,7 +11,7 @@ export interface UserBoardPreferences {
 }
 
 const DEFAULT_BOARD_PREFERENCES: UserBoardPreferences = {
-  boardBackgroundSetting: '#282828',
+  boardBackgroundSetting: '--board-bg-midnight-blue',
 };
 
 export const UserPreferencesService = {

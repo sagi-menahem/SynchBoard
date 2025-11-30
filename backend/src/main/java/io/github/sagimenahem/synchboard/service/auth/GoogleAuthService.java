@@ -198,7 +198,7 @@ public class GoogleAuthService {
         return User.builder().email(email).firstName(nameParts[0]).lastName(nameParts[1])
                 .authProvider(User.AuthProvider.GOOGLE).providerId(providerId)
                 .profilePictureUrl(localPicturePath).creationDate(LocalDateTime.now())
-                .boardBackgroundSetting("--board-bg-default").build();
+                .boardBackgroundSetting("--board-bg-midnight-blue").build();
     }
 
     /**

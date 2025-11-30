@@ -7,14 +7,14 @@
 
 export const CHAT_BACKGROUND_OPTIONS = [
   {
-    nameKey: 'backgroundColors.default',
-    color: '--board-bg-default',
-    cssVar: '--board-bg-default',
-  },
-  {
     nameKey: 'backgroundColors.midnightBlue',
     color: '--board-bg-midnight-blue',
     cssVar: '--board-bg-midnight-blue',
+  },
+  {
+    nameKey: 'backgroundColors.default',
+    color: '--board-bg-default',
+    cssVar: '--board-bg-default',
   },
   {
     nameKey: 'backgroundColors.warmEmber',
