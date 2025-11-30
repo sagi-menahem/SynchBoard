@@ -1,36 +1,40 @@
 import { CANVAS_CONFIG, TOOLS } from 'features/board/constants/BoardConstants';
 import type {
-  ActionPayload,
-  ArrowPayload,
-  CirclePayload,
-  EnhancedActionPayload,
-  LinePayload,
-  Point,
-  PolygonPayload,
-  RectanglePayload,
-  StraightLinePayload,
-  TextBoxPayload,
-  TrianglePayload,
+    ActionPayload,
+    ArrowPayload,
+    CirclePayload,
+    EnhancedActionPayload,
+    LinePayload,
+    Point,
+    PolygonPayload,
+    RectanglePayload,
+    StraightLinePayload,
+    TextBoxPayload,
+    TrianglePayload,
 } from 'features/board/types/BoardObjectTypes';
 
 /**
  * Converts browser pointer coordinates to canvas-relative pixel coordinates.
  * This function accounts for the canvas element's position and size within the viewport
  * to provide accurate coordinate mapping for drawing operations. Supports mouse, touch,
- * and stylus input through the Pointer Events API.
+ * and stylus input through the Pointer Events API. Adjusts for zoom scale when canvas
+ * is transformed via CSS.
  *
  * @param event - Pointer event containing browser-relative coordinates
  * @param canvas - Target canvas element for coordinate calculation
+ * @param scale - Optional zoom scale factor (default 1.0 = no zoom)
  * @returns Canvas-relative coordinates or null if invalid
  */
 export const getPointerCoordinates = (
   event: PointerEvent,
   canvas: HTMLCanvasElement,
+  scale = 1.0,
 ): { x: number; y: number } | null => {
   const rect = canvas.getBoundingClientRect();
+  // Adjust coordinates for zoom scale - divide by scale to get actual canvas coordinates
   return {
-    x: event.clientX - rect.left,
-    y: event.clientY - rect.top,
+    x: (event.clientX - rect.left) / scale,
+    y: (event.clientY - rect.top) / scale,
   };
 };
 

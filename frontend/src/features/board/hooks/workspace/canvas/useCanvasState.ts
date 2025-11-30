@@ -1,23 +1,24 @@
 import type { ActionPayload, Point } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import {
-  drawCirclePayload,
-  drawLinePayload,
-  drawPolygonPayload,
-  drawRectanglePayload,
-  drawTextPayload,
-  drawTrianglePayload,
-  getPointerCoordinates,
-  isRadiusValid,
-  isShapeSizeValid,
-  replayDrawAction,
-  setupCanvasContext,
+    drawCirclePayload,
+    drawLinePayload,
+    drawPolygonPayload,
+    drawRectanglePayload,
+    drawTextPayload,
+    drawTrianglePayload,
+    getPointerCoordinates,
+    isRadiusValid,
+    isShapeSizeValid,
+    replayDrawAction,
+    setupCanvasContext,
 } from 'features/board/utils/CanvasUtils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseCanvasStateProps {
   objects: ActionPayload[];
   canvasConfig?: CanvasConfig;
+  zoomScale?: number; // Optional zoom scale for coordinate adjustment
 }
 
 /**
@@ -33,7 +34,7 @@ interface UseCanvasStateProps {
  * @param canvasConfig - Optional configuration object containing canvas dimensions and background settings
  * @returns Object containing canvas references, drawing state, dimension management, utility functions, and drawing tools
  */
-export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) => {
+export const useCanvasState = ({ objects, canvasConfig, zoomScale = 1.0 }: UseCanvasStateProps) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
 
@@ -102,7 +103,8 @@ export const useCanvasState = ({ objects, canvasConfig }: UseCanvasStateProps) =
     drawPolygonPayload,
     drawTextPayload,
     setupCanvasContext,
-    getPointerCoordinates,
+    getPointerCoordinates: (event: PointerEvent, canvas: HTMLCanvasElement) =>
+      getPointerCoordinates(event, canvas, zoomScale),
     isShapeSizeValid,
     isRadiusValid,
   };

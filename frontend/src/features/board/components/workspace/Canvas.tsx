@@ -3,6 +3,7 @@ import { useCanvas } from 'features/board/hooks/workspace/canvas/useCanvas';
 import { useCanvasInteractions } from 'features/board/hooks/workspace/canvas/useCanvasInteractions';
 import type { ActionPayload, SendBoardActionRequest } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
+import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -67,6 +68,10 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
+  const { preferences } = useCanvasPreferences();
+
+  // Get zoom scale from preferences (default 1.0 if not set)
+  const zoomScale = preferences.canvasZoomScale ?? 1.0;
 
   const textInputRequestRef = useRef<
     ((x: number, y: number, width: number, height: number) => void) | null
@@ -74,6 +79,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
 
   const { canvasRef, containerRef, handlePointerDown, isPanning } = useCanvas({
     ...props,
+    zoomScale, // Pass zoom scale to useCanvas
     onTextInputRequest: (x: number, y: number, width: number, height: number) => {
       textInputRequestRef.current?.(x, y, width, height);
     },
@@ -140,8 +146,10 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     () => ({
       width: `${canvasWidth}px`,
       height: `${canvasHeight}px`,
+      transform: `scale(${zoomScale})`,
+      transformOrigin: 'center center',
     }),
-    [canvasWidth, canvasHeight],
+    [canvasWidth, canvasHeight, zoomScale],
   );
 
   // Determine cursor based on panning state, tool, and recolor hover

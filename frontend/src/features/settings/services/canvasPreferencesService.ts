@@ -14,12 +14,15 @@ export interface CanvasPreferences {
   layoutMode: LayoutMode;
   // Whether the chat panel is open (visible) or collapsed
   isChatOpen: boolean;
+  // Canvas zoom scale factor (0.1 to 5.0, default 1.0 = 100%)
+  canvasZoomScale: number;
 }
 
 const DEFAULT_CANVAS_PREFERENCES: CanvasPreferences = {
   canvasChatSplitRatio: 70, // Default canvas to chat area ratio: 70% canvas, 30% chat
   layoutMode: 'balanced',
   isChatOpen: true, // Chat panel visible by default
+  canvasZoomScale: 1.0, // Default zoom at 100%
 };
 
 export const CanvasPreferencesService = {
@@ -36,6 +39,7 @@ export const CanvasPreferencesService = {
         canvasChatSplitRatio: canvasPrefs.canvasChatSplitRatio,
         layoutMode: 'balanced',
         isChatOpen: canvasPrefs.isChatOpen ?? true,
+        canvasZoomScale: canvasPrefs.canvasZoomScale ?? 1.0,
       };
     } catch (error) {
       logger.error('Failed to fetch canvas preferences:', error);
@@ -73,6 +77,9 @@ export const CanvasPreferencesService = {
       }
       if (preferences.isChatOpen !== undefined) {
         updatePayload.isChatOpen = preferences.isChatOpen;
+      }
+      if (preferences.canvasZoomScale !== undefined) {
+        updatePayload.canvasZoomScale = preferences.canvasZoomScale;
       }
 
       if (Object.keys(updatePayload).length > 0) {

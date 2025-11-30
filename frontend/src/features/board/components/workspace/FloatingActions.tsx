@@ -36,6 +36,12 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
   const { preferences, updateCanvasPreferences } = useCanvasPreferences();
   const isRTLMode = isRTL(i18n.language);
 
+  // Zoom constants
+  const ZOOM_MIN = 0.1;
+  const ZOOM_MAX = 5.0;
+  const ZOOM_STEP = 0.1;
+  const currentZoom = preferences.canvasZoomScale ?? 1.0;
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -81,6 +87,20 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
 
   const handleToggleChat = () => {
     void updateCanvasPreferences({ isChatOpen: !preferences.isChatOpen });
+  };
+
+  const handleZoomIn = () => {
+    const newZoom = Math.min(currentZoom + ZOOM_STEP, ZOOM_MAX);
+    void updateCanvasPreferences({ canvasZoomScale: Math.round(newZoom * 10) / 10 });
+  };
+
+  const handleZoomOut = () => {
+    const newZoom = Math.max(currentZoom - ZOOM_STEP, ZOOM_MIN);
+    void updateCanvasPreferences({ canvasZoomScale: Math.round(newZoom * 10) / 10 });
+  };
+
+  const handleZoomReset = () => {
+    void updateCanvasPreferences({ canvasZoomScale: 1.0 });
   };
 
   // Hide on mobile when satellite is open to prevent overlap
@@ -133,12 +153,13 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
         </Button>
       </motion.div>
 
-      {/* Zoom Pill - Visual only, disabled until Phase 3 */}
+      {/* Zoom Pill - Zoom in/out with percentage display */}
       <motion.div className={styles.pill} variants={pillVariants}>
         <Button
           variant="icon"
-          disabled
-          title={t('board:zoom.comingSoon')}
+          onClick={handleButtonClick(handleZoomOut)}
+          disabled={currentZoom <= ZOOM_MIN}
+          title={t('board:zoom.zoomOut')}
           className={styles.actionButton}
         >
           <Minus size={18} />
@@ -147,15 +168,16 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
         {isMobile ? (
           <div className={styles.pillSeparator} />
         ) : (
-          <div className={styles.zoomIndicator} title={t('board:zoom.comingSoon')}>
-            100%
+          <div className={styles.zoomIndicator} title={t('board:zoom.currentZoom')}>
+            {Math.round(currentZoom * 100)}%
           </div>
         )}
 
         <Button
           variant="icon"
-          disabled
-          title={t('board:zoom.comingSoon')}
+          onClick={handleButtonClick(handleZoomIn)}
+          disabled={currentZoom >= ZOOM_MAX}
+          title={t('board:zoom.zoomIn')}
           className={styles.actionButton}
         >
           <Plus size={18} />
@@ -166,8 +188,9 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
             <div className={styles.pillSeparator} />
             <Button
               variant="icon"
-              disabled
-              title={t('board:zoom.comingSoon')}
+              onClick={handleButtonClick(handleZoomReset)}
+              disabled={currentZoom === 1.0}
+              title={t('board:zoom.resetZoom')}
               className={styles.actionButton}
             >
               <RotateCcw size={16} />

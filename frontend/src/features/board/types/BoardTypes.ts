@@ -124,4 +124,6 @@ export interface CanvasPreferences {
   canvasChatSplitRatio: number;
   // Whether the chat panel is open (visible) or collapsed
   isChatOpen?: boolean;
+  // Canvas zoom scale factor (0.1 to 5.0, where 1.0 = 100%)
+  canvasZoomScale?: number;
 }

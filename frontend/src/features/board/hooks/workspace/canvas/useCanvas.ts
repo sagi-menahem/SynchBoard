@@ -18,6 +18,7 @@ interface UseCanvasProps {
   onDraw: (action: Omit<SendBoardActionRequest, 'boardId' | 'instanceId'>) => void;
   canvasConfig?: CanvasConfig;
   onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
+  zoomScale: number; // Zoom scale factor for coordinate adjustment
 }
 
 const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
@@ -54,6 +55,7 @@ export const useCanvas = ({
   onDraw,
   canvasConfig,
   onTextInputRequest,
+  zoomScale,
 }: UseCanvasProps) => {
   const finalCanvasConfig = useMemo(() => canvasConfig ?? DEFAULT_CANVAS_CONFIG, [canvasConfig]);
 
@@ -73,6 +75,7 @@ export const useCanvas = ({
   } = useCanvasState({
     objects,
     canvasConfig: finalCanvasConfig,
+    zoomScale,
   });
 
   const canvasEventsState = useMemo(

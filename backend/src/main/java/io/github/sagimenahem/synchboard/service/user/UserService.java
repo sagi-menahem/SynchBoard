@@ -1,7 +1,11 @@
 package io.github.sagimenahem.synchboard.service.user;
 
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.*;
-
+import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.user.*;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardUpdateDTO;
@@ -12,13 +16,8 @@ import io.github.sagimenahem.synchboard.repository.GroupMemberRepository;
 import io.github.sagimenahem.synchboard.repository.UserRepository;
 import io.github.sagimenahem.synchboard.service.board.BoardNotificationService;
 import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Service layer for user profile management and preference operations. Handles user profile
@@ -201,7 +200,8 @@ public class UserService {
         return getPreferences(userEmail, "canvas",
                 (user) -> CanvasPreferencesDTO.builder()
                         .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
-                        .isChatOpen(user.getIsChatOpen()).build());
+                        .isChatOpen(user.getIsChatOpen()).canvasZoomScale(user.getCanvasZoomScale())
+                        .build());
     }
 
     @Transactional
@@ -214,19 +214,21 @@ public class UserService {
             if (prefs.getIsChatOpen() != null) {
                 user.setIsChatOpen(prefs.getIsChatOpen());
             }
+            if (prefs.getCanvasZoomScale() != null) {
+                user.setCanvasZoomScale(prefs.getCanvasZoomScale());
+            }
         }, (user) -> CanvasPreferencesDTO.builder()
                 .canvasChatSplitRatio(user.getCanvasChatSplitRatio())
-                .isChatOpen(user.getIsChatOpen()).build());
+                .isChatOpen(user.getIsChatOpen()).canvasZoomScale(user.getCanvasZoomScale())
+                .build());
     }
 
     @Transactional(readOnly = true)
     public ToolPreferencesDTO getToolPreferences(String userEmail) {
-        return getPreferences(userEmail, "tool",
-                (user) -> ToolPreferencesDTO.builder().defaultTool(user.getDefaultTool())
-                        .defaultStrokeColor(user.getDefaultStrokeColor())
-                        .defaultStrokeWidth(user.getDefaultStrokeWidth())
-                        .dockAnchor(user.getDockAnchor())
-                        .isDockMinimized(user.getIsDockMinimized()).build());
+        return getPreferences(userEmail, "tool", (user) -> ToolPreferencesDTO.builder()
+                .defaultTool(user.getDefaultTool()).defaultStrokeColor(user.getDefaultStrokeColor())
+                .defaultStrokeWidth(user.getDefaultStrokeWidth()).dockAnchor(user.getDockAnchor())
+                .isDockMinimized(user.getIsDockMinimized()).build());
     }
 
     @Transactional
@@ -250,8 +252,7 @@ public class UserService {
             }
         }, (user) -> ToolPreferencesDTO.builder().defaultTool(user.getDefaultTool())
                 .defaultStrokeColor(user.getDefaultStrokeColor())
-                .defaultStrokeWidth(user.getDefaultStrokeWidth())
-                .dockAnchor(user.getDockAnchor())
+                .defaultStrokeWidth(user.getDefaultStrokeWidth()).dockAnchor(user.getDockAnchor())
                 .isDockMinimized(user.getIsDockMinimized()).build());
     }
 

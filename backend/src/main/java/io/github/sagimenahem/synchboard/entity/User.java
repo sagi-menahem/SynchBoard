@@ -5,19 +5,18 @@ import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT
 import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_STROKE_COLOR;
 import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_THEME;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
-
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * JPA entity representing a user account in the SynchBoard application. Implements Spring
@@ -89,6 +88,11 @@ public class User implements UserDetails {
     @Builder.Default
     private Boolean isChatOpen = true;
 
+    /** Canvas zoom scale factor (0.1 to 5.0, where 1.0 = 100%) */
+    @Column(name = "canvas_zoom_scale")
+    @Builder.Default
+    private Double canvasZoomScale = 1.0;
+
     @Column(name = "default_tool")
     @Builder.Default
     private String defaultTool = "brush";
@@ -101,7 +105,10 @@ public class User implements UserDetails {
     @Builder.Default
     private Integer defaultStrokeWidth = 3;
 
-    /** Dock anchor position for floating toolbar (bottom-center, bottom-left, bottom-right, left-center, right-center) */
+    /**
+     * Dock anchor position for floating toolbar (bottom-center, bottom-left, bottom-right,
+     * left-center, right-center)
+     */
     @Column(name = "dock_anchor", length = 20)
     @Builder.Default
     private String dockAnchor = "bottom-center";

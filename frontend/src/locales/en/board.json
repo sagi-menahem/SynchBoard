@@ -173,9 +173,10 @@
     "dragHint": "Drag to reposition"
   },
   "zoom": {
-    "in": "Zoom in",
-    "out": "Zoom out",
-    "reset": "Reset zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom",
+    "currentZoom": "Current zoom level",
     "comingSoon": "Zoom coming soon"
   },
   "actions": {
