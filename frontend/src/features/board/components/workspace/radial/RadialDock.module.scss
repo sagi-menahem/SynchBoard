@@ -339,6 +339,16 @@ $border-radius-mobile: 20px;
     cursor: pointer;
     
     transition: all theme.$transition-fast;
+    outline: none; // Prevent default focus outline
+    -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
+    
+    &:focus {
+        outline: none !important; // Force remove browser outline
+    }
+    
+    &:focus-visible {
+        outline: none !important; // Force remove keyboard focus outline
+    }
     
     // Desktop: Integrated as last tool in row
     .desktop & {
@@ -350,6 +360,17 @@ $border-radius-mobile: 20px;
             background: var(--color-surface-hover);
             color: var(--color-text-primary);
             transform: scale(1.1);
+        }
+        
+        &:active {
+            outline: none !important;
+            border: none !important; // No border flash
+            background: var(--color-surface-hover);
+        }
+        
+        &:focus {
+            outline: none !important;
+            border: none !important; // No border flash
         }
     }
     
@@ -364,22 +385,44 @@ $border-radius-mobile: 20px;
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        border: 1.5px solid rgba(0, 0, 0, 0.15); // Subtle elegant border
+        border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Force consistent border
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        -webkit-tap-highlight-color: transparent; // Extra emphasis
         
         &:active {
             transform: translateX(-50%) scale(0.95);
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Keep consistent border
+            outline: none !important;
+        }
+        
+        &:focus {
+            border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Keep consistent border
+            outline: none !important;
+        }
+        
+        &:focus-visible {
+            border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Keep consistent border
+            outline: none !important;
         }
         
         body[data-theme='dark'] & {
-            border-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.1) !important;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            
+            &:active {
+                border-color: rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            &:focus {
+                border-color: rgba(255, 255, 255, 0.1) !important;
+            }
         }
     }
     
     &:active {
         transform: scale(0.9);
+        outline: none !important;
         
         .mobile & {
             transform: translateX(-50%) scale(0.9);
