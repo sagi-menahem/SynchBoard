@@ -48,8 +48,7 @@ type AllowedDockAnchor =
     | 'top-center'
     | 'top-right'
     | 'bottom-left'
-    | 'bottom-center'
-    | 'bottom-right';
+    | 'bottom-center';
 
 interface ToolItem {
     tool: Tool | string;
@@ -77,7 +76,8 @@ const getAllowedAnchors = (isRTLMode: boolean): AllowedDockAnchor[] => {
     if (isRTLMode) {
         return ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center'];
     }
-    return ['top-left', 'top-center', 'top-right', 'bottom-center', 'bottom-right'];
+    // In LTR, bottom-left is reserved (e.g. for other UI), and now bottom-right is disabled.
+    return ['top-left', 'top-center', 'top-right', 'bottom-center'];
 };
 
 const getAnchorPosition = (
@@ -113,10 +113,6 @@ const getAnchorPosition = (
             x: centerX,
             y: bottomOffset,
         },
-        'bottom-right': {
-            x: rightOffset,
-            y: bottomOffset,
-        },
     };
 
     return positions[anchor] || positions['bottom-center'];
@@ -137,6 +133,7 @@ const mapToAllowedAnchor = (
 
     if (isRTLMode && anchor === 'bottom-right') return 'bottom-center';
     if (!isRTLMode && anchor === 'bottom-left') return 'bottom-center';
+    if (anchor === 'bottom-right') return 'bottom-center'; // Explicitly disable bottom-right for everyone
 
     return defaultAnchor;
 };
@@ -250,15 +247,16 @@ export const RadialDock: React.FC = () => {
     // EXPANSION DIRECTION LOGIC
     // =========================================================================
 
-    const expansionOrigin = useMemo(() => {
-        // Use currentAnchor to determine zone for stable expansion
-        const isLeft = ['top-left', 'bottom-left'].includes(currentAnchor);
-        const isRight = ['top-right', 'bottom-right'].includes(currentAnchor);
-
-        if (isLeft) return { originX: 0, originY: 0.5 }; // Expand Right
-        if (isRight) return { originX: 1, originY: 0.5 }; // Expand Left
-        return { originX: 0.5, originY: 0.5 }; // Expand Center
+    const anchorDirection = useMemo(() => {
+        if (['top-left', 'bottom-left'].includes(currentAnchor)) return 'left';
+        if (['top-right'].includes(currentAnchor)) return 'right';
+        return 'center';
     }, [currentAnchor]);
+
+    // Split tools for Center Trigger layout
+    const midPoint = Math.ceil(DOCK_TOOLS.length / 2);
+    const leftTools = DOCK_TOOLS.slice(0, midPoint);
+    const rightTools = DOCK_TOOLS.slice(midPoint);
 
     // =========================================================================
     // SNAP TO ANCHOR
@@ -473,12 +471,12 @@ export const RadialDock: React.FC = () => {
             onDrag={handleDrag}
             onDragEnd={handleDragEnd}
             style={{ x: motionX, y: motionY }}
+            data-anchor={anchorDirection}
         >
             <motion.div
                 className={`${styles.morphingContainer} ${isExpanded ? styles.expanded : styles.collapsed}`}
                 layout
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                style={{ originX: expansionOrigin.originX, originY: expansionOrigin.originY }}
             >
                 <AnimatePresence mode="wait">
                     {!isExpanded ? (
@@ -503,19 +501,34 @@ export const RadialDock: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0, transition: { duration: 0.1 } }}
                             transition={{ duration: 0.2, delay: 0.05 }}
-                            style={{ display: 'contents' }} // Let grid/flex from parent control layout
+                            style={{ display: 'contents' }}
                         >
-                            {/* Close Button (First Item) */}
+                            {/* Left Group */}
+                            {leftTools.map((item) => {
+                                const isActive = preferences.defaultTool === item.tool;
+                                return (
+                                    <button
+                                        key={item.label}
+                                        className={`${styles.toolButton} ${isActive ? styles.active : ''}`}
+                                        onClick={() => item.type === 'direct' ? handleToolSelect(item.tool as Tool) : handleOpenSatellite(item.tool as string)}
+                                        title={item.label}
+                                    >
+                                        {item.icon}
+                                    </button>
+                                );
+                            })}
+
+                            {/* Center Close Button */}
                             <button
-                                className={styles.toolButton}
+                                className={`${styles.toolButton} ${styles.closeButton}`}
                                 onClick={handleToggleExpand}
                                 aria-label="Close dock"
                             >
                                 <X size={20} />
                             </button>
 
-                            {/* Tool Buttons */}
-                            {DOCK_TOOLS.map((item) => {
+                            {/* Right Group */}
+                            {rightTools.map((item) => {
                                 const isActive = preferences.defaultTool === item.tool;
                                 return (
                                     <button

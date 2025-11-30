@@ -39,6 +39,19 @@ $padding: 4px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    // Directional Expansion Logic (CSS-based)
+    &[data-anchor="left"] {
+        align-items: flex-start; // Expand to Right
+    }
+
+    &[data-anchor="right"] {
+        align-items: flex-end; // Expand to Left
+    }
+
+    &[data-anchor="center"] {
+        align-items: center; // Expand Outwards
+    }
 }
 
 // -----------------------------------------------------------------------------
