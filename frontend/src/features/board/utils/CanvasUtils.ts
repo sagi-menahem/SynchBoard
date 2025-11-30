@@ -23,7 +23,7 @@ import type {
  * @param event - Pointer event containing browser-relative coordinates
  * @param canvas - Target canvas element for coordinate calculation
  * @param scale - Optional zoom scale factor (default 1.0 = no zoom)
- * @returns Canvas-relative coordinates or null if invalid
+ * @returns Canvas-relative coordinates or null if outside canvas bounds
  */
 export const getPointerCoordinates = (
   event: PointerEvent,
@@ -32,10 +32,16 @@ export const getPointerCoordinates = (
 ): { x: number; y: number } | null => {
   const rect = canvas.getBoundingClientRect();
   // Adjust coordinates for zoom scale - divide by scale to get actual canvas coordinates
-  return {
-    x: (event.clientX - rect.left) / scale,
-    y: (event.clientY - rect.top) / scale,
-  };
+  const x = (event.clientX - rect.left) / scale;
+  const y = (event.clientY - rect.top) / scale;
+  
+  // Check if coordinates are within canvas bounds
+  // This ensures drawing only happens when the pointer is actually over the canvas
+  if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) {
+    return null;
+  }
+  
+  return { x, y };
 };
 
 /**
