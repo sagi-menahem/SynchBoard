@@ -310,8 +310,10 @@ $border-radius-mobile: 20px;
         }
     }
     
-    // Mobile: Floating at top-center
+    // Mobile: Floating at top-center with themed background
     .mobile & {
+        @include theme.glass-panel; // Match themed design
+        
         position: absolute;
         top: 8px;
         left: 50%;
@@ -319,10 +321,17 @@ $border-radius-mobile: 20px;
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: var(--color-surface-elevated);
+        border: 1.5px solid rgba(0, 0, 0, 0.15); // Subtle elegant border
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         
         &:active {
-            background: var(--color-surface-hover);
+            transform: translateX(-50%) scale(0.95);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+        
+        body[data-theme='dark'] & {
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
     }
     
@@ -336,6 +345,14 @@ $border-radius-mobile: 20px;
 }
 
 .closeIcon {
+    color: var(--color-text-primary); // Ensure contrast with themed background
+    opacity: 0.8;
+    transition: opacity theme.$transition-fast;
+    
+    .closeButton:hover & {
+        opacity: 1;
+    }
+    
     .mobile & {
         transform: rotate(180deg); // Point down to indicate "minimize"
     }
