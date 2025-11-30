@@ -136,7 +136,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
         onClick={togglePasswordVisibility}
         disabled={disabled}
         aria-label={showPassword ? t('common:form.hidePassword') : t('common:form.showPassword')}
-        tabIndex={0}
+        tabIndex={-1}
       >
         {showPassword ? (
           <EyeOffIcon className={styles.eyeIcon} />

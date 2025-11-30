@@ -74,6 +74,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
           autoComplete="current-password"
           showPassword={showPasswords}
           onToggleVisibility={setShowPasswords}
+          className={styles.settingsPasswordInput}
         />
       </div>
       <div className={styles.field}>
@@ -86,6 +87,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
           autoComplete="new-password"
           showPassword={showPasswords}
           onToggleVisibility={setShowPasswords}
+          className={styles.settingsPasswordInput}
         />
       </div>
       <div className={styles.field}>
@@ -98,6 +100,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
           autoComplete="new-password"
           showPassword={showPasswords}
           onToggleVisibility={setShowPasswords}
+          className={styles.settingsPasswordInput}
         />
       </div>
       <div className={styles.buttonGroup}>

@@ -4,8 +4,10 @@
 
 // Main card container with responsive sizing
 .sectionCard {
-  background-color: theme.$background-secondary;
-  border: 1px solid theme.$border-primary;
+  background: var(--glass-background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   border-radius: theme.$card-border-radius;
   margin-bottom: 0; // Remove margin since we're using gap in grid/flex containers
   position: relative;
@@ -35,7 +37,8 @@
   box-shadow: theme.$shadow-card;
 
   &:hover {
-    background-color: theme.$background-surface;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -44,16 +47,31 @@
   box-shadow: theme.$shadow-lg;
 
   &:hover {
-    background-color: theme.$background-surface;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
   }
 }
 
 // Warning state with accent border
 .warning {
-  box-shadow: theme.$shadow-card;
-  border: 2px solid theme.$warning;
-  background: linear-gradient(to bottom, var(--color-surface), rgba(245, 158, 11, 0.02));
+  border: 2px solid rgba(245, 158, 11, 0.6);
+  border-top: 4px solid theme.$warning;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+  background: linear-gradient(
+    135deg,
+    var(--glass-background) 0%,
+    rgba(245, 158, 11, 0.08) 100%
+  );
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+    background: linear-gradient(
+      135deg,
+      var(--glass-background) 0%,
+      rgba(245, 158, 11, 0.12) 100%
+    );
+  }
 
   // Top accent stripe for warning state
   &::before {
@@ -70,12 +88,23 @@
 
 // Danger state with destructive styling
 .danger {
-  border: 1px solid var(--btn-destructive-bg);
-  border-top: 2px solid var(--btn-destructive-bg);
-  box-shadow: theme.$shadow-glow-md var(--btn-destructive-bg);
-  background: linear-gradient(to bottom,
-      var(--color-surface),
-      color-mix(in srgb, var(--btn-destructive-bg) 2%, transparent));
+  border: 2px solid var(--btn-destructive-bg);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2), theme.$shadow-glow-md var(--btn-destructive-bg);
+  background: linear-gradient(
+    135deg,
+    var(--glass-background) 0%,
+    rgba(239, 68, 68, 0.08) 100%
+  );
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.25), theme.$shadow-glow-md var(--btn-destructive-bg);
+    background: linear-gradient(
+      135deg,
+      var(--glass-background) 0%,
+      rgba(239, 68, 68, 0.12) 100%
+    );
+  }
 }
 
 // --- Header Section ---
