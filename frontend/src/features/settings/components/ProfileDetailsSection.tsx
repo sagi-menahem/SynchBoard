@@ -48,7 +48,7 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
       variant="default"
       headerActions={
         !isEditing ? (
-          <Button onClick={startEditing} variant="secondary" className={styles.editButton}>
+          <Button onClick={startEditing} variant="secondary" className={`${styles.editButton} ${styles.themeButton}`}>
             <PencilLine size={16} />
             {t('settings:page.buttons.edit')}
           </Button>

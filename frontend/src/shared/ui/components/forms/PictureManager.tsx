@@ -84,7 +84,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
       />
 
       <div className={styles.buttonGroup}>
-        <Button onClick={triggerFileInput} variant="secondary">
+        <Button onClick={triggerFileInput} variant="secondary" className={styles.themeButton}>
           {uploadButtonText ?? t('common:pictureManager.changeButton')}
         </Button>
 

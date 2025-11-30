@@ -104,7 +104,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       variant="default"
       headerActions={
         !isEditing ? (
-          <Button onClick={handleStartEditing} variant="secondary" className={styles.editButton}>
+          <Button onClick={handleStartEditing} variant="secondary" className={`${styles.editButton} ${styles.themeButton}`}>
             <Settings2 size={16} />
             {t('board:details.canvasSettings.edit')}
           </Button>

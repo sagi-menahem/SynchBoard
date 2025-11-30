@@ -24,6 +24,23 @@
   @include theme.edit-button;
 }
 
+.themeButton {
+  background-color: var(--user-chosen-color) !important;
+  border-color: var(--user-chosen-color) !important;
+  color: var(--color-text-primary) !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) !important;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+}
+
 .readOnlySettings {
   @include theme.flex-column;
   gap: theme.$spacing-3;

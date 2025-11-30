@@ -77,7 +77,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
             <Button
               onClick={onEditName}
               variant="secondary"
-              className={styles.editButton}
+              className={`${styles.editButton} ${styles.themeButton}`}
               title={t('board:detailsPage.editBoardName')}
             >
               <PencilLine size={16} />
@@ -107,7 +107,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
             <Button
               onClick={() => setIsEditingDescription(true)}
               variant="secondary"
-              className={styles.editButton}
+              className={`${styles.editButton} ${styles.themeButton}`}
             >
               <PencilLine size={16} />
               {t('board:detailsPage.editDescription')}

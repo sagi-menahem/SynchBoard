@@ -115,6 +115,24 @@
   @include theme.edit-button;
 }
 
+// Theme button with user's chosen background color
+.themeButton {
+  background-color: var(--user-chosen-color) !important;
+  border-color: var(--user-chosen-color) !important;
+  color: var(--color-text-primary) !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) !important;
+  
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  
+  &:active:not(:disabled) {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+}
+
 .field {
   @include theme.form-field;
 }
