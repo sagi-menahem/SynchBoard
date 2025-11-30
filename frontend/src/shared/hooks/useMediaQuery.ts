@@ -39,26 +39,71 @@ export const useMediaQuery = (query: string): boolean => {
 };
 
 /**
- * Detects if the device is mobile based on device characteristics,
- * not just viewport width. This ensures phones stay in mobile mode
- * even when rotated to landscape orientation.
+ * Device type classification
+ */
+export type DeviceType = 'mobile' | 'tablet' | 'desktop';
+
+/**
+ * Multi-layered device detection using User Agent, Pointer Type, and Width.
+ * Handles edge cases like touchscreen laptops, small desktop screens, and tablets.
  * 
- * @returns boolean indicating if the device is mobile
+ * Detection priority:
+ * 1. User Agent (most reliable for phones/tablets)
+ * 2. Pointer Type (coarse = touch, fine = mouse/trackpad)
+ * 3. Width fallback (legacy detection)
+ * 
+ * @returns DeviceType - 'mobile' (phone), 'tablet' (iPad/Android tablet), or 'desktop'
+ */
+const detectDeviceType = (): DeviceType => {
+  if (typeof window === 'undefined') {
+    return 'desktop';
+  }
+
+  const width = window.innerWidth;
+  const userAgent = navigator.userAgent;
+
+  // 1. Explicit phone detection (highest priority)
+  // Phones should always use mobile UI regardless of orientation
+  if (/iPhone|iPod|Android.*Mobile/i.test(userAgent)) {
+    return 'mobile';
+  }
+
+  // 2. Explicit tablet detection
+  // iPad and Android tablets (but not phones)
+  if (/iPad|Android(?!.*Mobile)/i.test(userAgent)) {
+    // Large tablets (≥1024px) can use desktop-like UI
+    // Smaller tablets use mobile UI for better UX
+    return width < 1024 ? 'mobile' : 'tablet';
+  }
+
+  // 3. Pointer type detection (modern approach)
+  // Helps distinguish touchscreen laptops from actual mobile devices
+  const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+  // Device with ONLY coarse pointer (touch) and small screen = mobile
+  if (isCoarsePointer && !isFinePointer && width < 1024) {
+    return 'mobile';
+  }
+
+  // Device with fine pointer (mouse/trackpad) = desktop, even if touchscreen
+  if (isFinePointer) {
+    return 'desktop';
+  }
+
+  // 4. Fallback to width-based detection (legacy browsers)
+  return width < 768 ? 'mobile' : 'desktop';
+};
+
+/**
+ * Detects if the device is mobile (phone or small tablet).
+ * Compatible with existing code expecting boolean.
+ * 
+ * @returns boolean indicating if the device should use mobile UI
  */
 const detectMobileDevice = (): boolean => {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-  
-  // Check for mobile user agent
-  const isMobileUserAgent = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-  // Check for touch capability
-  const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  
-  // If it's a mobile device (phone/tablet), always use mobile UI
-  // Otherwise, fall back to width check for desktop responsiveness
-  return isMobileUserAgent || (hasTouchScreen && window.innerWidth < 1024);
+  const deviceType = detectDeviceType();
+  return deviceType === 'mobile';
 };
 
 /**
@@ -88,6 +133,34 @@ export const useIsMobile = (): boolean => {
   }, []);
 
   return isMobile;
+};
+
+/**
+ * Hook to detect and track device type (mobile/tablet/desktop).
+ * Provides granular device classification for responsive behavior.
+ * 
+ * @returns DeviceType - 'mobile', 'tablet', or 'desktop'
+ */
+export const useDeviceType = (): DeviceType => {
+  const [deviceType, setDeviceType] = useState<DeviceType>(() => detectDeviceType());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDeviceType(detectDeviceType());
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Listen for resize events
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return deviceType;
 };
 
 export const useIsTablet = (): boolean =>
