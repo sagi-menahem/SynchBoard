@@ -5,19 +5,29 @@ import { PRESET_COLORS } from 'shared/constants/ColorConstants';
 import styles from './satellites.module.scss';
 
 /**
+ * Props for ColorPaletteSatellite component.
+ */
+interface ColorPaletteSatelliteProps {
+    /** Whether device is mobile */
+    isMobile: boolean;
+    /** Handler to collapse the toolbar (mobile only) */
+    onCollapse: () => void;
+}
+
+/**
  * ColorPaletteSatellite component - Interactive color picker for stroke colors.
  * 
  * Features:
  * - 18 preset Material Design colors in 6×3 grid
  * - Circular color buttons with visible color swatches
  * - Visual active border for currently selected color
- * - Does NOT auto-close (allows multiple color changes)
+ * - Auto-collapses toolbar on mobile after selection
  * - Syncs with global tool preferences
  * - Compact, centered design matching other satellites
  * 
  * Phase 3D Implementation
  */
-export const ColorPaletteSatellite: React.FC = () => {
+export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({ isMobile, onCollapse }) => {
     const { preferences, updateStrokeColor } = useToolPreferences();
 
     // Use first 18 colors from PRESET_COLORS (Material Design palette)
@@ -27,13 +37,16 @@ export const ColorPaletteSatellite: React.FC = () => {
         async (color: string) => {
             try {
                 await updateStrokeColor(color);
-                // No onClose() - satellite stays open for multiple color changes
+                // Auto-collapse toolbar on mobile after color selection
+                if (isMobile) {
+                    onCollapse();
+                }
             } catch {
                 // Error handling is managed by useToolPreferences
                 // Errors are displayed via the preferences context error state
             }
         },
-        [updateStrokeColor],
+        [updateStrokeColor, isMobile, onCollapse],
     );
 
     return (

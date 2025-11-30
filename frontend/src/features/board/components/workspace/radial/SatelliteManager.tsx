@@ -12,6 +12,10 @@ interface SatelliteManagerProps {
     activeSatellite: string | null;
     /** Handler to close the satellite */
     onClose: () => void;
+    /** Whether device is mobile */
+    isMobile: boolean;
+    /** Handler to collapse the toolbar (mobile only) */
+    onCollapse: () => void;
 }
 
 // Mobile breakpoint (matches RadialDock)
@@ -53,21 +57,18 @@ const SATELLITE_POSITION = {
 export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
     activeSatellite,
     onClose,
+    isMobile: isMobileProp,
+    onCollapse,
 }) => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
+    const [isMobile, setIsMobile] = useState(isMobileProp);
 
     // =========================================================================
     // MOBILE DETECTION
     // =========================================================================
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+        setIsMobile(isMobileProp);
+    }, [isMobileProp]);
 
     // =========================================================================
     // CLICK OUTSIDE HANDLER
@@ -122,13 +123,13 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
     const renderSatelliteContent = () => {
         switch (activeSatellite) {
             case 'shapes':
-                return <ShapesSatellite onClose={onClose} />;
+                return <ShapesSatellite onClose={onClose} isMobile={isMobile} onCollapse={onCollapse} />;
 
             case 'lines':
-                return <LinesSatellite onClose={onClose} />;
+                return <LinesSatellite onClose={onClose} isMobile={isMobile} onCollapse={onCollapse} />;
 
             case 'colorPalette':
-                return <ColorPaletteSatellite />;
+                return <ColorPaletteSatellite isMobile={isMobile} onCollapse={onCollapse} />;
 
             case 'strokeProps':
                 return <StrokeWidthSatellite />;
