@@ -2,7 +2,15 @@ package io.github.sagimenahem.synchboard.service.auth;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
-
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -15,17 +23,8 @@ import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository
 import io.github.sagimenahem.synchboard.repository.UserRepository;
 import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
 import jakarta.annotation.PostConstruct;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 /**
  * Service for processing Google authentication across different flows (OAuth2 redirect and One
@@ -121,8 +120,9 @@ public class GoogleAuthService {
         String pictureUrl = googleUserInfo.getPictureUrl();
 
         if (email == null || providerId == null) {
-            log.error(SECURITY_PREFIX
-                    + " Missing required Google user data - email: {}, providerId: {}",
+            log.error(
+                    SECURITY_PREFIX
+                            + " Missing required Google user data - email: {}, providerId: {}",
                     email != null, providerId != null);
             throw new InvalidRequestException("Missing required user information from Google");
         }
@@ -135,9 +135,10 @@ public class GoogleAuthService {
 
         if (existingUser.isPresent()) {
             User user = existingUser.get();
-            log.info(SECURITY_PREFIX
-                    + " Found existing user: email={}, authProvider={}, creationDate={}", email,
-                    user.getAuthProvider(), user.getCreationDate());
+            log.info(
+                    SECURITY_PREFIX
+                            + " Found existing user: email={}, authProvider={}, creationDate={}",
+                    email, user.getAuthProvider(), user.getCreationDate());
 
             // Account merging: Allow Google login for existing accounts regardless of auth provider
             if (user.getAuthProvider() == User.AuthProvider.GOOGLE) {
@@ -185,7 +186,8 @@ public class GoogleAuthService {
         if (pictureUrl != null) {
             localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
-                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}",
+                log.info(
+                        SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}",
                         email);
             } else {
                 log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
@@ -195,7 +197,8 @@ public class GoogleAuthService {
 
         return User.builder().email(email).firstName(nameParts[0]).lastName(nameParts[1])
                 .authProvider(User.AuthProvider.GOOGLE).providerId(providerId)
-                .profilePictureUrl(localPicturePath).creationDate(LocalDateTime.now()).build();
+                .profilePictureUrl(localPicturePath).creationDate(LocalDateTime.now())
+                .boardBackgroundSetting("--board-bg-default").build();
     }
 
     /**
@@ -207,7 +210,8 @@ public class GoogleAuthService {
      * @param pictureUrl The updated profile picture URL
      * @param providerId The Google provider's user identifier
      */
-    private void updateUserFromGoogle(User user, String name, String pictureUrl, String providerId) {
+    private void updateUserFromGoogle(User user, String name, String pictureUrl,
+            String providerId) {
         if (name != null) {
             String[] nameParts = splitName(name);
             user.setFirstName(nameParts[0]);
@@ -291,8 +295,9 @@ public class GoogleAuthService {
             String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
                 user.setProfilePictureUrl(localPicturePath);
-                log.info(SECURITY_PREFIX
-                        + " Downloaded and stored profile picture for merged user: {}",
+                log.info(
+                        SECURITY_PREFIX
+                                + " Downloaded and stored profile picture for merged user: {}",
                         user.getEmail());
             } else {
                 log.warn(SECURITY_PREFIX
@@ -316,8 +321,10 @@ public class GoogleAuthService {
     private void cleanupPendingRegistration(String email) {
         Optional<PendingRegistration> pending = pendingRegistrationRepository.findByEmail(email);
         if (pending.isPresent()) {
-            log.info(SECURITY_PREFIX
-                    + " Cleaning up pending registration for: {} (Google verifies email)", email);
+            log.info(
+                    SECURITY_PREFIX
+                            + " Cleaning up pending registration for: {} (Google verifies email)",
+                    email);
             pendingRegistrationRepository.delete(pending.get());
         }
     }

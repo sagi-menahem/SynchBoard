@@ -298,7 +298,8 @@ public class AuthService {
                 .firstName(pendingRegistration.getFirstName())
                 .lastName(pendingRegistration.getLastName()).gender(pendingRegistration.getGender())
                 .phoneNumber(pendingRegistration.getPhoneNumber())
-                .dateOfBirth(pendingRegistration.getDateOfBirth()).build();
+                .dateOfBirth(pendingRegistration.getDateOfBirth())
+                .boardBackgroundSetting("--board-bg-default").build();
     }
 
     /**
@@ -312,7 +313,8 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName()).lastName(request.getLastName())
                 .gender(request.getGender()).phoneNumber(request.getPhoneNumber())
-                .dateOfBirth(request.getDateOfBirth()).build();
+                .dateOfBirth(request.getDateOfBirth()).boardBackgroundSetting("--board-bg-default")
+                .build();
     }
 
     /**
