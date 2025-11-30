@@ -1,0 +1,26 @@
+@use '@/styles' as theme;
+
+.textInputOverlay {
+  position: absolute;
+  background: transparent;
+  border: none;
+  padding: 0;
+  z-index: theme.$z-index-overlay;
+}
+
+.textInput {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  outline: none;
+  overflow: hidden;
+  resize: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  direction: ltr;
+}

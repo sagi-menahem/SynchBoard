@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Textarea } from 'shared/ui';
 
-import styles from './CanvasToolSection.module.scss';
+import styles from './TextInputOverlay.module.scss';
 
 /**
  * Props interface for TextInputOverlay component.

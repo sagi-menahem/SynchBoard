@@ -1,6 +1,5 @@
 export { default as BoardWorkspace } from './components/workspace/BoardWorkspace';
 export { default as Canvas } from './components/workspace/Canvas';
-export { CanvasToolSection } from './components/workspace/CanvasToolSection';
 export { default as TextInputOverlay } from './components/workspace/TextInputOverlay';
 
 export { default as BoardCard } from './components/list/BoardCard';
@@ -40,3 +39,4 @@ export * from './utils/CanvasUtils';
 export type * from './types/BoardObjectTypes';
 export type * from './types/BoardTypes';
 export type * from './types/ToolbarTypes';
+
