@@ -3,7 +3,7 @@
 // Main page container with responsive grid layout and proper spacing
 .pageContent {
   position: relative;
-  padding-block-start: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 24px);
+  padding-block-start: calc(var(--banner-height, 0px) + theme.$header-height + 24px);
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -17,6 +17,23 @@
   gap: 2rem;
   align-items: start;
   justify-content: center;
+}
+
+// AppHeader styles for settings page
+.pageTitle {
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+// Logout button label - visible on desktop, hidden on mobile
+.logoutLabel {
+  margin-inline-start: theme.$spacing-2;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {

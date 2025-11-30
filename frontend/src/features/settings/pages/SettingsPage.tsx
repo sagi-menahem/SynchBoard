@@ -1,21 +1,21 @@
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
-import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
-import { LogOut } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import { ArrowLeft, ArrowRight, LogOut } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import {
+    AppHeader,
+    Button,
     ConfirmationDialog,
     PageLoader,
     PageTransition,
     PictureManager,
     SectionCard,
-    UniversalToolbar,
 } from 'shared/ui';
 import logger from 'shared/utils/logger';
-import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
+import { isRTL } from 'shared/utils/rtlUtils';
 
 import {
     BoardAppearanceSection,
@@ -35,10 +35,10 @@ import styles from './SettingsPage.module.scss';
  * Integrates multiple settings sections including theme, language, board appearance, password management,
  * profile picture handling, personal details editing, and account deletion functionality.
  * Implements proper loading states, error handling, and confirmation dialogs for destructive actions.
- * Features responsive design with universal toolbar integration and proper navigation patterns.
+ * Features responsive design with AppHeader integration and proper navigation patterns.
  */
 const SettingsPage: React.FC = () => {
-  const { t } = useTranslation(['settings', 'common']);
+  const { t, i18n } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -76,40 +76,26 @@ const SettingsPage: React.FC = () => {
     }
   };
 
-  const toolbarConfig: ToolbarConfig = useMemo(
-    () => ({
-      pageType: 'settings',
-      leftSection: [
-        {
-          type: 'title',
-          content: t('settings:page.heading'),
-        },
-      ],
-      rightSection: [
-        {
-          type: 'button',
-          icon: LogOut,
-          label: t('settings:page.logoutButton'),
-          onClick: logout,
-          variant: 'warning',
-        },
-        {
-          type: 'button',
-          icon: getNavigationArrowIcon(),
-          label: t('settings:page.boardListButton'),
-          onClick: () => navigate(APP_ROUTES.BOARD_LIST),
-          variant: 'navigation',
-          className: 'iconOnlyButton',
-        },
-      ],
-    }),
-    [t, logout, navigate],
-  );
+  // RTL-aware back arrow
+  const BackArrow = isRTL(i18n.language) ? ArrowRight : ArrowLeft;
 
   if (isLoading) {
     return (
       <PageTransition>
-        <UniversalToolbar config={toolbarConfig} />
+        <AppHeader
+          leading={(
+            <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
+              <BackArrow size={20} />
+            </Button>
+          )}
+          title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
+          trailing={(
+            <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
+              <LogOut size={20} />
+              <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
+            </Button>
+          )}
+        />
         <PageLoader message={t('settings:page.loading')} />
       </PageTransition>
     );
@@ -118,8 +104,21 @@ const SettingsPage: React.FC = () => {
   if (!user) {
     return (
       <PageTransition>
-        <UniversalToolbar config={toolbarConfig} />
-        <main className={styles.pageContent} data-has-toolbar>
+        <AppHeader
+          leading={(
+            <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
+              <BackArrow size={20} />
+            </Button>
+          )}
+          title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
+          trailing={(
+            <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
+              <LogOut size={20} />
+              <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
+            </Button>
+          )}
+        />
+        <main className={styles.pageContent}>
           <div className={styles.loadError}>{t('settings:page.loadError')}</div>
         </main>
       </PageTransition>
@@ -128,8 +127,21 @@ const SettingsPage: React.FC = () => {
 
   return (
     <PageTransition>
-      <UniversalToolbar config={toolbarConfig} />
-      <main className={styles.pageContent} data-has-toolbar>
+      <AppHeader
+        leading={(
+          <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
+            <BackArrow size={20} />
+          </Button>
+        )}
+        title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
+        trailing={(
+          <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
+            <LogOut size={20} />
+            <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
+          </Button>
+        )}
+      />
+      <main className={styles.pageContent}>
         {/* Left Column - Appearance & Preferences */}
         <div className={styles.leftColumn}>
           <ThemeSection />
