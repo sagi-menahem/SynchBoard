@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { MessageSquare, Minus, Plus, Redo2, RotateCcw, Undo2 } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useIsMobile } from 'shared/hooks';
 import { Button } from 'shared/ui';
 import { isRTL } from 'shared/utils/rtlUtils';
 
@@ -57,14 +58,8 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
     },
   };
 
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Use shared mobile detection hook (device-based, not width-only)
+  const isMobile = useIsMobile();
 
   const handleToggleChat = () => {
     void updateCanvasPreferences({ isChatOpen: !preferences.isChatOpen });

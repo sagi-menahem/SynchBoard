@@ -27,10 +27,25 @@ import { SatelliteManager } from './SatelliteManager';
 
 
 // =============================================================================
-// CONSTANTS
+// HELPER FUNCTIONS
 // =============================================================================
 
-const MOBILE_BREAKPOINT = 768;
+/**
+ * Detects if the device is mobile based on device characteristics,
+ * not just viewport width. This ensures phones stay in mobile mode
+ * even when rotated to landscape orientation.
+ */
+const detectMobileDevice = (): boolean => {
+    // Check for mobile user agent
+    const isMobileUserAgent = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    // Check for touch capability
+    const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    // If it's a mobile device (phone/tablet), always use mobile UI
+    // Otherwise, fall back to width check for desktop responsiveness
+    return isMobileUserAgent || (hasTouchScreen && window.innerWidth < 1024);
+};
 
 // Shape tools that should trigger shapes satellite active state
 const SHAPE_TOOLS = [TOOLS.SQUARE, TOOLS.CIRCLE, TOOLS.TRIANGLE, TOOLS.PENTAGON, TOOLS.HEXAGON, TOOLS.STAR] as const;
@@ -126,7 +141,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
     // STATE
     // =========================================================================
 
-    const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
+    const [isMobile, setIsMobile] = useState(detectMobileDevice());
     const [isExpanded, setIsExpanded] = useState(!preferences.isDockMinimized);
     const [activeSatellite, setActiveSatellite] = useState<string | null>(null);
 
@@ -151,8 +166,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
             if (resizeTimeout) clearTimeout(resizeTimeout);
 
             resizeTimeout = setTimeout(() => {
-                const newWidth = window.innerWidth;
-                const mobile = newWidth < MOBILE_BREAKPOINT;
+                const mobile = detectMobileDevice();
                 setIsMobile(mobile);
             }, 100);
         };
