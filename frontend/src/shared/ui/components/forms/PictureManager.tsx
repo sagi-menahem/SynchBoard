@@ -84,12 +84,12 @@ const PictureManager: React.FC<PictureManagerProps> = ({
       />
 
       <div className={styles.buttonGroup}>
-        <Button onClick={triggerFileInput} variant="secondary" className={styles.themeButton}>
+        <Button type="button" onClick={triggerFileInput} variant="secondary" className={styles.themeButton}>
           {uploadButtonText ?? t('common:pictureManager.changeButton')}
         </Button>
 
         {showDeleteButton && onDelete && imageUrl && (
-          <Button onClick={onDelete} variant="destructive">
+          <Button type="button" onClick={onDelete} variant="destructive">
             {deleteButtonText ?? t('common:pictureManager.deleteButton')}
           </Button>
         )}
