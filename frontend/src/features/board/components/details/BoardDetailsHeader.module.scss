@@ -100,8 +100,8 @@
   @include theme.input-base;
   width: 100%;
   padding: theme.$spacing-3;
-  background-color: theme.$background-surface;
-  border: 1px solid theme.$border-secondary;
+  background-color: var(--user-chosen-color);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   @include theme.rounded-small;
   color: theme.$text-primary;
   font-size: 16px;
@@ -132,15 +132,14 @@
 /* Empty state container for board description with interactive hover feedback */
 .emptyDescription {
   padding: theme.$spacing-6;
-  background-color: var(--color-surface-hover);
-  border: 2px dashed var(--color-border-light);
+  background-color: var(--user-chosen-color);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: theme.$border-radius-md;
   margin: theme.$spacing-2 0;
   @include theme.smooth-transition;
 
   &:hover {
-    background-color: var(--color-surface-elevated);
-    border-color: var(--color-border);
+    opacity: 0.95;
   }
 
   label {
