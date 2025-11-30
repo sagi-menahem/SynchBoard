@@ -22,7 +22,7 @@ import styles from './RadialDock.module.scss';
 // CONSTANTS
 // =============================================================================
 
-const EDGE_MARGIN = 32; // Increased safe distance from screen edge
+const EDGE_MARGIN = 24; // Visual margin from screen edge
 const MOBILE_BREAKPOINT = 768;
 const DRAG_THRESHOLD = 5;
 const HEADER_HEIGHT = 56;
@@ -86,33 +86,36 @@ const getAnchorPosition = (
     viewportHeight: number,
     buttonSize: number,
 ): { x: number; y: number } => {
-    const offset = buttonSize / 2;
-    const safeDistance = EDGE_MARGIN + offset;
+    const margin = EDGE_MARGIN;
+    const headerOffset = margin + HEADER_HEIGHT;
+    const bottomOffset = viewportHeight - margin - buttonSize;
+    const rightOffset = viewportWidth - margin - buttonSize;
+    const centerX = (viewportWidth - buttonSize) / 2;
 
     const positions: Record<AllowedDockAnchor, { x: number; y: number }> = {
         'top-left': {
-            x: safeDistance,
-            y: safeDistance + HEADER_HEIGHT,
+            x: margin,
+            y: headerOffset,
         },
         'top-center': {
-            x: viewportWidth / 2,
-            y: safeDistance + HEADER_HEIGHT,
+            x: centerX,
+            y: headerOffset,
         },
         'top-right': {
-            x: viewportWidth - safeDistance,
-            y: safeDistance + HEADER_HEIGHT,
+            x: rightOffset,
+            y: headerOffset,
         },
         'bottom-left': {
-            x: safeDistance,
-            y: viewportHeight - safeDistance,
+            x: margin,
+            y: bottomOffset,
         },
         'bottom-center': {
-            x: viewportWidth / 2,
-            y: viewportHeight - safeDistance,
+            x: centerX,
+            y: bottomOffset,
         },
         'bottom-right': {
-            x: viewportWidth - safeDistance,
-            y: viewportHeight - safeDistance,
+            x: rightOffset,
+            y: bottomOffset,
         },
     };
 
@@ -143,14 +146,11 @@ const calculateConstraints = (
     viewportHeight: number,
     buttonSize: number,
 ) => {
-    const offset = buttonSize / 2;
-    const safeDistance = EDGE_MARGIN + offset;
-
     return {
-        left: safeDistance,
-        right: viewportWidth - safeDistance,
-        top: safeDistance + HEADER_HEIGHT,
-        bottom: viewportHeight - safeDistance,
+        left: EDGE_MARGIN,
+        right: viewportWidth - EDGE_MARGIN - buttonSize,
+        top: EDGE_MARGIN + HEADER_HEIGHT,
+        bottom: viewportHeight - EDGE_MARGIN - buttonSize,
     };
 };
 
