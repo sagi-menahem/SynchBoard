@@ -193,14 +193,35 @@
   }
 
   .headerContent {
-    flex-direction: column;
-    align-items: stretch;
-    gap: theme.$spacing-3;
+    gap: theme.$spacing-2;
+    align-items: center;
+  }
+
+  .titleGroup {
+    flex: 1;
+    min-width: 0;
   }
 
   .headerActions {
-    justify-content: start;
-    margin-top: theme.$spacing-2;
+    flex-shrink: 0;
+    
+    // Hide button text on mobile, show only icons
+    :global(button) {
+      span:not([class*="icon"]) {
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+      
+      // Ensure icon is visible
+      svg {
+        display: block;
+      }
+      
+      // Make icon-only buttons more compact
+      padding: theme.$spacing-2;
+      min-width: 2.5rem;
+    }
   }
 
   .title {
