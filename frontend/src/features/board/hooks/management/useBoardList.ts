@@ -2,6 +2,7 @@ import { useAuth } from 'features/auth/hooks';
 import * as BoardService from 'features/board/services/boardService';
 import type { Board } from 'features/board/types/BoardTypes';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
+import * as UserService from 'features/settings/services/userService';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -35,7 +36,7 @@ export const useBoardList = () => {
   const { userEmail } = useAuth();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const viewMode: ViewMode = 'list';
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const filteredBoards = useMemo(() => {
     if (!searchQuery.trim()) {
       return boards;
@@ -51,6 +52,17 @@ export const useBoardList = () => {
   const handleClearSearch = useCallback(() => {
     setSearchQuery('');
   }, []);
+
+  const toggleViewMode = useCallback(() => {
+    const newMode: ViewMode = viewMode === 'grid' ? 'list' : 'grid';
+    setViewMode(newMode);
+
+    // Persist preference to backend
+    UserService.updateUserPreferences({ boardListViewMode: newMode }).catch((error) => {
+      logger.error('Failed to save view mode preference:', error);
+      // Silent failure - user can still use the feature, just won't persist
+    });
+  }, [viewMode]);
 
   // Memoized to prevent unnecessary API calls while maintaining loading state consistency
   const fetchBoards = useCallback(() => {
@@ -82,6 +94,22 @@ export const useBoardList = () => {
   useEffect(() => {
     fetchBoards();
   }, [fetchBoards]);
+
+  // Load user's view mode preference from backend
+  useEffect(() => {
+    const loadViewPreference = async () => {
+      try {
+        const profile = await UserService.getUserProfile();
+        if (profile.boardListViewMode) {
+          setViewMode(profile.boardListViewMode as ViewMode);
+        }
+      } catch (error) {
+        logger.warn('Failed to load view mode preference:', error);
+      }
+    };
+
+    void loadViewPreference();
+  }, []);
 
   const handleBoardCreated = (newBoard: Board) => {
     setBoards((prevBoards) => [...prevBoards, newBoard]);
@@ -187,5 +215,6 @@ export const useBoardList = () => {
     handleSearch,
     handleClearSearch,
     viewMode,
+    toggleViewMode,
   };
 };

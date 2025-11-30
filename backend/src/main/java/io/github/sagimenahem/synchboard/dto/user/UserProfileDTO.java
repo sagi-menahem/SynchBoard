@@ -44,4 +44,7 @@ public class UserProfileDTO {
 
     /** User's preferred language (en/he) */
     private String preferredLanguage;
+
+    /** User's board list view mode preference (grid/list) */
+    private String boardListViewMode;
 }

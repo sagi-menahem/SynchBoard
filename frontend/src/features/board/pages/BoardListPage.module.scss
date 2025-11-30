@@ -3,7 +3,7 @@
 // Dynamic height calculation accounting for banner and AppHeader presence
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 8px);
+  padding-top: calc(var(--banner-height, 0px) + theme.$header-height);
   min-height: calc(100vh - var(--banner-height, 0px) - theme.$header-height - 36px);
   width: 100%;
   max-width: 1200px;
@@ -107,18 +107,25 @@
 .boardList {
   display: grid;
   gap: theme.$spacing-6;
-  padding: theme.$spacing-2 0;
+  padding: 0;
   list-style: none;
   margin: 0;
 }
 
-// Responsive grid layout with fluid column sizing
+// Modern grid layout for grid view
 .boardList.grid {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(700px, 100vw - 48px), min(700px, 100vw - 48px))
-  );
-  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  
+  @media (min-width: 769px) and (max-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
 }
 
 .boardList.list {

@@ -126,6 +126,10 @@ public class User implements UserDetails {
     @Builder.Default
     private String themePreference = DEFAULT_THEME;
 
+    @Column(name = "board_list_view_mode", length = 10)
+    @Builder.Default
+    private String boardListViewMode = "grid";
+
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 

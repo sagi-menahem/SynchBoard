@@ -57,48 +57,91 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
 
   const boardRoute = useMemo(() => APP_ROUTES.getBoardDetailRoute(board.id), [board.id]);
 
+  // Grid view: Compact modern card with preview
+  if (viewMode === 'grid') {
+    return (
+      <Link to={boardRoute} className={styles.cardLink}>
+        <Card variant="elevated" hoverable className={cardClasses}>
+          {/* Preview area with background color and centered avatar */}
+          <div
+            className={styles.previewArea}
+            style={{ backgroundColor: board.canvasBackgroundColor }}
+          >
+            {/* Centered avatar */}
+            <div className={styles.gridAvatar}>
+              <img src={imageSource} alt={board.name} className={styles.gridAvatarImage} />
+            </div>
+            
+            {board.isAdmin && (
+              <div className={styles.adminBadge} title={t('board:listPage.adminLabel')}>
+                <Crown size={14} />
+              </div>
+            )}
+          </div>
+
+          {/* Card content - compact */}
+          <div className={styles.boardCardContent}>
+            <h3 className={styles.boardName}>{board.name}</h3>
+            
+            {/* Metadata row */}
+            <div className={styles.metadataRow}>
+              <div
+                className={styles.colorDot}
+                style={{ backgroundColor: board.canvasBackgroundColor }}
+                title={colorDisplayName}
+              />
+              <span className={styles.resolutionText}>{canvasResolution}</span>
+            </div>
+
+            {/* Timestamp */}
+            <RelativeTimestamp
+              timestamp={board.lastModifiedDate}
+              className={styles.timestamp}
+            />
+          </div>
+        </Card>
+      </Link>
+    );
+  }
+
+  // List view: Modern compact horizontal row
   return (
     <Link to={boardRoute} className={styles.cardLink}>
       <Card variant="elevated" hoverable className={cardClasses}>
-        <img src={imageSource} alt={board.name} className={styles.boardCardImage} />
-        <div className={styles.boardCardContent}>
-          <div className={styles.cardHeader}>
-            <h2>{board.name}</h2>
-            <div className={styles.metadataColumn}>
-              <div className={styles.colorInfo}>
-                <span className={styles.colorName}>{colorDisplayName}</span>
-                <div
-                  className={styles.canvasColorBadge}
-                  style={{ backgroundColor: board.canvasBackgroundColor }}
-                  title={colorDisplayName}
-                />
-              </div>
+        {/* Circular avatar thumbnail */}
+        <img 
+          src={imageSource} 
+          alt={board.name} 
+          className={styles.listThumbnail}
+        />
+        
+        {/* Board name */}
+        <div className={styles.listName}>
+          <h3>{board.name}</h3>
+          {board.isAdmin && (
+            <div className={styles.listAdminIcon} title={t('board:listPage.adminLabel')}>
+              <Crown size={16} />
             </div>
-          </div>
-          <div className={styles.cardBody}>
-            <p className={styles.description}>
-              {board.description ?? t('board:listPage.noDescription')}
-            </p>
-            <div className={styles.resolutionInfo}>
-              <span className={styles.canvasResolution}>{canvasResolution}</span>
-            </div>
-          </div>
-          <div className={styles.cardFooter}>
-            <div className={styles.leftSection} />
-            <div className={styles.centerSection}>
-              {board.isAdmin && (
-                <div className={styles.adminLabel} title={t('board:listPage.adminLabel')}>
-                  <Crown size={18} />
-                </div>
-              )}
-            </div>
-            <div className={styles.rightSection}>
-              <RelativeTimestamp
-                timestamp={board.lastModifiedDate}
-                className={styles.lastModified}
-              />
-            </div>
-          </div>
+          )}
+        </div>
+
+        {/* Color indicator */}
+        <div className={styles.listColorInfo}>
+          <div
+            className={styles.listColorDot}
+            style={{ backgroundColor: board.canvasBackgroundColor }}
+          />
+          <span className={styles.listColorName}>{colorDisplayName}</span>
+        </div>
+
+        {/* Resolution */}
+        <div className={styles.listResolution}>
+          <span>{canvasResolution}</span>
+        </div>
+
+        {/* Timestamp */}
+        <div className={styles.listTimestamp}>
+          <RelativeTimestamp timestamp={board.lastModifiedDate} />
         </div>
       </Card>
     </Link>

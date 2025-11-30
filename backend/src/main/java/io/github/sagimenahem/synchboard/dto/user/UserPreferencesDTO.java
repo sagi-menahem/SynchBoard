@@ -17,4 +17,7 @@ public class UserPreferencesDTO {
 
     /** User's preferred board background setting */
     private String boardBackgroundSetting;
+
+    /** User's board list view mode preference (grid/list) */
+    private String boardListViewMode;
 }

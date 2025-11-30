@@ -57,6 +57,8 @@ export interface UserProfile {
   boardBackgroundSetting: string | null;
   // Preferred language code for internationalization
   preferredLanguage?: string | null;
+  // Board list view mode preference (grid or list)
+  boardListViewMode?: 'grid' | 'list' | null;
 }
 
 /**
@@ -91,6 +93,8 @@ export interface ChangePasswordRequest {
 export interface UserPreferences {
   // Board background color preference in hex format or color name
   boardBackgroundSetting?: string | null;
+  // Board list view mode preference
+  boardListViewMode?: 'grid' | 'list';
 }
 
 /**

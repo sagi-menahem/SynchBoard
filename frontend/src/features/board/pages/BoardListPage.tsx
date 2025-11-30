@@ -1,4 +1,4 @@
-import { LayoutDashboard, LogOut, Plus, Settings } from 'lucide-react';
+import { LayoutDashboard, LayoutGrid, List, LogOut, Plus, Settings } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -51,6 +51,7 @@ const BoardListPage: React.FC = () => {
     handleSearch,
     handleClearSearch,
     viewMode,
+    toggleViewMode,
   } = useBoardList();
 
   if (isLoading) {
@@ -70,6 +71,13 @@ const BoardListPage: React.FC = () => {
           ) : undefined}
           trailing={(
             <>
+              <Button
+                variant="icon"
+                onClick={toggleViewMode}
+                title={viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')}
+              >
+                {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+              </Button>
               <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
                 <Plus size={20} />
               </Button>
@@ -110,6 +118,13 @@ const BoardListPage: React.FC = () => {
         ) : undefined}
         trailing={(
           <>
+            <Button
+              variant="icon"
+              onClick={toggleViewMode}
+              title={viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')}
+            >
+              {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+            </Button>
             <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
               <Plus size={20} />
             </Button>

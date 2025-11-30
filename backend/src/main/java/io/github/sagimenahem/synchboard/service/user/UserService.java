@@ -151,6 +151,10 @@ public class UserService {
 
         user.setBoardBackgroundSetting(dto.getBoardBackgroundSetting());
 
+        if (dto.getBoardListViewMode() != null) {
+            user.setBoardListViewMode(dto.getBoardListViewMode());
+        }
+
         User updatedUser = userRepository.save(user);
         log.info(USER_PREFERENCES_UPDATED, userEmail);
         return mapUserToUserProfileDTO(updatedUser);
@@ -175,7 +179,8 @@ public class UserService {
                 .phoneNumber(user.getPhoneNumber()).dateOfBirth(user.getDateOfBirth())
                 .profilePictureUrl(user.getProfilePictureUrl())
                 .boardBackgroundSetting(user.getBoardBackgroundSetting())
-                .preferredLanguage(user.getPreferredLanguage()).build();
+                .preferredLanguage(user.getPreferredLanguage())
+                .boardListViewMode(user.getBoardListViewMode()).build();
     }
 
     private void broadcastUserUpdateToSharedBoards(String userEmail) {

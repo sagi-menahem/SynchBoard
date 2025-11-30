@@ -4,264 +4,309 @@
   text-decoration: none;
   color: inherit;
   @include theme.smooth-transition;
+  
+  &:hover .boardCard.grid {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  &:hover .boardCard.list {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(4px);
+  }
 }
 
 .boardCard {
-  background-color: theme.$background-secondary;
-  border: 1px solid theme.$border-primary;
-  padding: theme.$spacing-4;
+  background: var(--glass-background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   text-align: start;
   position: relative;
   overflow: hidden;
-  height: 100%;
+  @include theme.smooth-transition;
 }
 
+// ===== GRID VIEW STYLES =====
 .boardCard.grid {
   @include theme.flex-column;
-  height: theme.$board-card-grid-height;
-  width: min(theme.$board-card-grid-max-width, 100vw - 48px);
-  max-width: theme.$board-card-grid-max-width;
+  padding: 0;
+  border-radius: 8px;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.boardCard.list {
+.previewArea {
+  width: 100%;
+  flex: 1;
+  position: relative;
+  border-radius: 8px 8px 0 0;
   display: flex;
   align-items: center;
-  gap: theme.$spacing-4;
-  height: auto;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.cardLink:hover .boardCard {
-  background-color: theme.$background-surface;
+.colorRing {
+  display: none;
 }
 
-.boardCardImage {
-  object-fit: cover;
-  flex-shrink: 0;
-  @include theme.rounded-medium;
+.gridAvatar {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  background: white;
 }
 
-/* Grid view: full-width image with top corners rounded and negative margins to extend to card edges */
-.boardCard.grid .boardCardImage {
+.gridAvatarImage {
   width: 100%;
-  height: theme.$board-card-image-height-grid;
-  border-radius: theme.$border-radius-lg theme.$border-radius-lg 0 0;
-  margin: -1rem -1rem 1rem -1rem;
+  height: 100%;
+  object-fit: cover;
 }
 
-.boardCard.list .boardCardImage {
-  width: theme.$board-card-image-size-list;
-  height: theme.$board-card-image-size-list;
-  @include theme.rounded-circle;
-}
-
-.boardCardContent {
-  @include theme.flex-column;
-  flex: 1;
+.adminBadge {
+  position: absolute;
+  top: 6px;
+  inset-inline-end: 6px;
+  background: rgba(255, 215, 0, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #000;
+  padding: 3px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .boardCard.grid .boardCardContent {
-  height: 100%;
-  justify-content: space-between;
-}
-
-.boardCard.list .boardCardContent {
-  min-height: theme.$board-card-image-size-list;
-  justify-content: center;
-}
-
-.cardHeader {
-  @include theme.flex-between;
-  align-items: flex-start;
-  margin-bottom: theme.$spacing-2;
-}
-
-.cardHeader h2 {
-  flex: 1;
-  margin-inline-end: 1rem;
-  margin-block: 0;
-  color: theme.$text-muted;
-  font-weight: 600;
-}
-
-.metadataColumn {
   @include theme.flex-column;
-  align-items: flex-start;
-  gap: theme.$spacing-1;
+  padding: 8px 10px;
+  gap: 4px;
   flex-shrink: 0;
-  min-width: 0;
-}
-
-.colorInfo {
-  display: flex;
   align-items: center;
-  gap: theme.$spacing-2;
-  flex-shrink: 0;
+  text-align: center;
 }
 
-.colorName {
-  font-size: 0.75rem;
-  color: theme.$text-muted;
-  white-space: nowrap;
-  text-align: start;
-}
-
-.canvasColorBadge {
-  width: 12px;
-  height: 12px;
-  @include theme.rounded-circle;
-  border: 1px solid theme.$border-secondary;
-  flex-shrink: 0;
-}
-
-.cardBody {
-  @include theme.flex-between;
-  align-items: flex-start;
-  margin-bottom: theme.$spacing-2;
-  gap: theme.$spacing-4;
-}
-
-.description {
-  flex: 1;
+.boardName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
   margin: 0;
-  color: theme.$text-muted;
-}
-
-.resolutionInfo {
-  flex-shrink: 0;
-  text-align: start;
-}
-
-.canvasResolution {
-  font-size: 0.75rem;
-  color: theme.$text-disabled;
-  white-space: nowrap;
-  font-family: monospace;
-}
-
-.cardFooter {
-  display: flex;
-  align-items: center;
-  margin-top: auto;
-  width: 100%;
-  position: relative;
-}
-
-.leftSection {
-  flex: 1;
-}
-
-/* Center section positioned absolutely with logical positioning and transform centering */
-.centerSection {
-  position: absolute;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-  @include theme.flex-center;
-}
-
-.rightSection {
-  flex: 1;
-  display: flex;
-  justify-content: end;
-}
-
-.lastModified {
-  font-size: 0.75rem;
-  color: theme.$text-placeholder;
-  white-space: nowrap;
-}
-
-.adminLabel {
-  @include theme.flex-center;
-  color: theme.$text-muted;
-}
-
-.boardCard.grid .cardHeader h2 {
-  font-size: 1.1rem;
-  line-height: 1.3;
-  margin-bottom: theme.$spacing-2;
-}
-
-.boardCard.list .cardHeader h2 {
-  font-size: 1rem;
   line-height: 1.2;
-  margin: 0;
-}
-
-.boardCard.grid .description {
-  font-size: 0.9rem;
-  line-height: 1.4;
-  @include theme.text-clamp(2);
-}
-
-.boardCard.list .description {
-  font-size: 0.85rem;
-  line-height: 1.3;
   @include theme.text-clamp(1);
 }
 
-.boardCard.grid .cardFooter {
-  margin-top: auto;
-  padding-top: theme.$spacing-2;
+.metadataRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
 }
 
-.boardCard.list .cardFooter {
-  margin-top: 0;
+.colorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  flex-shrink: 0;
 }
 
+.resolutionText {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  font-family: monospace;
+  line-height: 1;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  line-height: 1;
+}
+
+// ===== LIST VIEW STYLES =====
+.boardCard.list {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  min-height: 64px;
+}
+
+.listThumbnail {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid var(--glass-border);
+  object-fit: cover;
+}
+
+.listName {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    @include theme.text-clamp(1);
+  }
+}
+
+.listAdminIcon {
+  color: #FFD700;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listColorInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.listColorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+.listColorName {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.listResolution {
+  flex-shrink: 0;
+
+  span {
+    font-size: 12px;
+    font-family: monospace;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+}
+
+.listTimestamp {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+// ===== RESPONSIVE DESIGN =====
 @media (max-width: 768px) {
   .boardCard.grid {
-    height: 240px;
+    aspect-ratio: 1 / 1;
   }
-
-  .boardCard.grid .boardCardImage {
-    height: 100px;
+  
+  .previewArea {
+    flex: 1;
+  }
+  
+  .gridAvatar {
+    width: 60px;
+    height: 60px;
+    border-width: 2px;
+  }
+  
+  .boardCard.grid .boardCardContent {
+    padding: 6px 8px;
+    gap: 3px;
+  }
+  
+  .boardName {
+    font-size: 12px;
+  }
+  
+  .resolutionText,
+  .timestamp {
+    font-size: 9px;
+  }
+  
+  .metadataRow {
+    font-size: 9px;
+    gap: 3px;
+  }
+  
+  .colorDot {
+    width: 5px;
+    height: 5px;
   }
 
   .boardCard.list {
-    gap: theme.$spacing-3;
-    padding: theme.$spacing-3;
+    gap: 12px;
+    padding: 10px 12px;
   }
 
-  .boardCard.list .boardCardImage {
-    width: 50px;
-    height: 50px;
+  .listThumbnail {
+    width: 48px;
+    height: 48px;
   }
 
-  .boardCard.list .cardHeader h2 {
-    font-size: 0.9rem;
+  .listName h3 {
+    font-size: 13px;
   }
 
-  .boardCard.list .description {
-    font-size: 0.8rem;
+  .listColorName,
+  .listResolution span,
+  .listTimestamp {
+    font-size: 11px;
+  }
+
+  // Hide color name on mobile to save space
+  .listColorName {
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .boardCard.grid {
-    height: 220px;
+  .boardCard.grid .boardCardContent {
+    padding: 8px;
+    gap: 4px;
   }
-
-  .boardCard.grid .boardCardImage {
-    height: 80px;
+  
+  .boardName {
+    font-size: 12px;
   }
 
   .boardCard.list {
-    gap: theme.$spacing-2;
-    padding: theme.$spacing-2;
+    gap: 8px;
+    padding: 8px 10px;
   }
 
-  .boardCard.list .boardCardImage {
-    width: 45px;
-    height: 45px;
+  .listThumbnail {
+    width: 40px;
+    height: 40px;
   }
 
-  .cardHeader h2 {
-    font-size: 0.9rem;
+  .listName h3 {
+    font-size: 12px;
   }
 
-  .colorName,
-  .canvasResolution,
-  .lastModified {
-    font-size: 0.7rem;
+  // Hide resolution on very small screens
+  .listResolution {
+    display: none;
   }
 }
