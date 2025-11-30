@@ -18,9 +18,6 @@ interface SatelliteManagerProps {
     onCollapse: () => void;
 }
 
-// Mobile breakpoint (matches RadialDock)
-const MOBILE_BREAKPOINT = 768;
-
 // Satellite positioning constants
 const SATELLITE_POSITION = {
     // Desktop: toolbar at bottom: 32px, height: ~56px, gap: 8px
