@@ -63,61 +63,33 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       const popoverHeight = 300; // Color picker widget standard height with palette and sliders
       const margin = 8; // Visual spacing between swatch and popover for better UX
 
-      console.log('[ColorPicker] Calculating position:', {
-        swatchRect: {
-          top: swatchRect.top,
-          left: swatchRect.left,
-          bottom: swatchRect.bottom,
-          right: swatchRect.right,
-          width: swatchRect.width,
-          height: swatchRect.height,
-        },
-        viewport: {
-          width: window.innerWidth,
-          height: window.innerHeight,
-        },
-        popoverDimensions: {
-          width: popoverWidth,
-          height: popoverHeight,
-        },
-      });
-
       let left = swatchRect.left;
       let top = swatchRect.bottom + margin;
 
       if (left + popoverWidth > window.innerWidth) {
         left = swatchRect.right - popoverWidth;
-        console.log('[ColorPicker] Adjusted left to avoid overflow:', left);
       }
 
       if (left < margin) {
         left = margin;
-        console.log('[ColorPicker] Adjusted left to minimum margin:', left);
       }
 
       if (top + popoverHeight > window.innerHeight) {
         top = swatchRect.top - popoverHeight - margin;
-        console.log('[ColorPicker] Moved popover above button:', top);
       }
 
       if (top < margin) {
         top = margin;
-        console.log('[ColorPicker] Adjusted top to minimum margin:', top);
       }
 
-      console.log('[ColorPicker] Final position:', { top, left });
       setPopoverPosition({ top, left });
     }
   }, [showPicker]);
 
   const handleSwatchClick = useCallback(() => {
-    console.log('[ColorPicker] Swatch clicked:', { disabled, currentShowPicker: showPicker });
     if (!disabled) {
       const newShowPicker = !showPicker;
-      console.log('[ColorPicker] Toggling picker to:', newShowPicker);
       setShowPicker(newShowPicker);
-    } else {
-      console.log('[ColorPicker] Click ignored - button is disabled');
     }
   }, [disabled, showPicker]);
 
@@ -131,6 +103,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   const handlePaletteColorClick = useCallback(
     (color: string) => {
       onChange(color);
+      setShowPicker(false);
     },
     [onChange],
   );
@@ -213,12 +186,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       </div>
 
       {showPicker && !disabled && createPortal(
-        (() => {
-          console.log('[ColorPicker] Rendering popover with position:', popoverPosition);
-          console.log('[ColorPicker] Popover element classes:', styles.popover);
-          return (
-            <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
-              <div className={styles.colorfulWrapper}>
+        <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
+          <div className={styles.colorfulWrapper}>
                 <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} role="presentation">
                   <HexColorPicker color={color} onChange={handleColorChange} />
                 </div>
@@ -236,9 +205,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                   ))}
                 </div>
               </div>
-            </div>
-          );
-        })(),
+            </div>,
         document.body
       )}
     </>
