@@ -22,6 +22,7 @@ interface UseCanvasInteractionsProps {
   onColorPick?: (color: string) => void;
   canvasBackgroundColor?: string;
   handlePointerDown: (e: React.PointerEvent<HTMLCanvasElement>) => void;
+  zoomScale?: number;
 }
 
 /**
@@ -43,6 +44,7 @@ interface UseCanvasInteractionsProps {
  * @param onColorPick - Optional callback for color picker tool results
  * @param canvasBackgroundColor - Optional canvas background color for transparent pixel handling
  * @param handlePointerDown - Fallback pointer down handler for standard drawing operations
+ * @param zoomScale - Optional zoom scale factor for coordinate adjustment (default 1.0)
  * @returns Object containing text input state, cursor styles, and specialized interaction handlers
  */
 export const useCanvasInteractions = ({
@@ -56,6 +58,7 @@ export const useCanvasInteractions = ({
   onColorPick,
   canvasBackgroundColor,
   handlePointerDown,
+  zoomScale = 1.0,
 }: UseCanvasInteractionsProps) => {
   const { preferences } = useUserBoardPreferences();
   const [textInput, setTextInput] = useState<{
@@ -86,8 +89,9 @@ export const useCanvasInteractions = ({
         const ctx = canvas.getContext('2d');
         if (ctx) {
           const rect = canvas.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
+          // Adjust coordinates for zoom scale - divide by scale to get actual canvas pixel position
+          const x = (e.clientX - rect.left) / zoomScale;
+          const y = (e.clientY - rect.top) / zoomScale;
           const imageData = ctx.getImageData(x, y, 1, 1);
           const data = imageData.data;
 

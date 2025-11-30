@@ -97,6 +97,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       onColorPick: props.onColorPick,
       canvasBackgroundColor: props.canvasConfig?.backgroundColor,
       handlePointerDown,
+      zoomScale,
     }),
     [
       props.tool,
@@ -109,6 +110,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       props.onColorPick,
       props.canvasConfig?.backgroundColor,
       handlePointerDown,
+      zoomScale,
     ],
   );
 
@@ -158,6 +160,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     if (isPanning) return 'grabbing';
     // Tool-specific cursors
     if (props.tool === TOOLS.RECOLOR) return recolorCursor;
+    if (props.tool === TOOLS.COLOR_PICKER) return 'pointer'; // Eyedropper/color picking cursor
     return 'crosshair';
   }, [isPanning, props.tool, recolorCursor]);
 

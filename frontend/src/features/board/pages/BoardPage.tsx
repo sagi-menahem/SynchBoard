@@ -72,21 +72,41 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     handleDrawAction,
   } = useBoardContext();
 
-  const { preferences } = useToolPreferences();
+  const { preferences, updateStrokeColor, updateTool } = useToolPreferences();
   const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
   // Track satellite state for mobile FloatingActions coordination
   const [activeSatellite, setActiveSatellite] = React.useState<string | null>(null);
+  // Track previous tool for auto-switch after color picking
+  const previousToolRef = React.useRef<typeof preferences.defaultTool>(preferences.defaultTool);
 
   // Extract current tool settings from user preferences
   const tool = preferences.defaultTool;
   const strokeColor = preferences.defaultStrokeColor;
   const strokeWidth = preferences.defaultStrokeWidth;
 
-  const handleColorPick = useCallback((_color: string) => {
-    // Color picking is now handled internally by FloatingDock
-    // This is kept for BoardWorkspace compatibility
-  }, []);
+  // Update previous tool ref when tool changes (but not when switching to COLOR_PICKER)
+  React.useEffect(() => {
+    if (tool !== 'colorPicker' && tool !== previousToolRef.current) {
+      previousToolRef.current = tool;
+    }
+  }, [tool]);
+
+  const handleColorPick = useCallback(async (color: string) => {
+    try {
+      // Save picked color to preferences
+      await updateStrokeColor(color);
+      
+      // Auto-switch back to previous drawing tool for better workflow
+      // Don't switch back if previous tool was eraser or another utility tool
+      const drawingTools = ['brush', 'square', 'rectangle', 'circle', 'triangle', 'pentagon', 'hexagon', 'star', 'line', 'dottedLine', 'arrow', 'text'];
+      if (drawingTools.includes(previousToolRef.current)) {
+        await updateTool(previousToolRef.current);
+      }
+    } catch (error) {
+      console.error('Failed to update picked color:', error);
+    }
+  }, [updateStrokeColor, updateTool]);
 
   const { preferences: canvasPreferences, updateSplitRatio } = useCanvasPreferences();
 
