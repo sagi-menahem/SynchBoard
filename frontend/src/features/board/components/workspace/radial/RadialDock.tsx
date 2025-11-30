@@ -1,8 +1,25 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Brush, ChevronUp, Eraser, Minus, Palette, PenTool, Pipette, Square, Type } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import {
+    ArrowRight,
+    Brush,
+    ChevronUp,
+    Circle,
+    Eraser,
+    Hexagon,
+    Minus,
+    MoreHorizontal,
+    Palette,
+    Pentagon,
+    PenTool,
+    Pipette,
+    Square,
+    Star,
+    Triangle,
+    Type
+} from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import styles from './RadialDock.module.scss';
@@ -14,6 +31,57 @@ import { SatelliteManager } from './SatelliteManager';
 // =============================================================================
 
 const MOBILE_BREAKPOINT = 768;
+
+// Shape tools that should trigger shapes satellite active state
+const SHAPE_TOOLS = [TOOLS.SQUARE, TOOLS.CIRCLE, TOOLS.TRIANGLE, TOOLS.PENTAGON, TOOLS.HEXAGON, TOOLS.STAR] as const;
+
+// Line tools that should trigger lines satellite active state
+const LINE_TOOLS = [TOOLS.LINE, TOOLS.ARROW, TOOLS.DOTTED_LINE] as const;
+
+// Helper function to get icon for shape tools based on current selection
+const getShapeIcon = (currentTool: Tool, size = 20): React.ReactNode => {
+    switch (currentTool) {
+        case TOOLS.SQUARE:
+            return <Square size={size} />;
+        case TOOLS.CIRCLE:
+            return <Circle size={size} />;
+        case TOOLS.TRIANGLE:
+            return <Triangle size={size} />;
+        case TOOLS.PENTAGON:
+            return <Pentagon size={size} />;
+        case TOOLS.HEXAGON:
+            return <Hexagon size={size} />;
+        case TOOLS.STAR:
+            return <Star size={size} />;
+        default:
+            return <Square size={size} />; // Default to square
+    }
+};
+
+// Helper function to get icon for line tools based on current selection
+const getLineIcon = (currentTool: Tool, size = 20): React.ReactNode => {
+    switch (currentTool) {
+        case TOOLS.LINE:
+            return <Minus size={size} />;
+        case TOOLS.ARROW:
+            return <ArrowRight size={size} />;
+        case TOOLS.DOTTED_LINE:
+            return <MoreHorizontal size={size} />;
+        default:
+            return <Minus size={size} />; // Default to line
+    }
+};
+
+// Helper function to check if a satellite button should show active state
+const isSatelliteActive = (satelliteType: string, currentTool: Tool): boolean => {
+    if (satelliteType === 'shapes') {
+        return SHAPE_TOOLS.includes(currentTool as typeof SHAPE_TOOLS[number]);
+    }
+    if (satelliteType === 'lines') {
+        return LINE_TOOLS.includes(currentTool as typeof LINE_TOOLS[number]);
+    }
+    return false;
+};
 
 // =============================================================================
 // TYPES
@@ -28,18 +96,19 @@ interface ToolItem {
     tool: Tool | string;
     type: 'direct' | 'satellite';
     label: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode; // Make icon optional since we'll generate it dynamically
+    isDynamic?: boolean; // Flag to indicate if icon should be generated dynamically
 }
 
 const DOCK_TOOLS: ToolItem[] = [
     { tool: TOOLS.BRUSH, type: 'direct', label: 'Brush', icon: <Brush size={20} /> },
     { tool: TOOLS.ERASER, type: 'direct', label: 'Eraser', icon: <Eraser size={20} /> },
-    { tool: 'shapes', type: 'satellite', label: 'Shapes', icon: <Square size={20} /> },
-    { tool: 'lines', type: 'satellite', label: 'Lines', icon: <Minus size={20} /> },
+    { tool: 'shapes', type: 'satellite', label: 'Shapes', isDynamic: true }, // Dynamic icon
+    { tool: 'lines', type: 'satellite', label: 'Lines', isDynamic: true }, // Dynamic icon
     { tool: TOOLS.TEXT, type: 'direct', label: 'Text', icon: <Type size={20} /> },
     { tool: TOOLS.COLOR_PICKER, type: 'direct', label: 'Color Picker', icon: <Pipette size={20} /> },
     { tool: 'strokeProps', type: 'satellite', label: 'Stroke Width', icon: <PenTool size={20} /> },
-    { tool: 'colorPalette', type: 'satellite', label: 'Palette', icon: <Palette size={20} /> },
+    { tool: 'colorPalette', type: 'satellite', label: 'Palette', isDynamic: true }, // Dynamic color indicator
 ];
 
 // =============================================================================
@@ -137,13 +206,68 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
     }, []);
 
     // =========================================================================
+    // RENDER HELPERS
+    // =========================================================================
+
+    const getToolIcon = useCallback((item: ToolItem, size = 20): React.ReactNode => {
+        if (!item.isDynamic) {
+            return item.icon;
+        }
+
+        // Dynamic icons based on current tool
+        if (item.tool === 'shapes') {
+            return getShapeIcon(preferences.defaultTool, size);
+        }
+        if (item.tool === 'lines') {
+            return getLineIcon(preferences.defaultTool, size);
+        }
+        if (item.tool === 'colorPalette') {
+            return (
+                <div className={styles.colorPaletteIcon}>
+                    <Palette size={size} />
+                    <div 
+                        className={styles.colorIndicator} 
+                        style={{ backgroundColor: preferences.defaultStrokeColor }}
+                    />
+                </div>
+            );
+        }
+
+        return item.icon;
+    }, [preferences.defaultTool, preferences.defaultStrokeColor]);
+
+    const isToolActive = useCallback((item: ToolItem): boolean => {
+        if (item.type === 'direct') {
+            return preferences.defaultTool === item.tool;
+        }
+        // For satellite buttons, check if current tool belongs to that category
+        return isSatelliteActive(item.tool as string, preferences.defaultTool);
+    }, [preferences.defaultTool]);
+
+    // =========================================================================
     // RENDER
     // =========================================================================
 
-    const activeToolIcon = React.useMemo(() => {
-        const tool = DOCK_TOOLS.find(t => t.tool === preferences.defaultTool);
-        return tool ? tool.icon : <Brush size={20} />;
-    }, [preferences.defaultTool]);
+    const activeToolIcon = useMemo(() => {
+        // Find the active tool in DOCK_TOOLS
+        const directTool = DOCK_TOOLS.find(t => t.type === 'direct' && t.tool === preferences.defaultTool);
+        if (directTool) {
+            return getToolIcon(directTool, 20);
+        }
+
+        // Check if it's a shape tool
+        if (SHAPE_TOOLS.includes(preferences.defaultTool as typeof SHAPE_TOOLS[number])) {
+            return getShapeIcon(preferences.defaultTool, 20);
+        }
+
+        // Check if it's a line tool
+        if (LINE_TOOLS.includes(preferences.defaultTool as typeof LINE_TOOLS[number])) {
+            return getLineIcon(preferences.defaultTool, 20);
+        }
+
+        // Default fallback
+        return <Brush size={20} />;
+    }, [preferences.defaultTool, getToolIcon]);
 
     return (
         <>
@@ -207,7 +331,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                 transition={{ delay: 0.15, duration: 0.2 }}
                             >
                                 {DOCK_TOOLS.map((item) => {
-                                    const isActive = preferences.defaultTool === item.tool;
+                                    const isActive = isToolActive(item);
                                     return (
                                         <button
                                             key={item.label}
@@ -218,7 +342,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                             }
                                             title={item.label}
                                         >
-                                            {item.icon}
+                                            {getToolIcon(item, 20)}
                                         </button>
                                     );
                                 })}
@@ -248,7 +372,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                 
                                 <div className={styles.toolsGrid}>
                                     {DOCK_TOOLS.map((item) => {
-                                        const isActive = preferences.defaultTool === item.tool;
+                                        const isActive = isToolActive(item);
                                         return (
                                             <button
                                                 key={item.label}
@@ -259,7 +383,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                                 }
                                                 title={item.label}
                                             >
-                                                {item.icon}
+                                                {getToolIcon(item, 20)}
                                             </button>
                                         );
                                     })}
