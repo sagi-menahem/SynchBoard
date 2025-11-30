@@ -105,35 +105,39 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
   return (
     <Link to={boardRoute} className={styles.cardLink}>
       <Card variant="elevated" hoverable className={cardClasses}>
-        {/* Circular avatar thumbnail */}
-        <img 
-          src={imageSource} 
-          alt={board.name} 
-          className={styles.listThumbnail}
-        />
-        
-        {/* Board name */}
-        <div className={styles.listName}>
-          <h3>{board.name}</h3>
-          {board.isAdmin && (
-            <div className={styles.listAdminIcon} title={t('board:listPage.adminLabel')}>
-              <Crown size={16} />
-            </div>
-          )}
-        </div>
-
-        {/* Color indicator */}
-        <div className={styles.listColorInfo}>
-          <div
-            className={styles.listColorDot}
-            style={{ backgroundColor: board.canvasBackgroundColor }}
+        {/* Left section: Avatar + Name */}
+        <div className={styles.listLeftSection}>
+          <img 
+            src={imageSource} 
+            alt={board.name} 
+            className={styles.listThumbnail}
           />
-          <span className={styles.listColorName}>{colorDisplayName}</span>
+          
+          <div className={styles.listName}>
+            <h3>{board.name}</h3>
+            {board.isAdmin && (
+              <div className={styles.listAdminIcon} title={t('board:listPage.adminLabel')}>
+                <Crown size={16} />
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Resolution */}
-        <div className={styles.listResolution}>
-          <span>{canvasResolution}</span>
+        {/* Center section: Resolution and Color stacked */}
+        <div className={styles.listCenterInfo}>
+          {/* Resolution on top */}
+          <div className={styles.listResolution}>
+            <span>{canvasResolution}</span>
+          </div>
+          
+          {/* Color below */}
+          <div className={styles.listColorInfo}>
+            <div
+              className={styles.listColorDot}
+              style={{ backgroundColor: board.canvasBackgroundColor }}
+            />
+            <span className={styles.listColorName}>{colorDisplayName}</span>
+          </div>
         </div>
 
         {/* Timestamp */}

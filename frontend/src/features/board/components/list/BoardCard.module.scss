@@ -135,17 +135,26 @@
 
 // ===== LIST VIEW STYLES =====
 .boardCard.list {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  min-height: 56px;
+}
+
+.listLeftSection {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  min-height: 64px;
+  gap: 12px;
+  grid-column: 1;
+  min-width: 0;
 }
 
 .listThumbnail {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   flex-shrink: 0;
   border: 2px solid var(--glass-border);
@@ -153,11 +162,10 @@
 }
 
 .listName {
-  flex: 1;
-  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
 
   h3 {
     margin: 0;
@@ -176,6 +184,27 @@
   justify-content: center;
 }
 
+.listCenterInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  grid-column: 2;
+  justify-self: center;
+}
+
+.listResolution {
+  flex-shrink: 0;
+
+  span {
+    font-size: 13px;
+    font-family: monospace;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+}
+
 .listColorInfo {
   display: flex;
   align-items: center;
@@ -184,28 +213,17 @@
 }
 
 .listColorDot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   border: 1px solid var(--glass-border);
   flex-shrink: 0;
 }
 
 .listColorName {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-text-secondary);
   white-space: nowrap;
-}
-
-.listResolution {
-  flex-shrink: 0;
-
-  span {
-    font-size: 12px;
-    font-family: monospace;
-    color: var(--color-text-secondary);
-    white-space: nowrap;
-  }
 }
 
 .listTimestamp {
@@ -213,6 +231,10 @@
   font-size: 12px;
   color: var(--color-text-muted);
   white-space: nowrap;
+  text-align: right;
+  min-width: 80px;
+  grid-column: 3;
+  justify-self: end;
 }
 
 // ===== RESPONSIVE DESIGN =====
@@ -256,13 +278,46 @@
   }
 
   .boardCard.list {
-    gap: 12px;
-    padding: 10px 12px;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  
+  .listLeftSection {
+    gap: 8px;
+    grid-column: 1;
   }
 
   .listThumbnail {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .listName {
+    min-width: 0;
+    flex: 1;
+    
+    h3 {
+      font-size: 13px;
+    }
+  }
+  
+  .listCenterInfo {
+    display: none;
+  }
+  
+  .listTimestamp {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    font-size: 10px;
+    min-width: 60px;
+  }
+  
+  .listAdminIcon {
+    display: flex;
+    align-items: center;
   }
 
   .listName h3 {
