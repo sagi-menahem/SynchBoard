@@ -198,10 +198,9 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   const containerStyle = useMemo(
     () =>
       ({
-        '--user-chosen-color': getUserChosenColor(),
         '--background-blur': '0px',
       }) as React.CSSProperties,
-    [getUserChosenColor],
+    [],
   );
 
   // Canvas component (shared between mobile and desktop)

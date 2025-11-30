@@ -21,7 +21,7 @@
   @include theme.rounded-medium;
   @include theme.shadow-heavy;
   @include theme.theme-scrollbar;
-  background: theme.$surface-elevated;
+  background: var(--user-chosen-color);
   border: theme.$border-width solid theme.$border;
   min-width: theme.$modal-min-width;
   max-width: theme.$modal-max-width;

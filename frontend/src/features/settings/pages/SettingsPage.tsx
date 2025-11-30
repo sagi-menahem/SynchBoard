@@ -65,10 +65,9 @@ const SettingsPage: React.FC = () => {
   const containerStyle = useMemo(
     () =>
       ({
-        '--user-chosen-color': getUserChosenColor(),
         '--background-blur': '0px',
       }) as React.CSSProperties,
-    [getUserChosenColor],
+    [],
   );
 
   const handlePictureUploadWithCleanup = async (file: File) => {

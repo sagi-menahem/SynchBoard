@@ -77,10 +77,9 @@ const BoardDetailsPage: React.FC = () => {
   const containerStyle = useMemo(
     () =>
       ({
-        '--user-chosen-color': getUserChosenColor(),
         '--background-blur': '0px',
       }) as React.CSSProperties,
-    [getUserChosenColor],
+    [],
   );
 
   // Icon components for AppHeader

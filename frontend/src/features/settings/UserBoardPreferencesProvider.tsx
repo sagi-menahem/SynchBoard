@@ -2,6 +2,7 @@ import React, { createContext, useContext } from 'react';
 
 import { useUserBoardPreferencesService } from './hooks/useUserBoardPreferencesService';
 import type { UserBoardPreferences } from './services/userPreferencesService';
+import { UserPreferencesStyleInjector } from './UserPreferencesStyleInjector';
 
 export type { UserBoardPreferences };
 
@@ -54,6 +55,7 @@ export const UserBoardPreferencesProvider: React.FC<UserBoardPreferencesProvider
 
   return (
     <UserBoardPreferencesContext.Provider value={value}>
+      <UserPreferencesStyleInjector />
       {children}
     </UserBoardPreferencesContext.Provider>
   );
