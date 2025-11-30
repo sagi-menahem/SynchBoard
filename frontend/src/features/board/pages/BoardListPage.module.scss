@@ -134,7 +134,6 @@
 }
 
 .boardListItem {
-  animation: boardStaggerIn theme.$transition-slow ease-out backwards;
   @include theme.smooth-transition;
 }
 
