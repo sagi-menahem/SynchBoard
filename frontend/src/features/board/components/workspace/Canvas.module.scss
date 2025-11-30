@@ -57,6 +57,9 @@
   display: block;
   cursor: crosshair;
   border-radius: theme.$border-radius-xs;
+  // Disable native touch scrolling on canvas to enable custom drawing and panning
+  // Without this, the inherited pan-x pan-y would allow native 1-finger scrolling
+  touch-action: none;
 }
 
 .canvas.disabled {

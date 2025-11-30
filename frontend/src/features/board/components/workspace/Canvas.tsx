@@ -85,17 +85,14 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     },
   });
 
-  // Container handler: only process events that originate from canvas
-  // This allows 2-finger panning on background while ensuring single-finger drawing only works on canvas
+  // Container handler: pass all pointer events to enable multi-touch detection
+  // Background touches need to be tracked so 2-finger panning works anywhere
+  // The getPointerCoordinates bounds check prevents drawing outside the canvas
   const handleContainerPointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      // Only pass through to handlePointerDown if the target is the canvas
-      // This prevents single-finger touches on the background from interfering with drawing
-      if (e.target === canvasRef.current) {
-        handlePointerDown(e as unknown as React.PointerEvent<HTMLCanvasElement>);
-      }
+      handlePointerDown(e as unknown as React.PointerEvent<HTMLCanvasElement>);
     },
-    [handlePointerDown, canvasRef],
+    [handlePointerDown],
   );
 
   const canvasInteractionsConfig = useMemo(
