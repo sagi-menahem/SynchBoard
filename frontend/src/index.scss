@@ -177,6 +177,10 @@ body[data-theme='light'] {
   --google-button-disabled-text: #{dt.$google-button-disabled-text-light};
   --google-button-disabled-border: #{dt.$google-button-disabled-border-light};
 
+  // Glass morphism variables for light theme
+  --glass-background: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.1);
+
   color: var(--color-text-primary);
   background-color: var(--color-background);
 }
@@ -298,6 +302,10 @@ body[data-theme='dark'] {
   --google-button-bg: #{dt.$google-button-bg-dark};
   --google-button-text: #{dt.$google-button-text-dark};
   --google-button-border: #{dt.$google-button-border-dark};
+
+  // Glass morphism variables for dark theme
+  --glass-background: rgba(39, 39, 42, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
   --google-button-hover-bg: #{dt.$google-button-hover-bg-dark};
   --google-button-hover-border: #{dt.$google-button-hover-border-dark};
   --google-button-active-bg: #{dt.$google-button-active-bg-dark};
