@@ -177,7 +177,7 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
                         position: 'fixed',
                         left: '50%',
                         bottom: `${bottomPosition}px`,
-                        transform: 'translateX(-50%)',
+                        x: '-50%', // Framer Motion transform - avoids CSS conflicts
                     }}
                     variants={satelliteVariants}
                     initial="hidden"

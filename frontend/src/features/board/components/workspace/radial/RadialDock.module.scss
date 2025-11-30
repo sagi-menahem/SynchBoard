@@ -42,6 +42,8 @@ $border-radius-mobile: 20px;
         left: 0;
         right: 0;
         width: 100%;
+        max-width: 100vw; // Prevent overflow
+        overflow-x: hidden; // Hide any horizontal overflow
         
         // Safe area for iPhone home bar
         padding-bottom: env(safe-area-inset-bottom);
@@ -97,10 +99,7 @@ $border-radius-mobile: 20px;
         margin: 0 auto;
         border-radius: $border-radius-mobile $border-radius-mobile 0 0;
         box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
-        
-        &:active {
-            background: var(--color-surface-hover);
-        }
+        // Clean glassmorphism - no background change on hover/active
     }
 }
 
@@ -133,6 +132,7 @@ $border-radius-mobile: 20px;
     // Mobile: Bottom sheet
     .mobile & {
         width: 100%;
+        max-width: 100vw; // Ensure it never exceeds viewport
         padding: $toolbar-padding-mobile;
         padding-top: 44px; // Extra space for close button
         border-radius: $border-radius-mobile $border-radius-mobile 0 0;
@@ -156,7 +156,9 @@ $border-radius-mobile: 20px;
     grid-template-columns: repeat(4, 1fr);
     gap: $gap-mobile;
     width: 100%;
+    max-width: 100%; // Prevent grid overflow
     justify-items: center; // Center tools within their grid cells
+    box-sizing: border-box; // Include padding/margins in width calculation
 }
 
 // -----------------------------------------------------------------------------
@@ -283,7 +285,7 @@ $border-radius-mobile: 20px;
     // transform: translateX(-50%) applied via style prop for centering
 
     width: 200px;
-    padding: theme.$spacing-3;
+    padding: theme.$spacing-2; // More compact padding (0.5rem instead of 0.75rem)
     border-radius: 20px; // More rounded
     
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
