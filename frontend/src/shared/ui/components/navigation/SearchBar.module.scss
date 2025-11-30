@@ -8,23 +8,25 @@
   padding: 0;
 }
 
-// Main container with focus-within styling
+// Main container with focus-within styling and glass design
 .searchContainer {
   position: relative;
   @include theme.flex-start;
-  background: theme.$surface-elevated;
-  border: 1px solid theme.$border-strong;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   @include theme.rounded-medium;
   padding: theme.$spacing-2 theme.$spacing-3;
   gap: theme.$spacing-2;
   @include theme.smooth-transition;
   min-width: 300px;
   max-width: 400px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   &:focus-within {
-    background: theme.$surface-hover;
-    border-color: theme.$primary;
-    box-shadow: theme.$shadow-glow-md theme.$primary-light;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 }
 
