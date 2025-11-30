@@ -1,8 +1,8 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type {
-  ActionPayload,
-  SendBoardActionRequest,
-  TextBoxPayload,
+    ActionPayload,
+    SendBoardActionRequest,
+    TextBoxPayload,
 } from 'features/board/types/BoardObjectTypes';
 import { getRecolorCursor } from 'features/board/utils/cursorUtils';
 import { processRecolorClick } from 'features/board/utils/recolorLogic';
