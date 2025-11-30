@@ -6,10 +6,9 @@
   height: 100%;
   overflow: auto;
   display: flex;
-  // Prevent browser from intercepting touch events for native scrolling
-  // This is critical for mobile: without this, the browser may take over
-  // touch handling after two-finger gestures, breaking subsequent single-finger drawing
-  touch-action: none;
+  // Allow pan gestures (2-finger scroll) but prevent pinch-zoom and other default browser gestures
+  // This enables mobile scrolling while still allowing custom touch drawing on the canvas element
+  touch-action: pan-x pan-y;
 
   @include theme.theme-scrollbar-enhanced;
 }

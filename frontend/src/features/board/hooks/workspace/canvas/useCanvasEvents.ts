@@ -69,6 +69,7 @@ export const useCanvasEvents = ({
   // Initialize panning functionality
   const {
     isPanning,
+    activePointerCount,
     handlePanStart,
     handlePanMove,
     handlePanEnd,
@@ -93,8 +94,9 @@ export const useCanvasEvents = ({
         return;
       }
 
-      // Skip drawing if already drawing or panning
-      if (isDrawing || isPanning) {
+      // Skip drawing if already drawing, panning, or multiple pointers are active
+      // The activePointerCount check prevents phantom drawing when starting a 2-finger scroll
+      if (isDrawing || isPanning || activePointerCount > 1) {
         return;
       }
 
@@ -125,6 +127,7 @@ export const useCanvasEvents = ({
       contextRef,
       isDrawing,
       isPanning,
+      activePointerCount,
       setIsDrawing,
       startPoint,
       resetDrawingState,
