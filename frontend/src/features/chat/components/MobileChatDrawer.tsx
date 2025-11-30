@@ -1,9 +1,11 @@
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import clsx from 'clsx';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Drawer } from 'vaul';
 
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import ChatWindow, { type ChatWindowHandle } from './ChatWindow';
 import styles from './MobileChatDrawer.module.scss';
 
@@ -75,7 +77,7 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
         <Drawer.Overlay className={styles.overlay} />
         <Drawer.Content
           ref={contentRef}
-          className={styles.content}
+          className={clsx(styles.content, utilStyles.unifiedDotBackground)}
           onOpenAutoFocus={(e) => {
             e.preventDefault();
             contentRef.current?.focus();
