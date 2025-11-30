@@ -73,6 +73,16 @@ $border-radius-mobile: 20px;
     color: var(--color-text-primary);
     
     transition: all 0.2s ease-out;
+    outline: none; // Prevent default focus outline
+    -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
+    
+    &:focus {
+        outline: none; // Extra emphasis - no focus outline
+    }
+    
+    &:focus-visible {
+        outline: none; // No keyboard focus outline (accessibility handled by subtle shadow)
+    }
     
     // Desktop: Circular button with elegant border
     .desktop & {
@@ -92,6 +102,19 @@ $border-radius-mobile: 20px;
         
         &:active {
             transform: translateY(-2px) scale(1.02);
+            border-color: rgba(0, 0, 0, 0.1); // Keep consistent neutral gray
+            outline: none;
+        }
+        
+        &:focus {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.1); // Keep consistent neutral gray
+        }
+        
+        &:focus-visible {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.15); // Slightly darker for keyboard focus
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); // Subtle shadow for accessibility
         }
     }
     
@@ -101,13 +124,33 @@ $border-radius-mobile: 20px;
         height: 48px;
         margin: 0 auto;
         border-radius: $border-radius-mobile $border-radius-mobile 0 0;
+        -webkit-tap-highlight-color: transparent; // Extra emphasis - no tap highlight
         
         // Use theme-aware glass mixin (no override needed)
         box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06), // Lighter shadow
                     0 -1px 3px rgba(0, 0, 0, 0.05); // Subtle top edge
         
+        &:focus {
+            outline: none !important; // Force remove browser outline
+            border: none; // No border on focus
+        }
+        
+        &:active {
+            outline: none !important; // Force remove browser outline
+            border: none; // No border on active
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08); // Subtle press feedback
+        }
+        
+        &:focus-visible {
+            outline: none !important; // Force remove keyboard focus outline
+        }
+        
         body[data-theme='dark'] & {
             box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+            
+            &:active {
+                box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.4);
+            }
         }
     }
 }
