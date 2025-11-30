@@ -275,8 +275,9 @@ export const useCanvasPreview = ({
 
   const handlePreviewStart = useCallback(
     (eventData: CanvasEventData) => {
+      const canvas = canvasRef.current;
       const ctx = contextRef.current;
-      if (!ctx) {
+      if (!canvas || !ctx) {
         return;
       }
 
@@ -288,9 +289,13 @@ export const useCanvasPreview = ({
         ctx.globalCompositeOperation = tool === TOOLS.ERASER ? 'destination-out' : 'source-over';
         ctx.beginPath();
         ctx.moveTo(eventData.startPoint.x, eventData.startPoint.y);
+      } else if (tool === TOOLS.TEXT) {
+        // Render initial preview for text tool on mouse down
+        setupCanvasStyle(ctx, 0.8);
+        renderShapePreview(ctx, eventData.startPoint, eventData.currentPoint);
       }
     },
-    [contextRef, saveCanvasState, setupCanvasStyle, tool],
+    [canvasRef, contextRef, saveCanvasState, setupCanvasStyle, tool, renderShapePreview],
   );
 
   const handlePreviewMove = useCallback(
