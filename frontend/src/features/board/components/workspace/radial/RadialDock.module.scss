@@ -156,6 +156,7 @@ $border-radius-mobile: 20px;
     grid-template-columns: repeat(4, 1fr);
     gap: $gap-mobile;
     width: 100%;
+    justify-items: center; // Center tools within their grid cells
 }
 
 // -----------------------------------------------------------------------------
