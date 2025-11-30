@@ -92,14 +92,26 @@ $border-radius-mobile: 20px;
         }
     }
     
-    // Mobile: Pull-up tab/button
+    // Mobile: Pull-up tab/button - Enhanced glassmorphism
     .mobile & {
         width: 80px;
         height: 48px;
         margin: 0 auto;
         border-radius: $border-radius-mobile $border-radius-mobile 0 0;
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
-        // Clean glassmorphism - no background change on hover/active
+        
+        // Enhanced glass effect for visibility on white backgrounds
+        background: rgba(255, 255, 255, 0.5); // Lower opacity for subtle tint
+        backdrop-filter: blur(20px); // Stronger blur
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 0, 0, 0.08); // Visible border for contrast
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06), // Lighter shadow
+                    0 -1px 3px rgba(0, 0, 0, 0.05); // Subtle top edge
+        
+        body[data-theme='dark'] & {
+            background: rgba(30, 30, 30, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+        }
     }
 }
 
@@ -129,14 +141,28 @@ $border-radius-mobile: 20px;
         padding: $toolbar-padding;
     }
     
-    // Mobile: Bottom sheet
+    // Mobile: Bottom sheet - Enhanced glassmorphism
     .mobile & {
         width: 100%;
         max-width: 100vw; // Ensure it never exceeds viewport
         padding: $toolbar-padding-mobile;
         padding-top: 44px; // Extra space for close button
         border-radius: $border-radius-mobile $border-radius-mobile 0 0;
-        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+        
+        // Enhanced glass effect for visibility on white backgrounds
+        background: rgba(255, 255, 255, 0.5); // Lower opacity for subtle tint
+        backdrop-filter: blur(20px); // Stronger blur
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 0, 0, 0.08); // Visible border for contrast
+        border-bottom: none; // No border at bottom (sits at screen edge)
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06), // Lighter shadow
+                    0 -2px 8px rgba(0, 0, 0, 0.04); // Subtle edge definition
+        
+        body[data-theme='dark'] & {
+            background: rgba(30, 30, 30, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.25);
+        }
     }
 }
 
