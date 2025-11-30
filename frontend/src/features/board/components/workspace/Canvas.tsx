@@ -85,6 +85,14 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     },
   });
 
+  // Wrapper to allow pointer events from both container and canvas
+  const handleContainerPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      handlePointerDown(e as unknown as React.PointerEvent<HTMLCanvasElement>);
+    },
+    [handlePointerDown],
+  );
+
   const canvasInteractionsConfig = useMemo(
     () => ({
       tool: props.tool,
@@ -194,7 +202,12 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   );
 
   return (
-    <div ref={containerRef} className={containerClassName} style={containerStyle}>
+    <div 
+      ref={containerRef} 
+      className={containerClassName} 
+      style={containerStyle}
+      onPointerDown={handleContainerPointerDown}
+    >
       <div className={canvasContainerClassName} style={canvasContainerStyle}>
         <div className={styles.canvasWrapper} style={canvasWrapperStyle}>
           <canvas
