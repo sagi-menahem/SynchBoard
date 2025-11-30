@@ -76,11 +76,11 @@
   }
 }
 
-// Icon-only button for toolbar and compact interfaces
+// Icon-only button for toolbar and compact interfaces with glass design
 .icon {
   @include theme.interactive-button;
-  background: theme.$tool-button-bg;
-  border: 1px solid theme.$tool-button-border;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   color: var(--btn-icon-text);
   cursor: pointer;
   padding: theme.$spacing-2;
@@ -90,13 +90,15 @@
   min-width: theme.$icon-button-size;
   min-height: theme.$icon-button-size;
   position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   &:hover:not(:disabled) {
-    background: var(--btn-icon-bg-hover);
-    border-color: theme.$tool-button-hover-border;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(0, 0, 0, 0.15);
     color: theme.$text-primary;
     transform: translateY(-1px);
-    @include theme.shadow-light;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   &:disabled {
@@ -107,24 +109,24 @@
 
   // Active state for toggle icon buttons
   &.active {
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.3) !important;
     color: theme.$text-primary;
-    border-color: var(--btn-icon-active-border) !important;
-    box-shadow: none;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   &.active:hover,
   &.active:focus,
   &.active:focus-visible {
-    background: transparent !important;
-    border-color: var(--btn-icon-active-border) !important;
+    background: rgba(255, 255, 255, 0.35) !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
     outline: none !important;
   }
 
   &:focus,
   &:focus-visible {
     outline: none !important;
-    border-color: var(--btn-icon-active-border) !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
   }
 }
 
