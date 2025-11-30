@@ -2,9 +2,8 @@ import { LogOut, UserPlus } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import { AppHeader, Button, PageLoader, PageTransition, SectionCard } from 'shared/ui';
-import { getBackArrowIcon, getNavigationArrowIcon } from 'shared/utils/rtlUtils';
+import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
     BoardConfirmDialogs,
@@ -64,10 +63,8 @@ const BoardDetailsPage: React.FC = () => {
 
   // Icon components for AppHeader
   const BackArrowIcon = getBackArrowIcon();
-  const NavigationArrowIcon = getNavigationArrowIcon();
 
   // Navigation handlers
-  const handleBackToList = () => navigate(APP_ROUTES.BOARD_LIST);
   const handleGoToBoard = () => navigate(`/board/${numericBoardId}`);
 
   if (isLoading) {
@@ -75,7 +72,7 @@ const BoardDetailsPage: React.FC = () => {
       <PageTransition>
         <AppHeader
           leading={
-            <Button variant="icon" onClick={handleBackToList} title={t('common:back')}>
+            <Button variant="icon" onClick={handleGoToBoard} title={t('common:back')}>
               <BackArrowIcon size={20} />
             </Button>
           }
@@ -91,7 +88,7 @@ const BoardDetailsPage: React.FC = () => {
       <PageTransition>
         <AppHeader
           leading={
-            <Button variant="icon" onClick={handleBackToList} title={t('common:back')}>
+            <Button variant="icon" onClick={handleGoToBoard} title={t('common:back')}>
               <BackArrowIcon size={20} />
             </Button>
           }
@@ -108,7 +105,7 @@ const BoardDetailsPage: React.FC = () => {
     <PageTransition>
       <AppHeader
         leading={
-          <Button variant="icon" onClick={handleBackToList} title={t('common:back')}>
+          <Button variant="icon" onClick={handleGoToBoard} title={t('common:back')}>
             <BackArrowIcon size={20} />
           </Button>
         }
@@ -131,13 +128,6 @@ const BoardDetailsPage: React.FC = () => {
                 <UserPlus size={20} />
               </Button>
             )}
-            <Button
-              variant="icon"
-              onClick={handleGoToBoard}
-              title={t('board:detailsPage.boardButton')}
-            >
-              <NavigationArrowIcon size={20} />
-            </Button>
           </>
         }
       />

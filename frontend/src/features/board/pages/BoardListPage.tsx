@@ -59,7 +59,9 @@ const BoardListPage: React.FC = () => {
       <PageTransition>
         <AppHeader
           leading={
-            <h1 className={styles.pageTitle}>{t('board:listPage.heading')}</h1>
+            <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
+              <Settings size={20} />
+            </Button>
           }
           center={!isMobile ? (
             <SearchBar
@@ -80,9 +82,6 @@ const BoardListPage: React.FC = () => {
               </Button>
               <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
                 <Plus size={20} />
-              </Button>
-              <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
-                <Settings size={20} />
               </Button>
             </>
           )}
@@ -106,7 +105,9 @@ const BoardListPage: React.FC = () => {
     <PageTransition>
       <AppHeader
         leading={
-          <h1 className={styles.pageTitle}>{t('board:listPage.heading')}</h1>
+          <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
+            <Settings size={20} />
+          </Button>
         }
         center={!isMobile ? (
           <SearchBar
@@ -127,9 +128,6 @@ const BoardListPage: React.FC = () => {
             </Button>
             <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
               <Plus size={20} />
-            </Button>
-            <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
-              <Settings size={20} />
             </Button>
           </>
         )}
