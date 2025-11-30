@@ -3,7 +3,7 @@
 // Dynamic height calculation accounting for banner and AppHeader presence
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + theme.$header-height);
+  padding-top: calc(var(--banner-height, 0px) + 24px);
   min-height: calc(100vh - var(--banner-height, 0px) - theme.$header-height - 36px);
   width: 100%;
   max-width: 1200px;
@@ -15,7 +15,7 @@
   
   // Add extra padding on mobile to account for mobile search row
   @media (max-width: 768px) {
-    padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 48px);
+    padding-top: calc(var(--banner-height, 0px) + 72px);
   }
 }
 

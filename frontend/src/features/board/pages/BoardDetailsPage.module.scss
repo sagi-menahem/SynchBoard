@@ -3,7 +3,7 @@
 // Dynamic padding calculation to account for banner and AppHeader heights
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 24px);
+  padding-top: calc(var(--banner-height, 0px) + 24px);
   min-height: 100vh;
   width: 100%;
   max-width: 1200px;

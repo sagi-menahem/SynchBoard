@@ -3,7 +3,7 @@
 // Main page container with responsive grid layout and proper spacing
 .pageContent {
   position: relative;
-  padding-block-start: calc(var(--banner-height, 0px) + theme.$header-height + 24px);
+  padding-block-start: calc(var(--banner-height, 0px) + 24px);
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
