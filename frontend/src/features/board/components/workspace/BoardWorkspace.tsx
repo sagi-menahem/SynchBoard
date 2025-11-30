@@ -7,11 +7,11 @@ import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvide
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  type ImperativePanelGroupHandle,
-  type ImperativePanelHandle,
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
+    type ImperativePanelGroupHandle,
+    type ImperativePanelHandle,
+    Panel,
+    PanelGroup,
+    PanelResizeHandle,
 } from 'react-resizable-panels';
 import { useDebouncedCallback, useIsMobile } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
@@ -234,6 +234,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
           messages={messages}
           isOpen={isChatOpen}
           onOpenChange={(isOpen) => void updateCanvasPreferences({ isChatOpen: isOpen })}
+          userChosenColor={getUserChosenColor()}
         />
       </div>
     );

@@ -21,6 +21,8 @@ interface MobileChatDrawerProps {
   isOpen: boolean;
   /** Callback when the drawer open state changes */
   onOpenChange: (open: boolean) => void;
+  /** User's chosen color for background theming */
+  userChosenColor: string;
 }
 
 /**
@@ -41,6 +43,7 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
   messages,
   isOpen,
   onOpenChange,
+  userChosenColor,
 }) => {
   const { t } = useTranslation(['chat']);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -77,13 +80,16 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
         <Drawer.Overlay className={styles.overlay} />
         <Drawer.Content
           ref={contentRef}
-          className={clsx(styles.content, utilStyles.unifiedDotBackground)}
+          className={styles.content}
           onOpenAutoFocus={(e) => {
             e.preventDefault();
             contentRef.current?.focus();
           }}
           tabIndex={-1}
-          style={{ outline: 'none' }}
+          style={{
+            outline: 'none',
+            backgroundColor: userChosenColor,
+          }}
         >
           {/* Vaul's built-in handle component for proper drag behavior */}
           <Drawer.Handle className={styles.handle} />
@@ -93,7 +99,10 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
               {t('chat:window.description')}
             </Drawer.Description>
           </VisuallyHidden.Root>
-          <div className={styles.chatContainer}>
+          <div
+            className={clsx(styles.chatContainer, utilStyles.unifiedDotBackground)}
+            style={{ '--user-chosen-color': userChosenColor } as React.CSSProperties}
+          >
             <ChatWindow boardId={boardId} messages={messages} isMobileDrawer chatRef={chatWindowRef} />
           </div>
         </Drawer.Content>
