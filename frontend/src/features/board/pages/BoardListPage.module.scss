@@ -66,12 +66,14 @@
   max-width: 420px;
   position: relative;
   cursor: pointer;
-  background: var(--user-chosen-color);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   @include theme.smooth-transition;
 
   &:hover {
+    background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
