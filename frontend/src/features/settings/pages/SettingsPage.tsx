@@ -1,7 +1,8 @@
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { ArrowLeft, LogOut } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
@@ -14,6 +15,7 @@ import {
     PictureManager,
     SectionCard,
 } from 'shared/ui';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import logger from 'shared/utils/logger';
 
 import {
@@ -40,6 +42,7 @@ const SettingsPage: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
   const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
   const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
@@ -48,6 +51,25 @@ const SettingsPage: React.FC = () => {
     useUserProfile();
 
   const { handleChangePassword, handleDeleteAccount } = useAccountActions();
+
+  // Callback to get the user's chosen color for the background
+  const getUserChosenColor = useCallback(() => {
+    const savedVariable = userBoardPreferences.boardBackgroundSetting;
+    if (!savedVariable) {
+      return 'var(--color-surface)';
+    }
+    return `var(${savedVariable})`;
+  }, [userBoardPreferences.boardBackgroundSetting]);
+
+  // CSS variables for background styling
+  const containerStyle = useMemo(
+    () =>
+      ({
+        '--user-chosen-color': getUserChosenColor(),
+        '--background-blur': '0px',
+      }) as React.CSSProperties,
+    [getUserChosenColor],
+  );
 
   const handlePictureUploadWithCleanup = async (file: File) => {
     try {
@@ -77,7 +99,7 @@ const SettingsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <PageTransition>
+      <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={
             <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
@@ -99,7 +121,7 @@ const SettingsPage: React.FC = () => {
 
   if (!user) {
     return (
-      <PageTransition>
+      <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={(
             <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
@@ -122,7 +144,7 @@ const SettingsPage: React.FC = () => {
   }
 
   return (
-    <PageTransition>
+    <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
       <AppHeader
         leading={(
           <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>

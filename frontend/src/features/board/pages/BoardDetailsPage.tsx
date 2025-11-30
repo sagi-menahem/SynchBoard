@@ -1,8 +1,10 @@
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { LogOut, UserPlus } from 'lucide-react';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppHeader, Button, PageLoader, PageTransition, SectionCard } from 'shared/ui';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
@@ -30,6 +32,7 @@ const BoardDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { boardId } = useParams<{ boardId: string }>();
   const numericBoardId = parseInt(boardId ?? '0', 10);
+  const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
   // Extract board management state and handlers from the dedicated hook
   const {
@@ -61,6 +64,25 @@ const BoardDetailsPage: React.FC = () => {
 
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
+  // Callback to get the user's chosen color for the background
+  const getUserChosenColor = useCallback(() => {
+    const savedVariable = userBoardPreferences.boardBackgroundSetting;
+    if (!savedVariable) {
+      return 'var(--color-surface)';
+    }
+    return `var(${savedVariable})`;
+  }, [userBoardPreferences.boardBackgroundSetting]);
+
+  // CSS variables for background styling
+  const containerStyle = useMemo(
+    () =>
+      ({
+        '--user-chosen-color': getUserChosenColor(),
+        '--background-blur': '0px',
+      }) as React.CSSProperties,
+    [getUserChosenColor],
+  );
+
   // Icon components for AppHeader
   const BackArrowIcon = getBackArrowIcon();
 
@@ -69,7 +91,7 @@ const BoardDetailsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <PageTransition>
+      <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={
             <Button variant="icon" onClick={handleGoToBoard} title={t('common:back')}>
@@ -85,7 +107,7 @@ const BoardDetailsPage: React.FC = () => {
 
   if (!boardDetails) {
     return (
-      <PageTransition>
+      <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={
             <Button variant="icon" onClick={handleGoToBoard} title={t('common:back')}>
@@ -102,7 +124,7 @@ const BoardDetailsPage: React.FC = () => {
   }
 
   return (
-    <PageTransition>
+    <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
       <AppHeader
         leading={
           <Button variant="icon" onClick={handleGoToBoard} title={t('common:back')}>
