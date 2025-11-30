@@ -1,149 +1,164 @@
 @use '@/styles' as theme;
 
 // =============================================================================
-// ADAPTIVE DOCK - MORPHING PILL ARCHITECTURE
+// FIXED BOTTOM TOOLBAR - MAC DOCK STYLE
 // =============================================================================
-// Phase 2: Refactor (Week 2)
-// - Linear/Grid layout instead of Radial
-// - Smart directional expansion
-// - Responsive morphing (Circle -> Pill -> Grid)
+// Simplified architecture - no drag, no radial positioning
+// Fixed position at bottom-center on desktop, bottom sheet on mobile
 // =============================================================================
 
 // -----------------------------------------------------------------------------
 // CONSTANTS
 // -----------------------------------------------------------------------------
 
-$button-size: 44px;
-$button-size-mobile: 40px;
-$tool-size: 36px;
-$tool-size-mobile: 32px;
-$gap: 4px;
-$padding: 4px;
+$tool-size: 40px;
+$tool-size-mobile: 44px;
+$gap: 6px;
+$gap-mobile: 8px;
+$toolbar-padding: 8px;
+$toolbar-padding-mobile: 12px;
+$border-radius: 24px;
+$border-radius-mobile: 20px;
 
 // -----------------------------------------------------------------------------
-// MAIN WRAPPER
+// MAIN CONTAINER - Fixed Position
 // -----------------------------------------------------------------------------
 
-.dockWrapper {
+.fixedToolbar {
     position: fixed;
-    top: 0;
-    left: 0;
     z-index: 1000;
+    pointer-events: none; // Allow clicks through when collapsed
 
-    // Interaction
-    user-select: none;
-    touch-action: none;
+    // Desktop: Bottom-Center (Mac Dock style)
+    &.desktop {
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
-    // Flex container for the morphing shape
+    // Mobile: Bottom Sheet style
+    &.mobile {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        
+        // Safe area for iPhone home bar
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    // Re-enable pointer events for actual content
+    > * {
+        pointer-events: all;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// COLLAPSED STATE - Small Trigger Button
+// -----------------------------------------------------------------------------
+
+.collapsedTrigger {
+    @include theme.glass-panel;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    // Directional Expansion Logic (CSS-based)
-    &[data-anchor="left"] {
-        align-items: flex-start; // Expand to Right
-    }
-
-    &[data-anchor="right"] {
-        align-items: flex-end; // Expand to Left
-    }
-
-    &[data-anchor="center"] {
-        align-items: center; // Expand Outwards
-    }
-}
-
-// -----------------------------------------------------------------------------
-// MORPHING CONTAINER (The Pill)
-// -----------------------------------------------------------------------------
-
-.morphingContainer {
-    @include theme.glass-panel;
-
-    position: relative;
-    overflow: hidden;
-
-    // Default: Circle (Collapsed)
-    border-radius: 9999px;
-
-    // Flex layout for tools
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    // Smooth morphing animation
-    transition: width theme.$transition-normal,
-        height theme.$transition-normal,
-        border-radius theme.$transition-normal,
-        background theme.$transition-fast;
-
-    // Shadow for depth
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-
-    // Collapsed State
-    &.collapsed {
-        width: $button-size;
-        height: $button-size;
-        padding: 0;
-        cursor: grab;
-
-        &:active {
-            cursor: grabbing;
-        }
-
-        // Mobile size
-        @media (max-width: theme.$breakpoint-md) {
-            width: $button-size-mobile;
-            height: $button-size-mobile;
-        }
-    }
-
-    // Expanded State
-    &.expanded {
-        border-radius: 9999px !important; // Force pill shape
-        padding: $padding;
-        cursor: default;
-
-        // Desktop: Horizontal Pill
-        flex-direction: row;
-        gap: $gap;
-
-        // Mobile: Grid/Rect
-        @media (max-width: theme.$breakpoint-md) {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); // 4 columns
-            grid-template-rows: repeat(2, 1fr); // 2 rows
-            gap: $gap;
-            border-radius: theme.$border-radius-lg;
-        }
-    }
-}
-
-// -----------------------------------------------------------------------------
-// CENTRAL TRIGGER (Close/Toggle Button)
-// -----------------------------------------------------------------------------
-// Note: In the new design, this might be integrated into the list or float.
-// For now, we'll keep it simple: The whole collapsed pill is the trigger.
-
-.triggerButton {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 4px;
+    
     border: none;
-    background: transparent;
-    color: var(--color-text-primary);
     cursor: pointer;
+    color: var(--color-text-primary);
+    
+    transition: all 0.2s ease-out;
+    
+    // Desktop: Circular button
+    .desktop & {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        
+        &:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            background: var(--color-surface-hover);
+        }
+        
+        &:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+    }
+    
+    // Mobile: Pull-up tab/button
+    .mobile & {
+        width: 80px;
+        height: 48px;
+        margin: 0 auto;
+        border-radius: $border-radius-mobile $border-radius-mobile 0 0;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+        
+        &:active {
+            background: var(--color-surface-hover);
+        }
+    }
+}
 
-    &:hover {
-        background: rgba(255, 255, 255, 0.1);
+.pullHandle {
+    width: 32px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-border-strong);
+    flex-shrink: 0;
+}
+
+// -----------------------------------------------------------------------------
+// EXPANDED STATE - Full Toolbar
+// -----------------------------------------------------------------------------
+
+.expandedToolbar {
+    @include theme.glass-panel;
+    
+    position: relative;
+    border-radius: $border-radius;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box; // Prevent padding from causing overflow
+    
+    // Desktop: Horizontal pill
+    .desktop & {
+        padding: $toolbar-padding;
+    }
+    
+    // Mobile: Bottom sheet
+    .mobile & {
+        width: 100%;
+        padding: $toolbar-padding-mobile;
+        padding-top: 44px; // Extra space for close button
+        border-radius: $border-radius-mobile $border-radius-mobile 0 0;
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
     }
 }
 
 // -----------------------------------------------------------------------------
-// TOOL BUTTONS (Inside the Pill)
+// TOOLS LAYOUT
+// -----------------------------------------------------------------------------
+
+.toolsRow {
+    display: flex;
+    align-items: center;
+    gap: $gap;
+    flex-wrap: nowrap;
+}
+
+.toolsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $gap-mobile;
+    width: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// TOOL BUTTONS
 // -----------------------------------------------------------------------------
 
 .toolButton {
@@ -151,31 +166,104 @@ $padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: $tool-size;
-    height: $tool-size;
-
+    flex-shrink: 0;
+    
     border: none;
     border-radius: theme.$border-radius-md;
     background: transparent;
     color: var(--color-text-secondary);
     cursor: pointer;
-
+    
     transition: all theme.$transition-fast;
-
+    
+    // Desktop size
+    .desktop & {
+        width: $tool-size;
+        height: $tool-size;
+    }
+    
+    // Mobile size
+    .mobile & {
+        width: $tool-size-mobile;
+        height: $tool-size-mobile;
+    }
+    
     &:hover {
         background: var(--color-surface-hover);
         color: var(--color-text-primary);
+        transform: scale(1.1);
     }
-
+    
+    &:active {
+        transform: scale(0.95);
+    }
+    
     &.active {
         background: var(--color-primary);
-        color: var(--color-on-primary);
+        color: var(--color-background);
+        box-shadow: 0 2px 8px var(--color-primary-light);
     }
+}
 
-    @media (max-width: theme.$breakpoint-md) {
-        width: $tool-size-mobile;
-        height: $tool-size-mobile;
+// -----------------------------------------------------------------------------
+// CLOSE BUTTON
+// -----------------------------------------------------------------------------
+
+.closeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    border: none;
+    border-radius: theme.$border-radius-md;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    
+    transition: all theme.$transition-fast;
+    
+    // Desktop: Integrated as last tool in row
+    .desktop & {
+        width: $tool-size;
+        height: $tool-size;
+        margin-left: $gap; // Separator gap from tools
+        
+        &:hover {
+            background: var(--color-surface-hover);
+            color: var(--color-text-primary);
+            transform: scale(1.1);
+        }
+    }
+    
+    // Mobile: Floating at top-center
+    .mobile & {
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--color-surface-elevated);
+        
+        &:active {
+            background: var(--color-surface-hover);
+        }
+    }
+    
+    &:active {
+        transform: scale(0.9);
+        
+        .mobile & {
+            transform: translateX(-50%) scale(0.9);
+        }
+    }
+}
+
+.closeIcon {
+    .mobile & {
+        transform: rotate(180deg); // Point down to indicate "minimize"
     }
 }
 
@@ -187,12 +275,18 @@ $padding: 4px;
     @include theme.glass-panel;
 
     position: fixed;
-    z-index: 1001; // Above the dock
+    z-index: 999; // Below the dock
+    
+    // Position centered above the toolbar
+    transform: translate(-50%, -100%);
+    margin-bottom: 16px;
 
     min-width: 200px;
     max-width: 300px;
     padding: theme.$spacing-3;
     border-radius: theme.$border-radius-lg;
+    
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 
     pointer-events: all;
     will-change: transform, opacity;
@@ -210,4 +304,9 @@ $padding: 4px;
     color: var(--color-text-primary);
     padding-bottom: theme.$spacing-1;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.satellitePlaceholder {
+    // Used to maintain space when satellite is animating out
+    pointer-events: none;
 }

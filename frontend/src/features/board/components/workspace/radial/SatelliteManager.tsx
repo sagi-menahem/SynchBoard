@@ -1,8 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
-import { calculateSatellitePosition } from './utils/radialPositioning';
-
 import styles from './RadialDock.module.scss';
 
 /**
@@ -11,8 +9,6 @@ import styles from './RadialDock.module.scss';
 interface SatelliteManagerProps {
     /** Currently active satellite type (null if none) */
     activeSatellite: string | null;
-    /** Current dock position (center coordinates) */
-    dockPosition: { x: number; y: number };
     /** Handler to close the satellite */
     onClose: () => void;
 }
@@ -20,11 +16,10 @@ interface SatelliteManagerProps {
 /**
  * SatelliteManager component - Coordinates satellite sub-menus.
  * 
- * Responsibilities:
- * - Calculate smart positioning for satellites based on available screen space
- * - Render the active satellite with proper placement
- * - Handle click-outside to close
- * - Prevent satellites from spawning off-screen
+ * Fixed Bottom Toolbar Version:
+ * - Satellites ALWAYS open upward from the bottom toolbar
+ * - Simplified positioning logic (no complex calculations needed)
+ * - Mobile and desktop use same vertical direction
  * 
  * Smart Positioning Logic:
  * - If dock is at bottom → Spawn satellite above
@@ -38,42 +33,32 @@ interface SatelliteManagerProps {
  * - Click-outside handling
  * 
  * @param activeSatellite - Type of satellite to show ('shapes', 'lines', 'colorPalette', 'strokeProps')
- * @param dockPosition - Current dock center position
+ * @param dockPosition - Current dock CSS position name
  * @param onClose - Handler to close the satellite
  */
 export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
     activeSatellite,
-    dockPosition,
     onClose,
 }) => {
-    const [satellitePos, setSatellitePos] = useState<{
-        x: number;
-        y: number;
-        direction: 'top' | 'bottom' | 'left' | 'right';
-    }>({ x: 0, y: 0, direction: 'top' });
+    const [satellitePos, setSatellitePos] = useState({ x: 0, y: 0 });
 
     // =========================================================================
-    // POSITION CALCULATION
+    // POSITION CALCULATION - Simplified for Fixed Bottom Toolbar
     // =========================================================================
 
     useEffect(() => {
         if (!activeSatellite) return;
 
         const calculatePosition = () => {
-            // Estimated satellite dimensions (will be refined in Phase 3)
-            const satelliteWidth = 200;
-            const satelliteHeight = 150;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            
+            // Position satellite above the bottom toolbar
+            // Centered horizontally, fixed distance from bottom
+            const x = vw / 2;
+            const y = vh - 100; // 100px from bottom (above toolbar)
 
-            const position = calculateSatellitePosition(
-                dockPosition.x,
-                dockPosition.y,
-                window.innerWidth,
-                window.innerHeight,
-                satelliteWidth,
-                satelliteHeight,
-            );
-
-            setSatellitePos(position);
+            setSatellitePos({ x, y });
         };
 
         calculatePosition();
@@ -81,7 +66,7 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
         // Recalculate on viewport resize
         window.addEventListener('resize', calculatePosition);
         return () => window.removeEventListener('resize', calculatePosition);
-    }, [activeSatellite, dockPosition]);
+    }, [activeSatellite]);
 
     // =========================================================================
     // CLICK OUTSIDE HANDLER
@@ -93,10 +78,10 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
 
-            // Don't close if clicking inside the satellite or the dock
+            // Don't close if clicking inside the satellite or the toolbar
             if (
                 target.closest(`.${styles.satelliteBubble}`) ||
-                target.closest(`.${styles.dockWrapper}`)
+                target.closest(`.${styles.fixedToolbar}`)
             ) {
                 return;
             }
