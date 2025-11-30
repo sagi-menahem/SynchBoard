@@ -123,6 +123,7 @@ $border-radius-mobile: 20px;
     border-radius: $border-radius;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
     box-sizing: border-box; // Prevent padding from causing overflow
+    overflow: hidden; // Hide content overflow during width animation
     
     // Desktop: Horizontal pill
     .desktop & {

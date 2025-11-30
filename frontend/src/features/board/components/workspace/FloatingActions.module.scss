@@ -105,6 +105,12 @@
 @media (max-width: theme.$breakpoint-md) {
   .container {
     bottom: calc(16px + env(safe-area-inset-bottom));
+    transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  // Move up when dock is expanded on mobile (use :global to escape CSS Modules)
+  :global(body.dock-expanded) .container {
+    bottom: calc(160px + env(safe-area-inset-bottom)); // Float ~20px above expanded dock
   }
 
   .ltr {

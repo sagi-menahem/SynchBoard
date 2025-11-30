@@ -87,6 +87,19 @@ export const RadialDock: React.FC = () => {
         };
     }, []);
 
+    // Toggle body class for FloatingActions to respond on mobile
+    useEffect(() => {
+        if (isMobile && isExpanded) {
+            document.body.classList.add('dock-expanded');
+        } else {
+            document.body.classList.remove('dock-expanded');
+        }
+        
+        return () => {
+            document.body.classList.remove('dock-expanded');
+        };
+    }, [isMobile, isExpanded]);
+
     // =========================================================================
     // HANDLERS
     // =========================================================================
@@ -131,37 +144,57 @@ export const RadialDock: React.FC = () => {
                         key="collapsed-trigger"
                         className={styles.collapsedTrigger}
                         onClick={handleToggleExpand}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ 
                             type: "spring", 
                             stiffness: 300, 
-                            damping: 25,
-                            opacity: { duration: 0.2 }
+                            damping: 25
                         }}
                     >
                         {isMobile && <div className={styles.pullHandle} />}
-                        {activeToolIcon}
+                        <motion.div
+                            initial={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                        >
+                            {activeToolIcon}
+                        </motion.div>
                     </motion.button>
                 ) : (
                     // EXPANDED STATE - Full toolbar
                     <motion.div
                         key="expanded-toolbar"
                         className={styles.expandedToolbar}
-                        initial={{ opacity: 0, y: isMobile ? 100 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: isMobile ? 100 : 20 }}
+                        initial={isMobile ? 
+                            { y: "100%" } : 
+                            { width: 56, opacity: 0 }
+                        }
+                        animate={isMobile ? 
+                            { y: 0 } : 
+                            { width: "auto", opacity: 1 }
+                        }
+                        exit={isMobile ? 
+                            { y: "100%" } : 
+                            { width: 56, opacity: 0 }
+                        }
                         transition={{ 
                             type: "spring", 
                             stiffness: 300, 
                             damping: 30,
-                            opacity: { duration: 0.25 }
+                            width: { duration: 0.3 },
+                            opacity: { duration: 0.2 }
                         }}
                     >
                         {/* Desktop: Single row with all tools */}
                         {!isMobile && (
-                            <div className={styles.toolsRow}>
+                            <motion.div 
+                                className={styles.toolsRow}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.15, duration: 0.2 }}
+                            >
                                 {DOCK_TOOLS.map((item) => {
                                     const isActive = preferences.defaultTool === item.tool;
                                     return (
@@ -187,7 +220,7 @@ export const RadialDock: React.FC = () => {
                                 >
                                     <ChevronUp size={20} className={styles.closeIcon} />
                                 </button>
-                            </div>
+                            </motion.div>
                         )}
 
                         {/* Mobile: Grid layout */}
