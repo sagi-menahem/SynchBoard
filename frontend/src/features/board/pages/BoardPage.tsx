@@ -52,6 +52,9 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   const { preferences } = useToolPreferences();
 
+  // Track satellite state for mobile FloatingActions coordination
+  const [activeSatellite, setActiveSatellite] = React.useState<string | null>(null);
+
   // Extract current tool settings from user preferences
   const tool = preferences.defaultTool;
   const strokeColor = preferences.defaultStrokeColor;
@@ -166,8 +169,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         {/* Floating UI Components */}
         {/* Legacy FloatingDock - Temporarily disabled for RadialDock testing */}
         {/* <FloatingDock /> */}
-        <RadialDock />
-        <FloatingActions />
+        <RadialDock onSatelliteChange={setActiveSatellite} />
+        <FloatingActions isSatelliteOpen={!!activeSatellite} />
       </main>
     </PageTransition>
   );

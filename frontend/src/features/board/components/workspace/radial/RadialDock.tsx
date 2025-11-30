@@ -19,6 +19,11 @@ const MOBILE_BREAKPOINT = 768;
 // TYPES
 // =============================================================================
 
+interface RadialDockProps {
+    /** Callback when satellite state changes (for coordinating with FloatingActions on mobile) */
+    onSatelliteChange?: (satelliteType: string | null) => void;
+}
+
 interface ToolItem {
     tool: Tool | string;
     type: 'direct' | 'satellite';
@@ -41,7 +46,7 @@ const DOCK_TOOLS: ToolItem[] = [
 // COMPONENT
 // =============================================================================
 
-export const RadialDock: React.FC = () => {
+export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => {
     const {
         preferences,
         updateTool,
@@ -63,6 +68,11 @@ export const RadialDock: React.FC = () => {
     useEffect(() => {
         setIsExpanded(!preferences.isDockMinimized);
     }, [preferences.isDockMinimized]);
+
+    // Notify parent when satellite state changes
+    useEffect(() => {
+        onSatelliteChange?.(activeSatellite);
+    }, [activeSatellite, onSatelliteChange]);
 
     // Viewport resize handler
     useEffect(() => {

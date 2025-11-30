@@ -10,6 +10,14 @@ import { isRTL } from 'shared/utils/rtlUtils';
 import styles from './FloatingActions.module.scss';
 
 /**
+ * Props for FloatingActions component.
+ */
+interface FloatingActionsProps {
+  /** Whether a satellite menu is currently open (used to hide on mobile) */
+  isSatelliteOpen?: boolean;
+}
+
+/**
  * FloatingActions component - Fixed corner action buttons with RTL/LTR awareness.
  *
  * Features:
@@ -19,8 +27,9 @@ import styles from './FloatingActions.module.scss';
  * - History pill: Undo/Redo (functional)
  * - Zoom pill: ZoomIn/Out/Reset (UI only, disabled until Phase 3)
  * - Dock cannot be in the same corner as FloatingActions
+ * - Auto-hides on mobile when satellite menu is open to prevent overlap
  */
-export const FloatingActions: React.FC = () => {
+export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpen = false }) => {
   const { t, i18n } = useTranslation(['board', 'common']);
   const { handleUndo, handleRedo, isUndoAvailable, isRedoAvailable } = useBoardContext();
   const { preferences, updateCanvasPreferences } = useCanvasPreferences();
@@ -60,6 +69,13 @@ export const FloatingActions: React.FC = () => {
   const handleToggleChat = () => {
     void updateCanvasPreferences({ isChatOpen: !preferences.isChatOpen });
   };
+
+  // Hide on mobile when satellite is open to prevent overlap
+  const shouldHide = isSatelliteOpen && isMobile;
+
+  if (shouldHide) {
+    return null;
+  }
 
   return (
     <motion.div
