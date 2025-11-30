@@ -127,3 +127,72 @@ export const getColorName = (hexColor: string): string | null => {
 
   return closestColor;
 };
+
+/**
+ * Converts a hex color to RGB values for CSS custom properties.
+ * Supports both 3-digit (#FFF) and 6-digit (#FFFFFF) hex formats.
+ * 
+ * @param hex - Hex color string (e.g., '#FFFFFF' or '#FFF')
+ * @returns RGB values as comma-separated string (e.g., '255, 255, 255')
+ * 
+ * @example
+ * ```typescript
+ * hexToRgbString('#FFFFFF') // Returns '255, 255, 255'
+ * hexToRgbString('#FFF')    // Returns '255, 255, 255'
+ * hexToRgbString('#282828') // Returns '40, 40, 40'
+ * ```
+ */
+export const hexToRgbString = (hex: string): string => {
+  // Remove # if present
+  const cleanHex = hex.replace('#', '');
+  
+  // Handle 3-digit hex by expanding to 6-digit format
+  const fullHex = cleanHex.length === 3
+    ? cleanHex.split('').map(char => char + char).join('')
+    : cleanHex;
+  
+  const r = parseInt(fullHex.substring(0, 2), 16);
+  const g = parseInt(fullHex.substring(2, 4), 16);
+  const b = parseInt(fullHex.substring(4, 6), 16);
+  
+  return `${r}, ${g}, ${b}`;
+};
+
+/**
+ * Calculates the relative luminance of a color according to WCAG 2.0 specification.
+ * Used to determine appropriate text color (light/dark) for contrast requirements.
+ * 
+ * @param hex - Hex color string (e.g., '#FFFFFF' or '#FFF')
+ * @returns Relative luminance value between 0 (darkest) and 1 (lightest)
+ * 
+ * @example
+ * ```typescript
+ * calculateLuminance('#FFFFFF') // Returns ~1.0 (very light)
+ * calculateLuminance('#000000') // Returns 0.0 (very dark)
+ * calculateLuminance('#282828') // Returns ~0.02 (dark)
+ * ```
+ */
+export const calculateLuminance = (hex: string): number => {
+  // Remove # if present
+  const cleanHex = hex.replace('#', '');
+  
+  // Handle 3-digit hex by expanding to 6-digit format
+  const fullHex = cleanHex.length === 3
+    ? cleanHex.split('').map(char => char + char).join('')
+    : cleanHex;
+  
+  const r = parseInt(fullHex.substring(0, 2), 16) / 255;
+  const g = parseInt(fullHex.substring(2, 4), 16) / 255;
+  const b = parseInt(fullHex.substring(4, 6), 16) / 255;
+  
+  // Apply sRGB gamma correction
+  const sRGB = [r, g, b].map(channel => {
+    if (channel <= 0.03928) {
+      return channel / 12.92;
+    }
+    return Math.pow((channel + 0.055) / 1.055, 2.4);
+  });
+  
+  // Calculate relative luminance using WCAG formula
+  return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
+};

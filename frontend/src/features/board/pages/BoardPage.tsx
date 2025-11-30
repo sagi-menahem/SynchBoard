@@ -11,33 +11,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
+import { hexToRgbString } from 'shared/utils/ColorUtils';
 
 import { FloatingActions } from '../components/workspace/FloatingActions';
 import { RadialDock } from '../components/workspace/radial';
 import { useCanvasDownload } from '../hooks/useCanvasDownload';
 
 import styles from './BoardPage.module.scss';
-
-/**
- * Converts a hex color to RGB values for CSS custom properties.
- * @param hex - Hex color string (e.g., '#FFFFFF' or '#FFF')
- * @returns RGB values as comma-separated string (e.g., '255, 255, 255')
- */
-const hexToRgb = (hex: string): string => {
-  // Remove # if present
-  const cleanHex = hex.replace('#', '');
-  
-  // Handle 3-digit hex
-  const fullHex = cleanHex.length === 3
-    ? cleanHex.split('').map(char => char + char).join('')
-    : cleanHex;
-  
-  const r = parseInt(fullHex.substring(0, 2), 16);
-  const g = parseInt(fullHex.substring(2, 4), 16);
-  const b = parseInt(fullHex.substring(4, 6), 16);
-  
-  return `${r}, ${g}, ${b}`;
-};
 
 /**
  * Props interface for the BoardPageContent component.
@@ -144,7 +124,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     }
     
     // It's a hex color - convert to RGB
-    const rgbValue = hexToRgb(savedColor);
+    const rgbValue = hexToRgbString(savedColor);
     
     return {
       '--board-theme-color': savedColor,
