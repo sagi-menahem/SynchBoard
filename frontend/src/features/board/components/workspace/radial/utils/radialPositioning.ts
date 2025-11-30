@@ -4,17 +4,7 @@
  * and satellite bubble positioning relative to the dock.
  */
 
-/**
- * Position of a tool on the radial ring.
- */
-export interface RadialPosition {
-    /** X coordinate offset from center */
-    x: number;
-    /** Y coordinate offset from center */
-    y: number;
-    /** Angle in degrees (0° = right, -90° = top) */
-    angle: number;
-}
+
 
 /**
  * Position of a satellite bubble relative to the dock.
@@ -28,48 +18,7 @@ export interface SatellitePosition {
     direction: 'top' | 'bottom' | 'left' | 'right';
 }
 
-/**
- * Calculate position for a tool on the radial ring using trigonometry.
- * 
- * The ring starts at the top (12:00 position) and tools are distributed
- * evenly around the circle. Uses standard trigonometry:
- * - x = radius * cos(angle)
- * - y = radius * sin(angle)
- * 
- * @param index - Index of the tool (0-based)
- * @param totalItems - Total number of items on the ring
- * @param radius - Radius of the ring in pixels
- * @param startAngle - Starting angle in degrees (default: -90 for top/12:00)
- * @returns Position object with x, y coordinates and angle
- * 
- * @example
- * // Position first tool at top (12:00)
- * const pos = calculateRadialPosition(0, 8, 100);
- * // Returns: { x: 0, y: -100, angle: -90 }
- */
-export function calculateRadialPosition(
-    index: number,
-    totalItems: number,
-    radius: number,
-    startAngle: number = -90
-): RadialPosition {
-    // Calculate angle step between each tool
-    const angleStep = 360 / totalItems;
 
-    // Calculate this tool's angle
-    const angle = startAngle + (index * angleStep);
-
-    // Convert to radians for trigonometry
-    const radians = (angle * Math.PI) / 180;
-
-    // Calculate x, y using trigonometry
-    // Note: y is negative for top positions due to SVG/CSS coordinate system
-    return {
-        x: radius * Math.cos(radians),
-        y: radius * Math.sin(radians),
-        angle,
-    };
-}
 
 /**
  * Calculate satellite bubble position relative to the dock.

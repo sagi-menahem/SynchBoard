@@ -13,21 +13,16 @@
  * - Phase 4: Drag behavior & mobile optimization
  */
 
-export { CentralTrigger } from './CentralTrigger';
 export { RadialDock } from './RadialDock';
-export { RadialRing } from './RadialRing';
 export { SatelliteManager } from './SatelliteManager';
-export { ToolButton } from './ToolButton';
 
 // Utilities
 export {
-    calculateRadialPosition,
     calculateSatellitePosition,
     isWithinViewport
 } from './utils/radialPositioning';
 
 export type {
-    RadialPosition,
     SatellitePosition
 } from './utils/radialPositioning';
 

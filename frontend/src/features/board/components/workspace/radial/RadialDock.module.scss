@@ -1,24 +1,24 @@
 @use '@/styles' as theme;
 
 // =============================================================================
-// RADIAL DOCK - GLASS MORPHISM CIRCULAR MENU
+// ADAPTIVE DOCK - MORPHING PILL ARCHITECTURE
 // =============================================================================
-// Phase 1: Foundation (Week 1)
-// - Core styling with glass morphism
-// - Radial positioning
-// - Expansion animations
-// - Responsive design
+// Phase 2: Refactor (Week 2)
+// - Linear/Grid layout instead of Radial
+// - Smart directional expansion
+// - Responsive morphing (Circle -> Pill -> Grid)
 // =============================================================================
 
 // -----------------------------------------------------------------------------
 // CONSTANTS
 // -----------------------------------------------------------------------------
 
-$dock-radius-desktop: 80px; // Reduced from 100px for tighter layout
-$dock-radius-mobile: 64px; // Reduced from 80px for tighter layout
-$center-button-size: 56px;
-$ring-button-size: 48px;
-$ring-button-size-mobile: 44px;
+$button-size: 44px;
+$button-size-mobile: 40px;
+$tool-size: 36px;
+$tool-size-mobile: 32px;
+$gap: 4px;
+$padding: 4px;
 
 // -----------------------------------------------------------------------------
 // MAIN WRAPPER
@@ -30,157 +30,144 @@ $ring-button-size-mobile: 44px;
     left: 0;
     z-index: 1000;
 
-    // Create a square container to hold the circular dock
-    width: calc($dock-radius-desktop * 2 + $ring-button-size);
-    height: calc($dock-radius-desktop * 2 + $ring-button-size);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     // Interaction
     user-select: none;
     touch-action: none;
 
-    // Phase 4: Drag cursor
-    // cursor: grab;
-    // &.dragging {
-    //   cursor: grabbing;
-    //   z-index: 1001;
-    // }
+    // Flex container for the morphing shape
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 // -----------------------------------------------------------------------------
-// CENTRAL TRIGGER BUTTON
+// MORPHING CONTAINER (The Pill)
 // -----------------------------------------------------------------------------
 
-.centralTrigger {
+.morphingContainer {
     @include theme.glass-panel;
 
     position: relative;
-    z-index: 2; // Above the ring
+    overflow: hidden;
 
+    // Default: Circle (Collapsed)
+    border-radius: 9999px;
+
+    // Flex layout for tools
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: $center-button-size;
-    height: $center-button-size;
+    // Smooth morphing animation
+    transition: width theme.$transition-normal,
+        height theme.$transition-normal,
+        border-radius theme.$transition-normal,
+        background theme.$transition-fast;
 
+    // Shadow for depth
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+    // Collapsed State
+    &.collapsed {
+        width: $button-size;
+        height: $button-size;
+        padding: 0;
+        cursor: grab;
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        // Mobile size
+        @media (max-width: theme.$breakpoint-md) {
+            width: $button-size-mobile;
+            height: $button-size-mobile;
+        }
+    }
+
+    // Expanded State
+    &.expanded {
+        border-radius: 9999px !important; // Force pill shape
+        padding: $padding;
+        cursor: default;
+
+        // Desktop: Horizontal Pill
+        flex-direction: row;
+        gap: $gap;
+
+        // Mobile: Grid/Rect
+        @media (max-width: theme.$breakpoint-md) {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); // 4 columns
+            grid-template-rows: repeat(2, 1fr); // 2 rows
+            gap: $gap;
+            border-radius: theme.$border-radius-lg;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// CENTRAL TRIGGER (Close/Toggle Button)
+// -----------------------------------------------------------------------------
+// Note: In the new design, this might be integrated into the list or float.
+// For now, we'll keep it simple: The whole collapsed pill is the trigger.
+
+.triggerButton {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    border-radius: 50%;
+    background: transparent;
+    color: var(--color-text-primary);
     cursor: pointer;
 
-    color: var(--color-text-primary);
-
-    transition: all theme.$transition-fast;
-
-    // Animation performance
-    will-change: transform;
-
     &:hover {
-        background: var(--color-surface-hover);
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
-
-    // Icon container
-    >div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background: rgba(255, 255, 255, 0.1);
     }
 }
 
 // -----------------------------------------------------------------------------
-// RADIAL RING CONTAINER
-// -----------------------------------------------------------------------------
-
-.radialRing {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    // Make container large enough to hold all buttons
-    width: calc($dock-radius-desktop * 2 + $ring-button-size);
-    height: calc($dock-radius-desktop * 2 + $ring-button-size);
-
-    // Don't block clicks to center button
-    pointer-events: none;
-
-    // Center point for radial positioning
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-// -----------------------------------------------------------------------------
-// TOOL BUTTONS
+// TOOL BUTTONS (Inside the Pill)
 // -----------------------------------------------------------------------------
 
 .toolButton {
-    @include theme.glass-panel;
-
-    position: absolute;
-
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: $ring-button-size;
-    height: $ring-button-size;
+    width: $tool-size;
+    height: $tool-size;
 
     border: none;
-    border-radius: 50%;
+    border-radius: theme.$border-radius-md;
+    background: transparent;
+    color: var(--color-text-secondary);
     cursor: pointer;
 
-    color: var(--color-text-secondary);
-
-    // Re-enable clicks for buttons
-    pointer-events: all;
-
     transition: all theme.$transition-fast;
-
-    // Animation performance
-    will-change: transform;
 
     &:hover {
         background: var(--color-surface-hover);
         color: var(--color-text-primary);
     }
 
-    &:active {
-        transform: scale(0.9);
-    }
-
-    // Active state
     &.active {
         background: var(--color-primary);
         color: var(--color-on-primary);
-        box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.4);
     }
-}
 
-// Icon with chevron (for satellite triggers)
-.iconWithChevron {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .chevron {
-        position: absolute;
-        bottom: -4px;
-        right: -4px;
-        opacity: 0.7;
+    @media (max-width: theme.$breakpoint-md) {
+        width: $tool-size-mobile;
+        height: $tool-size-mobile;
     }
 }
 
 // -----------------------------------------------------------------------------
-// SATELLITE BUBBLES (Phase 2)
+// SATELLITE BUBBLES
 // -----------------------------------------------------------------------------
 
 .satelliteBubble {
@@ -195,8 +182,6 @@ $ring-button-size-mobile: 44px;
     border-radius: theme.$border-radius-lg;
 
     pointer-events: all;
-
-    // Animation performance
     will-change: transform, opacity;
 }
 
@@ -212,54 +197,4 @@ $ring-button-size-mobile: 44px;
     color: var(--color-text-primary);
     padding-bottom: theme.$spacing-1;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.satellitePlaceholder {
-    padding: theme.$spacing-4;
-    text-align: center;
-    color: var(--color-text-secondary);
-    font-size: 12px;
-    font-style: italic;
-}
-
-// -----------------------------------------------------------------------------
-// RESPONSIVE - MOBILE
-// -----------------------------------------------------------------------------
-
-@media (max-width: theme.$breakpoint-md) {
-    .dockWrapper {
-        width: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
-        height: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
-    }
-
-    .centralTrigger {
-        width: 48px;
-        height: 48px;
-    }
-
-    .radialRing {
-        width: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
-        height: calc($dock-radius-mobile * 2 + $ring-button-size-mobile);
-    }
-
-    .toolButton {
-        width: $ring-button-size-mobile;
-        height: $ring-button-size-mobile;
-    }
-}
-
-// -----------------------------------------------------------------------------
-// VERY SMALL SCREENS
-// -----------------------------------------------------------------------------
-
-@media (max-width: 480px) {
-    .centralTrigger {
-        width: 44px;
-        height: 44px;
-    }
-
-    .toolButton {
-        width: 40px;
-        height: 40px;
-    }
 }
