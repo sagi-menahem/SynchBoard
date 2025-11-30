@@ -6,6 +6,8 @@
   @include theme.input-focus;
   margin-top: theme.$spacing-1;
   padding: theme.$input-padding;
+  height: 2.5rem;
+  box-sizing: border-box;
 }
 
 // Date input specific styling for better UX

@@ -8,13 +8,18 @@
 .inputContainer {
   display: flex;
   gap: theme.$spacing-2;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .addButton {
   @include theme.button-base;
   flex-shrink: 0;
-  height: 2.5rem;
+  height: 2.5rem !important;
+  line-height: 2.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  align-self: flex-start;
+  margin-top: 0;
 }
 
 /* Scrollable container for email tags with custom scrollbar styling */

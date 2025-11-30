@@ -1,6 +1,5 @@
-import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { LogOut, UserPlus } from 'lucide-react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppHeader, Button, PageLoader, PageTransition, SectionCard } from 'shared/ui';
@@ -32,7 +31,6 @@ const BoardDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { boardId } = useParams<{ boardId: string }>();
   const numericBoardId = parseInt(boardId ?? '0', 10);
-  const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
   // Extract board management state and handlers from the dedicated hook
   const {
@@ -63,15 +61,6 @@ const BoardDetailsPage: React.FC = () => {
   } = useBoardDetailsPage(numericBoardId);
 
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
-
-  // Callback to get the user's chosen color for the background
-  const getUserChosenColor = useCallback(() => {
-    const savedVariable = userBoardPreferences.boardBackgroundSetting;
-    if (!savedVariable) {
-      return 'var(--color-surface)';
-    }
-    return `var(${savedVariable})`;
-  }, [userBoardPreferences.boardBackgroundSetting]);
 
   // CSS variables for background styling
   const containerStyle = useMemo(

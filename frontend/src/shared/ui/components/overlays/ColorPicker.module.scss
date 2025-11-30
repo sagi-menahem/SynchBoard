@@ -25,38 +25,61 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
+  cursor: pointer;
+  pointer-events: auto;
+  min-width: 36px;
+  min-height: 36px;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+
+  &:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
 
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
   }
 }
 
 // Color preview circle inside swatch
 .colorFill {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
 }
 
 // --- Popover Positioning ---
 
 // Fixed positioning popover for color picker interface
 .popover {
-  position: fixed;
-  z-index: theme.$z-index-popover;
-  @include theme.card-base;
-  @include theme.shadow-heavy;
+  position: fixed !important;
+  z-index: 9999 !important;
+  background: var(--user-chosen-color);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  @include theme.rounded-medium;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   animation: popoverIn theme.$transition-normal ease-out;
   padding: theme.$spacing-3;
-  width: 250px !important;
-  min-width: 250px !important;
+  width: 220px !important;
+  min-width: 220px !important;
   max-width: none !important;
+  pointer-events: auto;
 }
 
 // Responsive positioning for small viewports
@@ -87,36 +110,51 @@
 
 .colorfulWrapper {
   @include theme.flex-column;
-  gap: theme.$spacing-3;
+  gap: theme.$spacing-2;
+  
+  // Target the HexColorPicker component to make it more compact
+  > div:first-child {
+    width: 100% !important;
+    height: 140px !important;
+    @include theme.rounded-small;
+    overflow: hidden;
+  }
 }
 
 // Preset color palette grid
 .presetColors {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: theme.$spacing-1;
-  margin-top: 8px;
+  margin-top: theme.$spacing-2;
   justify-content: center;
 }
 
 // Individual preset color swatch
 .presetColor {
-  width: 24px;
-  height: 24px;
-  border: 1px solid theme.$border-primary;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
   @include theme.rounded-small;
   @include theme.interactive-button;
   @include theme.smooth-transition;
+  padding: 0 !important;
+  min-width: unset !important;
+  min-height: unset !important;
 
   &:hover {
-    border-color: theme.$primary;
-    transform: scale(1.1);
-    @include theme.shadow-light;
+    border-color: rgba(0, 0, 0, 0.25);
+    transform: scale(1.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
   &:focus {
     outline: none;
     border-color: theme.$primary;
-    box-shadow: theme.$shadow-focus-outline theme.$overlay-primary-30;
+    box-shadow: 0 0 0 2px rgba(theme.$primary, 0.3);
+  }
+  
+  &:active {
+    transform: scale(0.95);
   }
 }

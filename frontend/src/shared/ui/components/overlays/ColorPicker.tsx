@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
 import { HexColorPicker } from 'react-colorful';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { PRESET_COLORS } from 'shared/constants/ColorConstants';
 import { useClickOutside } from 'shared/hooks';
@@ -63,32 +63,61 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       const popoverHeight = 300; // Color picker widget standard height with palette and sliders
       const margin = 8; // Visual spacing between swatch and popover for better UX
 
+      console.log('[ColorPicker] Calculating position:', {
+        swatchRect: {
+          top: swatchRect.top,
+          left: swatchRect.left,
+          bottom: swatchRect.bottom,
+          right: swatchRect.right,
+          width: swatchRect.width,
+          height: swatchRect.height,
+        },
+        viewport: {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        },
+        popoverDimensions: {
+          width: popoverWidth,
+          height: popoverHeight,
+        },
+      });
+
       let left = swatchRect.left;
       let top = swatchRect.bottom + margin;
 
       if (left + popoverWidth > window.innerWidth) {
         left = swatchRect.right - popoverWidth;
+        console.log('[ColorPicker] Adjusted left to avoid overflow:', left);
       }
 
       if (left < margin) {
         left = margin;
+        console.log('[ColorPicker] Adjusted left to minimum margin:', left);
       }
 
       if (top + popoverHeight > window.innerHeight) {
         top = swatchRect.top - popoverHeight - margin;
+        console.log('[ColorPicker] Moved popover above button:', top);
       }
 
       if (top < margin) {
         top = margin;
+        console.log('[ColorPicker] Adjusted top to minimum margin:', top);
       }
 
+      console.log('[ColorPicker] Final position:', { top, left });
       setPopoverPosition({ top, left });
     }
   }, [showPicker]);
 
   const handleSwatchClick = useCallback(() => {
+    console.log('[ColorPicker] Swatch clicked:', { disabled, currentShowPicker: showPicker });
     if (!disabled) {
-      setShowPicker(!showPicker);
+      const newShowPicker = !showPicker;
+      console.log('[ColorPicker] Toggling picker to:', newShowPicker);
+      setShowPicker(newShowPicker);
+    } else {
+      console.log('[ColorPicker] Click ignored - button is disabled');
     }
   }, [disabled, showPicker]);
 
@@ -166,44 +195,53 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   );
 
   return (
-    <div className={containerClasses}>
-      {label && <label className={styles.label}>{label}</label>}
-      <Button
-        id={id}
-        ref={swatchRef}
-        type="button"
-        variant="icon"
-        className={swatchClasses}
-        onClick={handleSwatchClick}
-        disabled={disabled}
-        aria-label={label ?? t('common:chooseColor')}
-      >
-        <div className={styles.colorFill} style={{ backgroundColor: color ?? '#FFFFFF' }} />
-      </Button>
+    <>
+      <div className={containerClasses}>
+        {label && <label className={styles.label}>{label}</label>}
+        <Button
+          id={id}
+          ref={swatchRef}
+          type="button"
+          variant="icon"
+          className={swatchClasses}
+          onClick={handleSwatchClick}
+          disabled={disabled}
+          aria-label={label ?? t('common:chooseColor')}
+        >
+          <div className={styles.colorFill} style={{ backgroundColor: color ?? '#FFFFFF' }} />
+        </Button>
+      </div>
 
-      {showPicker && !disabled && (
-        <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
-          <div className={styles.colorfulWrapper}>
-            <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} role="presentation">
-              <HexColorPicker color={color} onChange={handleColorChange} />
+      {showPicker && !disabled && createPortal(
+        (() => {
+          console.log('[ColorPicker] Rendering popover with position:', popoverPosition);
+          console.log('[ColorPicker] Popover element classes:', styles.popover);
+          return (
+            <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
+              <div className={styles.colorfulWrapper}>
+                <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} role="presentation">
+                  <HexColorPicker color={color} onChange={handleColorChange} />
+                </div>
+                <div className={styles.presetColors}>
+                  {PRESET_COLORS.map((presetColor) => (
+                    <Button
+                      key={presetColor}
+                      type="button"
+                      variant="icon"
+                      className={styles.presetColor}
+                      style={{ backgroundColor: presetColor }}
+                      onClick={() => handlePaletteColorClick(presetColor)}
+                      title={presetColor}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className={styles.presetColors}>
-              {PRESET_COLORS.map((presetColor) => (
-                <Button
-                  key={presetColor}
-                  type="button"
-                  variant="icon"
-                  className={styles.presetColor}
-                  style={{ backgroundColor: presetColor }}
-                  onClick={() => handlePaletteColorClick(presetColor)}
-                  title={presetColor}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+          );
+        })(),
+        document.body
       )}
-    </div>
+    </>
   );
 };
 

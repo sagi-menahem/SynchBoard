@@ -1,8 +1,7 @@
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
-import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { ArrowLeft, LogOut } from 'lucide-react';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
@@ -42,7 +41,6 @@ const SettingsPage: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
   const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
   const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
@@ -52,16 +50,6 @@ const SettingsPage: React.FC = () => {
 
   const { handleChangePassword, handleDeleteAccount } = useAccountActions();
 
-  // Callback to get the user's chosen color for the background
-  const getUserChosenColor = useCallback(() => {
-    const savedVariable = userBoardPreferences.boardBackgroundSetting;
-    if (!savedVariable) {
-      return 'var(--color-surface)';
-    }
-    return `var(${savedVariable})`;
-  }, [userBoardPreferences.boardBackgroundSetting]);
-
-  // CSS variables for background styling
   const containerStyle = useMemo(
     () =>
       ({
