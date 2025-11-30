@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import styles from './RadialDock.module.scss';
-import { StrokeWidthSatellite } from './satellites';
+import { ColorPaletteSatellite, LinesSatellite, ShapesSatellite, StrokeWidthSatellite } from './satellites';
 
 /**
  * Props for the SatelliteManager component.
@@ -122,34 +122,13 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
     const renderSatelliteContent = () => {
         switch (activeSatellite) {
             case 'shapes':
-                return (
-                    <div className={styles.satelliteContent}>
-                        <div className={styles.satelliteHeader}>Shapes</div>
-                        <div className={styles.satellitePlaceholder}>
-                            Shape Selector (Phase 3)
-                        </div>
-                    </div>
-                );
+                return <ShapesSatellite onClose={onClose} />;
 
             case 'lines':
-                return (
-                    <div className={styles.satelliteContent}>
-                        <div className={styles.satelliteHeader}>Lines</div>
-                        <div className={styles.satellitePlaceholder}>
-                            Line Selector (Phase 3)
-                        </div>
-                    </div>
-                );
+                return <LinesSatellite onClose={onClose} />;
 
             case 'colorPalette':
-                return (
-                    <div className={styles.satelliteContent}>
-                        <div className={styles.satelliteHeader}>Colors</div>
-                        <div className={styles.satellitePlaceholder}>
-                            Color Palette (Phase 3)
-                        </div>
-                    </div>
-                );
+                return <ColorPaletteSatellite />;
 
             case 'strokeProps':
                 return <StrokeWidthSatellite />;

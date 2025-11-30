@@ -102,7 +102,6 @@
 }
 
 /* ==================== COLOR PALETTE SATELLITE ==================== */
-/* Coming in Phase 3B */
 
 .colorGrid {
     display: grid;
@@ -110,14 +109,16 @@
     gap: 0.5rem;
 }
 
-.colorSwatch {
+.colorButton {
     width: 36px;
     height: 36px;
-    border-radius: 6px;
+    border-radius: 50%; /* Circular color buttons */
     border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    padding: 0;
+    outline: none;
 
     &:hover {
         transform: scale(1.1);
@@ -125,7 +126,7 @@
     }
 
     &.active {
-        border-color: var(--accent-color, #4a9eff);
+        border-color: var(--text-primary);
         box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.3);
     }
 
@@ -136,16 +137,83 @@
     }
 }
 
-/* ==================== SHAPES & LINES SATELLITES ==================== */
-/* Coming in Phase 3C & 3D */
+/* Screen reader only text */
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
 
-.toolGrid {
+/* ==================== SHAPES SATELLITE ==================== */
+
+.shapeGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
 }
 
-.toolButton {
+.shapeButton {
+    aspect-ratio: 1;
+    min-height: 44px; /* WCAG touch target minimum */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &.active {
+        background: var(--accent-color, #4a9eff);
+        border-color: var(--accent-color, #4a9eff);
+        color: #ffffff;
+        box-shadow: 0 4px 16px rgba(74, 158, 255, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    body[data-theme='dark'] & {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+    }
+}
+
+/* ==================== LINES SATELLITE ==================== */
+
+.lineGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.lineButton {
     aspect-ratio: 1;
     min-height: 44px; /* WCAG touch target minimum */
     display: flex;
