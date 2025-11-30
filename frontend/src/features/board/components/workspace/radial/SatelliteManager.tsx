@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import styles from './RadialDock.module.scss';
+import { StrokeWidthSatellite } from './satellites';
 
 /**
  * Props for the SatelliteManager component.
@@ -12,6 +13,19 @@ interface SatelliteManagerProps {
     /** Handler to close the satellite */
     onClose: () => void;
 }
+
+// Mobile breakpoint (matches RadialDock)
+const MOBILE_BREAKPOINT = 768;
+
+// Satellite positioning constants
+const SATELLITE_POSITION = {
+    // Desktop: toolbar at bottom: 32px, height: ~56px, gap: 8px
+    DESKTOP_BOTTOM: 96,
+    // Mobile: toolbar at bottom: 0px, height: ~152px, gap: 8px
+    MOBILE_BOTTOM: 160,
+};
+
+
 
 /**
  * SatelliteManager component - Coordinates satellite sub-menus.
@@ -40,33 +54,20 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
     activeSatellite,
     onClose,
 }) => {
-    const [satellitePos, setSatellitePos] = useState({ x: 0, y: 0 });
+    const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT);
 
     // =========================================================================
-    // POSITION CALCULATION - Simplified for Fixed Bottom Toolbar
+    // MOBILE DETECTION
     // =========================================================================
 
     useEffect(() => {
-        if (!activeSatellite) return;
-
-        const calculatePosition = () => {
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-            
-            // Position satellite above the bottom toolbar
-            // Centered horizontally, fixed distance from bottom
-            const x = vw / 2;
-            const y = vh - 100; // 100px from bottom (above toolbar)
-
-            setSatellitePos({ x, y });
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
         };
 
-        calculatePosition();
-
-        // Recalculate on viewport resize
-        window.addEventListener('resize', calculatePosition);
-        return () => window.removeEventListener('resize', calculatePosition);
-    }, [activeSatellite]);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // =========================================================================
     // CLICK OUTSIDE HANDLER
@@ -151,14 +152,7 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
                 );
 
             case 'strokeProps':
-                return (
-                    <div className={styles.satelliteContent}>
-                        <div className={styles.satelliteHeader}>Stroke Width</div>
-                        <div className={styles.satellitePlaceholder}>
-                            Stroke Slider (Phase 3)
-                        </div>
-                    </div>
-                );
+                return <StrokeWidthSatellite />;
 
             default:
                 return null;
@@ -169,16 +163,21 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
     // RENDER
     // =========================================================================
 
+    // Calculate bottom position based on device type
+    const bottomPosition = isMobile 
+        ? SATELLITE_POSITION.MOBILE_BOTTOM 
+        : SATELLITE_POSITION.DESKTOP_BOTTOM;
+
     return (
         <AnimatePresence>
             {activeSatellite && (
                 <motion.div
                     className={styles.satelliteBubble}
                     style={{
-                        position: 'absolute',
-                        left: `${satellitePos.x}px`,
-                        top: `${satellitePos.y}px`,
-                        transform: 'translate(-50%, -50%)',
+                        position: 'fixed',
+                        left: '50%',
+                        bottom: `${bottomPosition}px`,
+                        transform: 'translateX(-50%)',
                     }}
                     variants={satelliteVariants}
                     initial="hidden"

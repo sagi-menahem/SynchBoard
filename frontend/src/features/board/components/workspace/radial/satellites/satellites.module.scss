@@ -1,0 +1,208 @@
+/**
+ * Satellite Components - Shared Styles
+ * 
+ * These styles are shared across all satellite bubble components:
+ * - StrokeWidthSatellite
+ * - ColorPaletteSatellite
+ * - ShapesSatellite
+ * - LinesSatellite
+ * 
+ * Design System:
+ * - Glassmorphism with theme support
+ * - Consistent spacing and typography
+ * - Mobile-friendly touch targets (min 44x44px)
+ * - Smooth transitions and animations
+ */
+
+@use '@/styles' as theme;
+
+/* Base Satellite Content Container */
+.satelliteContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    width: 100%;
+}
+
+/* Satellite Header */
+.satelliteHeader {
+    font-size: 0.6875rem; // 11px
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    opacity: 0.8;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+    body[data-theme='dark'] & {
+        color: var(--text-primary);
+    }
+}
+
+/* Centered Slider for Satellites */
+.centeredSlider {
+    width: 100%;
+    
+    :global(.sliderWrapper) {
+        justify-content: center;
+    }
+}
+
+/* ==================== STROKE WIDTH SATELLITE ==================== */
+
+.strokeWidthControl {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.strokePreviewContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+
+    body[data-theme='dark'] & {
+        background: rgba(0, 0, 0, 0.25);
+    }
+}
+
+.strokePreviewSvg {
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.strokePreviewLine {
+    transition: stroke-width 0.15s ease, stroke 0.2s ease;
+}
+
+.strokeValueLabel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    min-width: 3ch;
+    text-align: center;
+}
+
+/* ==================== COLOR PALETTE SATELLITE ==================== */
+/* Coming in Phase 3B */
+
+.colorGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+}
+
+.colorSwatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &.active {
+        border-color: var(--accent-color, #4a9eff);
+        box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.3);
+    }
+
+    /* Minimum touch target for mobile */
+    @media (max-width: 768px) {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* ==================== SHAPES & LINES SATELLITES ==================== */
+/* Coming in Phase 3C & 3D */
+
+.toolGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.toolButton {
+    aspect-ratio: 1;
+    min-height: 44px; /* WCAG touch target minimum */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &.active {
+        background: var(--accent-color, #4a9eff);
+        border-color: var(--accent-color, #4a9eff);
+        color: #ffffff;
+        box-shadow: 0 4px 16px rgba(74, 158, 255, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    body[data-theme='dark'] & {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+    }
+}
+
+/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+
+@media (max-width: 768px) {
+    .satelliteContent {
+        gap: 1rem;
+    }
+
+    .satelliteHeader {
+        font-size: 0.8125rem;
+    }
+
+    .strokeWidthControl {
+        gap: 0.875rem;
+    }
+
+    .toolGrid {
+        gap: 0.625rem;
+    }
+
+    .colorGrid {
+        gap: 0.625rem;
+    }
+}

@@ -1,7 +1,7 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Brush, ChevronUp, Eraser, GripHorizontal, Minus, Palette, Pipette, Square, Type } from 'lucide-react';
+import { Brush, ChevronUp, Eraser, Minus, Palette, PenTool, Pipette, Square, Type } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
@@ -33,7 +33,7 @@ const DOCK_TOOLS: ToolItem[] = [
     { tool: 'lines', type: 'satellite', label: 'Lines', icon: <Minus size={20} /> },
     { tool: TOOLS.TEXT, type: 'direct', label: 'Text', icon: <Type size={20} /> },
     { tool: TOOLS.COLOR_PICKER, type: 'direct', label: 'Color Picker', icon: <Pipette size={20} /> },
-    { tool: 'strokeProps', type: 'satellite', label: 'Stroke', icon: <GripHorizontal size={20} /> },
+    { tool: 'strokeProps', type: 'satellite', label: 'Stroke Width', icon: <PenTool size={20} /> },
     { tool: 'colorPalette', type: 'satellite', label: 'Palette', icon: <Palette size={20} /> },
 ];
 
@@ -136,13 +136,14 @@ export const RadialDock: React.FC = () => {
     }, [preferences.defaultTool]);
 
     return (
-        <div className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}>
-            <AnimatePresence mode="wait">
-                {!isExpanded ? (
-                    // COLLAPSED STATE - Small trigger button
-                    <motion.button
-                        key="collapsed-trigger"
-                        className={styles.collapsedTrigger}
+        <>
+            <div className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}>
+                <AnimatePresence mode="wait">
+                    {!isExpanded ? (
+                        // COLLAPSED STATE - Small trigger button
+                        <motion.button
+                            key="collapsed-trigger"
+                            className={styles.collapsedTrigger}
                         onClick={handleToggleExpand}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -258,13 +259,14 @@ export const RadialDock: React.FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            {/* Satellite Manager - Always opens upward from bottom */}
-            <SatelliteManager
-                activeSatellite={activeSatellite}
-                onClose={() => setActiveSatellite(null)}
-            />
         </div>
+
+        {/* Satellite Manager - Rendered outside toolbar to avoid transform context issues */}
+        <SatelliteManager
+            activeSatellite={activeSatellite}
+            onClose={() => setActiveSatellite(null)}
+        />
+        </>
     );
 };
 
