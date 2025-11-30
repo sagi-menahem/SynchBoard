@@ -3,7 +3,7 @@
 // Dynamic height calculation accounting for banner and AppHeader presence
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 12px);
+  padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 8px);
   min-height: calc(100vh - var(--banner-height, 0px) - theme.$header-height - 36px);
   width: 100%;
   max-width: 1200px;
@@ -12,16 +12,14 @@
   padding-inline-end: 24px;
   padding-bottom: 24px;
   box-sizing: border-box;
+  
+  // Add extra padding on mobile to account for mobile search row
+  @media (max-width: 768px) {
+    padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 48px);
+  }
 }
 
 // AppHeader styles for board list page
-.titleWithButton {
-  display: flex;
-  align-items: center;
-  gap: theme.$spacing-3;
-  flex-wrap: nowrap;
-}
-
 .pageTitle {
   font-size: theme.$font-size-lg;
   font-weight: theme.$font-weight-semibold;
@@ -30,11 +28,21 @@
   margin: 0;
 }
 
-// Create button label - visible on desktop, hidden on smaller screens
-.createButtonLabel {
-  margin-inline-start: theme.$spacing-2;
+// Mobile search row - displayed below AppHeader on mobile devices
+.mobileSearchRow {
+  position: fixed;
+  top: calc(var(--banner-height, 0px) + theme.$header-height);
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: var(--glass-background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: theme.$spacing-2 theme.$spacing-4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   
-  @media (max-width: 870px) {
+  @media (min-width: 769px) {
     display: none;
   }
 }

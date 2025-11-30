@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
+import { useMediaQuery } from 'shared/hooks';
 import {
     AppHeader,
     Button,
@@ -32,6 +33,7 @@ import styles from './BoardListPage.module.scss';
 const BoardListPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const {
     boards,
     isLoading,
@@ -55,30 +57,38 @@ const BoardListPage: React.FC = () => {
     return (
       <PageTransition>
         <AppHeader
-          leading={(
-            <div className={styles.titleWithButton}>
-              <h1 className={styles.pageTitle}>{t('board:listPage.heading')}</h1>
-              <Button variant="cta" onClick={openModal}>
-                <Plus size={20} />
-                <span className={styles.createButtonLabel}>{t('board:listPage.createNewBoardButton')}</span>
-              </Button>
-            </div>
-          )}
-          center={(
+          leading={
+            <h1 className={styles.pageTitle}>{t('board:listPage.heading')}</h1>
+          }
+          center={!isMobile ? (
             <SearchBar
               placeholder={t('board:toolbar.search.boardName')}
               value={searchQuery}
               onSearch={handleSearch}
               onClear={handleClearSearch}
             />
-          )}
-          showCenterOnMobile={true}
+          ) : undefined}
           trailing={(
-            <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
-              <Settings size={20} />
-            </Button>
+            <>
+              <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
+                <Plus size={20} />
+              </Button>
+              <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
+                <Settings size={20} />
+              </Button>
+            </>
           )}
         />
+        {isMobile && (
+          <div className={styles.mobileSearchRow}>
+            <SearchBar
+              placeholder={t('board:toolbar.search.boardName')}
+              value={searchQuery}
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
+            />
+          </div>
+        )}
         <PageLoader message={t('board:listPage.loading')} />
       </PageTransition>
     );
@@ -87,30 +97,38 @@ const BoardListPage: React.FC = () => {
   return (
     <PageTransition>
       <AppHeader
-        leading={(
-          <div className={styles.titleWithButton}>
-            <h1 className={styles.pageTitle}>{t('board:listPage.heading')}</h1>
-            <Button variant="cta" onClick={openModal}>
-              <Plus size={20} />
-              <span className={styles.createButtonLabel}>{t('board:listPage.createNewBoardButton')}</span>
-            </Button>
-          </div>
-        )}
-        center={(
+        leading={
+          <h1 className={styles.pageTitle}>{t('board:listPage.heading')}</h1>
+        }
+        center={!isMobile ? (
           <SearchBar
             placeholder={t('board:toolbar.search.boardName')}
             value={searchQuery}
             onSearch={handleSearch}
             onClear={handleClearSearch}
           />
-        )}
-        showCenterOnMobile={true}
+        ) : undefined}
         trailing={(
-          <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
-            <Settings size={20} />
-          </Button>
+          <>
+            <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
+              <Plus size={20} />
+            </Button>
+            <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
+              <Settings size={20} />
+            </Button>
+          </>
         )}
       />
+      {isMobile && (
+        <div className={styles.mobileSearchRow}>
+          <SearchBar
+            placeholder={t('board:toolbar.search.boardName')}
+            value={searchQuery}
+            onSearch={handleSearch}
+            onClear={handleClearSearch}
+          />
+        </div>
+      )}
       <main className={styles.pageContent}>
         {(() => {
           // Render board grid with staggered animation when boards are available

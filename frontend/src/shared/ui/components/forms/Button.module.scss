@@ -128,53 +128,59 @@
   }
 }
 
-// Call-to-action button with outline style
+// Call-to-action button with glassmorphism style
 .cta {
-  background-color: transparent;
+  background: rgba(16, 185, 129, 0.1);
   color: var(--btn-cta-bg);
-  border: 1px solid var(--btn-cta-bg);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   font-weight: theme.$font-weight-semibold;
-  box-shadow: theme.$shadow-button;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
   font-size: theme.$font-size-xs;
 
   &:hover:not(:disabled) {
-    background-color: var(--btn-cta-bg);
-    color: var(--btn-cta-text);
-    border-color: var(--btn-cta-bg);
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--btn-cta-bg);
+    border-color: rgba(16, 185, 129, 0.5);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: theme.$shadow-button-hover;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
   }
 
   &:active:not(:disabled) {
+    background: rgba(16, 185, 129, 0.25);
     transform: translateY(theme.$spacing-0);
-    box-shadow: theme.$shadow-button-active;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
   }
 }
 
-// Warning button for cautionary actions
+// Warning button for cautionary actions with glassmorphism style
 .warning {
-  background-color: transparent;
+  background: rgba(245, 158, 11, 0.1);
   color: var(--btn-warning-bg);
-  border: 1px solid var(--btn-warning-bg);
+  border: 1px solid rgba(245, 158, 11, 0.3);
   font-weight: theme.$font-weight-semibold;
-  box-shadow: theme.$shadow-button;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
   font-size: theme.$font-size-xs;
 
   &:hover:not(:disabled) {
-    background-color: var(--btn-warning-bg);
-    color: var(--btn-warning-text);
-    border-color: var(--btn-warning-bg);
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--btn-warning-bg);
+    border-color: rgba(245, 158, 11, 0.5);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: theme.$shadow-button-hover;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
   }
 
   &:active:not(:disabled) {
+    background: rgba(245, 158, 11, 0.25);
     transform: translateY(theme.$spacing-0);
-    box-shadow: theme.$shadow-button-active;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
   }
 }
 
