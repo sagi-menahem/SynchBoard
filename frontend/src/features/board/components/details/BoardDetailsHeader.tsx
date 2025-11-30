@@ -22,6 +22,8 @@ interface BoardDetailsHeaderProps {
   onUpdateDescription: (description: string) => Promise<void>;
   /** Handler for removing the current board picture */
   onDeletePicture: () => void;
+  /** Handler for editing board name */
+  onEditName: () => void;
 }
 
 /**
@@ -43,6 +45,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
     onPictureUpload,
     onUpdateDescription,
     onDeletePicture,
+    onEditName,
   } = props;
 
   const [isEditingDescription, setIsEditingDescription] = useState(false);
@@ -66,7 +69,23 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
   return (
     <>
-      <SectionCard title={t('board:detailsPage.changePicture')} variant="default">
+      <SectionCard 
+        title={t('board:detailsPage.changePicture')} 
+        variant="default"
+        headerActions={
+          currentUserIsAdmin ? (
+            <Button
+              onClick={onEditName}
+              variant="secondary"
+              className={styles.editButton}
+              title={t('board:detailsPage.editBoardName')}
+            >
+              <PencilLine size={16} />
+              {t('board:detailsPage.editBoardName')}
+            </Button>
+          ) : undefined
+        }
+      >
         <PictureManager
           imageUrl={boardDetails.pictureUrl}
           defaultImage={defaultBoardImage}

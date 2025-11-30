@@ -1,10 +1,10 @@
-import type { ToolbarConfig } from 'features/board/types/ToolbarTypes';
 import { LogOut, UserPlus } from 'lucide-react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, PageLoader, PageTransition, SectionCard, UniversalToolbar } from 'shared/ui';
-import { getNavigationArrowIcon } from 'shared/utils/rtlUtils';
+import { APP_ROUTES } from 'shared/constants/RoutesConstants';
+import { AppHeader, Button, PageLoader, PageTransition, SectionCard } from 'shared/ui';
+import { getBackArrowIcon, getNavigationArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
     BoardConfirmDialogs,
@@ -62,67 +62,25 @@ const BoardDetailsPage: React.FC = () => {
 
   const [isQuickSettingsOpen, setQuickSettingsOpen] = React.useState(false);
 
-  // Configure toolbar with conditional buttons based on user permissions
-  const toolbarConfig: ToolbarConfig = useMemo(
-    () => ({
-      pageType: 'board-details',
-      leftSection: [
-        {
-          type: 'title',
-          content: boardDetails?.name ?? t('common:loading'),
-          ...(boardDetails && currentUserIsAdmin
-            ? {
-                clickable: true,
-                onClick: () => setEditingField('name'),
-              }
-            : {}),
-        },
-        ...(currentUserIsAdmin
-          ? [
-              {
-                type: 'button' as const,
-                icon: UserPlus,
-                label: t('board:detailsPage.inviteButton'),
-                onClick: () => setInviteModalOpen(true),
-                variant: 'cta' as const,
-              },
-            ]
-          : []),
-      ],
-      rightSection: [
-        {
-          type: 'button',
-          icon: LogOut,
-          label: t('board:leaveBoard.button'),
-          onClick: () => setLeaveConfirmOpen(true),
-          variant: 'warning' as const,
-        },
-        {
-          type: 'button',
-          icon: getNavigationArrowIcon(),
-          label: t('board:detailsPage.boardButton'),
-          onClick: () => navigate(`/board/${numericBoardId}`),
-          variant: 'navigation' as const,
-          className: 'iconOnlyButton',
-        },
-      ],
-    }),
-    [
-      boardDetails,
-      currentUserIsAdmin,
-      t,
-      numericBoardId,
-      navigate,
-      setInviteModalOpen,
-      setLeaveConfirmOpen,
-      setEditingField,
-    ],
-  );
+  // Icon components for AppHeader
+  const BackArrowIcon = getBackArrowIcon();
+  const NavigationArrowIcon = getNavigationArrowIcon();
+
+  // Navigation handlers
+  const handleBackToList = () => navigate(APP_ROUTES.BOARD_LIST);
+  const handleGoToBoard = () => navigate(`/board/${numericBoardId}`);
 
   if (isLoading) {
     return (
       <PageTransition>
-        <UniversalToolbar config={toolbarConfig} />
+        <AppHeader
+          leading={
+            <Button variant="icon" onClick={handleBackToList} title={t('common:back')}>
+              <BackArrowIcon size={20} />
+            </Button>
+          }
+          title={<span>{t('common:loading')}</span>}
+        />
         <PageLoader message={t('board:detailsPage.loading')} />
       </PageTransition>
     );
@@ -131,8 +89,15 @@ const BoardDetailsPage: React.FC = () => {
   if (!boardDetails) {
     return (
       <PageTransition>
-        <UniversalToolbar config={toolbarConfig} />
-        <main className={styles.pageContent} data-has-toolbar>
+        <AppHeader
+          leading={
+            <Button variant="icon" onClick={handleBackToList} title={t('common:back')}>
+              <BackArrowIcon size={20} />
+            </Button>
+          }
+          title={<span>{t('board:detailsPage.notFound')}</span>}
+        />
+        <main className={styles.pageContent}>
           <div className={styles.notFound}>{t('board:detailsPage.notFound')}</div>
         </main>
       </PageTransition>
@@ -141,8 +106,42 @@ const BoardDetailsPage: React.FC = () => {
 
   return (
     <PageTransition>
-      <UniversalToolbar config={toolbarConfig} />
-      <main className={styles.pageContent} data-has-toolbar>
+      <AppHeader
+        leading={
+          <Button variant="icon" onClick={handleBackToList} title={t('common:back')}>
+            <BackArrowIcon size={20} />
+          </Button>
+        }
+        title={<span>{boardDetails.name}</span>}
+        trailing={
+          <>
+            <Button
+              variant="icon"
+              onClick={() => setLeaveConfirmOpen(true)}
+              title={t('board:leaveBoard.button')}
+            >
+              <LogOut size={20} />
+            </Button>
+            {currentUserIsAdmin && (
+              <Button
+                variant="icon"
+                onClick={() => setInviteModalOpen(true)}
+                title={t('board:detailsPage.inviteButton')}
+              >
+                <UserPlus size={20} />
+              </Button>
+            )}
+            <Button
+              variant="icon"
+              onClick={handleGoToBoard}
+              title={t('board:detailsPage.boardButton')}
+            >
+              <NavigationArrowIcon size={20} />
+            </Button>
+          </>
+        }
+      />
+      <main className={styles.pageContent}>
         {/* Left Column - Board Visual & Description */}
         <div className={styles.leftColumn}>
           <BoardDetailsHeader
@@ -151,6 +150,7 @@ const BoardDetailsPage: React.FC = () => {
             onPictureUpload={handlePictureUpload}
             onUpdateDescription={handleUpdateDescription}
             onDeletePicture={promptPictureDelete}
+            onEditName={() => setEditingField('name')}
           />
         </div>
 
