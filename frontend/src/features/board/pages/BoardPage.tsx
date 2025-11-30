@@ -243,8 +243,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         </div>
 
         {/* Floating UI Components */}
-        {/* Legacy FloatingDock - Temporarily disabled for RadialDock testing */}
-        {/* <FloatingDock /> */}
         <RadialDock onSatelliteChange={setActiveSatellite} />
         <FloatingActions isSatelliteOpen={!!activeSatellite} />
       </main>
