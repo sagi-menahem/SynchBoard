@@ -168,7 +168,6 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     () => ({
       backgroundColor: canvasConfig.backgroundColor,
       cursor: getCursor(),
-      touchAction: 'none' as const, // Prevent browser scroll/zoom gestures to enable touch drawing
     }),
     [canvasConfig.backgroundColor, getCursor],
   );
