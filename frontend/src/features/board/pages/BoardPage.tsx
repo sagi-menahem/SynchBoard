@@ -4,14 +4,13 @@ import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
-import { ArrowLeft, ArrowRight, Download, Info } from 'lucide-react';
+import { ArrowLeft, Download, Info } from 'lucide-react';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
-import { isRTL } from 'shared/utils/rtlUtils';
 
 import { FloatingActions } from '../components/workspace/FloatingActions';
 import { RadialDock } from '../components/workspace/radial';
@@ -58,7 +57,7 @@ interface BoardPageContentProps {
  * @param boardId - ID of the board to render and manage in the workspace
  */
 const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
-  const { t, i18n } = useTranslation(['board', 'common']);
+  const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
 
@@ -167,9 +166,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     navigate(APP_ROUTES.BOARD_LIST);
   }, [navigate]);
 
-  // RTL-aware back arrow
-  const BackArrow = isRTL(i18n.language) ? ArrowRight : ArrowLeft;
-
   if (isLoading) {
     return (
       <PageTransition>
@@ -177,7 +173,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           leading={
             <>
               <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
-                <BackArrow size={20} />
+                <ArrowLeft size={20} />
               </Button>
               <Button
                 variant="icon"
@@ -202,7 +198,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         leading={
           <>
             <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
-              <BackArrow size={20} />
+              <ArrowLeft size={20} />
             </Button>
             <Button
               variant="icon"

@@ -24,13 +24,11 @@ export const getNavigationArrowIcon = (): LucideIcon => {
 };
 
 /**
- * Returns the appropriate back navigation arrow icon based on text direction.
- * In RTL layouts, back navigation uses right arrow; in LTR layouts, uses left arrow.
- * Used for consistent directional back/previous navigation across different language interfaces.
+ * Returns the appropriate back navigation arrow icon.
+ * Always uses left arrow for consistent back navigation across all languages.
  *
- * @returns {LucideIcon} ArrowRight for RTL, ArrowLeft for LTR
+ * @returns {LucideIcon} ArrowLeft for all layouts
  */
 export const getBackArrowIcon = (): LucideIcon => {
-  const isRTLLayout = document.documentElement.dir === 'rtl';
-  return isRTLLayout ? ArrowRight : ArrowLeft;
+  return ArrowLeft;
 };

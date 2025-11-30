@@ -1,6 +1,6 @@
 import defaultUserImage from 'assets/default-user-image.png';
 import { useAuth } from 'features/auth/hooks';
-import { ArrowLeft, ArrowRight, LogOut } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,6 @@ import {
     SectionCard,
 } from 'shared/ui';
 import logger from 'shared/utils/logger';
-import { isRTL } from 'shared/utils/rtlUtils';
 
 import {
     BoardAppearanceSection,
@@ -38,7 +37,7 @@ import styles from './SettingsPage.module.scss';
  * Features responsive design with AppHeader integration and proper navigation patterns.
  */
 const SettingsPage: React.FC = () => {
-  const { t, i18n } = useTranslation(['settings', 'common']);
+  const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -76,18 +75,15 @@ const SettingsPage: React.FC = () => {
     }
   };
 
-  // RTL-aware back arrow
-  const BackArrow = isRTL(i18n.language) ? ArrowRight : ArrowLeft;
-
   if (isLoading) {
     return (
       <PageTransition>
         <AppHeader
-          leading={(
+          leading={
             <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
-              <BackArrow size={20} />
+              <ArrowLeft size={20} />
             </Button>
-          )}
+          }
           title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
           trailing={(
             <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
@@ -107,7 +103,7 @@ const SettingsPage: React.FC = () => {
         <AppHeader
           leading={(
             <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
-              <BackArrow size={20} />
+              <ArrowLeft size={20} />
             </Button>
           )}
           title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
@@ -130,7 +126,7 @@ const SettingsPage: React.FC = () => {
       <AppHeader
         leading={(
           <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
-            <BackArrow size={20} />
+            <ArrowLeft size={20} />
           </Button>
         )}
         title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
