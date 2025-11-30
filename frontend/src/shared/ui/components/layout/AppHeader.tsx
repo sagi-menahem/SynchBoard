@@ -1,3 +1,4 @@
+import { useTheme } from 'features/settings/ThemeProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import React, { useMemo } from 'react';
 import { calculateLuminance, hexToRgbString } from 'shared/utils/ColorUtils';
@@ -53,6 +54,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   className,
 }) => {
   const { preferences } = useUserBoardPreferences();
+  const { theme } = useTheme();
   
   // Compute header styles based on user's board appearance preference
   const headerStyles = useMemo(() => {
@@ -115,7 +117,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     }
     
     return {};
-  }, [preferences.boardBackgroundSetting, variant]);
+  }, [preferences.boardBackgroundSetting, variant, theme]);
   
   const headerClasses = [styles.header, styles[variant], className].filter(Boolean).join(' ');
 
