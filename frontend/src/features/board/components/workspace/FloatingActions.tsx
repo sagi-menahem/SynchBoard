@@ -61,6 +61,24 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
   // Use shared mobile detection hook (device-based, not width-only)
   const isMobile = useIsMobile();
 
+  /**
+   * Wrapper to auto-blur buttons on mobile after click to remove persistent focus.
+   * This prevents focus outlines from staying visible after tap on touch devices.
+   * Uses setTimeout to ensure blur happens after React state updates complete.
+   */
+  const handleButtonClick = (callback: () => void) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.currentTarget;
+    callback();
+    
+    // Auto-blur on mobile to remove focus outline after tap
+    // Use setTimeout to ensure blur happens after React re-renders
+    if (isMobile) {
+      setTimeout(() => {
+        target.blur();
+      }, 0);
+    }
+  };
+
   const handleToggleChat = () => {
     void updateCanvasPreferences({ isChatOpen: !preferences.isChatOpen });
   };
@@ -83,7 +101,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
       <motion.div className={styles.pill} variants={pillVariants}>
         <Button
           variant="icon"
-          onClick={handleToggleChat}
+          onClick={handleButtonClick(handleToggleChat)}
           title={preferences.isChatOpen ? t('board:workspace.hideChat') : t('board:workspace.showChat')}
           className={styles.actionButton}
           aria-pressed={preferences.isChatOpen}
@@ -96,7 +114,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
       <motion.div className={styles.pill} variants={pillVariants}>
         <Button
           variant="icon"
-          onClick={handleUndo}
+          onClick={handleButtonClick(handleUndo)}
           disabled={!isUndoAvailable}
           title={t('board:actions.undo')}
           className={styles.actionButton}
@@ -106,7 +124,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
         <div className={styles.pillSeparator} />
         <Button
           variant="icon"
-          onClick={handleRedo}
+          onClick={handleButtonClick(handleRedo)}
           disabled={!isRedoAvailable}
           title={t('board:actions.redo')}
           className={styles.actionButton}

@@ -72,9 +72,29 @@
   border-radius: theme.$border-radius-full !important;
   background: transparent !important;
   border: none !important;
+  outline: none !important; // Remove default focus outline
+  -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
 
   &:hover:not(:disabled) {
     background: var(--color-surface-hover) !important;
+  }
+
+  // Hide focus outline on mouse/touch, but preserve for keyboard navigation
+  &:focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  // Only show focus for keyboard navigation
+  &:focus-visible {
+    outline: 2px solid var(--color-primary) !important;
+    outline-offset: 2px !important;
+  }
+
+  &:active:not(:disabled) {
+    background: var(--color-surface-pressed) !important;
+    transform: scale(0.95);
+    outline: none !important; // Ensure no outline during press
   }
 
   &:disabled {
