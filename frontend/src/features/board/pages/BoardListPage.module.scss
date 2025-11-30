@@ -1,10 +1,10 @@
 @use '@/styles' as theme;
 
-// Dynamic height calculation accounting for banner and toolbar presence
+// Dynamic height calculation accounting for banner and AppHeader presence
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + var(--toolbar-height, 72px) + 12px);
-  min-height: calc(100vh - var(--banner-height, 0px) - var(--toolbar-height, 72px) - 36px);
+  padding-top: calc(var(--banner-height, 0px) + theme.$header-height + 12px);
+  min-height: calc(100vh - var(--banner-height, 0px) - theme.$header-height - 36px);
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -12,6 +12,31 @@
   padding-inline-end: 24px;
   padding-bottom: 24px;
   box-sizing: border-box;
+}
+
+// AppHeader styles for board list page
+.titleWithButton {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+  flex-wrap: nowrap;
+}
+
+.pageTitle {
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  margin: 0;
+}
+
+// Create button label - visible on desktop, hidden on smaller screens
+.createButtonLabel {
+  margin-inline-start: theme.$spacing-2;
+  
+  @media (max-width: 870px) {
+    display: none;
+  }
 }
 
 .emptyState {
