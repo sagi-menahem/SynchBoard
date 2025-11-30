@@ -25,9 +25,9 @@
   max-height: 150px;
   overflow-y: auto;
   padding: theme.$spacing-2;
-  border: 1px solid theme.$border-primary;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   @include theme.rounded-small;
-  background-color: theme.$overlay-darker;
+  background-color: var(--user-chosen-color);
 }
 
 .emailTag {
