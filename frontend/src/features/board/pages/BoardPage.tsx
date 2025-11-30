@@ -175,9 +175,18 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       <PageTransition>
         <AppHeader
           leading={
-            <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
-              <BackArrow size={20} />
-            </Button>
+            <>
+              <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
+                <BackArrow size={20} />
+              </Button>
+              <Button
+                variant="icon"
+                onClick={handleGoToDetails}
+                title={t('board:header.info')}
+              >
+                <Info size={20} />
+              </Button>
+            </>
           }
           title={<span>{t('board:page.loading')}</span>}
         />
@@ -191,9 +200,18 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       {/* Slim Header with navigation, title, info, and export only */}
       <AppHeader
         leading={
-          <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
-            <BackArrow size={20} />
-          </Button>
+          <>
+            <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
+              <BackArrow size={20} />
+            </Button>
+            <Button
+              variant="icon"
+              onClick={handleGoToDetails}
+              title={t('board:header.info')}
+            >
+              <Info size={20} />
+            </Button>
+          </>
         }
         title={<span className={styles.boardTitle}>{boardName ?? t('board:fallbacks.untitled')}</span>}
         trailing={
@@ -204,13 +222,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               title={t('board:header.export')}
             >
               <Download size={20} />
-            </Button>
-            <Button
-              variant="icon"
-              onClick={handleGoToDetails}
-              title={t('board:header.info')}
-            >
-              <Info size={20} />
             </Button>
           </>
         }
