@@ -3,6 +3,7 @@ import { BoardWorkspace } from 'features/board/components/workspace';
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
+import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { ArrowLeft, ArrowRight, Download, Info } from 'lucide-react';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,27 @@ import { RadialDock } from '../components/workspace/radial';
 import { useCanvasDownload } from '../hooks/useCanvasDownload';
 
 import styles from './BoardPage.module.scss';
+
+/**
+ * Converts a hex color to RGB values for CSS custom properties.
+ * @param hex - Hex color string (e.g., '#FFFFFF' or '#FFF')
+ * @returns RGB values as comma-separated string (e.g., '255, 255, 255')
+ */
+const hexToRgb = (hex: string): string => {
+  // Remove # if present
+  const cleanHex = hex.replace('#', '');
+  
+  // Handle 3-digit hex
+  const fullHex = cleanHex.length === 3
+    ? cleanHex.split('').map(char => char + char).join('')
+    : cleanHex;
+  
+  const r = parseInt(fullHex.substring(0, 2), 16);
+  const g = parseInt(fullHex.substring(2, 4), 16);
+  const b = parseInt(fullHex.substring(4, 6), 16);
+  
+  return `${r}, ${g}, ${b}`;
+};
 
 /**
  * Props interface for the BoardPageContent component.
@@ -51,6 +73,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   } = useBoardContext();
 
   const { preferences } = useToolPreferences();
+  const { preferences: userBoardPreferences } = useUserBoardPreferences();
 
   // Track satellite state for mobile FloatingActions coordination
   const [activeSatellite, setActiveSatellite] = React.useState<string | null>(null);
@@ -81,6 +104,34 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       }
       : undefined;
   }, [boardDetails]);
+  // Convert board theme color to CSS custom properties
+  // Use user's Board Appearance preference (same as chat background)
+  const themeColorStyles = useMemo(() => {
+    const savedColor = userBoardPreferences.boardBackgroundSetting;
+    
+    if (!savedColor) {
+      return undefined;
+    }
+    
+    // Check if it's a CSS variable (starts with --)
+    if (savedColor.startsWith('--')) {
+      // Use the CSS variable directly - no conversion needed
+      const bgColor = `var(${savedColor})`;
+      
+      return {
+        '--board-theme-color': bgColor,
+        background: bgColor, // Also set directly for immediate application
+      } as React.CSSProperties;
+    }
+    
+    // It's a hex color - convert to RGB
+    const rgbValue = hexToRgb(savedColor);
+    
+    return {
+      '--board-theme-color': savedColor,
+      '--board-theme-rgb': rgbValue,
+    } as React.CSSProperties;
+  }, [userBoardPreferences]);
 
   const { handleDownload } = useCanvasDownload({
     boardName: boardName ?? t('board:fallbacks.untitled'),
@@ -146,7 +197,12 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       />
 
       {/* Main Content Area */}
-      <main className={styles.pageContent} ref={pageRef} data-board-page>
+      <main 
+        className={styles.pageContent} 
+        ref={pageRef} 
+        data-board-page
+        style={themeColorStyles}
+      >
         <div className={styles.boardWorkspaceArea}>
           <BoardWorkspace
             boardId={boardId}

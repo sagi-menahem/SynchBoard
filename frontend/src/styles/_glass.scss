@@ -1,25 +1,17 @@
-// Glassmorphism Mixin
-// Creates a frosted glass effect with subtle border and shadow
-@mixin glass-panel($opacity: 0.75, $blur: 12px) {
-    background: rgba(255, 255, 255, $opacity);
-    backdrop-filter: blur($blur);
-    -webkit-backdrop-filter: blur($blur);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-
-    // Dark mode support using data-theme attribute
-    body[data-theme='dark'] & {
-        background: rgba(30, 30, 30, $opacity);
-        border-color: rgba(255, 255, 255, 0.1);
-    }
+// Solid Panel Mixin
+// Creates solid, opaque backgrounds using the user's Board Appearance color
+// No transparency - color determined purely by user preferences
+@mixin glass-panel($opacity: 1, $blur: 0) {
+    // Solid background using user's theme color
+    // First try RGB format (for hex colors), fallback to direct CSS variable (for var() values)
+    background: rgb(var(--board-theme-rgb, 255, 255, 255));
+    background: var(--board-theme-color, rgb(var(--board-theme-rgb, 255, 255, 255)));
     
-    // Fallback for prefers-color-scheme
-    @media (prefers-color-scheme: dark) {
-        body:not([data-theme]) & {
-            background: rgba(30, 30, 30, $opacity);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-    }
+    // Subtle border for definition
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    
+    // Soft shadow for depth
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 // Pill Shape Mixin

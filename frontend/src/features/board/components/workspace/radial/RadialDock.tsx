@@ -274,29 +274,44 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
             <div className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}>
                 <AnimatePresence mode="wait">
                     {!isExpanded ? (
-                        // COLLAPSED STATE - Small trigger button
+                        // COLLAPSED STATE - Small trigger button with color indicator
                         <motion.button
                             key="collapsed-trigger"
                             className={styles.collapsedTrigger}
-                        onClick={handleToggleExpand}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ 
-                            type: "spring", 
-                            stiffness: 300, 
-                            damping: 25
-                        }}
-                    >
-                        {isMobile && <div className={styles.pullHandle} />}
-                        <motion.div
-                            initial={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.15 }}
+                            onClick={handleToggleExpand}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ 
+                                type: "spring", 
+                                stiffness: 300, 
+                                damping: 25
+                            }}
                         >
-                            {activeToolIcon}
-                        </motion.div>
-                    </motion.button>
+                            {isMobile && (
+                                <div 
+                                    className={styles.pullHandle} 
+                                    style={{ 
+                                        backgroundColor: preferences.defaultTool === TOOLS.ERASER 
+                                            ? 'rgba(0, 0, 0, 0.3)' // Neutral gray for eraser
+                                            : preferences.defaultStrokeColor 
+                                    }}
+                                />
+                            )}
+                            <motion.div
+                                initial={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.15 }}
+                            >
+                                {activeToolIcon}
+                            </motion.div>
+                            {!isMobile && preferences.defaultTool !== TOOLS.ERASER && (
+                                <div 
+                                    className={styles.collapsedColorIndicator}
+                                    style={{ backgroundColor: preferences.defaultStrokeColor }}
+                                />
+                            )}
+                        </motion.button>
                 ) : (
                     // EXPANDED STATE - Full toolbar
                     <motion.div
