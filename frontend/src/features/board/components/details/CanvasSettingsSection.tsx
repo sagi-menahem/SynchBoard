@@ -166,7 +166,6 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                   disabled={isUpdating}
                   placeholder={t('board:details.canvasSettings.height')}
                 />
-                <span>{t('board:details.canvasSettings.pixels')}</span>
               </div>
             )}
           </div>

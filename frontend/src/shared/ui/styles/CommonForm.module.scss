@@ -211,8 +211,6 @@
   align-items: center;
   gap: theme.$spacing-3;
   margin-top: theme.$spacing-3;
-  padding: theme.$spacing-3 0;
-  background: transparent;
   color: theme.$text-secondary;
   font-size: 0.9rem;
   flex-wrap: wrap;
@@ -224,6 +222,16 @@
   min-width: 80px;
   flex-shrink: 1;
   text-align: center;
+  background-color: transparent;
+  border: 1px solid rgba(120, 120, 128, 0.3);
+  border-radius: theme.$border-radius-sm;
+  padding: theme.$spacing-2;
+  color: theme.$text-primary;
+
+  &:focus {
+    outline: none;
+    border-color: theme.$primary;
+  }
 }
 
 // Dimension separator and unit label styling

@@ -168,7 +168,6 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
               disabled={disabled}
               placeholder={t('board:createForm.placeholder.height')}
             />
-            <span>{t('board:createForm.label.pixels')}</span>
           </div>
         )}
       </div>
