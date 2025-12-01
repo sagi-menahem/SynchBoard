@@ -77,17 +77,13 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         />
       </div>
       <div className={styles.field}>
-        <label htmlFor="profile-gender">
-          {t('settings:page.genderLabel')}
-          <span className={styles.required}> *</span>
-        </label>
+        <label htmlFor="profile-gender">{t('settings:page.genderLabel')}</label>
         <RadioGroup
           id="profile-gender"
           value={gender}
           onValueChange={handleGenderChange}
           name="gender"
           orientation="horizontal"
-          required
           options={[
             { value: 'male', label: t('common:form.option.male') },
             { value: 'female', label: t('common:form.option.female') },
