@@ -1,3 +1,15 @@
+// Glass effect variables for light and dark themes
+:root,
+body[data-theme='light'] {
+  --glass-background: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme='dark'] {
+  --glass-background: rgba(39, 39, 42, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
 // Solid Panel Mixin
 // Creates solid, opaque backgrounds using the user's Board Appearance color
 // No transparency - color determined purely by user preferences
