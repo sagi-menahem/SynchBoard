@@ -76,6 +76,10 @@ interface BoardWorkspaceProps {
   onColorPick?: (color: string) => void;
   /** Whether the workspace is in a loading state */
   isLoading?: boolean;
+  /** Mobile chat open state (controlled from parent on mobile) */
+  mobileChatOpen?: boolean;
+  /** Handler for mobile chat open state changes */
+  onMobileChatOpenChange?: (isOpen: boolean) => void;
 }
 
 /**
@@ -110,6 +114,8 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   onSplitRatioChange,
   onColorPick,
   isLoading,
+  mobileChatOpen = false,
+  onMobileChatOpenChange,
 }) => {
   const isMobile = useIsMobile();
   const { preferences: canvasPreferences, updateCanvasPreferences } = useCanvasPreferences();
@@ -123,8 +129,10 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     splitRatio ?? canvasPreferences.canvasChatSplitRatio ?? 70,
   );
 
-  // Determine if chat is open based on user preferences
-  const isChatOpen = canvasPreferences.isChatOpen;
+  // Determine if chat is open
+  // On mobile: use prop (controlled by parent, always starts closed)
+  // On desktop: use user preferences
+  const isChatOpen = isMobile ? mobileChatOpen : canvasPreferences.isChatOpen;
 
   // Effect to update localCanvasSize when splitRatio prop changes
   useEffect(() => {
@@ -231,8 +239,8 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         <MobileChatDrawer
           boardId={boardId}
           messages={messages}
-          isOpen={isChatOpen}
-          onOpenChange={(isOpen) => void updateCanvasPreferences({ isChatOpen: isOpen })}
+          isOpen={mobileChatOpen}
+          onOpenChange={(isOpen) => onMobileChatOpenChange?.(isOpen)}
           userChosenColor={getUserChosenColor()}
         />
       </div>

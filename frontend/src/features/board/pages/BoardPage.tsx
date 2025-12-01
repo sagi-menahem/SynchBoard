@@ -5,11 +5,12 @@ import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvide
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { ArrowLeft, Download, Info, MessageSquare } from 'lucide-react';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
+import { useIsMobile } from 'shared/hooks';
 import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
 import { hexToRgbString } from 'shared/utils/ColorUtils';
 
@@ -40,6 +41,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const {
     isLoading,
@@ -53,6 +55,9 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   const { preferences, updateStrokeColor, updateTool } = useToolPreferences();
   const { preferences: userBoardPreferences } = useUserBoardPreferences();
+
+  // Mobile chat state - always starts closed on mobile
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
   // Track satellite state for mobile FloatingActions coordination
   const [activeSatellite, setActiveSatellite] = React.useState<string | null>(null);
@@ -201,9 +206,19 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             </Button>
             <Button
               variant="icon"
-              onClick={() => void updateCanvasPreferences({ isChatOpen: !canvasPreferences.isChatOpen })}
-              title={canvasPreferences.isChatOpen ? t('board:workspace.hideChat') : t('board:workspace.showChat')}
-              aria-pressed={canvasPreferences.isChatOpen}
+              onClick={() => {
+                if (isMobile) {
+                  setMobileChatOpen(!mobileChatOpen);
+                } else {
+                  void updateCanvasPreferences({ isChatOpen: !canvasPreferences.isChatOpen });
+                }
+              }}
+              title={
+                (isMobile ? mobileChatOpen : canvasPreferences.isChatOpen)
+                  ? t('board:workspace.hideChat')
+                  : t('board:workspace.showChat')
+              }
+              aria-pressed={isMobile ? mobileChatOpen : canvasPreferences.isChatOpen}
             >
               <MessageSquare size={20} />
             </Button>
@@ -234,6 +249,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             onSplitRatioChange={handleSplitRatioChange}
             onColorPick={handleColorPick}
             isLoading={isLoading}
+            mobileChatOpen={mobileChatOpen}
+            onMobileChatOpenChange={setMobileChatOpen}
           />
         </div>
 
