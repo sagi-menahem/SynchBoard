@@ -202,7 +202,7 @@ const BoardListPage: React.FC = () => {
           );
         })()}
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} className="modal-wide">
+        <Modal isOpen={isModalOpen} onClose={closeModal} className="modal-wide modal-fullscreen-mobile">
           <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
         </Modal>
       </main>

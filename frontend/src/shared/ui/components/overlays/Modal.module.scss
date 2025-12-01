@@ -100,32 +100,52 @@
 // Mobile responsive adjustments
 @media (max-width: theme.$breakpoint-sm) {
   .overlay {
-    padding: 0;
-    align-items: stretch;
-    justify-content: stretch;
+    padding: theme.$spacing-2;
+    align-items: center;
+    justify-content: center;
   }
 
   .content {
-    min-width: 0;
-    width: 100vw;
-    max-width: 100vw;
-    height: 100%;
-    max-height: 100%;
+    min-width: 280px;
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
     margin: 0;
-    border-radius: 0;
+    border-radius: theme.$border-radius-md;
     padding: theme.$spacing-4;
-    padding-top: theme.$spacing-12;
-    overflow-x: hidden;
     overflow-y: auto;
-    box-sizing: border-box;
   }
 
   .closeButton {
-    top: theme.$spacing-3;
-    inset-inline-end: theme.$spacing-3;
-    min-width: 36px;
-    min-height: 36px;
-    width: 36px;
-    height: 36px;
+    top: theme.$spacing-2;
+    inset-inline-end: theme.$spacing-2;
+    min-width: 32px;
+    min-height: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// Full-screen modal variant for mobile (used by large forms like Create Board)
+@media (max-width: theme.$breakpoint-sm) {
+  :global(.modal-fullscreen-mobile) {
+    padding: 0 !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+  }
+
+  :global(.modal-fullscreen-mobile) .content {
+    min-width: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    padding: theme.$spacing-4 !important;
+    padding-top: theme.$spacing-12 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
   }
 }
