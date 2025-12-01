@@ -77,20 +77,19 @@
   max-width: 420px;
   position: relative;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
+  box-shadow: theme.$shadow-card;
   @include theme.smooth-transition;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    border-color: rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
+    box-shadow: theme.$shadow-lg;
   }
 
   &:active {
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 

@@ -30,15 +30,18 @@
   border: theme.$card-border-width solid var(--color-border);
 }
 
-// Dashed border card for empty states
+// Empty state card with solid background (no transparency)
 .empty-state {
-  box-shadow: none;
-  border: theme.$border-width dashed var(--color-border);
-  background-color: var(--color-surface);
+  background: var(--user-chosen-color, var(--glass-background));
+  opacity: 1;
+  border: 1px solid var(--glass-border);
+  box-shadow: theme.$shadow-card;
 
-  &:hover {
-    background-color: var(--color-surface-hover);
-    border-color: var(--color-border-strong);
+  // Override general hoverable styles - keep background color and use scale instead of color change
+  &.hoverable:hover {
+    background: var(--user-chosen-color, var(--glass-background)) !important;
+    transform: scale(1.02) !important;
+    box-shadow: theme.$shadow-lg;
   }
 }
 
