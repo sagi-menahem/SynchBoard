@@ -221,14 +221,37 @@
   margin: 0;
 }
 
+// Settings page input with transparent background to show page background
+.settingsInput {
+  background-color: transparent !important;
+
+  // Override autofill background for transparent effect
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    background-color: transparent !important;
+  }
+}
+
 .dateInput {
   @include theme.input-base;
-  background-color: theme.$background-secondary;
+  background-color: transparent;
   border: 1px solid theme.$border-secondary;
   color: theme.$text-primary;
   font-size: 1rem;
   margin-top: 4px;
   @include theme.smooth-transition;
+
+  // Override autofill background for transparent effect
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    background-color: transparent !important;
+  }
 }
 
 .dateInput:focus {
