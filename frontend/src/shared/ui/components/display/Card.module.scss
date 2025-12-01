@@ -45,6 +45,7 @@
 // Glass morphism card with user-chosen color and transparency
 .glass {
   background: var(--user-chosen-color, var(--glass-background));
+  opacity: 0.75;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
@@ -53,6 +54,7 @@
   padding: theme.$card-padding;
 
   &.hoverable:hover {
+    opacity: 0.85;
     transform: translateY(theme.$transform-translate-y-xs);
     box-shadow: theme.$shadow-lg;
   }
