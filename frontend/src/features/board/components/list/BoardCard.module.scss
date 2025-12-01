@@ -4,20 +4,20 @@
   text-decoration: none;
   color: inherit;
   @include theme.smooth-transition;
-  
+
   &:hover .boardCard.grid {
     opacity: 0.99;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    transform: translateY(-2px);
+    transform: scale(1.02);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
-  
+
   &:hover .boardCard.list {
     opacity: 0.99;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    transform: translateY(-2px);
+    transform: scale(1.02);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 }
