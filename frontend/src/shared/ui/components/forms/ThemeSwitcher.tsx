@@ -77,37 +77,46 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           flexShrink: 0,
           cursor: 'pointer',
           borderRadius: '9999px',
-          border: '2px solid transparent',
-          backgroundColor: isDark ? '#374151' : '#e5e7eb',
+          border: '1px solid rgba(120, 120, 128, 0.3)',
+          backgroundColor: 'rgba(120, 120, 128, 0.12)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           padding: '0',
-          transition: 'background-color 0.2s',
+          transition: 'all 0.2s ease',
           outline: 'none',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
         }}
         aria-labelledby={showLabel ? 'theme-label' : undefined}
         aria-label={!showLabel ? t('common:theme') : undefined}
       >
         <span
           style={{
-            position: 'relative',
-            display: 'inline-block',
-            height: `${config.height - 4}px`,
-            width: `${config.height - 4}px`,
+            position: 'absolute',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: `${config.height - 6}px`,
+            width: `${config.height - 6}px`,
+            top: '2px',
+            insetInlineStart: '2px',
             borderRadius: '9999px',
-            backgroundColor: 'white',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            transform: (() => {
-              if (isDark) {
-                return isRTL
-                  ? `translateX(-${config.width - config.height}px)`
-                  : `translateX(${config.width - config.height}px)`;
-              }
-              return 'translateX(0px)';
-            })(),
-            transition: 'transform 0.2s',
-            zIndex: 1,
+            backgroundColor: isDark ? 'rgba(96, 165, 250, 0.9)' : 'rgba(251, 191, 36, 0.9)',
+            boxShadow: isDark
+              ? '0 2px 8px rgba(96, 165, 250, 0.4)'
+              : '0 2px 8px rgba(251, 191, 36, 0.4)',
+            transform: isDark
+              ? `translateX(${isRTL ? '-' : ''}${config.width - config.height}px)`
+              : 'translateX(0px)',
+            transition: 'all 0.2s ease',
+            zIndex: 2,
           }}
-        />
+        >
+          {isDark ? (
+            <Moon size={config.iconSize - 4} color="white" />
+          ) : (
+            <Sun size={config.iconSize - 4} color="white" />
+          )}
+        </span>
 
         <div
           style={{
@@ -118,11 +127,19 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             justifyContent: 'space-between',
             paddingLeft: '6px',
             paddingRight: '6px',
-            zIndex: 2,
+            zIndex: 1,
           }}
         >
-          <Sun size={config.iconSize} color={isDark ? '#6b7280' : '#f59e0b'} />
-          <Moon size={config.iconSize} color={isDark ? '#a5b4fc' : '#6b7280'} />
+          <Sun
+            size={config.iconSize}
+            color={isDark ? 'var(--color-text-muted)' : 'transparent'}
+            style={{ opacity: isDark ? 0.5 : 0 }}
+          />
+          <Moon
+            size={config.iconSize}
+            color={isDark ? 'transparent' : 'var(--color-text-muted)'}
+            style={{ opacity: isDark ? 0 : 0.5 }}
+          />
         </div>
       </Switch>
     </div>

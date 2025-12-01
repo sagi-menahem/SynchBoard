@@ -76,38 +76,48 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
           flexShrink: 0,
           cursor: 'pointer',
           borderRadius: '9999px',
-          border: '2px solid transparent',
-          backgroundColor: 'var(--language-toggle-bg)',
+          border: '1px solid rgba(120, 120, 128, 0.3)',
+          backgroundColor: 'rgba(120, 120, 128, 0.12)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           padding: '0',
-          transition: 'background-color 0.2s',
+          transition: 'all 0.2s ease',
           outline: 'none',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
         }}
         aria-labelledby={showLabel ? 'language-label' : undefined}
         aria-label={!showLabel ? t('common:language') : undefined}
       >
         <span
           style={{
-            position: 'relative',
-            display: 'inline-block',
-            height: `${config.height - 4}px`,
-            width: `${config.height - 4}px`,
+            position: 'absolute',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: `${config.height - 6}px`,
+            width: `${config.height - 6}px`,
+            top: '2px',
+            insetInlineStart: '2px',
             borderRadius: '9999px',
-            backgroundColor: 'white',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            // Calculate transform based on language and RTL direction
-            transform: (() => {
-              if (isHebrew) {
-                return isRTL
-                  ? `translateX(-${config.width - config.height}px)`
-                  : `translateX(${config.width - config.height}px)`;
-              }
-              return 'translateX(0px)';
-            })(),
-            transition: 'transform 0.2s',
-            zIndex: 1,
+            backgroundColor: 'rgba(59, 130, 246, 0.9)',
+            boxShadow: '0 2px 8px rgba(59, 130, 246, 0.4)',
+            transform: isHebrew
+              ? `translateX(${isRTL ? '-' : ''}${config.width - config.height}px)`
+              : 'translateX(0px)',
+            transition: 'all 0.2s ease',
+            zIndex: 2,
           }}
-        />
+        >
+          <span
+            style={{
+              fontSize: `${config.fontSize - 2}px`,
+              fontWeight: '700',
+              color: 'white',
+            }}
+          >
+            {isHebrew ? 'HE' : 'EN'}
+          </span>
+        </span>
 
         <div
           style={{
@@ -115,7 +125,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             inset: '2px',
             display: 'flex',
             alignItems: 'center',
-            zIndex: 2,
+            zIndex: 1,
           }}
         >
           <div
@@ -129,8 +139,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             <span
               style={{
                 fontSize: `${config.fontSize}px`,
-                fontWeight: '700',
-                color: isHebrew ? '#6b7280' : '#374151',
+                fontWeight: '600',
+                color: 'var(--color-text-muted)',
+                opacity: isHebrew ? 0.6 : 0,
               }}
             >
               EN
@@ -147,8 +158,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             <span
               style={{
                 fontSize: `${config.fontSize}px`,
-                fontWeight: '700',
-                color: isHebrew ? '#6b7280' : '#6b7280',
+                fontWeight: '600',
+                color: 'var(--color-text-muted)',
+                opacity: isHebrew ? 0 : 0.6,
               }}
             >
               HE
