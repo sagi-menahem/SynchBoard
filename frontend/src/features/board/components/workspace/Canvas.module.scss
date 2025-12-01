@@ -13,7 +13,38 @@
   // Flip the container vertically to move horizontal scrollbar to top
   transform: scaleY(-1);
 
-  @include theme.theme-scrollbar-enhanced;
+  // Custom scrollbar with user preference color track and gray thumb
+  scrollbar-width: auto;
+  scrollbar-color: rgba(120, 120, 128, 0.6) var(--user-chosen-color, var(--glass-background));
+
+  &::-webkit-scrollbar {
+    width: theme.$spacing-3;
+    height: theme.$spacing-3;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--user-chosen-color, var(--glass-background));
+    border: 1px solid rgba(120, 120, 128, 0.3);
+    @include theme.rounded-medium;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(120, 120, 128, 0.5);
+    border: 1px solid rgba(120, 120, 128, 0.3);
+    @include theme.rounded-medium;
+
+    &:hover {
+      background: rgba(120, 120, 128, 0.7);
+    }
+
+    &:active {
+      background: rgba(120, 120, 128, 0.8);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: var(--user-chosen-color, var(--glass-background));
+  }
 }
 
 // Flip the content back to normal orientation
