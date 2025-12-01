@@ -6,7 +6,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Content to be displayed within the card container */
   children: React.ReactNode;
   /** Visual style variant determining shadow and border appearance */
-  variant?: 'default' | 'elevated' | 'outlined' | 'empty-state';
+  variant?: 'default' | 'elevated' | 'outlined' | 'empty-state' | 'glass';
   /** Internal spacing size for consistent content positioning */
   padding?: 'none' | 'sm' | 'md' | 'lg';
   /** Whether card should respond to hover interactions with visual feedback */

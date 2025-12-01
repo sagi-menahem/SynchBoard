@@ -61,7 +61,7 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
   if (viewMode === 'grid') {
     return (
       <Link to={boardRoute} className={styles.cardLink}>
-        <Card variant="elevated" hoverable className={cardClasses}>
+        <Card variant="glass" hoverable className={cardClasses}>
           {/* Preview area with neutral gradient and centered avatar */}
           <div className={styles.previewArea}>
             {/* Centered avatar */}

@@ -17,10 +17,6 @@
 }
 
 .boardCard {
-  background: var(--glass-background);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
   text-align: start;
   position: relative;
   overflow: hidden;
