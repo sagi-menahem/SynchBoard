@@ -146,7 +146,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <Input id="register-lastName" name="lastName" type="text" disabled={isPending} />
       </div>
 
-      <div className={`${styles.field} ${styles.fullWidth}`}>
+      <div className={styles.field}>
         <label htmlFor="register-gender">
           <User size={14} />
           {t('common:form.label.gender')}
@@ -173,7 +173,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         <Input id="register-dateOfBirth" name="dateOfBirth" type="date" disabled={isPending} />
       </div>
 
-      <div className={styles.field}>
+      <div className={`${styles.field} ${styles.fullWidth}`}>
         <label htmlFor="register-phoneNumber">
           <Phone size={14} />
           {t('common:form.label.phoneNumber')}
