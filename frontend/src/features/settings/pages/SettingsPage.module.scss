@@ -193,11 +193,6 @@
   gap: theme.$spacing-2;
 }
 
-.dangerZone {
-  border-color: theme.$overlay-danger-40;
-  box-shadow: theme.$shadow-glow-md theme.$overlay-danger-10;
-}
-
 .required {
   color: theme.$error-color;
   font-weight: bold;

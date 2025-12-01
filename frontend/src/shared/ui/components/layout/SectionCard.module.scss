@@ -93,24 +93,17 @@
   }
 }
 
-// Danger state with destructive styling
+// Danger state with red border only
 .danger {
-  border: 2px solid var(--btn-destructive-bg);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2), theme.$shadow-glow-md var(--btn-destructive-bg);
-  background: linear-gradient(
-    135deg,
-    var(--glass-background) 0%,
-    rgba(239, 68, 68, 0.08) 100%
-  );
+  border: 1px solid var(--btn-destructive-bg) !important;
+  box-shadow: theme.$shadow-card;
 
   &:hover {
+    opacity: 0.99;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.25), theme.$shadow-glow-md var(--btn-destructive-bg);
-    background: linear-gradient(
-      135deg,
-      var(--glass-background) 0%,
-      rgba(239, 68, 68, 0.12) 100%
-    );
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -271,16 +264,12 @@
 @media (prefers-contrast: high) {
 
   .default,
-  .elevated {
+  .elevated,
+  .danger {
     border-width: 2px;
   }
 
   .warning {
     border-width: 3px;
-  }
-
-  .danger {
-    border-width: 2px;
-    border-top-width: 3px;
   }
 }
