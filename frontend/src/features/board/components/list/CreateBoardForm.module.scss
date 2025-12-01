@@ -13,8 +13,12 @@
 
 .modalHeader {
   text-align: center;
-  padding-bottom: theme.$spacing-4;
+  padding: theme.$spacing-4;
+  margin: calc(-1 * theme.$spacing-4);
+  margin-bottom: 0;
+  background-color: var(--user-chosen-color);
   border-bottom: 1px solid theme.$border-primary;
+  border-radius: theme.$border-radius-lg theme.$border-radius-lg 0 0;
 }
 
 .modalTitle {
@@ -126,6 +130,12 @@
     max-width: 900px;
     padding: theme.$spacing-3;
   }
+
+  .modalHeader {
+    padding: theme.$spacing-3;
+    margin: calc(-1 * theme.$spacing-3);
+    margin-bottom: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -133,6 +143,12 @@
     max-width: 95vw;
     padding: theme.$spacing-2;
     gap: theme.$spacing-4;
+  }
+
+  .modalHeader {
+    padding: theme.$spacing-2;
+    margin: calc(-1 * theme.$spacing-2);
+    margin-bottom: 0;
   }
 
   .formContainer {
@@ -164,6 +180,12 @@
   .modalContainer {
     padding: theme.$spacing-1;
     gap: theme.$spacing-3;
+  }
+
+  .modalHeader {
+    padding: theme.$spacing-1;
+    margin: calc(-1 * theme.$spacing-1);
+    margin-bottom: 0;
   }
 
   .leftColumn,
