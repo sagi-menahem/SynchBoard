@@ -55,7 +55,7 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ inviteForm, onInvit
           />
         </div>
         <div className={styles.buttonGroup}>
-          <Button type="submit" disabled={isSubmitting} variant="primary">
+          <Button type="submit" disabled={isSubmitting} variant="primary-glass">
             <UserPlus size={16} />
             {isSubmitting
               ? t('board:inviteMemberForm.button.sendingInvite')

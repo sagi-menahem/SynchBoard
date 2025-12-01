@@ -54,10 +54,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         </div>
         <p className={styles.modalMessage}>{message}</p>
         <div className={styles.buttonGroup}>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary-glass" onClick={onClose}>
             {t('common:button.cancel')}
           </Button>
-          <Button variant="primary" onClick={handleConfirm}>
+          <Button variant="primary-glass" onClick={handleConfirm}>
             {t('common:button.confirm')}
           </Button>
         </div>

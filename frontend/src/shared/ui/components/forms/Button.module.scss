@@ -186,6 +186,78 @@
   }
 }
 
+// Secondary action button with glass design (for user pages)
+.secondary-glass {
+  background: rgba(120, 120, 128, 0.12);
+  color: var(--color-text-primary);
+  border: 1px solid rgba(120, 120, 128, 0.2);
+  font-weight: theme.$font-weight-medium;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  &:hover:not(:disabled) {
+    background: rgba(120, 120, 128, 0.2);
+    border-color: rgba(120, 120, 128, 0.35);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(120, 120, 128, 0.25);
+    transform: translateY(theme.$spacing-0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+}
+
+// Primary action button with glass design (for user pages)
+.primary-glass {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--btn-primary-bg);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  font-weight: theme.$font-weight-semibold;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+
+  &:hover:not(:disabled) {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(59, 130, 246, 0.3);
+    transform: translateY(theme.$spacing-0);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+  }
+}
+
+// Destructive action button with glass design (for user pages)
+.destructive-glass {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--btn-destructive-bg);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-weight: theme.$font-weight-semibold;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+
+  &:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.5);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(239, 68, 68, 0.3);
+    transform: translateY(theme.$spacing-0);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+  }
+}
+
 // Link-style button that mimics text links
 .link {
   background: none;

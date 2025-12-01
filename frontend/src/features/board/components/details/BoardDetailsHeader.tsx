@@ -76,7 +76,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
           currentUserIsAdmin ? (
             <Button
               onClick={onEditName}
-              variant="secondary"
+              variant="secondary-glass"
               className={`${styles.editButton} ${styles.themeButton}`}
               title={t('board:detailsPage.editBoardName')}
             >
@@ -106,7 +106,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
           currentUserIsAdmin && !isEditingDescription ? (
             <Button
               onClick={() => setIsEditingDescription(true)}
-              variant="secondary"
+              variant="secondary-glass"
               className={`${styles.editButton} ${styles.themeButton}`}
             >
               <PencilLine size={16} />
@@ -131,12 +131,12 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
               <Button
                 onClick={handleCancelDescriptionEdit}
                 disabled={isUpdating}
-                variant="secondary"
+                variant="secondary-glass"
               >
                 <X size={16} />
                 {t('common:button.cancel')}
               </Button>
-              <Button onClick={handleSaveDescription} disabled={isUpdating} variant="primary">
+              <Button onClick={handleSaveDescription} disabled={isUpdating} variant="primary-glass">
                 <Save size={16} />
                 {isUpdating ? t('common:button.saving') : t('common:button.save')}
               </Button>

@@ -189,10 +189,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
 
           {/* Button Group - Full Width */}
           <div className={styles.buttonGroup}>
-            <Button type="button" onClick={onClose} disabled={isPending} variant="secondary">
+            <Button type="button" onClick={onClose} disabled={isPending} variant="secondary-glass">
               {t('common:button.cancel')}
             </Button>
-            <Button type="submit" disabled={isPending} variant="primary">
+            <Button type="submit" disabled={isPending} variant="primary-glass">
               {isPending ? t('common:button.creating') : t('board:createForm.button.createBoard')}
             </Button>
           </div>

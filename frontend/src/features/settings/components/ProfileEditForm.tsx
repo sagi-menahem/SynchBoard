@@ -112,11 +112,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         />
       </div>
       <div className={styles.buttonGroup}>
-        <Button onClick={onCancel} variant="secondary">
+        <Button onClick={onCancel} variant="secondary-glass">
           <X size={16} />
           {t('settings:page.buttons.cancel')}
         </Button>
-        <Button onClick={onSave} variant="primary">
+        <Button onClick={onSave} variant="primary-glass">
           <Save size={16} />
           {t('settings:page.buttons.save')}
         </Button>

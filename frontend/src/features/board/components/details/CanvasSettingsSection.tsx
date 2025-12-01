@@ -104,7 +104,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       variant="default"
       headerActions={
         !isEditing ? (
-          <Button onClick={handleStartEditing} variant="secondary" className={`${styles.editButton} ${styles.themeButton}`}>
+          <Button onClick={handleStartEditing} variant="secondary-glass" className={`${styles.editButton} ${styles.themeButton}`}>
             <Settings2 size={16} />
             {t('board:details.canvasSettings.edit')}
           </Button>
@@ -172,11 +172,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
 
           <div className={styles.buttonGroup}>
-            <Button onClick={handleCancel} disabled={isUpdating} variant="secondary">
+            <Button onClick={handleCancel} disabled={isUpdating} variant="secondary-glass">
               <X size={16} />
               {t('common:button.cancel')}
             </Button>
-            <Button onClick={handleSave} disabled={isUpdating} variant="primary">
+            <Button onClick={handleSave} disabled={isUpdating} variant="primary-glass">
               <Save size={16} />
               {isUpdating
                 ? t('common:button.saving')

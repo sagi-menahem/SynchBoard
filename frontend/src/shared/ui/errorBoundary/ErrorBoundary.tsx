@@ -120,7 +120,7 @@ const ErrorBoundaryUI: React.FC<{
         <div className={styles.buttonContainer}>
           <Button
             onClick={onGoHome}
-            variant="secondary"
+            variant="secondary-glass"
             className={styles.secondaryButton}
             disabled={isRetrying}
           >
@@ -129,7 +129,7 @@ const ErrorBoundaryUI: React.FC<{
           </Button>
           <Button
             onClick={onRetry}
-            variant="primary"
+            variant="primary-glass"
             className={styles.retryButton}
             disabled={isRetrying}
             aria-describedby="retry-description"

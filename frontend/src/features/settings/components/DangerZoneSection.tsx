@@ -32,7 +32,7 @@ const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }
       variant="danger"
     >
       <div className={styles.buttonGroup}>
-        <Button onClick={onDeleteAccount} variant="destructive">
+        <Button onClick={onDeleteAccount} variant="destructive-glass">
           <Trash2 size={16} />
           {t('settings:page.deleteAccountButton')}
         </Button>

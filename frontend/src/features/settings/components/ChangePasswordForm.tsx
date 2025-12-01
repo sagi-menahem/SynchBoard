@@ -104,7 +104,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => 
         />
       </div>
       <div className={styles.buttonGroup}>
-        <Button type="submit" disabled={isSubmitting} variant="primary">
+        <Button type="submit" disabled={isSubmitting} variant="primary-glass">
           <Save size={16} />
           {isSubmitting ? t('common:button.saving') : t('settings:page.buttons.save')}
         </Button>

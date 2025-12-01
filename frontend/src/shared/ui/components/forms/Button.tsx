@@ -30,7 +30,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', children, className, ...props }, ref) => {
-    const buttonClasses = `${styles.base} ${styles[variant]} ${className ?? ''}`.trim();
+    // Access variant class - bracket notation handles hyphenated names like 'primary-glass'
+    const variantClass = styles[variant as keyof typeof styles] ?? '';
+    const buttonClasses = `${styles.base} ${variantClass} ${className ?? ''}`.trim();
 
     return (
       <button ref={ref} className={buttonClasses} {...props}>

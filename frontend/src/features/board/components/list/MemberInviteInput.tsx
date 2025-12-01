@@ -94,7 +94,7 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({
           type="button"
           onClick={handleAddClick}
           disabled={disabled || !inputValue.trim() || !validateEmail(inputValue)}
-          variant="secondary"
+          variant="secondary-glass"
           className={styles.addButton}
         >
           {t('board:createForm.addMember')}

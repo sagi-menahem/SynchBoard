@@ -99,10 +99,10 @@ const EditFieldForm: React.FC<EditFieldFormProps> = ({
         </div>
 
         <div className={styles.buttonGroup}>
-          <Button type="button" onClick={onClose} disabled={isSubmitting} variant="secondary">
+          <Button type="button" onClick={onClose} disabled={isSubmitting} variant="secondary-glass">
             {t('common:button.cancel')}
           </Button>
-          <Button type="submit" disabled={isSubmitting} variant="primary">
+          <Button type="submit" disabled={isSubmitting} variant="primary-glass">
             {isSubmitting ? t('common:button.saving') : t('common:button.save')}
           </Button>
         </div>
