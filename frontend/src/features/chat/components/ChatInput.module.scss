@@ -7,12 +7,15 @@
   @include theme.flex-center;
 }
 
-/* Pill-shaped input container with hover and focus states */
+/* Pill-shaped input container with glass design and hover/focus states */
 .inputContainer {
   display: flex;
   align-items: center;
-  background: theme.$surface-elevated;
-  border: 2px solid theme.$border-light;
+  background: var(--user-chosen-color, var(--glass-background));
+  opacity: 0.85;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: theme.$spacing-2 theme.$spacing-4;
   width: 100%;
@@ -22,18 +25,21 @@
   box-sizing: border-box;
 
   &:focus-within {
-    border-color: theme.$primary;
-    box-shadow: 0 0 0 3px theme.$overlay-primary-20;
+    opacity: 0.92;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-color: var(--glass-border);
   }
 
   &:hover:not(.sending) {
-    border-color: theme.$border;
-    @include theme.shadow-light;
+    opacity: 0.92;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
   }
 
   /* Disabled state during message sending */
   &.sending {
-    opacity: 0.8;
+    opacity: 0.7;
     pointer-events: none;
 
     .input {
@@ -81,52 +87,58 @@
   }
 }
 
-/* Circular send button with scale hover effect */
+/* Circular send button with glass design and scale hover effect */
 .sendButton {
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  padding: 8px;
+  padding: 10px;
   border: none;
   transition: all 0.2s ease-in-out;
-
-  background-color: #3a3a3a;
+  background: var(--user-chosen-color, var(--glass-background));
+  opacity: 0.6;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: not-allowed;
+  border: 1px solid var(--glass-border);
 
   svg {
-    stroke: #707070;
+    stroke: currentColor;
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out;
   }
 
   &:not(:disabled) {
-    background-color: #adb5bd;
+    opacity: 0.9;
     cursor: pointer;
 
     svg {
-      stroke: #ffffff;
+      opacity: 1;
     }
 
     &:hover {
+      opacity: 1;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
   }
 }
 
 :global([data-theme='light']) {
   .sendButton {
-    background-color: #e9ecef;
+    color: theme.$text-primary;
+  }
+}
 
-    svg {
-      stroke: #adb5bd;
-    }
-
-    &:not(:disabled) {
-      background-color: #adb5bd;
-
-      svg {
-        stroke: #ffffff;
-      }
-    }
+:global([data-theme='dark']) {
+  .sendButton {
+    color: theme.$text-primary;
   }
 }
 
