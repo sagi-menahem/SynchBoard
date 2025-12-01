@@ -44,6 +44,8 @@ export const useCanvasPanning = ({
   const lastCentroid = useRef<{ x: number; y: number } | null>(null);
   // Track which pointer initiated middle-mouse panning
   const middleMousePointerId = useRef<number | null>(null);
+  // Track if we have any active pointers that need cleanup
+  const hasActivePointers = useRef(false);
 
   /**
    * Clears all tracked pointers and resets panning state.
@@ -54,6 +56,7 @@ export const useCanvasPanning = ({
     lastPanPosition.current = null;
     lastCentroid.current = null;
     middleMousePointerId.current = null;
+    hasActivePointers.current = false;
   }, []);
 
   /**
@@ -89,6 +92,7 @@ export const useCanvasPanning = ({
       };
 
       activePointers.current.set(pointerId, pointerData);
+      hasActivePointers.current = true;
       const pointerCount = activePointers.current.size;
 
       // Desktop: Middle mouse button (button === 1) always triggers panning
@@ -195,6 +199,48 @@ export const useCanvasPanning = ({
       clearAllPointers();
     };
   }, [clearAllPointers]);
+
+  // Always listen for pointer up/cancel on container to clean up stale pointers
+  // This is critical: when a touch starts outside the canvas and doesn't trigger
+  // drawing or panning, the global listeners in useCanvasEvents won't be active.
+  // Without this, the pointer would remain in activePointers and cause the next
+  // touch to be counted as 2 pointers, incorrectly triggering panning.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleContainerPointerUp = (event: PointerEvent) => {
+      // Only process if we have active pointers to clean up
+      if (!hasActivePointers.current) return;
+
+      activePointers.current.delete(event.pointerId);
+
+      // Check if middle mouse panning ended
+      if (event.pointerId === middleMousePointerId.current) {
+        middleMousePointerId.current = null;
+        setIsPanning(false);
+        lastPanPosition.current = null;
+      }
+
+      // If no more pointers, clean up everything
+      if (activePointers.current.size === 0) {
+        clearAllPointers();
+      }
+    };
+
+    container.addEventListener('pointerup', handleContainerPointerUp);
+    container.addEventListener('pointercancel', handleContainerPointerUp);
+    // Also listen on window for pointers that end outside the container
+    window.addEventListener('pointerup', handleContainerPointerUp);
+    window.addEventListener('pointercancel', handleContainerPointerUp);
+
+    return () => {
+      container.removeEventListener('pointerup', handleContainerPointerUp);
+      container.removeEventListener('pointercancel', handleContainerPointerUp);
+      window.removeEventListener('pointerup', handleContainerPointerUp);
+      window.removeEventListener('pointercancel', handleContainerPointerUp);
+    };
+  }, [containerRef, clearAllPointers]);
 
   return {
     isPanning,
