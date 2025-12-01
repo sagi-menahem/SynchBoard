@@ -54,6 +54,7 @@
 }
 
 // --- Radio Button Groups ---
+// DEPRECATED: Use RadioGroup component instead of native radio inputs
 
 .radioGroup {
   @include theme.flex-column;
@@ -71,7 +72,6 @@
   @include theme.radio-input;
   width: 1.2rem;
   height: 1.2rem;
-  accent-color: theme.$primary;
 }
 
 // Radio label hover state

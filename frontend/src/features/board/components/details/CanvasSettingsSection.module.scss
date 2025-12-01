@@ -134,10 +134,11 @@
 }
 
 /* Custom styled radio input with theme accent color */
+/* DEPRECATED: CanvasSettingsSection now uses RadioGroup component */
 .radioOption input[type='radio'] {
   width: 1rem;
   height: 1rem;
-  accent-color: theme.$primary;
+  accent-color: var(--user-chosen-color);
   cursor: pointer;
 }
 

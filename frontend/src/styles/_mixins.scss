@@ -654,7 +654,7 @@
 @mixin radio-input {
   width: theme.$spacing-4;
   height: theme.$spacing-4;
-  accent-color: var(--color-primary);
+  accent-color: var(--user-chosen-color);
   cursor: pointer;
 }
 

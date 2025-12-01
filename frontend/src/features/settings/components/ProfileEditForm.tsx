@@ -1,8 +1,8 @@
 import type { UpdateUserProfileRequest } from 'features/settings/types/UserTypes';
 import { Save, X } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input } from 'shared/ui';
+import { Button, Input, RadioGroup } from 'shared/ui';
 
 import styles from '../pages/SettingsPage.module.scss';
 
@@ -38,6 +38,17 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCancel,
 }) => {
   const { t } = useTranslation(['settings', 'common']);
+  const [gender, setGender] = useState<string>(formData.gender || '');
+
+  // Handle gender change with both RadioGroup and form data update
+  const handleGenderChange = (value: string) => {
+    setGender(value);
+    // Create synthetic event to match existing onInputChange handler
+    const syntheticEvent = {
+      target: { name: 'gender', value },
+    } as React.ChangeEvent<HTMLInputElement>;
+    onInputChange(syntheticEvent);
+  };
 
   return (
     <>
@@ -68,30 +79,18 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           {t('settings:page.genderLabel')}
           <span className={styles.required}> *</span>
         </label>
-        <div className={styles.radioGroup} id="profile-gender" role="radiogroup">
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={formData.gender === 'male'}
-              onChange={onInputChange}
-              required
-            />
-            {t('common:form.option.male')}
-          </label>
-          <label className={styles.radioLabel}>
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              checked={formData.gender === 'female'}
-              onChange={onInputChange}
-              required
-            />
-            {t('common:form.option.female')}
-          </label>
-        </div>
+        <RadioGroup
+          id="profile-gender"
+          value={gender}
+          onValueChange={handleGenderChange}
+          name="gender"
+          orientation="horizontal"
+          required
+          options={[
+            { value: 'male', label: t('common:form.option.male') },
+            { value: 'female', label: t('common:form.option.female') },
+          ]}
+        />
       </div>
       <div className={styles.field}>
         <label htmlFor="dateOfBirth">{t('settings:page.dateOfBirthLabel')}</label>
