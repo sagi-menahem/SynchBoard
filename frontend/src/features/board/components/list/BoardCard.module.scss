@@ -6,7 +6,7 @@
   @include theme.smooth-transition;
   
   &:hover .boardCard.grid {
-    opacity: 0.92;
+    opacity: 0.99;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     transform: translateY(-2px);
@@ -14,7 +14,7 @@
   }
   
   &:hover .boardCard.list {
-    opacity: 0.92;
+    opacity: 0.99;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     transform: translateY(-2px);
