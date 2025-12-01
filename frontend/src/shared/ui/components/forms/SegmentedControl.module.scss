@@ -66,14 +66,26 @@
 // Selected state with primary color border for clear visibility
 .segment.selected {
   background-color: transparent;
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
+  border: 2px solid var(--segmented-selected-color, var(--color-primary));
+  color: var(--segmented-selected-color, var(--color-primary));
   font-weight: theme.$font-weight-semibold;
 
   &:hover:not(.disabled) {
-    background-color: rgba(59, 130, 246, 0.08);
-    border-color: var(--color-primary-hover);
+    background-color: var(--segmented-selected-hover-bg, rgba(59, 130, 246, 0.08));
+    border-color: var(--segmented-selected-color, var(--color-primary-hover));
   }
+}
+
+// Light theme colors
+:global(body[data-theme='light']) .segment.selected {
+  --segmented-selected-color: #3b82f6;
+  --segmented-selected-hover-bg: rgba(59, 130, 246, 0.08);
+}
+
+// Dark theme - lighter/softer blue for better visibility
+:global(body[data-theme='dark']) .segment.selected {
+  --segmented-selected-color: #60a5fa;
+  --segmented-selected-hover-bg: rgba(96, 165, 250, 0.12);
 }
 
 // Disabled state
