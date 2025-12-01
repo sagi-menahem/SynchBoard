@@ -150,6 +150,7 @@
 .customSizeInputs {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: theme.$spacing-3;
   margin-top: theme.$spacing-3;
   color: theme.$text-muted;
