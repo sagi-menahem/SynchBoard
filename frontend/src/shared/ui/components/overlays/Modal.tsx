@@ -30,17 +30,18 @@ interface ModalProps {
  */
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) => {
   const { t } = useTranslation(['common']);
-  
+
   // Lock body scroll when modal is open to prevent background scrolling
   useEffect(() => {
     if (isOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      
+
       // Simple approach: just prevent scrolling without position manipulation
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     }
-    
+
     return () => {
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
