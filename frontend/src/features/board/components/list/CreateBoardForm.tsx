@@ -5,6 +5,7 @@ import { FileText, Pencil, Users } from 'lucide-react';
 import React, { startTransition, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, PictureManager, SectionCard, Textarea } from 'shared/ui';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import { useCreateBoardForm } from '../../hooks/management';
 
@@ -94,7 +95,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   };
 
   return (
-    <div className={styles.modalContainer}>
+    <div className={`${styles.modalContainer} ${utilStyles.unifiedDotBackground}`}>
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>{t('board:createForm.heading')}</h3>
       </div>
