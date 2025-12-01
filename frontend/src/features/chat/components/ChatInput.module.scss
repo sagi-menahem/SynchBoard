@@ -15,7 +15,7 @@
   opacity: 0.85;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
+  border: 2px solid var(--glass-border);
   border-radius: 24px;
   padding: theme.$spacing-2 theme.$spacing-4;
   width: 100%;
@@ -28,6 +28,7 @@
     opacity: 0.92;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
+    border-width: 3px;
     border-color: var(--glass-border);
   }
 
@@ -35,6 +36,7 @@
     opacity: 0.92;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
+    border-width: 2.5px;
   }
 
   /* Disabled state during message sending */
