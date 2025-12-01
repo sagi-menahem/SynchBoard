@@ -12,7 +12,8 @@
 .searchContainer {
   position: relative;
   @include theme.flex-start;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--user-chosen-color, rgba(255, 255, 255, 0.15));
+  opacity: 0.99;
   border: 1px solid rgba(0, 0, 0, 0.1);
   @include theme.rounded-medium;
   padding: theme.$spacing-2 theme.$spacing-3;
@@ -24,37 +25,39 @@
   -webkit-backdrop-filter: blur(12px);
 
   &:focus-within {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(0, 0, 0, 0.15);
+    opacity: 0.99;
+    border-color: rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 }
 
 // Search icon styling
 .searchIcon {
-  color: theme.$text-muted;
+  color: var(--color-text-secondary);
   flex-shrink: 0;
+  opacity: 0.99;
 }
 
 // Input field with flexible sizing
 .searchInput {
   background: none;
   border: none;
-  color: theme.$text-primary;
+  color: var(--color-text-primary);
   font-size: theme.$font-size-sm;
   outline: none;
   flex: 1;
   min-width: 0;
 
   &::placeholder {
-    color: theme.$text-placeholder;
+    color: var(--color-text-secondary);
+    opacity: 0.7;
   }
 }
 
 // Clear button with hover effects
 .clearButton {
   @include theme.interactive-button;
-  color: theme.$text-muted;
+  color: var(--color-text-secondary);
   padding: theme.$spacing-0-5;
   @include theme.rounded-small;
   @include theme.flex-center;
@@ -62,7 +65,7 @@
   flex-shrink: 0;
 
   &:hover {
-    color: theme.$text-primary;
-    background: theme.$surface-hover;
+    color: var(--color-text-primary);
+    background: var(--color-surface-hover);
   }
 }

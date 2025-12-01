@@ -35,15 +35,26 @@
   left: 0;
   right: 0;
   z-index: 90;
-  background: var(--glass-background);
+  background: var(--user-chosen-color, rgba(255, 255, 255, 0.85));
+  opacity: 0.99;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--glass-border);
-  padding: theme.$spacing-2 theme.$spacing-4;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding: theme.$spacing-3 theme.$spacing-4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   
   @media (min-width: 769px) {
     display: none;
+  }
+  
+  // Make search bar full width on mobile
+  :global(.searchForm) {
+    width: 100%;
+    
+    .searchContainer {
+      min-width: 100%;
+      max-width: 100%;
+    }
   }
 }
 
