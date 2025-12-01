@@ -49,7 +49,7 @@
   z-index: 10 !important; // Above backdrop (z-index: 0)
   overflow-y: auto; // Content scrolls, not overlay
   margin: theme.$spacing-6 auto;
-  
+
   &:hover {
     opacity: 0.98;
     backdrop-filter: blur(24px);
@@ -63,25 +63,28 @@
   width: 100%;
 }
 
-// Floating close button in top-right corner
+// Floating close button in top-right corner - uses sticky positioning to stay visible while scrolling
 .closeButton {
-  position: absolute;
-  top: theme.$spacing-4;
-  inset-inline-end: theme.$spacing-4;
-  background: theme.$surface-hover;
-  backdrop-filter: blur(theme.$blur-sm);
-  border: theme.$border-width solid theme.$border-strong;
-  @include theme.rounded-small;
-  font-size: theme.$font-size-base;
-  padding: theme.$spacing-2;
-  line-height: 1;
-  z-index: 100; // Above content
-  min-width: auto;
-  width: theme.$spacing-8;
-  height: theme.$spacing-8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: sticky !important;
+  top: theme.$spacing-2 !important;
+  inset-inline-start: calc(100% - 40px) !important;
+  margin-bottom: -40px !important; // Pull content up to overlap where button was
+  background: theme.$surface-hover !important;
+  backdrop-filter: blur(theme.$blur-sm) !important;
+  border: theme.$border-width solid theme.$border-strong !important;
+  border-radius: theme.$border-radius-sm !important;
+  font-size: theme.$font-size-base !important;
+  padding: theme.$spacing-2 !important;
+  line-height: 1 !important;
+  z-index: 100 !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
 }
 
 // --- Responsive Design ---
@@ -101,9 +104,8 @@
   }
 
   .closeButton {
-    top: theme.$spacing-3;
-    inset-inline-end: theme.$spacing-3;
-    font-size: theme.$font-size-base;
+    top: theme.$spacing-2 !important;
+    inset-inline-start: calc(100% - 44px) !important;
   }
 }
 
@@ -111,21 +113,30 @@
 @media (max-width: theme.$breakpoint-sm) {
   .overlay {
     padding: theme.$spacing-2;
-    align-items: center; // Explicitly center vertically
-    justify-content: center; // Explicitly center horizontally
+    align-items: center;
+    justify-content: center;
   }
 
   .content {
-    min-width: 280px; // Prevent collapse
-    width: calc(100vw - 32px) !important; // Explicit width for mobile with important
-    max-width: calc(100vw - 32px) !important; // Account for overlay padding
-    max-height: calc(100vh - 32px) !important; // Account for overlay padding
-    margin: 0 !important; // Remove auto margin on mobile, flex handles centering
+    min-width: 280px;
+    width: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+    margin: 0 !important;
     border-radius: theme.$border-radius-md;
     padding: theme.$spacing-4;
-    padding-top: theme.$spacing-12;
-    overflow-y: auto; // Ensure scrolling works for tall content
-    display: flex !important; // Ensure flex display
-    flex-direction: column !important; // Stack content vertically
+    overflow-y: auto;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .closeButton {
+    top: theme.$spacing-1 !important;
+    inset-inline-start: calc(100% - 40px) !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin-bottom: -36px !important;
   }
 }
