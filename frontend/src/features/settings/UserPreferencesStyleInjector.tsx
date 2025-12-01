@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { useTheme } from './ThemeProvider';
 import { useUserBoardPreferences } from './UserBoardPreferencesProvider';
 
 /**
@@ -9,30 +10,24 @@ import { useUserBoardPreferences } from './UserBoardPreferencesProvider';
  */
 export const UserPreferencesStyleInjector: React.FC = () => {
   const { preferences } = useUserBoardPreferences();
+  const { theme } = useTheme();
 
   useEffect(() => {
-    // Convert board background setting to actual color value
-    const getCSSColor = (cssVariable: string): string => {
-      if (cssVariable.startsWith('--')) {
-        // Get computed value from CSS variable
-        const computedValue = getComputedStyle(document.documentElement)
-          .getPropertyValue(cssVariable)
-          .trim();
-        return computedValue || cssVariable;
-      }
-      return cssVariable;
-    };
-
-    const userColor = getCSSColor(preferences.boardBackgroundSetting);
+    // Instead of resolving the CSS variable to a concrete color value,
+    // inject the CSS variable reference directly. This allows the browser
+    // to resolve it based on the current theme automatically.
+    const userColorValue = preferences.boardBackgroundSetting.startsWith('--')
+      ? `var(${preferences.boardBackgroundSetting})`
+      : preferences.boardBackgroundSetting;
 
     // Inject as global CSS variable on document body
-    document.body.style.setProperty('--user-chosen-color', userColor);
+    document.body.style.setProperty('--user-chosen-color', userColorValue);
 
     // Cleanup function (though in practice this component never unmounts)
     return () => {
       document.body.style.removeProperty('--user-chosen-color');
     };
-  }, [preferences.boardBackgroundSetting]);
+  }, [preferences.boardBackgroundSetting, theme]);
 
   // This component renders nothing - it only manages CSS variables
   return null;
