@@ -6,6 +6,9 @@
 .searchForm {
   margin: 0;
   padding: 0;
+  width: 100%; // Take full width of parent container
+  max-width: 100%; // Prevent overflow
+  box-sizing: border-box; // Include padding in width calculation
 }
 
 // Main container with focus-within styling and glass design
@@ -19,8 +22,10 @@
   padding: theme.$spacing-2 theme.$spacing-3;
   gap: theme.$spacing-2;
   @include theme.smooth-transition;
-  min-width: 300px;
-  max-width: 400px;
+  width: 100%; // Take full width of form
+  max-width: 100%; // Allow expansion to full width
+  min-width: 0; // Allow shrinking
+  box-sizing: border-box; // Include padding and border in width
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
