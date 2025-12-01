@@ -208,6 +208,15 @@
     transform: translateY(theme.$spacing-0);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(120, 120, 128, 0.4);
+  }
 }
 
 // Primary action button with glass design (for user pages)
@@ -232,6 +241,15 @@
     transform: translateY(theme.$spacing-0);
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
   }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+  }
 }
 
 // Destructive action button with glass design (for user pages)
@@ -255,6 +273,15 @@
     background: rgba(239, 68, 68, 0.3);
     transform: translateY(theme.$spacing-0);
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
   }
 }
 
