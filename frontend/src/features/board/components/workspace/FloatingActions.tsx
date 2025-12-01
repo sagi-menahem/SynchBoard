@@ -86,13 +86,19 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
   };
 
   const handleZoomIn = () => {
-    const newZoom = Math.min(currentZoom + ZOOM_STEP, ZOOM_MAX);
-    void updateCanvasPreferences({ canvasZoomScale: Math.round(newZoom * 10) / 10 });
+    // Use ceil to always round UP to next 10% step (e.g., 117% → 120%)
+    // This ensures zoom in always moves to the next clean increment
+    const roundedUp = Math.ceil(currentZoom * 10) / 10;
+    const newZoom = roundedUp <= currentZoom ? roundedUp + ZOOM_STEP : roundedUp;
+    void updateCanvasPreferences({ canvasZoomScale: Math.min(newZoom, ZOOM_MAX) });
   };
 
   const handleZoomOut = () => {
-    const newZoom = Math.max(currentZoom - ZOOM_STEP, ZOOM_MIN);
-    void updateCanvasPreferences({ canvasZoomScale: Math.round(newZoom * 10) / 10 });
+    // Use floor to always round DOWN to next 10% step (e.g., 117% → 110%)
+    // This ensures zoom out always moves to the previous clean increment
+    const roundedDown = Math.floor(currentZoom * 10) / 10;
+    const newZoom = roundedDown >= currentZoom ? roundedDown - ZOOM_STEP : roundedDown;
+    void updateCanvasPreferences({ canvasZoomScale: Math.max(newZoom, ZOOM_MIN) });
   };
 
   const handleZoomReset = () => {

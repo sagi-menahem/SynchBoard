@@ -19,6 +19,8 @@ interface UseCanvasProps {
   canvasConfig?: CanvasConfig;
   onTextInputRequest?: (x: number, y: number, width: number, height: number) => void;
   zoomScale: number; // Zoom scale factor for coordinate adjustment
+  /** Callback when zoom changes via pinch gesture */
+  onZoomChange?: (newScale: number, centerPoint: { x: number; y: number }) => void;
 }
 
 const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
@@ -56,6 +58,7 @@ export const useCanvas = ({
   canvasConfig,
   onTextInputRequest,
   zoomScale,
+  onZoomChange,
 }: UseCanvasProps) => {
   const finalCanvasConfig = useMemo(() => canvasConfig ?? DEFAULT_CANVAS_CONFIG, [canvasConfig]);
 
@@ -173,6 +176,8 @@ export const useCanvas = ({
       onPointerDown: handlePointerDown,
       onPointerMove: handlePointerMove,
       onPointerUp: handlePointerUp,
+      zoomScale,
+      onZoomChange,
     }),
     [
       canvasRef,
@@ -183,6 +188,8 @@ export const useCanvas = ({
       handlePointerDown,
       handlePointerMove,
       handlePointerUp,
+      zoomScale,
+      onZoomChange,
     ],
   );
 

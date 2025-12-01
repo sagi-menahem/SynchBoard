@@ -26,6 +26,10 @@ interface UseCanvasEventsProps {
   onPointerDown?: (eventData: CanvasEventData) => void;
   onPointerMove?: (eventData: CanvasEventData) => void;
   onPointerUp?: (eventData: CanvasEventData) => void;
+  /** Current zoom scale for pinch-to-zoom calculations */
+  zoomScale?: number;
+  /** Callback when zoom changes via pinch gesture */
+  onZoomChange?: (newScale: number, centerPoint: { x: number; y: number }) => void;
 }
 
 /**
@@ -61,19 +65,21 @@ export const useCanvasEvents = ({
   onPointerDown,
   onPointerMove,
   onPointerUp,
+  zoomScale,
+  onZoomChange,
 }: UseCanvasEventsProps) => {
   const { isDrawing, setIsDrawing, startPoint, resetDrawingState } = drawingState;
   const { shouldBlockFunctionality } = useConnectionStatus();
   const lastPointerPosition = useRef<Point | null>(null);
 
-  // Initialize panning functionality
+  // Initialize panning and pinch-to-zoom functionality
   const {
     isPanning,
     activePointerCount,
     handlePanStart,
     handlePanMove,
     handlePanEnd,
-  } = useCanvasPanning({ containerRef, canvasRef });
+  } = useCanvasPanning({ containerRef, canvasRef, zoomScale, onZoomChange });
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {

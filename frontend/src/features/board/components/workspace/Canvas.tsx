@@ -5,8 +5,9 @@ import type { ActionPayload, SendBoardActionRequest } from 'features/board/types
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDebouncedCallback } from 'shared/hooks/useDebounce';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import styles from './Canvas.module.scss';
@@ -68,10 +69,38 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
   const { shouldShowBanner, shouldBlockFunctionality } = useConnectionStatus();
-  const { preferences } = useCanvasPreferences();
+  const { preferences, updateCanvasPreferences } = useCanvasPreferences();
 
   // Get zoom scale from preferences (default 1.0 if not set)
-  const zoomScale = preferences.canvasZoomScale ?? 1.0;
+  const savedZoomScale = preferences.canvasZoomScale ?? 1.0;
+
+  // Local zoom state for immediate UI updates during pinch gestures
+  // This provides smooth zoom feedback while debouncing server saves
+  const [localZoomScale, setLocalZoomScale] = useState(savedZoomScale);
+
+  // Sync local state when server preferences change (e.g., from FloatingActions buttons)
+  useEffect(() => {
+    setLocalZoomScale(savedZoomScale);
+  }, [savedZoomScale]);
+
+  // Use local state for rendering (smooth pinch gestures)
+  const zoomScale = localZoomScale;
+
+  // Debounced server save (500ms delay to avoid excessive API calls during pinch)
+  const debouncedSaveZoom = useDebouncedCallback((newScale: number) => {
+    updateCanvasPreferences({ canvasZoomScale: newScale });
+  }, 500);
+
+  // Handle zoom changes from pinch gestures
+  const handleZoomChange = useCallback(
+    (newScale: number) => {
+      // Update local state immediately for smooth UI
+      setLocalZoomScale(newScale);
+      // Debounce server save
+      debouncedSaveZoom(newScale);
+    },
+    [debouncedSaveZoom],
+  );
 
   const textInputRequestRef = useRef<
     ((x: number, y: number, width: number, height: number) => void) | null
@@ -80,6 +109,7 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   const { canvasRef, containerRef, handlePointerDown, isPanning } = useCanvas({
     ...props,
     zoomScale, // Pass zoom scale to useCanvas
+    onZoomChange: handleZoomChange, // Pass zoom change handler for pinch gestures
     onTextInputRequest: (x: number, y: number, width: number, height: number) => {
       textInputRequestRef.current?.(x, y, width, height);
     },
