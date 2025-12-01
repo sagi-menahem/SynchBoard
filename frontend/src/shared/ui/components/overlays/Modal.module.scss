@@ -21,8 +21,11 @@
   @include theme.rounded-medium;
   @include theme.shadow-heavy;
   @include theme.theme-scrollbar;
-  background: var(--user-chosen-color);
-  border: theme.$border-width solid theme.$border;
+  background: var(--user-chosen-color, var(--glass-background));
+  opacity: 0.96;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: theme.$border-width solid var(--glass-border);
   min-width: theme.$modal-min-width;
   max-width: theme.$modal-max-width;
   max-height: 70vh;
@@ -31,6 +34,12 @@
   z-index: theme.$z-index-base;
   overflow-y: auto;
   margin: theme.$spacing-6 auto;
+  
+  &:hover {
+    opacity: 0.98;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
 }
 
 // Special override for wide modals (like create board form)
@@ -83,20 +92,19 @@
   }
 }
 
-// Mobile responsive adjustments - full screen
+// Mobile responsive adjustments
 @media (max-width: theme.$breakpoint-sm) {
   .overlay {
     padding: theme.$spacing-2;
-    align-items: stretch;
+    align-items: center;
   }
 
   .content {
     min-width: auto;
-    max-width: 100%;
-    max-height: 100%;
-    margin: 0;
-    border-radius: 0;
-    height: 100vh;
+    max-width: calc(100% - theme.$spacing-4);
+    max-height: calc(100vh - theme.$spacing-4);
+    margin: theme.$spacing-2;
+    border-radius: theme.$border-radius-md;
     padding: theme.$spacing-4;
     padding-top: theme.$spacing-12;
   }
