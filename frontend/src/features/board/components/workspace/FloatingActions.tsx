@@ -1,7 +1,7 @@
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { motion } from 'framer-motion';
-import { MessageSquare, Minus, Plus, Redo2, RotateCcw, Undo2 } from 'lucide-react';
+import { Minus, Plus, Redo2, RotateCcw, Undo2 } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from 'shared/hooks';
@@ -85,10 +85,6 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
     }
   };
 
-  const handleToggleChat = () => {
-    void updateCanvasPreferences({ isChatOpen: !preferences.isChatOpen });
-  };
-
   const handleZoomIn = () => {
     const newZoom = Math.min(currentZoom + ZOOM_STEP, ZOOM_MAX);
     void updateCanvasPreferences({ canvasZoomScale: Math.round(newZoom * 10) / 10 });
@@ -117,19 +113,6 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
       initial="hidden"
       animate="visible"
     >
-      {/* Chat Toggle Pill - Visible on both Desktop and Mobile */}
-      <motion.div className={styles.pill} variants={pillVariants}>
-        <Button
-          variant="icon"
-          onClick={handleButtonClick(handleToggleChat)}
-          title={preferences.isChatOpen ? t('board:workspace.hideChat') : t('board:workspace.showChat')}
-          className={styles.actionButton}
-          aria-pressed={preferences.isChatOpen}
-        >
-          <MessageSquare size={20} className={preferences.isChatOpen ? styles.activeIcon : ''} />
-        </Button>
-      </motion.div>
-
       {/* History Pill - Undo/Redo */}
       <motion.div className={styles.pill} variants={pillVariants}>
         <Button

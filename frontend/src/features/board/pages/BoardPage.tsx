@@ -4,7 +4,7 @@ import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
-import { ArrowLeft, Download, Info } from 'lucide-react';
+import { ArrowLeft, Download, Info, MessageSquare } from 'lucide-react';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -87,7 +87,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     }
   }, [updateStrokeColor, updateTool]);
 
-  const { preferences: canvasPreferences, updateSplitRatio } = useCanvasPreferences();
+  const { preferences: canvasPreferences, updateSplitRatio, updateCanvasPreferences } = useCanvasPreferences();
 
   const handleSplitRatioChange = (newRatio: number) => {
     void updateSplitRatio(newRatio);
@@ -198,6 +198,14 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               title={t('board:header.export')}
             >
               <Download size={20} />
+            </Button>
+            <Button
+              variant="icon"
+              onClick={() => void updateCanvasPreferences({ isChatOpen: !canvasPreferences.isChatOpen })}
+              title={canvasPreferences.isChatOpen ? t('board:workspace.hideChat') : t('board:workspace.showChat')}
+              aria-pressed={canvasPreferences.isChatOpen}
+            >
+              <MessageSquare size={20} />
             </Button>
           </>
         }
