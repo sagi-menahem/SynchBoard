@@ -62,8 +62,8 @@ const BoardConfirmDialogs: React.FC<BoardConfirmDialogsProps> = ({
         isOpen={isDeleteConfirmOpen}
         onClose={onCloseDelete}
         onConfirm={onConfirmDelete}
-        title={t('common:pictureManager.deleteButton')}
-        message={t('board:leaveBoard.confirmText', { boardName })}
+        title={t('board:pictureManager.confirmTitle')}
+        message={t('board:pictureManager.confirmText', { boardName })}
       />
     </>
   );

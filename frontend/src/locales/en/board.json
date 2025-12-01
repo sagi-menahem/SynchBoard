@@ -120,7 +120,11 @@
   "pictureManager": {
     "title": "Manage picture for '{{boardName}}'",
     "changeButton": "Change Picture",
-    "deleteButton": "Delete Picture"
+    "deleteButton": "Delete Picture",
+    "confirmTitle": "Delete Board Picture?",
+    "confirmText": "Are you sure you want to delete the picture for '{{boardName}}'? This action cannot be undone.",
+    "success": "Picture deleted successfully.",
+    "error": "Failed to delete the picture."
   },
   "canvas": {
     "loading": "Loading canvas..."

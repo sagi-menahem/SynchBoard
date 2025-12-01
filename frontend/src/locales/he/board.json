@@ -120,7 +120,11 @@
   "pictureManager": {
     "title": "נהל תמונה עבור '{{boardName}}'",
     "changeButton": "שנה תמונה",
-    "deleteButton": "מחק תמונה"
+    "deleteButton": "מחק תמונה",
+    "confirmTitle": "למחוק את תמונת הלוח?",
+    "confirmText": "האם אתה בטוח שברצונך למחוק את התמונה של '{{boardName}}'? פעולה זו לא ניתנת לביטול.",
+    "success": "התמונה נמחקה בהצלחה.",
+    "error": "מחיקת התמונה נכשלה."
   },
   "canvas": {
     "loading": "טוען קנבס..."
