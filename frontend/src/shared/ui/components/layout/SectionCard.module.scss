@@ -5,9 +5,9 @@
 // Main card container with responsive sizing
 .sectionCard {
   background: var(--user-chosen-color, var(--glass-background));
-  opacity: 0.75;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  opacity: 0.96;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: theme.$card-border-radius;
   margin-bottom: 0; // Remove margin since we're using gap in grid/flex containers
