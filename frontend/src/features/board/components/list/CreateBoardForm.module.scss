@@ -135,9 +135,11 @@
 
 @media (max-width: 768px) {
   .modalContainer {
-    max-width: 95vw;
+    max-width: 100%;
+    width: 100%;
     padding: theme.$spacing-2;
     gap: theme.$spacing-4;
+    overflow-x: hidden;
   }
 
   .modalHeader {
@@ -147,11 +149,15 @@
   .formContainer {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
   }
 
   .leftColumn,
   .rightColumn {
     gap: 1.25rem;
+    width: 100%;
+    max-width: 100%;
   }
 
   .modalTitle {
@@ -171,8 +177,11 @@
 
 @media (max-width: 480px) {
   .modalContainer {
+    max-width: 100%;
+    width: 100%;
     padding: theme.$spacing-1;
     gap: theme.$spacing-3;
+    overflow-x: hidden;
   }
 
   .modalHeader {
@@ -182,5 +191,7 @@
   .leftColumn,
   .rightColumn {
     gap: 1rem;
+    width: 100%;
+    max-width: 100%;
   }
 }
