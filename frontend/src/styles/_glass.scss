@@ -1,30 +1,27 @@
 // Glass effect variables for light and dark themes
+// Using solid colors instead of transparent for cleaner appearance
 :root,
 body[data-theme='light'] {
-  --glass-background: rgba(255, 255, 255, 0.75);
+  --glass-background: #ffffff;
   --glass-border: rgba(0, 0, 0, 0.1);
 }
 
 body[data-theme='dark'] {
-  --glass-background: rgba(39, 39, 42, 0.75);
+  --glass-background: #27272a;
   --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 // Glass Panel Mixin
-// Creates frosted glass effect using user's Board Appearance color with transparency
-// Applies backdrop blur and semi-transparent background for modern glass morphism
-@mixin glass-panel($opacity: 0.85, $blur: 20px) {
-    // Semi-transparent background using user's theme color
+// Creates a solid panel using user's Board Appearance color
+// Previously used transparency/blur, now uses solid backgrounds for cleaner look
+@mixin glass-panel($opacity: 1, $blur: 0) {
+    // Solid background using user's theme color
     background: var(--user-chosen-color, var(--glass-background));
     opacity: $opacity;
-    
-    // Frosted glass blur effect
-    backdrop-filter: blur($blur);
-    -webkit-backdrop-filter: blur($blur);
-    
+
     // Subtle border for definition
     border: 1px solid var(--glass-border);
-    
+
     // Soft shadow for depth
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
