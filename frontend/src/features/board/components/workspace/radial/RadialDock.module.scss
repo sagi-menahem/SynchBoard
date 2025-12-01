@@ -182,21 +182,26 @@ $border-radius-mobile: 20px;
         padding: $toolbar-padding;
     }
     
-    // Mobile: Bottom sheet - Unified glassmorphism
+    // Mobile: Bottom sheet - Solid background (no transparency)
     .mobile & {
         width: 100%;
         max-width: 100vw; // Ensure it never exceeds viewport
         padding: $toolbar-padding-mobile;
         padding-top: 44px; // Extra space for close button
         border-radius: $border-radius-mobile $border-radius-mobile 0 0;
-        
-        // Use theme-aware glass mixin (no override needed)
+
+        // Override glass-panel opacity to make it fully opaque on mobile
+        opacity: 1;
+        background: var(--user-chosen-color, var(--glass-background));
+        backdrop-filter: none; // Remove blur since it's opaque
+        -webkit-backdrop-filter: none;
+
         border-bottom: none; // No border at bottom (sits at screen edge)
-        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06), // Lighter shadow
-                    0 -2px 8px rgba(0, 0, 0, 0.04); // Subtle edge definition
-        
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12),
+                    0 -2px 8px rgba(0, 0, 0, 0.08);
+
         body[data-theme='dark'] & {
-            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
         }
     }
 }
