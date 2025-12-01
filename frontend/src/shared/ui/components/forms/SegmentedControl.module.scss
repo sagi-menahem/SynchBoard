@@ -5,10 +5,10 @@
 .segmentedControl {
   display: inline-flex;
   background-color: transparent;
-  border: 1px solid var(--color-border);
+  border: none;
   border-radius: theme.$border-radius-lg;
-  padding: theme.$spacing-1;
-  gap: theme.$spacing-1;
+  padding: 0;
+  gap: theme.$spacing-2;
   @include theme.smooth-transition;
 }
 
@@ -32,7 +32,7 @@
   padding: theme.$spacing-2 theme.$spacing-4;
   min-height: 36px;
   background-color: transparent;
-  border: 2px solid transparent;
+  border: 1px solid var(--color-border);
   border-radius: theme.$border-radius-md;
   color: theme.$text-secondary;
   font-size: theme.$font-size-sm;
