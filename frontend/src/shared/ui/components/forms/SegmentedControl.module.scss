@@ -63,15 +63,15 @@
   }
 }
 
-// Selected state with primary color for clear visibility
+// Selected state with primary color border for clear visibility
 .segment.selected {
-  background-color: var(--color-primary);
+  background-color: transparent;
   border: 2px solid var(--color-primary);
-  color: white;
+  color: var(--color-primary);
   font-weight: theme.$font-weight-semibold;
 
   &:hover:not(.disabled) {
-    background-color: var(--color-primary-hover);
+    background-color: rgba(59, 130, 246, 0.08);
     border-color: var(--color-primary-hover);
   }
 }
