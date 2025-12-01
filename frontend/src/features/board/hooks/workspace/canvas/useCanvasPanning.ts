@@ -6,6 +6,9 @@ interface ActivePointer {
   y: number;
 }
 
+/** Gesture type for two-finger interactions */
+type GestureType = 'undetermined' | 'pan' | 'zoom';
+
 interface UseCanvasPanningProps {
   containerRef: React.RefObject<HTMLElement | null>;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
@@ -26,6 +29,10 @@ interface UseCanvasPanningReturn {
   handlePanMove: (event: PointerEvent) => void;
   handlePanEnd: (event: PointerEvent) => void;
 }
+
+// Threshold in pixels for gesture detection
+// Once cumulative movement exceeds this, we lock into that gesture type
+const GESTURE_DETECTION_THRESHOLD = 15;
 
 /**
  * Custom hook for canvas panning and pinch-to-zoom functionality supporting both desktop and mobile interactions.
@@ -72,6 +79,16 @@ export const useCanvasPanning = ({
   const currentZoomRef = useRef(zoomScale);
   currentZoomRef.current = zoomScale;
 
+  // Gesture detection state
+  // Once we determine the gesture type (pan vs zoom), we lock it for the duration
+  const gestureType = useRef<GestureType>('undetermined');
+  // Track initial values when gesture starts to compare against threshold
+  const initialPinchDistance = useRef<number | null>(null);
+  const initialCentroid = useRef<{ x: number; y: number } | null>(null);
+  // Cumulative movement tracking for gesture detection
+  const cumulativePinchDelta = useRef(0);
+  const cumulativePanDelta = useRef(0);
+
   /**
    * Clears all tracked pointers and resets panning/zoom state.
    * Called when panning ends or when state needs to be reset.
@@ -83,6 +100,12 @@ export const useCanvasPanning = ({
     middleMousePointerId.current = null;
     hasActivePointers.current = false;
     lastPinchDistance.current = null;
+    // Reset gesture detection state
+    gestureType.current = 'undetermined';
+    initialPinchDistance.current = null;
+    initialCentroid.current = null;
+    cumulativePinchDelta.current = 0;
+    cumulativePanDelta.current = 0;
   }, []);
 
   /**
@@ -150,6 +173,12 @@ export const useCanvasPanning = ({
         lastCentroid.current = calculateCentroid();
         // Initialize pinch distance for zoom detection
         lastPinchDistance.current = calculatePinchDistance();
+        // Initialize gesture detection - start as undetermined
+        gestureType.current = 'undetermined';
+        initialPinchDistance.current = lastPinchDistance.current;
+        initialCentroid.current = lastCentroid.current;
+        cumulativePinchDelta.current = 0;
+        cumulativePanDelta.current = 0;
         return true;
       }
 
@@ -178,10 +207,42 @@ export const useCanvasPanning = ({
       // Multi-touch panning and pinch-to-zoom (mobile two-finger)
       if (pointerCount >= 2) {
         const newCentroid = calculateCentroid();
+        const newDistance = calculatePinchDistance();
 
-        // Handle pinch-to-zoom
-        if (onZoomChange) {
-          const newDistance = calculatePinchDistance();
+        // Calculate deltas for gesture detection
+        let pinchDelta = 0;
+        let panDelta = 0;
+
+        if (newDistance !== null && lastPinchDistance.current !== null) {
+          pinchDelta = Math.abs(newDistance - lastPinchDistance.current);
+        }
+
+        if (newCentroid && lastCentroid.current) {
+          const dx = newCentroid.x - lastCentroid.current.x;
+          const dy = newCentroid.y - lastCentroid.current.y;
+          panDelta = Math.sqrt(dx * dx + dy * dy);
+        }
+
+        // Accumulate deltas for gesture detection
+        cumulativePinchDelta.current += pinchDelta;
+        cumulativePanDelta.current += panDelta;
+
+        // Determine gesture type if still undetermined
+        if (gestureType.current === 'undetermined') {
+          // Check if either gesture has exceeded the threshold
+          if (cumulativePinchDelta.current >= GESTURE_DETECTION_THRESHOLD ||
+              cumulativePanDelta.current >= GESTURE_DETECTION_THRESHOLD) {
+            // Lock into the gesture with more cumulative movement
+            if (cumulativePinchDelta.current > cumulativePanDelta.current) {
+              gestureType.current = 'zoom';
+            } else {
+              gestureType.current = 'pan';
+            }
+          }
+        }
+
+        // Handle zoom (only if gesture is zoom or still undetermined with zoom callback)
+        if (gestureType.current === 'zoom' && onZoomChange) {
           if (newDistance !== null && lastPinchDistance.current !== null) {
             const distanceDelta = newDistance - lastPinchDistance.current;
             // Scale sensitivity: larger movements = more zoom change
@@ -195,17 +256,21 @@ export const useCanvasPanning = ({
               onZoomChange(newScale, newCentroid);
             }
           }
-          lastPinchDistance.current = newDistance;
         }
 
-        // Handle panning
-        if (newCentroid && lastCentroid.current) {
-          const deltaX = lastCentroid.current.x - newCentroid.x;
-          const deltaY = lastCentroid.current.y - newCentroid.y;
+        // Handle panning (only if gesture is pan or still undetermined)
+        if (gestureType.current === 'pan') {
+          if (newCentroid && lastCentroid.current) {
+            const deltaX = lastCentroid.current.x - newCentroid.x;
+            const deltaY = lastCentroid.current.y - newCentroid.y;
 
-          container.scrollLeft += deltaX;
-          container.scrollTop += deltaY;
+            container.scrollLeft += deltaX;
+            container.scrollTop += deltaY;
+          }
         }
+
+        // Update tracking values
+        lastPinchDistance.current = newDistance;
         lastCentroid.current = newCentroid;
         return;
       }
