@@ -5,7 +5,7 @@ import type { ActionPayload, SendBoardActionRequest } from 'features/board/types
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
 import { useConnectionStatus } from 'features/websocket/hooks/useConnectionStatus';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 
@@ -84,6 +84,43 @@ const Canvas: React.FC<CanvasProps> = (props) => {
       textInputRequestRef.current?.(x, y, width, height);
     },
   });
+
+  // Track if initial scroll centering has been done
+  const hasScrolledToCenter = useRef(false);
+
+  // Center the scroll position when the canvas first loads
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || hasScrolledToCenter.current) return;
+
+    // Wait for the container to have scrollable content
+    const scrollWidth = container.scrollWidth;
+    const scrollHeight = container.scrollHeight;
+    const clientWidth = container.clientWidth;
+    const clientHeight = container.clientHeight;
+
+    // Only center if there's content to scroll
+    if (scrollWidth > clientWidth || scrollHeight > clientHeight) {
+      // Check if the container has RTL direction (used for scroll behavior)
+      const containerDirection = getComputedStyle(container).direction;
+      const isRtlScroll = containerDirection === 'rtl';
+
+      // Calculate center positions
+      const scrollTop = (scrollHeight - clientHeight) / 2;
+
+      if (isRtlScroll) {
+        // In RTL scroll containers, scrollLeft is 0 at right edge and negative towards left
+        // Center is negative half of the scrollable width
+        const scrollLeft = -((scrollWidth - clientWidth) / 2);
+        container.scrollTo(scrollLeft, scrollTop);
+      } else {
+        const scrollLeft = (scrollWidth - clientWidth) / 2;
+        container.scrollTo(scrollLeft, scrollTop);
+      }
+
+      hasScrolledToCenter.current = true;
+    }
+  }, [containerRef, props.canvasConfig]);
 
   // Container handler: pass all pointer events to enable multi-touch detection
   // Background touches need to be tracked so 2-finger panning works anywhere
