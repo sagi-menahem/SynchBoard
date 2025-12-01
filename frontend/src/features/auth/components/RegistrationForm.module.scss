@@ -92,8 +92,10 @@
   gap: theme.$spacing-2;
   padding: theme.$spacing-3;
   border-radius: 8px;
-  border: 1px solid theme.$success;
-  background-color: theme.$success-light;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   grid-column: 1 / -1;
   margin: theme.$spacing-2 0;
 
@@ -108,13 +110,12 @@
   &::before {
     content: '✓';
     font-size: 1rem;
-    color: theme.$success;
     font-weight: bold;
     flex-shrink: 0;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: theme.$success;
+    background: rgba(16, 185, 129, 0.9);
     color: white;
     display: flex;
     align-items: center;

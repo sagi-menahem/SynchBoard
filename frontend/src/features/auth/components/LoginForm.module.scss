@@ -55,14 +55,14 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: theme.$border;
+  background: var(--glass-border);
   transform: translateY(-50%);
 }
 
 // Text overlay on divider line
 .dividerText {
   position: relative;
-  background: theme.$surface-elevated;
+  background: var(--glass-background);
   padding: 0 theme.$spacing-4;
   color: theme.$text-disabled;
   font-size: 0.875rem;
@@ -87,8 +87,10 @@
   gap: theme.$spacing-2;
   padding: theme.$spacing-2 theme.$spacing-3;
   border-radius: 6px;
-  border: 1px solid theme.$border;
-  background-color: theme.$surface;
+  border: 1px solid var(--glass-border);
+  background: rgba(120, 120, 128, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   margin: theme.$spacing-2 0;
 
   p {
@@ -109,8 +111,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: theme.$border;
-    color: theme.$text-muted;
+    background: rgba(120, 120, 128, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -195,7 +195,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
 
       <Button
         type="submit"
-        variant="primary"
+        variant="primary-glass"
         disabled={isPending}
         className={`${styles.submitButton} ${styles.fullWidth}`}
       >

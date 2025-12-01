@@ -34,14 +34,16 @@
 .heroSection {
   flex: 0 0 60%;
   min-width: 0;
-  background: linear-gradient(135deg, theme.$primary 0%, theme.$primary-hover 100%);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   @include theme.flex-center;
   padding: theme.$spacing-6;
   color: white;
   position: relative;
   overflow: hidden;
 
-  /* Subtle overlay for better text contrast on gradient */
+  /* Subtle glass overlay for depth */
   &::before {
     content: '';
     position: absolute;
@@ -49,7 +51,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
     pointer-events: none;
   }
 }
@@ -118,7 +125,7 @@
   align-items: stretch;
   justify-content: stretch;
   padding: 0;
-  background: theme.$background-primary;
+  background: var(--glass-background);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -127,8 +134,10 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: theme.$background-secondary;
-  border: 1px solid theme.$border-primary;
+  background: var(--glass-background);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
   border-radius: theme.$card-border-radius;
   box-shadow: theme.$shadow-lg;
   box-sizing: border-box;
@@ -165,7 +174,7 @@
   gap: theme.$spacing-1;
   margin-top: theme.$spacing-2;
   padding-top: theme.$spacing-2;
-  border-top: 1px solid theme.$border-primary;
+  border-top: 1px solid var(--glass-border);
 }
 
 .toggleText {
@@ -280,23 +289,28 @@
   }
 }
 
-/* Dark theme gradient using grays instead of primary colors */
+/* Dark theme with glass effect */
 :global(body[data-theme='dark']) {
   .heroSection {
-    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+    background: linear-gradient(135deg, rgba(55, 65, 81, 0.9) 0%, rgba(31, 41, 55, 0.85) 100%);
 
     &::before {
-      background: rgba(0, 0, 0, 0.15);
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(0, 0, 0, 0.15) 100%
+      );
     }
   }
 
   .formSection {
-    background: #{theme.$color-gray-900};
+    background: var(--glass-background);
   }
 
   .authCard {
-    background-color: #{theme.$color-gray-800};
-    border: 1px solid #{theme.$color-gray-700};
+    background: var(--glass-background);
+    border: 1px solid var(--glass-border);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   }
 
@@ -309,6 +323,6 @@
   }
 
   .authActions {
-    border-top: 1px solid #{theme.$color-gray-700};
+    border-top: 1px solid var(--glass-border);
   }
 }

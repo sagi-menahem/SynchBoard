@@ -1,6 +1,6 @@
 @use '@/styles' as theme;
 
-// Google OAuth button with brand-compliant styling and theming support
+// Google OAuth button with glass design styling
 .googleButton {
   @include theme.flex-center;
   @include theme.button-transition;
@@ -9,35 +9,40 @@
   max-width: theme.$google-button-max-width;
   margin: 0 auto;
   padding: theme.$spacing-3 theme.$spacing-4;
-  border: 1px solid var(--google-button-border);
-  background: var(--google-button-bg);
-  color: var(--google-button-text);
+  border: 1px solid rgba(120, 120, 128, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-text-primary);
   font-size: theme.$font-size-sm;
   font-weight: 500;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   gap: theme.$spacing-3;
   min-height: theme.$button-standard-height;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-// Hover state with Google-style shadow elevation
+// Hover state with glass elevation
 .googleButton:hover:not(:disabled) {
-  background: var(--google-button-hover-bg);
-  border-color: var(--google-button-hover-border);
-  box-shadow: theme.$shadow-google;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(120, 120, 128, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-// Active press state with reduced shadow
+// Active press state
 .googleButton:active:not(:disabled) {
-  background: var(--google-button-active-bg);
-  box-shadow: theme.$shadow-google-hover;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 // Disabled state with reduced opacity and no interaction
 .googleButton:disabled {
-  background: var(--google-button-bg);
-  color: var(--google-button-disabled-text);
-  border-color: var(--google-button-disabled-border);
+  background: rgba(120, 120, 128, 0.08);
+  color: var(--color-text-muted);
+  border-color: rgba(120, 120, 128, 0.15);
   cursor: not-allowed;
   opacity: 0.6;
   box-shadow: none;

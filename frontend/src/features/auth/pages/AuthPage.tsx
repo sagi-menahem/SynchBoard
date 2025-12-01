@@ -141,7 +141,7 @@ const AuthPage: React.FC = () => {
                         <span className={styles.toggleText}>
                           {t('auth:authPage.promptToRegister')}
                         </span>
-                        <Button variant="secondary" onClick={toggleAuthMode}>
+                        <Button variant="secondary-glass" onClick={toggleAuthMode}>
                           <UserPlus size={16} />
                           {t('auth:authPage.switchToRegisterButton')}
                         </Button>
@@ -160,7 +160,7 @@ const AuthPage: React.FC = () => {
                         <span className={styles.toggleText}>
                           {t('auth:authPage.promptToLogin')}
                         </span>
-                        <Button variant="secondary" onClick={toggleAuthMode}>
+                        <Button variant="secondary-glass" onClick={toggleAuthMode}>
                           <LogIn size={16} />
                           {t('auth:authPage.switchToLoginButton')}
                         </Button>
