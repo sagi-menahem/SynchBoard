@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster, useToasterStore } from 'react-hot-toast';
 
 import { useAuth } from 'features/auth/hooks';
 import { useIsMobile } from 'shared/hooks';
@@ -8,6 +8,11 @@ import { useIsMobile } from 'shared/hooks';
 // Header height from design tokens (56px)
 const HEADER_HEIGHT = 56;
 const MOBILE_TOP_OFFSET = 12;
+
+// Toast configuration
+const TOAST_DURATION_DEFAULT = 3000; // 3 seconds for success/info
+const TOAST_DURATION_ERROR = 4000; // 4 seconds for errors (more time to read)
+const MAX_VISIBLE_TOASTS = 3; // Limit visible toasts to prevent clutter
 
 /**
  * Global toast notification configuration component for the application.
@@ -21,6 +26,17 @@ export const ToasterConfig: React.FC = () => {
   const isMobile = useIsMobile();
   const { token } = useAuth();
   const isLoggedIn = !!token;
+  const { toasts } = useToasterStore();
+
+  // Limit visible toasts by dismissing oldest when limit is exceeded
+  useEffect(() => {
+    const visibleToasts = toasts.filter((t) => t.visible);
+    if (visibleToasts.length > MAX_VISIBLE_TOASTS) {
+      // Dismiss the oldest visible toasts (they appear first in the array)
+      const toastsToRemove = visibleToasts.slice(0, visibleToasts.length - MAX_VISIBLE_TOASTS);
+      toastsToRemove.forEach((t) => toast.dismiss(t.id));
+    }
+  }, [toasts]);
 
   // On mobile: top-center, with offset for navbar if logged in
   // On desktop: bottom-right
@@ -43,7 +59,7 @@ export const ToasterConfig: React.FC = () => {
       gutter={8}
       containerStyle={containerStyle}
       toastOptions={{
-        duration: 5000,
+        duration: TOAST_DURATION_DEFAULT,
         style: {
           background: 'var(--user-chosen-color, var(--color-surface-elevated))',
           color: 'var(--color-text-primary)',
@@ -63,6 +79,7 @@ export const ToasterConfig: React.FC = () => {
           },
         },
         error: {
+          duration: TOAST_DURATION_ERROR,
           style: {
             border: '1px solid var(--color-error)',
           },
