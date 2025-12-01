@@ -10,7 +10,15 @@
   // This enables mobile scrolling while still allowing custom touch drawing on the canvas element
   touch-action: pan-x pan-y;
 
+  // Flip the container vertically to move horizontal scrollbar to top
+  transform: scaleY(-1);
+
   @include theme.theme-scrollbar-enhanced;
+}
+
+// Flip the content back to normal orientation
+.scrollContainer > * {
+  transform: scaleY(-1);
 }
 
 /* RTL/LTR direction handling for scroll behavior in different text directions */
