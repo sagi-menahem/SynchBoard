@@ -1,0 +1,113 @@
+@use '@/styles' as theme;
+
+// --- Segmented Control Container ---
+
+.segmentedControl {
+  display: inline-flex;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: theme.$border-radius-lg;
+  padding: theme.$spacing-1;
+  gap: theme.$spacing-1;
+  @include theme.smooth-transition;
+}
+
+// Horizontal layout (default)
+.segmentedControl.horizontal {
+  flex-direction: row;
+}
+
+// Vertical layout
+.segmentedControl.vertical {
+  flex-direction: column;
+  width: 100%;
+}
+
+// --- Individual Segment Button ---
+
+.segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: theme.$spacing-2 theme.$spacing-4;
+  min-height: 36px;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: theme.$border-radius-md;
+  color: theme.$text-secondary;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  font-family: inherit;
+  cursor: pointer;
+  @include theme.smooth-transition;
+  user-select: none;
+  white-space: nowrap;
+  text-align: center;
+
+  &:hover:not(.selected):not(.disabled) {
+    background-color: var(--color-surface-hover);
+    color: theme.$text-primary;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--user-chosen-color) 30%, transparent);
+  }
+
+  &:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--user-chosen-color) 30%, transparent);
+  }
+}
+
+// Selected state with primary color for clear visibility
+.segment.selected {
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  color: white;
+  font-weight: theme.$font-weight-semibold;
+
+  &:hover:not(.disabled) {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+}
+
+// Disabled state
+.segment.disabled {
+  cursor: not-allowed;
+  opacity: theme.$opacity-50;
+  color: theme.$text-disabled;
+}
+
+// Vertical layout segment adjustments
+.segmentedControl.vertical .segment {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: start;
+  padding: theme.$spacing-3 theme.$spacing-4;
+}
+
+// --- RTL Support ---
+
+[dir='rtl'] .segmentedControl.vertical .segment {
+  text-align: end;
+}
+
+// --- Responsive Design ---
+
+@media (max-width: 640px) {
+  .segmentedControl.horizontal {
+    width: 100%;
+  }
+
+  .segment {
+    flex: 1;
+    padding: theme.$spacing-2 theme.$spacing-2;
+    min-height: 40px;
+    font-size: theme.$font-size-sm;
+  }
+}

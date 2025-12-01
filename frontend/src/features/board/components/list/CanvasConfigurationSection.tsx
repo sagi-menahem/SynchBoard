@@ -2,7 +2,7 @@ import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import { Monitor } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
+import { ColorPicker, Input, SectionCard, SegmentedControl } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
@@ -101,7 +101,7 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
           {t('board:createForm.label.canvasSize')}
         </label>
         <div className={styles.canvasSizeOptions}>
-          <RadioGroup
+          <SegmentedControl
             id="board-canvas-size"
             value={canvasSize}
             onValueChange={(value) => onCanvasSizeChange(value as typeof canvasSize)}
@@ -138,7 +138,6 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
               },
             ]}
           />
-          <input type="hidden" name="canvasSize" value={canvasSize} />
         </div>
         {canvasSize === 'custom' && (
           <div className={styles.customSizeInputs}>

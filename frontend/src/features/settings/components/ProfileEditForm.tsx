@@ -2,7 +2,7 @@ import type { UpdateUserProfileRequest } from 'features/settings/types/UserTypes
 import { Save, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, RadioGroup } from 'shared/ui';
+import { Button, Input, SegmentedControl } from 'shared/ui';
 
 import styles from '../pages/SettingsPage.module.scss';
 
@@ -23,7 +23,7 @@ interface ProfileEditFormProps {
 /**
  * Profile editing form component with comprehensive field validation and user input handling.
  * Provides editable form fields for all user profile information with proper accessibility support.
- * Implements radio group controls for gender selection and date input handling for birth dates.
+ * Implements segmented control for gender selection and date input handling for birth dates.
  * Includes form validation indicators, required field marking, and intuitive save/cancel operations.
  * 
  * @param formData - Current form state data for profile update fields
@@ -40,7 +40,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   const { t } = useTranslation(['settings', 'common']);
   const [gender, setGender] = useState<string>(formData.gender || '');
 
-  // Handle gender change with both RadioGroup and form data update
+  // Handle gender change with both SegmentedControl and form data update
   const handleGenderChange = (value: string) => {
     setGender(value);
     // Create synthetic event to match existing onInputChange handler
@@ -78,7 +78,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       </div>
       <div className={styles.field}>
         <label htmlFor="profile-gender">{t('settings:page.genderLabel')}</label>
-        <RadioGroup
+        <SegmentedControl
           id="profile-gender"
           value={gender}
           onValueChange={handleGenderChange}

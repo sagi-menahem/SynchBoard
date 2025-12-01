@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
-import { Button, Input, PasswordInput, RadioGroup } from 'shared/ui';
+import { Button, Input, PasswordInput, SegmentedControl } from 'shared/ui';
 
 import { useRegisterForm } from '../hooks/forms';
 
@@ -151,7 +151,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           <User size={14} />
           {t('common:form.label.gender')}
         </label>
-        <RadioGroup
+        <SegmentedControl
           id="register-gender"
           value={gender}
           onValueChange={setGender}
@@ -163,8 +163,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
             { value: 'female', label: t('common:form.option.female') },
           ]}
         />
-        {/* Hidden input to ensure gender value is submitted with form */}
-        <input type="hidden" name="gender" value={gender} />
       </div>
 
       <div className={styles.field}>

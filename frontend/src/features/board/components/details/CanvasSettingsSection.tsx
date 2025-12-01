@@ -4,7 +4,7 @@ import type { BoardDetails, UpdateCanvasSettingsRequest } from 'features/board/t
 import { Save, Settings2, X } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ColorPicker, Input, RadioGroup, SectionCard } from 'shared/ui';
+import { Button, ColorPicker, Input, SectionCard, SegmentedControl } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getColorName } from 'shared/utils/ColorUtils';
 
@@ -137,7 +137,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           <div className={styles.settingsContainerLarge}>
             <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}</label>
             <div style={{ marginTop: '0.5rem' }}>
-              <RadioGroup
+              <SegmentedControl
                 value={canvasSize}
                 onValueChange={handleCanvasSizeChange}
                 disabled={isUpdating}
