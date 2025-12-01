@@ -139,8 +139,28 @@
 
 .canvasSizeOptions {
   @include theme.flex-column;
-  gap: theme.$spacing-4;
+  gap: theme.$spacing-2;
   margin-top: theme.$spacing-2;
+}
+
+// Preset label container for canvas size options
+.presetLabel {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  flex-wrap: wrap;
+}
+
+// Preset name text styling
+.presetName {
+  font-weight: theme.$font-weight-medium;
+  color: theme.$text-primary;
+}
+
+// Preset info text (dimensions and ratio)
+.presetInfo {
+  font-size: theme.$font-size-xs;
+  color: theme.$text-muted;
 }
 
 .sizeGroup {
@@ -181,13 +201,12 @@
 
 // Custom dimension input container with flexible layout
 .customSizeInputs {
-  @include theme.flex-start;
-  gap: theme.$spacing-2;
-  margin-top: theme.$spacing-2;
-  padding: theme.$spacing-4;
-  border: 1px solid theme.$border-primary;
-  @include theme.rounded-large;
-  background: theme.$overlay-surface-80;
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+  margin-top: theme.$spacing-3;
+  padding: theme.$spacing-3 0;
+  background: transparent;
   color: theme.$text-secondary;
   font-size: 0.9rem;
   flex-wrap: wrap;
@@ -195,14 +214,17 @@
 
 // Fixed width inputs for dimensions
 .customSizeInputs input {
-  width: 90px;
+  width: 100px;
   min-width: 80px;
   flex-shrink: 1;
+  text-align: center;
 }
 
-// Prevent text wrapping in dimension labels
+// Dimension separator and unit label styling
 .customSizeInputs span {
   white-space: nowrap;
+  color: theme.$text-muted;
+  font-weight: theme.$font-weight-medium;
 }
 
 // --- Modal Layout Elements ---
@@ -272,14 +294,14 @@
   }
 
   .customSizeInputs {
-    flex-direction: column;
-    align-items: stretch;
-    gap: theme.$spacing-3;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: theme.$spacing-2;
   }
 
   .customSizeInputs input {
-    width: 100%;
-    max-width: 150px;
+    width: 80px;
+    min-width: 70px;
   }
 
   .buttonGroup {
