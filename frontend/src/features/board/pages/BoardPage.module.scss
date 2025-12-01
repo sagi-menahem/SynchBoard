@@ -2,7 +2,7 @@
 
 // Full-viewport layout with dynamic positioning based on header presence
 .pageContent {
-  position: absolute;
+  position: fixed;
   top: calc(var(--banner-height, 0px) + #{theme.$header-height});
   left: 0;
   right: 0;
