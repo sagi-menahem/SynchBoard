@@ -19,12 +19,13 @@ export const ToasterConfig: React.FC = () => {
       toastOptions={{
         duration: 5000,
         style: {
-          background: 'var(--color-surface-elevated)',
+          background: 'var(--user-chosen-color, var(--color-surface-elevated))',
           color: 'var(--color-text-primary)',
           border: '1px solid var(--color-border)',
           borderRadius: '8px',
           padding: '12px 16px',
           boxShadow: '0 4px 12px var(--color-overlay-medium)',
+          backdropFilter: 'blur(12px)',
         },
         success: {
           style: {
@@ -32,7 +33,7 @@ export const ToasterConfig: React.FC = () => {
           },
           iconTheme: {
             primary: 'var(--color-success)',
-            secondary: 'var(--color-surface-elevated)',
+            secondary: 'var(--user-chosen-color, var(--color-surface-elevated))',
           },
         },
         error: {
@@ -41,7 +42,7 @@ export const ToasterConfig: React.FC = () => {
           },
           iconTheme: {
             primary: 'var(--color-error)',
-            secondary: 'var(--color-surface-elevated)',
+            secondary: 'var(--user-chosen-color, var(--color-surface-elevated))',
           },
         },
         loading: {
@@ -50,7 +51,7 @@ export const ToasterConfig: React.FC = () => {
           },
           iconTheme: {
             primary: 'var(--color-primary)',
-            secondary: 'var(--color-surface-elevated)',
+            secondary: 'var(--user-chosen-color, var(--color-surface-elevated))',
           },
         },
       }}
