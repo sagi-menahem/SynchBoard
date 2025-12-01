@@ -6,12 +6,9 @@
   height: 100%;
   overflow: auto;
   display: flex;
-  // Allow pan gestures (2-finger scroll) but prevent pinch-zoom and other default browser gestures
-  // This enables mobile scrolling while still allowing custom touch drawing on the canvas element
-  touch-action: pan-x pan-y;
-
-  // Flip the container vertically to move horizontal scrollbar to top
-  transform: scaleY(-1);
+  // Disable ALL native touch gestures - we handle 2-finger pan via JavaScript
+  // This prevents 1-finger scrolling outside canvas and ensures consistent behavior
+  touch-action: none;
 
   // Custom scrollbar with user preference color track and gray thumb
   scrollbar-width: auto;
@@ -47,28 +44,6 @@
   }
 }
 
-// Flip the content back to normal orientation
-.scrollContainer > * {
-  transform: scaleY(-1);
-}
-
-/* RTL/LTR direction handling for scroll behavior in different text directions */
-[dir='ltr'] .scrollContainer {
-  direction: rtl;
-}
-
-[dir='ltr'] .scrollContainer > * {
-  direction: ltr;
-}
-
-[dir='rtl'] .scrollContainer {
-  direction: ltr;
-}
-
-[dir='rtl'] .scrollContainer > * {
-  direction: ltr;
-}
-
 .canvasContainer {
   @include theme.flex-center;
   box-sizing: border-box;
@@ -96,8 +71,8 @@
   display: block;
   cursor: crosshair;
   border-radius: theme.$border-radius-xs;
-  // Disable native touch scrolling on canvas to enable custom drawing and panning
-  // Without this, the inherited pan-x pan-y would allow native 1-finger scrolling
+  // Disable native touch gestures - all touch interactions handled via JavaScript
+  // Single finger draws, two fingers pan (handled in useCanvasPanning)
   touch-action: none;
 }
 
