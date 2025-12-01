@@ -4,15 +4,30 @@
 
 // Full-screen modal overlay container
 .overlay {
-  @include theme.modal-backdrop;
+  @include theme.fixed-overlay;
+  @include theme.flex-center;
+  background-color: transparent; // No background - backdrop handles it
+  padding: theme.$spacing-0 theme.$spacing-4;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  position: fixed !important;
+  z-index: theme.$z-index-modal !important;
+  // DO NOT add overflow-y: auto here - only content should scroll, not overlay
 }
 
 // Clickable backdrop behind modal content
 .backdrop {
-  @include theme.overlay-full;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
   background-color: theme.$overlay-strong;
   border: none;
   cursor: pointer;
+  z-index: 0; // Behind the content
 }
 
 // Modal content container with responsive sizing
@@ -30,9 +45,9 @@
   max-width: theme.$modal-max-width;
   max-height: 70vh;
   height: fit-content;
-  position: relative;
-  z-index: theme.$z-index-base;
-  overflow-y: auto;
+  position: relative !important;
+  z-index: 10 !important; // Above backdrop (z-index: 0)
+  overflow-y: auto; // Content scrolls, not overlay
   margin: theme.$spacing-6 auto;
   
   &:hover {
@@ -60,7 +75,7 @@
   font-size: theme.$font-size-base;
   padding: theme.$spacing-2;
   line-height: 1;
-  z-index: theme.$z-index-dropdown;
+  z-index: 100; // Above content
   min-width: auto;
   width: theme.$spacing-8;
   height: theme.$spacing-8;
@@ -96,16 +111,21 @@
 @media (max-width: theme.$breakpoint-sm) {
   .overlay {
     padding: theme.$spacing-2;
-    align-items: center;
+    align-items: center; // Explicitly center vertically
+    justify-content: center; // Explicitly center horizontally
   }
 
   .content {
-    min-width: auto;
-    max-width: calc(100% - theme.$spacing-4);
-    max-height: calc(100vh - theme.$spacing-4);
-    margin: theme.$spacing-2;
+    min-width: 280px; // Prevent collapse
+    width: calc(100vw - 32px) !important; // Explicit width for mobile with important
+    max-width: calc(100vw - 32px) !important; // Account for overlay padding
+    max-height: calc(100vh - 32px) !important; // Account for overlay padding
+    margin: 0 !important; // Remove auto margin on mobile, flex handles centering
     border-radius: theme.$border-radius-md;
     padding: theme.$spacing-4;
     padding-top: theme.$spacing-12;
+    overflow-y: auto; // Ensure scrolling works for tall content
+    display: flex !important; // Ensure flex display
+    flex-direction: column !important; // Stack content vertically
   }
 }

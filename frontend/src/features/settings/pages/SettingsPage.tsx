@@ -182,23 +182,23 @@ const SettingsPage: React.FC = () => {
             <DangerZoneSection onDeleteAccount={() => setAccountDeleteConfirmOpen(true)} />
           </div>
         </div>
-
-        <ConfirmationDialog
-          isOpen={isPicDeleteConfirmOpen}
-          onClose={() => setPicDeleteConfirmOpen(false)}
-          onConfirm={handlePictureDeleteWithCleanup}
-          title={t('settings:page.deletePictureConfirmTitle')}
-          message={t('settings:page.deletePictureConfirmText')}
-        />
-
-        <ConfirmationDialog
-          isOpen={isAccountDeleteConfirmOpen}
-          onClose={() => setAccountDeleteConfirmOpen(false)}
-          onConfirm={handleDeleteAccountWithCleanup}
-          title={t('settings:page.deleteAccountConfirmTitle')}
-          message={t('settings:page.deleteAccountConfirmText')}
-        />
       </main>
+
+      <ConfirmationDialog
+        isOpen={isPicDeleteConfirmOpen}
+        onClose={() => setPicDeleteConfirmOpen(false)}
+        onConfirm={handlePictureDeleteWithCleanup}
+        title={t('settings:page.deletePictureConfirmTitle')}
+        message={t('settings:page.deletePictureConfirmText')}
+      />
+
+      <ConfirmationDialog
+        isOpen={isAccountDeleteConfirmOpen}
+        onClose={() => setAccountDeleteConfirmOpen(false)}
+        onConfirm={handleDeleteAccountWithCleanup}
+        title={t('settings:page.deleteAccountConfirmTitle')}
+        message={t('settings:page.deleteAccountConfirmText')}
+      />
     </PageTransition>
   );
 };

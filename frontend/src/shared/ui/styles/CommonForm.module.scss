@@ -211,6 +211,7 @@
   @include theme.flex-column;
   gap: theme.$spacing-6;
   max-width: 400px;
+  width: 100%;
 }
 
 .modalHeader {
@@ -266,6 +267,10 @@
     max-width: 90vw;
   }
 
+  .modalContainer {
+    max-width: 90vw;
+  }
+
   .customSizeInputs {
     flex-direction: column;
     align-items: stretch;
@@ -284,5 +289,14 @@
 
   .buttonGroup button {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContainer {
+    max-width: 100%; // Use full available width
+    min-width: 280px; // Prevent collapse
+    width: 100%; // Take full width of parent
+    gap: theme.$spacing-4;
   }
 }

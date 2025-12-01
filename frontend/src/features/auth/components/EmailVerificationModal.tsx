@@ -94,10 +94,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div
-        className={styles.modalContainer}
-        style={{ maxWidth: UI_CONSTANTS.AUTH_MODAL_MAX_WIDTH }}
-      >
+      <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>
             <Mail size={20} />

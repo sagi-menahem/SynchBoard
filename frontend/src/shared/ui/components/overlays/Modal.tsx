@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 import { useTranslation } from 'react-i18next';
 
@@ -29,6 +30,23 @@ interface ModalProps {
  */
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) => {
   const { t } = useTranslation(['common']);
+  
+  // Lock body scroll when modal is open to prevent background scrolling
+  useEffect(() => {
+    if (isOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      
+      // Simple approach: just prevent scrolling without position manipulation
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [isOpen]);
+  
   if (!isOpen) {
     return null;
   }
@@ -40,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
     }
   };
 
-  return (
+  const modalContent = (
     <div className={`${styles.overlay} ${className || ''}`} onKeyDown={handleOverlayKeyDown} role="presentation">
       <button
         className={styles.backdrop}
@@ -56,6 +74,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
       </div>
     </div>
   );
+
+  // Render modal as a portal to document.body to escape any parent container constraints
+  return createPortal(modalContent, document.body);
 };
 
 export default Modal;

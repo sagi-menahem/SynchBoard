@@ -1,6 +1,5 @@
 import React, { type ReactNode } from 'react';
 
-import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { Button, Modal } from 'shared/ui';
 import styles from 'shared/ui/styles/CommonForm.module.scss';
 
@@ -24,8 +23,6 @@ interface BaseAuthModalProps {
   // Form fields and additional action area content
   children: ReactNode;
   additionalActions?: ReactNode;
-  // Optional modal width override from default authentication modal size
-  maxWidth?: string;
 }
 
 /**
@@ -53,12 +50,10 @@ const BaseAuthModal: React.FC<BaseAuthModalProps> = ({
   cancelButtonText,
   children,
   additionalActions,
-  // Default to standard auth modal width unless overridden for specific use cases
-  maxWidth = UI_CONSTANTS.AUTH_MODAL_MAX_WIDTH,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.modalContainer} style={{ maxWidth }}>
+      <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{title}</h2>
         </div>
