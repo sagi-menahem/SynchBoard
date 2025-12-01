@@ -38,7 +38,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ref,
   ) => {
     const cardClasses = [
-      styles.card,
+      variant !== 'glass' && styles.card, // Don't apply card-base to glass variant
       styles[variant],
       styles[`padding-${padding}`],
       hoverable && styles.hoverable,

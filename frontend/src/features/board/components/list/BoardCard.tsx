@@ -104,7 +104,7 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
   // List view: Modern compact horizontal row
   return (
     <Link to={boardRoute} className={styles.cardLink}>
-      <Card variant="elevated" hoverable className={cardClasses}>
+      <Card variant="glass" hoverable className={cardClasses}>
         {/* Left section: Avatar + Name */}
         <div className={styles.listLeftSection}>
           <img 
