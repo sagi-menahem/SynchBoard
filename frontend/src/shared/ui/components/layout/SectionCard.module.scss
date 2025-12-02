@@ -168,7 +168,7 @@
 // --- Responsive Design ---
 
 // Mobile responsive adjustments
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .sectionCard {
     margin-bottom: 0; // Keep consistent with grid layout
     width: 100%;
@@ -192,7 +192,7 @@
     // Hide button text on mobile, show only icons
     :global(button) {
       span:not([class*='icon']) {
-        @media (max-width: 768px) {
+        @media (max-width: theme.$breakpoint-md) {
           display: none;
         }
       }

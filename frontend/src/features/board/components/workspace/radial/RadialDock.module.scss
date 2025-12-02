@@ -557,7 +557,7 @@ $border-radius-mobile: 20px;
   will-change: transform, opacity;
 
   /* Wider on mobile to fit color palette grid (6×3) */
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     width: 180px; /* 6 colors × 24px + 5 gaps × 6px + padding */
   }
 }

@@ -129,7 +129,7 @@
   }
 
   /* Smaller on mobile to fit 6-column grid */
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     width: 24px;
     height: 24px;
   }
@@ -248,7 +248,7 @@
 
 /* ==================== RESPONSIVE ADJUSTMENTS ==================== */
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .satelliteContent {
     gap: 1rem;
   }

@@ -180,7 +180,7 @@
 }
 
 /* Mobile breakpoint: stack hero and form vertically */
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .pageContent {
     min-height: auto;
   }
@@ -255,7 +255,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .heroSection {
     min-height: 35vh;
     padding: theme.$spacing-4;

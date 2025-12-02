@@ -7,7 +7,7 @@
   font-weight: theme.$font-weight-medium;
   white-space: nowrap;
 
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     display: none;
   }
 }
@@ -33,7 +33,7 @@
   justify-content: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .pageContent {
     padding-inline-start: 16px;
     padding-inline-end: 16px;
@@ -42,7 +42,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .pageContent {
     padding-inline-start: 12px;
     padding-inline-end: 12px;
@@ -67,14 +67,14 @@
 }
 
 // Reduce gap between cards on smaller screens
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .leftColumn,
   .rightColumn {
     gap: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .leftColumn,
   .rightColumn {
     gap: 1rem;

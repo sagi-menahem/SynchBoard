@@ -193,7 +193,7 @@
 }
 
 // Hide search bar first before other elements get squished (boards page only)
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   // Target only the boards page using data attribute
   .universalToolbar[data-page-type='boards'] .centerSection {
     display: none !important;

@@ -224,7 +224,7 @@
 
 // --- Responsive Design ---
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .form {
     min-width: 300px;
     max-width: 90vw;
@@ -255,7 +255,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .modalContainer {
     max-width: 100%; // Use full available width
     min-width: 280px; // Prevent collapse

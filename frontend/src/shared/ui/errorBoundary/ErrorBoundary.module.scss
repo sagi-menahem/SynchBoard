@@ -26,12 +26,12 @@
   text-align: center;
   box-shadow: theme.$shadow-lg;
 
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     padding: theme.$spacing-8;
     margin: theme.$spacing-4;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: theme.$breakpoint-sm) {
     padding: theme.$spacing-6;
     margin: theme.$spacing-2;
     border-radius: theme.$border-radius-lg;
@@ -52,7 +52,7 @@
     filter: drop-shadow(0 2px 8px var(--color-overlay-light));
     animation: pulseIcon 2s ease-in-out infinite;
 
-    @media (max-width: 480px) {
+    @media (max-width: theme.$breakpoint-sm) {
       font-size: 3rem;
     }
   }
@@ -80,7 +80,7 @@
   margin: 0 0 theme.$spacing-4 0;
   line-height: 1.2;
 
-  @media (max-width: 480px) {
+  @media (max-width: theme.$breakpoint-sm) {
     font-size: 1.75rem;
   }
 }
@@ -94,7 +94,7 @@
   max-width: 500px;
   margin-inline: auto;
 
-  @media (max-width: 480px) {
+  @media (max-width: theme.$breakpoint-sm) {
     font-size: 1rem;
     margin-bottom: theme.$spacing-6;
   }
@@ -110,7 +110,7 @@
   align-items: center;
   flex-wrap: wrap;
 
-  @media (max-width: 480px) {
+  @media (max-width: theme.$breakpoint-sm) {
     flex-direction: column;
     gap: theme.$spacing-3;
     width: 100%;
@@ -166,7 +166,7 @@
   .buttonContainer {
     flex-direction: row-reverse;
 
-    @media (max-width: 480px) {
+    @media (max-width: theme.$breakpoint-sm) {
       flex-direction: column;
     }
   }

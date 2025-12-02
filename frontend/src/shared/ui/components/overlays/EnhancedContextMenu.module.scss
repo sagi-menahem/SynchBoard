@@ -152,7 +152,7 @@
 // --- Responsive Design ---
 
 // Tablet adjustments
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .menu {
     min-width: 160px;
     padding: theme.$spacing-1;
@@ -161,7 +161,7 @@
 }
 
 // Mobile adjustments
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .menu {
     min-width: 140px;
     max-width: 200px;

@@ -89,7 +89,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .activityIndicator {
     padding: theme.$spacing-1-5 theme.$spacing-2-5;
     font-size: theme.$font-size-xs-plus;

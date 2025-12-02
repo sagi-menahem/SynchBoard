@@ -7,7 +7,7 @@
   font-weight: theme.$font-weight-medium;
   white-space: nowrap;
 
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     display: none;
   }
 }

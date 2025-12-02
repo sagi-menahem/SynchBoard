@@ -34,12 +34,12 @@
   font-weight: theme.$font-weight-medium;
   white-space: nowrap;
 
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     display: none;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .pageContent {
     padding-inline: 16px;
     grid-template-columns: 1fr;
@@ -47,7 +47,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .pageContent {
     padding-inline: 12px;
     gap: 1rem;
@@ -72,14 +72,14 @@
 }
 
 // Reduce gap between cards on smaller screens
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .leftColumn,
   .rightColumn {
     gap: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .leftColumn,
   .rightColumn {
     gap: 1rem;
@@ -88,7 +88,7 @@
 
 // Ensure danger zone spans full width on mobile for better visibility
 .dangerZone {
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     grid-column: 1 / -1;
   }
 }

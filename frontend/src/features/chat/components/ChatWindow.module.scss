@@ -122,7 +122,7 @@
   inset-inline-end: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .container {
     border-radius: theme.$border-radius-none;
     box-shadow: none;

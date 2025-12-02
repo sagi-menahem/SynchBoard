@@ -241,7 +241,7 @@
 }
 
 // ===== RESPONSIVE DESIGN =====
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .boardCard.grid {
     aspect-ratio: 1 / 1;
   }
@@ -339,7 +339,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .boardCard.grid .boardCardContent {
     padding: 8px;
     gap: 4px;

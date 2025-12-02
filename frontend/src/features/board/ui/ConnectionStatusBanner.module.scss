@@ -71,7 +71,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .banner {
     padding: theme.$spacing-2;
   }

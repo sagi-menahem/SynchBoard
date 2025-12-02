@@ -124,7 +124,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .form {
     padding: theme.$spacing-3 theme.$spacing-4;
     // Ensure form stays above keyboard on mobile

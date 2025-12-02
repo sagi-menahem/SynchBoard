@@ -7,7 +7,7 @@
   font-weight: theme.$font-weight-medium;
   white-space: nowrap;
 
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     display: none;
   }
 }
@@ -26,7 +26,7 @@
   box-sizing: border-box;
 
   // Add extra padding on mobile to account for mobile search row
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     padding-top: calc(var(--banner-height, 0px) + 72px);
   }
 }
@@ -139,12 +139,12 @@
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 24px;
 
-  @media (max-width: 768px) {
+  @media (max-width: theme.$breakpoint-md) {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
   }
 
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: calc(theme.$breakpoint-md + 1px)) and (max-width: theme.$breakpoint-lg) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
   }

@@ -141,7 +141,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: theme.$breakpoint-md) {
   .modalContainer {
     max-width: 100%;
     width: 100%;
@@ -189,7 +189,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: theme.$breakpoint-sm) {
   .modalContainer {
     max-width: 100%;
     width: 100%;
