@@ -139,14 +139,13 @@
 // Mobile styles
 @media (max-width: theme.$breakpoint-md) {
   .container {
-    bottom: calc(16px + env(safe-area-inset-bottom));
-    transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  // Move up when dock is expanded on mobile (use :global to escape CSS Modules)
-  // Position buttons just above the tab with chevron
-  :global(body.dock-expanded) .container {
-    bottom: calc(140px + env(safe-area-inset-bottom)); // Float just above expanded dock tab
+    // Use CSS custom property set by RadialDock for smooth sync during drag
+    // --dock-toolbar-height is updated in real-time during drag gestures
+    // Add 48px for the tab height + 8px gap
+    bottom: calc(
+      var(--dock-toolbar-height, 0px) + 10px + 8px + env(safe-area-inset-bottom)
+    );
+    // No transition - we want instant sync with drag gesture
   }
 
   .ltr {

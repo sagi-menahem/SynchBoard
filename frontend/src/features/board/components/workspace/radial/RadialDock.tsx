@@ -221,6 +221,30 @@ export const RadialDock: React.FC<RadialDockProps> = ({
     };
   }, [isMobile, isExpanded]);
 
+  // Update CSS custom property for toolbar height during drag (for FloatingActions sync)
+  useEffect(() => {
+    if (isMobile) {
+      // Calculate current toolbar height (same logic as getToolbarHeight)
+      let height = 0;
+      if (isDragging) {
+        if (isExpanded) {
+          const closeProgress = Math.max(0, dragY) / TOOLBAR_HEIGHT_MOBILE;
+          height = TOOLBAR_HEIGHT_MOBILE * (1 - closeProgress);
+        } else {
+          const openProgress = Math.abs(Math.min(0, dragY)) / TOOLBAR_HEIGHT_MOBILE;
+          height = TOOLBAR_HEIGHT_MOBILE * openProgress;
+        }
+      } else {
+        height = isExpanded ? TOOLBAR_HEIGHT_MOBILE : 0;
+      }
+      document.body.style.setProperty('--dock-toolbar-height', `${height}px`);
+    }
+
+    return () => {
+      document.body.style.removeProperty('--dock-toolbar-height');
+    };
+  }, [isMobile, isDragging, dragY, isExpanded]);
+
   // =========================================================================
   // HANDLERS
   // =========================================================================
