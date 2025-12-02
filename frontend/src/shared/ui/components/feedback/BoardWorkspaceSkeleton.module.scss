@@ -10,9 +10,9 @@
   overflow: hidden;
 }
 
-// Canvas panel (left side) - darker background like actual canvas
+// Canvas panel - darker background like actual canvas
+// Width controlled by inline style from splitRatio prop
 .canvasPanel {
-  flex: 0 0 70%; // Default 70% width
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -73,9 +73,9 @@
   border-radius: 50%;
 }
 
-// Chat panel (right side)
+// Chat panel
+// Width controlled by inline style from splitRatio prop
 .chatPanel {
-  flex: 0 0 30%; // Default 30% width
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -171,11 +171,11 @@
   flex-shrink: 0;
 }
 
-// Floating toolbar skeleton - positioned at bottom center
+// Floating toolbar skeleton - positioned at bottom center of canvas panel
+// Left position controlled by inline style from splitRatio prop
 .toolbarSkeleton {
   position: absolute;
   bottom: theme.$spacing-6;
-  left: 35%; // Centered within canvas panel (70% / 2)
   transform: translateX(-50%);
   display: flex;
   gap: theme.$spacing-2;

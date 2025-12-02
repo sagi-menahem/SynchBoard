@@ -187,7 +187,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   if (isLoading) {
     return (
-      <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
+      <PageTransition>
         <AppHeader
           leading={
             <>
@@ -207,7 +207,10 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         />
         <main className={styles.pageContent}>
           <div className={styles.boardWorkspaceArea}>
-            <BoardWorkspaceSkeleton />
+            <BoardWorkspaceSkeleton
+              splitRatio={canvasPreferences.canvasChatSplitRatio}
+              containerStyle={containerStyle}
+            />
           </div>
         </main>
       </PageTransition>
