@@ -3,18 +3,21 @@
 .cardLink {
   text-decoration: none;
   color: inherit;
-  @include theme.smooth-transition;
+  display: block;
 
   &:hover .boardCard.grid {
-    opacity: 0.99;
-    transform: scale(1.02);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
   }
 
   &:hover .boardCard.list {
-    opacity: 0.99;
-    transform: scale(1.02);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  &:active .boardCard {
+    transform: translateY(0) scale(1);
+    transition-duration: 0.1s;
   }
 }
 
@@ -22,7 +25,10 @@
   text-align: start;
   position: relative;
   overflow: hidden;
-  @include theme.smooth-transition;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
 }
 
 // ===== GRID VIEW STYLES =====
