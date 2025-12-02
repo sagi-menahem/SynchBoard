@@ -15,10 +15,11 @@
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: var(--skeleton-base, rgba(128, 128, 128, 0.15));
+  // Default: subtle gray with lower opacity for less brightness
+  background: var(--skeleton-base, rgba(128, 128, 128, 0.12));
   border-radius: theme.$border-radius-sm;
 
-  // Shimmer overlay
+  // Shimmer overlay - more subtle animation
   &::after {
     content: '';
     position: absolute;
@@ -29,10 +30,24 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      var(--skeleton-shimmer, rgba(255, 255, 255, 0.4)) 50%,
+      var(--skeleton-shimmer, rgba(255, 255, 255, 0.15)) 50%,
       transparent 100%
     );
-    animation: shimmer 1.5s infinite ease-in-out;
+    animation: shimmer 1.8s infinite ease-in-out;
+  }
+
+  // Dark theme: even more subtle shimmer
+  :global(body[data-theme='dark']) & {
+    background: var(--skeleton-base, rgba(100, 100, 110, 0.2));
+
+    &::after {
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--skeleton-shimmer, rgba(150, 150, 160, 0.15)) 50%,
+        transparent 100%
+      );
+    }
   }
 }
 
