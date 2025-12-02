@@ -198,6 +198,18 @@
   font-size: 1rem;
   margin-top: 4px;
   @include theme.smooth-transition;
+
+  // Date picker popup styling - follows user's theme preference
+  // The color-scheme property tells the browser to render the date picker
+  // in the appropriate theme (light or dark) matching the site's theme
+  color-scheme: light;
+
+  body[data-theme='dark'] & {
+    color-scheme: dark;
+  }
+
+  // Accent color for date picker selection highlighting
+  accent-color: var(--color-primary);
 }
 
 .dateInput:focus {

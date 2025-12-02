@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
 import { Button, Input, PasswordInput, SegmentedControl } from 'shared/ui';
+import DatePicker from 'shared/ui/components/forms/DatePicker';
 
 import { useRegisterForm } from '../hooks/forms';
 
@@ -28,6 +29,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
   const { t } = useTranslation(['auth', 'common']);
   const { submitAction, isPending, state, formRef } = useRegisterForm(onRegistrationSuccess);
   const [gender, setGender] = useState<string>('');
+  const [dateOfBirth, setDateOfBirth] = useState<string>('');
   const featureConfig = useFeatureConfig();
 
   // Real-time validation state
@@ -53,6 +55,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
         }
         if (key === 'gender' && value) {
           setGender(value);
+        }
+        if (key === 'dateOfBirth' && value) {
+          setDateOfBirth(value);
         }
       });
     }
@@ -149,6 +154,23 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
       </div>
 
       <div className={styles.field}>
+        <label htmlFor="register-dateOfBirth">
+          <Calendar size={14} />
+          {t('common:form.label.dateOfBirth')}
+        </label>
+        <DatePicker
+          id="register-dateOfBirth"
+          name="dateOfBirth"
+          value={dateOfBirth}
+          onChange={setDateOfBirth}
+          disabled={isPending}
+          variant="auth"
+        />
+        {/* Hidden input to include date in form data */}
+        <input type="hidden" name="dateOfBirth" value={dateOfBirth} />
+      </div>
+
+      <div className={styles.field}>
         <label htmlFor="register-gender">
           <User size={14} />
           {t('common:form.label.gender')}
@@ -165,14 +187,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
             { value: 'female', label: t('common:form.option.female') },
           ]}
         />
-      </div>
-
-      <div className={styles.field}>
-        <label htmlFor="register-dateOfBirth">
-          <Calendar size={14} />
-          {t('common:form.label.dateOfBirth')}
-        </label>
-        <Input id="register-dateOfBirth" name="dateOfBirth" type="date" disabled={isPending} />
       </div>
 
       <div className={`${styles.field} ${styles.fullWidth}`}>

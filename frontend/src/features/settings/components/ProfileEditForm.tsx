@@ -3,6 +3,7 @@ import { Save, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, SegmentedControl } from 'shared/ui';
+import DatePicker from 'shared/ui/components/forms/DatePicker';
 
 import styles from '../pages/SettingsPage.module.scss';
 
@@ -92,13 +93,17 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       </div>
       <div className={styles.field}>
         <label htmlFor="dateOfBirth">{t('settings:page.dateOfBirthLabel')}</label>
-        <Input
+        <DatePicker
           id="dateOfBirth"
           name="dateOfBirth"
-          type="date"
           value={formData.dateOfBirth !== null ? formData.dateOfBirth : ''}
-          onChange={onInputChange}
-          className={styles.dateInput}
+          onChange={(value) => {
+            const syntheticEvent = {
+              target: { name: 'dateOfBirth', value },
+            } as React.ChangeEvent<HTMLInputElement>;
+            onInputChange(syntheticEvent);
+          }}
+          variant="settings"
         />
       </div>
       <div className={styles.field}>

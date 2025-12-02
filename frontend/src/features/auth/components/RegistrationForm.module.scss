@@ -38,6 +38,34 @@
 // Center-aligned date input styling
 .field input[type='date'] {
   text-align: center;
+
+  // Date picker popup styling for registration page
+  // Uses light theme by default, dark theme when site is in dark mode
+  // This ensures the date picker popup matches the auth page design
+  color-scheme: light;
+
+  body[data-theme='dark'] & {
+    color-scheme: dark;
+  }
+
+  // Accent color for date picker selection highlighting
+  accent-color: theme.$primary;
+}
+
+// Calendar picker icon styling for date inputs on registration page
+.field input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+  @include theme.smooth-transition;
+
+  // Invert colors only in dark mode for visibility
+  body[data-theme='dark'] & {
+    filter: invert(1);
+  }
+}
+
+.field input[type='date']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
 .required {
