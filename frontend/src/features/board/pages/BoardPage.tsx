@@ -205,7 +205,11 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           }
           title={<span>{t('board:page.loading')}</span>}
         />
-        <BoardWorkspaceSkeleton />
+        <main className={styles.pageContent}>
+          <div className={styles.boardWorkspaceArea}>
+            <BoardWorkspaceSkeleton />
+          </div>
+        </main>
       </PageTransition>
     );
   }
