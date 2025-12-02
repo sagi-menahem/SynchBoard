@@ -375,7 +375,6 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
     };
 
     const toolbarHeight = getToolbarHeight();
-    const toolbarOpacity = toolbarHeight / TOOLBAR_HEIGHT_MOBILE;
 
     return (
         <>
@@ -412,8 +411,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                             data-testid="mobile-toolbar"
                             data-expanded={isExpanded}
                             animate={{
-                                height: isDragging ? toolbarHeight : (isExpanded ? TOOLBAR_HEIGHT_MOBILE : 0),
-                                opacity: isDragging ? toolbarOpacity : (isExpanded ? 1 : 0)
+                                height: isDragging ? toolbarHeight : (isExpanded ? TOOLBAR_HEIGHT_MOBILE : 0)
                             }}
                             transition={isDragging ? { duration: 0 } : {
                                 type: "spring",
