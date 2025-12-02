@@ -28,7 +28,8 @@
   margin: 0;
 }
 
-// Mobile search row - displayed below AppHeader on mobile devices
+// Search row - displayed below AppHeader on narrow windows (mobile and small desktop)
+// Visibility is controlled by React based on window width
 .mobileSearchRow {
   position: fixed;
   top: calc(var(--banner-height, 0px) + theme.$header-height);
@@ -42,15 +43,11 @@
   border-bottom: 1px solid var(--glass-border);
   padding: theme.$spacing-3 theme.$spacing-4;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  
-  @media (min-width: 769px) {
-    display: none;
-  }
-  
-  // Make search bar full width on mobile
+
+  // Make search bar full width
   :global(.searchForm) {
     width: 100%;
-    
+
     .searchContainer {
       min-width: 100%;
       max-width: 100%;

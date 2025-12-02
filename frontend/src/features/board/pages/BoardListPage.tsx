@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
-import { useIsMobile } from 'shared/hooks';
+import { useIsMobile, useMediaQuery } from 'shared/hooks';
 import {
     AppHeader,
     Button,
@@ -35,6 +35,8 @@ const BoardListPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  // Show search in separate row when window is narrow (even on desktop)
+  const isNarrowWindow = useMediaQuery('(max-width: 768px)');
   const {
     boards,
     isLoading,
@@ -74,7 +76,7 @@ const BoardListPage: React.FC = () => {
               <Settings size={20} />
             </Button>
           }
-          center={!isMobile ? (
+          center={!isNarrowWindow ? (
             <SearchBar
               placeholder={t('board:toolbar.search.boardName')}
               value={searchQuery}
@@ -97,7 +99,7 @@ const BoardListPage: React.FC = () => {
             </>
           )}
         />
-        {isMobile && (
+        {isNarrowWindow && (
           <div className={styles.mobileSearchRow}>
             <SearchBar
               placeholder={t('board:toolbar.search.boardName')}
@@ -120,7 +122,7 @@ const BoardListPage: React.FC = () => {
             <Settings size={20} />
           </Button>
         }
-        center={!isMobile ? (
+        center={!isNarrowWindow ? (
           <SearchBar
             placeholder={t('board:toolbar.search.boardName')}
             value={searchQuery}
@@ -143,7 +145,7 @@ const BoardListPage: React.FC = () => {
           </>
         )}
       />
-      {isMobile && (
+      {isNarrowWindow && (
         <div className={styles.mobileSearchRow}>
           <SearchBar
             placeholder={t('board:toolbar.search.boardName')}
