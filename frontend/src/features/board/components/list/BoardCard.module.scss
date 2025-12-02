@@ -34,7 +34,9 @@
   @include theme.flex-column;
   padding: 0;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
+  box-shadow: theme.$shadow-card;
 }
 
 .previewArea {
@@ -145,6 +147,9 @@
   padding: 10px 14px;
   border-radius: 8px;
   min-height: 56px;
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
+  box-shadow: theme.$shadow-card;
 }
 
 .listLeftSection {

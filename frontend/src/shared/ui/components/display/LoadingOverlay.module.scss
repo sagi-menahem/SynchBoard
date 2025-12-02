@@ -5,7 +5,9 @@
 // Full-screen modal overlay that blocks user interaction during loading states
 .loadingOverlay {
   @include theme.fixed-overlay;
-  background-color: theme.$background-darker;
+  background-color: var(--color-overlay-strong);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   @include theme.flex-center;
 }
 

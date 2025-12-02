@@ -1,11 +1,12 @@
 @use '@/styles' as theme;
 
 .section {
-  background-color: theme.$background-secondary;
-  border: 1px solid theme.$border-primary;
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
   @include theme.rounded-medium;
   padding: theme.$spacing-6;
   margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sectionHeader {
@@ -86,7 +87,7 @@
   gap: theme.$spacing-3;
   justify-content: end;
   padding-block-start: theme.$spacing-2;
-  border-block-start: 1px solid theme.$border-primary;
+  border-block-start: 1px solid var(--glass-border);
 }
 
 .cancelButton,

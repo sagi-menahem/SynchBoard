@@ -1,12 +1,15 @@
 @use '@/styles' as theme;
 
 .memberItem {
-  background-color: var(--user-chosen-color);
+  background: var(--user-chosen-color, var(--glass-background));
   border: 1px solid var(--glass-border);
+  border-radius: theme.$border-radius-md;
+  padding: theme.$spacing-3 theme.$spacing-4;
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
   gap: theme.$spacing-3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .memberAvatar {

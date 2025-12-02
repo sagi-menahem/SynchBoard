@@ -6,7 +6,9 @@
 .menu {
   position: fixed;
   z-index: theme.$z-index-popover;
-  @include theme.card-base;
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
+  border-radius: theme.$card-border-radius;
   @include theme.shadow-heavy;
   padding: theme.$spacing-1-5;
   min-width: 180px;
@@ -78,16 +80,11 @@
   left: -4px;
   right: -4px;
   bottom: -4px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
+  background: transparent;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: inherit;
   z-index: -1;
-  opacity: 0.8;
-}
-
-// Dark theme backdrop adjustment
-[data-theme='dark'] .menu::before {
-  background: rgba(0, 0, 0, 0.2);
 }
 
 // --- Item Animations ---

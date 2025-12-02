@@ -9,8 +9,10 @@
   z-index: theme.$z-index-banner;
   @include theme.flex-center;
   padding: theme.$spacing-3 theme.$spacing-4;
-  border-bottom: 1px solid;
+  background: var(--user-chosen-color, var(--glass-background));
+  border-bottom: 1px solid var(--glass-border);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   @include theme.smooth-transition;
 }
 
@@ -36,9 +38,9 @@
 }
 
 .disconnected {
-  background-color: theme.$error-bg;
-  color: theme.$text-primary;
-  border-color: theme.$error-border;
+  background-color: var(--color-error-banner-bg);
+  color: var(--color-error-banner-text);
+  border-color: var(--color-error-banner-border);
 }
 
 .disconnected .icon {
