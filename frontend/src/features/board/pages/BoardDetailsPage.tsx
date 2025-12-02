@@ -2,6 +2,7 @@ import { LogOut, UserPlus } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useIsMobile } from 'shared/hooks';
 import { AppHeader, Button, PageLoader, PageTransition, SectionCard } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getBackArrowIcon } from 'shared/utils/rtlUtils';
@@ -31,6 +32,7 @@ const BoardDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { boardId } = useParams<{ boardId: string }>();
   const numericBoardId = parseInt(boardId ?? '0', 10);
+  const isMobile = useIsMobile();
 
   // Extract board management state and handlers from the dedicated hook
   const {
@@ -67,8 +69,9 @@ const BoardDetailsPage: React.FC = () => {
     () =>
       ({
         '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
       }) as React.CSSProperties,
-    [],
+    [isMobile],
   );
 
   // Icon components for AppHeader

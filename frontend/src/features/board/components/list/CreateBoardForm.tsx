@@ -2,8 +2,9 @@ import defaultBoardImage from 'assets/default-board-image.png';
 import { CANVAS_CONFIG } from 'features/board/constants/BoardConstants';
 import type { Board } from 'features/board/types/BoardTypes';
 import { FileText, Pencil, Users } from 'lucide-react';
-import React, { startTransition, useState } from 'react';
+import React, { startTransition, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useIsMobile } from 'shared/hooks';
 import { Button, Input, PictureManager, SectionCard, Textarea } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
@@ -35,6 +36,7 @@ interface CreateBoardFormProps {
 const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClose }) => {
   const { t } = useTranslation(['board', 'common']);
   const { submitAction, isPending } = useCreateBoardForm(onBoardCreated);
+  const isMobile = useIsMobile();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
@@ -94,8 +96,17 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
     });
   };
 
+  const containerStyle = useMemo(
+    () =>
+      ({
+        '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
+      }) as React.CSSProperties,
+    [isMobile],
+  );
+
   return (
-    <div className={`${styles.modalContainer} ${utilStyles.unifiedDotBackground}`}>
+    <div className={`${styles.modalContainer} ${utilStyles.unifiedDotBackground}`} style={containerStyle}>
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>{t('board:createForm.heading')}</h3>
       </div>

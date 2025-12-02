@@ -5,6 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
+import { useIsMobile } from 'shared/hooks';
 import {
     AppHeader,
     Button,
@@ -41,6 +42,7 @@ const SettingsPage: React.FC = () => {
   const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const isMobile = useIsMobile();
 
   const [isPicDeleteConfirmOpen, setPicDeleteConfirmOpen] = useState(false);
   const [isAccountDeleteConfirmOpen, setAccountDeleteConfirmOpen] = useState(false);
@@ -54,8 +56,9 @@ const SettingsPage: React.FC = () => {
     () =>
       ({
         '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
       }) as React.CSSProperties,
-    [],
+    [isMobile],
   );
 
   const handlePictureUploadWithCleanup = async (file: File) => {

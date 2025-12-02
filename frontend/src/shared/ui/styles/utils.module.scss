@@ -3,11 +3,12 @@
 // --- Background Utilities ---
 
 // Dynamic background with user-customizable color and hand-drawn doodle pattern overlay
+// Supports --background-size CSS variable for responsive sizing (default: 400px)
 .unifiedDotBackground {
   background-color: var(--user-chosen-color, var(--color-random-shapes-bg));
 
   background-image: url('../../../assets/HandDrawnDoodles.svg');
-  background-size: 400px 400px;
+  background-size: var(--background-size, 400px 400px);
 
   color: var(--color-random-shapes-pattern);
 

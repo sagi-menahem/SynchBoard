@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
-import { useMediaQuery } from 'shared/hooks';
+import { useIsMobile } from 'shared/hooks';
 import {
     AppHeader,
     Button,
@@ -34,7 +34,7 @@ import styles from './BoardListPage.module.scss';
 const BoardListPage: React.FC = () => {
   const { t } = useTranslation(['board', 'common']);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useIsMobile();
   const {
     boards,
     isLoading,
@@ -60,8 +60,9 @@ const BoardListPage: React.FC = () => {
     () =>
       ({
         '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
       }) as React.CSSProperties,
-    [],
+    [isMobile],
   );
 
   if (isLoading) {

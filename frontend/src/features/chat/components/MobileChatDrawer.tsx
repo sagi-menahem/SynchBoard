@@ -101,7 +101,10 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
           </VisuallyHidden.Root>
           <div
             className={clsx(styles.chatContainer, utilStyles.unifiedDotBackground)}
-            style={{ '--user-chosen-color': userChosenColor } as React.CSSProperties}
+            style={{
+              '--user-chosen-color': userChosenColor,
+              '--background-size': '280px 280px',
+            } as React.CSSProperties}
           >
             <ChatWindow boardId={boardId} messages={messages} isMobileDrawer chatRef={chatWindowRef} />
           </div>

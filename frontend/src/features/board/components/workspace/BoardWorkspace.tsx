@@ -207,8 +207,9 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
     () =>
       ({
         '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
       }) as React.CSSProperties,
-    [],
+    [isMobile],
   );
 
   // Canvas component (shared between mobile and desktop)
