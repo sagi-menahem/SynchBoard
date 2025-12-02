@@ -10,7 +10,8 @@ const MOBILE_BOTTOM_OFFSET = 20;
 // Toast configuration
 const TOAST_DURATION_DEFAULT = 3000; // 3 seconds for success/info
 const TOAST_DURATION_ERROR = 4000; // 4 seconds for errors (more time to read)
-const MAX_VISIBLE_TOASTS = 3; // Limit visible toasts to prevent clutter
+const MAX_VISIBLE_TOASTS_DESKTOP = 3; // Limit visible toasts on desktop
+const MAX_VISIBLE_TOASTS_MOBILE = 2; // Fewer toasts on mobile to prevent screen clutter
 
 /**
  * Global toast notification configuration component for the application.
@@ -25,14 +26,17 @@ export const ToasterConfig = () => {
   const { toasts } = useToasterStore();
 
   // Limit visible toasts by dismissing oldest when limit is exceeded
+  // Use different limits for mobile vs desktop to prevent screen clutter on small screens
+  const maxVisibleToasts = isMobile ? MAX_VISIBLE_TOASTS_MOBILE : MAX_VISIBLE_TOASTS_DESKTOP;
+
   useEffect(() => {
     const visibleToasts = toasts.filter((t) => t.visible);
-    if (visibleToasts.length > MAX_VISIBLE_TOASTS) {
+    if (visibleToasts.length > maxVisibleToasts) {
       // Dismiss the oldest visible toasts (they appear first in the array)
-      const toastsToRemove = visibleToasts.slice(0, visibleToasts.length - MAX_VISIBLE_TOASTS);
+      const toastsToRemove = visibleToasts.slice(0, visibleToasts.length - maxVisibleToasts);
       toastsToRemove.forEach((t) => toast.dismiss(t.id));
     }
-  }, [toasts]);
+  }, [toasts, maxVisibleToasts]);
 
   // On mobile: bottom-center
   // On desktop: bottom-right
