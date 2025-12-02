@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -7,6 +8,27 @@ import { useTranslation } from 'react-i18next';
 import Button from '../forms/Button';
 
 import styles from './Modal.module.scss';
+
+// Animation variants for backdrop
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+// Animation variants for modal content
+const contentVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.15, ease: 'easeOut' },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: { duration: 0.1, ease: 'easeIn' },
+  },
+};
 
 /**
  * Props for the Modal component.
@@ -47,10 +69,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
     };
   }, [isOpen]);
 
-  if (!isOpen) {
-    return null;
-  }
-
   // Handle keyboard shortcuts, especially Escape key to close modal
   const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -58,29 +76,42 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
     }
   };
 
-  const modalContent = (
-    <div
-      className={`${styles.overlay} ${className || ''}`}
-      onKeyDown={handleOverlayKeyDown}
-      role="presentation"
-    >
-      <button
-        className={styles.backdrop}
-        onClick={onClose}
-        aria-label={t('common:accessibility.closeModal')}
-        tabIndex={-1}
-      />
-      <div className={styles.content} role="dialog" aria-modal="true">
-        <Button onClick={onClose} className={styles.closeButton} variant="icon">
-          <X size={20} />
-        </Button>
-        {children}
-      </div>
-    </div>
-  );
-
   // Render modal as a portal to document.body to escape any parent container constraints
-  return createPortal(modalContent, document.body);
+  return createPortal(
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className={`${styles.overlay} ${className || ''}`}
+          onKeyDown={handleOverlayKeyDown}
+          role="presentation"
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          <motion.button
+            className={styles.backdrop}
+            onClick={onClose}
+            aria-label={t('common:accessibility.closeModal')}
+            tabIndex={-1}
+            variants={backdropVariants}
+            transition={{ duration: 0.15 }}
+          />
+          <motion.div
+            className={styles.content}
+            role="dialog"
+            aria-modal="true"
+            variants={contentVariants}
+          >
+            <Button onClick={onClose} className={styles.closeButton} variant="icon">
+              <X size={20} />
+            </Button>
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
 };
 
 export default Modal;
