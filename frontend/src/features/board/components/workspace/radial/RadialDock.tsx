@@ -292,6 +292,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({
           (info.velocity.y > velocityThreshold && dragDistance > 20)
         ) {
           setIsExpanded(false);
+          setActiveSatellite(null); // Close any open satellite when collapsing
           void updateDockMinimized(true);
         }
       } else {
