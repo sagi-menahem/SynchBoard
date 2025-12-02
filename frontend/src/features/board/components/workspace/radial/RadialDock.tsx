@@ -383,18 +383,15 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                 {/* MOBILE: Bottom sheet - tab on top, toolbar expands downward below tab */}
                 {isMobile ? (
                     <div className={styles.mobileToolbarContainer} data-testid="mobile-toolbar-container">
-                        {/* The tab - sits on top, draggable to open/close toolbar below */}
+                        {/* The tab - sits on top, pan gestures control toolbar height (tab doesn't move) */}
                         <motion.button
                             className={styles.collapsedTrigger}
                             data-testid="mobile-tab"
                             onClick={handleToggleExpand}
-                            drag="y"
-                            dragConstraints={{ top: 0, bottom: 0 }}
-                            dragElastic={0.1}
-                            onDragStart={handleDragStart}
-                            onDrag={handleDrag}
-                            onDragEnd={handleDragEnd}
-                            whileDrag={{ scale: 1.02 }}
+                            onPanStart={handleDragStart}
+                            onPan={handleDrag}
+                            onPanEnd={handleDragEnd}
+                            whileTap={{ scale: 0.98 }}
                             style={{ touchAction: 'none' }}
                         >
                             <div
