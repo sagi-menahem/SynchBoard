@@ -28,7 +28,7 @@
   background-color: var(--user-chosen-color) !important;
   border-color: var(--user-chosen-color) !important;
   color: var(--color-text-primary) !important;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 0 0 1px var(--glass-border) !important;
 
   &:hover:not(:disabled) {
     opacity: 0.9;
