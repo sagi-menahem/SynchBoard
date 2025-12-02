@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import styles from './RadialDock.module.scss';
@@ -117,7 +117,14 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
 
   // Calculate the animation variants based on toolbar layout
   // Animation should look like satellite is emerging from the toolbar
-  const getSatelliteVariants = () => {
+  const getSatelliteVariants = (): Variants => {
+    const springTransition = {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    };
+    const exitTransition = { duration: 0.15 };
+
     if (isMobile) {
       // Mobile: emerge upward from bottom toolbar
       return {
@@ -132,17 +139,13 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
           scale: 1,
           x: '-50%',
           y: 0,
-          transition: {
-            type: 'spring',
-            stiffness: 400,
-            damping: 25,
-          },
+          transition: springTransition,
         },
         exit: {
           opacity: 0,
           scale: 0.9,
           y: 20,
-          transition: { duration: 0.15 },
+          transition: exitTransition,
         },
       };
     }
@@ -161,17 +164,13 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
           scale: 1,
           x: 0,
           y: '50%',
-          transition: {
-            type: 'spring',
-            stiffness: 400,
-            damping: 25,
-          },
+          transition: springTransition,
         },
         exit: {
           opacity: 0,
           scale: 0.9,
           x: 20,
-          transition: { duration: 0.15 },
+          transition: exitTransition,
         },
       };
     }
@@ -189,17 +188,13 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
         scale: 1,
         x: '-50%',
         y: 0,
-        transition: {
-          type: 'spring',
-          stiffness: 400,
-          damping: 25,
-        },
+        transition: springTransition,
       },
       exit: {
         opacity: 0,
         scale: 0.9,
         y: 20,
-        transition: { duration: 0.15 },
+        transition: exitTransition,
       },
     };
   };
