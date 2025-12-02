@@ -21,6 +21,12 @@ interface SatelliteManagerProps {
   isMobile: boolean;
   /** Handler to collapse the toolbar (mobile only) */
   onCollapse: () => void;
+  /** Whether toolbar is in vertical layout mode */
+  isVerticalLayout?: boolean;
+  /** Canvas width in pixels (for positioning) */
+  canvasWidthPx?: number;
+  /** Current toolbar inline style (for position reference) */
+  toolbarStyle?: React.CSSProperties;
 }
 
 // Satellite positioning constants
@@ -59,6 +65,9 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   onClose,
   isMobile: isMobileProp,
   onCollapse,
+  isVerticalLayout = false,
+  canvasWidthPx = 0,
+  toolbarStyle = {},
 }) => {
   const [isMobile, setIsMobile] = useState(isMobileProp);
 
@@ -143,22 +152,99 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   // RENDER
   // =========================================================================
 
-  // Calculate bottom position based on device type
-  const bottomPosition = isMobile
-    ? SATELLITE_POSITION.MOBILE_BOTTOM
-    : SATELLITE_POSITION.DESKTOP_BOTTOM;
+  // Calculate satellite position based on device type and toolbar layout
+  const getSatelliteStyle = (): React.CSSProperties => {
+    if (isMobile) {
+      // Mobile: centered horizontally, above the toolbar
+      return {
+        position: 'fixed',
+        left: '50%',
+        bottom: `${SATELLITE_POSITION.MOBILE_BOTTOM}px`,
+        transform: 'translateX(-50%)',
+      };
+    }
+
+    if (isVerticalLayout) {
+      // Vertical toolbar: satellite appears to the left of the toolbar
+      // Toolbar is positioned from right edge, satellite should be to its left
+      const toolbarRight = toolbarStyle.right;
+      const rightOffset = typeof toolbarRight === 'string'
+        ? parseInt(toolbarRight, 10)
+        : (typeof toolbarRight === 'number' ? toolbarRight : 20);
+
+      // Vertical toolbar width is ~52px (40px tool + 12px padding)
+      // Position satellite to the left with a gap
+      const VERTICAL_TOOLBAR_WIDTH = 52;
+      const GAP = 12;
+
+      return {
+        position: 'fixed',
+        right: `${rightOffset + VERTICAL_TOOLBAR_WIDTH + GAP}px`,
+        bottom: '32px', // Same as toolbar bottom
+        transform: 'none',
+      };
+    }
+
+    // Horizontal toolbar: satellite centered above the toolbar
+    // Use the same positioning logic as the toolbar
+    const { left, right, transform } = toolbarStyle;
+
+    if (left && transform === 'translateX(-50%)') {
+      // Toolbar is centered using left + translateX(-50%)
+      return {
+        position: 'fixed',
+        left: left,
+        bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
+        transform: 'translateX(-50%)',
+      };
+    }
+
+    if (left && !transform) {
+      // Toolbar is positioned from left edge (shifted right to avoid floating buttons)
+      // Center satellite above the toolbar
+      const leftPx = typeof left === 'string' ? parseInt(left, 10) : left;
+      const TOOLBAR_WIDTH = 424;
+      const toolbarCenterPx = (leftPx || 0) + TOOLBAR_WIDTH / 2;
+
+      return {
+        position: 'fixed',
+        left: `${toolbarCenterPx}px`,
+        bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
+        transform: 'translateX(-50%)',
+      };
+    }
+
+    if (right) {
+      // Toolbar is positioned from right edge
+      const rightPx = typeof right === 'string' ? parseInt(right, 10) : right;
+      const TOOLBAR_WIDTH = 424;
+      const toolbarCenterFromRight = (rightPx || 0) + TOOLBAR_WIDTH / 2;
+
+      return {
+        position: 'fixed',
+        right: `${toolbarCenterFromRight}px`,
+        bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
+        transform: 'translateX(50%)',
+      };
+    }
+
+    // Fallback: center of canvas
+    return {
+      position: 'fixed',
+      left: `${canvasWidthPx / 2}px`,
+      bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
+      transform: 'translateX(-50%)',
+    };
+  };
+
+  const satelliteStyle = getSatelliteStyle();
 
   return (
     <AnimatePresence>
       {activeSatellite && (
         <motion.div
           className={styles.satelliteBubble}
-          style={{
-            position: 'fixed',
-            left: '50%',
-            bottom: `${bottomPosition}px`,
-            x: '-50%', // Framer Motion transform - avoids CSS conflicts
-          }}
+          style={satelliteStyle}
           variants={satelliteVariants}
           initial="hidden"
           animate="visible"

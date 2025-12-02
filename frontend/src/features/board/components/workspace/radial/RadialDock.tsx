@@ -701,6 +701,9 @@ export const RadialDock: React.FC<RadialDockProps> = ({
         onClose={() => setActiveSatellite(null)}
         isMobile={isMobile}
         onCollapse={handleToggleExpand}
+        isVerticalLayout={useVerticalLayout}
+        canvasWidthPx={canvasWidthPx}
+        toolbarStyle={getDesktopToolbarStyle}
       />
     </>
   );
