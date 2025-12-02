@@ -66,6 +66,13 @@ $border-radius-mobile: 20px;
     position: relative;
     margin: 0;
     padding: 0;
+
+    // Top shadow for depth and separation from canvas
+    filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.15));
+
+    body[data-theme='dark'] & {
+        filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.4));
+    }
 }
 
 // Mobile toolbar that expands/collapses below the tab
@@ -74,7 +81,7 @@ $border-radius-mobile: 20px;
     position: relative !important; // Override .expandedToolbar's position: relative
     width: 100%;
     overflow: hidden; // Hide content when height is 0
-    border-radius: 0; // No rounded corners - tab above has the rounded top, this connects flush
+    border-radius: 0; // No rounded corners - flat top for clean bottom sheet appearance
 }
 
 // -----------------------------------------------------------------------------
@@ -187,6 +194,16 @@ $border-radius-mobile: 20px;
     transition: background-color 0.2s ease;
 }
 
+// Chevron indicator for mobile tab - shows drag direction
+.chevronIndicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
 // -----------------------------------------------------------------------------
 // EXPANDED STATE - Full Toolbar
 // -----------------------------------------------------------------------------
@@ -212,7 +229,7 @@ $border-radius-mobile: 20px;
         width: 100%;
         max-width: 100vw; // Ensure it never exceeds viewport
         padding: 0; // No padding - moved to inner wrapper
-        border-radius: $border-radius-mobile $border-radius-mobile 0 0; // Rounded top corners
+        border-radius: 0; // No rounded corners - flat top, tab is the only rounded element
         border: none; // Remove all borders - connects seamlessly to tab above
 
         // Override glass-panel opacity to make it fully opaque on mobile
@@ -221,7 +238,7 @@ $border-radius-mobile: 20px;
         backdrop-filter: none; // Remove blur since it's opaque
         -webkit-backdrop-filter: none;
 
-        box-shadow: none; // No shadow - tab above handles the shadow
+        box-shadow: none; // No shadow - container handles the shadow
     }
 }
 

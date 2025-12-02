@@ -4,6 +4,7 @@ import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 import {
     ArrowRight,
     Brush,
+    ChevronDown,
     ChevronUp,
     Circle,
     Eraser,
@@ -392,14 +393,14 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                             onPanEnd={handleDragEnd}
                             style={{ touchAction: 'none' }}
                         >
-                            <div
-                                className={styles.pullHandle}
-                                style={{
-                                    backgroundColor: preferences.defaultTool === TOOLS.ERASER
-                                        ? 'rgba(0, 0, 0, 0.3)'
-                                        : preferences.defaultStrokeColor
-                                }}
-                            />
+                            {/* Chevron indicator - points up when closed (to open), down when open (to close) */}
+                            <motion.div
+                                className={styles.chevronIndicator}
+                                animate={{ rotate: isExpanded ? 180 : 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <ChevronUp size={16} />
+                            </motion.div>
                             <div>
                                 {activeToolIcon}
                             </div>
