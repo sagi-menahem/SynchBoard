@@ -1,0 +1,188 @@
+@use '@/styles' as theme;
+
+// ===== GRID VIEW SKELETON =====
+.gridCard {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: 8px;
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
+  box-shadow: theme.$shadow-card;
+  overflow: hidden;
+}
+
+.gridPreviewArea {
+  width: 100%;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.gridAvatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gridContent {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  gap: 6px;
+  align-items: center;
+  border-top: 1px solid var(--glass-border);
+}
+
+.gridTitle {
+  width: 70%;
+  height: 14px;
+}
+
+.gridMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gridColorDot {
+  width: 6px;
+  height: 6px;
+}
+
+.gridResolution {
+  width: 60px;
+  height: 10px;
+}
+
+.gridTimestamp {
+  width: 50px;
+  height: 10px;
+}
+
+// ===== LIST VIEW SKELETON =====
+.listCard {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  min-height: 56px;
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
+  box-shadow: theme.$shadow-card;
+}
+
+.listLeftSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.listThumbnail {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.listName {
+  width: 120px;
+  height: 14px;
+}
+
+.listCenterInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  justify-self: center;
+}
+
+.listResolution {
+  width: 80px;
+  height: 12px;
+}
+
+.listColorInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.listColorDot {
+  width: 8px;
+  height: 8px;
+}
+
+.listColorName {
+  width: 50px;
+  height: 12px;
+}
+
+.listTimestamp {
+  width: 70px;
+  height: 12px;
+  justify-self: end;
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: theme.$breakpoint-md) {
+  .gridPreviewArea {
+    height: 110px;
+  }
+
+  .gridAvatar {
+    width: 75px;
+    height: 75px;
+    border-width: 2px;
+  }
+
+  .gridContent {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .gridTitle {
+    height: 12px;
+  }
+
+  .gridResolution,
+  .gridTimestamp {
+    height: 8px;
+  }
+
+  .listCard {
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .listLeftSection {
+    gap: 8px;
+  }
+
+  .listThumbnail {
+    width: 40px;
+    height: 40px;
+  }
+
+  .listName {
+    width: 100px;
+    height: 12px;
+  }
+
+  .listCenterInfo {
+    display: none;
+  }
+
+  .listTimestamp {
+    grid-column: 2;
+    width: 60px;
+    height: 10px;
+  }
+}

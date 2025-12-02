@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { useIsMobile } from 'shared/hooks';
-import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
+import { AppHeader, BoardWorkspaceSkeleton, Button, PageTransition } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { hexToRgbString } from 'shared/utils/ColorUtils';
 
@@ -205,7 +205,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           }
           title={<span>{t('board:page.loading')}</span>}
         />
-        <PageLoader message={t('board:page.loading')} />
+        <BoardWorkspaceSkeleton />
       </PageTransition>
     );
   }

@@ -1,0 +1,33 @@
+@use '@/styles' as theme;
+
+// Board list skeleton container
+.boardListSkeleton {
+  display: grid;
+  gap: theme.$spacing-6;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+// Grid layout
+.boardListSkeleton.grid {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+
+  @media (max-width: theme.$breakpoint-md) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  @media (min-width: calc(theme.$breakpoint-md + 1px)) and (max-width: theme.$breakpoint-lg) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+}
+
+// List layout
+.boardListSkeleton.list {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-4;
+}

@@ -6,13 +6,13 @@ import { APP_ROUTES } from 'shared/constants';
 import { useIsMobile, useMediaQuery } from 'shared/hooks';
 import {
   AppHeader,
+  BoardListSkeleton,
   Button,
   Card,
   ConfirmationDialog,
   ContextMenuItem,
   EnhancedContextMenu,
   Modal,
-  PageLoader,
   PageTransition,
   SearchBar,
 } from 'shared/ui';
@@ -127,7 +127,9 @@ const BoardListPage: React.FC = () => {
             />
           </div>
         )}
-        <PageLoader message={t('board:listPage.loading')} />
+        <main className={styles.pageContent}>
+          <BoardListSkeleton viewMode={viewMode} />
+        </main>
       </PageTransition>
     );
   }

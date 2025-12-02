@@ -1,0 +1,57 @@
+@use '@/styles' as theme;
+
+// Main page container matching BoardDetailsPage layout
+.pageContent {
+  position: relative;
+  padding-top: calc(var(--banner-height, 0px) + 24px);
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  justify-content: center;
+}
+
+// Column wrappers
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// Responsive
+@media (max-width: theme.$breakpoint-md) {
+  .pageContent {
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: theme.$breakpoint-sm) {
+  .pageContent {
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
+    gap: 1rem;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 1rem;
+  }
+}

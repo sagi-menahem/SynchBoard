@@ -1,0 +1,162 @@
+@use '@/styles' as theme;
+
+// Section card skeleton container
+.sectionCardSkeleton {
+  background: var(--user-chosen-color, var(--glass-background));
+  opacity: 0.98;
+  border: 1px solid var(--glass-border);
+  border-radius: theme.$card-border-radius;
+  overflow: hidden;
+  width: 100%;
+}
+
+// Header section
+.header {
+  padding: theme.$card-padding;
+  padding-bottom: theme.$spacing-4;
+  border-bottom: 1px solid theme.$border-primary;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  width: 40%;
+  height: 20px;
+  min-width: 100px;
+}
+
+.headerAction {
+  width: 32px;
+  height: 32px;
+}
+
+// Content area
+.content {
+  padding: theme.$card-padding;
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-4;
+}
+
+// Content variants
+.contentRow {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+}
+
+.contentStack {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-3;
+}
+
+// Common skeleton elements
+.textLine {
+  height: 14px;
+}
+
+.textLineShort {
+  width: 60%;
+  height: 14px;
+}
+
+.textLineMedium {
+  width: 80%;
+  height: 14px;
+}
+
+.inputField {
+  width: 100%;
+  height: 40px;
+}
+
+.button {
+  width: 100px;
+  height: 36px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.avatarLarge {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+// Color swatches row
+.swatchesRow {
+  display: flex;
+  gap: theme.$spacing-2;
+  flex-wrap: wrap;
+}
+
+.colorSwatch {
+  width: 32px;
+  height: 32px;
+}
+
+// Member list item
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+  padding: theme.$spacing-3;
+  background: var(--color-surface-elevated);
+  border-radius: theme.$border-radius-md;
+}
+
+.memberAvatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.memberInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-1;
+}
+
+.memberName {
+  width: 120px;
+  height: 12px;
+}
+
+.memberEmail {
+  width: 160px;
+  height: 10px;
+}
+
+// Responsive
+@media (max-width: theme.$breakpoint-md) {
+  .header {
+    padding: theme.$spacing-4;
+    padding-bottom: theme.$spacing-3;
+  }
+
+  .content {
+    padding: theme.$spacing-4;
+    gap: theme.$spacing-3;
+  }
+
+  .title {
+    height: 18px;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .avatarLarge {
+    width: 100px;
+    height: 100px;
+  }
+}

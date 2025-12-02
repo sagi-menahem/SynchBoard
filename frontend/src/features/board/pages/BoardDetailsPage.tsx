@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useIsMobile } from 'shared/hooks';
-import { AppHeader, Button, PageLoader, PageTransition, SectionCard } from 'shared/ui';
+import { AppHeader, BoardDetailsPageSkeleton, Button, PageTransition, SectionCard } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 
@@ -91,7 +91,7 @@ const BoardDetailsPage: React.FC = () => {
           }
           title={<span>{t('common:loading')}</span>}
         />
-        <PageLoader message={t('board:detailsPage.loading')} />
+        <BoardDetailsPageSkeleton />
       </PageTransition>
     );
   }

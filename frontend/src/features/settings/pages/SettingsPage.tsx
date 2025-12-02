@@ -10,10 +10,10 @@ import {
   AppHeader,
   Button,
   ConfirmationDialog,
-  PageLoader,
   PageTransition,
   PictureManager,
   SectionCard,
+  SettingsPageSkeleton,
 } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import logger from 'shared/utils/logger';
@@ -108,7 +108,7 @@ const SettingsPage: React.FC = () => {
             </Button>
           }
         />
-        <PageLoader message={t('settings:page.loading')} />
+        <SettingsPageSkeleton />
       </PageTransition>
     );
   }
