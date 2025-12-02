@@ -7,16 +7,12 @@
 
   &:hover .boardCard.grid {
     opacity: 0.99;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     transform: scale(1.02);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
   &:hover .boardCard.list {
     opacity: 0.99;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     transform: scale(1.02);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
@@ -78,8 +74,6 @@
   top: 6px;
   inset-inline-end: 6px;
   background: var(--admin-badge-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   color: var(--admin-badge-text);
   padding: 4px 8px;
   border-radius: 6px;

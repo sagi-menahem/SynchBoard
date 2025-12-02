@@ -13,16 +13,10 @@ body[data-theme='dark'] {
 
 // Glass Panel Mixin
 // Creates a solid panel using user's Board Appearance color
-// Previously used transparency/blur, now uses solid backgrounds for cleaner look
-@mixin glass-panel($opacity: 1, $blur: 0) {
-  // Solid background using user's theme color
+@mixin glass-panel($opacity: 1) {
   background: var(--user-chosen-color, var(--glass-background));
   opacity: $opacity;
-
-  // Subtle border for definition
   border: 1px solid var(--glass-border);
-
-  // Soft shadow for depth
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 

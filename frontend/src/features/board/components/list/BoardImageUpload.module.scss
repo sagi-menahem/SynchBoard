@@ -65,8 +65,6 @@
   font-size: 0.8rem;
   cursor: pointer;
   @include theme.button-transition;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .removeButton:hover {

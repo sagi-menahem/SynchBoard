@@ -11,8 +11,6 @@
   padding: theme.$spacing-3 theme.$spacing-4;
   background: var(--user-chosen-color, var(--glass-background));
   border-bottom: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   @include theme.smooth-transition;
 }
 

@@ -287,8 +287,6 @@ $border-radius-mobile: 20px;
     // Override glass-panel opacity to make it fully opaque on mobile
     opacity: 1;
     background: var(--user-chosen-color, var(--glass-background));
-    backdrop-filter: none; // Remove blur since it's opaque
-    -webkit-backdrop-filter: none;
 
     box-shadow: none; // No shadow - container handles the shadow
   }

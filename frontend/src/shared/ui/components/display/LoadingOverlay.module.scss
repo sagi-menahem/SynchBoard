@@ -6,8 +6,6 @@
 .loadingOverlay {
   @include theme.fixed-overlay;
   background-color: var(--color-overlay-strong);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   @include theme.flex-center;
 }
 

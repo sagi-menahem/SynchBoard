@@ -64,8 +64,6 @@
 /* User's own messages styled with primary color and right alignment */
 .myMessage .messageBubble {
   background: var(--chat-my-bubble-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   color: var(--chat-my-bubble-text);
   margin-inline-start: auto;
   position: relative;
@@ -76,8 +74,6 @@
   // Semi-transparent background for other users' messages
   // Allows background shapes to show through slightly
   background: var(--chat-other-bubble-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   color: var(--chat-other-bubble-text);
   border: 1px solid var(--chat-other-bubble-border);
   position: relative;

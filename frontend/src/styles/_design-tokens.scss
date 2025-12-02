@@ -303,8 +303,6 @@ $board-card-image-size-list: 60px;
 
 // --- Visual Effects ---
 
-$blur-sm: 4px;
-$blur-md: 8px;
 $border-width: 1px;
 $border-width-thick: 2px;
 
@@ -314,12 +312,3 @@ $transform-translate-y-sm: -2px;
 
 $pattern-repeat-sm: 10px;
 $pattern-repeat-md: 20px;
-
-// --- Backdrop Blur Scale ---
-
-$background-blur-none: 0px;
-$background-blur-xs: 2px;
-$background-blur-sm: 4px;
-$background-blur-md: 8px;
-$background-blur-lg: 12px;
-$background-blur-xl: 16px;

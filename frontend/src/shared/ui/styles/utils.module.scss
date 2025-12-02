@@ -11,9 +11,6 @@
   background-size: var(--background-size, 400px 400px);
 
   color: var(--color-random-shapes-pattern);
-
-  backdrop-filter: blur(var(--background-blur, theme.$background-blur-sm));
-  -webkit-backdrop-filter: blur(var(--background-blur, theme.$background-blur-none));
 }
 
 // --- Settings UI Utilities ---

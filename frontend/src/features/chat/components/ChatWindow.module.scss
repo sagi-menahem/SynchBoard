@@ -37,8 +37,6 @@
   padding: theme.$spacing-3 theme.$spacing-4;
   background: var(--glass-background);
   opacity: 0.9;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--glass-border);
   gap: theme.$spacing-2;
 }

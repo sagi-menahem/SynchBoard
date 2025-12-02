@@ -90,8 +90,6 @@
   min-width: theme.$icon-button-size;
   min-height: theme.$icon-button-size;
   position: relative;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 
   // Default focus state - remove browser outline, maintain glass border
   &:focus,
@@ -139,8 +137,6 @@
   color: var(--btn-cta-bg);
   border: 1px solid color-mix(in srgb, var(--color-success) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-success) 10%, transparent);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
@@ -167,8 +163,6 @@
   color: var(--btn-warning-bg);
   border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-warning) 10%, transparent);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
@@ -195,8 +189,6 @@
   color: var(--color-text-primary);
   border: 1px solid var(--glass-border);
   font-weight: theme.$font-weight-medium;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
   &:hover:not(:disabled) {
@@ -228,8 +220,6 @@
   color: var(--btn-primary-bg);
   border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 10%, transparent);
 
   &:hover:not(:disabled) {
@@ -261,8 +251,6 @@
   color: var(--btn-destructive-bg);
   border: 1px solid color-mix(in srgb, var(--color-error) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-error) 10%, transparent);
 
   &:hover:not(:disabled) {

@@ -168,8 +168,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   color: var(--btn-icon-text);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 
   &:hover {
     background: var(--icon-btn-bg-hover);
@@ -219,8 +217,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   color: var(--btn-icon-text);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 
   &:hover {
     background: var(--icon-btn-bg-hover);

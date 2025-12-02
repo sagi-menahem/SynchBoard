@@ -49,8 +49,6 @@
 .glass {
   background: var(--user-chosen-color, var(--glass-background));
   opacity: 0.98;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   box-shadow: theme.$shadow-card;
   border-radius: theme.$card-border-radius;
@@ -60,8 +58,6 @@
   &.hoverable:hover {
     background: var(--user-chosen-color, var(--glass-background)) !important;
     opacity: 0.99;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     transform: scale(1.02) !important;
     box-shadow: theme.$shadow-lg;
   }

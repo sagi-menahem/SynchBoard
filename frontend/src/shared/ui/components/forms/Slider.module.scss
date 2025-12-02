@@ -54,8 +54,6 @@
   border-radius: 2px;
   @include theme.smooth-transition;
   overflow: hidden; // Ensure range doesn't bleed out
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 // Active range indicator - Solid primary color
@@ -79,16 +77,11 @@
   cursor: pointer;
   transition:
     transform 0.1s ease,
-    box-shadow 0.1s ease,
-    backdrop-filter 0.1s ease;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+    box-shadow 0.1s ease;
 
   &:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 8px var(--color-overlay-medium);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
   }
 
   &:focus {

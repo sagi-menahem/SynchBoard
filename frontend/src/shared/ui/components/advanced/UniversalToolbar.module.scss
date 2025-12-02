@@ -13,8 +13,6 @@
   box-sizing: border-box;
   background: var(--user-chosen-color, var(--glass-background));
   opacity: 0.85;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
   box-shadow: var(--toolbar-shadow, 0 1px 3px rgba(15, 23, 42, 0.08));
   display: flex;
@@ -26,16 +24,13 @@
   overflow: visible;
   transition:
     opacity theme.$transition-normal theme.$transition-ease,
-    backdrop-filter theme.$transition-normal theme.$transition-ease,
     border-color theme.$transition-normal theme.$transition-ease,
     box-shadow theme.$transition-normal theme.$transition-ease;
 
-  // Glass effect on focus/hover
+  // Hover/focus state
   &:hover,
   &:focus-within {
     opacity: 0.92;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
   }
 
   @media (max-width: 1200px) {

@@ -89,8 +89,6 @@
   border-radius: 6px;
   border: 1px solid var(--glass-border);
   background: rgba(120, 120, 128, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   margin: theme.$spacing-2 0;
 
   p {

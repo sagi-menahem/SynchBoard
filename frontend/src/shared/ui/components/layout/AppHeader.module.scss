@@ -17,10 +17,6 @@
   z-index: theme.$z-index-sticky;
   transition: all theme.$transition-normal;
 
-  // Glass-morphism effect
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
   // Apply dynamic text color to all text elements
   color: var(--header-text, var(--color-text-primary));
 

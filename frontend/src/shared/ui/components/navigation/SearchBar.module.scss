@@ -26,8 +26,6 @@
   max-width: 100%; // Allow expansion to full width
   min-width: 0; // Allow shrinking
   box-sizing: border-box; // Include padding and border in width
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   height: 36px; // Fixed height to prevent expansion when typing
 
   &:focus-within {

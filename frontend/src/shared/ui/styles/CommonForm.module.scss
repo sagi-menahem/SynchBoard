@@ -176,8 +176,6 @@
   border: 1px solid var(--glass-border);
   @include theme.rounded-large;
   background: var(--glass-background);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .groupLabel {

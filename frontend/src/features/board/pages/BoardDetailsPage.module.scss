@@ -108,8 +108,6 @@
   inset-inline-end: 0;
   bottom: 0;
   background: var(--color-overlay-strong);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   @include theme.flex-center;
   z-index: theme.$z-index-toolbar;
   padding: theme.$spacing-8;
@@ -118,8 +116,6 @@
 .quickSettingsContent {
   background: var(--user-chosen-color, var(--glass-background));
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   @include theme.rounded-large;
   @include theme.theme-scrollbar;
   padding: theme.$spacing-8;
