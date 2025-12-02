@@ -214,6 +214,8 @@
   .canvasPanel {
     flex: 1 !important; // Override inline style
     width: 100%;
+    border: none; // Remove border on mobile
+    border-radius: 0;
   }
 
   .canvasArea {
