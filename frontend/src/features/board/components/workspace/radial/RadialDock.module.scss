@@ -156,6 +156,7 @@ $border-radius-mobile: 20px;
         width: 110px; // Wider tab for better grip and visual balance
         height: 48px;
         margin: 0; // No margin needed, flex handles centering
+        margin-bottom: -1px; // Overlap toolbar's top edge to hide border line
         padding: 0;
         border-radius: $border-radius-mobile $border-radius-mobile 0 0; // Rounded top corners
         -webkit-tap-highlight-color: transparent;
