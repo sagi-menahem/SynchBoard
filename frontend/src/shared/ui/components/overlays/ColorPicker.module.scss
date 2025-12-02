@@ -238,8 +238,9 @@
     width: 200px;
   }
 
+  // Keep 9 columns on mobile (same as desktop) for consistent grid layout
   .presetColors {
-    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
   }
 
   .presetColor {

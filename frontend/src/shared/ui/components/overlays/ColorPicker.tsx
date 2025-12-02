@@ -3,7 +3,6 @@ import { HexColorPicker } from 'react-colorful';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { PRESET_COLORS } from 'shared/constants/ColorConstants';
-import { useClickOutside } from 'shared/hooks';
 import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ColorPicker.module.scss';
@@ -46,13 +45,25 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   const pickerRef = useRef<HTMLDivElement>(null);
   const swatchRef = useRef<HTMLButtonElement>(null);
 
-  useClickOutside(
-    pickerRef,
-    () => {
-      setShowPicker(false);
-    },
-    showPicker,
-  );
+  // Close picker when clicking outside, but prevent the click from
+  // propagating to modal backdrop to avoid closing the modal too
+  useEffect(() => {
+    if (!showPicker) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) {
+        // Stop the event from propagating to modal backdrop
+        event.stopPropagation();
+        setShowPicker(false);
+      }
+    };
+
+    // Use capture phase to intercept before other handlers
+    document.addEventListener('mousedown', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside, true);
+    };
+  }, [showPicker]);
 
   // Close picker when scrolling
   useEffect(() => {
