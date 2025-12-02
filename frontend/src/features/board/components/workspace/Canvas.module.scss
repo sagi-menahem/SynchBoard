@@ -10,6 +10,16 @@
   // This prevents 1-finger scrolling outside canvas and ensures consistent behavior
   touch-action: none;
 
+  // Move vertical scrollbar to the left side consistently in both LTR and RTL modes
+  // In LTR documents: direction: rtl puts scrollbar on left
+  // In RTL documents: direction: ltr puts scrollbar on left (opposite of document direction)
+  direction: rtl;
+
+  :global([dir='rtl']) & {
+    // In RTL mode, use LTR to place scrollbar on the visual left side
+    direction: ltr;
+  }
+
   // Custom scrollbar with user preference color track and gray thumb
   scrollbar-width: auto;
   scrollbar-color: rgba(120, 120, 128, 0.6) var(--user-chosen-color, var(--glass-background));
@@ -51,6 +61,8 @@
   height: 100%;
   position: relative;
   background: transparent;
+  // Restore LTR direction for content (parent uses RTL for left-side scrollbar)
+  direction: ltr;
 }
 
 .canvasContainer.hideBackground {
