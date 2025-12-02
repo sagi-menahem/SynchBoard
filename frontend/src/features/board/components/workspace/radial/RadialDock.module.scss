@@ -33,8 +33,8 @@ $border-radius-mobile: 20px;
     // Note: left and transform are set via inline styles to position relative to canvas area
     &.desktop {
         bottom: 32px;
-        // left and transform are dynamically set via inline style based on canvas split ratio
-        transition: left 0.2s ease-out, right 0.2s ease-out, top 0.2s ease-out, bottom 0.2s ease-out;
+        // Position updates instantly during resize for smooth real-time tracking
+        // No transition needed - position follows canvas split ratio in real-time
     }
 
     // Vertical layout: Right side of canvas, vertically centered
