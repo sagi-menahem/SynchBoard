@@ -22,8 +22,6 @@ interface BoardDetailsHeaderProps {
   onUpdateDescription: (description: string) => Promise<void>;
   /** Handler for removing the current board picture */
   onDeletePicture: () => void;
-  /** Handler for editing board name */
-  onEditName: () => void;
 }
 
 /**
@@ -39,14 +37,8 @@ interface BoardDetailsHeaderProps {
  */
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
-  const {
-    boardDetails,
-    currentUserIsAdmin,
-    onPictureUpload,
-    onUpdateDescription,
-    onDeletePicture,
-    onEditName,
-  } = props;
+  const { boardDetails, currentUserIsAdmin, onPictureUpload, onUpdateDescription, onDeletePicture } =
+    props;
 
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -69,23 +61,7 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
   return (
     <>
-      <SectionCard
-        title={t('board:detailsPage.changePicture')}
-        variant="default"
-        headerActions={
-          currentUserIsAdmin ? (
-            <Button
-              onClick={onEditName}
-              variant="secondary-glass"
-              className={`${styles.editButton} ${styles.themeButton}`}
-              title={t('board:detailsPage.editBoardName')}
-            >
-              <PencilLine size={16} />
-              {t('board:detailsPage.editBoardName')}
-            </Button>
-          ) : undefined
-        }
-      >
+      <SectionCard title={t('board:detailsPage.changePicture')} variant="default">
         <PictureManager
           imageUrl={boardDetails.pictureUrl}
           defaultImage={defaultBoardImage}

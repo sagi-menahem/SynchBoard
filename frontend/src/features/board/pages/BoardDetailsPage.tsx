@@ -1,4 +1,4 @@
-import { LogOut, UserPlus } from 'lucide-react';
+import { LogOut, PencilLine, UserPlus } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -129,6 +129,16 @@ const BoardDetailsPage: React.FC = () => {
         title={<span>{boardDetails.name}</span>}
         trailing={
           <>
+            {currentUserIsAdmin && (
+              <Button
+                variant="icon"
+                onClick={() => setEditingField('name')}
+                title={t('board:detailsPage.editBoardName')}
+              >
+                <PencilLine size={20} />
+                <span className={styles.buttonLabel}>{t('board:detailsPage.editBoardName')}</span>
+              </Button>
+            )}
             <Button
               variant="icon"
               onClick={() => setLeaveConfirmOpen(true)}
@@ -137,16 +147,6 @@ const BoardDetailsPage: React.FC = () => {
               <LogOut size={20} />
               <span className={styles.buttonLabel}>{t('board:leaveBoard.button')}</span>
             </Button>
-            {currentUserIsAdmin && (
-              <Button
-                variant="icon"
-                onClick={() => setInviteModalOpen(true)}
-                title={t('board:detailsPage.inviteButton')}
-              >
-                <UserPlus size={20} />
-                <span className={styles.buttonLabel}>{t('board:detailsPage.inviteButton')}</span>
-              </Button>
-            )}
           </>
         }
       />
@@ -159,7 +159,6 @@ const BoardDetailsPage: React.FC = () => {
             onPictureUpload={handlePictureUpload}
             onUpdateDescription={handleUpdateDescription}
             onDeletePicture={promptPictureDelete}
-            onEditName={() => setEditingField('name')}
           />
         </div>
 
@@ -171,7 +170,23 @@ const BoardDetailsPage: React.FC = () => {
             onUpdateSettings={handleCanvasSettingsUpdate}
           />
 
-          <SectionCard title={t('board:detailsPage.membersHeader')} variant="default">
+          <SectionCard
+            title={t('board:detailsPage.membersHeader')}
+            variant="default"
+            headerActions={
+              currentUserIsAdmin ? (
+                <Button
+                  onClick={() => setInviteModalOpen(true)}
+                  variant="secondary-glass"
+                  className={styles.inviteButton}
+                  title={t('board:detailsPage.inviteButton')}
+                >
+                  <UserPlus size={16} />
+                  {t('board:detailsPage.inviteButton')}
+                </Button>
+              ) : undefined
+            }
+          >
             <ul className={styles.membersListContainer}>
               <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
             </ul>
