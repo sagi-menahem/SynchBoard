@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import type { Board } from 'features/board/types/BoardTypes';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { formatCanvasResolution } from 'features/board/utils/CanvasUtils';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,21 @@ import { Card, RelativeTimestamp } from 'shared/ui';
 import { getColorName } from 'shared/utils/ColorUtils';
 
 import styles from './BoardCard.module.scss';
+
+// Animation for image cross-fade when switching view modes
+const imageVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.25, ease: 'easeOut' as const },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: 0.15, ease: 'easeIn' as const },
+  },
+};
 
 /**
  * Props interface for BoardCard component.
@@ -64,9 +80,20 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
         <Card variant="glass" hoverable className={cardClasses}>
           {/* Preview area with neutral gradient and centered avatar */}
           <div className={styles.previewArea}>
-            {/* Centered avatar */}
+            {/* Centered avatar with animated image */}
             <div className={styles.gridAvatar}>
-              <img src={imageSource} alt={board.name} className={styles.gridAvatarImage} />
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={`grid-${board.id}`}
+                  src={imageSource}
+                  alt={board.name}
+                  className={styles.gridAvatarImage}
+                  variants={imageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                />
+              </AnimatePresence>
             </div>
 
             {board.isAdmin && (
@@ -104,7 +131,18 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
       <Card variant="glass" hoverable className={cardClasses}>
         {/* Left section: Avatar + Name */}
         <div className={styles.listLeftSection}>
-          <img src={imageSource} alt={board.name} className={styles.listThumbnail} />
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={`list-${board.id}`}
+              src={imageSource}
+              alt={board.name}
+              className={styles.listThumbnail}
+              variants={imageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            />
+          </AnimatePresence>
 
           <div className={styles.listName}>
             <h3>{board.name}</h3>
