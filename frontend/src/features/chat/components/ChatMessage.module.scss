@@ -18,7 +18,7 @@
     }
 
     &.otherMessage {
-      padding-inline-start: 48px;
+      // No extra padding needed - avatarSpacer maintains consistent layout
     }
   }
 }
@@ -57,7 +57,8 @@
 }
 
 .otherMessage .messageBubble {
-  flex: 1;
+  // Use consistent width for all other users' messages (like own messages)
+  width: 100%;
 }
 
 /* User's own messages styled with primary color and right alignment */
@@ -90,6 +91,14 @@
   border: 2px solid theme.$border-light;
   flex-shrink: 0;
   align-self: flex-start;
+}
+
+// Invisible spacer that takes same space as avatar for grouped messages
+.avatarSpacer {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  visibility: hidden;
 }
 
 .messageHeader {

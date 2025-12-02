@@ -80,13 +80,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   return (
     <div className={classNames}>
-      {/* Show avatar only for other users' messages and non-grouped messages */}
+      {/* Show avatar for other users' first message, invisible spacer for grouped */}
       {!isOwnMessage && !isGrouped && (
         <img
           src={imageSource}
           alt={t('common:accessibility.userAvatar', { email: senderEmail })}
           className={styles.avatar}
         />
+      )}
+      {/* Invisible spacer for grouped messages to maintain consistent bubble width */}
+      {!isOwnMessage && isGrouped && (
+        <div className={styles.avatarSpacer} aria-hidden="true" />
       )}
 
       <div className={styles.messageBubble}>
