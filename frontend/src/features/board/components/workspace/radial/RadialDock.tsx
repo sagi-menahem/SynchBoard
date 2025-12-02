@@ -384,10 +384,14 @@ export const RadialDock: React.FC<RadialDockProps> = ({
 
     const toolbarHeight = getToolbarHeight();
 
-    // Minimum canvas width (in pixels) required for horizontal toolbar
-    // Need space for: floating actions (~175px) + toolbar (~420px) + margins (~50px) = ~645px
-    // This ensures the toolbar doesn't overlap with undo/redo/zoom buttons
-    const MIN_CANVAS_WIDTH_FOR_HORIZONTAL = 650;
+    // Layout constants - calculated from SCSS:
+    // Tool: 40px, 9 buttons (8 tools + close), 8 gaps × 6px = 48px, padding 16px = 424px total
+    const TOOLBAR_WIDTH = 424;
+    // Floating actions: left: 25px + zoom pill ~180px wide = 205px from left edge
+    const FLOATING_ACTIONS_WIDTH = 210; // Add some buffer
+    // Minimum canvas width = floating actions (210) + toolbar (424) + right margin (20) = 654px
+    const MIN_CANVAS_WIDTH_FOR_HORIZONTAL = 660;
+    const RIGHT_MARGIN = 20; // Margin from right edge of canvas (to not touch chat panel)
 
     // Track window width for responsive layout calculations
     const [windowWidth, setWindowWidth] = useState(
@@ -404,30 +408,29 @@ export const RadialDock: React.FC<RadialDockProps> = ({
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Calculate canvas width in pixels
+    const canvasWidthPx = useMemo(() => {
+        const canvasWidthPercent = isChatOpen ? canvasSplitRatio : 100;
+        return (windowWidth * canvasWidthPercent) / 100;
+    }, [isChatOpen, canvasSplitRatio, windowWidth]);
+
     // Calculate if we should use vertical layout based on available canvas width
     const useVerticalLayout = useMemo(() => {
         if (isMobile) return false;
-
-        // Calculate canvas width in pixels
-        const canvasWidthPercent = isChatOpen ? canvasSplitRatio : 100;
-        const canvasWidthPx = (windowWidth * canvasWidthPercent) / 100;
-
         return canvasWidthPx < MIN_CANVAS_WIDTH_FOR_HORIZONTAL;
-    }, [isMobile, isChatOpen, canvasSplitRatio, windowWidth]);
+    }, [isMobile, canvasWidthPx]);
 
     // Calculate the position of the toolbar on desktop
-    // Horizontal: bottom-right of canvas area
-    // Vertical: bottom-right of canvas area
     const getDesktopToolbarStyle = useMemo((): React.CSSProperties => {
         if (isMobile) return {};
 
-        // Calculate the right edge of the canvas (where chat begins)
-        const canvasRightEdgePercent = isChatOpen ? canvasSplitRatio : 100;
+        // Distance from window right edge to canvas right edge (chat panel width)
+        const chatPanelWidth = windowWidth - canvasWidthPx;
 
         if (useVerticalLayout) {
-            // Vertical layout: bottom-right of canvas
+            // Vertical layout: bottom-right of canvas, with margin from chat panel
             return {
-                right: `calc(${100 - canvasRightEdgePercent}% + 16px)`,
+                right: `${chatPanelWidth + RIGHT_MARGIN}px`,
                 left: 'auto',
                 bottom: '32px',
                 top: 'auto',
@@ -435,15 +438,57 @@ export const RadialDock: React.FC<RadialDockProps> = ({
             };
         }
 
-        // Horizontal layout: bottom-right of canvas
+        // Horizontal layout positioning:
+        // Goal: Center toolbar in canvas, but shift right if it overlaps floating buttons,
+        // and ensure it never extends into the chat panel area.
+
+        const canvasCenterPx = canvasWidthPx / 2;
+        const toolbarHalfWidth = TOOLBAR_WIDTH / 2;
+
+        // Calculate where toolbar edges would be if centered
+        const toolbarLeftIfCentered = canvasCenterPx - toolbarHalfWidth;
+        const toolbarRightIfCentered = canvasCenterPx + toolbarHalfWidth;
+
+        // Available space for toolbar: from floating actions to right edge of canvas
+        const availableLeft = FLOATING_ACTIONS_WIDTH;
+        const availableRight = canvasWidthPx - RIGHT_MARGIN;
+        const availableWidth = availableRight - availableLeft;
+
+        // If centered position doesn't fit in available space, calculate best position
+        if (toolbarLeftIfCentered < availableLeft || toolbarRightIfCentered > availableRight) {
+            // Calculate the optimal position: center within available space
+            const availableCenterPx = availableLeft + (availableWidth / 2);
+
+            // If toolbar fits in available space, center it there
+            if (TOOLBAR_WIDTH <= availableWidth) {
+                return {
+                    left: `${availableCenterPx}px`,
+                    right: 'auto',
+                    bottom: '32px',
+                    top: 'auto',
+                    transform: 'translateX(-50%)',
+                };
+            }
+
+            // Toolbar doesn't fit well - position from right edge to ensure no cutoff by chat
+            return {
+                right: `${chatPanelWidth + RIGHT_MARGIN}px`,
+                left: 'auto',
+                bottom: '32px',
+                top: 'auto',
+                transform: 'none',
+            };
+        }
+
+        // Centered position works perfectly
         return {
-            right: `calc(${100 - canvasRightEdgePercent}% + 16px)`,
-            left: 'auto',
+            left: `${canvasCenterPx}px`,
+            right: 'auto',
             bottom: '32px',
             top: 'auto',
-            transform: 'none',
+            transform: 'translateX(-50%)',
         };
-    }, [isMobile, isChatOpen, canvasSplitRatio, useVerticalLayout]);
+    }, [isMobile, useVerticalLayout, canvasWidthPx, windowWidth]);
 
     return (
         <>
