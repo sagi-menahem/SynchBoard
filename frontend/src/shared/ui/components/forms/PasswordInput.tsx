@@ -1,9 +1,25 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
 import Button from './Button';
 import styles from './PasswordInput.module.scss';
+
+// Animation variants for the eye icon
+const iconVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.15, ease: 'easeOut' as const },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: 0.1, ease: 'easeIn' as const },
+  },
+};
 
 /**
  * Props for the PasswordInput component.
@@ -138,11 +154,31 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
         aria-label={showPassword ? t('common:form.hidePassword') : t('common:form.showPassword')}
         tabIndex={-1}
       >
-        {showPassword ? (
-          <EyeOffIcon className={styles.eyeIcon} />
-        ) : (
-          <EyeIcon className={styles.eyeIcon} />
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {showPassword ? (
+            <motion.span
+              key="eye-off"
+              variants={iconVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{ display: 'flex' }}
+            >
+              <EyeOffIcon className={styles.eyeIcon} />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="eye"
+              variants={iconVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{ display: 'flex' }}
+            >
+              <EyeIcon className={styles.eyeIcon} />
+            </motion.span>
+          )}
+        </AnimatePresence>
       </Button>
     </div>
   );
