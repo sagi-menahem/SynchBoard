@@ -28,6 +28,7 @@
   box-sizing: border-box; // Include padding and border in width
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  height: 40px; // Fixed height to prevent expansion when typing
 
   &:focus-within {
     opacity: 0.99;
@@ -53,11 +54,15 @@
   flex: 1;
   min-width: 0;
   text-align: center;
+  height: 24px;
+  line-height: 24px;
+  padding: 0;
 
   &::placeholder {
     color: var(--color-text-secondary);
     opacity: 0.7;
     text-align: center;
+    line-height: 24px;
   }
 }
 
