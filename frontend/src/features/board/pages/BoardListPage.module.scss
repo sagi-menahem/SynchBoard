@@ -73,7 +73,7 @@
 
 .emptyState p {
   color: theme.$text-secondary;
-  font-size: 16px;
+  font-size: theme.$font-size-base;
   margin: 0;
   max-width: 400px;
   line-height: 1.5;
@@ -113,7 +113,7 @@
 
 .emptyStateTitle {
   color: theme.$text-primary;
-  font-size: 20px;
+  font-size: theme.$font-size-lg;
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.01em;
@@ -121,7 +121,7 @@
 
 .emptyStateMessage {
   color: theme.$text-secondary-light;
-  font-size: 16px;
+  font-size: theme.$font-size-base;
   line-height: 1.5;
   margin: 0;
 }

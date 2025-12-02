@@ -130,7 +130,7 @@
     // Ensure form stays above keyboard on mobile
     flex-shrink: 0;
     // Prevent iOS zoom on input focus (requires 16px minimum)
-    font-size: 16px;
+    font-size: theme.$font-size-base;
   }
 
   .inputContainer {
@@ -141,7 +141,7 @@
   .input {
     padding: 8px 6px;
     // Minimum 16px to prevent iOS auto-zoom on focus
-    font-size: 16px;
+    font-size: theme.$font-size-base;
     // Prevent text selection issues on mobile
     -webkit-user-select: text;
     user-select: text;

@@ -54,7 +54,7 @@
   @include theme.flex-center;
   padding: theme.$spacing-12;
   color: theme.$text-secondary;
-  font-size: 16px;
+  font-size: theme.$font-size-base;
   grid-column: 1 / -1; // Span across both columns
 }
 
@@ -140,7 +140,7 @@
   @include theme.rounded-circle;
   @include theme.flex-center;
   cursor: pointer;
-  font-size: 18px;
+  font-size: theme.$font-size-md;
   font-weight: bold;
   @include theme.button-transition;
 }

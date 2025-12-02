@@ -115,17 +115,21 @@ $spacing-container-xl: 50rem;
 
 // --- Typography Scale ---
 
-$font-size-xs: 0.75rem;
-$font-size-sm: 0.875rem;
-$font-size-base: 1rem;
-$font-size-md: 1.125rem;
-$font-size-lg: 1.25rem;
-$font-size-xl: 1.5rem;
-$font-size-2xl: 1.875rem;
+$font-size-3xs: 0.5625rem; // 9px
+$font-size-2xs: 0.625rem; // 10px
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-md: 1.125rem; // 18px
+$font-size-lg: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
+$font-size-2xl: 1.875rem; // 30px
 
-$font-size-2xs: 0.7rem;
-$font-size-sm-plus: 0.9rem;
-$font-size-base-plus: 1.1rem;
+// Non-standard intermediate sizes
+$font-size-2xs-plus: 0.6875rem; // 11px
+$font-size-xs-plus: 0.8125rem; // 13px
+$font-size-sm-plus: 0.9rem; // ~14.4px
+$font-size-base-plus: 1.1rem; // ~17.6px
 
 $font-weight-normal: 400;
 $font-weight-medium: 500;

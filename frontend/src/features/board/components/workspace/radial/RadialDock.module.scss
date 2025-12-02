@@ -571,7 +571,7 @@ $border-radius-mobile: 20px;
 }
 
 .satelliteHeader {
-  font-size: 11px;
+  font-size: theme.$font-size-2xs-plus;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;

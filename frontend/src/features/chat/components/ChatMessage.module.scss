@@ -176,7 +176,7 @@
   position: absolute;
   bottom: theme.$spacing-0-5;
   right: 6px;
-  font-size: 12px;
+  font-size: theme.$font-size-xs;
   color: theme.$text-primary !important;
   z-index: theme.$z-index-base;
   cursor: help;

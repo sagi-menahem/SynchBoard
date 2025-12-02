@@ -65,7 +65,7 @@
 
 // Drawer title styling
 .title {
-  font-size: 18px;
+  font-size: theme.$font-size-md;
   font-weight: 600;
   color: var(--color-text-primary);
   text-align: center;

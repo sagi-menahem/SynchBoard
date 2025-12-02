@@ -10,7 +10,7 @@
   background: theme.$activity-indicator-bg;
   border: 1px solid theme.$activity-indicator-border;
   color: theme.$text-secondary;
-  font-size: 14px;
+  font-size: theme.$font-size-sm;
   font-weight: 500;
   position: relative;
   @include theme.smooth-transition;
@@ -92,7 +92,7 @@
 @media (max-width: 768px) {
   .activityIndicator {
     padding: theme.$spacing-1-5 theme.$spacing-2-5;
-    font-size: 13px;
+    font-size: theme.$font-size-xs-plus;
   }
 
   .onlineIndicator {
