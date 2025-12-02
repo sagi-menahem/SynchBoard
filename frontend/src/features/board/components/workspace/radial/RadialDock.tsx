@@ -4,7 +4,6 @@ import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 import {
     ArrowRight,
     Brush,
-    ChevronDown,
     ChevronUp,
     Circle,
     Eraser,
