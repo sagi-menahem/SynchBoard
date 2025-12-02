@@ -195,6 +195,16 @@ body[data-theme='light'] {
   --admin-badge-text: #b45309;
   --admin-icon-color: #d97706;
 
+  // Chat bubble colors - light theme
+  --chat-my-bubble-bg: rgba(59, 130, 246, 0.9);
+  --chat-my-bubble-border: rgba(59, 130, 246, 0.3);
+  --chat-my-bubble-text: #ffffff;
+  --chat-my-bubble-timestamp: rgba(255, 255, 255, 0.7);
+  --chat-other-bubble-bg: var(--glass-background);
+  --chat-other-bubble-border: var(--glass-border);
+  --chat-other-bubble-text: var(--color-text-primary);
+  --chat-other-bubble-timestamp: var(--color-text-muted);
+
   color: var(--color-text-primary);
   background-color: var(--color-background);
 }
@@ -339,6 +349,16 @@ body[data-theme='dark'] {
   --admin-badge-bg: rgba(251, 191, 36, 0.15);
   --admin-badge-text: #fbbf24;
   --admin-icon-color: #fbbf24;
+
+  // Chat bubble colors - dark theme
+  --chat-my-bubble-bg: rgba(37, 99, 235, 0.85);
+  --chat-my-bubble-border: rgba(59, 130, 246, 0.4);
+  --chat-my-bubble-text: #ffffff;
+  --chat-my-bubble-timestamp: rgba(255, 255, 255, 0.6);
+  --chat-other-bubble-bg: var(--glass-background);
+  --chat-other-bubble-border: var(--glass-border);
+  --chat-other-bubble-text: var(--color-text-primary);
+  --chat-other-bubble-timestamp: var(--color-text-muted);
 
   color: var(--color-text-primary);
   background-color: var(--color-background);
