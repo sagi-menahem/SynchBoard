@@ -401,10 +401,14 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                             >
                                 <ChevronUp size={16} />
                             </motion.div>
-                            {/* Tool icon colored with current stroke color (same as active tool in toolbar) */}
+                            {/* Tool icon colored with current stroke color (or primary text for eraser) */}
                             <div
                                 className={styles.mobileTabToolIcon}
-                                style={{ color: preferences.defaultStrokeColor }}
+                                style={{
+                                    color: preferences.defaultTool === TOOLS.ERASER
+                                        ? 'var(--color-text-primary)'
+                                        : preferences.defaultStrokeColor
+                                }}
                             >
                                 {activeToolIcon}
                             </div>
@@ -442,11 +446,15 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                                 {/* Wrapper for icon + indicator (same structure as colorPaletteIcon) */}
                                                 <div className={styles.toolIconWrapper}>
                                                     {getToolIcon(item, 20)}
-                                                    {/* Underline indicator for active tool - uses stroke color */}
+                                                    {/* Underline indicator for active tool - uses stroke color (or primary text for eraser) */}
                                                     {isActive && (
                                                         <span
                                                             className={styles.activeIndicator}
-                                                            style={{ backgroundColor: preferences.defaultStrokeColor }}
+                                                            style={{
+                                                                backgroundColor: item.tool === TOOLS.ERASER
+                                                                    ? 'var(--color-text-primary)'
+                                                                    : preferences.defaultStrokeColor
+                                                            }}
                                                         />
                                                     )}
                                                 </div>
