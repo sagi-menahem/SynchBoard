@@ -9,7 +9,7 @@
     "genderLabel": "Gender",
     "phoneNumberLabel": "Phone Number",
     "dateOfBirthLabel": "Date of Birth",
-    "notProvided": "Not provided",
+    "notProvided": "—",
     "updateSuccess": "Profile updated successfully!",
     "updateError": "Failed to update profile.",
     "buttons": {

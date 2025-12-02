@@ -9,7 +9,7 @@
     "genderLabel": "מגדר",
     "phoneNumberLabel": "מספר טלפון",
     "dateOfBirthLabel": "תאריך לידה",
-    "notProvided": "לא סופק",
+    "notProvided": "—",
     "updateSuccess": "הפרופיל עודכן בהצלחה!",
     "updateError": "עדכון הפרופיל נכשל.",
     "buttons": {
