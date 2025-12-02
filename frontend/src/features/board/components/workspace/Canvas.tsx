@@ -123,34 +123,72 @@ const Canvas: React.FC<CanvasProps> = (props) => {
     const container = containerRef.current;
     if (!container || hasScrolledToCenter.current) return;
 
-    // Wait for the container to have scrollable content
-    const scrollWidth = container.scrollWidth;
-    const scrollHeight = container.scrollHeight;
-    const clientWidth = container.clientWidth;
-    const clientHeight = container.clientHeight;
+    // Use requestAnimationFrame to ensure DOM has been painted and dimensions are available
+    const centerScroll = () => {
+      const scrollWidth = container.scrollWidth;
+      const scrollHeight = container.scrollHeight;
+      const clientWidth = container.clientWidth;
+      const clientHeight = container.clientHeight;
 
-    // Only center if there's content to scroll
-    if (scrollWidth > clientWidth || scrollHeight > clientHeight) {
-      // Check if the container has RTL direction (used for scroll behavior)
-      const containerDirection = getComputedStyle(container).direction;
-      const isRtlScroll = containerDirection === 'rtl';
+      // Only center if there's content to scroll
+      if (scrollWidth > clientWidth || scrollHeight > clientHeight) {
+        // Check if the container has RTL direction (used for scroll behavior)
+        const containerDirection = getComputedStyle(container).direction;
+        const isRtlScroll = containerDirection === 'rtl';
 
-      // Calculate center positions
-      const scrollTop = (scrollHeight - clientHeight) / 2;
+        // Calculate center positions
+        // Note: scrollTop is NOT inverted even though we use scaleY(-1)
+        // because scrollTop always measures from the DOM top, not visual top
+        const scrollTop = (scrollHeight - clientHeight) / 2;
 
-      if (isRtlScroll) {
-        // In RTL scroll containers, scrollLeft is 0 at right edge and negative towards left
-        // Center is negative half of the scrollable width
-        const scrollLeft = -((scrollWidth - clientWidth) / 2);
-        container.scrollTo(scrollLeft, scrollTop);
-      } else {
-        const scrollLeft = (scrollWidth - clientWidth) / 2;
-        container.scrollTo(scrollLeft, scrollTop);
+        if (isRtlScroll) {
+          // In RTL scroll containers, scrollLeft is 0 at right edge and negative towards left
+          // Center is negative half of the scrollable width
+          const scrollLeft = -((scrollWidth - clientWidth) / 2);
+          container.scrollTo(scrollLeft, scrollTop);
+        } else {
+          const scrollLeft = (scrollWidth - clientWidth) / 2;
+          container.scrollTo(scrollLeft, scrollTop);
+        }
+
+        hasScrolledToCenter.current = true;
       }
+    };
 
-      hasScrolledToCenter.current = true;
-    }
+    // Wait for next frame to ensure layout is complete
+    requestAnimationFrame(() => {
+      requestAnimationFrame(centerScroll);
+    });
   }, [containerRef, props.canvasConfig]);
+
+  // Handle wheel events to invert vertical scroll direction
+  // This is needed because the container uses transform: scaleY(-1) to move scrollbar to top
+  // which inverts the visual scroll direction for mouse wheel events
+  // Must use native event listener with { passive: false } to allow preventDefault()
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Prevent default scroll behavior
+      e.preventDefault();
+
+      // Invert the vertical delta to correct the scroll direction
+      // Horizontal scrolling doesn't need inversion (direction: rtl handles it differently)
+      container.scrollBy({
+        left: e.deltaX,
+        top: -e.deltaY, // Invert vertical scroll
+        behavior: 'instant',
+      });
+    };
+
+    // Add with passive: false to allow preventDefault()
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [containerRef]);
 
   // Container handler: pass all pointer events to enable multi-touch detection
   // Background touches need to be tracked so 2-finger panning works anywhere
