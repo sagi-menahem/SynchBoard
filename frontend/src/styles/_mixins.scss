@@ -184,16 +184,6 @@
     border-color theme.$transition-normal ease,
     box-shadow theme.$transition-normal ease;
 
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--color-text-primary) !important;
-    -webkit-box-shadow: theme.$shadow-overlay-hack var(--color-surface) inset !important;
-    box-shadow: theme.$shadow-overlay-hack var(--color-surface) inset !important;
-    background-color: var(--color-surface) !important;
-    border-color: var(--color-border) !important;
-  }
-
   &:disabled {
     background-color: var(--color-surface);
     color: var(--color-text-disabled);
