@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useIsMobile } from 'shared/hooks';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './BoardWorkspaceSkeleton.module.scss';
@@ -46,16 +47,17 @@ const BoardWorkspaceSkeleton: React.FC<BoardWorkspaceSkeletonProps> = ({
   splitRatio = 70,
   containerStyle,
 }) => {
+  const isMobile = useIsMobile();
+
   // Calculate panel sizes based on split ratio
   const panelStyles = useMemo(
     () => ({
       canvas: { flex: `0 0 ${splitRatio}%` },
       chat: { flex: `0 0 ${100 - splitRatio}%` },
-      // Position toolbar centered within canvas panel
-      toolbar: { left: `${splitRatio / 2}%` },
     }),
     [splitRatio],
   );
+
   return (
     <div
       className={`${styles.workspaceSkeleton} ${utilStyles.unifiedDotBackground}`}
@@ -101,6 +103,13 @@ const BoardWorkspaceSkeleton: React.FC<BoardWorkspaceSkeletonProps> = ({
         </div>
       </div>
 
+      {/* Mobile Toolbar Tab - Only visible on mobile */}
+      {isMobile && (
+        <div className={styles.mobileToolbarTab}>
+          <Skeleton variant="text" width={16} height={16} />
+          <Skeleton variant="circular" width={20} height={20} />
+        </div>
+      )}
     </div>
   );
 };

@@ -205,6 +205,11 @@
   --skeleton-shimmer: rgba(255, 255, 255, 0.2);
 }
 
+// Mobile toolbar tab skeleton - matches RadialDock mobile tab
+.mobileToolbarTab {
+  display: none; // Hidden on desktop
+}
+
 // Responsive adjustments - Mobile shows only canvas (chat is in drawer)
 @media (max-width: theme.$breakpoint-md) {
   .workspaceSkeleton {
@@ -229,5 +234,25 @@
 
   .chatPanel {
     display: none; // Chat is in drawer on mobile
+  }
+
+  // Mobile toolbar tab - positioned at bottom center
+  .mobileToolbarTab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 48px;
+    background: var(--user-chosen-color, var(--glass-background));
+    border: 1px solid var(--glass-border);
+    border-bottom: none;
+    border-radius: 20px 20px 0 0;
+    z-index: 100;
   }
 }

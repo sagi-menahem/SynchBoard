@@ -161,7 +161,9 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   // =========================================================================
 
   const [isMobile, setIsMobile] = useState(detectMobileDevice());
-  const [isExpanded, setIsExpanded] = useState(!preferences.isDockMinimized);
+  // On mobile, always start collapsed regardless of saved preference
+  const initialMobile = detectMobileDevice();
+  const [isExpanded, setIsExpanded] = useState(initialMobile ? false : !preferences.isDockMinimized);
   const [activeSatellite, setActiveSatellite] = useState<string | null>(null);
 
   // Drag state for mobile pull-up gesture
@@ -182,8 +184,11 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   // =========================================================================
 
   useEffect(() => {
-    setIsExpanded(!preferences.isDockMinimized);
-  }, [preferences.isDockMinimized]);
+    // On mobile, don't sync from preferences - always require manual open
+    if (!isMobile) {
+      setIsExpanded(!preferences.isDockMinimized);
+    }
+  }, [preferences.isDockMinimized, isMobile]);
 
   // Notify parent when satellite state changes
   useEffect(() => {
@@ -612,6 +617,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({
               className={`${styles.expandedToolbar} ${styles.mobileToolbar}`}
               data-testid="mobile-toolbar"
               data-expanded={isExpanded}
+              initial={false}
               animate={{
                 height: isDragging ? toolbarHeight : isExpanded ? TOOLBAR_HEIGHT_MOBILE : 0,
               }}
