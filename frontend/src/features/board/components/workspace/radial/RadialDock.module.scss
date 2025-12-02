@@ -5,6 +5,12 @@
 // =============================================================================
 // Simplified architecture - no drag, no radial positioning
 // Fixed position at bottom-center on desktop, bottom sheet on mobile
+//
+// NOTE ON !important USAGE:
+// - Focus/outline removal: Browser focus outlines are persistent and require
+//   !important to reliably remove. This is a common pattern for custom UI.
+// - Mobile close button border: Ensures consistent appearance across all states
+// - Vertical toolbar max-height: Overrides horizontal layout constraints
 // =============================================================================
 
 // -----------------------------------------------------------------------------

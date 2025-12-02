@@ -93,7 +93,15 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  &:hover:not(:disabled) {
+  // Default focus state - remove browser outline, maintain glass border
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: var(--glass-border);
+  }
+
+  // Hover state for non-active buttons
+  &:hover:not(:disabled):not(.active) {
     background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
     color: theme.$text-primary;
@@ -106,28 +114,23 @@
     opacity: 0.3;
     cursor: not-allowed;
   }
+}
 
-  // Active state for toggle icon buttons
-  &.active {
-    background: var(--icon-btn-bg-active) !important;
-    color: theme.$text-primary;
-    border-color: var(--glass-border) !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+// Active state for toggle icon buttons - separate block for higher specificity
+// This ensures active styles always win over hover/focus states
+.icon.active {
+  background: var(--icon-btn-bg-active);
+  color: theme.$text-primary;
+  border-color: var(--glass-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  &.active:hover,
-  &.active:focus,
-  &.active:focus-visible {
-    background: var(--icon-btn-bg-active-hover) !important;
-    border-color: var(--glass-border) !important;
-    outline: none !important;
-  }
-
-  &:focus,
-  &:focus-visible {
-    outline: none !important;
-    border-color: var(--glass-border) !important;
-  }
+.icon.active:hover,
+.icon.active:focus,
+.icon.active:focus-visible {
+  background: var(--icon-btn-bg-active-hover);
+  border-color: var(--glass-border);
+  outline: none;
 }
 
 // Call-to-action button with glassmorphism style

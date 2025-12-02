@@ -1,8 +1,17 @@
 @use '@/styles' as theme;
 @use '@/styles/glass' as glass;
 
-// FloatingActions - Fixed corner position with RTL/LTR awareness
+// =============================================================================
+// FLOATING ACTIONS - Undo/Redo/Zoom Controls
+// =============================================================================
+// Fixed corner position with RTL/LTR awareness
 // LTR (English): Bottom-left | RTL (Hebrew): Bottom-right
+//
+// NOTE ON !important USAGE:
+// - RTL margins (.rtl > *): Force correct alignment in right-to-left layouts
+// - Action button styles: Override base Button component styles to achieve
+//   minimal transparent button appearance required for this floating UI
+// =============================================================================
 
 .container {
   // Fixed position - corner varies by language direction
@@ -35,6 +44,7 @@
 
   // Force all direct children (motion.div pills) to align right
   // margin-left: auto in a column flex pushes items to the right
+  // !important: Required to override Framer Motion's inline margin styles
   > * {
     margin-left: auto !important;
     margin-right: 0 !important;
@@ -67,6 +77,9 @@
   border-radius: theme.$border-radius-pill;
 }
 
+// Action buttons need !important to override the base Button component styles.
+// These buttons require a minimal, transparent appearance that differs significantly
+// from standard buttons, and the Button component's base styles would otherwise win.
 .actionButton {
   min-width: 32px !important;
   min-height: 32px !important;
@@ -74,8 +87,8 @@
   border-radius: theme.$border-radius-full !important;
   background: transparent !important;
   border: none !important;
-  outline: none !important; // Remove default focus outline
-  -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover:not(:disabled) {
     background: var(--color-surface-hover) !important;
@@ -96,7 +109,7 @@
   &:active:not(:disabled) {
     background: var(--color-surface-pressed) !important;
     transform: scale(0.95);
-    outline: none !important; // Ensure no outline during press
+    outline: none !important;
   }
 
   &:disabled {

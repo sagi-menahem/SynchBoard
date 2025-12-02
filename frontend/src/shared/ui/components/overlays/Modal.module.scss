@@ -1,8 +1,22 @@
 @use '@/styles' as theme;
 
+// =============================================================================
+// MODAL COMPONENT STYLES
+// =============================================================================
+// NOTE ON !important USAGE:
+// The overlay and backdrop use !important for positioning properties to ensure
+// the modal always displays correctly regardless of:
+// 1. Framer Motion inline styles that may override positioning
+// 2. Parent component contexts that might affect fixed positioning
+// 3. Third-party library interference
+// These are defensive styles critical for modal functionality.
+// =============================================================================
+
 // --- Modal Layout ---
 
 // Full-screen modal overlay container
+// !important: Required to override Framer Motion inline styles and ensure
+// consistent positioning across all contexts where the modal might be rendered
 .overlay {
   @include theme.fixed-overlay;
   @include theme.flex-center;
@@ -18,6 +32,7 @@
 }
 
 // Clickable backdrop behind modal content
+// !important: Same reasoning as overlay - must maintain fixed full-screen positioning
 .backdrop {
   position: fixed !important;
   top: 0 !important;
@@ -127,6 +142,9 @@
 }
 
 // Full-screen modal variant for mobile (used by large forms like Create Board)
+// !important: Required here because :global() selectors have lower specificity than
+// the base .content styles above. These must override all base responsive styles
+// to achieve true fullscreen behavior on mobile devices.
 @media (max-width: theme.$breakpoint-sm) {
   :global(.modal-fullscreen-mobile) {
     padding: 0 !important;
