@@ -385,8 +385,9 @@ export const RadialDock: React.FC<RadialDockProps> = ({
     const toolbarHeight = getToolbarHeight();
 
     // Minimum canvas width (in pixels) required for horizontal toolbar
-    // Toolbar is approximately 420px wide (8 tools × 40px + gaps + padding + close button)
-    const MIN_CANVAS_WIDTH_FOR_HORIZONTAL = 480;
+    // Need space for: floating actions (~175px) + toolbar (~420px) + margins (~50px) = ~645px
+    // This ensures the toolbar doesn't overlap with undo/redo/zoom buttons
+    const MIN_CANVAS_WIDTH_FOR_HORIZONTAL = 650;
 
     // Track window width for responsive layout calculations
     const [windowWidth, setWindowWidth] = useState(
