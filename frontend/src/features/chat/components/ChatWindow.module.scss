@@ -1,13 +1,16 @@
 @use '@/styles' as theme;
+@use '@/styles/glass' as glass;
 
 .container {
   @include theme.flex-column;
   height: 100%;
-  box-shadow: theme.$shadow-card;
+  // Transparent background to show shapes behind
   background: transparent;
-  color: theme.$text-primary;
+  color: var(--color-text-primary);
   overflow: hidden;
   border-radius: 0 !important;
+  // No border - transparent container
+  border: none;
 }
 
 /* Scrollable message area with smooth scrolling behavior */
@@ -28,53 +31,71 @@
   @include theme.theme-scrollbar-enhanced;
 }
 
-/* Search interface container with subtle background separation */
+/* Search interface container - semi-transparent to show background */
 .searchContainer {
   @include theme.flex-start;
   padding: theme.$spacing-3 theme.$spacing-4;
-  background-color: theme.$background-tertiary !important;
-  border-bottom: 1px solid theme.$border-primary;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--glass-border);
   gap: theme.$spacing-2;
+
+  body[data-theme='dark'] & {
+    background: rgba(39, 39, 42, 0.8);
+  }
 }
 
 .searchInput {
   flex: 1;
   padding: theme.$spacing-2 theme.$spacing-3;
-  background-color: theme.$background-primary !important;
-  border: 1px solid theme.$border-secondary;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--glass-border);
   @include theme.rounded-medium;
-  color: theme.$text-primary !important;
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   outline: none;
   @include theme.smooth-transition;
+
+  body[data-theme='dark'] & {
+    background: rgba(39, 39, 42, 0.9);
+  }
 }
 
 .searchInput:focus {
-  border-color: theme.$accent-purple;
-  box-shadow: theme.$shadow-focus-outline theme.$overlay-primary-20;
+  border-color: var(--glass-border);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+
+  body[data-theme='dark'] & {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  }
 }
 
 .searchInput::placeholder {
-  color: theme.$text-placeholder;
+  color: var(--color-text-secondary);
 }
 
 .searchCloseButton {
   @include theme.interactive-button;
   padding: theme.$spacing-1-5 theme.$spacing-2;
-  color: theme.$text-placeholder;
+  color: var(--color-text-secondary);
   @include theme.rounded-small;
   font-size: 1rem;
   @include theme.smooth-transition;
 }
 
 .searchCloseButton:hover {
-  background-color: theme.$border-primary;
-  color: theme.$text-primary;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-primary);
+
+  body[data-theme='dark'] & {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .searchResults {
   font-size: 0.8rem;
-  color: theme.$text-placeholder;
+  color: var(--color-text-secondary);
   white-space: nowrap;
 }
 
@@ -82,17 +103,12 @@
 .dateSeparator {
   text-align: center;
   margin: theme.$spacing-6 0 theme.$spacing-4 0;
-  color: theme.$text-muted;
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
   font-weight: 500;
   position: relative;
   padding: 0;
   user-select: none;
-
-  body[data-theme='dark'] &,
-  body[data-theme='light'] & {
-    color: theme.$text-secondary;
-  }
 }
 
 /* Decorative lines on both sides of date separator text */

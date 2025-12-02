@@ -7,15 +7,13 @@
   @include theme.flex-center;
 }
 
-/* Pill-shaped input container with glass design and hover/focus states */
+/* Pill-shaped input container with solid glass design */
 .inputContainer {
   display: flex;
   align-items: center;
+  // Solid glass design - no transparency
   background: var(--user-chosen-color, var(--glass-background));
-  opacity: 0.85;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 2px solid var(--glass-border);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: theme.$spacing-2 theme.$spacing-4;
   width: 100%;
@@ -25,18 +23,16 @@
   box-sizing: border-box;
 
   &:focus-within {
-    opacity: 0.92;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-width: 3px;
-    border-color: var(--glass-border);
+    border-width: 2px;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+
+    body[data-theme='dark'] & {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    }
   }
 
   &:hover:not(.sending) {
-    opacity: 0.92;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-width: 2.5px;
+    border-width: 1.5px;
   }
 
   /* Disabled state during message sending */
@@ -89,21 +85,19 @@
   }
 }
 
-/* Circular send button with glass design and scale hover effect */
+/* Circular send button with solid glass design and scale hover effect */
 .sendButton {
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   padding: 10px;
-  border: none;
   transition: all 0.2s ease-in-out;
+  // Solid glass design - no transparency
   background: var(--user-chosen-color, var(--glass-background));
-  opacity: 0.6;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  cursor: not-allowed;
   border: 1px solid var(--glass-border);
+  cursor: not-allowed;
+  color: var(--color-text-secondary);
 
   svg {
     stroke: currentColor;
@@ -112,18 +106,16 @@
   }
 
   &:not(:disabled) {
-    opacity: 0.9;
     cursor: pointer;
+    color: var(--color-text-primary);
 
     svg {
       opacity: 1;
     }
 
     &:hover {
-      opacity: 1;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     &:active {
@@ -132,17 +124,6 @@
   }
 }
 
-:global([data-theme='light']) {
-  .sendButton {
-    color: theme.$text-primary;
-  }
-}
-
-:global([data-theme='dark']) {
-  .sendButton {
-    color: theme.$text-primary;
-  }
-}
 
 @media (max-width: 768px) {
   .form {

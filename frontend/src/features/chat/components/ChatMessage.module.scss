@@ -1,4 +1,5 @@
 @use '@/styles' as theme;
+@use '@/styles/glass' as glass;
 
 /* Main message container with slide-in animation for new messages */
 .messageContainer {
@@ -80,21 +81,11 @@
 }
 
 .otherMessage .messageBubble {
-  background: theme.$surface-elevated;
-  color: theme.$text-primary;
+  // Glass design for other users' messages
+  background: var(--user-chosen-color, var(--glass-background));
+  color: var(--color-text-primary);
+  border: 1px solid var(--glass-border);
   position: relative;
-
-  body[data-theme='dark'] & {
-    background: theme.$color-chat-other-message-dark;
-    color: #f9fafb;
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
-  body[data-theme='light'] & {
-    background: theme.$color-chat-other-message-light;
-    color: #1b1b1b;
-    border-color: rgba(0, 0, 0, 0.1);
-  }
 }
 
 .avatar {
@@ -120,7 +111,7 @@
 }
 
 .senderName {
-  color: theme.$text-secondary;
+  color: var(--color-text-secondary);
   font-size: 0.85rem;
   font-weight: 600;
   @include theme.text-ellipsis;
@@ -168,15 +159,16 @@
 }
 
 .otherMessage .messageText {
-  color: theme.$text-primary;
+  color: var(--color-text-primary);
   text-align: start;
 }
 
 .timestamp {
-  color: theme.$text-muted;
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
   white-space: nowrap;
   display: inline-block;
+  opacity: 0.7;
 }
 
 .failureIcon {
