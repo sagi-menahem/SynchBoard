@@ -205,15 +205,20 @@
   --skeleton-shimmer: rgba(255, 255, 255, 0.2);
 }
 
-// Responsive adjustments
+// Responsive adjustments - Mobile shows only canvas (chat is in drawer)
 @media (max-width: theme.$breakpoint-md) {
   .workspaceSkeleton {
     flex-direction: column;
   }
 
   .canvasPanel {
-    flex: 1;
+    flex: 1 !important; // Override inline style
     width: 100%;
+  }
+
+  .canvasArea {
+    // Remove dark background on mobile - just show the SVG pattern
+    background: transparent;
   }
 
   .resizeHandle {
@@ -222,15 +227,5 @@
 
   .chatPanel {
     display: none; // Chat is in drawer on mobile
-  }
-
-  .toolbarSkeleton {
-    left: 50%;
-    bottom: theme.$spacing-4;
-  }
-
-  .toolButton {
-    width: 32px;
-    height: 32px;
   }
 }
