@@ -279,6 +279,7 @@ const BoardListPage: React.FC = () => {
               <Card
                 variant="empty-state"
                 hoverable
+                animate
                 className={styles.emptyStateCard}
                 onClick={openModal}
               >
