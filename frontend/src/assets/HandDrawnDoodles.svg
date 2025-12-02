@@ -1,5 +1,8 @@
 <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <filter id="softBlur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.8"/>
+    </filter>
     <pattern id="handDrawnDoodles" width="400" height="400" patternUnits="userSpaceOnUse">
       <!-- Sketchy imperfect circles - slightly wobbly paths instead of perfect circles -->
       <path d="M45 35 C55 32, 58 42, 55 50 C52 58, 42 60, 35 55 C28 50, 30 38, 45 35" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35" stroke-linecap="round"/>
@@ -66,5 +69,5 @@
       <path d="M360 35 C365 33, 368 38, 365 42 C362 46, 357 44, 357 40 C357 36, 360 35, 360 35" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35" stroke-linecap="round"/>
     </pattern>
   </defs>
-  <rect width="100%" height="100%" fill="url(#handDrawnDoodles)"/>
+  <rect width="100%" height="100%" fill="url(#handDrawnDoodles)" filter="url(#softBlur)"/>
 </svg>
