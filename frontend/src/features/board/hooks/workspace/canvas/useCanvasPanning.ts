@@ -265,7 +265,9 @@ export const useCanvasPanning = ({
             const deltaY = lastCentroid.current.y - newCentroid.y;
 
             container.scrollLeft += deltaX;
-            container.scrollTop += deltaY;
+            // Note: deltaY is negated because the scroll container has scaleY(-1) transform
+            // to move the horizontal scrollbar to the top. This inverts the scrollTop direction.
+            container.scrollTop -= deltaY;
           }
         }
 
@@ -282,7 +284,9 @@ export const useCanvasPanning = ({
           const deltaY = lastPanPosition.current.y - event.clientY;
 
           container.scrollLeft += deltaX;
-          container.scrollTop += deltaY;
+          // Note: deltaY is negated because the scroll container has scaleY(-1) transform
+          // to move the horizontal scrollbar to the top. This inverts the scrollTop direction.
+          container.scrollTop -= deltaY;
 
           lastPanPosition.current = { x: event.clientX, y: event.clientY };
         }
