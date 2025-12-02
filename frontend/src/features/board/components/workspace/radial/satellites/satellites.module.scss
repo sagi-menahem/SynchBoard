@@ -31,14 +31,14 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   opacity: 0.8;
   text-align: center;
   margin: 0;
   padding: 0;
 
   body[data-theme='dark'] & {
-    color: var(--text-primary);
+    color: var(--color-text-primary);
   }
 }
 
@@ -93,7 +93,7 @@
 .strokeValueLabel {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
   min-width: 3ch;
   text-align: center;
@@ -124,7 +124,7 @@
   }
 
   &.active {
-    border-color: var(--text-primary);
+    border-color: var(--color-text-primary);
     box-shadow: 0 0 0 2px var(--color-primary-light);
   }
 
@@ -181,7 +181,7 @@
   &.active {
     background: var(--icon-btn-bg-active);
     border-color: var(--glass-border);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
@@ -232,7 +232,7 @@
   &.active {
     background: var(--icon-btn-bg-active);
     border-color: var(--glass-border);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 

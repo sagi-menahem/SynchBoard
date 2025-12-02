@@ -41,6 +41,25 @@
   transition: all 0.2s ease;
 }
 
+// Button styled with user's chosen theme background color
+// Used for color preview buttons that show the current theme color
+@mixin theme-button {
+  background-color: var(--user-chosen-color) !important;
+  border-color: var(--user-chosen-color) !important;
+  color: var(--color-text-primary) !important;
+  box-shadow: 0 0 0 1px var(--glass-border) !important;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+}
+
 .editButton {
   @include edit-button;
 }
