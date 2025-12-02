@@ -48,57 +48,38 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   // Track if we're closing to prevent label click from reopening
   const isClosingRef = useRef(false);
 
-  // Close picker when clicking outside, but prevent the click from
-  // propagating to modal backdrop to avoid closing the modal too
+  // Handle clicks on labels associated with our swatch button
+  // The backdrop handles most click-outside cases, but labels can trigger
+  // the swatch button via htmlFor, so we need special handling
   useEffect(() => {
-    if (!showPicker) {
+    if (!showPicker || !id) {
       return;
     }
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleLabelClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
 
-      // Don't close if clicking inside the picker
-      if (pickerRef.current?.contains(target)) {
-        return;
-      }
-
-      // Don't interfere if clicking the swatch button (let toggle handle it)
-      if (swatchRef.current?.contains(target)) {
-        return;
-      }
-
-      // Check if clicking on a label that's associated with our swatch button
-      // This prevents the label click from reopening the picker after we close it
-      if (target.tagName === 'LABEL' && id) {
+      // Only handle labels that are associated with our swatch button
+      if (target.tagName === 'LABEL') {
         const labelFor = target.getAttribute('for');
         if (labelFor === id) {
-          // This label will trigger the swatch button - prevent that
+          // Prevent label from triggering the swatch button
           event.stopPropagation();
           event.preventDefault();
           isClosingRef.current = true;
           setShowPicker(false);
-          // Reset the flag after a short delay
           setTimeout(() => {
             isClosingRef.current = false;
           }, 100);
-          return;
         }
       }
-
-      // Normal click outside - close picker
-      event.stopPropagation();
-      event.preventDefault();
-      setShowPicker(false);
     };
 
-    // Use capture phase to intercept before other handlers
-    // Listen to both mousedown and click to fully prevent modal backdrop activation
-    document.addEventListener('mousedown', handleClickOutside, true);
-    document.addEventListener('click', handleClickOutside, true);
+    document.addEventListener('mousedown', handleLabelClick, true);
+    document.addEventListener('click', handleLabelClick, true);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside, true);
-      document.removeEventListener('click', handleClickOutside, true);
+      document.removeEventListener('mousedown', handleLabelClick, true);
+      document.removeEventListener('click', handleLabelClick, true);
     };
   }, [showPicker, id]);
 
@@ -215,35 +196,46 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       {showPicker &&
         !disabled &&
         createPortal(
-          <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
-            <div className={styles.colorfulWrapper}>
-              {/* Color picker area */}
-              <div className={styles.pickerArea}>
-                <HexColorPicker color={color} onChange={handleColorChange} />
-              </div>
+          <>
+            {/* Invisible backdrop to catch all clicks outside the picker */}
+            <div
+              className={styles.backdrop}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setShowPicker(false);
+              }}
+            />
+            <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
+              <div className={styles.colorfulWrapper}>
+                {/* Color picker area */}
+                <div className={styles.pickerArea}>
+                  <HexColorPicker color={color} onChange={handleColorChange} />
+                </div>
 
-              {/* Divider */}
-              <div className={styles.divider} />
+                {/* Divider */}
+                <div className={styles.divider} />
 
-              {/* Preset colors section */}
-              <div className={styles.presetsSection}>
-                <span className={styles.presetsLabel}>{t('common:presets')}</span>
-                <div className={styles.presetColors}>
-                  {PRESET_COLORS.map((presetColor) => (
-                    <button
-                      key={presetColor}
-                      type="button"
-                      className={`${styles.presetColor} ${presetColor === color ? styles.active : ''}`}
-                      style={{ backgroundColor: presetColor }}
-                      onClick={() => handlePaletteColorClick(presetColor)}
-                      title={presetColor}
-                      aria-label={`Select ${presetColor}`}
-                    />
-                  ))}
+                {/* Preset colors section */}
+                <div className={styles.presetsSection}>
+                  <span className={styles.presetsLabel}>{t('common:presets')}</span>
+                  <div className={styles.presetColors}>
+                    {PRESET_COLORS.map((presetColor) => (
+                      <button
+                        key={presetColor}
+                        type="button"
+                        className={`${styles.presetColor} ${presetColor === color ? styles.active : ''}`}
+                        style={{ backgroundColor: presetColor }}
+                        onClick={() => handlePaletteColorClick(presetColor)}
+                        title={presetColor}
+                        aria-label={`Select ${presetColor}`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>,
+          </>,
           document.body,
         )}
     </>
