@@ -483,8 +483,20 @@ export const RadialDock: React.FC<RadialDockProps> = ({
     const chatPanelWidth = isRTLMode ? 0 : windowWidth - canvasWidthPx;
 
     if (useVerticalLayout) {
-      // Vertical layout: position on the side opposite to floating actions (near chat)
-      // Both LTR and RTL: position near the chat panel side
+      // Vertical layout: position near the chat panel side
+      // LTR: Chat is on right, so toolbar on right side of canvas (use right positioning)
+      // RTL: Chat is on left, so toolbar on left side of canvas (use left positioning)
+      if (isRTLMode) {
+        // RTL: Position from left edge, near chat panel
+        return {
+          left: `${canvasStartPx + RIGHT_MARGIN}px`,
+          right: 'auto',
+          bottom: '32px',
+          top: 'auto',
+          transform: 'none',
+        };
+      }
+      // LTR: Position from right edge, near chat panel
       return {
         right: `${chatPanelWidth + RIGHT_MARGIN}px`,
         left: 'auto',
