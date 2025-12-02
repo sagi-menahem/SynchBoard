@@ -1,9 +1,26 @@
+import { motion } from 'framer-motion';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { Textarea } from 'shared/ui';
 
 import styles from './TextInputOverlay.module.scss';
+
+// Animation variants for the text input overlay
+const overlayVariants = {
+  initial: {
+    opacity: 0,
+    scale: 0.9,
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.15,
+      ease: 'easeOut' as const,
+    },
+  },
+};
 
 /**
  * Props interface for TextInputOverlay component.
@@ -84,7 +101,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
   );
 
   return (
-    <div
+    <motion.div
       className={styles.textInputOverlay}
       style={{
         left: `${x}px`,
@@ -94,6 +111,9 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         color,
         fontSize: `${fontSize}px`,
       }}
+      variants={overlayVariants}
+      initial="initial"
+      animate="animate"
     >
       <Textarea
         ref={textareaRef}
@@ -112,7 +132,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
           resize: 'none',
         }}
       />
-    </div>
+    </motion.div>
   );
 };
 
