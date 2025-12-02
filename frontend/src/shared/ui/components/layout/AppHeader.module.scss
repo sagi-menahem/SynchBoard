@@ -88,9 +88,15 @@
   width: 100%; // Allow full width when wrapping
   max-width: 100%; // Ensure no overflow
   padding: theme.$spacing-2 0; // Add vertical padding when wrapping
+  min-width: 320px; // Minimum width for search bar on desktop
+
+  @media (min-width: theme.$breakpoint-lg) {
+    min-width: 400px; // Wider on larger screens
+  }
 
   @media (max-width: theme.$breakpoint-md) {
     display: none;
+    min-width: 0; // Reset min-width on mobile
 
     &[data-show-mobile='true'] {
       display: flex;

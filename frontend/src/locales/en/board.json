@@ -236,7 +236,7 @@
       "lines": "Lines"
     },
     "search": {
-      "boardName": "Search boards...",
+      "boardName": "Search boards",
       "placeholder": "Type board name...",
       "clear": "Clear search"
     },

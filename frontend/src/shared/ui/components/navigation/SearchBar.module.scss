@@ -14,7 +14,7 @@
 // Main container with focus-within styling and glass design
 .searchContainer {
   position: relative;
-  @include theme.flex-start;
+  @include theme.flex-center;
   background: var(--user-chosen-color, rgba(255, 255, 255, 0.15));
   opacity: 0.99;
   border: 1px solid var(--glass-border);
@@ -52,10 +52,12 @@
   outline: none;
   flex: 1;
   min-width: 0;
+  text-align: center;
 
   &::placeholder {
     color: var(--color-text-secondary);
     opacity: 0.7;
+    text-align: center;
   }
 }
 
