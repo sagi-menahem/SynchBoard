@@ -33,8 +33,7 @@ $border-radius-mobile: 20px;
     // Note: left and transform are set via inline styles to position relative to canvas area
     &.desktop {
         bottom: 32px;
-        // Position updates instantly during resize for smooth real-time tracking
-        // No transition needed - position follows canvas split ratio in real-time
+        // No transition on position - must track resize instantly without lag
     }
 
     // Vertical layout: Right side of canvas, vertically centered
