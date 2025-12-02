@@ -215,7 +215,7 @@ $border-radius-mobile: 20px;
   border-radius: 2px;
   // Background color set via inline style to use current stroke color
   flex-shrink: 0;
-  transition: background-color 0.2s ease;
+  transition: background-color theme.$transition-normal ease;
 }
 
 // Chevron indicator for mobile tab - shows drag direction
@@ -408,7 +408,7 @@ $border-radius-mobile: 20px;
   width: 16px;
   height: 2px;
   border-radius: 1px;
-  transition: background-color 0.2s ease;
+  transition: background-color theme.$transition-normal ease;
 }
 
 // Color indicator for collapsed button (desktop)
@@ -420,7 +420,7 @@ $border-radius-mobile: 20px;
   width: 20px;
   height: 3px;
   border-radius: 1.5px;
-  transition: background-color 0.2s ease;
+  transition: background-color theme.$transition-normal ease;
 }
 
 // -----------------------------------------------------------------------------

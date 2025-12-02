@@ -76,7 +76,7 @@
   padding: 0.75rem;
   background: var(--color-surface-hover);
   border-radius: 8px;
-  transition: background 0.2s ease;
+  transition: background theme.$transition-normal ease;
 }
 
 .strokePreviewSvg {
@@ -113,7 +113,7 @@
   border-radius: 50%; /* Circular color buttons */
   border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all theme.$transition-normal ease;
   position: relative;
   padding: 0;
   outline: none;
@@ -166,7 +166,7 @@
   border: 1px solid var(--glass-border);
   border-radius: theme.$border-radius-md;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all theme.$transition-normal ease;
   color: var(--btn-icon-text);
 
   &:hover {
@@ -215,7 +215,7 @@
   border: 1px solid var(--glass-border);
   border-radius: theme.$border-radius-md;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all theme.$transition-normal ease;
   color: var(--btn-icon-text);
 
   &:hover {

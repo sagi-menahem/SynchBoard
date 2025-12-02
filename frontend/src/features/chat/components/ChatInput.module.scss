@@ -92,7 +92,7 @@
   justify-content: center;
   border-radius: 50%;
   padding: 10px;
-  transition: all 0.2s ease-in-out;
+  transition: all theme.$transition-normal ease-in-out;
   // Solid glass design - no transparency
   background: var(--user-chosen-color, var(--glass-background));
   border: 1px solid var(--glass-border);
@@ -102,7 +102,7 @@
   svg {
     stroke: currentColor;
     opacity: 0.5;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity theme.$transition-normal ease-in-out;
   }
 
   &:not(:disabled) {

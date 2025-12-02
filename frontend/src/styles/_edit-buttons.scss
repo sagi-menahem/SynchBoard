@@ -38,7 +38,7 @@
 
   min-height: theme.$edit-button-height;
 
-  transition: all 0.2s ease;
+  transition: all theme.$transition-normal ease;
 }
 
 // Button styled with user's chosen theme background color
