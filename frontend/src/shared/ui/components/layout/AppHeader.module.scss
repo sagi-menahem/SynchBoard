@@ -10,7 +10,7 @@
   padding-inline: theme.$spacing-4;
   // Use CSS custom properties for dynamic background color (85% opacity for glassmorphism)
   background: rgba(var(--header-bg-rgb, 255, 255, 255), 0.85);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid var(--glass-border);
   // Use sticky positioning (acts as relative for child absolute positioning)
   position: sticky;
   top: 0;

@@ -17,7 +17,7 @@
   @include theme.flex-start;
   background: var(--user-chosen-color, rgba(255, 255, 255, 0.15));
   opacity: 0.99;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--glass-border);
   @include theme.rounded-medium;
   padding: theme.$spacing-2 theme.$spacing-3;
   gap: theme.$spacing-2;
@@ -31,7 +31,7 @@
 
   &:focus-within {
     opacity: 0.99;
-    border-color: rgba(0, 0, 0, 0.2);
+    border-color: var(--glass-border);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 }
