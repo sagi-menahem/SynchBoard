@@ -42,7 +42,7 @@
 .formContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: theme.$spacing-8;
   width: 100%;
   align-items: start;
 
@@ -59,7 +59,7 @@
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: theme.$spacing-6;
 }
 
 // Button group spans full width at bottom
@@ -162,14 +162,14 @@
 
   .formContainer {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
     width: 100%;
     max-width: 100%;
   }
 
   .leftColumn,
   .rightColumn {
-    gap: 1.25rem;
+    gap: theme.$spacing-5;
     width: 100%;
     max-width: 100%;
   }
@@ -200,7 +200,7 @@
 
   .leftColumn,
   .rightColumn {
-    gap: 1rem;
+    gap: theme.$spacing-4;
     width: 100%;
     max-width: 100%;
   }
