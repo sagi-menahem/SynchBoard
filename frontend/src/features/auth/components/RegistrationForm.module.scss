@@ -45,24 +45,6 @@
   font-weight: bold;
 }
 
-// Horizontal layout for gender selection radio buttons
-// Note: Uses RadioGroup component - these styles are for backwards compatibility only
-.radioGroup {
-  @include theme.flex-start;
-  gap: theme.$spacing-4;
-  margin-top: theme.$spacing-2;
-}
-
-.radioLabel {
-  @include theme.radio-option;
-  font-size: 0.875rem;
-}
-
-.radioLabel input[type='radio'] {
-  @include theme.radio-input;
-  margin: 0;
-}
-
 .error {
   @include theme.error-message;
   color: theme.$error;
@@ -134,10 +116,3 @@
   }
 }
 
-// Tablet layout: vertical radio button alignment
-@media (max-width: 640px) {
-  .radioGroup {
-    @include theme.flex-column;
-    gap: theme.$spacing-2;
-  }
-}

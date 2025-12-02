@@ -618,37 +618,6 @@
 }
 
 /**
- * Styling for radio button option containers.
- * @example
- *   .radio-choice {
- *     @include radio-option;
- *   }
- */
-@mixin radio-option {
-  display: flex;
-  align-items: center;
-  gap: theme.$spacing-2;
-  cursor: pointer;
-  color: var(--color-text-primary);
-  font-size: theme.$font-size-sm-plus;
-  padding: theme.$spacing-1 0;
-}
-
-/**
- * Styling for radio input elements with theme accent color.
- * @example
- *   input[type='radio'] {
- *     @include radio-input;
- *   }
- */
-@mixin radio-input {
-  width: theme.$spacing-4;
-  height: theme.$spacing-4;
-  accent-color: var(--user-chosen-color);
-  cursor: pointer;
-}
-
-/**
  * Truncates text with ellipsis when it overflows.
  * @example
  *   .truncated-title {

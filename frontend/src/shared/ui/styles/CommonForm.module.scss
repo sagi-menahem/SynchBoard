@@ -59,32 +59,6 @@
   font-weight: bold;
 }
 
-// --- Radio Button Groups ---
-// DEPRECATED: Use RadioGroup component instead of native radio inputs
-
-.radioGroup {
-  @include theme.flex-column;
-  gap: theme.$spacing-2;
-  margin-top: theme.$spacing-2;
-}
-
-.radioLabel {
-  @include theme.radio-option;
-  color: theme.$text-primary;
-  font-size: 1rem;
-}
-
-.radioLabel input[type='radio'] {
-  @include theme.radio-input;
-  width: 1.2rem;
-  height: 1.2rem;
-}
-
-// Radio label hover state
-.radioLabel:hover {
-  color: theme.$text-secondary;
-}
-
 // --- Date Input Styling ---
 
 .dateInput {
@@ -187,21 +161,6 @@
   letter-spacing: 0.5px;
   border-bottom: 1px solid theme.$border-primary;
   padding-bottom: 0.25rem;
-}
-
-.radioOption {
-  @include theme.radio-option;
-  color: theme.$text-primary;
-  font-size: 0.9rem;
-}
-
-.radioOption input[type='radio'] {
-  @include theme.radio-input;
-  accent-color: theme.$primary;
-}
-
-.radioOption:hover {
-  color: theme.$text-secondary;
 }
 
 // Custom dimension input container with flexible layout

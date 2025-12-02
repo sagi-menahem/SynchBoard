@@ -185,29 +185,6 @@
   font-weight: bold;
 }
 
-// Radio button group layout for gender selection
-// DEPRECATED: Use RadioGroup component instead of native radio inputs
-.radioGroup {
-  display: flex;
-  gap: theme.$spacing-4;
-  margin-top: theme.$spacing-2;
-}
-
-// Radio button labels with proper styling
-// DEPRECATED: Use RadioGroup component instead of native radio inputs
-.radioLabel {
-  @include theme.radio-option;
-  color: theme.$text-muted;
-  font-size: 0.875rem;
-}
-
-// Radio input styling with theme colors
-// DEPRECATED: Use RadioGroup component instead of native radio inputs
-.radioLabel input[type='radio'] {
-  @include theme.radio-input;
-  margin: 0;
-}
-
 // Settings page input with transparent background to show page background
 .settingsInput {
   background-color: transparent !important;
