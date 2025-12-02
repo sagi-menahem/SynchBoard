@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import toast, { Toaster, useToasterStore } from 'react-hot-toast';
 
-import { useAuth } from 'features/auth/hooks';
 import { useIsMobile } from 'shared/hooks';
 
-// Header height from design tokens (56px)
-const HEADER_HEIGHT = 56;
-const MOBILE_TOP_OFFSET = 12;
+// Mobile bottom offset (small padding from bottom edge)
+const MOBILE_BOTTOM_OFFSET = 20;
 
 // Toast configuration
 const TOAST_DURATION_DEFAULT = 3000; // 3 seconds for success/info
@@ -20,12 +18,10 @@ const MAX_VISIBLE_TOASTS = 3; // Limit visible toasts to prevent clutter
  * Configures theme-aware toast appearance that adapts to the application's design system.
  *
  * On desktop: bottom-right positioning
- * On mobile: top-center positioning, below navbar if logged in
+ * On mobile: bottom-center positioning
  */
-export const ToasterConfig: React.FC = () => {
+export const ToasterConfig = () => {
   const isMobile = useIsMobile();
-  const { token } = useAuth();
-  const isLoggedIn = !!token;
   const { toasts } = useToasterStore();
 
   // Limit visible toasts by dismissing oldest when limit is exceeded
@@ -38,13 +34,13 @@ export const ToasterConfig: React.FC = () => {
     }
   }, [toasts]);
 
-  // On mobile: top-center, with offset for navbar if logged in
+  // On mobile: bottom-center
   // On desktop: bottom-right
-  const position = isMobile ? 'top-center' : 'bottom-right';
+  const position = isMobile ? 'bottom-center' : 'bottom-right';
 
   const containerStyle = isMobile
     ? {
-        top: isLoggedIn ? HEADER_HEIGHT + MOBILE_TOP_OFFSET : MOBILE_TOP_OFFSET,
+        bottom: MOBILE_BOTTOM_OFFSET,
         left: 0,
         right: 0,
       }
