@@ -24,7 +24,7 @@
 }
 
 .memberEmail {
-  color: theme.$text-light-gray;
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
   margin-top: 4px;
 }

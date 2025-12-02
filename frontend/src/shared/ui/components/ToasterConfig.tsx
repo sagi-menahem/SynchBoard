@@ -63,7 +63,7 @@ export const ToasterConfig = () => {
         style: {
           background: 'var(--user-chosen-color, var(--color-surface-elevated))',
           color: 'var(--color-text-primary)',
-          border: '1px solid var(--color-border)',
+          border: '1px solid var(--glass-border)',
           borderRadius: '8px',
           padding: '12px 16px',
           boxShadow: '0 4px 12px var(--color-overlay-medium)',

@@ -109,16 +109,19 @@
   inset-inline-start: 0;
   inset-inline-end: 0;
   bottom: 0;
-  background: theme.$overlay-modal;
-  backdrop-filter: blur(4px);
+  background: var(--color-overlay-strong);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   @include theme.flex-center;
   z-index: theme.$z-index-toolbar;
   padding: theme.$spacing-8;
 }
 
 .quickSettingsContent {
-  background: linear-gradient(to bottom, theme.$background-secondary, theme.$background-tertiary);
-  border: 1px solid theme.$border-light;
+  background: var(--user-chosen-color, var(--glass-background));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   @include theme.rounded-large;
   @include theme.theme-scrollbar;
   padding: theme.$spacing-8;
@@ -135,9 +138,9 @@
   position: absolute;
   top: 1rem;
   inset-inline-end: 1rem;
-  background: theme.$overlay-light;
-  border: none;
-  color: theme.$text-secondary;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--glass-border);
+  color: var(--color-text-secondary);
   width: 32px;
   height: 32px;
   @include theme.rounded-circle;
@@ -149,7 +152,7 @@
 }
 
 .closeQuickSettings:hover {
-  background: theme.$overlay-medium;
-  color: theme.$text-primary;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
   transform: scale(1.1);
 }

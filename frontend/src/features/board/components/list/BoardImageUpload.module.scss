@@ -21,7 +21,7 @@
   height: 80px;
   @include theme.rounded-circle;
   object-fit: cover;
-  border: 2px solid theme.$border-primary;
+  border: 2px solid var(--glass-border);
 }
 
 /* Overlay covers entire image with logical positioning and starts hidden */
@@ -31,7 +31,7 @@
   inset-inline-start: 0;
   inset-inline-end: 0;
   bottom: 0;
-  background-color: theme.$overlay-dark;
+  background-color: var(--color-overlay-strong);
   @include theme.flex-center;
   @include theme.rounded-circle;
   opacity: 0;
@@ -43,7 +43,7 @@
 }
 
 .overlayText {
-  color: theme.$text-primary;
+  color: var(--color-text-primary);
   font-size: 0.7rem;
   text-align: center;
   padding: theme.$spacing-1;
@@ -54,20 +54,23 @@
   display: none;
 }
 
-/* Remove button with gradient background using error theme colors */
+/* Remove button with glass destructive styling */
 .removeButton {
   @include theme.button-base;
-  background: linear-gradient(135deg, theme.$error-color 0%, theme.$error-dark 100%);
-  color: theme.$text-primary;
-  border: none;
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--btn-destructive-bg);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   padding: theme.$spacing-1 theme.$spacing-2;
   @include theme.rounded-small;
   font-size: 0.8rem;
   cursor: pointer;
   @include theme.button-transition;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .removeButton:hover {
-  background: linear-gradient(135deg, theme.$error-dark 0%, theme.$error-darker 100%);
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
   transform: translateY(-1px);
 }

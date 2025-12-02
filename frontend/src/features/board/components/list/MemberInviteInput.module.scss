@@ -36,8 +36,8 @@
 }
 
 .emailTag {
-  background-color: theme.$secondary-color;
-  color: theme.$text-primary;
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
   padding: theme.$spacing-2 theme.$spacing-3;
   @include theme.rounded-small;
   @include theme.flex-between;
@@ -66,11 +66,11 @@
 }
 
 .removeTag:hover {
-  background-color: theme.$overlay-light;
+  background-color: var(--color-surface-elevated);
 }
 
 .helpText {
   font-size: 0.8rem;
-  color: theme.$text-light-gray;
+  color: var(--color-text-secondary);
   margin: 0;
 }

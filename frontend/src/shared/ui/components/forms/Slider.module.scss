@@ -46,7 +46,7 @@
 
 // Background track styling - Thinner and darker
 .sliderTrack {
-  background-color: rgba(0, 0, 0, 0.1); // Darker track for contrast
+  background-color: var(--color-surface-hover); // Theme-aware track color
   position: relative;
   flex-grow: 1;
   height: 4px; // Thinner track (Apple style)
@@ -64,38 +64,38 @@
   @include theme.smooth-transition;
 }
 
-// Draggable thumb control - White circle with shadow
+// Draggable thumb control - Theme-aware circle with shadow
 .sliderThumb {
   display: block;
   width: 20px; // Larger thumb
   height: 20px;
-  background-color: #ffffff;
-  border: 0.5px solid rgba(0, 0, 0, 0.04); // Subtle border
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--glass-border);
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); // Drop shadow
+  box-shadow: 0 2px 4px var(--color-overlay-light); // Drop shadow
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px var(--color-overlay-medium);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 4px rgba(theme.$primary, 0.2); // Focus ring
+    box-shadow: 0 0 0 4px var(--color-primary-light); // Focus ring
   }
 
   &[data-state='dragging'] {
     transform: scale(1.15);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 12px var(--color-overlay-medium);
   }
 
   .sliderRoot[data-disabled] & {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-    background-color: theme.$surface;
+    background-color: var(--color-surface);
   }
 }
 
