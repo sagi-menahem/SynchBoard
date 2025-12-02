@@ -120,31 +120,31 @@ $border-radius-mobile: 20px;
         width: 56px;
         height: 56px;
         border-radius: 50%;
-        border: 2px solid rgba(0, 0, 0, 0.1);
+        border: 2px solid var(--glass-border);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
         position: relative; // For color indicator positioning
-        
+
         &:hover {
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
             background: var(--color-surface-hover);
-            border-color: rgba(0, 0, 0, 0.15);
+            border-color: var(--glass-border);
         }
-        
+
         &:active {
             transform: translateY(-2px) scale(1.02);
-            border-color: rgba(0, 0, 0, 0.1); // Keep consistent neutral gray
+            border-color: var(--glass-border);
             outline: none;
         }
-        
+
         &:focus {
             outline: none;
-            border-color: rgba(0, 0, 0, 0.1); // Keep consistent neutral gray
+            border-color: var(--glass-border);
         }
-        
+
         &:focus-visible {
             outline: none;
-            border-color: rgba(0, 0, 0, 0.15); // Slightly darker for keyboard focus
+            border-color: var(--glass-border);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); // Subtle shadow for accessibility
         }
     }
@@ -166,7 +166,7 @@ $border-radius-mobile: 20px;
         background: var(--user-chosen-color, var(--glass-background));
 
         // Top border wrapping around the tab - left, top, right (no bottom)
-        border: 1px solid rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--glass-border);
         border-bottom: none; // No bottom border - connects to toolbar
 
         // Subtle inset shadow at top for depth
@@ -185,7 +185,6 @@ $border-radius-mobile: 20px;
         }
 
         body[data-theme='dark'] & {
-            border-color: rgba(255, 255, 255, 0.1);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
         }
     }
@@ -243,8 +242,8 @@ $border-radius-mobile: 20px;
         border-radius: 0; // No rounded corners - flat top, tab is the only rounded element
 
         // Border only on left and right - no top border (to avoid line between tab and toolbar)
-        border-left: 1px solid rgba(0, 0, 0, 0.08);
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        border-left: 1px solid var(--glass-border);
+        border-right: 1px solid var(--glass-border);
         border-top: none;
         border-bottom: none; // No bottom border - sits at screen edge
 
@@ -255,11 +254,6 @@ $border-radius-mobile: 20px;
         -webkit-backdrop-filter: none;
 
         box-shadow: none; // No shadow - container handles the shadow
-
-        body[data-theme='dark'] & {
-            border-left-color: rgba(255, 255, 255, 0.1);
-            border-right-color: rgba(255, 255, 255, 0.1);
-        }
     }
 }
 
@@ -452,38 +446,25 @@ $border-radius-mobile: 20px;
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Force consistent border
+        border: 1.5px solid var(--glass-border) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         -webkit-tap-highlight-color: transparent; // Extra emphasis
-        
+
         &:active {
             transform: translateX(-50%) scale(0.95);
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-            border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Keep consistent border
+            border: 1.5px solid var(--glass-border) !important;
             outline: none !important;
         }
-        
+
         &:focus {
-            border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Keep consistent border
+            border: 1.5px solid var(--glass-border) !important;
             outline: none !important;
         }
-        
+
         &:focus-visible {
-            border: 1.5px solid rgba(0, 0, 0, 0.15) !important; // Keep consistent border
+            border: 1.5px solid var(--glass-border) !important;
             outline: none !important;
-        }
-        
-        body[data-theme='dark'] & {
-            border-color: rgba(255, 255, 255, 0.1) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            
-            &:active {
-                border-color: rgba(255, 255, 255, 0.1) !important;
-            }
-            
-            &:focus {
-                border-color: rgba(255, 255, 255, 0.1) !important;
-            }
         }
     }
     

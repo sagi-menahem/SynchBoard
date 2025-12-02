@@ -2,7 +2,7 @@
 
 .memberItem {
   background-color: var(--user-chosen-color);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--glass-border);
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;

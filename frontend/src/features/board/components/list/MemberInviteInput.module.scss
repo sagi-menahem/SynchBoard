@@ -30,7 +30,7 @@
   max-height: 150px;
   overflow-y: auto;
   padding: theme.$spacing-2;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--glass-border);
   @include theme.rounded-small;
   background-color: var(--user-chosen-color);
 }

@@ -80,7 +80,7 @@
 .icon {
   @include theme.interactive-button;
   background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--glass-border);
   color: var(--btn-icon-text);
   cursor: pointer;
   padding: theme.$spacing-2;
@@ -95,7 +95,7 @@
 
   &:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(0, 0, 0, 0.15);
+    border-color: var(--glass-border);
     color: theme.$text-primary;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -111,7 +111,7 @@
   &.active {
     background: rgba(255, 255, 255, 0.3) !important;
     color: theme.$text-primary;
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: var(--glass-border) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
@@ -119,14 +119,14 @@
   &.active:focus,
   &.active:focus-visible {
     background: rgba(255, 255, 255, 0.35) !important;
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: var(--glass-border) !important;
     outline: none !important;
   }
 
   &:focus,
   &:focus-visible {
     outline: none !important;
-    border-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: var(--glass-border) !important;
   }
 }
 

@@ -79,7 +79,7 @@
 .field textarea {
   @include theme.input-base;
   background-color: var(--user-chosen-color);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--glass-border);
   color: theme.$text-primary;
   margin-top: 4px;
   width: 100%;
@@ -91,7 +91,7 @@
   @include theme.textarea-base;
   @include theme.rounded-small;
   background-color: var(--user-chosen-color);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--glass-border);
   color: theme.$text-primary;
   margin-top: 4px;
   width: 100%;
