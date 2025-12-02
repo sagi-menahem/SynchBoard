@@ -115,12 +115,27 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   // ANIMATION VARIANTS
   // =========================================================================
 
+  // Calculate the translation offset for centering
+  // This needs to be applied via Framer Motion's x/y props to avoid transform conflicts
+  const getCenteringOffset = () => {
+    if (isMobile) {
+      return { x: '-50%', y: 0 };
+    }
+    if (isVerticalLayout) {
+      return { x: 0, y: '50%' }; // Move down by 50% of height to center
+    }
+    return { x: '-50%', y: 0 }; // Center horizontally
+  };
+
+  const centeringOffset = getCenteringOffset();
+
   const satelliteVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: -10 },
+    hidden: { opacity: 0, scale: 0.8, y: centeringOffset.y === 0 ? -10 : centeringOffset.y },
     visible: {
       opacity: 1,
       scale: 1,
-      y: 0,
+      x: centeringOffset.x,
+      y: centeringOffset.y,
       transition: { duration: 0.2 },
     },
   };
@@ -153,87 +168,84 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   // =========================================================================
 
   // Calculate satellite position based on device type and toolbar layout
+  // NOTE: Do NOT use CSS transform here - Framer Motion handles transforms via x/y props
   const getSatelliteStyle = (): React.CSSProperties => {
     if (isMobile) {
       // Mobile: centered horizontally, above the toolbar
+      // The x: '-50%' transform is applied by Framer Motion
       return {
         position: 'fixed',
         left: '50%',
         bottom: `${SATELLITE_POSITION.MOBILE_BOTTOM}px`,
-        transform: 'translateX(-50%)',
       };
     }
 
+    // Constants for toolbar dimensions
+    const VERTICAL_TOOLBAR_WIDTH = 52; // 40px tool + 12px padding
+    const VERTICAL_TOOLBAR_HEIGHT = 420; // 9 items × 40px + 8 gaps × 6px + 12px padding
+    const GAP = 12;
+
     if (isVerticalLayout) {
       // Vertical toolbar: satellite appears to the left of the toolbar
-      // Toolbar is positioned from right edge, satellite should be to its left
+      // Toolbar is positioned at bottom: 32px and extends upward
+      // Center satellite vertically with the toolbar
       const toolbarRight = toolbarStyle.right;
       const rightOffset = typeof toolbarRight === 'string'
         ? parseInt(toolbarRight, 10)
         : (typeof toolbarRight === 'number' ? toolbarRight : 20);
 
-      // Vertical toolbar width is ~52px (40px tool + 12px padding)
-      // Position satellite to the left with a gap
-      const VERTICAL_TOOLBAR_WIDTH = 52;
-      const GAP = 12;
+      // Toolbar bottom edge is 32px from viewport bottom
+      // Toolbar center is at: 32px + (toolbarHeight / 2) from bottom
+      const TOOLBAR_BOTTOM = 32;
+      const toolbarCenterFromBottom = TOOLBAR_BOTTOM + (VERTICAL_TOOLBAR_HEIGHT / 2);
 
+      // The y: '50%' transform is applied by Framer Motion
       return {
         position: 'fixed',
         right: `${rightOffset + VERTICAL_TOOLBAR_WIDTH + GAP}px`,
-        bottom: '32px', // Same as toolbar bottom
-        transform: 'none',
+        bottom: `${toolbarCenterFromBottom}px`,
       };
     }
 
-    // Horizontal toolbar: satellite centered above the toolbar
-    // Use the same positioning logic as the toolbar
-    const { left, right, transform } = toolbarStyle;
+    // Horizontal toolbar: satellite centered horizontally above the toolbar
+    // The toolbar is positioned at the center of the canvas (or shifted if overlapping buttons)
+    // We need to calculate the same center point the toolbar uses
 
-    if (left && transform === 'translateX(-50%)') {
-      // Toolbar is centered using left + translateX(-50%)
-      return {
-        position: 'fixed',
-        left: left,
-        bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
-        transform: 'translateX(-50%)',
-      };
+    // Constants matching RadialDock.tsx
+    const TOOLBAR_WIDTH = 424;
+    const FLOATING_ACTIONS_WIDTH = 210;
+    const RIGHT_MARGIN = 20;
+
+    const canvasCenterPx = canvasWidthPx / 2;
+    const toolbarHalfWidth = TOOLBAR_WIDTH / 2;
+    const toolbarLeftIfCentered = canvasCenterPx - toolbarHalfWidth;
+    const toolbarRightIfCentered = canvasCenterPx + toolbarHalfWidth;
+
+    const availableLeft = FLOATING_ACTIONS_WIDTH;
+    const availableRight = canvasWidthPx - RIGHT_MARGIN;
+
+    // Determine toolbar center using same logic as RadialDock
+    let toolbarCenterPx: number;
+
+    if (toolbarLeftIfCentered < availableLeft || toolbarRightIfCentered > availableRight) {
+      // Toolbar is shifted - centered in available space
+      const availableWidth = availableRight - availableLeft;
+      if (TOOLBAR_WIDTH <= availableWidth) {
+        toolbarCenterPx = availableLeft + (availableWidth / 2);
+      } else {
+        // Toolbar positioned from right edge
+        toolbarCenterPx = availableRight - (TOOLBAR_WIDTH / 2);
+      }
+    } else {
+      // Toolbar is perfectly centered in canvas
+      toolbarCenterPx = canvasCenterPx;
     }
 
-    if (left && !transform) {
-      // Toolbar is positioned from left edge (shifted right to avoid floating buttons)
-      // Center satellite above the toolbar
-      const leftPx = typeof left === 'string' ? parseInt(left, 10) : left;
-      const TOOLBAR_WIDTH = 424;
-      const toolbarCenterPx = (leftPx || 0) + TOOLBAR_WIDTH / 2;
-
-      return {
-        position: 'fixed',
-        left: `${toolbarCenterPx}px`,
-        bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
-        transform: 'translateX(-50%)',
-      };
-    }
-
-    if (right) {
-      // Toolbar is positioned from right edge
-      const rightPx = typeof right === 'string' ? parseInt(right, 10) : right;
-      const TOOLBAR_WIDTH = 424;
-      const toolbarCenterFromRight = (rightPx || 0) + TOOLBAR_WIDTH / 2;
-
-      return {
-        position: 'fixed',
-        right: `${toolbarCenterFromRight}px`,
-        bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
-        transform: 'translateX(50%)',
-      };
-    }
-
-    // Fallback: center of canvas
+    // The x: '-50%' transform is applied by Framer Motion
     return {
       position: 'fixed',
-      left: `${canvasWidthPx / 2}px`,
+      left: `${toolbarCenterPx}px`,
       bottom: `${SATELLITE_POSITION.DESKTOP_BOTTOM}px`,
-      transform: 'translateX(-50%)',
     };
   };
 
