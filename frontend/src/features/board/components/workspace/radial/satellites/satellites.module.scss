@@ -162,25 +162,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-surface-hover);
-  border: 2px solid var(--glass-border);
-  border-radius: 8px;
+  background: var(--icon-btn-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--text-primary);
+  color: var(--btn-icon-text);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   &:hover {
-    background: var(--color-surface-elevated);
+    background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--color-overlay-medium);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   &.active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: #ffffff;
-    box-shadow: 0 4px 16px var(--color-primary-light);
+    background: var(--icon-btn-bg-active);
+    border-color: var(--glass-border);
+    color: var(--text-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &.active:hover {
+    background: var(--icon-btn-bg-active-hover);
   }
 
   &:active {
@@ -207,25 +213,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-surface-hover);
-  border: 2px solid var(--glass-border);
-  border-radius: 8px;
+  background: var(--icon-btn-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--text-primary);
+  color: var(--btn-icon-text);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   &:hover {
-    background: var(--color-surface-elevated);
+    background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--color-overlay-medium);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   &.active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: #ffffff;
-    box-shadow: 0 4px 16px var(--color-primary-light);
+    background: var(--icon-btn-bg-active);
+    border-color: var(--glass-border);
+    color: var(--text-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &.active:hover {
+    background: var(--icon-btn-bg-active-hover);
   }
 
   &:active {
