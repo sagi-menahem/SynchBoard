@@ -156,9 +156,11 @@ $border-radius-mobile: 20px;
         z-index: 2; // Above toolbar for touch events
         flex-shrink: 0; // Don't shrink
 
-        // Shadow on top edge since tab is on top
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06),
-                    0 -1px 3px rgba(0, 0, 0, 0.05);
+        // Match toolbar background exactly - must override glass-panel mixin
+        background: var(--user-chosen-color, var(--glass-background));
+
+        // No shadow - tab and toolbar should look like one seamless unit
+        box-shadow: none;
 
         &:focus {
             outline: none !important; // Force remove browser outline
@@ -168,19 +170,10 @@ $border-radius-mobile: 20px;
         &:active {
             outline: none !important; // Force remove browser outline
             border: none; // No border on active
-            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
         }
 
         &:focus-visible {
             outline: none !important; // Force remove keyboard focus outline
-        }
-
-        body[data-theme='dark'] & {
-            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
-
-            &:active {
-                box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.4);
-            }
         }
     }
 }
