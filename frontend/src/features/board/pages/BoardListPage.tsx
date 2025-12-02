@@ -31,15 +31,15 @@ const listItemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.05,
-      duration: 0.2,
+      delay: i * 0.06,
+      duration: 0.35,
       ease: 'easeOut' as const,
     },
   }),
   exit: {
     opacity: 0,
     scale: 0.95,
-    transition: { duration: 0.15 },
+    transition: { duration: 0.2 },
   },
 };
 
@@ -243,7 +243,7 @@ const BoardListPage: React.FC = () => {
               <motion.ul
                 className={`${styles.boardList} ${styles[viewMode]}`}
                 layout
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
               >
                 <AnimatePresence mode="popLayout">
                   {boards.map((board, index) => (
