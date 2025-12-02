@@ -19,7 +19,7 @@
   opacity: 0.99;
   border: 1px solid var(--glass-border);
   @include theme.rounded-medium;
-  padding: theme.$spacing-2 theme.$spacing-3;
+  padding: 6px theme.$spacing-3;
   gap: theme.$spacing-2;
   @include theme.smooth-transition;
   width: 100%; // Take full width of form
@@ -28,7 +28,7 @@
   box-sizing: border-box; // Include padding and border in width
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  height: 40px; // Fixed height to prevent expansion when typing
+  height: 36px; // Fixed height to prevent expansion when typing
 
   &:focus-within {
     opacity: 0.99;
@@ -49,35 +49,48 @@
   background: none;
   border: none;
   color: var(--color-text-primary);
-  font-size: theme.$font-size-sm;
+  font-size: 13px;
   outline: none;
   flex: 1;
   min-width: 0;
   text-align: center;
-  height: 24px;
-  line-height: 24px;
+  height: 20px;
+  line-height: 20px;
   padding: 0;
 
   &::placeholder {
     color: var(--color-text-secondary);
     opacity: 0.7;
     text-align: center;
-    line-height: 24px;
+    line-height: 20px;
   }
 }
 
-// Clear button with hover effects
+// Clear button with hover effects - minimal styling to integrate with search bar
 .clearButton {
-  @include theme.interactive-button;
+  // Reset button variant styles
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  min-width: unset !important;
+  min-height: unset !important;
+
   color: var(--color-text-secondary);
-  padding: theme.$spacing-0-5;
-  @include theme.rounded-small;
-  @include theme.flex-center;
-  @include theme.smooth-transition;
+  padding: 4px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  opacity: 0.6;
 
   &:hover {
     color: var(--color-text-primary);
-    background: var(--color-surface-hover);
+    background: rgba(128, 128, 128, 0.2) !important;
+    opacity: 1;
   }
 }
