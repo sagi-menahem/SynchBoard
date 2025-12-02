@@ -20,6 +20,11 @@
     direction: ltr;
   }
 
+  // Move horizontal scrollbar from bottom to top using vertical flip
+  // The container is flipped, and the content is counter-flipped to appear normal
+  // This works independently of LTR/RTL (which is horizontal, not vertical)
+  transform: scaleY(-1);
+
   // Custom scrollbar with user preference color track and gray thumb
   scrollbar-width: auto;
   scrollbar-color: rgba(120, 120, 128, 0.6) var(--user-chosen-color, var(--glass-background));
@@ -63,6 +68,9 @@
   background: transparent;
   // Restore LTR direction for content (parent uses RTL for left-side scrollbar)
   direction: ltr;
+  // Counter-flip the content so it appears right-side up
+  // (parent scrollContainer is flipped to move horizontal scrollbar to top)
+  transform: scaleY(-1);
 }
 
 .canvasContainer.hideBackground {
@@ -100,7 +108,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  // Counter-flip the overlay text and apply centering translation
+  // scaleY(-1) counters the parent's flip, translate centers the element
+  transform: translate(-50%, -50%) scaleY(-1);
   background: theme.$error-overlay;
   color: theme.$text-primary;
   padding: theme.$spacing-3 theme.$spacing-5;
@@ -121,6 +131,9 @@
   background-color: theme.$background-overlay;
   @include theme.flex-center;
   z-index: theme.$z-index-elevated;
+  // Counter-flip the loading overlay so it appears right-side up
+  // (parent scrollContainer is flipped to move horizontal scrollbar to top)
+  transform: scaleY(-1);
 }
 
 .placeholderContent {
