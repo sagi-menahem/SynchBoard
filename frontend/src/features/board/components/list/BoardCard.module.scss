@@ -64,7 +64,7 @@
   border: 3px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  background: white;
+  background: var(--color-surface-elevated);
 }
 
 .gridAvatarImage {
@@ -77,10 +77,10 @@
   position: absolute;
   top: 6px;
   inset-inline-end: 6px;
-  background: rgba(255, 215, 0, 0.95);
+  background: var(--admin-badge-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #000;
+  color: var(--admin-badge-text);
   padding: 3px 6px;
   border-radius: 4px;
   display: flex;
@@ -185,7 +185,7 @@
 }
 
 .listAdminIcon {
-  color: #FFD700;
+  color: var(--admin-icon-color);
   flex-shrink: 0;
   display: flex;
   align-items: center;

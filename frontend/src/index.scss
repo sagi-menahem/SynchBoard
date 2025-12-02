@@ -190,6 +190,11 @@ body[data-theme='light'] {
   --glass-background: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(0, 0, 0, 0.1);
 
+  // Admin badge colors
+  --admin-badge-bg: rgba(255, 215, 0, 0.95);
+  --admin-badge-text: #000000;
+  --admin-icon-color: #ffd700;
+
   color: var(--color-text-primary);
   background-color: var(--color-background);
 }
@@ -329,6 +334,11 @@ body[data-theme='dark'] {
   --google-button-active-bg: #{dt.$google-button-active-bg-dark};
   --google-button-disabled-text: #{dt.$google-button-disabled-text-dark};
   --google-button-disabled-border: #{dt.$google-button-disabled-border-dark};
+
+  // Admin badge colors for dark theme
+  --admin-badge-bg: rgba(255, 215, 0, 0.9);
+  --admin-badge-text: #000000;
+  --admin-icon-color: #ffd700;
 
   color: var(--color-text-primary);
   background-color: var(--color-background);

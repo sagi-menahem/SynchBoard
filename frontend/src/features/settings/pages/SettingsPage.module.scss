@@ -241,8 +241,8 @@
 .dateInput {
   @include theme.input-base;
   background-color: transparent;
-  border: 1px solid theme.$border-secondary;
-  color: theme.$text-primary;
+  border: 1px solid var(--glass-border);
+  color: var(--color-text-primary);
   font-size: 1rem;
   margin-top: 4px;
   @include theme.smooth-transition;

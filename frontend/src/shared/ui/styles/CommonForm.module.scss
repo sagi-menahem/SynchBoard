@@ -40,8 +40,8 @@
   @include theme.textarea-base;
   @include theme.rounded-small;
   background-color: transparent;
-  border: 1px solid theme.$border-primary;
-  color: theme.$text-primary;
+  border: 1px solid var(--glass-border);
+  color: var(--color-text-primary);
   margin-top: 4px;
 }
 
@@ -173,10 +173,11 @@
   @include theme.flex-column;
   gap: theme.$spacing-2;
   padding: theme.$spacing-4;
-  border: 1px solid theme.$border-primary;
+  border: 1px solid var(--glass-border);
   @include theme.rounded-large;
-  background: theme.$overlay-surface-60;
-  backdrop-filter: blur(4px);
+  background: var(--glass-background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .groupLabel {
@@ -224,14 +225,14 @@
   flex-shrink: 1;
   text-align: center;
   background-color: transparent;
-  border: 1px solid rgba(120, 120, 128, 0.3);
+  border: 1px solid var(--glass-border);
   border-radius: theme.$border-radius-sm;
   padding: theme.$spacing-2;
-  color: theme.$text-primary;
+  color: var(--color-text-primary);
 
   &:focus {
     outline: none;
-    border-color: theme.$primary;
+    border-color: var(--color-primary);
   }
 }
 

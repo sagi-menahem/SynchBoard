@@ -76,16 +76,16 @@
   }
 }
 
-// Light theme colors
+// Light theme colors - using CSS variables for consistency
 :global(body[data-theme='light']) .segment.selected {
-  --segmented-selected-color: #3b82f6;
-  --segmented-selected-hover-bg: rgba(59, 130, 246, 0.08);
+  --segmented-selected-color: var(--color-primary);
+  --segmented-selected-hover-bg: var(--color-primary-light);
 }
 
-// Dark theme - lighter/softer blue for better visibility
+// Dark theme - using CSS variables for consistency
 :global(body[data-theme='dark']) .segment.selected {
-  --segmented-selected-color: #60a5fa;
-  --segmented-selected-hover-bg: rgba(96, 165, 250, 0.12);
+  --segmented-selected-color: var(--color-primary);
+  --segmented-selected-hover-bg: var(--color-primary-light);
 }
 
 // Disabled state
