@@ -8,8 +8,8 @@
   height: auto; // Allow height to adjust when wrapping
   min-height: theme.$header-height;
   padding-inline: theme.$spacing-4;
-  // Use CSS custom properties for dynamic background color (85% opacity for glassmorphism)
-  background: rgba(var(--header-bg-rgb, 255, 255, 255), 0.85);
+  // Solid background using user's chosen color or glass background
+  background: var(--user-chosen-color, var(--glass-background));
   border-bottom: 1px solid var(--glass-border);
   // Use sticky positioning (acts as relative for child absolute positioning)
   position: sticky;
@@ -36,7 +36,7 @@
 
 // Variant: Elevated (more prominent)
 .elevated {
-  background: rgba(var(--header-bg-rgb, 255, 255, 255), 0.95);
+  background: var(--user-chosen-color, var(--glass-background));
   box-shadow: theme.$shadow-sm;
 }
 
