@@ -79,7 +79,7 @@
 // Icon-only button for toolbar and compact interfaces with glass design
 .icon {
   @include theme.interactive-button;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--icon-btn-bg);
   border: 1px solid var(--glass-border);
   color: var(--btn-icon-text);
   cursor: pointer;
@@ -94,7 +94,7 @@
   -webkit-backdrop-filter: blur(12px);
 
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
     color: theme.$text-primary;
     transform: translateY(-1px);
@@ -109,7 +109,7 @@
 
   // Active state for toggle icon buttons
   &.active {
-    background: rgba(255, 255, 255, 0.3) !important;
+    background: var(--icon-btn-bg-active) !important;
     color: theme.$text-primary;
     border-color: var(--glass-border) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -118,7 +118,7 @@
   &.active:hover,
   &.active:focus,
   &.active:focus-visible {
-    background: rgba(255, 255, 255, 0.35) !important;
+    background: var(--icon-btn-bg-active-hover) !important;
     border-color: var(--glass-border) !important;
     outline: none !important;
   }

@@ -131,6 +131,7 @@ const BoardDetailsPage: React.FC = () => {
               title={t('board:leaveBoard.button')}
             >
               <LogOut size={20} />
+              <span className={styles.buttonLabel}>{t('board:leaveBoard.button')}</span>
             </Button>
             {currentUserIsAdmin && (
               <Button
@@ -139,6 +140,7 @@ const BoardDetailsPage: React.FC = () => {
                 title={t('board:detailsPage.inviteButton')}
               >
                 <UserPlus size={20} />
+                <span className={styles.buttonLabel}>{t('board:detailsPage.inviteButton')}</span>
               </Button>
             )}
           </>

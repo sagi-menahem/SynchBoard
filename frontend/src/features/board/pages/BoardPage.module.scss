@@ -1,5 +1,17 @@
 @use '@/styles' as theme;
 
+// Button label - visible on desktop, hidden on mobile (same pattern as logout button)
+.buttonLabel {
+  margin-inline-start: theme.$spacing-1-5;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 // Full-viewport layout with dynamic positioning based on header presence
 .pageContent {
   position: fixed;

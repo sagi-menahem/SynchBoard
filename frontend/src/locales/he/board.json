@@ -5,6 +5,9 @@
   "listPage": {
     "heading": "הלוחות שלי",
     "createNewBoardButton": "צור לוח חדש",
+    "createButtonLabel": "צור",
+    "viewListLabel": "רשימה",
+    "viewGridLabel": "רשת",
     "loading": "טוען את הלוחות שלך...",
     "fetchError": "טעינת הלוחות נכשלה. אנא נסה שוב מאוחר יותר.",
     "noDescription": "אין תיאור.",
@@ -189,7 +192,8 @@
     "redo": "בצע שנית"
   },
   "header": {
-    "export": "ייצא קנבס",
+    "export": "ייצוא",
+    "chat": "צ'אט",
     "info": "פרטי לוח"
   },
   "toolbar": {

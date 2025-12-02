@@ -5,6 +5,9 @@
   "listPage": {
     "heading": "My Boards",
     "createNewBoardButton": "Create New Board",
+    "createButtonLabel": "Create",
+    "viewListLabel": "List",
+    "viewGridLabel": "Grid",
     "loading": "Loading your boards...",
     "fetchError": "Failed to fetch boards. Please try again later.",
     "noDescription": "No description.",
@@ -189,7 +192,8 @@
     "redo": "Redo"
   },
   "header": {
-    "export": "Export canvas",
+    "export": "Export",
+    "chat": "Chat",
     "info": "Board details"
   },
   "toolbar": {

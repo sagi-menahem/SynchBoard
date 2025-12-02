@@ -92,9 +92,13 @@ const BoardListPage: React.FC = () => {
                 title={viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')}
               >
                 {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+                <span className={styles.buttonLabel}>
+                  {viewMode === 'grid' ? t('board:listPage.viewListLabel') : t('board:listPage.viewGridLabel')}
+                </span>
               </Button>
               <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
                 <Plus size={20} />
+                <span className={styles.buttonLabel}>{t('board:listPage.createButtonLabel')}</span>
               </Button>
             </>
           )}
@@ -138,9 +142,13 @@ const BoardListPage: React.FC = () => {
               title={viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')}
             >
               {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+              <span className={styles.buttonLabel}>
+                {viewMode === 'grid' ? t('board:listPage.viewListLabel') : t('board:listPage.viewGridLabel')}
+              </span>
             </Button>
             <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
               <Plus size={20} />
+              <span className={styles.buttonLabel}>{t('board:listPage.createButtonLabel')}</span>
             </Button>
           </>
         )}

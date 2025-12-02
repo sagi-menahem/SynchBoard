@@ -203,6 +203,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               title={t('board:header.export')}
             >
               <Download size={20} />
+              <span className={styles.buttonLabel}>{t('board:header.export')}</span>
             </Button>
             <Button
               variant="icon"
@@ -221,6 +222,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
               aria-pressed={isMobile ? mobileChatOpen : canvasPreferences.isChatOpen}
             >
               <MessageSquare size={20} />
+              <span className={styles.buttonLabel}>{t('board:header.chat')}</span>
             </Button>
           </>
         }

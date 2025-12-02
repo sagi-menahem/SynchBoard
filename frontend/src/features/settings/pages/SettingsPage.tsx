@@ -98,7 +98,7 @@ const SettingsPage: React.FC = () => {
           }
           title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
           trailing={(
-            <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
+            <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
               <LogOut size={20} />
               <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
             </Button>
@@ -120,7 +120,7 @@ const SettingsPage: React.FC = () => {
           )}
           title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
           trailing={(
-            <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
+            <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
               <LogOut size={20} />
               <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
             </Button>
@@ -143,7 +143,7 @@ const SettingsPage: React.FC = () => {
         )}
         title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
         trailing={(
-          <Button variant="warning" onClick={logout} title={t('settings:page.logoutButton')}>
+          <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
             <LogOut size={20} />
             <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
           </Button>

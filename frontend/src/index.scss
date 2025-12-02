@@ -166,6 +166,12 @@ body[data-theme='light'] {
   --btn-icon-text: #{dt.$color-gray-500};
   --btn-icon-active-border: #{dt.$color-primary};
 
+  // Icon button glass backgrounds (light theme - white overlays)
+  --icon-btn-bg: rgba(255, 255, 255, 0.15);
+  --icon-btn-bg-hover: rgba(255, 255, 255, 0.25);
+  --icon-btn-bg-active: rgba(255, 255, 255, 0.3);
+  --icon-btn-bg-active-hover: rgba(255, 255, 255, 0.35);
+
   --scrollbar-track-bg: #{dt.$color-gray-100};
   --scrollbar-thumb-bg: #{dt.$color-gray-400};
   --scrollbar-thumb-hover-bg: #{dt.$color-gray-500};
@@ -299,6 +305,12 @@ body[data-theme='dark'] {
   --btn-icon-bg-hover: #{dt.$color-gray-700};
   --btn-icon-text: #{dt.$color-gray-400};
   --btn-icon-active-border: #{dt.$color-gray-500};
+
+  // Icon button glass backgrounds (dark theme - dark overlays)
+  --icon-btn-bg: rgba(255, 255, 255, 0.08);
+  --icon-btn-bg-hover: rgba(255, 255, 255, 0.12);
+  --icon-btn-bg-active: rgba(255, 255, 255, 0.15);
+  --icon-btn-bg-active-hover: rgba(255, 255, 255, 0.18);
 
   --scrollbar-track-bg: #{dt.$color-gray-900};
   --scrollbar-thumb-bg: #{dt.$color-gray-700};
