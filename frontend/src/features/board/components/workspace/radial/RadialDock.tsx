@@ -1,6 +1,6 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 import {
     ArrowRight,
     Brush,
@@ -19,7 +19,7 @@ import {
     Triangle,
     Type
 } from 'lucide-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import styles from './RadialDock.module.scss';
@@ -130,6 +130,11 @@ const DOCK_TOOLS: ToolItem[] = [
 // COMPONENT
 // =============================================================================
 
+// Height of the expanded toolbar content (2 rows × 44px tools + gaps + padding)
+const TOOLBAR_HEIGHT_MOBILE = 120; // 2 rows of tools (~88px) + padding (~32px)
+// Threshold for drag to trigger open (percentage of toolbar height)
+const DRAG_OPEN_THRESHOLD = 0.3;
+
 export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => {
     const {
         preferences,
@@ -144,6 +149,19 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
     const [isMobile, setIsMobile] = useState(detectMobileDevice());
     const [isExpanded, setIsExpanded] = useState(!preferences.isDockMinimized);
     const [activeSatellite, setActiveSatellite] = useState<string | null>(null);
+
+    // Drag state for mobile pull-up gesture
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragY, setDragY] = useState(0);
+    const toolbarContentRef = useRef<HTMLDivElement>(null);
+
+    // Reset drag state when expanded changes
+    useEffect(() => {
+        if (isExpanded) {
+            setDragY(0);
+            setIsDragging(false);
+        }
+    }, [isExpanded]);
 
     // =========================================================================
     // EFFECTS
@@ -226,6 +244,55 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
     }, []);
 
     // =========================================================================
+    // MOBILE DRAG HANDLERS
+    // =========================================================================
+
+    const handleDragStart = useCallback(() => {
+        if (!isMobile) return;
+        setIsDragging(true);
+    }, [isMobile]);
+
+    const handleDrag = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        if (!isMobile) return;
+        // info.offset.y is negative when dragging up, positive when dragging down
+        // Clamp based on current state
+        if (isExpanded) {
+            // When open, only allow dragging down (positive values) to close
+            const newDragY = Math.max(0, Math.min(TOOLBAR_HEIGHT_MOBILE, info.offset.y));
+            setDragY(newDragY);
+        } else {
+            // When closed, only allow dragging up (negative values) to open
+            const newDragY = Math.min(0, Math.max(-TOOLBAR_HEIGHT_MOBILE, info.offset.y));
+            setDragY(newDragY);
+        }
+    }, [isMobile, isExpanded]);
+
+    const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        if (!isMobile) return;
+        setIsDragging(false);
+        setDragY(0);
+
+        const dragDistance = Math.abs(info.offset.y);
+        const threshold = TOOLBAR_HEIGHT_MOBILE * DRAG_OPEN_THRESHOLD;
+        const velocityThreshold = 300;
+
+        if (isExpanded) {
+            // Currently open - check if should close (drag down)
+            if (info.offset.y > threshold || (info.velocity.y > velocityThreshold && dragDistance > 20)) {
+                setIsExpanded(false);
+                void updateDockMinimized(true);
+            }
+        } else {
+            // Currently closed - check if should open (drag up)
+            if (info.offset.y < -threshold || (info.velocity.y < -velocityThreshold && dragDistance > 20)) {
+                setIsExpanded(true);
+                void updateDockMinimized(false);
+            }
+        }
+        // Otherwise framer-motion will snap back automatically due to dragConstraints
+    }, [isMobile, isExpanded, updateDockMinimized]);
+
+    // =========================================================================
     // RENDER HELPERS
     // =========================================================================
 
@@ -289,122 +356,77 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
         return <Brush size={20} />;
     }, [preferences.defaultTool, getToolIcon]);
 
+    // Calculate toolbar height to show based on drag progress
+    // When closed and dragging up: dragY goes from 0 to -TOOLBAR_HEIGHT_MOBILE
+    // When open and dragging down: dragY goes from 0 to +TOOLBAR_HEIGHT_MOBILE
+    const getToolbarHeight = () => {
+        if (isDragging) {
+            if (isExpanded) {
+                // Open, dragging down to close: reduce height
+                const closeProgress = Math.max(0, dragY) / TOOLBAR_HEIGHT_MOBILE;
+                return TOOLBAR_HEIGHT_MOBILE * (1 - closeProgress);
+            } else {
+                // Closed, dragging up to open: increase height
+                const openProgress = Math.abs(Math.min(0, dragY)) / TOOLBAR_HEIGHT_MOBILE;
+                return TOOLBAR_HEIGHT_MOBILE * openProgress;
+            }
+        }
+        return isExpanded ? TOOLBAR_HEIGHT_MOBILE : 0;
+    };
+
+    const toolbarHeight = getToolbarHeight();
+    const toolbarOpacity = toolbarHeight / TOOLBAR_HEIGHT_MOBILE;
+
     return (
         <>
             <div className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}>
-                <AnimatePresence mode="wait">
-                    {!isExpanded ? (
-                        // COLLAPSED STATE - Small trigger button with color indicator
+                {/* MOBILE: Bottom sheet - tab on top, toolbar expands downward below tab */}
+                {isMobile ? (
+                    <div className={styles.mobileToolbarContainer} data-testid="mobile-toolbar-container">
+                        {/* The tab - sits on top, draggable to open/close toolbar below */}
                         <motion.button
-                            key="collapsed-trigger"
                             className={styles.collapsedTrigger}
+                            data-testid="mobile-tab"
                             onClick={handleToggleExpand}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ 
-                                type: "spring", 
-                                stiffness: 300, 
-                                damping: 25
+                            drag="y"
+                            dragConstraints={{ top: 0, bottom: 0 }}
+                            dragElastic={0.1}
+                            onDragStart={handleDragStart}
+                            onDrag={handleDrag}
+                            onDragEnd={handleDragEnd}
+                            whileDrag={{ scale: 1.02 }}
+                            style={{ touchAction: 'none' }}
+                        >
+                            <div
+                                className={styles.pullHandle}
+                                style={{
+                                    backgroundColor: preferences.defaultTool === TOOLS.ERASER
+                                        ? 'rgba(0, 0, 0, 0.3)'
+                                        : preferences.defaultStrokeColor
+                                }}
+                            />
+                            <div>
+                                {activeToolIcon}
+                            </div>
+                        </motion.button>
+
+                        {/* Toolbar - expands downward below the tab */}
+                        <motion.div
+                            className={`${styles.expandedToolbar} ${styles.mobileToolbar}`}
+                            data-testid="mobile-toolbar"
+                            data-expanded={isExpanded}
+                            animate={{
+                                height: isDragging ? toolbarHeight : (isExpanded ? TOOLBAR_HEIGHT_MOBILE : 0),
+                                opacity: isDragging ? toolbarOpacity : (isExpanded ? 1 : 0)
+                            }}
+                            transition={isDragging ? { duration: 0 } : {
+                                type: "spring",
+                                stiffness: 400,
+                                damping: 28
                             }}
                         >
-                            {isMobile && (
-                                <div 
-                                    className={styles.pullHandle} 
-                                    style={{ 
-                                        backgroundColor: preferences.defaultTool === TOOLS.ERASER 
-                                            ? 'rgba(0, 0, 0, 0.3)' // Neutral gray for eraser
-                                            : preferences.defaultStrokeColor 
-                                    }}
-                                />
-                            )}
-                            <motion.div
-                                initial={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.15 }}
-                            >
-                                {activeToolIcon}
-                            </motion.div>
-                            {!isMobile && preferences.defaultTool !== TOOLS.ERASER && (
-                                <div 
-                                    className={styles.collapsedColorIndicator}
-                                    style={{ backgroundColor: preferences.defaultStrokeColor }}
-                                />
-                            )}
-                        </motion.button>
-                ) : (
-                    // EXPANDED STATE - Full toolbar
-                    <motion.div
-                        key="expanded-toolbar"
-                        className={styles.expandedToolbar}
-                        initial={isMobile ? 
-                            { y: "100%" } : 
-                            { width: 56, opacity: 0 }
-                        }
-                        animate={isMobile ? 
-                            { y: 0 } : 
-                            { width: "auto", opacity: 1 }
-                        }
-                        exit={isMobile ? 
-                            { y: "100%" } : 
-                            { width: 56, opacity: 0 }
-                        }
-                        transition={{ 
-                            type: "spring", 
-                            stiffness: 300, 
-                            damping: 30,
-                            width: { duration: 0.3 },
-                            opacity: { duration: 0.2 }
-                        }}
-                    >
-                        {/* Desktop: Single row with all tools */}
-                        {!isMobile && (
-                            <motion.div 
-                                className={styles.toolsRow}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.15, duration: 0.2 }}
-                            >
-                                {DOCK_TOOLS.map((item) => {
-                                    const isActive = isToolActive(item);
-                                    return (
-                                        <button
-                                            key={item.label}
-                                            className={`${styles.toolButton} ${isActive ? styles.active : ''}`}
-                                            onClick={() => item.type === 'direct' 
-                                                ? handleToolSelect(item.tool as Tool) 
-                                                : handleOpenSatellite(item.tool as string)
-                                            }
-                                            title={item.label}
-                                        >
-                                            {getToolIcon(item, 20)}
-                                        </button>
-                                    );
-                                })}
-                                
-                                {/* Close button integrated into toolbar */}
-                                <button
-                                    className={styles.closeButton}
-                                    onClick={handleToggleExpand}
-                                    title="Collapse toolbar"
-                                >
-                                    <ChevronUp size={20} className={styles.closeIcon} />
-                                </button>
-                            </motion.div>
-                        )}
-
-                        {/* Mobile: Grid layout */}
-                        {isMobile && (
-                            <>
-                                {/* Close button - positioned at top center on mobile */}
-                                <button
-                                    className={styles.closeButton}
-                                    onClick={handleToggleExpand}
-                                    aria-label="Close toolbar"
-                                >
-                                    <ChevronUp size={20} className={styles.closeIcon} />
-                                </button>
-                                
+                            {/* Inner wrapper holds padding - gets clipped by overflow:hidden on parent */}
+                            <div className={styles.mobileToolbarContent}>
                                 <div className={styles.toolsGrid}>
                                     {DOCK_TOOLS.map((item) => {
                                         const isActive = isToolActive(item);
@@ -412,8 +434,8 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                             <button
                                                 key={item.label}
                                                 className={`${styles.toolButton} ${isActive ? styles.active : ''}`}
-                                                onClick={() => item.type === 'direct' 
-                                                    ? handleToolSelect(item.tool as Tool) 
+                                                onClick={() => item.type === 'direct'
+                                                    ? handleToolSelect(item.tool as Tool)
                                                     : handleOpenSatellite(item.tool as string)
                                                 }
                                                 title={item.label}
@@ -423,11 +445,88 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                         );
                                     })}
                                 </div>
-                            </>
+                            </div>
+                        </motion.div>
+                    </div>
+                ) : (
+                    /* DESKTOP: Original AnimatePresence behavior */
+                    <AnimatePresence mode="wait">
+                        {!isExpanded ? (
+                            <motion.button
+                                key="collapsed-trigger"
+                                className={styles.collapsedTrigger}
+                                onClick={handleToggleExpand}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 25
+                                }}
+                            >
+                                <div>
+                                    {activeToolIcon}
+                                </div>
+                                {preferences.defaultTool !== TOOLS.ERASER && (
+                                    <div
+                                        className={styles.collapsedColorIndicator}
+                                        style={{ backgroundColor: preferences.defaultStrokeColor }}
+                                    />
+                                )}
+                            </motion.button>
+                        ) : (
+                            <motion.div
+                                key="expanded-toolbar"
+                                ref={toolbarContentRef}
+                                className={styles.expandedToolbar}
+                                initial={{ width: 56, opacity: 0 }}
+                                animate={{ width: "auto", opacity: 1 }}
+                                exit={{ width: 56, opacity: 0 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 28,
+                                    width: { duration: 0.2 },
+                                    opacity: { duration: 0.15 }
+                                }}
+                            >
+                                <motion.div
+                                    className={styles.toolsRow}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.15, duration: 0.2 }}
+                                >
+                                    {DOCK_TOOLS.map((item) => {
+                                        const isActive = isToolActive(item);
+                                        return (
+                                            <button
+                                                key={item.label}
+                                                className={`${styles.toolButton} ${isActive ? styles.active : ''}`}
+                                                onClick={() => item.type === 'direct'
+                                                    ? handleToolSelect(item.tool as Tool)
+                                                    : handleOpenSatellite(item.tool as string)
+                                                }
+                                                title={item.label}
+                                            >
+                                                {getToolIcon(item, 20)}
+                                            </button>
+                                        );
+                                    })}
+
+                                    {/* Close button integrated into toolbar */}
+                                    <button
+                                        className={styles.closeButton}
+                                        onClick={handleToggleExpand}
+                                        title="Collapse toolbar"
+                                    >
+                                        <ChevronUp size={20} className={styles.closeIcon} />
+                                    </button>
+                                </motion.div>
+                            </motion.div>
                         )}
-                    </motion.div>
+                    </AnimatePresence>
                 )}
-            </AnimatePresence>
         </div>
 
         {/* Satellite Manager - Rendered outside toolbar to avoid transform context issues */}

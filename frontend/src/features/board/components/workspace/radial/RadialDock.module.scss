@@ -43,10 +43,8 @@ $border-radius-mobile: 20px;
         right: 0;
         width: 100%;
         max-width: 100vw; // Prevent overflow
-        overflow-x: hidden; // Hide any horizontal overflow
-        
-        // Safe area for iPhone home bar
-        padding-bottom: env(safe-area-inset-bottom);
+        overflow: visible; // Allow dragged content to be visible above
+        // Note: Safe area padding handled by individual elements if needed
     }
 
     // Re-enable pointer events for actual content
@@ -56,23 +54,49 @@ $border-radius-mobile: 20px;
 }
 
 // -----------------------------------------------------------------------------
+// MOBILE: Bottom sheet structure - tab on top, toolbar below (expands downward)
+// Uses flex-direction: column so tab stays on top, toolbar expands below it
+// -----------------------------------------------------------------------------
+
+.mobileToolbarContainer {
+    display: flex;
+    flex-direction: column; // Tab first (on top), toolbar second (below)
+    align-items: center;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+// Mobile toolbar that expands/collapses below the tab
+// Sits between the tab and the screen bottom edge
+.mobileToolbar {
+    position: relative !important; // Override .expandedToolbar's position: relative
+    width: 100%;
+    overflow: hidden; // Hide content when height is 0
+    border-radius: 0 0 0 0; // No rounded corners - flat bottom at screen edge
+}
+
+// -----------------------------------------------------------------------------
 // COLLAPSED STATE - Small Trigger Button
 // -----------------------------------------------------------------------------
 
 .collapsedTrigger {
     @include theme.glass-panel;
-    
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    
+
     border: none;
     cursor: pointer;
     color: var(--color-text-primary);
-    
-    transition: all 0.2s ease-out;
+    z-index: 2; // Above toolbar preview during drag
+    position: relative; // For stacking context
+
+    transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
     outline: none; // Prevent default focus outline
     -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
     
@@ -118,36 +142,42 @@ $border-radius-mobile: 20px;
         }
     }
     
-    // Mobile: Pull-up tab/button - Unified glassmorphism
+    // Mobile: Pull-up tab/button - sits at top of the bottom sheet
+    // Tab has rounded top corners, toolbar expands below it
     .mobile & {
+        position: relative; // Part of flex layout
         width: 80px;
         height: 48px;
-        margin: 0 auto;
-        border-radius: $border-radius-mobile $border-radius-mobile 0 0;
-        -webkit-tap-highlight-color: transparent; // Extra emphasis - no tap highlight
-        
-        // Use theme-aware glass mixin (no override needed)
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06), // Lighter shadow
-                    0 -1px 3px rgba(0, 0, 0, 0.05); // Subtle top edge
-        
+        margin: 0; // No margin needed, flex handles centering
+        padding: 0;
+        border-radius: $border-radius-mobile $border-radius-mobile 0 0; // Rounded top corners
+        border-bottom: none; // Connects to toolbar below
+        -webkit-tap-highlight-color: transparent;
+        z-index: 2; // Above toolbar for touch events
+        flex-shrink: 0; // Don't shrink
+
+        // Shadow on top edge since tab is on top
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06),
+                    0 -1px 3px rgba(0, 0, 0, 0.05);
+
         &:focus {
             outline: none !important; // Force remove browser outline
             border: none; // No border on focus
         }
-        
+
         &:active {
             outline: none !important; // Force remove browser outline
             border: none; // No border on active
-            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08); // Subtle press feedback
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
         }
-        
+
         &:focus-visible {
             outline: none !important; // Force remove keyboard focus outline
         }
-        
+
         body[data-theme='dark'] & {
             box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
-            
+
             &:active {
                 box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.4);
             }
@@ -170,25 +200,26 @@ $border-radius-mobile: 20px;
 
 .expandedToolbar {
     @include theme.glass-panel;
-    
+
     position: relative;
     border-radius: $border-radius;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
     box-sizing: border-box; // Prevent padding from causing overflow
     overflow: hidden; // Hide content overflow during width animation
-    
+
     // Desktop: Horizontal pill
     .desktop & {
         padding: $toolbar-padding;
     }
-    
+
     // Mobile: Bottom sheet - Solid background (no transparency)
+    // Toolbar sits below the tab, at the very bottom of the screen
+    // NOTE: No padding here - padding is on .mobileToolbarContent so it gets clipped when height=0
     .mobile & {
         width: 100%;
         max-width: 100vw; // Ensure it never exceeds viewport
-        padding: $toolbar-padding-mobile;
-        padding-top: 44px; // Extra space for close button
-        border-radius: $border-radius-mobile $border-radius-mobile 0 0;
+        padding: 0; // No padding - moved to inner wrapper
+        border-radius: 0; // No rounded corners - flat at screen bottom
 
         // Override glass-panel opacity to make it fully opaque on mobile
         opacity: 1;
@@ -196,14 +227,17 @@ $border-radius-mobile: 20px;
         backdrop-filter: none; // Remove blur since it's opaque
         -webkit-backdrop-filter: none;
 
-        border-bottom: none; // No border at bottom (sits at screen edge)
-        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12),
-                    0 -2px 8px rgba(0, 0, 0, 0.08);
-
-        body[data-theme='dark'] & {
-            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
-        }
+        border-bottom: none; // Sits at screen edge
+        box-shadow: none; // No shadow - tab above handles the shadow
     }
+}
+
+// Inner wrapper for mobile toolbar - holds padding so it gets clipped when parent height=0
+.mobileToolbarContent {
+    padding: $toolbar-padding-mobile;
+    padding-bottom: calc(#{$toolbar-padding-mobile} + env(safe-area-inset-bottom, 0px)); // Safe area for home indicator
+    width: 100%;
+    box-sizing: border-box;
 }
 
 // -----------------------------------------------------------------------------
