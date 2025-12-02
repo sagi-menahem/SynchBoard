@@ -47,7 +47,7 @@
   top: calc(var(--banner-height, 0px) + theme.$header-height);
   left: 0;
   right: 0;
-  z-index: 90;
+  z-index: theme.$z-index-fixed-secondary;
   background: var(--user-chosen-color, rgba(255, 255, 255, 0.85));
   opacity: 0.99;
   border-bottom: 1px solid var(--glass-border);

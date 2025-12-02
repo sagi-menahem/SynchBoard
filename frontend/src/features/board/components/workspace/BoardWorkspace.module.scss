@@ -148,7 +148,7 @@
   border-radius: theme.$border-radius-lg;
   @include theme.hover-transition;
   opacity: 0.8;
-  z-index: 1;
+  z-index: theme.$z-index-base;
 }
 
 .handleDot {

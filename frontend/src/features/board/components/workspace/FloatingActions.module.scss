@@ -17,7 +17,7 @@
   // Fixed position - corner varies by language direction
   position: fixed;
   bottom: 20px;
-  z-index: 1000;
+  z-index: theme.$z-index-modal;
 
   // Vertical stack of pills
   display: flex;

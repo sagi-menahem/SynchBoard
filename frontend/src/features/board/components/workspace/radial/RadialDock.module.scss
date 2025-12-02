@@ -32,7 +32,7 @@ $border-radius-mobile: 20px;
 
 .fixedToolbar {
   position: fixed;
-  z-index: 1000;
+  z-index: theme.$z-index-modal;
   pointer-events: none; // Allow clicks through when collapsed
 
   // Desktop: Bottom-Center (Mac Dock style)
@@ -540,7 +540,7 @@ $border-radius-mobile: 20px;
   @include theme.glass-panel;
 
   position: fixed;
-  z-index: 1001; // Above the dock (1000) to be visible
+  z-index: theme.$z-index-above-modal; // Above the dock to be visible
 
   // Positioning handled by inline styles in SatelliteManager
   // transform: translateX(-50%) applied via style prop for centering

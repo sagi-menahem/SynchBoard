@@ -61,7 +61,7 @@
 
 .heroContent {
   position: relative;
-  z-index: 1;
+  z-index: theme.$z-index-base;
   max-width: 500px;
   text-align: start;
 }

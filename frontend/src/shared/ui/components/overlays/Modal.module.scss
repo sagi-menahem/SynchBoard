@@ -58,7 +58,7 @@
   max-height: 90vh;
   height: fit-content;
   position: relative;
-  z-index: 10;
+  z-index: theme.$z-index-elevated;
   overflow-y: auto;
   margin: theme.$spacing-6 auto;
 }
@@ -74,7 +74,7 @@
   position: absolute;
   top: theme.$spacing-5;
   inset-inline-end: theme.$spacing-2;
-  z-index: 10;
+  z-index: theme.$z-index-elevated;
   background: var(--user-chosen-color, var(--glass-background));
   border: theme.$border-width solid theme.$border-strong;
   border-radius: theme.$border-radius-sm;

@@ -117,7 +117,7 @@
   padding: theme.$spacing-4;
   border: 1px solid var(--glass-border);
   @include theme.rounded-large;
-  background: var(--glass-background);
+  background: var(--user-chosen-color, var(--glass-background));
 }
 
 .groupLabel {

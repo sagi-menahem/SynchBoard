@@ -204,12 +204,14 @@ $opacity-100: 1;
 $z-index-base: 1;
 $z-index-elevated: 10;
 $z-index-dropdown: 50;
+$z-index-fixed-secondary: 90; // Fixed elements below toolbar (e.g., mobile search row)
 $z-index-toolbar: 100;
 $z-index-overlay: 200;
 $z-index-modal: 1000;
 $z-index-banner: 1000;
 $z-index-tooltip: 1000;
 $z-index-popover: 1000;
+$z-index-above-modal: 1001; // Elements that must appear above modal-level components
 $z-index-popover-above-modal: 1100; // For popovers that appear inside modals
 
 // --- Animation Timing ---

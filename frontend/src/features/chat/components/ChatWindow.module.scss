@@ -35,7 +35,7 @@
 .searchContainer {
   @include theme.flex-start;
   padding: theme.$spacing-3 theme.$spacing-4;
-  background: var(--glass-background);
+  background: var(--user-chosen-color, var(--glass-background));
   opacity: 0.9;
   border-bottom: 1px solid var(--glass-border);
   gap: theme.$spacing-2;
@@ -44,7 +44,7 @@
 .searchInput {
   flex: 1;
   padding: theme.$spacing-2 theme.$spacing-3;
-  background: var(--glass-background);
+  background: var(--user-chosen-color, var(--glass-background));
   border: 1px solid var(--glass-border);
   @include theme.rounded-medium;
   color: var(--color-text-primary);
