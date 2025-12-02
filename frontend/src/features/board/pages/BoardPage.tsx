@@ -209,7 +209,6 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             <BoardWorkspaceSkeleton
               splitRatio={canvasPreferences.canvasChatSplitRatio}
               containerStyle={containerStyle}
-              zoomScale={canvasPreferences.canvasZoomScale}
             />
           </div>
         </main>
