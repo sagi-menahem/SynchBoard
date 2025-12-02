@@ -162,14 +162,3 @@ export interface ToolbarConfig {
   // Optional CSS class for toolbar styling
   className?: string;
 }
-
-/**
- * Props for the UniversalToolbar component.
- * Provides configuration and styling options for toolbar rendering.
- */
-export interface UniversalToolbarProps {
-  // Complete toolbar configuration object
-  config: ToolbarConfig;
-  // Optional CSS class for additional styling
-  className?: string;
-}

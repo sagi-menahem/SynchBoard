@@ -29,8 +29,6 @@ export { ContextMenuSeparator } from './components/overlays/ContextMenuSeparator
 export { EnhancedContextMenu } from './components/overlays/EnhancedContextMenu';
 export { default as Modal } from './components/overlays/Modal';
 
-export { default as UniversalToolbar } from './components/advanced/UniversalToolbar';
-
 export { AppHeader } from './components/layout/AppHeader';
 export { default as SectionCard } from './components/layout/SectionCard';
 export { default as Layout } from './layout/Layout';
