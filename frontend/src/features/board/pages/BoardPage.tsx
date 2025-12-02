@@ -5,7 +5,7 @@ import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvide
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { useUserBoardPreferences } from 'features/settings/UserBoardPreferencesProvider';
 import { ArrowLeft, Download, Info, MessageSquare } from 'lucide-react';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
@@ -94,9 +94,17 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   const { preferences: canvasPreferences, updateSplitRatio, updateCanvasPreferences } = useCanvasPreferences();
 
+  // Track live canvas split ratio for toolbar positioning (real-time, not debounced)
+  const [liveCanvasSplitRatio, setLiveCanvasSplitRatio] = useState(canvasPreferences.canvasChatSplitRatio);
+
   const handleSplitRatioChange = (newRatio: number) => {
     void updateSplitRatio(newRatio);
   };
+
+  // Sync live ratio with saved preferences when they change (e.g., on load or from another tab)
+  useEffect(() => {
+    setLiveCanvasSplitRatio(canvasPreferences.canvasChatSplitRatio);
+  }, [canvasPreferences.canvasChatSplitRatio]);
 
   // Create canvas configuration from board details - memoized to prevent unnecessary re-renders
   const canvasConfig = useMemo(() => {
@@ -253,11 +261,16 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             isLoading={isLoading}
             mobileChatOpen={mobileChatOpen}
             onMobileChatOpenChange={setMobileChatOpen}
+            onLiveSplitRatioChange={setLiveCanvasSplitRatio}
           />
         </div>
 
         {/* Floating UI Components */}
-        <RadialDock onSatelliteChange={setActiveSatellite} />
+        <RadialDock
+          onSatelliteChange={setActiveSatellite}
+          canvasSplitRatio={liveCanvasSplitRatio}
+          isChatOpen={canvasPreferences.isChatOpen}
+        />
         <FloatingActions isSatelliteOpen={!!activeSatellite} />
       </main>
     </PageTransition>

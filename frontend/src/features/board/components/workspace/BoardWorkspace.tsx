@@ -80,6 +80,8 @@ interface BoardWorkspaceProps {
   mobileChatOpen?: boolean;
   /** Handler for mobile chat open state changes */
   onMobileChatOpenChange?: (isOpen: boolean) => void;
+  /** Real-time handler for split ratio changes during resize (not debounced) */
+  onLiveSplitRatioChange?: (ratio: number) => void;
 }
 
 /**
@@ -116,6 +118,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   isLoading,
   mobileChatOpen = false,
   onMobileChatOpenChange,
+  onLiveSplitRatioChange,
 }) => {
   const isMobile = useIsMobile();
   const { preferences: canvasPreferences, updateCanvasPreferences } = useCanvasPreferences();
@@ -191,6 +194,9 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         // Update local state immediately for smooth UI
         setLocalCanvasSize(canvasSize);
 
+        // Notify parent of real-time size changes (for toolbar positioning)
+        onLiveSplitRatioChange?.(canvasSize);
+
         // Guard: Don't save if chat panel is collapsed or near-collapsed (< 10%)
         // This prevents overwriting the user's preferred open size with "0"
         const chatSize = 100 - canvasSize;
@@ -199,7 +205,7 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
         }
       }
     },
-    [debouncedSave, isChatOpen],
+    [debouncedSave, isChatOpen, onLiveSplitRatioChange],
   );
 
   // CSS variables for background styling

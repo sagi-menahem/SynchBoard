@@ -30,10 +30,11 @@ $border-radius-mobile: 20px;
     pointer-events: none; // Allow clicks through when collapsed
 
     // Desktop: Bottom-Center (Mac Dock style)
+    // Note: left and transform are set via inline styles to position relative to canvas area
     &.desktop {
         bottom: 32px;
-        left: 50%;
-        transform: translateX(-50%);
+        // left and transform are dynamically set via inline style based on canvas split ratio
+        transition: left 0.2s ease-out;
     }
 
     // Mobile: Bottom Sheet style

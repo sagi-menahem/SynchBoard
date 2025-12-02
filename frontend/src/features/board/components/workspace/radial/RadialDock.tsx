@@ -105,6 +105,10 @@ const isSatelliteActive = (satelliteType: string, currentTool: Tool): boolean =>
 interface RadialDockProps {
     /** Callback when satellite state changes (for coordinating with FloatingActions on mobile) */
     onSatelliteChange?: (satelliteType: string | null) => void;
+    /** Canvas split ratio percentage (0-100) - used to position toolbar relative to canvas area on desktop */
+    canvasSplitRatio?: number;
+    /** Whether chat panel is open - affects toolbar positioning on desktop */
+    isChatOpen?: boolean;
 }
 
 interface ToolItem {
@@ -135,7 +139,11 @@ const TOOLBAR_HEIGHT_MOBILE = 120; // 2 rows of tools (~88px) + padding (~32px)
 // Threshold for drag to trigger open (percentage of toolbar height)
 const DRAG_OPEN_THRESHOLD = 0.3;
 
-export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => {
+export const RadialDock: React.FC<RadialDockProps> = ({
+    onSatelliteChange,
+    canvasSplitRatio = 70,
+    isChatOpen = true
+}) => {
     const {
         preferences,
         updateTool,
@@ -376,9 +384,30 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
 
     const toolbarHeight = getToolbarHeight();
 
+    // Calculate the center position of the canvas area on desktop
+    // When chat is open, canvas takes canvasSplitRatio% of the viewport width
+    // When chat is closed, canvas takes 100% of the viewport width
+    const getDesktopToolbarStyle = useMemo((): React.CSSProperties => {
+        if (isMobile) return {};
+
+        // If chat is closed, center in viewport (50%)
+        if (!isChatOpen) {
+            return { left: '50%', transform: 'translateX(-50%)' };
+        }
+
+        // If chat is open, center within the canvas area
+        // Canvas area is canvasSplitRatio% of viewport width
+        // Center of canvas = canvasSplitRatio / 2
+        const canvasCenterPercent = canvasSplitRatio / 2;
+        return { left: `${canvasCenterPercent}%`, transform: 'translateX(-50%)' };
+    }, [isMobile, isChatOpen, canvasSplitRatio]);
+
     return (
         <>
-            <div className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}>
+            <div
+                className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}
+                style={getDesktopToolbarStyle}
+            >
                 {/* MOBILE: Bottom sheet - tab on top, toolbar expands downward below tab */}
                 {isMobile ? (
                     <div className={styles.mobileToolbarContainer} data-testid="mobile-toolbar-container">
