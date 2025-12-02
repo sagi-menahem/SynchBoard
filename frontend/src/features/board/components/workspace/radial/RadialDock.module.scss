@@ -200,17 +200,29 @@ $border-radius-mobile: 20px;
 }
 
 // Chevron indicator for mobile tab - shows drag direction
-// Color is set via inline style to match currently selected tool color
+// Uses muted gray for subtle visual hierarchy - arrow is secondary UI element
 .chevronIndicator {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    color: var(--color-text-muted);
 
-    // Override parent's color so inline style takes effect
     svg {
-        color: inherit !important;
-        stroke: currentColor !important;
+        color: inherit;
+        stroke: currentColor;
+    }
+}
+
+// Tool icon in mobile tab - larger than default for better visibility
+.mobileTabToolIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 24px;
+        height: 24px;
     }
 }
 

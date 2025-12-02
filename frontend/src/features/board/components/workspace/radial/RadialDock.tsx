@@ -393,19 +393,19 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                             style={{ touchAction: 'none' }}
                         >
                             {/* Chevron indicator - points up when closed (to open), down when open (to close) */}
+                            {/* Uses muted gray for subtle visual hierarchy - arrow is secondary UI element */}
                             <motion.div
                                 className={styles.chevronIndicator}
                                 animate={{ rotate: isExpanded ? 180 : 0 }}
                                 transition={{ duration: 0.2 }}
-                                style={{
-                                    color: preferences.defaultTool === TOOLS.ERASER
-                                        ? 'rgba(0, 0, 0, 0.5)'
-                                        : preferences.defaultStrokeColor
-                                }}
                             >
-                                <ChevronUp size={22} />
+                                <ChevronUp size={16} />
                             </motion.div>
-                            <div>
+                            {/* Tool icon colored with current stroke color (same as active tool in toolbar) */}
+                            <div
+                                className={styles.mobileTabToolIcon}
+                                style={{ color: preferences.defaultStrokeColor }}
+                            >
                                 {activeToolIcon}
                             </div>
                         </motion.button>
