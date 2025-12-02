@@ -214,15 +214,15 @@ $border-radius-mobile: 20px;
     }
 }
 
-// Tool icon in mobile tab - larger than default for better visibility
+// Tool icon in mobile tab
 .mobileTabToolIcon {
     display: flex;
     align-items: center;
     justify-content: center;
 
     svg {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
     }
 }
 
@@ -348,7 +348,7 @@ $border-radius-mobile: 20px;
     }
     
     &.active {
-        // Only the icon color indicates active state (set via inline style)
+        // Active state indicated by underline (.activeIndicator) - icon stays muted
         // No background, no border - clean minimal look
         background: transparent;
 
@@ -360,9 +360,11 @@ $border-radius-mobile: 20px;
 }
 
 // -----------------------------------------------------------------------------
-// COLOR PALETTE ICON WITH INDICATOR
+// TOOL ICON WRAPPER WITH INDICATOR
 // -----------------------------------------------------------------------------
 
+// Shared wrapper style for icons with underline indicators
+.toolIconWrapper,
 .colorPaletteIcon {
     position: relative;
     display: flex;
@@ -372,7 +374,8 @@ $border-radius-mobile: 20px;
     gap: 2px;
 }
 
-.colorIndicator {
+.colorIndicator,
+.activeIndicator {
     position: absolute;
     bottom: -2px;
     left: 50%;

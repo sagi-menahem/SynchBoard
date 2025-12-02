@@ -438,11 +438,18 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                                     : handleOpenSatellite(item.tool as string)
                                                 }
                                                 title={item.label}
-                                                style={isActive ? {
-                                                    color: preferences.defaultStrokeColor
-                                                } : undefined}
                                             >
-                                                {getToolIcon(item, 20)}
+                                                {/* Wrapper for icon + indicator (same structure as colorPaletteIcon) */}
+                                                <div className={styles.toolIconWrapper}>
+                                                    {getToolIcon(item, 20)}
+                                                    {/* Underline indicator for active tool - uses stroke color */}
+                                                    {isActive && (
+                                                        <span
+                                                            className={styles.activeIndicator}
+                                                            style={{ backgroundColor: preferences.defaultStrokeColor }}
+                                                        />
+                                                    )}
+                                                </div>
                                             </button>
                                         );
                                     })}
