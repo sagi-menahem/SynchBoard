@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { createPortal } from 'react-dom';
@@ -6,6 +7,26 @@ import { PRESET_COLORS } from 'shared/constants/ColorConstants';
 import Button from 'shared/ui/components/forms/Button';
 
 import styles from './ColorPicker.module.scss';
+
+// Animation variants for the popover
+const popoverVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.95,
+    transition: { duration: 0.1, ease: 'easeIn' as const },
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.15, ease: 'easeOut' as const },
+  },
+};
+
+// Animation variants for backdrop
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.1 } },
+};
 
 /**
  * Props for the ColorPicker component.
@@ -193,51 +214,65 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         </Button>
       </div>
 
-      {showPicker &&
-        !disabled &&
-        createPortal(
-          <>
-            {/* Invisible backdrop to catch all clicks outside the picker */}
-            <div
-              className={styles.backdrop}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setShowPicker(false);
-              }}
-            />
-            <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
-              <div className={styles.colorfulWrapper}>
-                {/* Color picker area */}
-                <div className={styles.pickerArea}>
-                  <HexColorPicker color={color} onChange={handleColorChange} />
-                </div>
+      {createPortal(
+        <AnimatePresence>
+          {showPicker && !disabled && (
+            <>
+              {/* Invisible backdrop to catch all clicks outside the picker */}
+              <motion.div
+                className={styles.backdrop}
+                variants={backdropVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setShowPicker(false);
+                }}
+              />
+              <motion.div
+                ref={pickerRef}
+                className={styles.popover}
+                style={popoverStyle}
+                variants={popoverVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                <div className={styles.colorfulWrapper}>
+                  {/* Color picker area */}
+                  <div className={styles.pickerArea}>
+                    <HexColorPicker color={color} onChange={handleColorChange} />
+                  </div>
 
-                {/* Divider */}
-                <div className={styles.divider} />
+                  {/* Divider */}
+                  <div className={styles.divider} />
 
-                {/* Preset colors section */}
-                <div className={styles.presetsSection}>
-                  <span className={styles.presetsLabel}>{t('common:presets')}</span>
-                  <div className={styles.presetColors}>
-                    {PRESET_COLORS.map((presetColor) => (
-                      <button
-                        key={presetColor}
-                        type="button"
-                        className={`${styles.presetColor} ${presetColor === color ? styles.active : ''}`}
-                        style={{ backgroundColor: presetColor }}
-                        onClick={() => handlePaletteColorClick(presetColor)}
-                        title={presetColor}
-                        aria-label={`Select ${presetColor}`}
-                      />
-                    ))}
+                  {/* Preset colors section */}
+                  <div className={styles.presetsSection}>
+                    <span className={styles.presetsLabel}>{t('common:presets')}</span>
+                    <div className={styles.presetColors}>
+                      {PRESET_COLORS.map((presetColor) => (
+                        <button
+                          key={presetColor}
+                          type="button"
+                          className={`${styles.presetColor} ${presetColor === color ? styles.active : ''}`}
+                          style={{ backgroundColor: presetColor }}
+                          onClick={() => handlePaletteColorClick(presetColor)}
+                          title={presetColor}
+                          aria-label={`Select ${presetColor}`}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </>,
-          document.body,
-        )}
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </>
   );
 };
