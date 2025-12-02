@@ -156,34 +156,9 @@
 }
 
 .boardListItem {
-  @include theme.smooth-transition;
-}
-
-.boardListItem.noAnimation {
-  animation: none;
+  // Framer Motion handles animations - no CSS animation needed
 }
 
 .boardList.list .boardListItem {
   width: 100%;
-}
-
-.boardListItem:hover {
-  transform: translateY(-2px);
-}
-
-.boardList.list .boardListItem:hover {
-  transform: translateY(-1px);
-}
-
-// Staggered entrance animation for board list items
-@keyframes boardStaggerIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

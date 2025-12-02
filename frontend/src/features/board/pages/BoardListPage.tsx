@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { LayoutDashboard, LayoutGrid, List, LogOut, Plus, Settings } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +23,25 @@ import { BoardCard, CreateBoardForm } from '../components/list';
 import { useBoardList } from '../hooks/management';
 
 import styles from './BoardListPage.module.scss';
+
+// Animation variants for board list items
+const listItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.2,
+      ease: 'easeOut' as const,
+    },
+  }),
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: { duration: 0.15 },
+  },
+};
 
 /**
  * Board List Page component that displays and manages the user's board collection.
@@ -99,7 +119,18 @@ const BoardListPage: React.FC = () => {
                   viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')
                 }
               >
-                {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={viewMode}
+                    initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
+                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                    exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
+                    transition={{ duration: 0.15 }}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+                  </motion.span>
+                </AnimatePresence>
                 <span className={styles.buttonLabel}>
                   {viewMode === 'grid'
                     ? t('board:listPage.viewListLabel')
@@ -165,7 +196,18 @@ const BoardListPage: React.FC = () => {
                 viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')
               }
             >
-              {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={viewMode}
+                  initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
+                </motion.span>
+              </AnimatePresence>
               <span className={styles.buttonLabel}>
                 {viewMode === 'grid'
                   ? t('board:listPage.viewListLabel')
@@ -198,18 +240,29 @@ const BoardListPage: React.FC = () => {
           // Render board grid with staggered animation when boards are available
           if (boards.length > 0) {
             return (
-              <ul className={`${styles.boardList} ${styles[viewMode]}`}>
-                {boards.map((board, index) => (
-                  <li
-                    key={board.id}
-                    className={styles.boardListItem}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                    onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
-                  >
-                    <BoardCard board={board} viewMode={viewMode} />
-                  </li>
-                ))}
-              </ul>
+              <motion.ul
+                className={`${styles.boardList} ${styles[viewMode]}`}
+                layout
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+              >
+                <AnimatePresence mode="popLayout">
+                  {boards.map((board, index) => (
+                    <motion.li
+                      key={board.id}
+                      className={styles.boardListItem}
+                      layout
+                      variants={listItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      custom={index}
+                      onContextMenu={(e) => contextMenu.handleContextMenu(e, board)}
+                    >
+                      <BoardCard board={board} viewMode={viewMode} />
+                    </motion.li>
+                  ))}
+                </AnimatePresence>
+              </motion.ul>
             );
           }
 
