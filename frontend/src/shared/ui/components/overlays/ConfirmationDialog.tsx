@@ -16,7 +16,7 @@ const iconVariants = {
     scale: 1,
     opacity: 1,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 400,
       damping: 15,
       delay: 0.1,
@@ -33,7 +33,7 @@ const buttonGroupVariants = {
     transition: {
       delay: 0.15,
       duration: 0.2,
-      ease: 'easeOut',
+      ease: 'easeOut' as const,
     },
   },
 };
