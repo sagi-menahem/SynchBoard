@@ -398,8 +398,13 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                 className={styles.chevronIndicator}
                                 animate={{ rotate: isExpanded ? 180 : 0 }}
                                 transition={{ duration: 0.2 }}
+                                style={{
+                                    color: preferences.defaultTool === TOOLS.ERASER
+                                        ? 'rgba(0, 0, 0, 0.5)'
+                                        : preferences.defaultStrokeColor
+                                }}
                             >
-                                <ChevronUp size={16} />
+                                <ChevronUp size={22} />
                             </motion.div>
                             <div>
                                 {activeToolIcon}
@@ -434,6 +439,9 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                                                     : handleOpenSatellite(item.tool as string)
                                                 }
                                                 title={item.label}
+                                                style={isActive ? {
+                                                    color: preferences.defaultStrokeColor
+                                                } : undefined}
                                             >
                                                 {getToolIcon(item, 20)}
                                             </button>
