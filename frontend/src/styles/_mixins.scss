@@ -344,9 +344,9 @@
  *   }
  */
 @mixin error-message {
-  background-color: theme.$color-error-light;
-  border: theme.$border-width solid theme.$color-error;
-  color: theme.$color-error;
+  background-color: vars.$error-light;
+  border: theme.$border-width solid vars.$error;
+  color: vars.$error;
   padding: theme.$spacing-3;
   border-radius: theme.$border-radius-md;
   font-size: theme.$font-size-sm;
@@ -360,9 +360,9 @@
  *   }
  */
 @mixin success-message {
-  background-color: theme.$color-success-light;
-  border: theme.$border-width solid theme.$color-success;
-  color: theme.$color-success;
+  background-color: vars.$success-light;
+  border: theme.$border-width solid vars.$success;
+  color: vars.$success;
   padding: theme.$spacing-3;
   border-radius: theme.$border-radius-md;
   font-size: theme.$font-size-sm;
@@ -453,7 +453,7 @@
 @mixin modal-backdrop {
   @include fixed-overlay;
   @include flex-center;
-  background-color: theme.$color-backdrop;
+  background-color: vars.$overlay-strong;
   padding: theme.$spacing-0 theme.$spacing-4;
   overflow-y: auto;
 }
@@ -654,8 +654,8 @@
  *   }
  */
 @mixin spinner-base {
-  border: theme.$border-width-thick solid rgba(theme.$color-white, theme.$opacity-10);
-  border-top: theme.$border-width-thick solid theme.$color-primary;
+  border: theme.$border-width-thick solid var(--color-overlay-light);
+  border-top: theme.$border-width-thick solid vars.$primary;
   border-radius: theme.$border-radius-full;
   animation: spin theme.$transition-very-slow linear infinite;
 }
