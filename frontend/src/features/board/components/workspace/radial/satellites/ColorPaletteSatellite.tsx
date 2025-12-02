@@ -1,6 +1,6 @@
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { PRESET_COLORS } from 'shared/constants/ColorConstants';
 
@@ -36,6 +36,8 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
 }) => {
   const { preferences, updateStrokeColor } = useToolPreferences();
   const [showCustomPicker, setShowCustomPicker] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
 
   // Use first 18 colors from PRESET_COLORS (Material Design palette)
   const paletteColors = PRESET_COLORS.slice(0, 18);
@@ -72,6 +74,53 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
   const toggleCustomPicker = useCallback(() => {
     setShowCustomPicker((prev) => !prev);
   }, []);
+
+  // Track when user starts dragging in the color picker
+  const handlePointerDown = useCallback(() => {
+    setIsDragging(true);
+  }, []);
+
+  // Close picker when user finishes selecting from saturation area
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isDragging) return;
+
+      const target = e.target as HTMLElement;
+      const isSaturationArea = target.closest('.react-colorful__saturation');
+
+      setIsDragging(false);
+      if (isSaturationArea) {
+        setShowCustomPicker(false);
+        if (isMobile) {
+          onCollapse();
+        }
+      }
+    },
+    [isDragging, isMobile, onCollapse],
+  );
+
+  // Handle global pointer up for when drag ends outside the picker (works for both mouse and touch)
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleGlobalPointerUp = (e: PointerEvent) => {
+      const target = e.target as HTMLElement;
+      const isSaturationArea = target.closest('.react-colorful__saturation');
+
+      setIsDragging(false);
+      if (isSaturationArea) {
+        setShowCustomPicker(false);
+        if (isMobile) {
+          onCollapse();
+        }
+      }
+    };
+
+    document.addEventListener('pointerup', handleGlobalPointerUp);
+    return () => {
+      document.removeEventListener('pointerup', handleGlobalPointerUp);
+    };
+  }, [isDragging, isMobile, onCollapse]);
 
   return (
     <div className={styles.satelliteContent}>
@@ -114,7 +163,12 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
       {/* Expandable custom color picker */}
       {showCustomPicker && (
         <div className={styles.customPickerSection}>
-          <div className={styles.customPickerWrapper}>
+          <div
+            ref={pickerRef}
+            className={styles.customPickerWrapper}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+          >
             <HexColorPicker
               color={preferences.defaultStrokeColor}
               onChange={handleCustomColorChange}
