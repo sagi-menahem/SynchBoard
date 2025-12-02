@@ -18,9 +18,9 @@ interface MemberActivityIndicatorProps {
  * providing visual feedback about collaborative activity. It can optionally be made
  * interactive with a click handler and includes a pulsing indicator when members are online.
  * The component dynamically switches between div and button elements based on interactivity.
- * 
+ *
  * @param memberCount - Total number of members in the board
- * @param onlineCount - Number of currently online/active members  
+ * @param onlineCount - Number of currently online/active members
  * @param onClick - Optional click handler to make the indicator interactive
  * @param className - Optional CSS class for custom styling
  */

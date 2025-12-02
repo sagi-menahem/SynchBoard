@@ -22,7 +22,7 @@ interface ChangePasswordFormProps {
  * Implements client-side password validation, confirmation matching, and secure submission handling.
  * Provides synchronized password visibility toggle across all fields for enhanced user experience.
  * Includes proper form validation, error handling, and loading states for security operations.
- * 
+ *
  * @param onSubmit - Async function to handle validated password change data submission
  */
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit }) => {

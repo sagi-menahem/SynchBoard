@@ -22,7 +22,7 @@ interface SearchBarProps {
  * Search input component with clear functionality and keyboard navigation support.
  * Provides a styled search interface with icon, input field, and optional clear button.
  * Supports both form submission and Enter key for search execution.
- * 
+ *
  * @param {string} placeholder - Placeholder text to display in the search input
  * @param {string} value - Initial value for the search input field
  * @param {function} onSearch - Callback function called when search is performed with query string

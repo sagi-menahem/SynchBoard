@@ -74,10 +74,7 @@ const STATUS_CODE_TRANSLATION_MAP: Record<number, string> = {
  * Attempts to translate a message if it looks like a translation key.
  * Returns the translated message or null if translation failed.
  */
-const tryTranslateKey = (
-  message: string,
-  t: (key: string) => string,
-): string | null => {
+const tryTranslateKey = (message: string, t: (key: string) => string): string | null => {
   // Check if message looks like a translation key (contains dots or specific patterns)
   if (!message.includes('.') && !message.includes(':')) {
     return null;

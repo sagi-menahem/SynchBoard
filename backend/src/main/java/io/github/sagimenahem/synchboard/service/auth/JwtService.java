@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
  * Service for JWT token operations including generation, validation, and parsing. Handles all
  * JWT-related functionality for user authentication and authorization. Uses HMAC SHA algorithms for
  * token signing and verification.
- * 
+ *
  * @author Sagi Menahem
  */
 @Slf4j
@@ -56,7 +56,7 @@ public class JwtService {
 
     /**
      * Extracts the username (subject) from a JWT token.
-     * 
+     *
      * @param token the JWT token
      * @return the username stored in the token's subject claim
      */
@@ -69,7 +69,7 @@ public class JwtService {
 
     /**
      * Extracts a specific claim from a JWT token using a claims resolver function.
-     * 
+     *
      * @param <T> the type of the claim value
      * @param token the JWT token
      * @param claimsResolver function to extract the desired claim
@@ -82,7 +82,7 @@ public class JwtService {
 
     /**
      * Generates a JWT token for the given user without additional claims.
-     * 
+     *
      * @param userDetails the user details containing username and authorities
      * @return a signed JWT token
      */
@@ -92,7 +92,7 @@ public class JwtService {
 
     /**
      * Generates a JWT token for the given user with additional custom claims.
-     * 
+     *
      * @param extraClaims additional claims to include in the token
      * @param userDetails the user details containing username and authorities
      * @return a signed JWT token with the specified claims
@@ -101,10 +101,13 @@ public class JwtService {
         String username = userDetails.getUsername();
         log.debug(SECURITY_PREFIX + " Generating JWT token for user: {}", username);
 
-        String token = Jwts.builder().claims(extraClaims).subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + getExpirationTimeInMillis()))
-                .signWith(getSignInKey()).compact();
+        String token = Jwts.builder()
+            .claims(extraClaims)
+            .subject(username)
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + getExpirationTimeInMillis()))
+            .signWith(getSignInKey())
+            .compact();
 
         log.info(SECURITY_PREFIX + " JWT token generated for user: {}", username);
         return token;
@@ -112,7 +115,7 @@ public class JwtService {
 
     /**
      * Calculates the token expiration time in milliseconds.
-     * 
+     *
      * @return expiration time in milliseconds from now
      */
     private long getExpirationTimeInMillis() {
@@ -122,7 +125,7 @@ public class JwtService {
     /**
      * Validates a JWT token against the provided user details. Checks both username match and token
      * expiration.
-     * 
+     *
      * @param token the JWT token to validate
      * @param userDetails the user details to validate against
      * @return true if the token is valid, false otherwise
@@ -134,9 +137,11 @@ public class JwtService {
         if (isValid) {
             log.debug(SECURITY_PREFIX + " JWT token validated for user: {}", username);
         } else {
-            log.warn(SECURITY_PREFIX + " Invalid JWT token for user: {}. Reason: {}", username,
-                    !username.equals(userDetails.getUsername()) ? "username mismatch"
-                            : "token expired");
+            log.warn(
+                SECURITY_PREFIX + " Invalid JWT token for user: {}. Reason: {}",
+                username,
+                !username.equals(userDetails.getUsername()) ? "username mismatch" : "token expired"
+            );
         }
 
         return isValid;
@@ -144,7 +149,7 @@ public class JwtService {
 
     /**
      * Checks if a JWT token has expired.
-     * 
+     *
      * @param token the JWT token to check
      * @return true if the token has expired, false otherwise
      */
@@ -158,7 +163,7 @@ public class JwtService {
 
     /**
      * Extracts the expiration date from a JWT token.
-     * 
+     *
      * @param token the JWT token
      * @return the expiration date
      */
@@ -168,15 +173,18 @@ public class JwtService {
 
     /**
      * Extracts all claims from a JWT token.
-     * 
+     *
      * @param token the JWT token
      * @return all claims from the token
      * @throws io.jsonwebtoken.JwtException if the token is invalid or expired
      */
     private Claims extractAllClaims(String token) {
         try {
-            return Jwts.parser().verifyWith((javax.crypto.SecretKey) getSignInKey()).build()
-                    .parseSignedClaims(token).getPayload();
+            return Jwts.parser()
+                .verifyWith((javax.crypto.SecretKey) getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         } catch (Exception e) {
             log.error(SECURITY_PREFIX + " Failed to extract claims from token: {}", e.getMessage());
             throw e;
@@ -185,7 +193,7 @@ public class JwtService {
 
     /**
      * Gets the signing key used for JWT operations.
-     * 
+     *
      * @return the signing key
      */
     private Key getSignInKey() {

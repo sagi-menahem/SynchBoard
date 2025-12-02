@@ -13,7 +13,7 @@ import apiClient from 'shared/lib/apiClient';
 /**
  * Registers a new user account with the backend and handles both email verification and direct login flows.
  * When email verification is enabled, returns a message to check email. When disabled, returns auth token for immediate login.
- * 
+ *
  * @param userData - User registration data including email, password, and profile fields
  * @returns Either AuthResponse with token (when email verification disabled) or string message (when enabled)
  */
@@ -25,7 +25,7 @@ export const register = async (userData: RegisterRequest): Promise<AuthResponse 
 /**
  * Authenticates user with email and password credentials, returning JWT token for session management.
  * Validates credentials against backend and provides authentication token for subsequent API calls.
- * 
+ *
  * @param credentials - User login credentials containing email and password
  * @returns Authentication response containing JWT token and user information
  */
@@ -37,7 +37,7 @@ export const login = async (credentials: LoginRequest): Promise<AuthResponse> =>
 /**
  * Completes email verification process using 6-digit code sent to user's email address.
  * Validates verification code and activates user account, returning authentication token for immediate login.
- * 
+ *
  * @param data - Email verification data containing email address and 6-digit verification code
  * @returns Authentication response with JWT token for newly verified and activated account
  */
@@ -49,7 +49,7 @@ export const verifyEmail = async (data: VerifyEmailRequest): Promise<AuthRespons
 /**
  * Requests a new verification code to be sent to user's email address for accounts pending verification.
  * Useful when initial verification code expires or is lost, subject to rate limiting for security.
- * 
+ *
  * @param data - Request data containing email address to resend verification code to
  * @returns Success message confirming new verification code has been sent
  */
@@ -107,7 +107,7 @@ export const googleOneTap = async (credential: string): Promise<AuthResponse> =>
 /**
  * Extracts JWT token from OAuth callback URL query parameters after successful third-party authentication.
  * Parses 'token' query parameter containing authentication token from OAuth provider redirect.
- * 
+ *
  * @returns JWT token string if present in URL parameters, null if not found or OAuth flow failed
  */
 export const extractTokenFromCallback = (): string | null => {
@@ -118,7 +118,7 @@ export const extractTokenFromCallback = (): string | null => {
 /**
  * Extracts error message from OAuth callback URL when third-party authentication fails.
  * Parses 'message' query parameter containing error description from failed OAuth provider redirect.
- * 
+ *
  * @returns Error message string if present in URL parameters, null if no error occurred
  */
 export const extractErrorFromCallback = (): string | null => {
@@ -129,7 +129,7 @@ export const extractErrorFromCallback = (): string | null => {
 /**
  * Determines if current page URL represents an OAuth callback route from third-party authentication provider.
  * Checks pathname against known OAuth success and error callback routes to identify post-authentication state.
- * 
+ *
  * @returns True if current page is OAuth callback route, false for regular authentication pages
  */
 export const isOAuthCallback = (): boolean => {

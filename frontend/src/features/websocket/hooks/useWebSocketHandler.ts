@@ -42,7 +42,7 @@ interface WebSocketHandlerProps {
  * Orchestrates different message types including board updates, drawing actions, and chat messages.
  * Implements optimistic UI updates with transaction-based conflict resolution to ensure consistent
  * state across multiple collaborators.
- * 
+ *
  * Key responsibilities:
  * - Subscribe to board-specific WebSocket topic for real-time updates
  * - Handle board metadata updates (name, member changes, access permissions)
@@ -51,7 +51,7 @@ interface WebSocketHandlerProps {
  * - Filter out own actions to prevent duplicate UI updates
  * - Implement transaction-based conflict resolution for optimistic updates
  * - Handle permission-based access loss and error scenarios
- * 
+ *
  * @param props - Configuration object containing board ID, session info, and state management callbacks
  * @returns Object containing message handler for external access if needed
  */
@@ -83,7 +83,8 @@ export const useWebSocketHandler = ({
           .then((details) => setBoardName(details.name))
           .catch((err) => {
             // Handle case where user lost access due to member removal
-            if (err instanceof AxiosError && err.response?.status === 403) { // 403 Forbidden - user no longer has board access
+            if (err instanceof AxiosError && err.response?.status === 403) {
+              // 403 Forbidden - user no longer has board access
               setAccessLost(true);
             }
           });
@@ -153,7 +154,7 @@ export const useWebSocketHandler = ({
 
       // Complex message routing logic: discriminate between different WebSocket message types
       // using duck typing to avoid strict type checking on dynamic payloads from different sources
-      
+
       // Check for board update messages (member/details changes)
       if (
         'updateType' in (payload as Record<string, unknown>) &&

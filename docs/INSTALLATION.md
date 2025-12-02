@@ -43,6 +43,7 @@ Internet → Nginx (Host) → Docker Network → Services
 ```
 
 **Key Security Features:**
+
 - `docker-compose.prod.yml` removes all external port bindings for PostgreSQL, ActiveMQ, and the backend
 - Only the frontend Nginx container exposes port 8080 to the host
 - Host Nginx handles SSL termination and proxies requests to the Docker network
@@ -168,6 +169,7 @@ chmod +x deploy.sh
 ```
 
 **What `deploy.sh` does:**
+
 1. Navigates to `/root/SynchBoard`
 2. Reverts any local file changes (`git checkout .`)
 3. Pulls the latest code from GitHub
@@ -182,16 +184,17 @@ The production override file enhances security by removing external port binding
 ```yaml
 services:
   postgres:
-    ports: !reset []  # Removes port 5432 exposure
+    ports: !reset [] # Removes port 5432 exposure
 
   activemq:
-    ports: !reset []  # Removes ports 8161, 61616, 61613 exposure
+    ports: !reset [] # Removes ports 8161, 61616, 61613 exposure
 
   backend:
-    ports: !reset []  # Backend only accessible via Docker network
+    ports: !reset [] # Backend only accessible via Docker network
 ```
 
 This ensures:
+
 - PostgreSQL is not accessible from the internet
 - ActiveMQ management console is not exposed
 - All traffic must flow through the host Nginx reverse proxy
@@ -243,16 +246,19 @@ sudo certbot renew
 ### Troubleshooting Production
 
 **502 Bad Gateway:**
+
 - Verify Docker containers are running: `docker compose ps`
 - Check backend logs: `docker compose logs backend`
 - Ensure Nginx can reach localhost:8080
 
 **WebSocket Connection Failed:**
+
 - Verify Nginx has WebSocket headers configured
 - Check browser console for connection errors
 - Ensure firewall allows port 443
 
 **SSL Certificate Issues:**
+
 - Run `sudo certbot renew --dry-run` to test renewal
 - Check certificate expiration: `sudo certbot certificates`
 
@@ -263,6 +269,7 @@ sudo certbot renew
 For development and debugging with IDE support.
 
 **Prerequisites:**
+
 - PostgreSQL 17+ running locally
 - ActiveMQ Artemis 2.37+ running locally
 - Java 24+ and Node.js 20+
@@ -289,10 +296,10 @@ npm run dev
 
 ## 📝 Configuration Notes
 
-- **Environment Files**: 
+- **Environment Files**:
   - Root `.env` - Used by Docker Compose for production deployment
   - `backend/.env` - Used by Spring Boot for local development
-- **OAuth2 Setup**: 
+- **OAuth2 Setup**:
   - Development: OAuth redirects to `http://localhost:8080/login/oauth2/code/google`
   - Docker/Production: OAuth redirects to `http://localhost/api/login/oauth2/code/google`
   - Both URIs must be added to Google Cloud Console
@@ -304,6 +311,7 @@ npm run dev
 ### 🔧 Feature Availability
 
 The application gracefully handles missing API keys:
+
 - Without SendGrid: Registration works without email verification
 - Without Google OAuth: Traditional email/password login only
 - Check `/api/config/features` to see which features are enabled
@@ -313,6 +321,7 @@ The application gracefully handles missing API keys:
 ### Technology Stack
 
 **Backend:**
+
 - Java 24 with Spring Boot 3.5.5
 - Spring Security with JWT authentication
 - Spring WebSocket with STOMP protocol
@@ -322,6 +331,7 @@ The application gracefully handles missing API keys:
 - OAuth2 with Google provider
 
 **Frontend:**
+
 - React 19.2.0 with TypeScript 5.9.2
 - Vite 7.2.4 build tool
 - SCSS modules for styling
@@ -331,6 +341,7 @@ The application gracefully handles missing API keys:
 - Axios for HTTP requests
 
 **Infrastructure:**
+
 - Docker & Docker Compose for containerization
 - Nginx for serving frontend and proxying API requests
 - Multi-stage Docker builds for optimized images
@@ -375,6 +386,7 @@ The application uses environment variables for configuration. See `.env.example`
 ### Default Credentials
 
 For development/testing with default configuration:
+
 - PostgreSQL: `synchboard_user` / `test12345`
 - ActiveMQ: `admin` / `admin`
 - pgAdmin: `admin@synchboard.local` / `admin`
@@ -384,6 +396,7 @@ For development/testing with default configuration:
 ### Running Without Docker
 
 **Backend:**
+
 ```bash
 cd backend
 ./gradlew bootRun  # Unix/Mac
@@ -391,6 +404,7 @@ gradlew.bat bootRun # Windows
 ```
 
 **Frontend:**
+
 ```bash
 cd frontend
 npm install
@@ -400,17 +414,20 @@ npm run dev
 ### Available Scripts
 
 **Backend:**
+
 - `./gradlew test` - Run tests
 - `./gradlew build` - Build the application
 - `./gradlew bootJar` - Create executable JAR
 
 **Frontend:**
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 
 **Root Level:**
+
 - `npm run format:all` - Format entire project
 - `npm run build:backend` - Build backend
 - `npm run build:frontend` - Build frontend
@@ -418,10 +435,12 @@ npm run dev
 ## 🐛 Troubleshooting
 
 **Port Conflicts:**
+
 - Ensure ports 80, 8080, 5432, 61613, 61616, 8161 are free
 - Modify port mappings in `.env` if needed
 
 **Docker Issues:**
+
 - Run `docker-compose down -v` to clean up volumes
 - For complete rebuild after configuration changes:
   ```bash
@@ -432,10 +451,12 @@ npm run dev
 - View backend logs: `docker logs -f synchboard-backend`
 
 **Database Connection:**
+
 - Verify PostgreSQL is healthy: `docker-compose ps`
 - Check logs: `docker-compose logs postgres`
 
 **OAuth2 Authentication:**
+
 - Ensure redirect URIs are configured in Google Cloud Console for your environment:
   - Local Development: `http://localhost:8080/login/oauth2/code/google`
   - Docker Development: `http://localhost/api/login/oauth2/code/google`
@@ -444,5 +465,6 @@ npm run dev
 - Clear browser cookies if authentication fails after configuration changes
 
 **Backend Logging:**
+
 - Docker: Logs visible with `docker logs synchboard-backend`
 - Development: Logs appear in console when using `spring.profiles.active=dev`

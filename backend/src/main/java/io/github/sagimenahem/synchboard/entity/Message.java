@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * JPA entity representing chat messages within collaborative boards. Stores message content, sender
  * information, timestamps, and board associations for real-time chat functionality in whiteboard
  * sessions.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity

@@ -25,7 +25,7 @@ import styles from './AuthPage.module.scss';
  * Features a split-screen layout with hero section showcasing app features and form section
  * for user authentication. Manages modal states for email verification and password reset flows.
  * Handles OAuth callback processing and automatic navigation upon successful authentication.
- * 
+ *
  * Key responsibilities:
  * - Toggle between login and registration forms based on user preference
  * - Coordinate post-registration email verification flow with modal state management

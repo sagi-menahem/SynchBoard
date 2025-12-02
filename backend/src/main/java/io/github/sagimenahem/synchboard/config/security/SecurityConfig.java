@@ -27,7 +27,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * Spring Security configuration for the SynchBoard application. Configures JWT-based
  * authentication, OAuth2 integration, CORS policies, and security filters for protecting API
  * endpoints and WebSocket connections.
- * 
+ *
  * @author Sagi Menahem
  */
 @Configuration
@@ -41,30 +41,41 @@ public class SecurityConfig {
     private final AppProperties appProperties;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
-    
+
     @Value("${GOOGLE_CLIENT_ID:}")
     private String googleClientId;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors((cors) -> cors.configurationSource(corsConfigurationSource()))
-                .csrf((csrf) -> csrf.disable())
-                .authorizeHttpRequests((auth) -> auth.requestMatchers(API_AUTH_PATH_PATTERN)
-                        .permitAll().requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS).permitAll()
-                        .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN).permitAll()
-                        .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
-                        .requestMatchers("/api/config/**").permitAll()
-                        .requestMatchers(API_USER_PATH_PATTERN).authenticated().anyRequest()
-                        .authenticated())
-                .sessionManagement(
-                        (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+            .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+            .csrf((csrf) -> csrf.disable())
+            .authorizeHttpRequests((auth) ->
+                auth
+                    .requestMatchers(API_AUTH_PATH_PATTERN)
+                    .permitAll()
+                    .requestMatchers(WEBSOCKET_ENDPOINT_WITH_SUBPATHS)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, IMAGES_PATH_PATTERN)
+                    .permitAll()
+                    .requestMatchers("/login/oauth2/**", "/oauth2/**")
+                    .permitAll()
+                    .requestMatchers("/api/config/**")
+                    .permitAll()
+                    .requestMatchers(API_USER_PATH_PATTERN)
+                    .authenticated()
+                    .anyRequest()
+                    .authenticated()
+            )
+            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         // Conditionally enable OAuth2 if Google Client ID is configured
         if (googleClientId != null && !googleClientId.trim().isEmpty()) {
-            http.oauth2Login((oauth2) -> oauth2.successHandler(oAuth2SuccessHandler)
-                    .failureHandler(oAuth2FailureHandler));
+            http.oauth2Login((oauth2) ->
+                oauth2.successHandler(oAuth2SuccessHandler).failureHandler(oAuth2FailureHandler)
+            );
         }
 
         return http.build();
@@ -73,8 +84,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration
-                .setAllowedOrigins(Arrays.asList(appProperties.getSecurity().getAllowedOrigins()));
+        configuration.setAllowedOrigins(Arrays.asList(appProperties.getSecurity().getAllowedOrigins()));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

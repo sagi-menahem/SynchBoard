@@ -5,7 +5,7 @@ import { useState } from 'react';
  * Provides state management for menu position, visibility, and associated data.
  * Handles right-click events to show the menu at cursor position and manages
  * menu lifecycle including opening and closing operations.
- * 
+ *
  * @returns {Object} Object containing menu state, position coordinates, data, and control functions
  */
 export const useContextMenu = <T>() => {

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * Data Transfer Object for user-specific update WebSocket notifications. Used to notify individual
  * users about changes that affect their personal board access or require UI updates on their
  * client.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

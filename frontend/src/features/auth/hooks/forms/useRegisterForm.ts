@@ -13,7 +13,9 @@ import { authValidation, extractFormData, useAuthForm } from './useAuthForm';
  * @param onRegistrationSuccess - Callback fired when registration is successful, receives either email for verification or auth token for immediate login
  * @returns Form submission handler and loading state for registration functionality
  */
-export const useRegisterForm = (onRegistrationSuccess: (emailOrToken: string | AuthResponse) => void) => {
+export const useRegisterForm = (
+  onRegistrationSuccess: (emailOrToken: string | AuthResponse) => void,
+) => {
   const { t } = useTranslation(['auth', 'common']);
 
   return useAuthForm<RegisterRequest, AuthResponse | string>({
@@ -38,7 +40,11 @@ export const useRegisterForm = (onRegistrationSuccess: (emailOrToken: string | A
         return passwordError;
       }
 
-      const confirmPasswordError = authValidation.validateConfirmPassword(password, confirmPassword, t);
+      const confirmPasswordError = authValidation.validateConfirmPassword(
+        password,
+        confirmPassword,
+        t,
+      );
       if (confirmPasswordError) {
         return confirmPasswordError;
       }

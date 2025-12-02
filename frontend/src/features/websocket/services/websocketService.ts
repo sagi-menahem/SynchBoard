@@ -15,7 +15,7 @@ import SockJS from 'sockjs-client';
  * Comprehensive WebSocket service managing STOMP-based real-time communication with the backend.
  * Handles connection lifecycle, automatic reconnection, message validation, and subscription management.
  * Implements security features including message sanitization, schema validation, and size limits.
- * 
+ *
  * Key features:
  * - JWT-authenticated STOMP connections over SockJS
  * - Exponential backoff reconnection strategy with configurable limits
@@ -69,7 +69,7 @@ class WebSocketService {
   /**
    * Validates incoming WebSocket message against specified schema or general security rules.
    * Applies schema-specific validation for different message types and falls back to basic validation.
-   * 
+   *
    * @param data - Message data to validate
    * @param schemaKey - Optional schema identifier for specific validation rules
    * @returns True if message passes validation, false otherwise
@@ -98,7 +98,7 @@ class WebSocketService {
   /**
    * Parses JSON message body and applies validation and sanitization before processing.
    * Enforces message size limits, validates structure, and sanitizes content for security.
-   * 
+   *
    * @param messageBody - Raw JSON string from WebSocket message
    * @param schemaKey - Optional schema key for validation
    * @returns Parsed and sanitized message object or null if invalid
@@ -200,7 +200,7 @@ class WebSocketService {
   /**
    * Establishes WebSocket connection with JWT authentication and manages connection lifecycle.
    * Prevents duplicate connections and handles existing connection cleanup before establishing new ones.
-   * 
+   *
    * @param token - JWT token for authentication
    * @param onConnectedCallback - Callback executed when connection is successfully established
    */
@@ -224,7 +224,7 @@ class WebSocketService {
   /**
    * Internal method that performs the actual WebSocket connection setup.
    * Configures STOMP client with authentication headers, event handlers, and connection parameters.
-   * 
+   *
    * @param token - JWT token for authentication headers
    * @param onConnectedCallback - Callback to execute upon successful connection
    */
@@ -291,7 +291,8 @@ class WebSocketService {
           return;
         }
 
-        if (this.rollbackCallbacks.size > 0) { // Only process rollbacks if pending optimistic updates exist
+        if (this.rollbackCallbacks.size > 0) {
+          // Only process rollbacks if pending optimistic updates exist
           this.rollbackCallbacks.forEach((callback) => {
             try {
               callback();
@@ -361,7 +362,7 @@ class WebSocketService {
   /**
    * Subscribes to STOMP topic with message validation and automatic queuing for disconnected state.
    * Queues subscriptions when disconnected and processes them upon reconnection.
-   * 
+   *
    * @param topic - STOMP topic path to subscribe to
    * @param onMessageReceived - Callback function to handle incoming messages
    * @param schemaKey - Optional validation schema key for message security
@@ -404,7 +405,7 @@ class WebSocketService {
   /**
    * Sends message to specified STOMP destination with validation and sanitization.
    * Enforces message size limits and connection state validation before sending.
-   * 
+   *
    * @param destination - STOMP destination path (e.g., '/app/chat.send')
    * @param body - Message body object to be JSON serialized and sent
    * @throws {Error} When connection is not established or message exceeds size limits
@@ -442,7 +443,7 @@ class WebSocketService {
 
   /**
    * Returns current WebSocket connection state for UI state management.
-   * 
+   *
    * @returns Current connection state: 'disconnected', 'connecting', or 'connected'
    */
   public getConnectionState(): 'disconnected' | 'connecting' | 'connected' {
@@ -451,7 +452,7 @@ class WebSocketService {
 
   /**
    * Checks if WebSocket is fully connected and ready for message operations.
-   * 
+   *
    * @returns True if connection is established and STOMP client is active
    */
   public isConnected(): boolean {
@@ -461,7 +462,7 @@ class WebSocketService {
   /**
    * Registers callback for optimistic update rollback when WebSocket disconnects.
    * Used to revert UI changes that haven't been confirmed by the server.
-   * 
+   *
    * @param callback - Function to execute when connection is lost for rollback operations
    * @returns Cleanup function to remove the callback registration
    */
@@ -476,7 +477,7 @@ class WebSocketService {
   /**
    * Registers callback to process offline message queue when connection is restored.
    * Used to send messages that were queued while WebSocket was disconnected.
-   * 
+   *
    * @param callback - Async function to process queued messages upon reconnection
    * @returns Cleanup function to remove the callback registration
    */

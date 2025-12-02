@@ -10,7 +10,7 @@ import { APP_ROUTES } from 'shared/constants';
  * Handles the complete flow of account deletion including service calls, authentication cleanup,
  * and navigation redirection with proper user feedback through toast notifications.
  * Ensures secure logout and navigation to authentication flow after successful account deletion.
- * 
+ *
  * @returns Object containing account management handlers for destructive account operations
  */
 export const useAccountManager = () => {

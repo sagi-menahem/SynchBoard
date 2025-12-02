@@ -18,7 +18,7 @@ interface MemberListProps {
  * Renders a list of board members using individual MemberListItem components.
  * This component acts as a simple container that maps over the members array
  * to provide a consistent list structure with proper key management.
- * 
+ *
  * @param members - Array of board members to display in the list
  * @param onMemberContextMenu - Handler for right-click context menu events on individual members
  */

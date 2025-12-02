@@ -25,38 +25,38 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .fixedToolbar {
-    position: fixed;
-    z-index: 1000;
-    pointer-events: none; // Allow clicks through when collapsed
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none; // Allow clicks through when collapsed
 
-    // Desktop: Bottom-Center (Mac Dock style)
-    // Note: left and transform are set via inline styles to position relative to canvas area
-    &.desktop {
-        bottom: 32px;
-        // No transition on position - must track resize instantly without lag
-    }
+  // Desktop: Bottom-Center (Mac Dock style)
+  // Note: left and transform are set via inline styles to position relative to canvas area
+  &.desktop {
+    bottom: 32px;
+    // No transition on position - must track resize instantly without lag
+  }
 
-    // Vertical layout: Right side of canvas, vertically centered
-    &.vertical {
-        // Position is set via inline styles
-        // This class adds vertical-specific styling
-    }
+  // Vertical layout: Right side of canvas, vertically centered
+  &.vertical {
+    // Position is set via inline styles
+    // This class adds vertical-specific styling
+  }
 
-    // Mobile: Bottom Sheet style
-    &.mobile {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-width: 100vw; // Prevent overflow
-        overflow: visible; // Allow dragged content to be visible above
-        // Note: Safe area padding handled by individual elements if needed
-    }
+  // Mobile: Bottom Sheet style
+  &.mobile {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100vw; // Prevent overflow
+    overflow: visible; // Allow dragged content to be visible above
+    // Note: Safe area padding handled by individual elements if needed
+  }
 
-    // Re-enable pointer events for actual content
-    > * {
-        pointer-events: all;
-    }
+  // Re-enable pointer events for actual content
+  > * {
+    pointer-events: all;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -65,29 +65,29 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .mobileToolbarContainer {
-    display: flex;
-    flex-direction: column; // Tab first (on top), toolbar second (below)
-    align-items: center;
-    width: 100%;
-    position: relative;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  flex-direction: column; // Tab first (on top), toolbar second (below)
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
 
-    // Top shadow for depth and separation from canvas
-    filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.15));
+  // Top shadow for depth and separation from canvas
+  filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.15));
 
-    body[data-theme='dark'] & {
-        filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.4));
-    }
+  body[data-theme='dark'] & {
+    filter: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.4));
+  }
 }
 
 // Mobile toolbar that expands/collapses below the tab
 // Sits between the tab and the screen bottom edge
 .mobileToolbar {
-    position: relative !important; // Override .expandedToolbar's position: relative
-    width: 100%;
-    overflow: hidden; // Hide content when height is 0
-    border-radius: 0; // No rounded corners - flat top for clean bottom sheet appearance
+  position: relative !important; // Override .expandedToolbar's position: relative
+  width: 100%;
+  overflow: hidden; // Hide content when height is 0
+  border-radius: 0; // No rounded corners - flat top for clean bottom sheet appearance
 }
 
 // -----------------------------------------------------------------------------
@@ -95,142 +95,148 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .collapsedTrigger {
-    @include theme.glass-panel;
+  @include theme.glass-panel;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-primary);
-    z-index: 2; // Above toolbar preview during drag
-    position: relative; // For stacking context
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  z-index: 2; // Above toolbar preview during drag
+  position: relative; // For stacking context
 
-    transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
-    outline: none; // Prevent default focus outline
-    -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
-    
+  transition:
+    background-color 0.2s ease-out,
+    box-shadow 0.2s ease-out;
+  outline: none; // Prevent default focus outline
+  -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
+
+  &:focus {
+    outline: none; // Extra emphasis - no focus outline
+  }
+
+  &:focus-visible {
+    outline: none; // No keyboard focus outline (accessibility handled by subtle shadow)
+  }
+
+  // Desktop: Circular button with elegant border
+  .desktop & {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--glass-border);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 1px 3px rgba(0, 0, 0, 0.06);
+    position: relative; // For color indicator positioning
+
+    &:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        0 2px 4px rgba(0, 0, 0, 0.08);
+      background: var(--color-surface-hover);
+      border-color: var(--glass-border);
+    }
+
+    &:active {
+      transform: translateY(-2px) scale(1.02);
+      border-color: var(--glass-border);
+      outline: none;
+    }
+
     &:focus {
-        outline: none; // Extra emphasis - no focus outline
+      outline: none;
+      border-color: var(--glass-border);
     }
-    
+
     &:focus-visible {
-        outline: none; // No keyboard focus outline (accessibility handled by subtle shadow)
+      outline: none;
+      border-color: var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); // Subtle shadow for accessibility
     }
-    
-    // Desktop: Circular button with elegant border
-    .desktop & {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        border: 2px solid var(--glass-border);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
-        position: relative; // For color indicator positioning
+  }
 
-        &:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
-            background: var(--color-surface-hover);
-            border-color: var(--glass-border);
-        }
+  // Mobile: Pull-up tab/button - sits at top of the bottom sheet
+  // Tab has rounded top corners, toolbar expands below it
+  .mobile & {
+    position: relative; // Part of flex layout
+    width: 110px; // Wider tab for better grip and visual balance
+    height: 48px;
+    margin: 0; // No margin needed, flex handles centering
+    margin-bottom: -1px; // Overlap toolbar's top edge to hide border line
+    padding: 0;
+    border-radius: $border-radius-mobile $border-radius-mobile 0 0; // Rounded top corners
+    -webkit-tap-highlight-color: transparent;
+    z-index: 2; // Above toolbar for touch events
+    flex-shrink: 0; // Don't shrink
 
-        &:active {
-            transform: translateY(-2px) scale(1.02);
-            border-color: var(--glass-border);
-            outline: none;
-        }
+    // Match toolbar background exactly - must override glass-panel mixin
+    background: var(--user-chosen-color, var(--glass-background));
 
-        &:focus {
-            outline: none;
-            border-color: var(--glass-border);
-        }
+    // Top border wrapping around the tab - left, top, right (no bottom)
+    border: 1px solid var(--glass-border);
+    border-bottom: none; // No bottom border - connects to toolbar
 
-        &:focus-visible {
-            outline: none;
-            border-color: var(--glass-border);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); // Subtle shadow for accessibility
-        }
+    // Subtle inset shadow at top for depth
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+
+    &:focus {
+      outline: none !important; // Force remove browser outline
     }
-    
-    // Mobile: Pull-up tab/button - sits at top of the bottom sheet
-    // Tab has rounded top corners, toolbar expands below it
-    .mobile & {
-        position: relative; // Part of flex layout
-        width: 110px; // Wider tab for better grip and visual balance
-        height: 48px;
-        margin: 0; // No margin needed, flex handles centering
-        margin-bottom: -1px; // Overlap toolbar's top edge to hide border line
-        padding: 0;
-        border-radius: $border-radius-mobile $border-radius-mobile 0 0; // Rounded top corners
-        -webkit-tap-highlight-color: transparent;
-        z-index: 2; // Above toolbar for touch events
-        flex-shrink: 0; // Don't shrink
 
-        // Match toolbar background exactly - must override glass-panel mixin
-        background: var(--user-chosen-color, var(--glass-background));
-
-        // Top border wrapping around the tab - left, top, right (no bottom)
-        border: 1px solid var(--glass-border);
-        border-bottom: none; // No bottom border - connects to toolbar
-
-        // Subtle inset shadow at top for depth
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
-
-        &:focus {
-            outline: none !important; // Force remove browser outline
-        }
-
-        &:active {
-            outline: none !important; // Force remove browser outline
-        }
-
-        &:focus-visible {
-            outline: none !important; // Force remove keyboard focus outline
-        }
-
-        body[data-theme='dark'] & {
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-        }
+    &:active {
+      outline: none !important; // Force remove browser outline
     }
+
+    &:focus-visible {
+      outline: none !important; // Force remove keyboard focus outline
+    }
+
+    body[data-theme='dark'] & {
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+  }
 }
 
 .pullHandle {
-    width: 32px;
-    height: 4px;
-    border-radius: 2px;
-    // Background color set via inline style to use current stroke color
-    flex-shrink: 0;
-    transition: background-color 0.2s ease;
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  // Background color set via inline style to use current stroke color
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
 }
 
 // Chevron indicator for mobile tab - shows drag direction
 // Uses muted gray for subtle visual hierarchy - arrow is secondary UI element
 .chevronIndicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
 
-    svg {
-        color: inherit;
-        stroke: currentColor;
-    }
+  svg {
+    color: inherit;
+    stroke: currentColor;
+  }
 }
 
 // Tool icon in mobile tab
 .mobileTabToolIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    svg {
-        width: 20px;
-        height: 20px;
-    }
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -238,52 +244,58 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .expandedToolbar {
-    @include theme.glass-panel;
+  @include theme.glass-panel;
 
-    position: relative;
-    border-radius: $border-radius;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box; // Prevent padding from causing overflow
-    overflow: hidden; // Hide content overflow during width animation
+  position: relative;
+  border-radius: $border-radius;
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box; // Prevent padding from causing overflow
+  overflow: hidden; // Hide content overflow during width animation
 
-    // Desktop: Horizontal pill
-    .desktop & {
-        padding: $toolbar-padding;
-        height: auto;
-        max-height: calc(#{$tool-size} + #{$toolbar-padding} * 2); // Constrain height for horizontal layout
-    }
+  // Desktop: Horizontal pill
+  .desktop & {
+    padding: $toolbar-padding;
+    height: auto;
+    max-height: calc(
+      #{$tool-size} + #{$toolbar-padding} * 2
+    ); // Constrain height for horizontal layout
+  }
 
-    // Mobile: Bottom sheet - Solid background (no transparency)
-    // Toolbar sits below the tab, at the very bottom of the screen
-    // NOTE: No padding here - padding is on .mobileToolbarContent so it gets clipped when height=0
-    .mobile & {
-        width: 100%;
-        max-width: 100vw; // Ensure it never exceeds viewport
-        padding: 0; // No padding - moved to inner wrapper
-        border-radius: 0; // No rounded corners - flat top, tab is the only rounded element
+  // Mobile: Bottom sheet - Solid background (no transparency)
+  // Toolbar sits below the tab, at the very bottom of the screen
+  // NOTE: No padding here - padding is on .mobileToolbarContent so it gets clipped when height=0
+  .mobile & {
+    width: 100%;
+    max-width: 100vw; // Ensure it never exceeds viewport
+    padding: 0; // No padding - moved to inner wrapper
+    border-radius: 0; // No rounded corners - flat top, tab is the only rounded element
 
-        // Border only on left and right - no top border (to avoid line between tab and toolbar)
-        border-left: 1px solid var(--glass-border);
-        border-right: 1px solid var(--glass-border);
-        border-top: none;
-        border-bottom: none; // No bottom border - sits at screen edge
+    // Border only on left and right - no top border (to avoid line between tab and toolbar)
+    border-left: 1px solid var(--glass-border);
+    border-right: 1px solid var(--glass-border);
+    border-top: none;
+    border-bottom: none; // No bottom border - sits at screen edge
 
-        // Override glass-panel opacity to make it fully opaque on mobile
-        opacity: 1;
-        background: var(--user-chosen-color, var(--glass-background));
-        backdrop-filter: none; // Remove blur since it's opaque
-        -webkit-backdrop-filter: none;
+    // Override glass-panel opacity to make it fully opaque on mobile
+    opacity: 1;
+    background: var(--user-chosen-color, var(--glass-background));
+    backdrop-filter: none; // Remove blur since it's opaque
+    -webkit-backdrop-filter: none;
 
-        box-shadow: none; // No shadow - container handles the shadow
-    }
+    box-shadow: none; // No shadow - container handles the shadow
+  }
 }
 
 // Inner wrapper for mobile toolbar - holds padding so it gets clipped when parent height=0
 .mobileToolbarContent {
-    padding: $toolbar-padding-mobile;
-    padding-bottom: calc(#{$toolbar-padding-mobile} + env(safe-area-inset-bottom, 0px)); // Safe area for home indicator
-    width: 100%;
-    box-sizing: border-box;
+  padding: $toolbar-padding-mobile;
+  padding-bottom: calc(
+    #{$toolbar-padding-mobile} + env(safe-area-inset-bottom, 0px)
+  ); // Safe area for home indicator
+  width: 100%;
+  box-sizing: border-box;
 }
 
 // -----------------------------------------------------------------------------
@@ -291,20 +303,20 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .toolsRow {
-    display: flex;
-    align-items: center;
-    gap: $gap;
-    flex-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  gap: $gap;
+  flex-wrap: nowrap;
 }
 
 .toolsGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: $gap-mobile;
-    width: 100%;
-    max-width: 100%; // Prevent grid overflow
-    justify-items: center; // Center tools within their grid cells
-    box-sizing: border-box; // Include padding/margins in width calculation
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $gap-mobile;
+  width: 100%;
+  max-width: 100%; // Prevent grid overflow
+  justify-items: center; // Center tools within their grid cells
+  box-sizing: border-box; // Include padding/margins in width calculation
 }
 
 // -----------------------------------------------------------------------------
@@ -312,60 +324,60 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .toolButton {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    
-    border: none;
-    border-radius: theme.$border-radius-md;
-    background: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    
-    transition: all theme.$transition-fast;
-    
-    // Remove default focus outline
-    outline: none;
-    
-    // Desktop size
-    .desktop & {
-        width: $tool-size;
-        height: $tool-size;
-    }
-    
-    // Mobile size
-    .mobile & {
-        width: $tool-size-mobile;
-        height: $tool-size-mobile;
-    }
-    
-    &:hover {
-        background: var(--color-surface-hover);
-        color: var(--color-text-primary);
-        transform: scale(1.1);
-    }
-    
-    &:active {
-        transform: scale(0.95);
-    }
-    
-    // Focus state should match active state (no black border)
-    &:focus {
-        outline: none;
-    }
-    
-    &.active {
-        // Active state indicated by underline (.activeIndicator) - icon stays muted
-        // No background, no border - clean minimal look
-        background: transparent;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
-        // Override focus state when active
-        &:focus {
-            outline: none;
-        }
+  border: none;
+  border-radius: theme.$border-radius-md;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+
+  transition: all theme.$transition-fast;
+
+  // Remove default focus outline
+  outline: none;
+
+  // Desktop size
+  .desktop & {
+    width: $tool-size;
+    height: $tool-size;
+  }
+
+  // Mobile size
+  .mobile & {
+    width: $tool-size-mobile;
+    height: $tool-size-mobile;
+  }
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  // Focus state should match active state (no black border)
+  &:focus {
+    outline: none;
+  }
+
+  &.active {
+    // Active state indicated by underline (.activeIndicator) - icon stays muted
+    // No background, no border - clean minimal look
+    background: transparent;
+
+    // Override focus state when active
+    &:focus {
+      outline: none;
     }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -375,36 +387,36 @@ $border-radius-mobile: 20px;
 // Shared wrapper style for icons with underline indicators
 .toolIconWrapper,
 .colorPaletteIcon {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
 
 .colorIndicator,
 .activeIndicator {
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 2px;
-    border-radius: 1px;
-    transition: background-color 0.2s ease;
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  transition: background-color 0.2s ease;
 }
 
 // Color indicator for collapsed button (desktop)
 .collapsedColorIndicator {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 3px;
-    border-radius: 1.5px;
-    transition: background-color 0.2s ease;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  border-radius: 1.5px;
+  transition: background-color 0.2s ease;
 }
 
 // -----------------------------------------------------------------------------
@@ -412,108 +424,108 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .closeButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    
-    border: none;
-    border-radius: theme.$border-radius-md;
-    background: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    
-    transition: all theme.$transition-fast;
-    outline: none; // Prevent default focus outline
-    -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
-    
-    &:focus {
-        outline: none !important; // Force remove browser outline
-    }
-    
-    &:focus-visible {
-        outline: none !important; // Force remove keyboard focus outline
-    }
-    
-    // Desktop: Integrated as last tool in row
-    .desktop & {
-        width: $tool-size;
-        height: $tool-size;
-        margin-left: $gap; // Separator gap from tools
-        
-        &:hover {
-            background: var(--color-surface-hover);
-            color: var(--color-text-primary);
-            transform: scale(1.1);
-        }
-        
-        &:active {
-            outline: none !important;
-            border: none !important; // No border flash
-            background: var(--color-surface-hover);
-        }
-        
-        &:focus {
-            outline: none !important;
-            border: none !important; // No border flash
-        }
-    }
-    
-    // Mobile: Floating at top-center with themed background
-    .mobile & {
-        @include theme.glass-panel; // Match themed design
-        
-        position: absolute;
-        top: 8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: 1.5px solid var(--glass-border) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        -webkit-tap-highlight-color: transparent; // Extra emphasis
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
-        &:active {
-            transform: translateX(-50%) scale(0.95);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-            border: 1.5px solid var(--glass-border) !important;
-            outline: none !important;
-        }
+  border: none;
+  border-radius: theme.$border-radius-md;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
 
-        &:focus {
-            border: 1.5px solid var(--glass-border) !important;
-            outline: none !important;
-        }
+  transition: all theme.$transition-fast;
+  outline: none; // Prevent default focus outline
+  -webkit-tap-highlight-color: transparent; // Remove mobile tap highlight
 
-        &:focus-visible {
-            border: 1.5px solid var(--glass-border) !important;
-            outline: none !important;
-        }
+  &:focus {
+    outline: none !important; // Force remove browser outline
+  }
+
+  &:focus-visible {
+    outline: none !important; // Force remove keyboard focus outline
+  }
+
+  // Desktop: Integrated as last tool in row
+  .desktop & {
+    width: $tool-size;
+    height: $tool-size;
+    margin-left: $gap; // Separator gap from tools
+
+    &:hover {
+      background: var(--color-surface-hover);
+      color: var(--color-text-primary);
+      transform: scale(1.1);
     }
-    
+
     &:active {
-        transform: scale(0.9);
-        outline: none !important;
-        
-        .mobile & {
-            transform: translateX(-50%) scale(0.9);
-        }
+      outline: none !important;
+      border: none !important; // No border flash
+      background: var(--color-surface-hover);
     }
+
+    &:focus {
+      outline: none !important;
+      border: none !important; // No border flash
+    }
+  }
+
+  // Mobile: Floating at top-center with themed background
+  .mobile & {
+    @include theme.glass-panel; // Match themed design
+
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--glass-border) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: transparent; // Extra emphasis
+
+    &:active {
+      transform: translateX(-50%) scale(0.95);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      border: 1.5px solid var(--glass-border) !important;
+      outline: none !important;
+    }
+
+    &:focus {
+      border: 1.5px solid var(--glass-border) !important;
+      outline: none !important;
+    }
+
+    &:focus-visible {
+      border: 1.5px solid var(--glass-border) !important;
+      outline: none !important;
+    }
+  }
+
+  &:active {
+    transform: scale(0.9);
+    outline: none !important;
+
+    .mobile & {
+      transform: translateX(-50%) scale(0.9);
+    }
+  }
 }
 
 .closeIcon {
-    color: var(--color-text-primary); // Ensure contrast with themed background
-    opacity: 0.8;
-    transition: opacity theme.$transition-fast;
-    
-    .closeButton:hover & {
-        opacity: 1;
-    }
-    
-    .mobile & {
-        transform: rotate(180deg); // Point down to indicate "minimize"
-    }
+  color: var(--color-text-primary); // Ensure contrast with themed background
+  opacity: 0.8;
+  transition: opacity theme.$transition-fast;
+
+  .closeButton:hover & {
+    opacity: 1;
+  }
+
+  .mobile & {
+    transform: rotate(180deg); // Point down to indicate "minimize"
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -521,51 +533,53 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .satelliteBubble {
-    @include theme.glass-panel;
+  @include theme.glass-panel;
 
-    position: fixed;
-    z-index: 1001; // Above the dock (1000) to be visible
-    
-    // Positioning handled by inline styles in SatelliteManager
-    // transform: translateX(-50%) applied via style prop for centering
+  position: fixed;
+  z-index: 1001; // Above the dock (1000) to be visible
 
-    width: 200px;
-    padding: theme.$spacing-2; // More compact padding (0.5rem instead of 0.75rem)
-    border-radius: 20px; // More rounded
-    
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
+  // Positioning handled by inline styles in SatelliteManager
+  // transform: translateX(-50%) applied via style prop for centering
 
-    pointer-events: all;
-    will-change: transform, opacity;
+  width: 200px;
+  padding: theme.$spacing-2; // More compact padding (0.5rem instead of 0.75rem)
+  border-radius: 20px; // More rounded
 
-    /* Wider on mobile to fit color palette grid (6×3) */
-    @media (max-width: 768px) {
-        width: 180px; /* 6 colors × 24px + 5 gaps × 6px + padding */
-    }
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.06);
+
+  pointer-events: all;
+  will-change: transform, opacity;
+
+  /* Wider on mobile to fit color palette grid (6×3) */
+  @media (max-width: 768px) {
+    width: 180px; /* 6 colors × 24px + 5 gaps × 6px + padding */
+  }
 }
 
 .satelliteContent {
-    display: flex;
-    flex-direction: column;
-    gap: theme.$spacing-2;
-    align-items: center; // Center content
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-2;
+  align-items: center; // Center content
+  width: 100%;
 }
 
 .satelliteHeader {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-primary);
-    opacity: 0.8;
-    text-align: center;
-    width: 100%;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  opacity: 0.8;
+  text-align: center;
+  width: 100%;
 }
 
 .satellitePlaceholder {
-    // Used to maintain space when satellite is animating out
-    pointer-events: none;
+  // Used to maintain space when satellite is animating out
+  pointer-events: none;
 }
 
 // -----------------------------------------------------------------------------
@@ -573,24 +587,24 @@ $border-radius-mobile: 20px;
 // -----------------------------------------------------------------------------
 
 .verticalToolbar {
-    // Override horizontal pill styling for vertical layout
-    border-radius: $border-radius;
-    padding: 6px;
-    overflow: hidden;
+  // Override horizontal pill styling for vertical layout
+  border-radius: $border-radius;
+  padding: 6px;
+  overflow: hidden;
 
-    // Override the max-height from horizontal layout
-    max-height: none !important;
-    height: auto;
+  // Override the max-height from horizontal layout
+  max-height: none !important;
+  height: auto;
 
-    // Constrain width for vertical layout
-    width: auto;
-    max-width: calc(#{$tool-size} + 12px); // tool size + padding
+  // Constrain width for vertical layout
+  width: auto;
+  max-width: calc(#{$tool-size} + 12px); // tool size + padding
 }
 
 .toolsColumn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $gap;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $gap;
+  flex-wrap: nowrap;
 }

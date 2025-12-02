@@ -251,36 +251,36 @@
   .boardCard.grid {
     aspect-ratio: 1 / 1;
   }
-  
+
   .previewArea {
     height: 110px;
   }
-  
+
   .gridAvatar {
     width: 75px;
     height: 75px;
     border-width: 2px;
   }
-  
+
   .boardCard.grid .boardCardContent {
     padding: 6px 8px;
     gap: 3px;
   }
-  
+
   .boardName {
     font-size: 12px;
   }
-  
+
   .resolutionText,
   .timestamp {
     font-size: 9px;
   }
-  
+
   .metadataRow {
     font-size: 9px;
     gap: 3px;
   }
-  
+
   .colorDot {
     width: 5px;
     height: 5px;
@@ -291,7 +291,7 @@
     gap: 8px;
     padding: 8px 10px;
   }
-  
+
   .listLeftSection {
     gap: 8px;
     grid-column: 1;
@@ -301,20 +301,20 @@
     width: 40px;
     height: 40px;
   }
-  
+
   .listName {
     min-width: 0;
     flex: 1;
-    
+
     h3 {
       font-size: 13px;
     }
   }
-  
+
   .listCenterInfo {
     display: none;
   }
-  
+
   .listTimestamp {
     grid-column: 2;
     grid-row: 1;
@@ -323,7 +323,7 @@
     font-size: 10px;
     min-width: 60px;
   }
-  
+
   .listAdminIcon {
     display: flex;
     align-items: center;
@@ -350,7 +350,7 @@
     padding: 8px;
     gap: 4px;
   }
-  
+
   .boardName {
     font-size: 12px;
   }

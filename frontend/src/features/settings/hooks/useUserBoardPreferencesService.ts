@@ -76,7 +76,7 @@ const userBoardPreferencesReducer = (
  * and user interface preferences with persistent storage for authenticated users.
  * Implements reducer pattern for complex state management with optimistic UI updates and rollback functionality.
  * Includes both explicit toast notifications and silent update modes for different user interaction contexts.
- * 
+ *
  * @returns Object containing current board preferences, loading states, and preference update functions
  */
 export function useUserBoardPreferencesService() {

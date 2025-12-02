@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for password reset requests. Contains user email, reset code, and new
  * password for completing the password reset process with proper validation.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

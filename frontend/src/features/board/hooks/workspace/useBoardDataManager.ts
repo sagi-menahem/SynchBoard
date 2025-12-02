@@ -15,7 +15,7 @@ import logger from 'shared/utils/logger';
  * error handling for access control violations and network failures. The hook implements a minimum loading
  * delay for better user experience and manages access permissions by detecting 403 errors and setting
  * appropriate access loss states. It serves as the primary data layer for board workspace functionality.
- * 
+ *
  * @param boardId - ID of the board to load and manage data for
  * @returns Object containing board state data, loading states, error flags, state setters, and data fetching functions
  */
@@ -67,7 +67,8 @@ export const useBoardDataManager = (boardId: number) => {
   }, [boardId, t]);
 
   useEffect(() => {
-    if (isNaN(boardId) ?? boardId === 0) { // Validate board ID exists and is valid to prevent accessing non-existent boards
+    if (isNaN(boardId) ?? boardId === 0) {
+      // Validate board ID exists and is valid to prevent accessing non-existent boards
       setAccessLost(true);
       return;
     }

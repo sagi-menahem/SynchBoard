@@ -5,7 +5,7 @@ package io.github.sagimenahem.synchboard.constants;
  * settings for the SynchBoard application. These constants control JWT token handling, CORS
  * policies, user roles, and various security timeouts throughout the application security
  * infrastructure.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class SecurityConstants {

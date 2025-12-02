@@ -17,7 +17,7 @@ const DEFAULT_BOARD_PREFERENCES: UserBoardPreferences = {
 export const UserPreferencesService = {
   /**
    * Fetches user board preferences from the server via user profile with fallback defaults.
-   * 
+   *
    * @returns Promise resolving to user board preferences with background settings
    * @throws {Error} When preferences cannot be loaded from the server
    */
@@ -36,7 +36,7 @@ export const UserPreferencesService = {
 
   /**
    * Updates the board background setting on the server.
-   * 
+   *
    * @param background - New background color in hex format or color name
    * @throws {Error} When the background update fails on the server
    */
@@ -53,7 +53,7 @@ export const UserPreferencesService = {
 
   /**
    * Updates multiple user board preferences on the server with selective field updates.
-   * 
+   *
    * @param preferences - Partial board preferences object with fields to update
    * @throws {Error} When preference updates fail on the server
    */
@@ -73,7 +73,7 @@ export const UserPreferencesService = {
 
   /**
    * Returns default board preferences for fallback and initialization purposes.
-   * 
+   *
    * @returns Default board preferences with dark background setting
    */
   getDefaultPreferences(): UserBoardPreferences {

@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Service for secure file storage and retrieval operations. Handles file uploads with comprehensive
  * security validation including MIME type verification, file signature validation, size limits, and
  * malicious content detection for SVG files.
- * 
+ *
  * @author Sagi Menahem
  */
 @Slf4j
@@ -44,17 +44,16 @@ public class FileStorageService {
     private static final Map<String, byte[]> FILE_SIGNATURES = new HashMap<>();
 
     static {
-        FILE_SIGNATURES.put("image/jpeg", new byte[] {(byte) 0xFF, (byte) 0xD8});
-        FILE_SIGNATURES.put("image/png",
-                new byte[] {(byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A});
-        FILE_SIGNATURES.put("image/gif", new byte[] {0x47, 0x49, 0x46, 0x38});
-        FILE_SIGNATURES.put("image/webp", new byte[] {0x52, 0x49, 0x46, 0x46});
+        FILE_SIGNATURES.put("image/jpeg", new byte[] { (byte) 0xFF, (byte) 0xD8 });
+        FILE_SIGNATURES.put("image/png", new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A });
+        FILE_SIGNATURES.put("image/gif", new byte[] { 0x47, 0x49, 0x46, 0x38 });
+        FILE_SIGNATURES.put("image/webp", new byte[] { 0x52, 0x49, 0x46, 0x46 });
     }
 
     /**
      * Initializes the file storage system by creating the upload directory if it doesn't exist.
      * Called automatically after bean construction.
-     * 
+     *
      * @throws RuntimeException if the storage location cannot be initialized
      */
     @PostConstruct
@@ -78,7 +77,7 @@ public class FileStorageService {
     /**
      * Stores an uploaded file securely with comprehensive validation. Validates file type, size,
      * signature, and content security before storage.
-     * 
+     *
      * @param file The multipart file to store
      * @return The relative path to the stored file (e.g., "/images/uuid.jpg")
      * @throws InvalidRequestException if file validation fails
@@ -96,13 +95,11 @@ public class FileStorageService {
 
         String contentType = file.getContentType();
         long fileSize = file.getSize();
-        log.info("Processing file upload: {} ({}), Size: {} bytes", originalFilename, contentType,
-                fileSize);
+        log.info("Processing file upload: {} ({}), Size: {} bytes", originalFilename, contentType, fileSize);
 
         String cleanedFilename = StringUtils.cleanPath(originalFilename);
         String fileExtension = getFileExtension(cleanedFilename);
-        String normalizedContentType =
-                contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
+        String normalizedContentType = contentType != null ? normalizeMimeType(contentType.toLowerCase()) : null;
 
         validateUploadedFile(file, cleanedFilename, fileSize, normalizedContentType, fileExtension);
 
@@ -119,8 +116,7 @@ public class FileStorageService {
             log.info(LoggingConstants.FILE_UPLOAD_SUCCESS, uniqueFilename, "system");
             return "/images/" + uniqueFilename;
         } catch (IOException e) {
-            log.error(LoggingConstants.FILE_UPLOAD_FAILED, originalFilename, "system",
-                    e.getMessage());
+            log.error(LoggingConstants.FILE_UPLOAD_FAILED, originalFilename, "system", e.getMessage());
             throw new RuntimeException(ERROR_FILE_STORAGE_FAILED, e);
         }
     }
@@ -128,7 +124,7 @@ public class FileStorageService {
     /**
      * Deletes a file from the storage system securely. Validates the file path to prevent directory
      * traversal attacks.
-     * 
+     *
      * @param filename The name of the file to delete
      * @throws RuntimeException if file deletion fails
      */
@@ -158,7 +154,7 @@ public class FileStorageService {
     /**
      * Normalizes MIME types to standard formats. Converts non-standard types like "image/jpg" to
      * "image/jpeg".
-     * 
+     *
      * @param mimeType The MIME type to normalize
      * @return The normalized MIME type
      */
@@ -168,7 +164,7 @@ public class FileStorageService {
 
     /**
      * Extracts the file extension from a filename.
-     * 
+     *
      * @param filename The filename to extract extension from
      * @return The file extension including the dot (e.g., ".jpg"), or empty string if none
      */
@@ -181,7 +177,7 @@ public class FileStorageService {
 
     /**
      * Generates a unique filename using UUID to prevent naming conflicts.
-     * 
+     *
      * @param extension The file extension to append
      * @return A unique filename with the specified extension
      */
@@ -191,7 +187,7 @@ public class FileStorageService {
 
     /**
      * Validates the binary signature of a file against its declared MIME type.
-     * 
+     *
      * @param file The file to validate
      * @param declaredMimeType The declared MIME type
      * @return true if the file signature matches the declared type, false otherwise
@@ -203,7 +199,7 @@ public class FileStorageService {
 
     /**
      * Gets the appropriate file signature validator for the given MIME type.
-     * 
+     *
      * @param mimeType The MIME type to get validator for
      * @return A FileSignatureValidator instance for the MIME type
      */
@@ -224,7 +220,7 @@ public class FileStorageService {
     private interface FileSignatureValidator {
         /**
          * Validates the binary signature of a file.
-         * 
+         *
          * @param file The file to validate
          * @return true if the signature is valid, false otherwise
          */
@@ -260,13 +256,17 @@ public class FileStorageService {
                 }
 
                 // WebP format starts with RIFF signature at bytes 0-3: "RIFF" (0x52494646)
-                boolean isRiff = Arrays.equals(Arrays.copyOfRange(fileHeader, 0, 4),
-                        new byte[] {0x52, 0x49, 0x46, 0x46});
+                boolean isRiff = Arrays.equals(
+                    Arrays.copyOfRange(fileHeader, 0, 4),
+                    new byte[] { 0x52, 0x49, 0x46, 0x46 }
+                );
                 if (isRiff) {
                     // WebP marker appears at bytes 8-11: "WEBP" (0x57454250)
                     // Bytes 4-7 contain file size, so WebP marker is offset by 8 bytes
-                    boolean hasWebpMarker = Arrays.equals(Arrays.copyOfRange(fileHeader, 8, 12),
-                            new byte[] {0x57, 0x45, 0x42, 0x50});
+                    boolean hasWebpMarker = Arrays.equals(
+                        Arrays.copyOfRange(fileHeader, 8, 12),
+                        new byte[] { 0x57, 0x45, 0x42, 0x50 }
+                    );
                     return hasWebpMarker;
                 }
                 return false;
@@ -287,7 +287,7 @@ public class FileStorageService {
 
         /**
          * Creates a standard signature validator for the specified MIME type.
-         * 
+         *
          * @param mimeType The MIME type to validate
          */
         public StandardSignatureValidator(String mimeType) {
@@ -314,16 +314,17 @@ public class FileStorageService {
                 boolean isValid = Arrays.equals(fileHeader, expectedSignature);
 
                 if (!isValid) {
-                    log.debug("File signature mismatch for MIME type {}: expected {} but got {}",
-                            mimeType, Arrays.toString(expectedSignature),
-                            Arrays.toString(fileHeader));
+                    log.debug(
+                        "File signature mismatch for MIME type {}: expected {} but got {}",
+                        mimeType,
+                        Arrays.toString(expectedSignature),
+                        Arrays.toString(fileHeader)
+                    );
                 }
 
                 return isValid;
             } catch (IOException e) {
-                log.error(
-                        "Error reading file signature for MIME type: {}, rejecting file for security",
-                        mimeType, e);
+                log.error("Error reading file signature for MIME type: {}, rejecting file for security", mimeType, e);
                 return false;
             }
         }
@@ -332,7 +333,7 @@ public class FileStorageService {
     /**
      * Validates SVG files for potentially malicious content. Scans for dangerous patterns like
      * script tags, event handlers, and external references.
-     * 
+     *
      * @param file The SVG file to validate
      * @return true if the SVG is safe, false if malicious content is detected
      */
@@ -342,8 +343,11 @@ public class FileStorageService {
 
             for (String pattern : SVG_DANGEROUS_PATTERNS) {
                 if (content.contains(pattern.toLowerCase())) {
-                    log.warn(LoggingConstants.FILE_VALIDATION_FAILED, "SVG file",
-                            "Contains potentially dangerous content: " + pattern);
+                    log.warn(
+                        LoggingConstants.FILE_VALIDATION_FAILED,
+                        "SVG file",
+                        "Contains potentially dangerous content: " + pattern
+                    );
                     return false;
                 }
             }
@@ -358,7 +362,7 @@ public class FileStorageService {
     /**
      * Downloads an image from a URL and stores it securely. Validates the content type and applies
      * the same security measures as file uploads.
-     * 
+     *
      * @param imageUrl The URL of the image to download
      * @return The relative path to the stored image, or null if download fails
      */
@@ -400,8 +404,7 @@ public class FileStorageService {
 
                 Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
-                log.info("Successfully downloaded and stored image from URL: {} as {}", imageUrl,
-                        uniqueFilename);
+                log.info("Successfully downloaded and stored image from URL: {} as {}", imageUrl, uniqueFilename);
                 return "/images/" + uniqueFilename;
             }
         } catch (java.net.MalformedURLException | java.lang.IllegalArgumentException e) {
@@ -415,7 +418,7 @@ public class FileStorageService {
 
     /**
      * Maps content types to appropriate file extensions.
-     * 
+     *
      * @param contentType The content type to map
      * @return The corresponding file extension
      */
@@ -437,7 +440,7 @@ public class FileStorageService {
     /**
      * Performs comprehensive validation of an uploaded file. Checks filename safety, file size,
      * MIME type, extension, signature, and SVG security.
-     * 
+     *
      * @param file The file to validate
      * @param cleanedFilename The sanitized filename
      * @param fileSize The size of the file in bytes
@@ -445,37 +448,55 @@ public class FileStorageService {
      * @param fileExtension The file extension
      * @throws InvalidRequestException if validation fails
      */
-    private void validateUploadedFile(MultipartFile file, String cleanedFilename, long fileSize,
-            String normalizedContentType, String fileExtension) throws InvalidRequestException {
+    private void validateUploadedFile(
+        MultipartFile file,
+        String cleanedFilename,
+        long fileSize,
+        String normalizedContentType,
+        String fileExtension
+    ) throws InvalidRequestException {
         if (cleanedFilename.contains("..")) {
             log.error("Invalid path in filename: {}", cleanedFilename);
             throw new InvalidRequestException(ERROR_INVALID_PATH);
         }
 
         if (fileSize > MAX_FILE_SIZE_BYTES) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
-                    String.format("File size %d exceeds maximum allowed size", fileSize));
-            throw new InvalidRequestException(
-                    String.format(ERROR_FILE_TOO_LARGE, MAX_FILE_SIZE_MB));
+            log.warn(
+                LoggingConstants.FILE_VALIDATION_FAILED,
+                file.getOriginalFilename(),
+                String.format("File size %d exceeds maximum allowed size", fileSize)
+            );
+            throw new InvalidRequestException(String.format(ERROR_FILE_TOO_LARGE, MAX_FILE_SIZE_MB));
         }
 
         if (!isValidMimeType(normalizedContentType)) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
-                    "MIME type not allowed: " + normalizedContentType);
-            throw new InvalidRequestException(String.format(ERROR_MIME_TYPE_NOT_ALLOWED,
-                    String.join(", ", ALLOWED_IMAGE_MIME_TYPES)));
+            log.warn(
+                LoggingConstants.FILE_VALIDATION_FAILED,
+                file.getOriginalFilename(),
+                "MIME type not allowed: " + normalizedContentType
+            );
+            throw new InvalidRequestException(
+                String.format(ERROR_MIME_TYPE_NOT_ALLOWED, String.join(", ", ALLOWED_IMAGE_MIME_TYPES))
+            );
         }
 
         if (!isValidExtension(fileExtension)) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
-                    "File extension not allowed: " + fileExtension);
-            throw new InvalidRequestException(String.format(ERROR_EXTENSION_NOT_ALLOWED,
-                    String.join(", ", ALLOWED_IMAGE_EXTENSIONS)));
+            log.warn(
+                LoggingConstants.FILE_VALIDATION_FAILED,
+                file.getOriginalFilename(),
+                "File extension not allowed: " + fileExtension
+            );
+            throw new InvalidRequestException(
+                String.format(ERROR_EXTENSION_NOT_ALLOWED, String.join(", ", ALLOWED_IMAGE_EXTENSIONS))
+            );
         }
 
         if (!validateFileSignature(file, normalizedContentType)) {
-            log.warn(LoggingConstants.FILE_VALIDATION_FAILED, file.getOriginalFilename(),
-                    "File signature validation failed for type: " + normalizedContentType);
+            log.warn(
+                LoggingConstants.FILE_VALIDATION_FAILED,
+                file.getOriginalFilename(),
+                "File signature validation failed for type: " + normalizedContentType
+            );
             throw new InvalidRequestException(ERROR_FILE_SIGNATURE_MISMATCH);
         }
 
@@ -486,7 +507,7 @@ public class FileStorageService {
 
     /**
      * Checks if a MIME type is in the allowed list.
-     * 
+     *
      * @param mimeType The MIME type to check
      * @return true if the MIME type is allowed, false otherwise
      */
@@ -496,7 +517,7 @@ public class FileStorageService {
 
     /**
      * Checks if a file extension is in the allowed list.
-     * 
+     *
      * @param extension The file extension to check
      * @return true if the extension is allowed, false otherwise
      */
@@ -507,7 +528,7 @@ public class FileStorageService {
     /**
      * Securely resolves a file path within the root storage directory. Prevents directory traversal
      * attacks by validating the resolved path.
-     * 
+     *
      * @param filename The filename to resolve
      * @param operation The operation being performed (for logging)
      * @return The resolved Path if secure, null if the path is unsafe

@@ -27,9 +27,9 @@ interface EditFieldFormProps {
 
 /**
  * Generic form component for editing single field values in modal dialogs.
- * This reusable component provides a consistent interface for editing various 
+ * This reusable component provides a consistent interface for editing various
  * board fields with support for both single-line inputs and multi-line textareas.
- * 
+ *
  * @param title - Title displayed in the modal header
  * @param label - Label text for the input field
  * @param initialValue - Current value to populate the input field

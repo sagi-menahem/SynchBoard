@@ -11,7 +11,7 @@ import logger from 'shared/utils/logger';
  * Implements inline editing state management with form validation, optimistic updates, and proper error handling.
  * Handles profile picture upload and deletion with proper loading states and user feedback through toast notifications.
  * Includes minimum loading delays for better perceived performance and smooth user experience transitions.
- * 
+ *
  * @returns Object containing user profile data, editing state, form handlers, and media management functions
  */
 export const useUserProfile = () => {

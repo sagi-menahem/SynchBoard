@@ -14,7 +14,7 @@ interface ToolGroupProps {
  * Container component for grouping related toolbar tools with a descriptive label.
  * Provides consistent spacing and layout for tool button collections.
  * Used to organize tools into logical categories within toolbars.
- * 
+ *
  * @param {string} label - Descriptive text displayed below the grouped tools
  * @param {React.ReactNode} children - Tool buttons or other controls to group together
  */

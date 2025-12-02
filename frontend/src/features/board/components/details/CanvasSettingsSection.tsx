@@ -27,7 +27,7 @@ interface CanvasSettingsSectionProps {
  * Renders canvas configuration interface with background color and size controls.
  * This component provides a comprehensive settings panel for canvas customization,
  * supporting both preset dimensions and custom sizing with admin-controlled editing modes.
- * 
+ *
  * @param boardDetails - Board details including current canvas dimensions and background color
  * @param isAdmin - Whether the current user has admin privileges to modify canvas settings
  * @param onUpdateSettings - Handler for updating canvas settings with async validation
@@ -104,7 +104,11 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       variant="default"
       headerActions={
         !isEditing ? (
-          <Button onClick={handleStartEditing} variant="secondary-glass" className={`${styles.editButton} ${styles.themeButton}`}>
+          <Button
+            onClick={handleStartEditing}
+            variant="secondary-glass"
+            className={`${styles.editButton} ${styles.themeButton}`}
+          >
             <Settings2 size={16} />
             {t('board:details.canvasSettings.edit')}
           </Button>

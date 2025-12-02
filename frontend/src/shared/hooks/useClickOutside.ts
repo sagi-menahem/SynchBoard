@@ -5,7 +5,7 @@ import { useEffect, type RefObject } from 'react';
  * Commonly used for closing dropdowns, modals, or popover components when
  * users click outside of them. Provides an optional activation flag for
  * conditional behavior.
- * 
+ *
  * @param {RefObject<T | null>} ref - React ref to the target element to monitor
  * @param {() => void} callback - Function to execute when click outside is detected
  * @param {boolean} isActive - Whether the click outside detection is active (default: true)

@@ -22,7 +22,7 @@ interface UseCanvasPreviewProps {
  * The hook implements sophisticated rendering logic for various geometric shapes, maintains proper canvas
  * styling and transparency during previews, and provides optimized state management for smooth real-time
  * drawing feedback without affecting the underlying canvas content until actions are committed.
- * 
+ *
  * @param canvasRef - Reference to the HTML canvas element for preview rendering operations
  * @param contextRef - Reference to the 2D canvas rendering context for drawing operations
  * @param tool - Currently active drawing tool that determines preview rendering behavior

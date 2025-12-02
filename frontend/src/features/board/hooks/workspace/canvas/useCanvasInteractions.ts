@@ -1,8 +1,8 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
 import type {
-    ActionPayload,
-    SendBoardActionRequest,
-    TextBoxPayload,
+  ActionPayload,
+  SendBoardActionRequest,
+  TextBoxPayload,
 } from 'features/board/types/BoardObjectTypes';
 import { getRecolorCursor } from 'features/board/utils/cursorUtils';
 import { processRecolorClick } from 'features/board/utils/recolorLogic';
@@ -33,7 +33,7 @@ interface UseCanvasInteractionsProps {
  * access, coordinate transformations, and specialized tool logic. The hook coordinates between user interactions
  * and drawing actions while maintaining proper state management for text input overlays and dynamic cursor
  * feedback for recoloring operations.
- * 
+ *
  * @param tool - Currently active drawing tool that determines interaction behavior
  * @param strokeColor - Active color setting for drawing and recoloring operations
  * @param fontSize - Font size setting for text input operations

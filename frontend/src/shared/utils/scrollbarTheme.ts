@@ -26,7 +26,7 @@ const SCROLLBAR_THEMES: Record<Theme, ScrollbarColors> = {
  * Applies scrollbar color theme by updating CSS custom properties on the document element.
  * Sets appropriate colors for scrollbar components to match the overall application theme.
  * Used when theme changes occur to maintain visual consistency.
- * 
+ *
  * @param {Theme} theme - The theme to apply ('light' or 'dark')
  */
 export const applyScrollbarTheme = (theme: Theme): void => {

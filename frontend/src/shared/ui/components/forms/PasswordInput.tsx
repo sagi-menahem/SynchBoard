@@ -68,7 +68,7 @@ const EyeOffIcon: React.FC<{ className?: string }> = ({ className }) => (
  * Password input field with toggle visibility functionality.
  * Provides a secure way to enter passwords while allowing users to verify their input.
  * Supports both controlled and uncontrolled visibility state management.
- * 
+ *
  * @param {string} id - HTML id attribute for the input element
  * @param {string} name - HTML name attribute for form submission
  * @param {string} value - Current input value for controlled components

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 /**
  * WebSocket channel interceptor for JWT authentication. Intercepts STOMP CONNECT commands to
  * authenticate users via JWT tokens before allowing WebSocket connection establishment.
- * 
+ *
  * @author Sagi Menahem
  */
 @Component
@@ -37,15 +37,14 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
     /**
      * Intercepts WebSocket messages before they are sent to authenticate CONNECT commands. Extracts
      * JWT tokens from STOMP headers and sets user authentication if valid.
-     * 
+     *
      * @param message The WebSocket message being sent
      * @param channel The message channel
      * @return The message (potentially modified with authentication info)
      */
     @Override
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
-        StompHeaderAccessor accessor =
-                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
         if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
             log.debug("Processing WebSocket CONNECT command");
@@ -61,22 +60,21 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
                     if (jwtService.isTokenValid(jwt, userDetails)) {
-                        UsernamePasswordAuthenticationToken authToken =
-                                new UsernamePasswordAuthenticationToken(userDetails, null,
-                                        userDetails.getAuthorities());
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                        );
                         accessor.setUser(authToken);
                         log.info("WebSocket connection authenticated for user: {}", userEmail);
                     } else {
-                        log.warn("WebSocket authentication failed - invalid JWT for user: {}",
-                                userEmail);
+                        log.warn("WebSocket authentication failed - invalid JWT for user: {}", userEmail);
                     }
                 } else {
-                    log.warn(
-                            "WebSocket authentication failed - unable to extract user email from JWT");
+                    log.warn("WebSocket authentication failed - unable to extract user email from JWT");
                 }
             } else {
-                log.warn(
-                        "WebSocket authentication failed - missing or invalid authorization header");
+                log.warn("WebSocket authentication failed - missing or invalid authorization header");
             }
         }
         return message;

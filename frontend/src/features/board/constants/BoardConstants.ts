@@ -1,6 +1,6 @@
 /**
  * @fileoverview Board and canvas configuration constants for the SynchBoard collaborative whiteboard.
- * 
+ *
  * This file contains all the essential constants that define the behavior, appearance, and functionality
  * of the drawing canvas and board features. It includes tool definitions, canvas configuration settings,
  * drawing parameters, optimization settings, and predefined canvas size presets. These constants ensure

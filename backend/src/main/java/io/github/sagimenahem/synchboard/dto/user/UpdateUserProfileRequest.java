@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for updating user profile information. Contains personal details with
  * validation constraints to ensure proper data format and required field completion.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

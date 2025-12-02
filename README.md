@@ -41,19 +41,19 @@
 
 ## 🚀 Key Features
 
-| Feature | Description |
-|---------|-------------|
+| Feature                     | Description                                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------- |
 | **Real-time Collaboration** | Multiple users can draw and edit simultaneously with instant WebSocket synchronization via STOMP protocol |
-| **User Authentication** | Secure JWT-based authentication with email verification and password reset functionality |
-| **OAuth2 Integration** | Sign in with Google for seamless, passwordless access |
-| **Board Management** | Create, share, and manage collaborative boards with granular team permissions |
-| **Drawing Tools** | Comprehensive toolset including shapes, freehand drawing, lines, text, and customizable colors |
-| **Live Chat** | Real-time messaging within boards for effective team communication |
-| **Member Management** | Invite users via email and manage board permissions (Admin/Member roles) |
-| **Undo/Redo History** | Full action history tracking per user with undo/redo support |
-| **Internationalization** | Full support for English and Hebrew (RTL) with i18next |
-| **Theme Support** | Light and Dark visual themes for a personalized experience |
-| **Responsive Design** | Optimized for desktop and tablet devices |
+| **User Authentication**     | Secure JWT-based authentication with email verification and password reset functionality                  |
+| **OAuth2 Integration**      | Sign in with Google for seamless, passwordless access                                                     |
+| **Board Management**        | Create, share, and manage collaborative boards with granular team permissions                             |
+| **Drawing Tools**           | Comprehensive toolset including shapes, freehand drawing, lines, text, and customizable colors            |
+| **Live Chat**               | Real-time messaging within boards for effective team communication                                        |
+| **Member Management**       | Invite users via email and manage board permissions (Admin/Member roles)                                  |
+| **Undo/Redo History**       | Full action history tracking per user with undo/redo support                                              |
+| **Internationalization**    | Full support for English and Hebrew (RTL) with i18next                                                    |
+| **Theme Support**           | Light and Dark visual themes for a personalized experience                                                |
+| **Responsive Design**       | Optimized for desktop and tablet devices                                                                  |
 
 ---
 
@@ -69,6 +69,7 @@ The production deployment uses a multi-layer architecture with SSL termination a
 </div>
 
 **Traffic Flow:**
+
 1. User connects via HTTPS (port 443) with SSL/TLS encryption
 2. Host Nginx terminates SSL and proxies to Docker network (port 8080)
 3. Frontend Nginx container serves static assets and proxies API/WebSocket requests
@@ -87,13 +88,13 @@ The production deployment uses a multi-layer architecture with SSL termination a
 
 ## 🛠️ Tech Stack
 
-| Backend | Frontend | Infrastructure |
-|:-----------------------------:|:-----------------------------------:|:---------------------------:|
-| Java 24 + Spring Boot 3.5.5 | React 19.2.0 + TypeScript 5.9.2 | Docker & Docker Compose |
-| Spring Security + JWT | Vite 7.2.4 + SCSS Modules | Nginx Reverse Proxy |
-| Spring WebSocket + STOMP | @stomp/stompjs WebSocket | PostgreSQL 17 Database |
-| PostgreSQL + ActiveMQ Artemis | React Router + i18next | ActiveMQ Message Broker |
-| SendGrid Email + OAuth2 Google| Axios HTTP Client | Multi-stage Docker Builds |
+|            Backend             |            Frontend             |      Infrastructure       |
+| :----------------------------: | :-----------------------------: | :-----------------------: |
+|  Java 24 + Spring Boot 3.5.5   | React 19.2.0 + TypeScript 5.9.2 |  Docker & Docker Compose  |
+|     Spring Security + JWT      |    Vite 7.2.4 + SCSS Modules    |    Nginx Reverse Proxy    |
+|    Spring WebSocket + STOMP    |    @stomp/stompjs WebSocket     |  PostgreSQL 17 Database   |
+| PostgreSQL + ActiveMQ Artemis  |     React Router + i18next      |  ActiveMQ Message Broker  |
+| SendGrid Email + OAuth2 Google |        Axios HTTP Client        | Multi-stage Docker Builds |
 
 ---
 
@@ -102,34 +103,38 @@ The production deployment uses a multi-layer architecture with SSL termination a
 ### Local Development (Docker)
 
 1.  **Clone the repository**
+
     ```bash
     git clone https://github.com/sagi-menahem/SynchBoard.git
     cd SynchBoard
     ```
 
 2.  **Copy environment file**
+
     ```bash
     cp .env.example .env
     ```
+
     > **Note:** The `.env` file includes optional API keys for email and Google login features. For basic operation, no changes are needed.
 
 3.  **Start the application**
+
     ```bash
     docker-compose up --build
     ```
 
 4.  **Access the application**
-    -   **Frontend**: http://localhost
-    -   **Backend API**: http://localhost:8080
-    -   **ActiveMQ Console**: http://localhost:8161 (admin/admin)
+    - **Frontend**: http://localhost
+    - **Backend API**: http://localhost:8080
+    - **ActiveMQ Console**: http://localhost:8161 (admin/admin)
 
 ### Production Deployment
 
 SynchBoard includes production-ready infrastructure for VPS deployment:
 
--   **`deploy.sh`** - Automated deployment script for pulling updates and rebuilding containers
--   **`docker-compose.prod.yml`** - Production overrides that secure internal services (PostgreSQL, ActiveMQ, Backend) by removing external port bindings
--   **`server-config/synchboard.conf`** - Nginx reverse proxy configuration with SSL/TLS support
+- **`deploy.sh`** - Automated deployment script for pulling updates and rebuilding containers
+- **`docker-compose.prod.yml`** - Production overrides that secure internal services (PostgreSQL, ActiveMQ, Backend) by removing external port bindings
+- **`server-config/synchboard.conf`** - Nginx reverse proxy configuration with SSL/TLS support
 
 For detailed production setup instructions, see the [Installation Guide](docs/INSTALLATION.md#production-deployment-vps).
 
@@ -137,10 +142,10 @@ For detailed production setup instructions, see the [Installation Guide](docs/IN
 
 ## 📚 Full Documentation
 
--   **[User Manual](docs/User_Manual.pdf)** - Comprehensive technical guide covering all features and functionality.
--   **[Functional Document](docs/Functional_Document.pdf)** - Screen-by-screen feature walkthrough with visual examples.
--   **[API Documentation](docs/API_DOCUMENTATION.md)** - Detailed API endpoint guide for developers.
--   **[Installation Guide](docs/INSTALLATION.md)** - Advanced setup instructions and local development guide.
+- **[User Manual](docs/User_Manual.pdf)** - Comprehensive technical guide covering all features and functionality.
+- **[Functional Document](docs/Functional_Document.pdf)** - Screen-by-screen feature walkthrough with visual examples.
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Detailed API endpoint guide for developers.
+- **[Installation Guide](docs/INSTALLATION.md)** - Advanced setup instructions and local development guide.
 
 ---
 

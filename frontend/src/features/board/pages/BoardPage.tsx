@@ -43,15 +43,8 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const pageRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  const {
-    isLoading,
-    boardName,
-    boardDetails,
-    objects,
-    messages,
-    instanceId,
-    handleDrawAction,
-  } = useBoardContext();
+  const { isLoading, boardName, boardDetails, objects, messages, instanceId, handleDrawAction } =
+    useBoardContext();
 
   const { preferences, updateStrokeColor, updateTool } = useToolPreferences();
   const { preferences: userBoardPreferences } = useUserBoardPreferences();
@@ -76,26 +69,48 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
     }
   }, [tool]);
 
-  const handleColorPick = useCallback(async (color: string) => {
-    try {
-      // Save picked color to preferences
-      await updateStrokeColor(color);
-      
-      // Auto-switch back to previous drawing tool for better workflow
-      // Don't switch back if previous tool was eraser or another utility tool
-      const drawingTools = ['brush', 'square', 'rectangle', 'circle', 'triangle', 'pentagon', 'hexagon', 'star', 'line', 'dottedLine', 'arrow', 'text'];
-      if (drawingTools.includes(previousToolRef.current)) {
-        await updateTool(previousToolRef.current);
-      }
-    } catch (error) {
-      console.error('Failed to update picked color:', error);
-    }
-  }, [updateStrokeColor, updateTool]);
+  const handleColorPick = useCallback(
+    async (color: string) => {
+      try {
+        // Save picked color to preferences
+        await updateStrokeColor(color);
 
-  const { preferences: canvasPreferences, updateSplitRatio, updateCanvasPreferences } = useCanvasPreferences();
+        // Auto-switch back to previous drawing tool for better workflow
+        // Don't switch back if previous tool was eraser or another utility tool
+        const drawingTools = [
+          'brush',
+          'square',
+          'rectangle',
+          'circle',
+          'triangle',
+          'pentagon',
+          'hexagon',
+          'star',
+          'line',
+          'dottedLine',
+          'arrow',
+          'text',
+        ];
+        if (drawingTools.includes(previousToolRef.current)) {
+          await updateTool(previousToolRef.current);
+        }
+      } catch (error) {
+        console.error('Failed to update picked color:', error);
+      }
+    },
+    [updateStrokeColor, updateTool],
+  );
+
+  const {
+    preferences: canvasPreferences,
+    updateSplitRatio,
+    updateCanvasPreferences,
+  } = useCanvasPreferences();
 
   // Track live canvas split ratio for toolbar positioning (real-time, not debounced)
-  const [liveCanvasSplitRatio, setLiveCanvasSplitRatio] = useState(canvasPreferences.canvasChatSplitRatio);
+  const [liveCanvasSplitRatio, setLiveCanvasSplitRatio] = useState(
+    canvasPreferences.canvasChatSplitRatio,
+  );
 
   const handleSplitRatioChange = (newRatio: number) => {
     void updateSplitRatio(newRatio);
@@ -110,35 +125,35 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const canvasConfig = useMemo(() => {
     return boardDetails
       ? {
-        backgroundColor: boardDetails.canvasBackgroundColor,
-        width: boardDetails.canvasWidth,
-        height: boardDetails.canvasHeight,
-      }
+          backgroundColor: boardDetails.canvasBackgroundColor,
+          width: boardDetails.canvasWidth,
+          height: boardDetails.canvasHeight,
+        }
       : undefined;
   }, [boardDetails]);
   // Convert board theme color to CSS custom properties
   // Use user's Board Appearance preference (same as chat background)
   const themeColorStyles = useMemo(() => {
     const savedColor = userBoardPreferences.boardBackgroundSetting;
-    
+
     if (!savedColor) {
       return undefined;
     }
-    
+
     // Check if it's a CSS variable (starts with --)
     if (savedColor.startsWith('--')) {
       // Use the CSS variable directly - no conversion needed
       const bgColor = `var(${savedColor})`;
-      
+
       return {
         '--board-theme-color': bgColor,
         background: bgColor, // Also set directly for immediate application
       } as React.CSSProperties;
     }
-    
+
     // It's a hex color - convert to RGB
     const rgbValue = hexToRgbString(savedColor);
-    
+
     return {
       '--board-theme-color': savedColor,
       '--board-theme-rgb': rgbValue,
@@ -165,14 +180,14 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
         <AppHeader
           leading={
             <>
-              <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
-                <ArrowLeft size={20} />
-              </Button>
               <Button
                 variant="icon"
-                onClick={handleGoToDetails}
-                title={t('board:header.info')}
+                onClick={handleGoToList}
+                title={t('board:page.boardListButton')}
               >
+                <ArrowLeft size={20} />
+              </Button>
+              <Button variant="icon" onClick={handleGoToDetails} title={t('board:header.info')}>
                 <Info size={20} />
               </Button>
             </>
@@ -193,23 +208,17 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
             <Button variant="icon" onClick={handleGoToList} title={t('board:page.boardListButton')}>
               <ArrowLeft size={20} />
             </Button>
-            <Button
-              variant="icon"
-              onClick={handleGoToDetails}
-              title={t('board:header.info')}
-            >
+            <Button variant="icon" onClick={handleGoToDetails} title={t('board:header.info')}>
               <Info size={20} />
             </Button>
           </>
         }
-        title={<span className={styles.boardTitle}>{boardName ?? t('board:fallbacks.untitled')}</span>}
+        title={
+          <span className={styles.boardTitle}>{boardName ?? t('board:fallbacks.untitled')}</span>
+        }
         trailing={
           <>
-            <Button
-              variant="icon"
-              onClick={handleDownload}
-              title={t('board:header.export')}
-            >
+            <Button variant="icon" onClick={handleDownload} title={t('board:header.export')}>
               <Download size={20} />
               <span className={styles.buttonLabel}>{t('board:header.export')}</span>
             </Button>
@@ -237,12 +246,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
       />
 
       {/* Main Content Area */}
-      <main 
-        className={styles.pageContent} 
-        ref={pageRef} 
-        data-board-page
-        style={themeColorStyles}
-      >
+      <main className={styles.pageContent} ref={pageRef} data-board-page style={themeColorStyles}>
         <div className={styles.boardWorkspaceArea}>
           <BoardWorkspace
             boardId={boardId}

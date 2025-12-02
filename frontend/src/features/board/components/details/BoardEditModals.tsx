@@ -31,9 +31,9 @@ interface BoardEditModalsProps {
 
 /**
  * Container component that manages modal dialogs for board editing operations.
- * This component centralizes modal state management to provide consistent modal 
+ * This component centralizes modal state management to provide consistent modal
  * behavior for member invitations and field editing across the board details interface.
- * 
+ *
  * @param isInviteModalOpen - Controls visibility of the member invitation modal
  * @param editingField - Indicates which field is currently being edited, null when no editing
  * @param boardName - Current name of the board being edited

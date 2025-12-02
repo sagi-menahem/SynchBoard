@@ -146,10 +146,7 @@ export interface PromptMomentNotification {
   getSkippedReason: () => 'auto_cancel' | 'user_cancel' | 'tap_outside' | 'issuing_failed';
 
   /** Returns the reason why the prompt was dismissed */
-  getDismissedReason: () =>
-    | 'credential_returned'
-    | 'cancel_called'
-    | 'flow_restarted';
+  getDismissedReason: () => 'credential_returned' | 'cancel_called' | 'flow_restarted';
 
   /** Returns the moment type */
   getMomentType: () => 'display' | 'skipped' | 'dismissed';

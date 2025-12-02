@@ -36,7 +36,7 @@ interface CanvasConfigurationSectionProps {
  * Configuration section for canvas settings during board creation.
  * This component provides controls for setting canvas background color and dimensions,
  * supporting both preset sizes and custom dimensions with validation constraints.
- * 
+ *
  * @param canvasBackgroundColor - Current background color value for the canvas
  * @param onCanvasBackgroundColorChange - Handler for canvas background color changes
  * @param canvasSize - Selected canvas size preset or 'custom' for custom dimensions

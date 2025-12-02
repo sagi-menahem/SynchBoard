@@ -28,8 +28,9 @@ public class ToolPreferencesDTO {
     /** User's preferred default drawing tool (required, must match allowed tool pattern) */
     @NotBlank(message = "validation.toolRequired")
     @Pattern(
-            regexp = "brush|eraser|square|rectangle|circle|triangle|pentagon|hexagon|star|line|dottedLine|arrow|text|colorPicker|recolor",
-            message = "validation.toolPattern")
+        regexp = "brush|eraser|square|rectangle|circle|triangle|pentagon|hexagon|star|line|dottedLine|arrow|text|colorPicker|recolor",
+        message = "validation.toolPattern"
+    )
     private String defaultTool;
 
     /**
@@ -46,8 +47,9 @@ public class ToolPreferencesDTO {
 
     /** Dock anchor position for floating toolbar placement */
     @Pattern(
-            regexp = "top-left|top-center|top-right|bottom-left|bottom-center|bottom-right|left-center|right-center",
-            message = "validation.dockAnchorPattern")
+        regexp = "top-left|top-center|top-right|bottom-left|bottom-center|bottom-right|left-center|right-center",
+        message = "validation.dockAnchorPattern"
+    )
     private String dockAnchor;
 
     /** Whether the floating dock is minimized/collapsed */

@@ -116,10 +116,7 @@ export const useCanvasPanning = ({
     const pointers = Array.from(activePointers.current.values());
     if (pointers.length === 0) return null;
 
-    const sum = pointers.reduce(
-      (acc, p) => ({ x: acc.x + p.x, y: acc.y + p.y }),
-      { x: 0, y: 0 }
-    );
+    const sum = pointers.reduce((acc, p) => ({ x: acc.x + p.x, y: acc.y + p.y }), { x: 0, y: 0 });
 
     return {
       x: sum.x / pointers.length,
@@ -184,7 +181,7 @@ export const useCanvasPanning = ({
 
       return false;
     },
-    [calculateCentroid, calculatePinchDistance]
+    [calculateCentroid, calculatePinchDistance],
   );
 
   /**
@@ -230,8 +227,10 @@ export const useCanvasPanning = ({
         // Determine gesture type if still undetermined
         if (gestureType.current === 'undetermined') {
           // Check if either gesture has exceeded the threshold
-          if (cumulativePinchDelta.current >= GESTURE_DETECTION_THRESHOLD ||
-              cumulativePanDelta.current >= GESTURE_DETECTION_THRESHOLD) {
+          if (
+            cumulativePinchDelta.current >= GESTURE_DETECTION_THRESHOLD ||
+            cumulativePanDelta.current >= GESTURE_DETECTION_THRESHOLD
+          ) {
             // Lock into the gesture with more cumulative movement
             if (cumulativePinchDelta.current > cumulativePanDelta.current) {
               gestureType.current = 'zoom';
@@ -249,7 +248,10 @@ export const useCanvasPanning = ({
             const zoomSensitivity = 0.005;
             const zoomDelta = distanceDelta * zoomSensitivity;
 
-            const newScale = Math.min(maxZoom, Math.max(minZoom, currentZoomRef.current + zoomDelta));
+            const newScale = Math.min(
+              maxZoom,
+              Math.max(minZoom, currentZoomRef.current + zoomDelta),
+            );
 
             // Only trigger zoom change if scale actually changed
             if (newScale !== currentZoomRef.current && newCentroid) {
@@ -278,7 +280,10 @@ export const useCanvasPanning = ({
       }
 
       // Middle mouse panning - only respond to the pointer that initiated panning
-      if (middleMousePointerId.current !== null && event.pointerId === middleMousePointerId.current) {
+      if (
+        middleMousePointerId.current !== null &&
+        event.pointerId === middleMousePointerId.current
+      ) {
         if (lastPanPosition.current) {
           const deltaX = lastPanPosition.current.x - event.clientX;
           const deltaY = lastPanPosition.current.y - event.clientY;
@@ -292,7 +297,15 @@ export const useCanvasPanning = ({
         }
       }
     },
-    [containerRef, isPanning, calculateCentroid, calculatePinchDistance, onZoomChange, minZoom, maxZoom]
+    [
+      containerRef,
+      isPanning,
+      calculateCentroid,
+      calculatePinchDistance,
+      onZoomChange,
+      minZoom,
+      maxZoom,
+    ],
   );
 
   /**
@@ -321,7 +334,7 @@ export const useCanvasPanning = ({
         clearAllPointers();
       }
     },
-    [clearAllPointers]
+    [clearAllPointers],
   );
 
   // Clean up all pointers on unmount

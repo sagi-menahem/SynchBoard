@@ -44,15 +44,18 @@
   }
 }
 
-// Background track styling - Thinner and darker
+// Background track styling - Thinner with glass effect
 .sliderTrack {
-  background-color: var(--color-surface-hover); // Theme-aware track color
+  background-color: var(--glass-background);
+  border: 1px solid var(--glass-border);
   position: relative;
   flex-grow: 1;
   height: 4px; // Thinner track (Apple style)
   border-radius: 2px;
   @include theme.smooth-transition;
   overflow: hidden; // Ensure range doesn't bleed out
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 // Active range indicator - Solid primary color
@@ -64,21 +67,28 @@
   @include theme.smooth-transition;
 }
 
-// Draggable thumb control - Theme-aware circle with shadow
+// Draggable thumb control - Glass circle with shadow
 .sliderThumb {
   display: block;
   width: 20px; // Larger thumb
   height: 20px;
-  background-color: var(--color-surface-elevated);
+  background-color: var(--glass-background);
   border: 1px solid var(--glass-border);
   border-radius: 50%;
   box-shadow: 0 2px 4px var(--color-overlay-light); // Drop shadow
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease,
+    backdrop-filter 0.1s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
   &:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 8px var(--color-overlay-medium);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   &:focus {
@@ -96,6 +106,8 @@
     transform: none;
     box-shadow: none;
     background-color: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 

@@ -55,16 +55,16 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 }) => {
   const { preferences } = useUserBoardPreferences();
   const { theme } = useTheme();
-  
+
   // Compute header styles based on user's board appearance preference
   const headerStyles = useMemo(() => {
     const bgColor = preferences.boardBackgroundSetting;
-    
+
     // Skip color customization for transparent variant
     if (variant === 'transparent') {
       return {};
     }
-    
+
     // Handle CSS variables (like --board-bg-default)
     if (bgColor.startsWith('--')) {
       // For CSS variables, we need to get the computed value from the DOM
@@ -74,21 +74,21 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         tempElement.style.display = 'none';
         tempElement.style.color = `var(${bgColor})`;
         document.body.appendChild(tempElement);
-        
+
         const computedColor = getComputedStyle(tempElement).color;
         document.body.removeChild(tempElement);
-        
+
         // Parse RGB from computed style (format: "rgb(r, g, b)")
         const rgbMatch = computedColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
         if (rgbMatch) {
           const r = parseInt(rgbMatch[1]);
           const g = parseInt(rgbMatch[2]);
           const b = parseInt(rgbMatch[3]);
-          
+
           // Calculate luminance from RGB values
-          const luminance = (0.2126 * (r / 255) + 0.7152 * (g / 255) + 0.0722 * (b / 255));
+          const luminance = 0.2126 * (r / 255) + 0.7152 * (g / 255) + 0.0722 * (b / 255);
           const textColor = luminance < 0.5 ? '#ffffff' : '#000000';
-          
+
           return {
             '--header-bg': `var(${bgColor})`,
             '--header-bg-rgb': `${r}, ${g}, ${b}`,
@@ -96,29 +96,29 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           } as React.CSSProperties;
         }
       }
-      
+
       // Fallback if computation fails
       return {};
     }
-    
+
     // Handle hex colors
     if (bgColor.startsWith('#')) {
       const rgbString = hexToRgbString(bgColor);
       const luminance = calculateLuminance(bgColor);
-      
+
       // Determine text color based on background luminance
       const textColor = luminance < 0.5 ? '#ffffff' : '#000000';
-      
+
       return {
         '--header-bg': bgColor,
         '--header-bg-rgb': rgbString,
         '--header-text': textColor,
       } as React.CSSProperties;
     }
-    
+
     return {};
   }, [preferences.boardBackgroundSetting, variant, theme]);
-  
+
   const headerClasses = [styles.header, styles[variant], className].filter(Boolean).join(' ');
 
   return (

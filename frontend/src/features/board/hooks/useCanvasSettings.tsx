@@ -72,7 +72,7 @@ interface UseCanvasSettingsReturn {
  * This hook orchestrates canvas settings management by combining preset functionality with
  * state management to provide a complete interface for editing canvas properties including
  * background color, dimensions, and preset selections.
- * 
+ *
  * @param boardDetails - Current board details including canvas configuration
  * @param onUpdateSettings - Handler for applying canvas settings updates
  * @param styles - CSS class names for styling preset display components

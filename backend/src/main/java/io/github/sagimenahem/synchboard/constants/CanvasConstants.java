@@ -5,7 +5,7 @@ package io.github.sagimenahem.synchboard.constants;
  * collaborative whiteboard canvas. These constants control the visual appearance, dimensions, and
  * behavior of the drawing surface across the application. Used by canvas initialization,
  * validation, and user preference systems.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class CanvasConstants {

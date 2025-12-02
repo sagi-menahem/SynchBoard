@@ -5,7 +5,7 @@ package io.github.sagimenahem.synchboard.constants;
  * parameters for real-time collaboration in SynchBoard. These constants configure STOMP-based
  * WebSocket communication for board updates, chat messaging, and user notifications across the
  * collaborative whiteboard system.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class WebSocketConstants {

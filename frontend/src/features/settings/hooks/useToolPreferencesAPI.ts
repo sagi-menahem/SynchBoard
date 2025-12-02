@@ -35,7 +35,7 @@ const defaultToolPreferences: ToolPreferences = {
  * and canvas drawing settings with persistent storage for authenticated users.
  * Implements optimistic UI updates with rollback functionality for failed operations and proper error states.
  * Offers granular preference updates as well as batch preference modification capabilities.
- * 
+ *
  * @returns Object containing current tool preferences, loading states, and preference update functions
  */
 export const useToolPreferencesAPI = () => {
@@ -94,7 +94,8 @@ export const useToolPreferencesAPI = () => {
   const updateStrokeColor = (color: string) => updatePreference('defaultStrokeColor', color);
   const updateStrokeWidth = (width: number) => updatePreference('defaultStrokeWidth', width);
   const updateDockAnchor = (anchor: DockAnchor) => updatePreference('dockAnchor', anchor);
-  const updateDockMinimized = (minimized: boolean) => updatePreference('isDockMinimized', minimized);
+  const updateDockMinimized = (minimized: boolean) =>
+    updatePreference('isDockMinimized', minimized);
 
   const updateToolPreferences = async (newPrefs: Partial<ToolPreferences>) => {
     if (!isAuthenticated) {

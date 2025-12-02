@@ -8,12 +8,12 @@ import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 
 import {
-    BoardConfirmDialogs,
-    BoardDetailsHeader,
-    BoardEditModals,
-    CanvasSettingsSection,
-    MemberContextMenu,
-    MemberList,
+  BoardConfirmDialogs,
+  BoardDetailsHeader,
+  BoardEditModals,
+  CanvasSettingsSection,
+  MemberContextMenu,
+  MemberList,
 } from '../components/details';
 import { useBoardDetailsPage } from '../hooks/details';
 

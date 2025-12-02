@@ -5,7 +5,7 @@ package io.github.sagimenahem.synchboard.constants;
  * centralizes error message keys, validation constraints, and business rules to ensure consistency
  * across the application. Message keys are designed for internationalization (i18n) support and are
  * resolved through the message source system.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class MessageConstants {

@@ -37,8 +37,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   // Compute validation errors for real-time feedback
-  const passwordTooShort = passwordTouched && password.length > 0 && password.length < MIN_PASSWORD_LENGTH;
-  const passwordsDoNotMatch = confirmPasswordTouched && confirmPassword.length > 0 && password !== confirmPassword;
+  const passwordTooShort =
+    passwordTouched && password.length > 0 && password.length < MIN_PASSWORD_LENGTH;
+  const passwordsDoNotMatch =
+    confirmPasswordTouched && confirmPassword.length > 0 && password !== confirmPassword;
 
   // Restore form values on error to prevent data loss
   useEffect(() => {

@@ -16,7 +16,7 @@ interface ConnectionStatusBannerProps {
  * when the connection is lost. It automatically manages its height measurements and updates
  * CSS custom properties for layout adjustment, ensuring other page elements can properly
  * account for the banner's presence. The banner is only shown to authenticated users.
- * 
+ *
  * @param onHeightChange - Optional callback fired when banner height changes for external layout adjustments
  */
 export const ConnectionStatusBanner: React.FC<ConnectionStatusBannerProps> = ({

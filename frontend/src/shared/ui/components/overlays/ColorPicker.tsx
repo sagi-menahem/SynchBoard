@@ -24,7 +24,7 @@ interface ColorPickerProps {
  * Advanced color picker component with popover interface and preset colors.
  * Provides both a visual color wheel picker and quick-select preset colors for efficient color selection.
  * Features intelligent positioning to avoid viewport overflow and supports keyboard navigation.
- * 
+ *
  * @param {string} color - Current selected color in hex format
  * @param {function} onChange - Callback function called when color selection changes
  * @param {boolean} disabled - Whether the color picker is disabled and non-interactive
@@ -185,29 +185,31 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         </Button>
       </div>
 
-      {showPicker && !disabled && createPortal(
-        <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
-          <div className={styles.colorfulWrapper}>
-                <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} role="presentation">
-                  <HexColorPicker color={color} onChange={handleColorChange} />
-                </div>
-                <div className={styles.presetColors}>
-                  {PRESET_COLORS.map((presetColor) => (
-                    <Button
-                      key={presetColor}
-                      type="button"
-                      variant="icon"
-                      className={styles.presetColor}
-                      style={{ backgroundColor: presetColor }}
-                      onClick={() => handlePaletteColorClick(presetColor)}
-                      title={presetColor}
-                    />
-                  ))}
-                </div>
+      {showPicker &&
+        !disabled &&
+        createPortal(
+          <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
+            <div className={styles.colorfulWrapper}>
+              <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} role="presentation">
+                <HexColorPicker color={color} onChange={handleColorChange} />
               </div>
-            </div>,
-        document.body
-      )}
+              <div className={styles.presetColors}>
+                {PRESET_COLORS.map((presetColor) => (
+                  <Button
+                    key={presetColor}
+                    type="button"
+                    variant="icon"
+                    className={styles.presetColor}
+                    style={{ backgroundColor: presetColor }}
+                    onClick={() => handlePaletteColorClick(presetColor)}
+                    title={presetColor}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 };

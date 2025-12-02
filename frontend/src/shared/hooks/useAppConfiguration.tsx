@@ -30,7 +30,7 @@ interface UseAppConfigurationResult {
  * Handles dynamic layout calculations, language synchronization, OAuth processing states,
  * and provides render functions for different loading screens. Essential for proper
  * app initialization and responsive layout management.
- * 
+ *
  * @returns {UseAppConfigurationResult} Object containing layout dimensions, loading states, and render functions
  */
 export function useAppConfiguration(): UseAppConfigurationResult {

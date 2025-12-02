@@ -1,17 +1,17 @@
 import type { ActionPayload, Point } from 'features/board/types/BoardObjectTypes';
 import type { CanvasConfig } from 'features/board/types/BoardTypes';
 import {
-    drawCirclePayload,
-    drawLinePayload,
-    drawPolygonPayload,
-    drawRectanglePayload,
-    drawTextPayload,
-    drawTrianglePayload,
-    getPointerCoordinates,
-    isRadiusValid,
-    isShapeSizeValid,
-    replayDrawAction,
-    setupCanvasContext,
+  drawCirclePayload,
+  drawLinePayload,
+  drawPolygonPayload,
+  drawRectanglePayload,
+  drawTextPayload,
+  drawTrianglePayload,
+  getPointerCoordinates,
+  isRadiusValid,
+  isShapeSizeValid,
+  replayDrawAction,
+  setupCanvasContext,
 } from 'features/board/utils/CanvasUtils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -29,7 +29,7 @@ interface UseCanvasStateProps {
  * access to essential drawing utilities and validation functions. The hook manages canvas lifecycle including
  * context setup, dimension updates, and object replay for maintaining visual consistency across collaborative
  * sessions and provides comprehensive drawing utilities for various shape and object types.
- * 
+ *
  * @param objects - Array of canvas objects to render and maintain on the canvas surface
  * @param canvasConfig - Optional configuration object containing canvas dimensions and background settings
  * @returns Object containing canvas references, drawing state, dimension management, utility functions, and drawing tools

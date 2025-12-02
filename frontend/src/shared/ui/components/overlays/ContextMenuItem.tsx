@@ -17,7 +17,7 @@ interface ContextMenuItemProps {
  * Individual context menu item component with keyboard navigation support.
  * Provides clickable menu items with optional icons and various visual variants.
  * Supports keyboard navigation and accessibility features for context menus.
- * 
+ *
  * @param {function} onClick - Callback function called when item is clicked or activated
  * @param {React.ReactNode} children - The text content to display in the menu item
  * @param {boolean} destructive - Whether this action is destructive (deprecated, use variant instead)

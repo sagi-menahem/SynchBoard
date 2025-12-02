@@ -27,7 +27,7 @@ interface PictureManagerProps {
  * Picture management component for uploading and deleting profile images.
  * Provides a complete interface for image management with upload, delete, and preview functionality.
  * Automatically handles image URL construction and file validation.
- * 
+ *
  * @param {string | null} imageUrl - URL of the current image relative to API base
  * @param {string} defaultImage - Fallback image URL to display when no image is set
  * @param {string} altText - Accessibility description for the image
@@ -84,7 +84,12 @@ const PictureManager: React.FC<PictureManagerProps> = ({
       />
 
       <div className={styles.buttonGroup}>
-        <Button type="button" onClick={triggerFileInput} variant="secondary-glass" className={styles.themeButton}>
+        <Button
+          type="button"
+          onClick={triggerFileInput}
+          variant="secondary-glass"
+          className={styles.themeButton}
+        >
           {uploadButtonText ?? t('common:pictureManager.changeButton')}
         </Button>
 

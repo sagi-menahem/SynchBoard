@@ -70,7 +70,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
         />
       </div>
 
-      <Button type="submit" variant="primary-glass" disabled={isPending} className={styles.submitButton}>
+      <Button
+        type="submit"
+        variant="primary-glass"
+        disabled={isPending}
+        className={styles.submitButton}
+      >
         <LogIn size={16} />
         {isPending ? t('common:button.loggingIn') : t('auth:loginForm.button')}
       </Button>

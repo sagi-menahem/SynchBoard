@@ -21,7 +21,7 @@ interface InviteMemberFormProps {
  * Form component for inviting new members to board via email.
  * This component provides a streamlined interface for board administrators
  * to invite collaborators by email with form validation and loading states.
- * 
+ *
  * @param inviteForm - Form state and handlers from useBoardMemberActions hook for managing invitation flow
  * @param onInviteSuccess - Callback executed when member invitation succeeds, receives the newly added member data
  */

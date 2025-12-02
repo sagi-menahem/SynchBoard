@@ -20,7 +20,7 @@ import logger from 'shared/utils/logger';
  * It handles the complex state management for the board list page, including optimistic updates for
  * specific board changes and full refetches for broader updates. The hook integrates with the context
  * menu system for board actions and manages modal states for board creation and confirmation dialogs.
- * 
+ *
  * @returns Object containing board list state, filtered boards, loading states, modal controls,
  *   search functionality, and handlers for board operations and real-time updates
  */

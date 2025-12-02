@@ -132,57 +132,57 @@
 
 // Call-to-action button with glassmorphism style
 .cta {
-  background: rgba(16, 185, 129, 0.1);
+  background: color-mix(in srgb, var(--color-success) 10%, transparent);
   color: var(--btn-cta-bg);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-success) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-success) 10%, transparent);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
   font-size: theme.$font-size-xs;
 
   &:hover:not(:disabled) {
-    background: rgba(16, 185, 129, 0.2);
+    background: color-mix(in srgb, var(--color-success) 20%, transparent);
     color: var(--btn-cta-bg);
-    border-color: rgba(16, 185, 129, 0.5);
+    border-color: color-mix(in srgb, var(--color-success) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-success) 20%, transparent);
   }
 
   &:active:not(:disabled) {
-    background: rgba(16, 185, 129, 0.25);
+    background: color-mix(in srgb, var(--color-success) 25%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-success) 15%, transparent);
   }
 }
 
 // Warning button for cautionary actions with glassmorphism style
 .warning {
-  background: rgba(245, 158, 11, 0.1);
+  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
   color: var(--btn-warning-bg);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-warning) 10%, transparent);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
   font-size: theme.$font-size-xs;
 
   &:hover:not(:disabled) {
-    background: rgba(245, 158, 11, 0.2);
+    background: color-mix(in srgb, var(--color-warning) 20%, transparent);
     color: var(--btn-warning-bg);
-    border-color: rgba(245, 158, 11, 0.5);
+    border-color: color-mix(in srgb, var(--color-warning) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-warning) 20%, transparent);
   }
 
   &:active:not(:disabled) {
-    background: rgba(245, 158, 11, 0.25);
+    background: color-mix(in srgb, var(--color-warning) 25%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-warning) 15%, transparent);
   }
 }
 
@@ -221,25 +221,25 @@
 
 // Primary action button with glass design (for user pages)
 .primary-glass {
-  background: rgba(59, 130, 246, 0.15);
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
   color: var(--btn-primary-bg);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 10%, transparent);
 
   &:hover:not(:disabled) {
-    background: rgba(59, 130, 246, 0.25);
-    border-color: rgba(59, 130, 246, 0.5);
+    background: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 20%, transparent);
   }
 
   &:active:not(:disabled) {
-    background: rgba(59, 130, 246, 0.3);
+    background: color-mix(in srgb, var(--color-primary) 30%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 15%, transparent);
   }
 
   &:focus {
@@ -248,31 +248,31 @@
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 40%, transparent);
   }
 }
 
 // Destructive action button with glass design (for user pages)
 .destructive-glass {
-  background: rgba(239, 68, 68, 0.15);
+  background: color-mix(in srgb, var(--color-error) 15%, transparent);
   color: var(--btn-destructive-bg);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-error) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-error) 10%, transparent);
 
   &:hover:not(:disabled) {
-    background: rgba(239, 68, 68, 0.25);
-    border-color: rgba(239, 68, 68, 0.5);
+    background: color-mix(in srgb, var(--color-error) 25%, transparent);
+    border-color: color-mix(in srgb, var(--color-error) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-error) 20%, transparent);
   }
 
   &:active:not(:disabled) {
-    background: rgba(239, 68, 68, 0.3);
+    background: color-mix(in srgb, var(--color-error) 30%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-error) 15%, transparent);
   }
 
   &:focus {
@@ -281,7 +281,7 @@
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-error) 40%, transparent);
   }
 }
 

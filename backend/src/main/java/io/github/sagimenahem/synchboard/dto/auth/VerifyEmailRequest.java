@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for email verification requests. Contains user email and verification code
  * for completing the email verification process during registration.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

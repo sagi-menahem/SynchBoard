@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * Data Transfer Object for board action WebSocket communications. Contains nested Request and
  * Response classes for handling canvas object operations (add, update, delete) in real-time
  * collaborative sessions.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class BoardActionDTO {

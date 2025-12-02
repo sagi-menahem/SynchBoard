@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  * JPA entity representing a collaborative whiteboard group. Stores board metadata, canvas settings,
  * creation details, and member associations. Each board can have multiple members with different
  * permission levels.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity

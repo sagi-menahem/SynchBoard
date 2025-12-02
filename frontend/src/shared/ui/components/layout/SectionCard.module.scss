@@ -64,20 +64,12 @@
   border: 2px solid rgba(245, 158, 11, 0.6);
   border-top: 4px solid theme.$warning;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
-  background: linear-gradient(
-    135deg,
-    var(--glass-background) 0%,
-    rgba(245, 158, 11, 0.08) 100%
-  );
+  background: linear-gradient(135deg, var(--glass-background) 0%, rgba(245, 158, 11, 0.08) 100%);
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
-    background: linear-gradient(
-      135deg,
-      var(--glass-background) 0%,
-      rgba(245, 158, 11, 0.12) 100%
-    );
+    background: linear-gradient(135deg, var(--glass-background) 0%, rgba(245, 158, 11, 0.12) 100%);
   }
 
   // Top accent stripe for warning state
@@ -204,20 +196,20 @@
 
   .headerActions {
     flex-shrink: 0;
-    
+
     // Hide button text on mobile, show only icons
     :global(button) {
-      span:not([class*="icon"]) {
+      span:not([class*='icon']) {
         @media (max-width: 768px) {
           display: none;
         }
       }
-      
+
       // Ensure icon is visible
       svg {
         display: block;
       }
-      
+
       // Make icon-only buttons more compact
       padding: theme.$spacing-2;
       min-width: 2.5rem;
@@ -262,7 +254,6 @@
 
 // Enhanced borders for high contrast preference
 @media (prefers-contrast: high) {
-
   .default,
   .elevated,
   .danger {

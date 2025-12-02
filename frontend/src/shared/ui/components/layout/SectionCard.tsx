@@ -21,7 +21,7 @@ interface SectionCardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Versatile section card component for organizing content with optional header and various styling variants.
  * Provides consistent layout structure with responsive design and accessibility features.
  * Supports different visual states (default, warning, danger, elevated) and flexible content padding.
- * 
+ *
  * @param {React.ReactNode} children - Content to display within the card body
  * @param {string} title - Main title text for the card header
  * @param {string} subtitle - Secondary descriptive text displayed below the title

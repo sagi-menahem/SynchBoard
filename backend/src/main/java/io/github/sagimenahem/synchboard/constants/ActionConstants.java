@@ -5,7 +5,7 @@ package io.github.sagimenahem.synchboard.constants;
  * used throughout the application for action tracking, audit trails, and undo/redo functionality.
  * They represent the fundamental operations that can be performed on canvas objects in the
  * collaborative whiteboard system.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class ActionConstants {

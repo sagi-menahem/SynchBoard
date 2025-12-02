@@ -19,7 +19,7 @@ import { useBoardMemberActions } from './useBoardMemberActions';
  * member promotion/removal, board leaving, picture upload/deletion, and canvas configuration.
  * The hook serves as the primary controller for the board details page, coordinating between
  * multiple sub-hooks and providing a unified interface for component interaction.
- * 
+ *
  * @param {number} boardId - ID of the board to manage and orchestrate all page operations for
  * @returns Complete board details page management interface containing board state, user permissions,
  *   member management handlers, modal controls, file operations, and canvas settings functionality

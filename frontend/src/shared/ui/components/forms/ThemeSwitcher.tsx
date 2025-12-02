@@ -17,7 +17,7 @@ interface ThemeSwitcherProps {
  * Theme toggle switch component for switching between light and dark modes.
  * Provides a visual toggle interface with sun/moon icons and proper RTL support.
  * Uses Headless UI Switch for keyboard navigation and accessibility.
- * 
+ *
  * @param {string} className - Optional CSS class to apply to the container
  * @param {'sm' | 'md' | 'lg'} size - Visual size variant:
  *   - 'sm': Use in compact toolbars, mobile interfaces, or space-constrained areas

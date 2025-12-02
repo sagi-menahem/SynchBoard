@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * Composite primary key class for the GroupMember entity. This class represents the compound key
  * consisting of a user email and board group ID, used to uniquely identify board memberships.
- * 
+ *
  * @author Sagi Menahem
  */
 @NoArgsConstructor

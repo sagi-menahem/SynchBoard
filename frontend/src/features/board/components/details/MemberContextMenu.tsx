@@ -29,7 +29,7 @@ interface MemberContextMenuProps {
  * Context menu component for member management actions in board details.
  * This component provides admin users with quick access to promote members to admin
  * or remove them from the board through a right-click context menu interface.
- * 
+ *
  * @param isOpen - Controls visibility of the context menu
  * @param x - Horizontal position in pixels for menu placement
  * @param y - Vertical position in pixels for menu placement

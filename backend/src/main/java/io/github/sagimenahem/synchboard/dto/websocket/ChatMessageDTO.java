@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for chat message WebSocket communications. Contains nested Request and
  * Response classes for handling real-time chat functionality within board collaboration sessions.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class ChatMessageDTO {

@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Configuration properties class for centralizing application settings. Binds external
  * configuration properties with "app" prefix to strongly-typed configuration objects for JWT,
  * STOMP, upload, security, and OAuth2 settings.
- * 
+ *
  * @author Sagi Menahem
  */
 @ConfigurationProperties(prefix = "app")

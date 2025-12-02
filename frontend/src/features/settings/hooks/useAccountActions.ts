@@ -11,7 +11,7 @@ import { APP_ROUTES } from 'shared/constants';
  * Provides secure password change and account deletion functionality with toast notifications and navigation.
  * Integrates with authentication context to handle logout flows and route redirection after destructive actions.
  * Implements proper loading states and error propagation for reliable user experience in account management.
- * 
+ *
  * @returns Object containing account action handlers for password changes and account deletion
  */
 export const useAccountActions = () => {

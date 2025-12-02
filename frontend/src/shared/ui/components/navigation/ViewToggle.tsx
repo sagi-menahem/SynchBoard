@@ -21,7 +21,7 @@ interface ViewToggleProps {
  * View mode toggle component for switching between grid and list layouts.
  * Provides a segmented control interface with visual feedback for the active selection.
  * Supports keyboard navigation and accessibility features for view mode switching.
- * 
+ *
  * @param {ViewMode} value - Currently selected view mode:
  *   - 'grid': Display items in card-based grid layout for visual browsing and preview
  *   - 'list': Display items in compact list layout for dense information and quick scanning

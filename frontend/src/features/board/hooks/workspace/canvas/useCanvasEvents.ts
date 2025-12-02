@@ -73,13 +73,8 @@ export const useCanvasEvents = ({
   const lastPointerPosition = useRef<Point | null>(null);
 
   // Initialize panning and pinch-to-zoom functionality
-  const {
-    isPanning,
-    activePointerCount,
-    handlePanStart,
-    handlePanMove,
-    handlePanEnd,
-  } = useCanvasPanning({ containerRef, canvasRef, zoomScale, onZoomChange });
+  const { isPanning, activePointerCount, handlePanStart, handlePanMove, handlePanEnd } =
+    useCanvasPanning({ containerRef, canvasRef, zoomScale, onZoomChange });
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {

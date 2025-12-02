@@ -39,4 +39,3 @@ export * from './utils/CanvasUtils';
 export type * from './types/BoardObjectTypes';
 export type * from './types/BoardTypes';
 export type * from './types/ToolbarTypes';
-

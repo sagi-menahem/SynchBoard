@@ -4,7 +4,7 @@ import i18n from 'i18next';
  * Formats a timestamp into a user-friendly, context-aware display string.
  * Uses smart logic to show relative times (e.g., "just now", "5 minutes ago") for recent dates,
  * and absolute times/dates for older content. Handles internationalization and locale formatting.
- * 
+ *
  * @param {number | Date | string} timestamp - The timestamp to format (various input types supported)
  * @returns {string} Formatted timestamp string appropriate for user display
  */
@@ -72,7 +72,7 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
  * Formats a timestamp into a detailed, locale-aware display string.
  * Always shows the complete date and time information using the user's locale settings.
  * Used for tooltips, detailed views, or when precise timing information is needed.
- * 
+ *
  * @param {number | Date | string} timestamp - The timestamp to format (various input types supported)
  * @returns {string} Complete date and time string in user's locale format
  */
@@ -97,7 +97,7 @@ export const formatDetailedTimestamp = (timestamp: number | Date | string): stri
  * Formats a timestamp as a date separator for grouping messages or content by day.
  * Returns semantic labels like "Today", "Yesterday" for recent dates, and
  * formatted date strings for older content. Used in chat interfaces and activity feeds.
- * 
+ *
  * @param {number | Date | string} timestamp - The timestamp to format (various input types supported)
  * @returns {string} Date separator string suitable for UI grouping elements
  */

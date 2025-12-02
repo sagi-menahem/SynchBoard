@@ -18,7 +18,7 @@ let languagePrefsPromise: Promise<LanguagePreferences> | null = null;
  * Handles both authenticated user language preferences stored on the server and guest preferences in localStorage.
  * Integrates with i18n system to provide seamless language switching with immediate UI updates.
  * Implements module-level caching to prevent duplicate API calls and ensure consistent language state.
- * 
+ *
  * @returns Object containing language synchronization functions and loading state indicators
  */
 export const useLanguageSync = () => {

@@ -60,7 +60,7 @@ export interface UseBoardDetailsDataReturn {
  * Custom hook that manages board details data fetching, caching, and real-time updates.
  * This hook handles loading board details, managing user permissions, providing optimistic
  * updates for name/description edits, and subscribing to real-time board changes via WebSocket.
- * 
+ *
  * @param boardId - ID of the board to fetch details for, undefined if no board selected
  * @returns Complete board details management interface with data, permissions, and update handlers
  */

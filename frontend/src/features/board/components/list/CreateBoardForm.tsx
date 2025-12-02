@@ -29,7 +29,7 @@ interface CreateBoardFormProps {
  * Comprehensive form for creating new boards with full configuration options.
  * This component provides a multi-section form interface for board creation including
  * basic information, member invitations, canvas settings, and image upload capabilities.
- * 
+ *
  * @param onBoardCreated - Callback executed when board creation succeeds with the newly created board data
  * @param onClose - Callback to close the create board form modal
  */
@@ -106,7 +106,10 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
   );
 
   return (
-    <div className={`${styles.modalContainer} ${utilStyles.unifiedDotBackground}`} style={containerStyle}>
+    <div
+      className={`${styles.modalContainer} ${utilStyles.unifiedDotBackground}`}
+      style={containerStyle}
+    >
       <div className={styles.modalHeader}>
         <h3 className={styles.modalTitle}>{t('board:createForm.heading')}</h3>
       </div>
@@ -115,7 +118,11 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
         <div className={styles.formContainer}>
           {/* Left Column - Basic Info & Members */}
           <div className={styles.leftColumn}>
-            <SectionCard title={t('board:createForm.label.basicInfo')} variant="default" padding="md">
+            <SectionCard
+              title={t('board:createForm.label.basicInfo')}
+              variant="default"
+              padding="md"
+            >
               <div className={styles.field}>
                 <label htmlFor="board-name">
                   <Pencil size={14} />

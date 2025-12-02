@@ -18,7 +18,7 @@ interface LanguageToggleProps {
  * Language toggle switch component for switching between English and Hebrew.
  * Provides a visual toggle interface with proper RTL support and accessibility features.
  * Uses Headless UI Switch for keyboard navigation and screen reader compatibility.
- * 
+ *
  * @param {'en' | 'he'} value - Currently selected language code
  * @param {function} onChange - Callback function called when language selection changes
  * @param {string} className - Optional CSS class to apply to the toggle container

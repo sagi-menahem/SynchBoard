@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for standardized error responses. Provides consistent error information
  * structure for API responses including error messages, codes, status codes, and timestamps.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

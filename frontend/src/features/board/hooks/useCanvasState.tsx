@@ -20,7 +20,7 @@ interface UseCanvasStateOptions {
  * This hook handles the local state for canvas settings including editing mode, background color,
  * size presets, custom dimensions, and provides utilities for resetting state and calculating
  * final dimensions based on current selections.
- * 
+ *
  * @param boardDetails - Current board details containing canvas configuration
  * @param detectCurrentSizePreset - Function to detect current size preset from board dimensions
  * @returns Object containing canvas settings state and manipulation functions

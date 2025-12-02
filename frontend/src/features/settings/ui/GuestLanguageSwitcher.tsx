@@ -21,7 +21,7 @@ interface GuestLanguageSwitcherProps {
  * Provides language selection interface that persists preferences in localStorage rather than server storage.
  * Integrates with the language sync system to handle guest-specific language management without authentication.
  * Uses the shared LanguageToggle component with appropriate sizing and labeling options for different contexts.
- * 
+ *
  * @param className - Optional CSS class for custom styling
  * @param size - Size variant for the toggle component (defaults to 'sm')
  * @param showLabel - Whether to show language labels (defaults to false)

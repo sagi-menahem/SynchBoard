@@ -22,7 +22,7 @@ interface SliderProps {
  * Slider input component built on Radix UI primitives.
  * Provides smooth value selection with visual feedback and accessibility features.
  * Displays current value alongside the slider for immediate user feedback.
- * 
+ *
  * @param {number} value - Current slider value
  * @param {number} min - Minimum allowed value
  * @param {number} max - Maximum allowed value

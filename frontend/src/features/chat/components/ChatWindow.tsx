@@ -39,7 +39,7 @@ interface ChatWindowProps {
  * Integrates with board context for WebSocket message handling, implements message grouping,
  * search functionality, and automatic scrolling behavior. Manages chat state and optimistic
  * updates for seamless real-time communication experience.
- * 
+ *
  * Key features:
  * - Real-time message display with WebSocket integration
  * - Message grouping for consecutive messages from the same sender
@@ -49,11 +49,16 @@ interface ChatWindowProps {
  * - Optimistic message updates with transaction-based conflict resolution
  * - Message animation control for performance optimization
  * - Integration with board context for unified state management
- * 
+ *
  * @param boardId - Board identifier for chat context
  * @param messages - Array of chat messages to display
  */
-const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDrawer = false, chatRef }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({
+  boardId,
+  messages,
+  isMobileDrawer = false,
+  chatRef,
+}) => {
   const { t } = useTranslation(['chat', 'common']);
   const { userEmail } = useAuth();
   const { registerChatCommitHandler } = useBoardContext();
@@ -75,9 +80,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ boardId, messages, isMobileDraw
   } = useChatWindowLogic({ boardId, messages, isMobileDrawer });
 
   // Expose scrollToBottom to parent components via ref
-  useImperativeHandle(chatRef, () => ({
-    scrollToBottom,
-  }), [scrollToBottom]);
+  useImperativeHandle(
+    chatRef,
+    () => ({
+      scrollToBottom,
+    }),
+    [scrollToBottom],
+  );
 
   // Register chat transaction handler with board context for WebSocket integration
   useEffect(() => {

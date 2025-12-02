@@ -16,7 +16,7 @@ interface BoardProviderProps {
  * drawing tools, member collaboration, WebSocket communication, and board settings. The provider
  * centralizes all board-related state and operations, enabling seamless collaborative drawing
  * experiences across multiple users with real-time updates and conflict resolution.
- * 
+ *
  * The value object provides:
  * - Canvas state and drawing operations
  * - Active tool management and settings
@@ -25,7 +25,7 @@ interface BoardProviderProps {
  * - Board metadata and configuration
  * - Drawing history and undo/redo functionality
  * - Object selection and manipulation tools
- * 
+ *
  * @param boardId - Unique identifier of the board to manage and provide context for
  * @param children - Child components that will have access to the board context
  */
@@ -34,7 +34,8 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({ boardId, children 
 
   const boardData = useBoardWorkspace(boardId);
 
-  if (isNaN(boardId) || boardId <= 0) { // Validate board ID exists and is a positive integer to prevent invalid board access
+  if (isNaN(boardId) || boardId <= 0) {
+    // Validate board ID exists and is a positive integer to prevent invalid board access
     return <div>{t('board:provider.invalidIdError')}</div>;
   }
 

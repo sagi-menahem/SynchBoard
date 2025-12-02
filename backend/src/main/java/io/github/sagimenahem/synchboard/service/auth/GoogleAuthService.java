@@ -2,15 +2,7 @@ package io.github.sagimenahem.synchboard.service.auth;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.IMAGES_BASE_PATH;
 import static io.github.sagimenahem.synchboard.constants.LoggingConstants.SECURITY_PREFIX;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -23,8 +15,17 @@ import io.github.sagimenahem.synchboard.repository.PendingRegistrationRepository
 import io.github.sagimenahem.synchboard.repository.UserRepository;
 import io.github.sagimenahem.synchboard.service.storage.FileStorageService;
 import jakarta.annotation.PostConstruct;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * Service for processing Google authentication across different flows (OAuth2 redirect and One
@@ -56,13 +57,15 @@ public class GoogleAuthService {
     @PostConstruct
     public void init() {
         if (StringUtils.hasText(googleClientId)) {
-            googleIdTokenVerifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(),
-                    GsonFactory.getDefaultInstance())
-                            .setAudience(Collections.singletonList(googleClientId)).build();
+            googleIdTokenVerifier = new GoogleIdTokenVerifier.Builder(
+                new NetHttpTransport(),
+                GsonFactory.getDefaultInstance()
+            )
+                .setAudience(Collections.singletonList(googleClientId))
+                .build();
             log.info(SECURITY_PREFIX + " Google ID Token verifier initialized");
         } else {
-            log.warn(SECURITY_PREFIX
-                    + " Google Client ID not configured - One Tap authentication disabled");
+            log.warn(SECURITY_PREFIX + " Google Client ID not configured - One Tap authentication disabled");
         }
     }
 
@@ -94,9 +97,12 @@ public class GoogleAuthService {
 
             log.info(SECURITY_PREFIX + " Google ID Token verified successfully for: {}", email);
 
-            return GoogleUserInfo.builder().email(email).providerId(providerId).name(name)
-                    .pictureUrl(pictureUrl).build();
-
+            return GoogleUserInfo.builder()
+                .email(email)
+                .providerId(providerId)
+                .name(name)
+                .pictureUrl(pictureUrl)
+                .build();
         } catch (GeneralSecurityException | IOException e) {
             log.error(SECURITY_PREFIX + " Error verifying Google ID Token: {}", e.getMessage());
             throw new InvalidRequestException("Failed to verify Google ID Token");
@@ -121,24 +127,26 @@ public class GoogleAuthService {
 
         if (email == null || providerId == null) {
             log.error(
-                    SECURITY_PREFIX
-                            + " Missing required Google user data - email: {}, providerId: {}",
-                    email != null, providerId != null);
+                SECURITY_PREFIX + " Missing required Google user data - email: {}, providerId: {}",
+                email != null,
+                providerId != null
+            );
             throw new InvalidRequestException("Missing required user information from Google");
         }
 
         Optional<User> existingUser = userRepository.findById(email);
-        log.info(SECURITY_PREFIX + " Google user lookup result for {}: exists={}", email,
-                existingUser.isPresent());
+        log.info(SECURITY_PREFIX + " Google user lookup result for {}: exists={}", email, existingUser.isPresent());
 
         User userForToken;
 
         if (existingUser.isPresent()) {
             User user = existingUser.get();
             log.info(
-                    SECURITY_PREFIX
-                            + " Found existing user: email={}, authProvider={}, creationDate={}",
-                    email, user.getAuthProvider(), user.getCreationDate());
+                SECURITY_PREFIX + " Found existing user: email={}, authProvider={}, creationDate={}",
+                email,
+                user.getAuthProvider(),
+                user.getCreationDate()
+            );
 
             // Account merging: Allow Google login for existing accounts regardless of auth provider
             if (user.getAuthProvider() == User.AuthProvider.GOOGLE) {
@@ -152,8 +160,7 @@ public class GoogleAuthService {
             }
 
             userForToken = userRepository.save(user);
-            log.info(SECURITY_PREFIX + " Updated/merged user: {} (provider: {})", email,
-                    user.getAuthProvider());
+            log.info(SECURITY_PREFIX + " Updated/merged user: {} (provider: {})", email, user.getAuthProvider());
         } else {
             // Check if there's a pending registration for this email
             cleanupPendingRegistration(email);
@@ -161,8 +168,11 @@ public class GoogleAuthService {
             log.info(SECURITY_PREFIX + " Creating new Google user for: {}", email);
             User newUser = createUserFromGoogle(email, name, pictureUrl, providerId);
             userForToken = userRepository.save(newUser);
-            log.info(SECURITY_PREFIX + " Created new Google user: {} with creation date: {}", email,
-                    newUser.getCreationDate());
+            log.info(
+                SECURITY_PREFIX + " Created new Google user: {} with creation date: {}",
+                email,
+                newUser.getCreationDate()
+            );
         }
 
         return jwtService.generateToken(userForToken);
@@ -178,27 +188,29 @@ public class GoogleAuthService {
      * @param providerId The Google provider's user identifier
      * @return A new User entity with Google data
      */
-    private User createUserFromGoogle(String email, String name, String pictureUrl,
-            String providerId) {
+    private User createUserFromGoogle(String email, String name, String pictureUrl, String providerId) {
         String[] nameParts = splitName(name);
 
         String localPicturePath = null;
         if (pictureUrl != null) {
             localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
-                log.info(
-                        SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}",
-                        email);
+                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for new user: {}", email);
             } else {
-                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
-                        pictureUrl);
+                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}", pictureUrl);
             }
         }
 
-        return User.builder().email(email).firstName(nameParts[0]).lastName(nameParts[1])
-                .authProvider(User.AuthProvider.GOOGLE).providerId(providerId)
-                .profilePictureUrl(localPicturePath).creationDate(LocalDateTime.now())
-                .boardBackgroundSetting("--board-bg-midnight-blue").build();
+        return User.builder()
+            .email(email)
+            .firstName(nameParts[0])
+            .lastName(nameParts[1])
+            .authProvider(User.AuthProvider.GOOGLE)
+            .providerId(providerId)
+            .profilePictureUrl(localPicturePath)
+            .creationDate(LocalDateTime.now())
+            .boardBackgroundSetting("--board-bg-midnight-blue")
+            .build();
     }
 
     /**
@@ -210,8 +222,7 @@ public class GoogleAuthService {
      * @param pictureUrl The updated profile picture URL
      * @param providerId The Google provider's user identifier
      */
-    private void updateUserFromGoogle(User user, String name, String pictureUrl,
-            String providerId) {
+    private void updateUserFromGoogle(User user, String name, String pictureUrl, String providerId) {
         if (name != null) {
             String[] nameParts = splitName(name);
             user.setFirstName(nameParts[0]);
@@ -221,20 +232,21 @@ public class GoogleAuthService {
         if (pictureUrl != null) {
             if (StringUtils.hasText(user.getProfilePictureUrl())) {
                 // Extract filename from stored URL by removing the base path prefix
-                String existingFilename =
-                        user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
+                String existingFilename = user.getProfilePictureUrl().substring(IMAGES_BASE_PATH.length());
                 if (existingFilename != null && !existingFilename.isBlank()) {
-                    log.debug(SECURITY_PREFIX + " Deleting existing Google profile picture: {}",
-                            existingFilename);
+                    log.debug(SECURITY_PREFIX + " Deleting existing Google profile picture: {}", existingFilename);
                     try {
                         fileStorageService.delete(existingFilename);
-                        log.debug(SECURITY_PREFIX
-                                + " Successfully deleted existing Google profile picture: {}",
-                                existingFilename);
+                        log.debug(
+                            SECURITY_PREFIX + " Successfully deleted existing Google profile picture: {}",
+                            existingFilename
+                        );
                     } catch (Exception e) {
-                        log.warn(SECURITY_PREFIX
-                                + " Failed to delete existing Google profile picture: {} - {}",
-                                existingFilename, e.getMessage());
+                        log.warn(
+                            SECURITY_PREFIX + " Failed to delete existing Google profile picture: {} - {}",
+                            existingFilename,
+                            e.getMessage()
+                        );
                     }
                 }
             }
@@ -242,11 +254,9 @@ public class GoogleAuthService {
             String localPicturePath = fileStorageService.downloadAndStoreImageFromUrl(pictureUrl);
             if (localPicturePath != null) {
                 user.setProfilePictureUrl(localPicturePath);
-                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for user: {}",
-                        user.getEmail());
+                log.info(SECURITY_PREFIX + " Downloaded and stored profile picture for user: {}", user.getEmail());
             } else {
-                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}",
-                        pictureUrl);
+                log.warn(SECURITY_PREFIX + " Failed to download profile picture from URL: {}", pictureUrl);
                 user.setProfilePictureUrl(null);
             }
         }
@@ -274,8 +284,7 @@ public class GoogleAuthService {
      * @param pictureUrl The profile picture URL from Google
      * @param providerId The Google provider's user identifier
      */
-    private void mergeLocalUserWithGoogle(User user, String name, String pictureUrl,
-            String providerId) {
+    private void mergeLocalUserWithGoogle(User user, String name, String pictureUrl, String providerId) {
         // SAFETY: Do NOT change authProvider - keep as LOCAL so password login still works
         // SAFETY: Do NOT modify password field - it must remain untouched
 
@@ -284,9 +293,10 @@ public class GoogleAuthService {
 
         // Clear email verification token since Google has verified this email
         if (StringUtils.hasText(user.getEmailVerificationToken())) {
-            log.info(SECURITY_PREFIX
-                    + " Clearing email verification token for merged user: {} (Google verified)",
-                    user.getEmail());
+            log.info(
+                SECURITY_PREFIX + " Clearing email verification token for merged user: {} (Google verified)",
+                user.getEmail()
+            );
             user.setEmailVerificationToken(null);
         }
 
@@ -296,19 +306,21 @@ public class GoogleAuthService {
             if (localPicturePath != null) {
                 user.setProfilePictureUrl(localPicturePath);
                 log.info(
-                        SECURITY_PREFIX
-                                + " Downloaded and stored profile picture for merged user: {}",
-                        user.getEmail());
+                    SECURITY_PREFIX + " Downloaded and stored profile picture for merged user: {}",
+                    user.getEmail()
+                );
             } else {
-                log.warn(SECURITY_PREFIX
-                        + " Failed to download profile picture from Google for merged user: {}",
-                        user.getEmail());
+                log.warn(
+                    SECURITY_PREFIX + " Failed to download profile picture from Google for merged user: {}",
+                    user.getEmail()
+                );
             }
         }
 
-        log.info(SECURITY_PREFIX
-                + " Account merge complete for: {} - password preserved, authProvider remains LOCAL",
-                user.getEmail());
+        log.info(
+            SECURITY_PREFIX + " Account merge complete for: {} - password preserved, authProvider remains LOCAL",
+            user.getEmail()
+        );
     }
 
     /**
@@ -321,10 +333,7 @@ public class GoogleAuthService {
     private void cleanupPendingRegistration(String email) {
         Optional<PendingRegistration> pending = pendingRegistrationRepository.findByEmail(email);
         if (pending.isPresent()) {
-            log.info(
-                    SECURITY_PREFIX
-                            + " Cleaning up pending registration for: {} (Google verifies email)",
-                    email);
+            log.info(SECURITY_PREFIX + " Cleaning up pending registration for: {} (Google verifies email)", email);
             pendingRegistrationRepository.delete(pending.get());
         }
     }
@@ -337,13 +346,13 @@ public class GoogleAuthService {
      */
     private String[] splitName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) {
-            return new String[] {"Unknown", null};
+            return new String[] { "Unknown", null };
         }
 
         String[] parts = fullName.trim().split("\\s+", 2);
         String firstName = parts[0];
         String lastName = parts.length > 1 ? parts[1] : null;
 
-        return new String[] {firstName, lastName};
+        return new String[] { firstName, lastName };
     }
 }

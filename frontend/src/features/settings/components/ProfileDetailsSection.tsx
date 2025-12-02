@@ -24,7 +24,7 @@ interface ProfileDetailsSectionProps {
  * Provides a toggle between display and edit modes for user profile information.
  * Integrates form state management with validation and error handling for profile updates.
  * Implements contextual edit controls with save/cancel operations and proper form isolation.
- * 
+ *
  * @param user - User profile data containing current information to display
  * @param onUpdateProfile - Async function to handle validated profile update requests
  */
@@ -48,7 +48,11 @@ const ProfileDetailsSection: React.FC<ProfileDetailsSectionProps> = ({ user, onU
       variant="default"
       headerActions={
         !isEditing ? (
-          <Button onClick={startEditing} variant="secondary-glass" className={`${styles.editButton} ${styles.themeButton}`}>
+          <Button
+            onClick={startEditing}
+            variant="secondary-glass"
+            className={`${styles.editButton} ${styles.themeButton}`}
+          >
             <PencilLine size={16} />
             {t('settings:page.buttons.edit')}
           </Button>

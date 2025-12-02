@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object representing a board in the system. Contains board metadata including
  * identification, display information, canvas configuration, and user access information.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

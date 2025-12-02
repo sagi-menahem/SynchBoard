@@ -76,7 +76,7 @@ apiClient.interceptors.response.use(
     const isUserNotFoundInMessage =
       error.response?.status === 500 && error.message?.includes?.('User not found'); // 500 Internal Server Error - user session corrupted
     const isUserNotFoundError = isUserNotFoundInResponse || isUserNotFoundInMessage;
-    
+
     // Detect OAuth redirect errors (often indicate expired sessions)
     const isOAuthRedirectError =
       !error.response &&
@@ -84,12 +84,12 @@ apiClient.interceptors.response.use(
         error.message?.includes?.('blocked by CORS policy') ||
         error.code === 'ERR_NETWORK') &&
       getToken();
-      
+
     const isHttpUnauthorized =
       error.response && [401, 403].includes(error.response.status) && !isAuthFormRequest; // 401 Unauthorized/403 Forbidden - invalid or expired credentials
     const isUserNotFoundErrorTimeout = isUserNotFoundError && !isAuthFormRequest;
     const isOAuthRedirectErrorTimeout = isOAuthRedirectError && !isAuthFormRequest;
-    
+
     // Determine if this is a session timeout requiring user reauthentication
     const isSessionTimeout =
       isHttpUnauthorized || isUserNotFoundErrorTimeout || isOAuthRedirectErrorTimeout;

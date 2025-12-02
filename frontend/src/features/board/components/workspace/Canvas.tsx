@@ -54,7 +54,7 @@ interface CanvasProps {
  * Interactive HTML5 canvas component for collaborative drawing and whiteboarding.
  * This component manages the drawing surface, tool interactions, text input overlays,
  * and connection status indicators for real-time collaborative drawing.
- * 
+ *
  * @param instanceId - Unique instance identifier for this canvas session
  * @param onDraw - Handler for drawing actions performed on the canvas
  * @param objects - Array of drawing objects/actions to render on the canvas
@@ -271,9 +271,9 @@ const Canvas: React.FC<CanvasProps> = (props) => {
   );
 
   return (
-    <div 
-      ref={containerRef} 
-      className={containerClassName} 
+    <div
+      ref={containerRef}
+      className={containerClassName}
       style={containerStyle}
       onPointerDown={handleContainerPointerDown}
     >

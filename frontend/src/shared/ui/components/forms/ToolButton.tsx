@@ -21,7 +21,7 @@ interface ToolButtonProps {
  * Specialized button component for toolbar tools with active state management.
  * Automatically applies active styling when the tool matches the current tool.
  * Provides consistent interaction patterns for tool selection interfaces.
- * 
+ *
  * @param {Tool} tool - Tool type that this button represents
  * @param {Tool} currentTool - Currently active tool for visual comparison
  * @param {function} onClick - Callback function called when button is clicked

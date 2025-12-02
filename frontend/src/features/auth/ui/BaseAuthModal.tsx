@@ -30,7 +30,7 @@ interface BaseAuthModalProps {
  * Provides consistent layout, styling, and behavior patterns for login, registration,
  * email verification, and password reset modals. Handles form submission states,
  * loading indicators, and standardized button arrangements.
- * 
+ *
  * Key features:
  * - Consistent modal header with title and optional description
  * - Form wrapper with submit/cancel button standardization

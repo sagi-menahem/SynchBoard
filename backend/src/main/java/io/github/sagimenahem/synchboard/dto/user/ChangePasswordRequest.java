@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for password change requests. Contains current and new password fields with
  * validation to ensure both passwords are provided for secure password updates.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

@@ -20,10 +20,10 @@
   // Glass-morphism effect
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  
+
   // Apply dynamic text color to all text elements
   color: var(--header-text, var(--color-text-primary));
-  
+
   // When center wraps, span full width
   @supports (grid-template-rows: subgrid) {
     grid-auto-rows: auto;

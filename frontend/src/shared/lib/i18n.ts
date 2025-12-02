@@ -39,7 +39,7 @@ const resources = {
  * Determines the initial language for the application on startup.
  * Checks guest language preference first, then stored i18next language,
  * falling back to English if neither is available or valid.
- * 
+ *
  * @returns {string} The initial language code ('en' or 'he')
  */
 const getInitialLanguage = (): string => {
@@ -86,7 +86,7 @@ export const RTL_LANGUAGES = ['he', 'ar'];
 
 /**
  * Determines if a language requires right-to-left (RTL) text direction.
- * 
+ *
  * @param {string} language - The language code to check
  * @returns {boolean} True if the language requires RTL layout
  */
@@ -96,7 +96,7 @@ export const isRTL = (language: string): boolean => {
 
 /**
  * Gets the text direction for a given language.
- * 
+ *
  * @param {string} language - The language code to check
  * @returns {'ltr' | 'rtl'} The appropriate text direction
  */
@@ -107,7 +107,7 @@ export const getTextDirection = (language: string): 'ltr' | 'rtl' => {
 /**
  * Updates the document's direction and language attributes based on the current language.
  * This affects the entire application's layout direction and accessibility attributes.
- * 
+ *
  * @param {string} language - The language code to apply to the document
  */
 export const updateDocumentDirection = (language: string): void => {

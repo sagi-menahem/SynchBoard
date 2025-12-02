@@ -8,15 +8,15 @@ import styles from './satellites.module.scss';
  * Props for ColorPaletteSatellite component.
  */
 interface ColorPaletteSatelliteProps {
-    /** Whether device is mobile */
-    isMobile: boolean;
-    /** Handler to collapse the toolbar (mobile only) */
-    onCollapse: () => void;
+  /** Whether device is mobile */
+  isMobile: boolean;
+  /** Handler to collapse the toolbar (mobile only) */
+  onCollapse: () => void;
 }
 
 /**
  * ColorPaletteSatellite component - Interactive color picker for stroke colors.
- * 
+ *
  * Features:
  * - 18 preset Material Design colors in 6×3 grid
  * - Circular color buttons with visible color swatches
@@ -24,53 +24,56 @@ interface ColorPaletteSatelliteProps {
  * - Auto-collapses toolbar on mobile after selection
  * - Syncs with global tool preferences
  * - Compact, centered design matching other satellites
- * 
+ *
  * Phase 3D Implementation
  */
-export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({ isMobile, onCollapse }) => {
-    const { preferences, updateStrokeColor } = useToolPreferences();
+export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
+  isMobile,
+  onCollapse,
+}) => {
+  const { preferences, updateStrokeColor } = useToolPreferences();
 
-    // Use first 18 colors from PRESET_COLORS (Material Design palette)
-    const paletteColors = PRESET_COLORS.slice(0, 18);
+  // Use first 18 colors from PRESET_COLORS (Material Design palette)
+  const paletteColors = PRESET_COLORS.slice(0, 18);
 
-    const handleColorSelect = useCallback(
-        async (color: string) => {
-            try {
-                await updateStrokeColor(color);
-                // Auto-collapse toolbar on mobile after color selection
-                if (isMobile) {
-                    onCollapse();
-                }
-            } catch {
-                // Error handling is managed by useToolPreferences
-                // Errors are displayed via the preferences context error state
-            }
-        },
-        [updateStrokeColor, isMobile, onCollapse],
-    );
+  const handleColorSelect = useCallback(
+    async (color: string) => {
+      try {
+        await updateStrokeColor(color);
+        // Auto-collapse toolbar on mobile after color selection
+        if (isMobile) {
+          onCollapse();
+        }
+      } catch {
+        // Error handling is managed by useToolPreferences
+        // Errors are displayed via the preferences context error state
+      }
+    },
+    [updateStrokeColor, isMobile, onCollapse],
+  );
 
-    return (
-        <div className={styles.satelliteContent}>
-            <div className={styles.satelliteHeader}>Color Palette</div>
-            
-            <div className={styles.colorGrid}>
-                {paletteColors.map((color, index) => {
-                    const isActive = preferences.defaultStrokeColor === color;
-                    return (
-                        <button
-                            key={`${color}-${index}`}
-                            className={`${styles.colorButton} ${isActive ? styles.active : ''}`}
-                            onClick={() => handleColorSelect(color)}
-                            style={{ backgroundColor: color }}
-                            title={color}
-                            aria-label={`Select color ${color}`}
-                            aria-pressed={isActive}
-                        >
-                            <span className={styles.srOnly}>{color}</span>
-                        </button>
-                    );
-                })}
-            </div>
-        </div>
-    );
+  return (
+    <div className={styles.satelliteContent}>
+      <div className={styles.satelliteHeader}>Color Palette</div>
+
+      <div className={styles.colorGrid}>
+        {paletteColors.map((color, index) => {
+          const isActive = preferences.defaultStrokeColor === color;
+          return (
+            <button
+              key={`${color}-${index}`}
+              className={`${styles.colorButton} ${isActive ? styles.active : ''}`}
+              onClick={() => handleColorSelect(color)}
+              style={{ backgroundColor: color }}
+              title={color}
+              aria-label={`Select color ${color}`}
+              aria-pressed={isActive}
+            >
+              <span className={styles.srOnly}>{color}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 };

@@ -16,7 +16,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  * Versatile button component with multiple visual variants and full accessibility support.
  * Provides consistent styling across the application while supporting all standard HTML button features.
  * Uses forwardRef for proper ref handling in complex component hierarchies.
- * 
+ *
  * @param {ButtonVariant} variant - Visual styling variant:
  *   - 'primary': Use for main actions (submit, save, create new)
  *   - 'secondary': Use for alternative actions (cancel, back, edit)

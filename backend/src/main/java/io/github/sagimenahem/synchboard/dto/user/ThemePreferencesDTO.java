@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object representing user theme preferences. Contains the user's selected theme
  * setting for the application with validation to ensure only supported themes are used.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

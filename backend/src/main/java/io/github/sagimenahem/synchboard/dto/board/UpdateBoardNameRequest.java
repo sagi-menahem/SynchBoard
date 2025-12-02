@@ -4,6 +4,7 @@ import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_LENGTH;
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_MAX_LENGTH;
 import static io.github.sagimenahem.synchboard.constants.MessageConstants.BOARD_NAME_MIN_LENGTH;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -11,7 +12,7 @@ import lombok.Data;
 /**
  * Data Transfer Object for updating a board's name. Contains validation constraints to ensure the
  * new name meets the system requirements for board naming.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

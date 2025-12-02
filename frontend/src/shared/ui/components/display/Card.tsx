@@ -28,7 +28,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  *   - 'none': Use when child components handle their own spacing and layout
  *   - 'sm': Use for compact content, lists, or minimal information display
  *   - 'md': Use for standard content sections and general-purpose containers
- *   - 'lg': Use for primary content areas, hero sections, or prominent information displays  
+ *   - 'lg': Use for primary content areas, hero sections, or prominent information displays
  * @param hoverable - Whether card should respond to hover interactions with visual feedback
  * @param className - Additional CSS classes for custom styling
  */

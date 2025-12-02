@@ -43,7 +43,7 @@ export interface ChatMessagePayload {
  * Custom hook for managing chat message operations including creation, validation, and sending.
  * Provides utilities for optimistic updates, message payload creation, and WebSocket communication.
  * Implements comprehensive validation and error handling for reliable message transmission.
- * 
+ *
  * Key features:
  * - Message validation with length and content checks
  * - Optimistic message creation for immediate UI feedback
@@ -51,7 +51,7 @@ export interface ChatMessagePayload {
  * - Transaction-based message tracking for conflict resolution
  * - Comprehensive error handling and logging
  * - Integration with React's flushSync for immediate updates
- * 
+ *
  * @returns Object containing message operations and utilities
  */
 export const useChatMessages = () => {

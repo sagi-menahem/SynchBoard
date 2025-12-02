@@ -32,7 +32,7 @@ interface TextInputOverlayProps {
  * Positioned text input overlay for adding text elements to the canvas.
  * This component provides an inline text editing experience that appears at specific
  * canvas coordinates with customizable styling and keyboard shortcuts for submission/cancellation.
- * 
+ *
  * @param x - Horizontal position of the overlay in pixels relative to the canvas
  * @param y - Vertical position of the overlay in pixels relative to the canvas
  * @param width - Width of the text input area in pixels

@@ -7,24 +7,24 @@ import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { useIsMobile } from 'shared/hooks';
 import {
-    AppHeader,
-    Button,
-    ConfirmationDialog,
-    PageLoader,
-    PageTransition,
-    PictureManager,
-    SectionCard,
+  AppHeader,
+  Button,
+  ConfirmationDialog,
+  PageLoader,
+  PageTransition,
+  PictureManager,
+  SectionCard,
 } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import logger from 'shared/utils/logger';
 
 import {
-    BoardAppearanceSection,
-    ChangePasswordForm,
-    DangerZoneSection,
-    LanguageSection,
-    ProfileDetailsSection,
-    ThemeSection,
+  BoardAppearanceSection,
+  ChangePasswordForm,
+  DangerZoneSection,
+  LanguageSection,
+  ProfileDetailsSection,
+  ThemeSection,
 } from '../components';
 import { useAccountActions } from '../hooks';
 import { useUserProfile } from '../hooks/profile';
@@ -92,17 +92,21 @@ const SettingsPage: React.FC = () => {
       <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={
-            <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
+            <Button
+              variant="icon"
+              onClick={() => navigate(APP_ROUTES.BOARD_LIST)}
+              title={t('settings:page.boardListButton')}
+            >
               <ArrowLeft size={20} />
             </Button>
           }
           title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
-          trailing={(
+          trailing={
             <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
               <LogOut size={20} />
               <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
             </Button>
-          )}
+          }
         />
         <PageLoader message={t('settings:page.loading')} />
       </PageTransition>
@@ -113,18 +117,22 @@ const SettingsPage: React.FC = () => {
     return (
       <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
-          leading={(
-            <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
+          leading={
+            <Button
+              variant="icon"
+              onClick={() => navigate(APP_ROUTES.BOARD_LIST)}
+              title={t('settings:page.boardListButton')}
+            >
               <ArrowLeft size={20} />
             </Button>
-          )}
+          }
           title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
-          trailing={(
+          trailing={
             <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
               <LogOut size={20} />
               <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
             </Button>
-          )}
+          }
         />
         <main className={styles.pageContent}>
           <div className={styles.loadError}>{t('settings:page.loadError')}</div>
@@ -136,18 +144,22 @@ const SettingsPage: React.FC = () => {
   return (
     <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
       <AppHeader
-        leading={(
-          <Button variant="icon" onClick={() => navigate(APP_ROUTES.BOARD_LIST)} title={t('settings:page.boardListButton')}>
+        leading={
+          <Button
+            variant="icon"
+            onClick={() => navigate(APP_ROUTES.BOARD_LIST)}
+            title={t('settings:page.boardListButton')}
+          >
             <ArrowLeft size={20} />
           </Button>
-        )}
+        }
         title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
-        trailing={(
+        trailing={
           <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
             <LogOut size={20} />
             <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
           </Button>
-        )}
+        }
       />
       <main className={styles.pageContent}>
         {/* Left Column - Appearance & Preferences */}

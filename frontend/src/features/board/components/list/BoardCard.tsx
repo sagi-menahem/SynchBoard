@@ -26,9 +26,9 @@ interface BoardCardProps {
 
 /**
  * Displays individual board information as an interactive card with navigation link.
- * This memoized component renders board details including picture, name, description, 
+ * This memoized component renders board details including picture, name, description,
  * canvas configuration, and admin status in either grid or list layout modes.
- * 
+ *
  * @param board - Board data including name, description, canvas settings, and metadata
  * @param viewMode - Display mode for the card layout - either grid or list view
  */
@@ -68,7 +68,7 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
             <div className={styles.gridAvatar}>
               <img src={imageSource} alt={board.name} className={styles.gridAvatarImage} />
             </div>
-            
+
             {board.isAdmin && (
               <div className={styles.adminBadge} title={t('board:listPage.adminLabel')}>
                 <Crown size={14} />
@@ -79,7 +79,7 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
           {/* Card content - compact */}
           <div className={styles.boardCardContent}>
             <h3 className={styles.boardName}>{board.name}</h3>
-            
+
             {/* Metadata row */}
             <div className={styles.metadataRow}>
               <div
@@ -91,10 +91,7 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
             </div>
 
             {/* Timestamp */}
-            <RelativeTimestamp
-              timestamp={board.lastModifiedDate}
-              className={styles.timestamp}
-            />
+            <RelativeTimestamp timestamp={board.lastModifiedDate} className={styles.timestamp} />
           </div>
         </Card>
       </Link>
@@ -107,12 +104,8 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
       <Card variant="glass" hoverable className={cardClasses}>
         {/* Left section: Avatar + Name */}
         <div className={styles.listLeftSection}>
-          <img 
-            src={imageSource} 
-            alt={board.name} 
-            className={styles.listThumbnail}
-          />
-          
+          <img src={imageSource} alt={board.name} className={styles.listThumbnail} />
+
           <div className={styles.listName}>
             <h3>{board.name}</h3>
             {board.isAdmin && (
@@ -129,7 +122,7 @@ const BoardCard: React.FC<BoardCardProps> = React.memo(({ board, viewMode = 'gri
           <div className={styles.listResolution}>
             <span>{canvasResolution}</span>
           </div>
-          
+
           {/* Color below */}
           <div className={styles.listColorInfo}>
             <div

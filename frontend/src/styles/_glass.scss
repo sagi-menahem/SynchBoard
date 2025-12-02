@@ -15,18 +15,18 @@ body[data-theme='dark'] {
 // Creates a solid panel using user's Board Appearance color
 // Previously used transparency/blur, now uses solid backgrounds for cleaner look
 @mixin glass-panel($opacity: 1, $blur: 0) {
-    // Solid background using user's theme color
-    background: var(--user-chosen-color, var(--glass-background));
-    opacity: $opacity;
+  // Solid background using user's theme color
+  background: var(--user-chosen-color, var(--glass-background));
+  opacity: $opacity;
 
-    // Subtle border for definition
-    border: 1px solid var(--glass-border);
+  // Subtle border for definition
+  border: 1px solid var(--glass-border);
 
-    // Soft shadow for depth
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  // Soft shadow for depth
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 // Pill Shape Mixin
 @mixin pill-shape {
-    border-radius: 9999px;
+  border-radius: 9999px;
 }

@@ -20,7 +20,7 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
  * WebSocket configuration for real-time collaborative features. Configures STOMP broker relay using
  * ActiveMQ, message routing, JWT authentication, and connection settings for real-time board
  * collaboration and chat functionality.
- * 
+ *
  * @author Sagi Menahem
  */
 @Configuration
@@ -41,19 +41,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      * Configures the STOMP message broker to use external ActiveMQ broker relay. Sets up broker
      * connection parameters, authentication credentials, heartbeat intervals, and application
      * destination prefixes for real-time message routing.
-     * 
+     *
      * @param config the message broker registry to configure
      */
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
-                .setRelayHost(appProperties.getStomp().getBrokerHost())
-                .setRelayPort(appProperties.getStomp().getBrokerPort()).setClientLogin(brokerUser)
-                .setClientPasscode(brokerPassword).setSystemLogin(brokerUser)
-                .setSystemPasscode(brokerPassword)
-                .setSystemHeartbeatSendInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
-                .setSystemHeartbeatReceiveInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
-                .setVirtualHost("/");
+        config
+            .enableStompBrokerRelay(WEBSOCKET_TOPIC_PREFIX)
+            .setRelayHost(appProperties.getStomp().getBrokerHost())
+            .setRelayPort(appProperties.getStomp().getBrokerPort())
+            .setClientLogin(brokerUser)
+            .setClientPasscode(brokerPassword)
+            .setSystemLogin(brokerUser)
+            .setSystemPasscode(brokerPassword)
+            .setSystemHeartbeatSendInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
+            .setSystemHeartbeatReceiveInterval(WEBSOCKET_HEARTBEAT_INTERVAL_MS)
+            .setVirtualHost("/");
 
         config.setApplicationDestinationPrefixes(WEBSOCKET_APP_PREFIX);
     }
@@ -62,21 +65,24 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      * Registers STOMP WebSocket endpoints with SockJS support for client connections. Configures
      * CORS allowed origins, connection limits, and fallback options for browsers without WebSocket
      * support.
-     * 
+     *
      * @param registry the STOMP endpoint registry to configure
      */
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-        registry.addEndpoint(WEBSOCKET_ENDPOINT)
-                .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins()).withSockJS()
-                .setStreamBytesLimit(1024 * 1024).setHttpMessageCacheSize(1000)
-                .setDisconnectDelay(30 * 1000);
+        registry
+            .addEndpoint(WEBSOCKET_ENDPOINT)
+            .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins())
+            .withSockJS()
+            .setStreamBytesLimit(1024 * 1024)
+            .setHttpMessageCacheSize(1000)
+            .setDisconnectDelay(30 * 1000);
     }
 
     /**
      * Configures client inbound channel with JWT authentication interceptor. Adds security layer
      * to validate JWT tokens for all incoming WebSocket messages and ensure authenticated access.
-     * 
+     *
      * @param registration the channel registration to configure with interceptors
      */
     @Override
@@ -88,7 +94,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      * Configures WebSocket transport settings including message size and buffer limits. Sets
      * maximum message size and send buffer limits to prevent excessive memory usage and ensure
      * stable performance under load.
-     * 
+     *
      * @param registration the WebSocket transport registration to configure
      */
     @Override
@@ -101,7 +107,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      * Creates and configures the WebSocket container with message buffer size limits. Establishes
      * maximum buffer sizes for text and binary messages to prevent out-of-memory errors during
      * large message processing.
-     * 
+     *
      * @return configured ServletServerContainerFactoryBean with appropriate buffer limits
      */
     @Bean

@@ -7,7 +7,7 @@ import { detectObjectHit } from './hitDetection';
  * Analyzes the mouse position against canvas objects to determine if recoloring is possible
  * at the current location. Returns visual feedback cursors to guide user interaction with
  * the recolor tool, distinguishing between valid targets and invalid areas.
- * 
+ *
  * @param mousePosition - Current mouse coordinates on the canvas
  * @param objects - Array of canvas objects to test for hit detection
  * @param canvasWidth - Canvas width in pixels for coordinate scaling

@@ -67,10 +67,7 @@ $color-status-confirmed-border-dark: #404040;
 $color-status-failed-border-light: #f87171;
 $color-status-failed-border-dark: #fca5a5;
 
-$color-status-failed-bg-light: rgba(254,
-    242,
-    242,
-    0.3);
+$color-status-failed-bg-light: rgba(254, 242, 242, 0.3);
 $color-status-failed-bg-dark: rgba(69, 26, 26, 0.2);
 
 $color-backdrop: rgba(0, 0, 0, 0.7);
@@ -223,7 +220,8 @@ $transition-ease: ease;
 $transition-ease-in-out: ease-in-out;
 
 $transition-all: all $transition-normal $transition-ease;
-$transition-colors: background-color $transition-normal $transition-ease,
+$transition-colors:
+  background-color $transition-normal $transition-ease,
   border-color $transition-normal $transition-ease,
   color $transition-normal $transition-ease;
 $transition-transform: transform $transition-normal $transition-ease;

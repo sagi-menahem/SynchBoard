@@ -9,7 +9,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist', 'node_modules', 'build', 'coverage']
+    ignores: ['dist', 'node_modules', 'build', 'coverage'],
   },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -39,39 +39,32 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
-      
+
       // React rules
       'react/react-in-jsx-scope': 'off', // React 17+ JSX Transform
       'react/prop-types': 'off', // Using TypeScript for prop validation
-      
+
       // React Hooks rules
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      
+
       // Import rules
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index'
-          ],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'ignore',
-          alphabetize: { order: 'asc', caseInsensitive: true }
-        }
+          alphabetize: { order: 'asc', caseInsensitive: true },
+        },
       ],
       'import/no-unresolved': 'off', // Let TypeScript handle this
-      
+
       // General code quality rules
       'no-console': 'warn',
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
-      
+
       // Accessibility rules
       'jsx-a11y/alt-text': 'error',
       'jsx-a11y/anchor-has-content': 'error',

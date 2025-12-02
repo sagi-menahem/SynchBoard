@@ -13,7 +13,7 @@ import apiClient from 'shared/lib/apiClient';
 
 /**
  * Fetches the current user's profile information from the server.
- * 
+ *
  * @returns Promise resolving to user profile data including personal information and preferences
  */
 export const getUserProfile = async (): Promise<UserProfile> => {
@@ -23,7 +23,7 @@ export const getUserProfile = async (): Promise<UserProfile> => {
 
 /**
  * Updates the user's profile information on the server.
- * 
+ *
  * @param data - Profile update request containing modified personal information
  * @returns Promise resolving to updated user profile data
  */
@@ -34,7 +34,7 @@ export const updateUserProfile = async (data: UpdateUserProfileRequest): Promise
 
 /**
  * Changes the user's password with current password verification.
- * 
+ *
  * @param data - Password change request containing current and new passwords
  */
 export const changePassword = async (data: ChangePasswordRequest): Promise<void> => {
@@ -43,7 +43,7 @@ export const changePassword = async (data: ChangePasswordRequest): Promise<void>
 
 /**
  * Uploads a new profile picture for the user.
- * 
+ *
  * @param file - Image file to upload as profile picture
  * @returns Promise resolving to updated user profile with new picture URL
  */
@@ -62,7 +62,7 @@ export const uploadProfilePicture = async (file: File): Promise<UserProfile> => 
 
 /**
  * Deletes the user's current profile picture.
- * 
+ *
  * @returns Promise resolving to updated user profile with removed picture
  */
 export const deleteProfilePicture = async (): Promise<UserProfile> => {
@@ -72,7 +72,7 @@ export const deleteProfilePicture = async (): Promise<UserProfile> => {
 
 /**
  * Updates user preferences including board background and visual settings.
- * 
+ *
  * @param data - User preferences object with updated settings
  * @returns Promise resolving to updated user profile with new preferences
  */
@@ -90,7 +90,7 @@ export const deleteAccount = async (): Promise<void> => {
 
 /**
  * Checks if a user account exists for the given email address.
- * 
+ *
  * @param email - Email address to check for existing account
  * @returns Promise resolving to boolean indicating if user exists
  */
@@ -101,7 +101,7 @@ export const checkUserExists = async (email: string): Promise<boolean> => {
 
 /**
  * Fetches user's canvas layout preferences including split ratios and display settings.
- * 
+ *
  * @returns Promise resolving to canvas preferences for workspace customization
  */
 export const getCanvasPreferences = async (): Promise<CanvasPreferences> => {
@@ -111,7 +111,7 @@ export const getCanvasPreferences = async (): Promise<CanvasPreferences> => {
 
 /**
  * Updates user's canvas layout preferences with partial preference object.
- * 
+ *
  * @param preferences - Partial canvas preferences with fields to update
  * @returns Promise resolving to updated canvas preferences
  */
@@ -127,7 +127,7 @@ export const updateCanvasPreferences = async (
 
 /**
  * Fetches user's drawing tool preferences including default tools and stroke settings.
- * 
+ *
  * @returns Promise resolving to tool preferences for drawing operations
  */
 export const getToolPreferences = async (): Promise<ToolPreferences> => {
@@ -137,7 +137,7 @@ export const getToolPreferences = async (): Promise<ToolPreferences> => {
 
 /**
  * Updates user's drawing tool preferences with new tool settings.
- * 
+ *
  * @param preferences - Complete tool preferences object with updated settings
  * @returns Promise resolving to updated tool preferences
  */
@@ -153,7 +153,7 @@ export const updateToolPreferences = async (
 
 /**
  * Fetches user's language preferences for internationalization settings.
- * 
+ *
  * @returns Promise resolving to language preferences with preferred locale
  */
 export const getLanguagePreferences = async (): Promise<LanguagePreferences> => {
@@ -163,7 +163,7 @@ export const getLanguagePreferences = async (): Promise<LanguagePreferences> => 
 
 /**
  * Updates user's language preferences for application localization.
- * 
+ *
  * @param preferences - Language preferences object with new locale settings
  * @returns Promise resolving to updated language preferences
  */
@@ -179,7 +179,7 @@ export const updateLanguagePreferences = async (
 
 /**
  * Fetches user's theme preferences for application appearance settings.
- * 
+ *
  * @returns Promise resolving to theme preferences with light/dark mode settings
  */
 export const getThemePreferences = async (): Promise<ThemePreferences> => {
@@ -189,7 +189,7 @@ export const getThemePreferences = async (): Promise<ThemePreferences> => {
 
 /**
  * Updates user's theme preferences for application appearance customization.
- * 
+ *
  * @param preferences - Theme preferences object with new appearance settings
  * @returns Promise resolving to updated theme preferences
  */

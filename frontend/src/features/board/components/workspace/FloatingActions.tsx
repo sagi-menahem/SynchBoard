@@ -75,7 +75,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({ isSatelliteOpe
   const handleButtonClick = (callback: () => void) => (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget;
     callback();
-    
+
     // Auto-blur on mobile to remove focus outline after tap
     // Use setTimeout to ensure blur happens after React re-renders
     if (isMobile) {

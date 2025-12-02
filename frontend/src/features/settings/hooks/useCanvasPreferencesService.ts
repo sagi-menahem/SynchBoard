@@ -84,7 +84,7 @@ const canvasPreferencesReducer = (
  * Integrates with WebSocket subscriptions for real-time preference updates across multiple clients.
  * Implements optimistic updates with rollback functionality and proper authentication-aware operations.
  * Uses reducer pattern for complex state management and provides automatic preference loading on authentication.
- * 
+ *
  * @returns Object containing current preferences, loading states, and preference update functions
  */
 export function useCanvasPreferencesService() {

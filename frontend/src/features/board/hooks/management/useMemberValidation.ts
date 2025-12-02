@@ -19,7 +19,7 @@ export interface MemberValidationResult {
  * and provides detailed error feedback through toast notifications. The hook separates validation
  * concerns into discrete functions for flexibility and reusability across different member
  * management scenarios, ensuring data integrity and user experience quality.
- * 
+ *
  * @returns Object containing validation functions for email format, self-invite checking,
  *   duplicate detection, and comprehensive member email validation with API verification
  */

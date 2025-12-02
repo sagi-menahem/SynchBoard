@@ -38,7 +38,7 @@ import logger from 'shared/utils/logger';
  * action submissions with size validation, and coordinates chat and drawing transaction commits. The hook
  * integrates multiple WebSocket subscriptions for real-time collaboration and provides comprehensive error
  * handling and access control management for collaborative whiteboard sessions.
- * 
+ *
  * @param boardId - ID of the board workspace to manage and coordinate operations for
  * @returns Object containing workspace state, drawing objects with optimistic updates, action handlers,
  *   undo/redo functionality, pending transaction counts, and chat transaction management

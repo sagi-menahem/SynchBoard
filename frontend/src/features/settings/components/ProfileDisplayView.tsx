@@ -18,7 +18,7 @@ interface ProfileDisplayViewProps {
  * Renders user profile data in a structured format with proper null handling and localization.
  * Provides formatted display for dates and uses appropriate fallback messages for missing data.
  * Implements accessible field labeling and consistent visual hierarchy for profile information.
- * 
+ *
  * @param user - User profile data object containing personal information fields
  */
 const ProfileDisplayView: React.FC<ProfileDisplayViewProps> = ({ user }) => {

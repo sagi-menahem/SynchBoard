@@ -24,7 +24,7 @@ interface MemberInviteInputProps {
  * Interactive input component for managing member email invitations with validation.
  * This component provides a tag-based interface for adding and removing email addresses
  * with real-time validation, keyboard shortcuts, and duplicate detection.
- * 
+ *
  * @param onMembersChange - Callback function triggered when the list of invite emails changes
  * @param disabled - Whether the input controls should be disabled
  * @param id - Optional HTML id attribute for the component container

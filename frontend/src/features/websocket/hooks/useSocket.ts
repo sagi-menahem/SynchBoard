@@ -9,7 +9,7 @@ import { WebSocketContext } from '../WebSocketContext';
  * Custom hook that provides access to WebSocket context and connection state.
  * Ensures components are properly wrapped in WebSocketProvider and provides
  * centralized access to connection status and state management.
- * 
+ *
  * @returns WebSocket context containing connection state and status flags
  * @throws {Error} When used outside of WebSocketProvider wrapper
  */
@@ -35,7 +35,7 @@ export const useSocket = useWebSocket;
  * Custom hook that manages WebSocket topic subscriptions with automatic lifecycle management.
  * Handles subscription setup, message routing, and cleanup for STOMP topics with optional
  * message validation schemas. Provides stable message handling and connection state awareness.
- * 
+ *
  * Key features:
  * - Automatic subscription when WebSocket connects and topic is provided
  * - Stable message callback handling to prevent unnecessary re-subscriptions
@@ -43,7 +43,7 @@ export const useSocket = useWebSocket;
  * - Automatic cleanup on unmount or dependency changes
  * - Optional schema validation for incoming messages
  * - Delayed subscription setup to ensure connection stability
- * 
+ *
  * @param topic - STOMP topic path to subscribe to (e.g., '/topic/board/123')
  * @param onMessageReceived - Callback function to handle incoming messages
  * @param schemaKey - Optional validation schema key for message validation

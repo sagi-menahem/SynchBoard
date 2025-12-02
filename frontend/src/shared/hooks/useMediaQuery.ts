@@ -46,12 +46,12 @@ export type DeviceType = 'mobile' | 'tablet' | 'desktop';
 /**
  * Multi-layered device detection using User Agent, Pointer Type, and Width.
  * Handles edge cases like touchscreen laptops, small desktop screens, and tablets.
- * 
+ *
  * Detection priority:
  * 1. User Agent (most reliable for phones/tablets)
  * 2. Pointer Type (coarse = touch, fine = mouse/trackpad)
  * 3. Width fallback (legacy detection)
- * 
+ *
  * @returns DeviceType - 'mobile' (phone), 'tablet' (iPad/Android tablet), or 'desktop'
  */
 const detectDeviceType = (): DeviceType => {
@@ -98,7 +98,7 @@ const detectDeviceType = (): DeviceType => {
 /**
  * Detects if the device is mobile (phone or small tablet).
  * Compatible with existing code expecting boolean.
- * 
+ *
  * @returns boolean indicating if the device should use mobile UI
  */
 const detectMobileDevice = (): boolean => {
@@ -109,7 +109,7 @@ const detectMobileDevice = (): boolean => {
 /**
  * Predefined breakpoint hooks for common responsive scenarios.
  * Based on project design tokens: sm=480px, md=768px, lg=1024px, xl=1280px
- * 
+ *
  * useIsMobile now uses device detection instead of width-only to handle
  * mobile landscape orientation properly.
  */
@@ -138,7 +138,7 @@ export const useIsMobile = (): boolean => {
 /**
  * Hook to detect and track device type (mobile/tablet/desktop).
  * Provides granular device classification for responsive behavior.
- * 
+ *
  * @returns DeviceType - 'mobile', 'tablet', or 'desktop'
  */
 export const useDeviceType = (): DeviceType => {

@@ -16,7 +16,7 @@ export interface UseCanvasDownloadProps {
  * Custom hook that manages canvas download functionality for board exports.
  * This hook provides the ability to download the current canvas as a PNG image with
  * proper background color handling and timestamp-based file naming.
- * 
+ *
  * @param {string} boardName - Name of the board to use in the downloaded file name
  * @param {CanvasConfig} [canvasConfig] - Canvas configuration including background color and dimension settings
  * @returns Object containing the handleDownload function for triggering canvas exports

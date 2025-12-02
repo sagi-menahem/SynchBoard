@@ -39,7 +39,7 @@ const noop = (): void => {};
  * Global context menu provider component that manages application-wide context menus.
  * Provides a centralized system for showing context menus at specific coordinates with custom content.
  * Uses React portals to render menus outside the normal component hierarchy for proper z-index layering.
- * 
+ *
  * @param {React.ReactNode} children - Child components that can trigger context menus
  */
 export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ children }) => {
@@ -100,7 +100,7 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
 /**
  * Hook to access the global context menu functionality.
  * Must be used within a ContextMenuProvider component.
- * 
+ *
  * @returns {ContextMenuContextType} Context menu controls and state
  * @throws {Error} When used outside of ContextMenuProvider
  */

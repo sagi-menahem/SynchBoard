@@ -29,7 +29,7 @@ const DANGEROUS_PROTOCOLS = {
  * Sanitizes user input by removing potentially dangerous XSS attack vectors.
  * Strips script tags, iframes, javascript protocols, event handlers, and data URLs
  * to prevent code injection attacks while preserving safe content.
- * 
+ *
  * @param input - User input of any type to be sanitized
  * @returns Sanitized string with dangerous patterns removed, empty string for null/undefined input
  */
@@ -57,7 +57,7 @@ export const sanitizeString = (input: unknown): string => {
  * Recursively sanitizes complex objects, arrays, and nested structures for XSS prevention.
  * Applies string sanitization to all string values while preserving object structure,
  * ensuring deep sanitization of nested content and array elements.
- * 
+ *
  * @param obj - Object, array, or primitive value to sanitize recursively
  * @returns Sanitized version of input with all string content processed for XSS removal
  */
@@ -95,7 +95,7 @@ export const sanitizeObject = (obj: unknown): unknown => {
  * Validates URLs for security threats including protocol-based attacks and dangerous schemes.
  * Ensures URLs use safe protocols (http/https) and prevents javascript:, data: HTML, and other
  * potentially malicious URL schemes that could execute code or bypass security controls.
- * 
+ *
  * @param url - URL string to validate for security threats
  * @returns True if URL is safe for use in links, redirects, and other contexts
  */
@@ -133,7 +133,7 @@ export const isSafeUrl = (url: string): boolean => {
  * Detects prototype pollution attack attempts in objects by checking for dangerous property names.
  * Scans for __proto__, prototype, and constructor.prototype manipulations that could modify
  * JavaScript object prototypes and lead to security vulnerabilities or application corruption.
- * 
+ *
  * @param obj - Object to inspect for prototype pollution patterns
  * @returns True if object contains potential prototype pollution attempt indicators
  */
@@ -167,7 +167,7 @@ export const isPrototypePollutionAttempt = (obj: Record<string, unknown>): boole
  * Validates incoming WebSocket messages and API requests against security and schema constraints.
  * Performs comprehensive validation including prototype pollution detection, required field checking,
  * type allowlisting, and content length limits to ensure message safety and structure compliance.
- * 
+ *
  * @param data - Message data to validate for security and schema compliance
  * @param schema - Optional validation schema defining field requirements and constraints
  * @returns True if message passes all security and schema validation checks
@@ -222,7 +222,7 @@ export const validateMessage = (data: unknown, schema?: MessageValidationSchema)
  * Specialized validation for board-related WebSocket messages with focus on prototype pollution prevention.
  * Simplified validation for real-time board updates, chat messages, and canvas operations
  * where performance is critical but security remains paramount.
- * 
+ *
  * @param data - Board message object to validate for security threats
  * @returns True if board message is safe for processing by WebSocket handlers
  */

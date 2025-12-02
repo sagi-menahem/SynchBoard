@@ -27,7 +27,7 @@ interface ChatMessageProps {
  * Individual chat message component with user differentiation, status indicators, and security features.
  * Displays chat messages with appropriate styling based on sender, includes avatar display for other users,
  * implements message grouping for consecutive messages, and provides visual feedback for message status.
- * 
+ *
  * Key features:
  * - Different styling for own messages vs. other users' messages
  * - Avatar display with secure URL validation and fallback
@@ -37,7 +37,7 @@ interface ChatMessageProps {
  * - Relative timestamps with detailed hover information
  * - Animation control for performance optimization
  * - Accessibility support with proper alt text and ARIA labels
- * 
+ *
  * @param message - Enhanced chat message with content and metadata
  * @param isOwnMessage - Boolean indicating if message belongs to current user
  * @param shouldAnimate - Whether to apply entrance animation
@@ -89,9 +89,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         />
       )}
       {/* Invisible spacer for grouped messages to maintain consistent bubble width */}
-      {!isOwnMessage && isGrouped && (
-        <div className={styles.avatarSpacer} aria-hidden="true" />
-      )}
+      {!isOwnMessage && isGrouped && <div className={styles.avatarSpacer} aria-hidden="true" />}
 
       <div className={styles.messageBubble}>
         {/* Show sender name only for other users' non-grouped messages */}

@@ -22,7 +22,7 @@ interface ModalProps {
  * Reusable modal dialog component with backdrop and responsive behavior.
  * Provides a centered overlay with close functionality via backdrop click, close button, or Escape key.
  * Automatically adapts to mobile screens with full-screen layout for better usability.
- * 
+ *
  * @param {boolean} isOpen - Controls whether the modal is visible
  * @param {function} onClose - Callback function called when modal should be closed
  * @param {React.ReactNode} children - Content to display inside the modal
@@ -39,7 +39,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
       // Simple approach: just prevent scrolling without position manipulation
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = `${scrollbarWidth}px`;
-
     }
 
     return () => {
@@ -47,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
       document.body.style.paddingRight = '';
     };
   }, [isOpen]);
-  
+
   if (!isOpen) {
     return null;
   }
@@ -60,7 +59,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
   };
 
   const modalContent = (
-    <div className={`${styles.overlay} ${className || ''}`} onKeyDown={handleOverlayKeyDown} role="presentation">
+    <div
+      className={`${styles.overlay} ${className || ''}`}
+      onKeyDown={handleOverlayKeyDown}
+      role="presentation"
+    >
       <button
         className={styles.backdrop}
         onClick={onClose}

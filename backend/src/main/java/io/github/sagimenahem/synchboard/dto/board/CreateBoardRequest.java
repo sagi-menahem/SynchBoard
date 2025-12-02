@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Data Transfer Object for board creation requests. Contains all necessary information to create a
  * new board including basic metadata, canvas settings, cover picture, and initial member
  * invitations.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data
@@ -36,8 +36,7 @@ public class CreateBoardRequest {
     private List<String> inviteEmails;
 
     /** Hexadecimal color code for the canvas background (must match hex pattern) */
-    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$",
-            message = "validation.canvasColorPattern")
+    @Pattern(regexp = "^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$", message = "validation.canvasColorPattern")
     private String canvasBackgroundColor;
 
     /** Width of the canvas in pixels (validated range) */

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * JPA entity representing the many-to-many relationship between users and boards. Stores membership
  * information including admin status and join date. Uses composite primary key consisting of user
  * email and board ID.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity
@@ -32,13 +32,11 @@ public class GroupMember {
     private Long boardGroupId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false, updatable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_group_id", referencedColumnName = "board_group_id",
-            insertable = false, updatable = false)
+    @JoinColumn(name = "board_group_id", referencedColumnName = "board_group_id", insertable = false, updatable = false)
     private GroupBoard groupBoard;
 
     @Column(name = "is_admin", nullable = false)

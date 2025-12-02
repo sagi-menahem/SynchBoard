@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * Entity representing a user registration that is pending email verification. This entity stores
  * temporary user data until the email verification process is completed, after which the data is
  * moved to the User entity.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity
@@ -101,7 +101,7 @@ public class PendingRegistration {
 
     /**
      * Checks if the verification code has expired.
-     * 
+     *
      * @return true if the current time is after the expiry time
      */
     public boolean isExpired() {
@@ -110,7 +110,7 @@ public class PendingRegistration {
 
     /**
      * Checks if the maximum number of verification attempts has been reached.
-     * 
+     *
      * @return true if 3 or more attempts have been made
      */
     public boolean isMaxAttemptsReached() {

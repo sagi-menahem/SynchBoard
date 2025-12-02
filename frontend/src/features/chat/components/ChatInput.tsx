@@ -24,7 +24,7 @@ interface ChatInputProps {
  * Chat message input component with real-time messaging capabilities and connection awareness.
  * Provides a user-friendly interface for composing and sending chat messages with automatic
  * focus management, keyboard shortcuts, and connection status integration.
- * 
+ *
  * Key features:
  * - Enter key submission with form validation
  * - Real-time connection status awareness for functionality blocking
@@ -33,104 +33,106 @@ interface ChatInputProps {
  * - Accessibility support with proper ARIA labels
  * - Message validation to prevent empty submissions
  * - Visual feedback for sending states
- * 
+ *
  * @param onSendMessage - Async callback to handle message transmission
  * @param placeholder - Optional custom placeholder text for input field
  */
-const ChatInput: React.FC<ChatInputProps> = React.memo(({ onSendMessage, placeholder, disableAutoFocus = false }) => {
-  const { t } = useTranslation(['chat', 'common']);
-  const { shouldBlockFunctionality } = useConnectionStatus();
-  const [message, setMessage] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  // Ref for programmatic focus management after message sending
-  const inputRef = useRef<HTMLInputElement>(null);
+const ChatInput: React.FC<ChatInputProps> = React.memo(
+  ({ onSendMessage, placeholder, disableAutoFocus = false }) => {
+    const { t } = useTranslation(['chat', 'common']);
+    const { shouldBlockFunctionality } = useConnectionStatus();
+    const [message, setMessage] = useState('');
+    const [isSending, setIsSending] = useState(false);
+    // Ref for programmatic focus management after message sending
+    const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+    const handleSubmit = useCallback(
+      async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-      const messageContent = message.trim();
-      // Prevent submission of empty messages or when connection issues exist
-      if (!messageContent || shouldBlockFunctionality || isSending) {
-        return;
+        const messageContent = message.trim();
+        // Prevent submission of empty messages or when connection issues exist
+        if (!messageContent || shouldBlockFunctionality || isSending) {
+          return;
+        }
+
+        setIsSending(true);
+
+        try {
+          await onSendMessage(messageContent);
+          setMessage('');
+        } catch {
+          // Clear message even on error to prevent resubmission
+          setMessage('');
+        } finally {
+          setIsSending(false);
+          // Always refocus to keep keyboard open after sending
+          // The key is to refocus synchronously before the browser can close the keyboard
+          // Using a microtask (queueMicrotask) is faster than setTimeout/requestAnimationFrame
+          queueMicrotask(() => {
+            inputRef.current?.focus({ preventScroll: true });
+          });
+        }
+      },
+      [message, onSendMessage, shouldBlockFunctionality, isSending],
+    );
+
+    // Memoized to prevent unnecessary re-renders when parent components update
+    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      setMessage(e.target.value);
+    }, []);
+
+    // Handle Enter key to submit message (standard chat behavior)
+    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const form = e.currentTarget.form;
+        if (form) {
+          const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+          form.dispatchEvent(submitEvent);
+        }
       }
+    }, []);
 
-      setIsSending(true);
-
-      try {
-        await onSendMessage(messageContent);
-        setMessage('');
-      } catch {
-        // Clear message even on error to prevent resubmission
-        setMessage('');
-      } finally {
-        setIsSending(false);
-        // Always refocus to keep keyboard open after sending
-        // The key is to refocus synchronously before the browser can close the keyboard
-        // Using a microtask (queueMicrotask) is faster than setTimeout/requestAnimationFrame
-        queueMicrotask(() => {
-          inputRef.current?.focus({ preventScroll: true });
-        });
+    // Focus input on component mount for immediate typing (disabled for mobile drawers)
+    useEffect(() => {
+      if (!disableAutoFocus) {
+        inputRef.current?.focus();
       }
-    },
-    [message, onSendMessage, shouldBlockFunctionality, isSending],
-  );
+    }, [disableAutoFocus]);
 
-  // Memoized to prevent unnecessary re-renders when parent components update
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
-  }, []);
+    const hasMessage = message.trim().length > 0;
+    const isDisabled = shouldBlockFunctionality || isSending;
 
-  // Handle Enter key to submit message (standard chat behavior)
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      const form = e.currentTarget.form;
-      if (form) {
-        const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
-        form.dispatchEvent(submitEvent);
-      }
-    }
-  }, []);
-
-  // Focus input on component mount for immediate typing (disabled for mobile drawers)
-  useEffect(() => {
-    if (!disableAutoFocus) {
-      inputRef.current?.focus();
-    }
-  }, [disableAutoFocus]);
-
-  const hasMessage = message.trim().length > 0;
-  const isDisabled = shouldBlockFunctionality || isSending;
-
-  return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={`${styles.inputContainer} ${isSending ? styles.sending : ''}`}>
-        <input
-          id="chat-message-input"
-          ref={inputRef}
-          type="text"
-          value={message}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder ?? t('chat:window.placeholder')}
-          disabled={isDisabled}
-          className={styles.input}
-          aria-label={t('chat:window.placeholder')}
-        />
-        <Button
-          type="submit"
-          variant="icon"
-          disabled={!hasMessage || isDisabled}
-          className={styles.sendButton}
-          aria-label={isSending ? t('chat:sending') : t('common:button.send')}
-        >
-          <Send size={18} />
-        </Button>
-      </div>
-    </form>
-  );
-});
+    return (
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={`${styles.inputContainer} ${isSending ? styles.sending : ''}`}>
+          <input
+            id="chat-message-input"
+            ref={inputRef}
+            type="text"
+            value={message}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder ?? t('chat:window.placeholder')}
+            disabled={isDisabled}
+            className={styles.input}
+            aria-label={t('chat:window.placeholder')}
+          />
+          <Button
+            type="submit"
+            variant="icon"
+            disabled={!hasMessage || isDisabled}
+            className={styles.sendButton}
+            aria-label={isSending ? t('chat:sending') : t('common:button.send')}
+          >
+            <Send size={18} />
+          </Button>
+        </div>
+      </form>
+    );
+  },
+);
 
 ChatInput.displayName = 'ChatInput';
 

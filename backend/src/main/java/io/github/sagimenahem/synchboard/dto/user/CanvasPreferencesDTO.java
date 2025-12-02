@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object representing user canvas preferences. Contains canvas-specific settings and
  * layout preferences with validation constraints for proper canvas configuration.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

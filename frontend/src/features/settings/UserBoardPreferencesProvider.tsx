@@ -45,7 +45,7 @@ interface UserBoardPreferencesProviderProps {
  * Provides global state management for board-specific settings including backgrounds, visual preferences, and UI customizations.
  * Integrates with authentication system to provide persistent user preferences with both explicit and silent update modes.
  * The value object exposes board preferences state, loading indicators, error handling, and multiple update functions.
- * 
+ *
  * @param children - Child components that will consume the user board preferences context
  */
 export const UserBoardPreferencesProvider: React.FC<UserBoardPreferencesProviderProps> = ({

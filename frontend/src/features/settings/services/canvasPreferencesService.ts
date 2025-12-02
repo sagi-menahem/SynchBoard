@@ -28,7 +28,7 @@ const DEFAULT_CANVAS_PREFERENCES: CanvasPreferences = {
 export const CanvasPreferencesService = {
   /**
    * Fetches canvas preferences from the server with error handling and transformation.
-   * 
+   *
    * @returns Promise resolving to canvas preferences with split ratio and layout mode
    * @throws {Error} When preferences cannot be loaded from the server
    */
@@ -49,7 +49,7 @@ export const CanvasPreferencesService = {
 
   /**
    * Updates the canvas/chat split ratio on the server.
-   * 
+   *
    * @param splitRatio - New split ratio value (0-100 percentage)
    * @throws {Error} When the split ratio update fails on the server
    */
@@ -64,7 +64,7 @@ export const CanvasPreferencesService = {
 
   /**
    * Updates multiple canvas preferences on the server with selective field updates.
-   * 
+   *
    * @param preferences - Partial canvas preferences object with fields to update
    * @throws {Error} When preference updates fail on the server
    */
@@ -93,7 +93,7 @@ export const CanvasPreferencesService = {
 
   /**
    * Returns default canvas preferences for fallback and initialization purposes.
-   * 
+   *
    * @returns Default canvas preferences with balanced layout and 70% canvas split
    */
   getDefaultPreferences(): CanvasPreferences {

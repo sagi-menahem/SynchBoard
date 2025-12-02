@@ -35,7 +35,7 @@ interface ToolDropdownProps {
  * Dropdown component for selecting tools with intelligent positioning.
  * Shows current tool icon with chevron and displays available options in a positioned dropdown.
  * Automatically adjusts position to prevent viewport overflow and provides keyboard navigation.
- * 
+ *
  * @param {Tool} currentTool - Currently selected tool value
  * @param {function} onToolSelect - Callback function called when a tool is selected
  * @param {ToolItem[]} toolItems - Array of available tools with icons and labels

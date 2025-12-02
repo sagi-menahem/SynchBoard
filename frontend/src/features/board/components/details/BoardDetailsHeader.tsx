@@ -30,7 +30,7 @@ interface BoardDetailsHeaderProps {
  * Renders the board header with picture management and editable description.
  * This component provides a comprehensive interface for managing board visual identity
  * including picture uploads/deletion and inline description editing with admin controls.
- * 
+ *
  * @param boardDetails - Complete board information including name, description, and picture
  * @param currentUserIsAdmin - Whether the current user has admin privileges for this board
  * @param onPictureUpload - Handler for uploading new board picture files
@@ -69,8 +69,8 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
   return (
     <>
-      <SectionCard 
-        title={t('board:detailsPage.changePicture')} 
+      <SectionCard
+        title={t('board:detailsPage.changePicture')}
         variant="default"
         headerActions={
           currentUserIsAdmin ? (

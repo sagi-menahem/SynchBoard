@@ -50,7 +50,7 @@ interface ToolPreferencesProviderProps {
  * Provides global state management for default tool selections, stroke colors, stroke widths, and drawing settings.
  * Integrates with authentication system to provide persistent user preferences with optimistic updates.
  * The value object exposes tool preferences state, loading indicators, error handling, and update functions.
- * 
+ *
  * @param children - Child components that will consume the tool preferences context
  */
 export const ToolPreferencesProvider: React.FC<ToolPreferencesProviderProps> = ({ children }) => {

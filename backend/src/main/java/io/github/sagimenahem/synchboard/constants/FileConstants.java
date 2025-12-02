@@ -8,7 +8,7 @@ import java.util.List;
  * messages for file upload and management operations. These constants ensure secure file handling,
  * prevent malicious uploads, and maintain consistent file processing behavior across the SynchBoard
  * application.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class FileConstants {
@@ -71,15 +71,26 @@ public final class FileConstants {
      * List of permitted MIME types for image uploads. Restricts uploads to safe, commonly supported
      * image formats. Used for server-side validation of uploaded files.
      */
-    public static final List<String> ALLOWED_IMAGE_MIME_TYPES =
-            Arrays.asList("image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml");
+    public static final List<String> ALLOWED_IMAGE_MIME_TYPES = Arrays.asList(
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+        "image/svg+xml"
+    );
 
     /**
      * List of permitted file extensions for image uploads. Provides additional validation layer
      * based on file naming. Extensions are checked in lowercase for case-insensitive validation.
      */
-    public static final List<String> ALLOWED_IMAGE_EXTENSIONS =
-            Arrays.asList(".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg");
+    public static final List<String> ALLOWED_IMAGE_EXTENSIONS = Arrays.asList(
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".webp",
+        ".svg"
+    );
 
     // Security Validation Patterns
 
@@ -89,13 +100,41 @@ public final class FileConstants {
      * other security vulnerabilities through uploaded SVG files. Patterns are checked
      * case-insensitively during validation.
      */
-    public static final List<String> SVG_DANGEROUS_PATTERNS = Arrays.asList("<script",
-            "javascript:", "onclick", "onload", "onerror", "onmouseover", "onmouseout",
-            "onmousemove", "onmouseenter", "onmouseleave", "onfocus", "onblur", "oninput",
-            "onchange", "onsubmit", "<iframe", "<embed", "<object", "<foreignobject", "<applet",
-            "data:text/html", "data:text/javascript", "vbscript:", "livescript:", "mocha:", "eval(",
-            "expression(", "import(", "document.cookie", "document.write", "window.location",
-            ".innerHTML", ".outerHTML");
+    public static final List<String> SVG_DANGEROUS_PATTERNS = Arrays.asList(
+        "<script",
+        "javascript:",
+        "onclick",
+        "onload",
+        "onerror",
+        "onmouseover",
+        "onmouseout",
+        "onmousemove",
+        "onmouseenter",
+        "onmouseleave",
+        "onfocus",
+        "onblur",
+        "oninput",
+        "onchange",
+        "onsubmit",
+        "<iframe",
+        "<embed",
+        "<object",
+        "<foreignobject",
+        "<applet",
+        "data:text/html",
+        "data:text/javascript",
+        "vbscript:",
+        "livescript:",
+        "mocha:",
+        "eval(",
+        "expression(",
+        "import(",
+        "document.cookie",
+        "document.write",
+        "window.location",
+        ".innerHTML",
+        ".outerHTML"
+    );
 
     // Error Messages
 
@@ -121,43 +160,38 @@ public final class FileConstants {
      * Error message template for files exceeding size limits. Uses String.format() with maximum
      * file size in MB as parameter.
      */
-    public static final String ERROR_FILE_TOO_LARGE =
-            "File size exceeds maximum allowed size of %d MB";
+    public static final String ERROR_FILE_TOO_LARGE = "File size exceeds maximum allowed size of %d MB";
 
     /**
      * Error message template for disallowed MIME types. Uses String.format() with list of allowed
      * types as parameter.
      */
-    public static final String ERROR_MIME_TYPE_NOT_ALLOWED =
-            "File type not allowed. Allowed types: %s";
+    public static final String ERROR_MIME_TYPE_NOT_ALLOWED = "File type not allowed. Allowed types: %s";
 
     /**
      * Error message template for disallowed file extensions. Uses String.format() with list of
      * allowed extensions as parameter.
      */
-    public static final String ERROR_EXTENSION_NOT_ALLOWED =
-            "File extension not allowed. Allowed extensions: %s";
+    public static final String ERROR_EXTENSION_NOT_ALLOWED = "File extension not allowed. Allowed extensions: %s";
 
     /**
      * Error message for file signature validation failures. Used when file content doesn't match
      * the declared MIME type, indicating potential security threats.
      */
     public static final String ERROR_FILE_SIGNATURE_MISMATCH =
-            "File content does not match its declared type. Possible security threat detected.";
+        "File content does not match its declared type. Possible security threat detected.";
 
     /**
      * Error message for malicious SVG content detection. Used when SVG files contain potentially
      * dangerous scripts or elements.
      */
-    public static final String ERROR_SVG_MALICIOUS_CONTENT =
-            "SVG file contains potentially malicious content";
+    public static final String ERROR_SVG_MALICIOUS_CONTENT = "SVG file contains potentially malicious content";
 
     /**
      * Error message for directory traversal prevention. Used when file storage attempts would place
      * files outside the designated upload directory.
      */
-    public static final String ERROR_STORAGE_OUTSIDE_DIRECTORY =
-            "Cannot store file outside of upload directory";
+    public static final String ERROR_STORAGE_OUTSIDE_DIRECTORY = "Cannot store file outside of upload directory";
 
     /**
      * Error message for general file storage failures. Used when file system operations fail during

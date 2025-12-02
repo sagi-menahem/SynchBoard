@@ -9,7 +9,7 @@ import { AppRoutes } from 'shared/ui/routing';
 
 /**
  * Main application component that serves as the root of the React component tree.
- * Manages application-wide routing, error boundaries, layout calculations, and 
+ * Manages application-wide routing, error boundaries, layout calculations, and
  * loading states for OAuth and initialization processes.
  */
 function App() {

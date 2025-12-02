@@ -25,7 +25,7 @@ interface ProfileEditFormProps {
  * Provides editable form fields for all user profile information with proper accessibility support.
  * Implements segmented control for gender selection and date input handling for birth dates.
  * Includes form validation indicators, required field marking, and intuitive save/cancel operations.
- * 
+ *
  * @param formData - Current form state data for profile update fields
  * @param onInputChange - Handler for processing input field change events
  * @param onSave - Handler for save operation with form validation

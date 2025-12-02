@@ -13,7 +13,7 @@ import org.hibernate.type.SqlTypes;
  * Entity representing the history of actions performed on board objects. This entity tracks all
  * create, update, and delete operations on board objects, allowing for undo/redo functionality and
  * audit trail purposes.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity

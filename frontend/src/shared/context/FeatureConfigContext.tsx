@@ -67,9 +67,7 @@ export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ ch
     return <PageLoader />;
   }
 
-  return (
-    <FeatureConfigContext.Provider value={config}>{children}</FeatureConfigContext.Provider>
-  );
+  return <FeatureConfigContext.Provider value={config}>{children}</FeatureConfigContext.Provider>;
 };
 
 /**

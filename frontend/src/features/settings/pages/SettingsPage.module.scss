@@ -73,7 +73,6 @@
 
 // Reduce gap between cards on smaller screens
 @media (max-width: 768px) {
-
   .leftColumn,
   .rightColumn {
     gap: 1.5rem;
@@ -81,7 +80,6 @@
 }
 
 @media (max-width: 480px) {
-
   .leftColumn,
   .rightColumn {
     gap: 1rem;

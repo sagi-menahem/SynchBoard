@@ -16,16 +16,16 @@ export type Tool = (typeof TOOL_LIST)[number];
  * Each variant corresponds to specific use cases and visual hierarchy.
  */
 export type ButtonVariant =
-  | 'primary'      // Main action buttons (auth pages)
-  | 'secondary'    // Secondary action buttons (auth pages)
-  | 'destructive'  // Delete/remove actions (auth pages)
-  | 'navigation'   // Navigation elements
-  | 'icon'         // Icon-only buttons
-  | 'cta'          // Call-to-action buttons
-  | 'warning'      // Warning/caution buttons
-  | 'link'         // Text link style buttons
-  | 'primary-glass'    // Primary action with glass design (user pages)
-  | 'secondary-glass'  // Secondary action with glass design (user pages)
+  | 'primary' // Main action buttons (auth pages)
+  | 'secondary' // Secondary action buttons (auth pages)
+  | 'destructive' // Delete/remove actions (auth pages)
+  | 'navigation' // Navigation elements
+  | 'icon' // Icon-only buttons
+  | 'cta' // Call-to-action buttons
+  | 'warning' // Warning/caution buttons
+  | 'link' // Text link style buttons
+  | 'primary-glass' // Primary action with glass design (user pages)
+  | 'secondary-glass' // Secondary action with glass design (user pages)
   | 'destructive-glass'; // Destructive action with glass design (user pages)
 
 /**

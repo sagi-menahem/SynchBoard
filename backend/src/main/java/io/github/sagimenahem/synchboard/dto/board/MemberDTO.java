@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object representing a board member. Contains member information including contact
  * details, profile information, and access permissions for board membership display.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

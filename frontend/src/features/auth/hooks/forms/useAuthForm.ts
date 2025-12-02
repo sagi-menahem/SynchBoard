@@ -116,8 +116,7 @@ export const authErrorHandling = {
     return t('auth:errors.unknown');
   },
 
-  dynamicMessageHandler: (successKey: string, t: (key: string) => string) => () =>
-    t(successKey),
+  dynamicMessageHandler: (successKey: string, t: (key: string) => string) => () => t(successKey),
 };
 
 export const authToastMessages = {

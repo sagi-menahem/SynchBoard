@@ -1,12 +1,12 @@
 import type {
-    ButtonToolbarItem,
-    CustomToolbarItem,
-    MemberActivityToolbarItem,
-    SearchToolbarItem,
-    TitleToolbarItem,
-    ToolbarItem,
-    UniversalToolbarProps,
-    ViewToggleToolbarItem,
+  ButtonToolbarItem,
+  CustomToolbarItem,
+  MemberActivityToolbarItem,
+  SearchToolbarItem,
+  TitleToolbarItem,
+  ToolbarItem,
+  UniversalToolbarProps,
+  ViewToggleToolbarItem,
 } from 'features/board/types/ToolbarTypes';
 import { MemberActivityIndicator } from 'features/board/ui';
 import React, { useCallback, useMemo } from 'react';

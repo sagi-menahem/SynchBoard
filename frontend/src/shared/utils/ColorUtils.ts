@@ -1,7 +1,7 @@
 /**
  * Converts a hexadecimal color string to RGB values.
  * Supports both 3-digit shorthand (#FFF) and 6-digit full format (#FFFFFF).
- * 
+ *
  * @param {string} hex - Hex color string with or without # prefix
  * @returns {{ r: number; g: number; b: number } | null} RGB object or null if invalid
  */
@@ -13,11 +13,13 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
 
   let r, g, b;
   // Handle 3-digit hex shorthand by duplicating each digit (#ABC -> #AABBCC)
-  if (hex.length === 4) { // Length 4 includes the # prefix for 3-digit hex
+  if (hex.length === 4) {
+    // Length 4 includes the # prefix for 3-digit hex
     r = parseInt(result[1] + result[1], 16); // A -> AA
     g = parseInt(result[2] + result[2], 16); // B -> BB
     b = parseInt(result[3] + result[3], 16); // C -> CC
-  } else { // 6-digit format like #AABBCC
+  } else {
+    // 6-digit format like #AABBCC
     r = parseInt(result[1], 16);
     g = parseInt(result[2], 16);
     b = parseInt(result[3], 16);
@@ -29,7 +31,7 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
 /**
  * Calculates the Euclidean distance between two RGB colors in color space.
  * Used to find the closest matching color from a predefined palette.
- * 
+ *
  * @param {Object} color1 - First RGB color object
  * @param {Object} color2 - Second RGB color object
  * @returns {number} Distance value (lower means more similar colors)
@@ -40,8 +42,8 @@ const getColorDistance = (
 ): number => {
   return Math.sqrt(
     Math.pow(color1.r - color2.r, 2) +
-    Math.pow(color1.g - color2.g, 2) +
-    Math.pow(color1.b - color2.b, 2),
+      Math.pow(color1.g - color2.g, 2) +
+      Math.pow(color1.b - color2.b, 2),
   );
 };
 
@@ -49,7 +51,7 @@ const getColorDistance = (
  * Maps a hexadecimal color to a semantic color name for internationalization and accessibility.
  * First attempts exact match, then finds the closest color from a predefined palette using
  * Euclidean distance in RGB space. Used for screen readers and UI color descriptions.
- * 
+ *
  * @param {string} hexColor - Hex color string to identify
  * @returns {string | null} Semantic color name or null if unable to determine
  */
@@ -131,10 +133,10 @@ export const getColorName = (hexColor: string): string | null => {
 /**
  * Converts a hex color to RGB values for CSS custom properties.
  * Supports both 3-digit (#FFF) and 6-digit (#FFFFFF) hex formats.
- * 
+ *
  * @param hex - Hex color string (e.g., '#FFFFFF' or '#FFF')
  * @returns RGB values as comma-separated string (e.g., '255, 255, 255')
- * 
+ *
  * @example
  * ```typescript
  * hexToRgbString('#FFFFFF') // Returns '255, 255, 255'
@@ -145,26 +147,30 @@ export const getColorName = (hexColor: string): string | null => {
 export const hexToRgbString = (hex: string): string => {
   // Remove # if present
   const cleanHex = hex.replace('#', '');
-  
+
   // Handle 3-digit hex by expanding to 6-digit format
-  const fullHex = cleanHex.length === 3
-    ? cleanHex.split('').map(char => char + char).join('')
-    : cleanHex;
-  
+  const fullHex =
+    cleanHex.length === 3
+      ? cleanHex
+          .split('')
+          .map((char) => char + char)
+          .join('')
+      : cleanHex;
+
   const r = parseInt(fullHex.substring(0, 2), 16);
   const g = parseInt(fullHex.substring(2, 4), 16);
   const b = parseInt(fullHex.substring(4, 6), 16);
-  
+
   return `${r}, ${g}, ${b}`;
 };
 
 /**
  * Calculates the relative luminance of a color according to WCAG 2.0 specification.
  * Used to determine appropriate text color (light/dark) for contrast requirements.
- * 
+ *
  * @param hex - Hex color string (e.g., '#FFFFFF' or '#FFF')
  * @returns Relative luminance value between 0 (darkest) and 1 (lightest)
- * 
+ *
  * @example
  * ```typescript
  * calculateLuminance('#FFFFFF') // Returns ~1.0 (very light)
@@ -175,24 +181,28 @@ export const hexToRgbString = (hex: string): string => {
 export const calculateLuminance = (hex: string): number => {
   // Remove # if present
   const cleanHex = hex.replace('#', '');
-  
+
   // Handle 3-digit hex by expanding to 6-digit format
-  const fullHex = cleanHex.length === 3
-    ? cleanHex.split('').map(char => char + char).join('')
-    : cleanHex;
-  
+  const fullHex =
+    cleanHex.length === 3
+      ? cleanHex
+          .split('')
+          .map((char) => char + char)
+          .join('')
+      : cleanHex;
+
   const r = parseInt(fullHex.substring(0, 2), 16) / 255;
   const g = parseInt(fullHex.substring(2, 4), 16) / 255;
   const b = parseInt(fullHex.substring(4, 6), 16) / 255;
-  
+
   // Apply sRGB gamma correction
-  const sRGB = [r, g, b].map(channel => {
+  const sRGB = [r, g, b].map((channel) => {
     if (channel <= 0.03928) {
       return channel / 12.92;
     }
     return Math.pow((channel + 0.055) / 1.055, 2.4);
   });
-  
+
   // Calculate relative luminance using WCAG formula
   return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
 };

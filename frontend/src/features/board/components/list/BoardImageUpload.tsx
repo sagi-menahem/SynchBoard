@@ -19,9 +19,9 @@ interface BoardImageUploadProps {
 
 /**
  * Interactive image upload component with preview functionality for board creation.
- * This component provides a user-friendly interface for selecting board images with 
+ * This component provides a user-friendly interface for selecting board images with
  * drag-and-drop style interactions, preview display, and removal capabilities.
- * 
+ *
  * @param onImageSelect - Callback function triggered when user selects or removes an image file
  * @param disabled - Whether the upload functionality should be disabled
  */

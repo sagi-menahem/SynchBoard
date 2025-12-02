@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 /**
  * Service for validating and managing board access permissions. Provides methods to check if users
  * have appropriate access levels (member, admin, creator) for performing operations on boards.
- * 
+ *
  * @author Sagi Menahem
  */
 @Service
@@ -32,7 +32,7 @@ public class BoardAccessService {
     /**
      * Validates that a user has access to a specific board. Checks if the user is either the board
      * creator or a member of the board.
-     * 
+     *
      * @param boardId The ID of the board to validate access for
      * @param userEmail The email of the user requesting access
      * @return The GroupBoard entity if access is granted
@@ -40,14 +40,13 @@ public class BoardAccessService {
      * @throws AccessDeniedException if the user is not a member of the board
      */
     public GroupBoard validateBoardAccess(Long boardId, String userEmail) {
-        GroupBoard board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Board not found"));
+        GroupBoard board = boardRepository
+            .findById(boardId)
+            .orElseThrow(() -> new ResourceNotFoundException("Board not found"));
 
-        userRepository.findById(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        userRepository.findById(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (board.getCreatedByUser() != null
-                && board.getCreatedByUser().getEmail().equals(userEmail)) {
+        if (board.getCreatedByUser() != null && board.getCreatedByUser().getEmail().equals(userEmail)) {
             return board;
         }
 
@@ -62,7 +61,7 @@ public class BoardAccessService {
     /**
      * Validates that a user has administrative access to a specific board. Checks if the user is
      * either the board creator or an admin member.
-     * 
+     *
      * @param boardId The ID of the board to validate admin access for
      * @param userEmail The email of the user requesting admin access
      * @return The GroupBoard entity if admin access is granted
@@ -72,13 +71,13 @@ public class BoardAccessService {
     public GroupBoard validateAdminAccess(Long boardId, String userEmail) {
         GroupBoard board = validateBoardAccess(boardId, userEmail);
 
-        if (board.getCreatedByUser() != null
-                && board.getCreatedByUser().getEmail().equals(userEmail)) {
+        if (board.getCreatedByUser() != null && board.getCreatedByUser().getEmail().equals(userEmail)) {
             return board;
         }
 
-        GroupMember membership = memberRepository.findByBoardGroupIdAndUserEmail(boardId, userEmail)
-                .orElseThrow(() -> new AccessDeniedException("User is not a member of this board"));
+        GroupMember membership = memberRepository
+            .findByBoardGroupIdAndUserEmail(boardId, userEmail)
+            .orElseThrow(() -> new AccessDeniedException("User is not a member of this board"));
 
         if (!membership.getIsAdmin()) {
             throw new AccessDeniedException("User does not have admin privileges for this board");
@@ -90,7 +89,7 @@ public class BoardAccessService {
     /**
      * Validates that a user is the creator of a specific board. Only the original creator can
      * perform certain operations like deleting the board.
-     * 
+     *
      * @param boardId The ID of the board to validate creator access for
      * @param userEmail The email of the user claiming to be the creator
      * @return The GroupBoard entity if creator access is granted
@@ -98,11 +97,11 @@ public class BoardAccessService {
      * @throws AccessDeniedException if the user is not the board creator
      */
     public GroupBoard validateCreatorAccess(Long boardId, String userEmail) {
-        GroupBoard board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Board not found"));
+        GroupBoard board = boardRepository
+            .findById(boardId)
+            .orElseThrow(() -> new ResourceNotFoundException("Board not found"));
 
-        if (board.getCreatedByUser() == null
-                || !board.getCreatedByUser().getEmail().equals(userEmail)) {
+        if (board.getCreatedByUser() == null || !board.getCreatedByUser().getEmail().equals(userEmail)) {
             throw new AccessDeniedException("Only the board creator can perform this operation");
         }
 
@@ -111,7 +110,7 @@ public class BoardAccessService {
 
     /**
      * Checks if a user is a member of a specific board without throwing exceptions.
-     * 
+     *
      * @param boardId The ID of the board to check membership for
      * @param userEmail The email of the user to check
      * @return true if the user is a member of the board, false otherwise
@@ -121,8 +120,7 @@ public class BoardAccessService {
             validateBoardAccess(boardId, userEmail);
             return true;
         } catch (AccessDeniedException | ResourceNotFoundException e) {
-            log.debug("User {} is not a member of board {}: {}", userEmail, boardId,
-                    e.getMessage());
+            log.debug("User {} is not a member of board {}: {}", userEmail, boardId, e.getMessage());
             return false;
         }
     }
@@ -130,7 +128,7 @@ public class BoardAccessService {
     /**
      * Checks if a user has administrative privileges on a specific board without throwing
      * exceptions.
-     * 
+     *
      * @param boardId The ID of the board to check admin access for
      * @param userEmail The email of the user to check
      * @return true if the user has admin access to the board, false otherwise
@@ -140,15 +138,14 @@ public class BoardAccessService {
             validateAdminAccess(boardId, userEmail);
             return true;
         } catch (AccessDeniedException | ResourceNotFoundException e) {
-            log.debug("User {} does not have admin access to board {}: {}", userEmail, boardId,
-                    e.getMessage());
+            log.debug("User {} does not have admin access to board {}: {}", userEmail, boardId, e.getMessage());
             return false;
         }
     }
 
     /**
      * Checks if a user is the creator of a specific board without throwing exceptions.
-     * 
+     *
      * @param boardId The ID of the board to check creator status for
      * @param userEmail The email of the user to check
      * @return true if the user is the board creator, false otherwise
@@ -158,8 +155,7 @@ public class BoardAccessService {
             validateCreatorAccess(boardId, userEmail);
             return true;
         } catch (AccessDeniedException | ResourceNotFoundException e) {
-            log.debug("User {} is not the creator of board {}: {}", userEmail, boardId,
-                    e.getMessage());
+            log.debug("User {} is not the creator of board {}: {}", userEmail, boardId, e.getMessage());
             return false;
         }
     }

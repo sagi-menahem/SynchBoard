@@ -5,24 +5,25 @@ import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT
 import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_STROKE_COLOR;
 import static io.github.sagimenahem.synchboard.constants.CanvasConstants.DEFAULT_THEME;
 import static io.github.sagimenahem.synchboard.constants.SecurityConstants.ROLE_USER;
+
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * JPA entity representing a user account in the SynchBoard application. Implements Spring
  * Security's UserDetails interface for authentication and authorization. Stores user profile
  * information, preferences, and OAuth2 provider details.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity
@@ -38,7 +39,8 @@ public class User implements UserDetails {
      * authentication, GOOGLE for OAuth2 authentication via Google.
      */
     public enum AuthProvider {
-        LOCAL, GOOGLE,
+        LOCAL,
+        GOOGLE,
     }
 
     /** Primary key: unique email address serving as user identifier */

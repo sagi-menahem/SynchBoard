@@ -35,7 +35,7 @@
 
   // Force all direct children (motion.div pills) to align right
   // margin-left: auto in a column flex pushes items to the right
-  >* {
+  > * {
     margin-left: auto !important;
     margin-right: 0 !important;
   }
@@ -59,7 +59,9 @@
 
   // Ensure pill hugs content tightly - no extra width
   width: fit-content;
-  max-width: calc(100vw - 50px); // Prevent overflow beyond viewport (account for scrollbar + margin)
+  max-width: calc(
+    100vw - 50px
+  ); // Prevent overflow beyond viewport (account for scrollbar + margin)
 
   // Override glass mixin border radius for pill shape
   border-radius: theme.$border-radius-pill;
@@ -127,7 +129,7 @@
     bottom: calc(16px + env(safe-area-inset-bottom));
     transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   // Move up when dock is expanded on mobile (use :global to escape CSS Modules)
   // Position buttons just above the tab with chevron
   :global(body.dock-expanded) .container {

@@ -4,7 +4,7 @@ package io.github.sagimenahem.synchboard.constants;
  * API constants defining REST endpoint paths, URL patterns, and request parameters. Centralizes all
  * API-related string constants to maintain consistency and facilitate refactoring across
  * controllers and configuration classes.
- * 
+ *
  * @author Sagi Menahem
  */
 public final class ApiConstants {
@@ -31,8 +31,7 @@ public final class ApiConstants {
     public static final String API_BOARDS_MEMBERS = "/{boardId}/members";
     public static final String API_BOARDS_MEMBERS_REMOVE = "/{boardId}/members/{memberEmail}";
     public static final String API_BOARDS_MEMBERS_LEAVE = "/{boardId}/members/leave";
-    public static final String API_BOARDS_MEMBERS_PROMOTE =
-            "/{boardId}/members/{memberEmail}/promote";
+    public static final String API_BOARDS_MEMBERS_PROMOTE = "/{boardId}/members/{memberEmail}/promote";
     public static final String API_BOARDS_UNDO = "/{boardId}/undo";
     public static final String API_BOARDS_REDO = "/{boardId}/redo";
     public static final String API_BOARDS_NAME = "/{boardId}/name";

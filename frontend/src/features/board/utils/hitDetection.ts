@@ -11,7 +11,7 @@ export interface HitResult {
  * Converts normalized rectangle coordinates to pixel coordinates and performs
  * boundary checking to determine if the point falls inside the rectangular area.
  * Essential for hit detection on rectangular shapes and UI elements.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param x - Rectangle left edge in normalized coordinates (0-1)
  * @param y - Rectangle top edge in normalized coordinates (0-1)
@@ -48,7 +48,7 @@ export const isPointInRectangle = (
  * Uses stroke width to create a tolerance zone around each edge of the rectangle,
  * allowing for accurate hit detection on rectangle borders even with thick strokes.
  * Checks all four edges (left, right, top, bottom) for proximity to the point.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param x - Rectangle left edge in normalized coordinates (0-1)
  * @param y - Rectangle top edge in normalized coordinates (0-1)
@@ -100,7 +100,7 @@ export const isPointOnRectangleBorder = (
  * Calculates the distance from the point to the circle center and compares it
  * to the circle radius to determine if the point is inside the circular area.
  * Uses Euclidean distance formula for precise circular boundary detection.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param centerX - Circle center X coordinate in normalized coordinates (0-1)
  * @param centerY - Circle center Y coordinate in normalized coordinates (0-1)
@@ -130,7 +130,7 @@ export const isPointInCircle = (
  * Calculates the distance from the point to the circle center and checks if it's
  * approximately equal to the radius within the stroke width tolerance. Essential
  * for detecting clicks on circle outlines and borders in drawing applications.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param centerX - Circle center X coordinate in normalized coordinates (0-1)
  * @param centerY - Circle center Y coordinate in normalized coordinates (0-1)
@@ -163,7 +163,7 @@ export const isPointOnCircleBorder = (
  * Uses mathematical barycentric coordinate calculation to determine if a point
  * is inside the triangle formed by three vertices. Handles degenerate triangles
  * by checking for near-zero denominators and returns false for invalid triangles.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param x1 - First vertex X coordinate in normalized coordinates (0-1)
  * @param y1 - First vertex Y coordinate in normalized coordinates (0-1)
@@ -195,7 +195,8 @@ export const isPointInTriangle = (
 
   // Calculate triangle area using cross product determinant
   const denominator = (p2y - p3y) * (p1x - p3x) + (p3x - p2x) * (p1y - p3y);
-  if (Math.abs(denominator) < 1e-10) { // Numerical precision threshold for degenerate triangle detection (collinear points)
+  if (Math.abs(denominator) < 1e-10) {
+    // Numerical precision threshold for degenerate triangle detection (collinear points)
     return false;
   }
 
@@ -212,7 +213,7 @@ export const isPointInTriangle = (
  * Checks the distance from the point to each of the three triangle edges,
  * using line segment distance calculation to determine if the point is close
  * enough to any edge to be considered a hit on the triangle border.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param x1 - First vertex X coordinate in normalized coordinates (0-1)
  * @param y1 - First vertex Y coordinate in normalized coordinates (0-1)
@@ -255,7 +256,7 @@ export const isPointOnTriangleBorder = (
  * Generates polygon vertices mathematically based on center, radius, and side count,
  * then uses the ray casting algorithm to determine if the point is inside the polygon.
  * Works with any regular polygon (pentagon, hexagon, octagon, etc.).
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param centerX - Polygon center X coordinate in normalized coordinates (0-1)
  * @param centerY - Polygon center Y coordinate in normalized coordinates (0-1)
@@ -313,7 +314,7 @@ export const isPointInPolygon = (
  * Generates star vertices with alternating outer and inner radii to create the classic
  * star shape, then uses ray casting to determine point inclusion. The inner radius
  * is calculated as 40% of the outer radius for proper star proportions.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param centerX - Star center X coordinate in normalized coordinates (0-1)
  * @param centerY - Star center Y coordinate in normalized coordinates (0-1)
@@ -372,7 +373,7 @@ export const isPointInStar = (
  * Uses vector projection to find the closest point on the line segment,
  * handling cases where the closest point is beyond the segment endpoints
  * by clamping to the segment bounds. Essential for line hit detection.
- * 
+ *
  * @param point - Point coordinates in pixels
  * @param x1 - Line segment start X coordinate in pixels
  * @param y1 - Line segment start Y coordinate in pixels
@@ -419,7 +420,7 @@ export const distanceToLineSegment = (
  * Converts normalized line coordinates to pixels and calculates the distance
  * from the point to the line segment. Returns true if the distance is within
  * the stroke width tolerance, enabling accurate line hit detection.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param x1 - Line start X coordinate in normalized coordinates (0-1)
  * @param y1 - Line start Y coordinate in normalized coordinates (0-1)
@@ -455,7 +456,7 @@ export const isPointOnLine = (
  * Delegates to the rectangle hit detection function since text boxes are rectangular
  * in nature. Provides a semantic wrapper for text-specific hit detection while
  * leveraging the existing rectangle boundary checking logic.
- * 
+ *
  * @param point - Point coordinates in pixels to test
  * @param x - Text box left edge in normalized coordinates (0-1)
  * @param y - Text box top edge in normalized coordinates (0-1)
@@ -483,7 +484,7 @@ export const isPointInTextBox = (
  * the topmost object that intersects with the click point. Distinguishes between
  * fill hits, stroke hits, and object hits for different types of drawing elements.
  * This is the main entry point for object interaction and selection logic.
- * 
+ *
  * @param clickPoint - Mouse click coordinates in pixels
  * @param objects - Array of canvas objects to test for hit detection
  * @param canvasWidth - Canvas width in pixels for coordinate conversion

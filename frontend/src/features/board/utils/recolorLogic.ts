@@ -21,7 +21,7 @@ export interface RecolorAction {
  * Uses hit detection to identify the clicked object and determines whether to recolor
  * the fill, stroke, or entire object based on the hit type. Returns a structured
  * action object that can be executed or rejected based on the hit results.
- * 
+ *
  * @param clickPoint - Mouse click coordinates in pixels
  * @param objects - Array of canvas objects to test for hit detection
  * @param canvasWidth - Canvas width in pixels for coordinate conversion
@@ -142,7 +142,7 @@ const createObjectColorAction = (
  * Uses hit detection to identify the object and hit type, then creates descriptive
  * text for UI tooltips and feedback. Distinguishes between fill recoloring, stroke
  * recoloring, and general object recoloring based on the hit detection results.
- * 
+ *
  * @param clickPoint - Mouse position coordinates in pixels
  * @param objects - Array of canvas objects to test for hit detection
  * @param canvasWidth - Canvas width in pixels for coordinate conversion

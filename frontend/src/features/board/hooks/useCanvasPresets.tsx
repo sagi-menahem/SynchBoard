@@ -37,7 +37,7 @@ const getTranslationKey = (sizeKey: string): string => {
  * This hook provides utilities for working with predefined canvas sizes, detecting current
  * preset from board dimensions, generating preset options for UI components, and handling
  * internationalization for preset labels.
- * 
+ *
  * @param styles - CSS class names for styling preset display components
  * @returns Object containing preset detection, option generation, and utility functions
  */

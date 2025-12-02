@@ -29,7 +29,7 @@
     backdrop-filter theme.$transition-normal theme.$transition-ease,
     border-color theme.$transition-normal theme.$transition-ease,
     box-shadow theme.$transition-normal theme.$transition-ease;
-  
+
   // Glass effect on focus/hover
   &:hover,
   &:focus-within {
@@ -160,7 +160,7 @@
 // --- Section Separators ---
 
 // Dynamic separator lines between toolbar items with gradient effect
-.toolbarSection>*:not(:last-child)::after {
+.toolbarSection > *:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -8px;
@@ -172,13 +172,13 @@
   pointer-events: none;
 }
 
-.toolbarSection>*:last-child::after {
+.toolbarSection > *:last-child::after {
   display: none;
 }
 
-.toolbarSection>.customItem::after,
-.toolbarSection>*:has(.searchInput)::after,
-.toolbarSection>*:has(.viewToggle)::after {
+.toolbarSection > .customItem::after,
+.toolbarSection > *:has(.searchInput)::after,
+.toolbarSection > *:has(.viewToggle)::after {
   display: none;
 }
 
@@ -199,9 +199,8 @@
 
 // Hide search bar first before other elements get squished (boards page only)
 @media (max-width: 768px) {
-
   // Target only the boards page using data attribute
-  .universalToolbar[data-page-type="boards"] .centerSection {
+  .universalToolbar[data-page-type='boards'] .centerSection {
     display: none !important;
   }
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * Data Transfer Object representing detailed board information. Contains comprehensive board
  * metadata including member information, visual settings, and canvas configuration for board
  * management screens.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

@@ -13,7 +13,7 @@ import logger from 'shared/utils/logger';
  * for resetting and incrementing counters based on board state changes. The hook ensures proper
  * user feedback through toast notifications and handles error scenarios gracefully while maintaining
  * action history consistency across collaborative sessions.
- * 
+ *
  * @param {number} boardId - ID of the board for which to manage action operations and history tracking
  * @returns Object containing action counts, availability flags, undo/redo handlers, and counter management functions
  */
@@ -23,7 +23,8 @@ export const useBoardActions = (boardId: number) => {
   const [redoCount, setRedoCount] = useState(0); // Tracks available redo actions
 
   const handleUndo = useCallback(() => {
-    if (undoCount === 0) { // No actions available to undo
+    if (undoCount === 0) {
+      // No actions available to undo
       toast.error(t('board:boardSync.nothingToUndo'));
       return;
     }
@@ -40,7 +41,8 @@ export const useBoardActions = (boardId: number) => {
   }, [boardId, undoCount, t]);
 
   const handleRedo = useCallback(() => {
-    if (redoCount === 0) { // No actions available to redo
+    if (redoCount === 0) {
+      // No actions available to redo
       toast.error(t('board:boardSync.nothingToRedo'));
       return;
     }

@@ -23,7 +23,7 @@ class Logger {
   /**
    * Logs debug-level messages. Only outputs to console in development mode.
    * Used for detailed troubleshooting information that shouldn't appear in production.
-   * 
+   *
    * @param {string} message - The debug message to log
    * @param {...unknown[]} data - Additional data to include with the message
    */
@@ -37,7 +37,7 @@ class Logger {
   /**
    * Logs informational messages. Only outputs to console in development mode.
    * Used for general application flow and state information.
-   * 
+   *
    * @param {string} message - The informational message to log
    * @param {...unknown[]} data - Additional data to include with the message
    */
@@ -51,7 +51,7 @@ class Logger {
   /**
    * Logs warning messages. Always outputs to console in both development and production.
    * Used for non-critical issues that don't break functionality but should be noted.
-   * 
+   *
    * @param {string} message - The warning message to log
    * @param {...unknown[]} data - Additional data to include with the message
    */
@@ -64,7 +64,7 @@ class Logger {
    * Logs error messages with enhanced error handling and production reporting.
    * Always outputs to console and stores in session storage for production analysis.
    * In production, errors are queued for potential external service reporting.
-   * 
+   *
    * @param {string} message - The error message to log
    * @param {Error | unknown} [error] - Optional error object or additional error data
    * @param {...unknown[]} data - Additional data to include with the message
@@ -144,7 +144,7 @@ class Logger {
   /**
    * Retrieves a copy of the log history for debugging or analysis purposes.
    * Returns a new array to prevent external modification of internal state.
-   * 
+   *
    * @returns {LogEntry[]} Array of recent log entries
    */
   getHistory(): LogEntry[] {
@@ -189,10 +189,10 @@ class Logger {
         error:
           error instanceof Error
             ? {
-              message: error.message,
-              stack: error.stack,
-              name: error.name,
-            }
+                message: error.message,
+                stack: error.stack,
+                name: error.name,
+              }
             : error,
         data,
         timestamp: new Date().toISOString(),
@@ -200,13 +200,13 @@ class Logger {
         url: window.location.href,
       });
 
-      if (errors.length > 50) { // Prevent session storage bloat in production
+      if (errors.length > 50) {
+        // Prevent session storage bloat in production
         errors.shift();
       }
 
       sessionStorage.setItem('app_errors', JSON.stringify(errors));
-    } catch {
-    }
+    } catch {}
   }
 }
 

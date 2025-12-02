@@ -48,31 +48,35 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
      * @throws ServletException if servlet operations fail
      */
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication
+    ) throws IOException, ServletException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = oauthToken.getPrincipal();
         String registrationId = oauthToken.getAuthorizedClientRegistrationId();
 
-        log.info(SECURITY_PREFIX + " OAuth2 authentication success for provider: {}",
-                registrationId);
+        log.info(SECURITY_PREFIX + " OAuth2 authentication success for provider: {}", registrationId);
 
         try {
             // Extract user info from OAuth2 token
             GoogleUserInfo googleUserInfo = GoogleUserInfo.builder()
-                    .email(oAuth2User.getAttribute("email"))
-                    .providerId(oAuth2User.getAttribute("sub"))
-                    .name(oAuth2User.getAttribute("name"))
-                    .pictureUrl(oAuth2User.getAttribute("picture")).build();
+                .email(oAuth2User.getAttribute("email"))
+                .providerId(oAuth2User.getAttribute("sub"))
+                .name(oAuth2User.getAttribute("name"))
+                .pictureUrl(oAuth2User.getAttribute("picture"))
+                .build();
 
             // Delegate to shared service for user processing
             String jwt = googleAuthService.processGoogleUser(googleUserInfo);
 
-            String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl()
-                    + "/auth/callback?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
+            String frontendUrl =
+                appProperties.getOauth2().getFrontendBaseUrl() +
+                "/auth/callback?token=" +
+                URLEncoder.encode(jwt, StandardCharsets.UTF_8);
 
-            log.info(SECURITY_PREFIX + " OAuth2 authentication successful for: {}",
-                    googleUserInfo.getEmail());
+            log.info(SECURITY_PREFIX + " OAuth2 authentication successful for: {}", googleUserInfo.getEmail());
             response.sendRedirect(frontendUrl);
         } catch (Exception e) {
             log.error(SECURITY_PREFIX + " Error processing OAuth2 authentication", e);
@@ -87,10 +91,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
      * @param message The error message to display to user
      * @throws IOException if redirect fails
      */
-    private void handleAuthenticationFailure(HttpServletResponse response, String message)
-            throws IOException {
-        String frontendUrl = appProperties.getOauth2().getFrontendBaseUrl() + "/auth/error?message="
-                + URLEncoder.encode(message, StandardCharsets.UTF_8);
+    private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
+        String frontendUrl =
+            appProperties.getOauth2().getFrontendBaseUrl() +
+            "/auth/error?message=" +
+            URLEncoder.encode(message, StandardCharsets.UTF_8);
         response.sendRedirect(frontendUrl);
     }
 }

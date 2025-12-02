@@ -24,13 +24,13 @@ const BANNER_DELAY_MS = 5000;
  * Custom hook that manages UI state based on WebSocket connection status.
  * Provides intelligent banner display logic with delays to prevent UI flicker
  * during connection transitions, and functionality blocking for disconnected states.
- * 
+ *
  * Key features:
  * - Delayed banner display (5 seconds) to avoid showing banner during brief disconnections
  * - Automatic banner hiding when connection is restored
  * - Functionality blocking recommendations for features requiring real-time connectivity
  * - Clean timeout management to prevent memory leaks
- * 
+ *
  * @returns Connection status state object with UI control flags and connection information
  */
 export const useConnectionStatus = (): ConnectionStatusState => {

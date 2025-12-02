@@ -6,7 +6,7 @@ export interface BackendError {
  * Type guard function that determines if unknown data represents a structured backend error.
  * Validates that the data contains a properly formatted error message from the server.
  * Used in API error handling to differentiate structured errors from unexpected failures.
- * 
+ *
  * @param {unknown} data - Data to check, typically from HTTP response body
  * @returns {data is BackendError} True if data matches BackendError interface structure
  */

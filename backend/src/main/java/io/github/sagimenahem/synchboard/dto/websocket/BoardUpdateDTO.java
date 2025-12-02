@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for board update WebSocket notifications. Used to notify board members about
  * changes to board configuration, membership, or canvas settings through real-time messaging.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

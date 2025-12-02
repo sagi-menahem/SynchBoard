@@ -95,18 +95,23 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
           <Drawer.Handle className={styles.handle} />
           <Drawer.Title className={styles.title}>{t('chat:window.title')}</Drawer.Title>
           <VisuallyHidden.Root asChild>
-            <Drawer.Description>
-              {t('chat:window.description')}
-            </Drawer.Description>
+            <Drawer.Description>{t('chat:window.description')}</Drawer.Description>
           </VisuallyHidden.Root>
           <div
             className={clsx(styles.chatContainer, utilStyles.unifiedDotBackground)}
-            style={{
-              '--user-chosen-color': userChosenColor,
-              '--background-size': '280px 280px',
-            } as React.CSSProperties}
+            style={
+              {
+                '--user-chosen-color': userChosenColor,
+                '--background-size': '280px 280px',
+              } as React.CSSProperties
+            }
           >
-            <ChatWindow boardId={boardId} messages={messages} isMobileDrawer chatRef={chatWindowRef} />
+            <ChatWindow
+              boardId={boardId}
+              messages={messages}
+              isMobileDrawer
+              chatRef={chatWindowRef}
+            />
           </div>
         </Drawer.Content>
       </Drawer.Portal>

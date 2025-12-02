@@ -42,7 +42,7 @@ interface UseApiCallReturn<T, P extends unknown[]> {
  * Custom hook for managing API calls with loading states, error handling, and toast notifications.
  * Provides a standardized way to handle asynchronous API operations with automatic state management
  * and user feedback through toast messages.
- * 
+ *
  * @param {Function} apiFunction - The API function to execute, should return a Promise<T>
  * @param {ApiCallOptions<T>} options - Configuration options for success/error handling and notifications
  * @returns {UseApiCallReturn<T, P>} Object containing data, loading state, error, execute function, and reset function
@@ -126,7 +126,7 @@ export function useApiCall<T = unknown, P extends unknown[] = unknown[]>(
  * Custom hook for managing API mutations (create, update, delete operations) without return data.
  * Similar to useApiCall but optimized for operations that don't return meaningful data,
  * focusing on success/failure status and user feedback through toast notifications.
- * 
+ *
  * @param {Function} apiFunction - The API mutation function to execute, should return a Promise
  * @param {Object} options - Configuration options for success/error handling and notifications
  * @returns {Object} Object containing loading state, error, and execute function that returns boolean success status

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object representing a user's profile information. Contains personal details,
  * contact information, and user preferences for display and management of user accounts.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

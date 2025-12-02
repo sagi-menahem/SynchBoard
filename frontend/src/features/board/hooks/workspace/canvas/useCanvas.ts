@@ -37,7 +37,7 @@ const DEFAULT_CANVAS_CONFIG: CanvasConfig = {
  * The hook handles canvas configuration, coordinate calculations, drawing validation, and provides the primary
  * event handler for canvas interactions. It abstracts the complexity of canvas operations while maintaining
  * separation of concerns through composition of specialized hooks.
- * 
+ *
  * @param instanceId - Unique sender identifier for drawing actions and collaboration tracking
  * @param tool - Currently active drawing tool for canvas operations
  * @param strokeColor - Color setting for drawing operations and previews
@@ -193,10 +193,7 @@ export const useCanvas = ({
     ],
   );
 
-  const {
-    handlePointerDown: canvasPointerDown,
-    isPanning,
-  } = useCanvasEvents(canvasEventsConfig);
+  const { handlePointerDown: canvasPointerDown, isPanning } = useCanvasEvents(canvasEventsConfig);
 
   return {
     canvasRef,

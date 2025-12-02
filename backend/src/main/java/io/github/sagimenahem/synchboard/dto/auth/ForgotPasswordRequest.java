@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object for forgot password requests. Contains the user's email address for password
  * reset functionality. Validates that the email is not blank and follows proper email format.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

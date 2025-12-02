@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
  * Provides secure password update functionality with loading states and toast notifications.
  * Handles service layer communication and error propagation while maintaining consistent UX patterns.
  * Integrates with localization system for internationalized feedback messages.
- * 
+ *
  * @returns Object containing password management handlers with proper error handling
  */
 export const usePasswordManager = () => {

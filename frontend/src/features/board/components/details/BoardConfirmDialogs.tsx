@@ -26,9 +26,9 @@ interface BoardConfirmDialogsProps {
 
 /**
  * Renders confirmation dialogs for critical board actions like leaving or deleting.
- * This component centralizes the confirmation UI to ensure consistent user experience 
+ * This component centralizes the confirmation UI to ensure consistent user experience
  * and prevent accidental destructive actions by requiring explicit user confirmation.
- * 
+ *
  * @param isLeaveConfirmOpen - Controls visibility of the leave board confirmation dialog
  * @param isDeleteConfirmOpen - Controls visibility of the delete board confirmation dialog
  * @param boardName - Name of the board being acted upon, used in confirmation messages

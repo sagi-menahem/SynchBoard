@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object representing user language preferences. Contains the user's preferred
  * language setting for the application with validation to ensure only supported languages are used.
- * 
+ *
  * @author Sagi Menahem
  */
 @Data

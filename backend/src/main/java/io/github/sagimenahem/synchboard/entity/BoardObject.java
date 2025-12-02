@@ -13,12 +13,11 @@ import org.hibernate.type.SqlTypes;
  * Entity representing objects drawn on a board (shapes, lines, text, etc.). Each board object
  * contains the visual data, positioning, and metadata necessary for rendering on the collaborative
  * whiteboard canvas.
- * 
+ *
  * @author Sagi Menahem
  */
 @Entity
-@Table(name = "board_objects",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "board_group_id"}))
+@Table(name = "board_objects", uniqueConstraints = @UniqueConstraint(columnNames = { "instance_id", "board_group_id" }))
 @Data
 @Builder
 @NoArgsConstructor

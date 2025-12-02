@@ -24,7 +24,7 @@
   padding-inline-end: 24px;
   padding-bottom: 24px;
   box-sizing: border-box;
-  
+
   // Add extra padding on mobile to account for mobile search row
   @media (max-width: 768px) {
     padding-top: calc(var(--banner-height, 0px) + 72px);
@@ -140,12 +140,12 @@
 .boardList.grid {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 24px;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
   }
-  
+
   @media (min-width: 769px) and (max-width: 1024px) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;

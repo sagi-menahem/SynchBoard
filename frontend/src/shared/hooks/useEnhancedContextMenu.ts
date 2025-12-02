@@ -7,7 +7,7 @@ import { useContextMenuProvider } from '../ui/components/overlays/ContextMenuPro
  * Extends basic context menu functionality by integrating with a global context menu provider,
  * allowing for more sophisticated menu rendering and positioning. Supports custom content
  * and cleanup callbacks for advanced use cases.
- * 
+ *
  * @returns {Object} Object containing menu state, associated data, and enhanced control functions
  */
 export const useEnhancedContextMenu = <T>() => {

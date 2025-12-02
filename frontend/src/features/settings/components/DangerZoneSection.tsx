@@ -19,7 +19,7 @@ interface DangerZoneSectionProps {
  * Provides a clearly separated and visually distinct interface for destructive operations.
  * Uses warning styling and explicit labeling to prevent accidental activation of dangerous actions.
  * Implements proper accessibility patterns with clear button labeling and danger styling.
- * 
+ *
  * @param onDeleteAccount - Function to initiate account deletion with user confirmation
  */
 const DangerZoneSection: React.FC<DangerZoneSectionProps> = ({ onDeleteAccount }) => {

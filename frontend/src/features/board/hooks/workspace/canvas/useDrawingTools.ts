@@ -43,7 +43,7 @@ interface UseDrawingToolsProps {
  * and coordinate transformations for consistent cross-device collaboration. It integrates validation functions
  * to ensure drawing quality and provides specialized handling for different tool types while maintaining
  * consistent action format for the collaboration system.
- * 
+ *
  * @param canvasRef - Reference to the HTML canvas element for coordinate calculations and validation
  * @param tool - Currently active drawing tool that determines action generation behavior
  * @param strokeWidth - Width setting for strokes and shape borders in drawing actions
@@ -115,7 +115,8 @@ export const useDrawingTools = ({
 
       const { startPoint, currentPoint } = eventData;
 
-      if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) { // Need at least 2 points for a valid stroke
+      if ((tool === TOOLS.BRUSH || tool === TOOLS.ERASER) && currentPath.current.length > 1) {
+        // Need at least 2 points for a valid stroke
         const optimizedPoints = optimizeDrawingPoints([...currentPath.current]);
 
         const payload: Omit<LinePayload, 'instanceId'> = {
@@ -131,7 +132,7 @@ export const useDrawingTools = ({
         const size = Math.max(Math.abs(width), Math.abs(height));
 
         // Adjust X position when dragging left to maintain square origin from correct corner
-        const squareX = width < 0 ? startPoint.x - size : startPoint.x; 
+        const squareX = width < 0 ? startPoint.x - size : startPoint.x;
         // Adjust Y position when dragging up to maintain square origin from correct corner
         const squareY = height < 0 ? startPoint.y - size : startPoint.y;
 

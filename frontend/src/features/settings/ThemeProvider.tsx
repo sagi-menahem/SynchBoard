@@ -61,7 +61,7 @@ const applyThemeToDOM = (theme: Theme) => {
  * Handles system theme detection, recent change tracking to prevent conflicts, and DOM theme application.
  * The value object exposes current theme state, loading indicators, theme switching function, and error handling.
  * Integrates with scrollbar theming and ensures smooth theme transitions across the entire application.
- * 
+ *
  * @param children - Child components that will consume the theme context
  */
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {

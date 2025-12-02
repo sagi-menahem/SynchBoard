@@ -5,16 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants';
 import { useIsMobile, useMediaQuery } from 'shared/hooks';
 import {
-    AppHeader,
-    Button,
-    Card,
-    ConfirmationDialog,
-    ContextMenuItem,
-    EnhancedContextMenu,
-    Modal,
-    PageLoader,
-    PageTransition,
-    SearchBar,
+  AppHeader,
+  Button,
+  Card,
+  ConfirmationDialog,
+  ContextMenuItem,
+  EnhancedContextMenu,
+  Modal,
+  PageLoader,
+  PageTransition,
+  SearchBar,
 } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
@@ -72,36 +72,50 @@ const BoardListPage: React.FC = () => {
       <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={
-            <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
+            <Button
+              variant="icon"
+              onClick={() => navigate(APP_ROUTES.SETTINGS)}
+              title={t('board:listPage.setting')}
+            >
               <Settings size={20} />
             </Button>
           }
-          center={!isNarrowWindow ? (
-            <SearchBar
-              placeholder={t('board:toolbar.search.boardName')}
-              value={searchQuery}
-              onSearch={handleSearch}
-              onClear={handleClearSearch}
-            />
-          ) : undefined}
-          trailing={(
+          center={
+            !isNarrowWindow ? (
+              <SearchBar
+                placeholder={t('board:toolbar.search.boardName')}
+                value={searchQuery}
+                onSearch={handleSearch}
+                onClear={handleClearSearch}
+              />
+            ) : undefined
+          }
+          trailing={
             <>
               <Button
                 variant="icon"
                 onClick={toggleViewMode}
-                title={viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')}
+                title={
+                  viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')
+                }
               >
                 {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
                 <span className={styles.buttonLabel}>
-                  {viewMode === 'grid' ? t('board:listPage.viewListLabel') : t('board:listPage.viewGridLabel')}
+                  {viewMode === 'grid'
+                    ? t('board:listPage.viewListLabel')
+                    : t('board:listPage.viewGridLabel')}
                 </span>
               </Button>
-              <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
+              <Button
+                variant="icon"
+                onClick={openModal}
+                title={t('board:listPage.createNewBoardButton')}
+              >
                 <Plus size={20} />
                 <span className={styles.buttonLabel}>{t('board:listPage.createButtonLabel')}</span>
               </Button>
             </>
-          )}
+          }
         />
         {isNarrowWindow && (
           <div className={styles.mobileSearchRow}>
@@ -122,36 +136,50 @@ const BoardListPage: React.FC = () => {
     <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
       <AppHeader
         leading={
-          <Button variant="icon" onClick={() => navigate(APP_ROUTES.SETTINGS)} title={t('board:listPage.setting')}>
+          <Button
+            variant="icon"
+            onClick={() => navigate(APP_ROUTES.SETTINGS)}
+            title={t('board:listPage.setting')}
+          >
             <Settings size={20} />
           </Button>
         }
-        center={!isNarrowWindow ? (
-          <SearchBar
-            placeholder={t('board:toolbar.search.boardName')}
-            value={searchQuery}
-            onSearch={handleSearch}
-            onClear={handleClearSearch}
-          />
-        ) : undefined}
-        trailing={(
+        center={
+          !isNarrowWindow ? (
+            <SearchBar
+              placeholder={t('board:toolbar.search.boardName')}
+              value={searchQuery}
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
+            />
+          ) : undefined
+        }
+        trailing={
           <>
             <Button
               variant="icon"
               onClick={toggleViewMode}
-              title={viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')}
+              title={
+                viewMode === 'grid' ? t('board:toolbar.view.list') : t('board:toolbar.view.grid')
+              }
             >
               {viewMode === 'grid' ? <List size={20} /> : <LayoutGrid size={20} />}
               <span className={styles.buttonLabel}>
-                {viewMode === 'grid' ? t('board:listPage.viewListLabel') : t('board:listPage.viewGridLabel')}
+                {viewMode === 'grid'
+                  ? t('board:listPage.viewListLabel')
+                  : t('board:listPage.viewGridLabel')}
               </span>
             </Button>
-            <Button variant="icon" onClick={openModal} title={t('board:listPage.createNewBoardButton')}>
+            <Button
+              variant="icon"
+              onClick={openModal}
+              title={t('board:listPage.createNewBoardButton')}
+            >
               <Plus size={20} />
               <span className={styles.buttonLabel}>{t('board:listPage.createButtonLabel')}</span>
             </Button>
           </>
-        )}
+        }
       />
       {isNarrowWindow && (
         <div className={styles.mobileSearchRow}>
@@ -213,7 +241,11 @@ const BoardListPage: React.FC = () => {
           );
         })()}
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} className="modal-wide modal-fullscreen-mobile">
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          className="modal-wide modal-fullscreen-mobile"
+        >
           <CreateBoardForm onBoardCreated={handleBoardCreated} onClose={closeModal} />
         </Modal>
       </main>

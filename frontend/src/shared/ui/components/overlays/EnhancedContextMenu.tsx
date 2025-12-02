@@ -26,7 +26,7 @@ interface MenuPosition {
  * Enhanced context menu component with intelligent positioning and animations.
  * Automatically adjusts position to prevent viewport overflow and provides smooth entrance animations.
  * Supports keyboard navigation and click-outside behavior for improved user experience.
- * 
+ *
  * @param {number} x - Initial horizontal position for the context menu
  * @param {number} y - Initial vertical position for the context menu
  * @param {function} onClose - Callback function called when menu should be closed

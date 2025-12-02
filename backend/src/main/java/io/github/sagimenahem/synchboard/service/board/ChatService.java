@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Service for managing real-time chat functionality within collaborative boards. Handles message
  * processing, persistence, broadcasting to board members, and retrieval of message history with
  * proper access control validation.
- * 
+ *
  * @author Sagi Menahem
  */
 @Slf4j
@@ -44,40 +44,42 @@ public class ChatService {
     @Transactional
     public void processAndSaveMessage(ChatMessageDTO.Request request, Principal principal) {
         String userEmail = principal.getName();
-        log.debug("Processing chat message for board {} from user: {}", request.getBoardId(),
-                userEmail);
+        log.debug("Processing chat message for board {} from user: {}", request.getBoardId(), userEmail);
 
-        User senderUser = userRepository.findById(userEmail).orElseThrow(
-                () -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
+        User senderUser = userRepository
+            .findById(userEmail)
+            .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.USER_NOT_FOUND + userEmail));
 
-        GroupBoard board = groupBoardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
+        GroupBoard board = groupBoardRepository
+            .findById(request.getBoardId())
+            .orElseThrow(() -> new ResourceNotFoundException(MessageConstants.BOARD_NOT_FOUND + request.getBoardId()));
 
         String fullNameSnapshot = senderUser.getFirstName() + " " + senderUser.getLastName();
 
-        Message messageToSave = Message.builder().board(board).sender(senderUser)
-                .messageContent(request.getContent()).senderFullNameSnapshot(fullNameSnapshot)
-                .build();
+        Message messageToSave = Message.builder()
+            .board(board)
+            .sender(senderUser)
+            .messageContent(request.getContent())
+            .senderFullNameSnapshot(fullNameSnapshot)
+            .build();
 
         messageRepository.save(messageToSave);
-        log.info(LoggingConstants.CHAT_MESSAGE_SENT, request.getBoardId(), userEmail,
-                messageToSave.getMessageId());
+        log.info(LoggingConstants.CHAT_MESSAGE_SENT, request.getBoardId(), userEmail, messageToSave.getMessageId());
 
         log.debug(
-                "[DIAGNOSTIC] Message saved to DB. MessageID: {}, InstanceID to be broadcasted: {}",
-                messageToSave.getMessageId(), request.getInstanceId());
+            "[DIAGNOSTIC] Message saved to DB. MessageID: {}, InstanceID to be broadcasted: {}",
+            messageToSave.getMessageId(),
+            request.getInstanceId()
+        );
 
         ChatMessageDTO.Response response = mapMessageToDto(messageToSave, request.getInstanceId());
 
         String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
 
-        log.info("[DIAGNOSTIC] Broadcasting chat message. Topic: {}, Payload: {}", destination,
-                response.toString());
+        log.info("[DIAGNOSTIC] Broadcasting chat message. Topic: {}, Payload: {}", destination, response.toString());
 
         messagingTemplate.convertAndSend(destination, response);
-        log.debug("Chat message broadcasted to topic: {} with instanceId: {}", destination,
-                request.getInstanceId());
+        log.debug("Chat message broadcasted to topic: {} with instanceId: {}", destination, request.getInstanceId());
     }
 
     @Transactional(readOnly = true)
@@ -88,10 +90,11 @@ public class ChatService {
 
         List<Message> messages = messageRepository.findByBoardWithSender(boardId);
 
-        log.info("Retrieved {} messages for board {} by user: {}", messages.size(), boardId,
-                userEmail);
-        return messages.stream().map((message) -> mapMessageToDto(message, null))
-                .collect(Collectors.toList());
+        log.info("Retrieved {} messages for board {} by user: {}", messages.size(), boardId, userEmail);
+        return messages
+            .stream()
+            .map((message) -> mapMessageToDto(message, null))
+            .collect(Collectors.toList());
     }
 
     private ChatMessageDTO.Response mapMessageToDto(Message message, String instanceId) {
@@ -110,11 +113,16 @@ public class ChatService {
             senderProfilePictureUrl = null;
         }
 
-        return ChatMessageDTO.Response.builder().id(message.getMessageId())
-                .type(ChatMessageDTO.Response.MessageType.CHAT).content(message.getMessageContent())
-                .timestamp(message.getTimestamp()).senderEmail(senderEmail)
-                .senderFullName(senderFullName).senderProfilePictureUrl(senderProfilePictureUrl)
-                .instanceId(instanceId).build();
+        return ChatMessageDTO.Response.builder()
+            .id(message.getMessageId())
+            .type(ChatMessageDTO.Response.MessageType.CHAT)
+            .content(message.getMessageContent())
+            .timestamp(message.getTimestamp())
+            .senderEmail(senderEmail)
+            .senderFullName(senderFullName)
+            .senderProfilePictureUrl(senderProfilePictureUrl)
+            .instanceId(instanceId)
+            .build();
     }
 
     private void validateBoardAccess(String userEmail, Long boardId) {

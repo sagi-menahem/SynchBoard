@@ -42,7 +42,7 @@ interface CanvasPreferencesProviderProps {
  * Provides global state management for canvas split ratios, layout modes, and visual preferences.
  * Integrates with authentication system to provide persistent user preferences with real-time synchronization.
  * The value object exposes canvas preferences state, loading indicators, error handling, and update functions.
- * 
+ *
  * @param children - Child components that will consume the canvas preferences context
  */
 export const CanvasPreferencesProvider: React.FC<CanvasPreferencesProviderProps> = ({
