@@ -5,6 +5,7 @@
   "lightTheme": "Light theme",
   "darkTheme": "Dark theme",
   "chooseColor": "Choose color",
+  "presets": "Presets",
   "form": {
     "label": {
       "email": "Email:",

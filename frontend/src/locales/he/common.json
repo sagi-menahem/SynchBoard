@@ -5,6 +5,7 @@
   "lightTheme": "ערכת עיצוב בהירה",
   "darkTheme": "ערכת עיצוב כהה",
   "chooseColor": "בחר צבע",
+  "presets": "צבעים מוכנים",
   "form": {
     "label": {
       "email": "אימייל:",

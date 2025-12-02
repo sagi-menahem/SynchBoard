@@ -42,7 +42,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 }) => {
   const { t } = useTranslation(['common']);
   const [showPicker, setShowPicker] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
   const pickerRef = useRef<HTMLDivElement>(null);
   const swatchRef = useRef<HTMLButtonElement>(null);
@@ -55,13 +54,28 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     showPicker,
   );
 
+  // Close picker when scrolling
+  useEffect(() => {
+    if (!showPicker) return;
+
+    const handleScroll = () => {
+      setShowPicker(false);
+    };
+
+    // Listen to scroll on window and any scrollable parent
+    window.addEventListener('scroll', handleScroll, true);
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [showPicker]);
+
   // Calculate optimal popover position to avoid viewport overflow - runs when popover opens
   useEffect(() => {
     if (showPicker && swatchRef.current) {
       const swatchRect = swatchRef.current.getBoundingClientRect();
-      const popoverWidth = 250; // Color picker widget standard width
-      const popoverHeight = 300; // Color picker widget standard height with palette and sliders
-      const margin = 8; // Visual spacing between swatch and popover for better UX
+      const popoverWidth = 260;
+      const popoverHeight = 310;
+      const margin = 8;
 
       let left = swatchRect.left;
       let top = swatchRect.bottom + margin;
@@ -88,63 +102,24 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const handleSwatchClick = useCallback(() => {
     if (!disabled) {
-      const newShowPicker = !showPicker;
-      setShowPicker(newShowPicker);
+      setShowPicker((prev) => !prev);
     }
-  }, [disabled, showPicker]);
+  }, [disabled]);
 
   const handleColorChange = useCallback(
-    (color: string) => {
-      onChange(color);
+    (newColor: string) => {
+      onChange(newColor);
     },
     [onChange],
   );
 
   const handlePaletteColorClick = useCallback(
-    (color: string) => {
-      onChange(color);
+    (presetColor: string) => {
+      onChange(presetColor);
       setShowPicker(false);
     },
     [onChange],
   );
-
-  // Track dragging state to close picker when color selection is complete
-  const handleMouseDown = useCallback(() => {
-    setIsDragging(true);
-  }, []);
-
-  // Close picker when user finishes selecting from color wheel
-  const handleMouseUp = useCallback((e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const isSaturationArea = target.closest('.react-colorful__saturation'); // CSS class name from react-colorful library for main color selection area
-
-    setIsDragging(false);
-    if (isSaturationArea) {
-      setShowPicker(false);
-    }
-  }, []);
-
-  // Handle global mouse events to close picker after drag operations - manages drag state cleanup
-  useEffect(() => {
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-      if (isDragging) {
-        const target = e.target as HTMLElement;
-        const isSaturationArea = target.closest('.react-colorful__saturation');
-
-        setIsDragging(false);
-        if (isSaturationArea) {
-          setShowPicker(false);
-        }
-      }
-    };
-
-    if (isDragging) {
-      document.addEventListener('mouseup', handleGlobalMouseUp);
-      return () => {
-        document.removeEventListener('mouseup', handleGlobalMouseUp);
-      };
-    }
-  }, [isDragging]);
 
   // Memoized to avoid recalculating CSS classes when className prop hasn't changed
   const containerClasses = useMemo(
@@ -190,21 +165,30 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         createPortal(
           <div ref={pickerRef} className={styles.popover} style={popoverStyle}>
             <div className={styles.colorfulWrapper}>
-              <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} role="presentation">
+              {/* Color picker area */}
+              <div className={styles.pickerArea}>
                 <HexColorPicker color={color} onChange={handleColorChange} />
               </div>
-              <div className={styles.presetColors}>
-                {PRESET_COLORS.map((presetColor) => (
-                  <Button
-                    key={presetColor}
-                    type="button"
-                    variant="icon"
-                    className={styles.presetColor}
-                    style={{ backgroundColor: presetColor }}
-                    onClick={() => handlePaletteColorClick(presetColor)}
-                    title={presetColor}
-                  />
-                ))}
+
+              {/* Divider */}
+              <div className={styles.divider} />
+
+              {/* Preset colors section */}
+              <div className={styles.presetsSection}>
+                <span className={styles.presetsLabel}>{t('common:presets')}</span>
+                <div className={styles.presetColors}>
+                  {PRESET_COLORS.map((presetColor) => (
+                    <button
+                      key={presetColor}
+                      type="button"
+                      className={`${styles.presetColor} ${presetColor === color ? styles.active : ''}`}
+                      style={{ backgroundColor: presetColor }}
+                      onClick={() => handlePaletteColorClick(presetColor)}
+                      title={presetColor}
+                      aria-label={`Select ${presetColor}`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>,
