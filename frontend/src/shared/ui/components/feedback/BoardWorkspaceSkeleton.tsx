@@ -31,12 +31,9 @@ const SKELETON_MESSAGES: MessageSkeletonData[] = [
 const BoardWorkspaceSkeleton: React.FC = () => {
   return (
     <div className={styles.workspaceSkeleton}>
-      {/* Canvas Panel - Left side */}
+      {/* Canvas Panel */}
       <div className={styles.canvasPanel}>
-        <div className={styles.canvasArea}>
-          {/* Canvas placeholder - represents the drawing area */}
-          <div className={styles.canvasPlaceholder} />
-        </div>
+        <div className={styles.canvasArea} />
       </div>
 
       {/* Resize Handle - Between panels */}
