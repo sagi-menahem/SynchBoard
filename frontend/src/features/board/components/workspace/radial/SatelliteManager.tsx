@@ -22,8 +22,8 @@ interface SatelliteManagerProps {
 const SATELLITE_POSITION = {
     // Desktop: toolbar at bottom: 32px, height: ~56px, gap: 8px
     DESKTOP_BOTTOM: 96,
-    // Mobile: toolbar at bottom: 0px, height: ~152px, gap: 8px
-    MOBILE_BOTTOM: 160,
+    // Mobile: tab (48px) + toolbar content (120px) + gap (16px) = 184px
+    MOBILE_BOTTOM: 184,
 };
 
 
