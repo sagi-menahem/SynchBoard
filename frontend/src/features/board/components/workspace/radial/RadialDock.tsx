@@ -384,28 +384,70 @@ export const RadialDock: React.FC<RadialDockProps> = ({
 
     const toolbarHeight = getToolbarHeight();
 
-    // Calculate the center position of the canvas area on desktop
-    // When chat is open, canvas takes canvasSplitRatio% of the viewport width
-    // When chat is closed, canvas takes 100% of the viewport width
+    // Minimum canvas width (in pixels) required for horizontal toolbar
+    // Toolbar is approximately 420px wide (8 tools × 40px + gaps + padding + close button)
+    const MIN_CANVAS_WIDTH_FOR_HORIZONTAL = 480;
+
+    // Track window width for responsive layout calculations
+    const [windowWidth, setWindowWidth] = useState(
+        typeof window !== 'undefined' ? window.innerWidth : 1200
+    );
+
+    // Listen to window resize events
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Calculate if we should use vertical layout based on available canvas width
+    const useVerticalLayout = useMemo(() => {
+        if (isMobile) return false;
+
+        // Calculate canvas width in pixels
+        const canvasWidthPercent = isChatOpen ? canvasSplitRatio : 100;
+        const canvasWidthPx = (windowWidth * canvasWidthPercent) / 100;
+
+        return canvasWidthPx < MIN_CANVAS_WIDTH_FOR_HORIZONTAL;
+    }, [isMobile, isChatOpen, canvasSplitRatio, windowWidth]);
+
+    // Calculate the position of the toolbar on desktop
+    // Horizontal: bottom-right of canvas area
+    // Vertical: bottom-right of canvas area
     const getDesktopToolbarStyle = useMemo((): React.CSSProperties => {
         if (isMobile) return {};
 
-        // If chat is closed, center in viewport (50%)
-        if (!isChatOpen) {
-            return { left: '50%', transform: 'translateX(-50%)' };
+        // Calculate the right edge of the canvas (where chat begins)
+        const canvasRightEdgePercent = isChatOpen ? canvasSplitRatio : 100;
+
+        if (useVerticalLayout) {
+            // Vertical layout: bottom-right of canvas
+            return {
+                right: `calc(${100 - canvasRightEdgePercent}% + 16px)`,
+                left: 'auto',
+                bottom: '32px',
+                top: 'auto',
+                transform: 'none',
+            };
         }
 
-        // If chat is open, center within the canvas area
-        // Canvas area is canvasSplitRatio% of viewport width
-        // Center of canvas = canvasSplitRatio / 2
-        const canvasCenterPercent = canvasSplitRatio / 2;
-        return { left: `${canvasCenterPercent}%`, transform: 'translateX(-50%)' };
-    }, [isMobile, isChatOpen, canvasSplitRatio]);
+        // Horizontal layout: bottom-right of canvas
+        return {
+            right: `calc(${100 - canvasRightEdgePercent}% + 16px)`,
+            left: 'auto',
+            bottom: '32px',
+            top: 'auto',
+            transform: 'none',
+        };
+    }, [isMobile, isChatOpen, canvasSplitRatio, useVerticalLayout]);
 
     return (
         <>
             <div
-                className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop}`}
+                className={`${styles.fixedToolbar} ${isMobile ? styles.mobile : styles.desktop} ${useVerticalLayout ? styles.vertical : ''}`}
                 style={getDesktopToolbarStyle}
             >
                 {/* MOBILE: Bottom sheet - tab on top, toolbar expands downward below tab */}
@@ -524,10 +566,10 @@ export const RadialDock: React.FC<RadialDockProps> = ({
                             <motion.div
                                 key="expanded-toolbar"
                                 ref={toolbarContentRef}
-                                className={styles.expandedToolbar}
-                                initial={{ width: 56, opacity: 0.5 }}
-                                animate={{ width: "auto", opacity: 1 }}
-                                exit={{ width: 56, opacity: 0.5 }}
+                                className={`${styles.expandedToolbar} ${useVerticalLayout ? styles.verticalToolbar : ''}`}
+                                initial={useVerticalLayout ? { height: 56, opacity: 0.5 } : { width: 56, opacity: 0.5 }}
+                                animate={useVerticalLayout ? { height: "auto", opacity: 1 } : { width: "auto", opacity: 1 }}
+                                exit={useVerticalLayout ? { height: 56, opacity: 0.5 } : { width: 56, opacity: 0.5 }}
                                 transition={{
                                     duration: 0.18,
                                     ease: [0.4, 0, 0.2, 1],
@@ -535,7 +577,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({
                                 }}
                             >
                                 <motion.div
-                                    className={styles.toolsRow}
+                                    className={`${styles.toolsRow} ${useVerticalLayout ? styles.toolsColumn : ''}`}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}

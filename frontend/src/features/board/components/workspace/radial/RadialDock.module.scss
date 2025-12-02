@@ -34,7 +34,13 @@ $border-radius-mobile: 20px;
     &.desktop {
         bottom: 32px;
         // left and transform are dynamically set via inline style based on canvas split ratio
-        transition: left 0.2s ease-out;
+        transition: left 0.2s ease-out, right 0.2s ease-out, top 0.2s ease-out, bottom 0.2s ease-out;
+    }
+
+    // Vertical layout: Right side of canvas, vertically centered
+    &.vertical {
+        // Position is set via inline styles
+        // This class adds vertical-specific styling
     }
 
     // Mobile: Bottom Sheet style
@@ -244,6 +250,8 @@ $border-radius-mobile: 20px;
     // Desktop: Horizontal pill
     .desktop & {
         padding: $toolbar-padding;
+        height: auto;
+        max-height: calc(#{$tool-size} + #{$toolbar-padding} * 2); // Constrain height for horizontal layout
     }
 
     // Mobile: Bottom sheet - Solid background (no transparency)
@@ -559,4 +567,31 @@ $border-radius-mobile: 20px;
 .satellitePlaceholder {
     // Used to maintain space when satellite is animating out
     pointer-events: none;
+}
+
+// -----------------------------------------------------------------------------
+// VERTICAL LAYOUT (Desktop - when canvas is narrow)
+// -----------------------------------------------------------------------------
+
+.verticalToolbar {
+    // Override horizontal pill styling for vertical layout
+    border-radius: $border-radius;
+    padding: 6px;
+    overflow: hidden;
+
+    // Override the max-height from horizontal layout
+    max-height: none !important;
+    height: auto;
+
+    // Constrain width for vertical layout
+    width: auto;
+    max-width: calc(#{$tool-size} + 12px); // tool size + padding
+}
+
+.toolsColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap;
+    flex-wrap: nowrap;
 }
