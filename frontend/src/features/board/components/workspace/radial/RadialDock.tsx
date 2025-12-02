@@ -20,7 +20,9 @@ import {
   Type,
 } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
+import { isRTL } from 'shared/utils/rtlUtils';
 
 import styles from './RadialDock.module.scss';
 import { SatelliteManager } from './SatelliteManager';
@@ -151,6 +153,8 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   isChatOpen = true,
 }) => {
   const { preferences, updateTool, updateDockMinimized } = useToolPreferences();
+  const { i18n } = useTranslation();
+  const isRTLMode = isRTL(i18n.language);
 
   // =========================================================================
   // STATE
@@ -463,14 +467,24 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   }, [isMobile, canvasWidthPx]);
 
   // Calculate the position of the toolbar on desktop
+  // In RTL mode, the canvas panel is visually on the RIGHT side of the window
+  // Canvas starts at (windowWidth - canvasWidthPx) from the left edge
   const getDesktopToolbarStyle = useMemo((): React.CSSProperties => {
     if (isMobile) return {};
 
+    // Calculate where the canvas panel starts from the left edge of the window
+    // LTR: Canvas is at left edge (starts at 0)
+    // RTL: Canvas is at right edge (starts at windowWidth - canvasWidthPx)
+    const canvasStartPx = isRTLMode ? windowWidth - canvasWidthPx : 0;
+
     // Distance from window right edge to canvas right edge (chat panel width)
-    const chatPanelWidth = windowWidth - canvasWidthPx;
+    // LTR: chatPanelWidth = windowWidth - canvasWidthPx (chat is on right)
+    // RTL: chatPanelWidth = 0 when calculating from canvas perspective (chat is on left, before canvas)
+    const chatPanelWidth = isRTLMode ? 0 : windowWidth - canvasWidthPx;
 
     if (useVerticalLayout) {
-      // Vertical layout: bottom-right of canvas, with margin from chat panel
+      // Vertical layout: position on the side opposite to floating actions (near chat)
+      // Both LTR and RTL: position near the chat panel side
       return {
         right: `${chatPanelWidth + RIGHT_MARGIN}px`,
         left: 'auto',
@@ -481,19 +495,26 @@ export const RadialDock: React.FC<RadialDockProps> = ({
     }
 
     // Horizontal layout positioning:
-    // Goal: Center toolbar in canvas, but shift right if it overlaps floating buttons,
+    // Goal: Center toolbar in canvas, but shift away from floating buttons,
     // and ensure it never extends into the chat panel area.
 
-    const canvasCenterPx = canvasWidthPx / 2;
+    // Calculate the center of the canvas in window coordinates
+    const canvasCenterPx = canvasStartPx + canvasWidthPx / 2;
     const toolbarHalfWidth = TOOLBAR_WIDTH / 2;
 
-    // Calculate where toolbar edges would be if centered
+    // Calculate where toolbar edges would be if centered (in window coordinates)
     const toolbarLeftIfCentered = canvasCenterPx - toolbarHalfWidth;
     const toolbarRightIfCentered = canvasCenterPx + toolbarHalfWidth;
 
-    // Available space for toolbar: from floating actions to right edge of canvas
-    const availableLeft = FLOATING_ACTIONS_WIDTH;
-    const availableRight = canvasWidthPx - RIGHT_MARGIN;
+    // Available space for toolbar in window coordinates
+    // LTR: FloatingActions on left (from 0), chat on right
+    // RTL: Chat on left (from 0), FloatingActions on right (at canvasStart + canvasWidth - offset)
+    const availableLeft = isRTLMode
+      ? canvasStartPx + RIGHT_MARGIN // Small margin from chat panel edge
+      : FLOATING_ACTIONS_WIDTH; // After floating actions
+    const availableRight = isRTLMode
+      ? canvasStartPx + canvasWidthPx - FLOATING_ACTIONS_WIDTH // Before floating actions
+      : canvasStartPx + canvasWidthPx - RIGHT_MARGIN; // Small margin from chat panel
     const availableWidth = availableRight - availableLeft;
 
     // If centered position doesn't fit in available space, calculate best position
@@ -530,7 +551,7 @@ export const RadialDock: React.FC<RadialDockProps> = ({
       top: 'auto',
       transform: 'translateX(-50%)',
     };
-  }, [isMobile, useVerticalLayout, canvasWidthPx, windowWidth]);
+  }, [isMobile, useVerticalLayout, canvasWidthPx, windowWidth, isRTLMode]);
 
   return (
     <>
