@@ -62,30 +62,34 @@
 
 /* User's own messages styled with primary color and right alignment */
 .myMessage .messageBubble {
-  background: theme.$primary;
+  // Semi-transparent blue background for own messages
+  background: rgba(59, 130, 246, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
   margin-inline-start: auto;
   position: relative;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 
   body[data-theme='dark'] & {
-    background: theme.$color-chat-my-message-dark;
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  body[data-theme='light'] & {
-    background: theme.$color-chat-my-message-light;
-    color: #ffffff;
-    border-color: rgba(59, 130, 246, 0.2);
+    background: rgba(37, 99, 235, 0.85);
+    border-color: rgba(59, 130, 246, 0.4);
   }
 }
 
 .otherMessage .messageBubble {
-  // Glass design for other users' messages
-  background: var(--user-chosen-color, var(--glass-background));
+  // Semi-transparent background for other users' messages
+  // Allows background shapes to show through slightly
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--color-text-primary);
   border: 1px solid var(--glass-border);
   position: relative;
+
+  body[data-theme='dark'] & {
+    background: rgba(63, 63, 70, 0.85);
+  }
 }
 
 .avatar {
@@ -150,12 +154,8 @@
 }
 
 .myMessage .messageText {
-  color: theme.$primary;
+  color: #ffffff;
   text-align: end;
-
-  body[data-theme='dark'] & {
-    color: #ffffff;
-  }
 }
 
 .otherMessage .messageText {
