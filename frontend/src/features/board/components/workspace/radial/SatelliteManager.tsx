@@ -115,30 +115,96 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   // ANIMATION VARIANTS
   // =========================================================================
 
-  // Calculate the translation offset for centering
-  // This needs to be applied via Framer Motion's x/y props to avoid transform conflicts
-  const getCenteringOffset = () => {
+  // Calculate the animation variants based on toolbar layout
+  // Animation should look like satellite is emerging from the toolbar
+  const getSatelliteVariants = () => {
     if (isMobile) {
-      return { x: '-50%', y: 0 };
+      // Mobile: emerge upward from bottom toolbar
+      return {
+        hidden: {
+          opacity: 0,
+          scale: 0.9,
+          x: '-50%',
+          y: 20, // Start below final position (closer to toolbar)
+        },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          x: '-50%',
+          y: 0,
+          transition: {
+            type: 'spring',
+            stiffness: 400,
+            damping: 25,
+          },
+        },
+        exit: {
+          opacity: 0,
+          scale: 0.9,
+          y: 20,
+          transition: { duration: 0.15 },
+        },
+      };
     }
+
     if (isVerticalLayout) {
-      return { x: 0, y: '50%' }; // Move down by 50% of height to center
+      // Vertical toolbar: emerge horizontally from right (toward left)
+      return {
+        hidden: {
+          opacity: 0,
+          scale: 0.9,
+          x: 20, // Start to the right (closer to toolbar)
+          y: '50%',
+        },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          y: '50%',
+          transition: {
+            type: 'spring',
+            stiffness: 400,
+            damping: 25,
+          },
+        },
+        exit: {
+          opacity: 0,
+          scale: 0.9,
+          x: 20,
+          transition: { duration: 0.15 },
+        },
+      };
     }
-    return { x: '-50%', y: 0 }; // Center horizontally
+
+    // Horizontal toolbar: emerge upward from bottom toolbar
+    return {
+      hidden: {
+        opacity: 0,
+        scale: 0.9,
+        x: '-50%',
+        y: 20, // Start below final position (closer to toolbar)
+      },
+      visible: {
+        opacity: 1,
+        scale: 1,
+        x: '-50%',
+        y: 0,
+        transition: {
+          type: 'spring',
+          stiffness: 400,
+          damping: 25,
+        },
+      },
+      exit: {
+        opacity: 0,
+        scale: 0.9,
+        y: 20,
+        transition: { duration: 0.15 },
+      },
+    };
   };
 
-  const centeringOffset = getCenteringOffset();
-
-  const satelliteVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: centeringOffset.y === 0 ? -10 : centeringOffset.y },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      x: centeringOffset.x,
-      y: centeringOffset.y,
-      transition: { duration: 0.2 },
-    },
-  };
+  const satelliteVariants = getSatelliteVariants();
 
   // =========================================================================
   // RENDER SATELLITE CONTENT
