@@ -193,7 +193,7 @@
 
 .dropdown {
   appearance: none;
-  background: var(--color-surface-hover);
+  background-color: transparent;
   border: 1px solid var(--glass-border);
   border-radius: theme.$border-radius-md;
   padding: theme.$spacing-1 theme.$spacing-3;
@@ -201,10 +201,17 @@
   font-size: theme.$font-size-sm;
   color: var(--color-text-primary);
   cursor: pointer;
-  @include theme.smooth-transition;
+  transition: border-color theme.$transition-normal ease, box-shadow theme.$transition-normal ease;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right theme.$spacing-2 center;
+
+  // Use color-scheme for native dropdown styling
+  color-scheme: light;
+
+  body[data-theme='dark'] & {
+    color-scheme: dark;
+  }
 
   [dir='rtl'] & {
     background-position: left theme.$spacing-2 center;
@@ -220,6 +227,14 @@
     outline: none;
     border-color: var(--color-primary);
     box-shadow: theme.$shadow-focus;
+    // Hide custom arrow when dropdown is open (focused)
+    background-image: none;
+  }
+
+  // Style the dropdown options
+  option {
+    background: var(--glass-background);
+    color: var(--color-text-primary);
   }
 }
 
