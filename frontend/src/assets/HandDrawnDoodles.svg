@@ -1,0 +1,70 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="handDrawnDoodles" width="400" height="400" patternUnits="userSpaceOnUse">
+      <!-- Sketchy imperfect circles - slightly wobbly paths instead of perfect circles -->
+      <path d="M45 35 C55 32, 58 42, 55 50 C52 58, 42 60, 35 55 C28 50, 30 38, 45 35" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35" stroke-linecap="round"/>
+      <path d="M320 85 C335 82, 342 95, 338 108 C334 121, 318 124, 308 115 C298 106, 305 88, 320 85" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.3" stroke-linecap="round"/>
+      <path d="M180 280 C192 277, 198 288, 195 298 C192 308, 178 311, 170 303 C162 295, 168 283, 180 280" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Hand-drawn rectangles - slightly uneven sides -->
+      <path d="M95 140 L118 141 L117 162 L94 160 Z" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M280 220 L308 221 L306 248 L279 246 Z" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M55 320 L78 321 L77 340 L54 339 Z" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Loose scribble lines - like quick pen strokes -->
+      <path d="M150 45 Q155 42, 175 48 Q180 50, 178 52" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35" stroke-linecap="round"/>
+      <path d="M240 150 Q248 145, 270 152 Q278 155, 275 158" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round"/>
+      <path d="M30 230 Q38 226, 58 232 Q65 235, 62 238" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Wavy underlines - like emphasis marks -->
+      <path d="M310 320 Q320 315, 330 320 Q340 325, 350 320 Q360 315, 370 320" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.3" stroke-linecap="round"/>
+      <path d="M120 360 Q130 355, 140 360 Q150 365, 160 360" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Small spiral doodles -->
+      <path d="M365 55 Q370 50, 375 55 Q380 60, 375 65 Q368 70, 362 65 Q356 58, 362 52 Q370 46, 378 52" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.3" stroke-linecap="round"/>
+      <path d="M20 95 Q25 90, 30 95 Q35 100, 30 105 Q23 110, 17 105 Q11 98, 17 92 Q25 86, 33 92" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Sketchy arrows - like quick direction indicators -->
+      <path d="M200 180 L225 175 M218 170 L225 175 L220 182" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M340 355 L365 350 M358 345 L365 350 L360 357" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Casual check marks -->
+      <path d="M130 250 L138 260 L155 238" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M360 145 L368 155 L385 133" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Wobbly triangle sketches -->
+      <path d="M250 35 L270 62 L232 60 Z" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M70 200 L92 230 L52 228 Z" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Quick curve swooshes -->
+      <path d="M170 120 Q190 100, 210 115" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.3" stroke-linecap="round"/>
+      <path d="M300 280 Q320 260, 340 275" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35" stroke-linecap="round"/>
+      <path d="M15 360 Q35 340, 55 355" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round"/>
+
+      <!-- Small asterisk/star doodles -->
+      <path d="M220 340 L220 352 M214 343 L226 349 M226 343 L214 349" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35" stroke-linecap="round"/>
+      <path d="M85 55 L85 67 M79 58 L91 64 M91 58 L79 64" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round"/>
+
+      <!-- Loose dots/periods - like thinking marks -->
+      <circle cx="160" cy="200" r="2.5" fill="currentColor" opacity="0.25"/>
+      <circle cx="350" cy="180" r="2" fill="currentColor" opacity="0.3"/>
+      <circle cx="40" cy="280" r="2.5" fill="currentColor" opacity="0.25"/>
+      <circle cx="280" cy="50" r="2" fill="currentColor" opacity="0.3"/>
+      <circle cx="120" cy="320" r="2.5" fill="currentColor" opacity="0.25"/>
+      <circle cx="380" cy="250" r="2" fill="currentColor" opacity="0.3"/>
+
+      <!-- Casual X marks -->
+      <path d="M190 360 L202 375 M202 360 L190 375" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round"/>
+      <path d="M330 120 L342 135 M342 120 L330 135" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Simple bracket/parenthesis doodles -->
+      <path d="M260 365 Q250 375, 260 385" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.3" stroke-linecap="round"/>
+      <path d="M385 300 Q375 310, 385 320" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Tiny quick circles - like bullet points -->
+      <path d="M145 165 C150 163, 153 168, 150 172 C147 176, 142 174, 142 170 C142 166, 145 165, 145 165" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+      <path d="M360 35 C365 33, 368 38, 365 42 C362 46, 357 44, 357 40 C357 36, 360 35, 360 35" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35" stroke-linecap="round"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#handDrawnDoodles)"/>
+</svg>

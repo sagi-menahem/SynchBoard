@@ -2,11 +2,11 @@
 
 // --- Background Utilities ---
 
-// Dynamic background with user-customizable color and pattern overlay
+// Dynamic background with user-customizable color and hand-drawn doodle pattern overlay
 .unifiedDotBackground {
   background-color: var(--user-chosen-color, var(--color-random-shapes-bg));
 
-  background-image: url('../../../assets/RandomShapes.svg');
+  background-image: url('../../../assets/HandDrawnDoodles.svg');
   background-size: 400px 400px;
 
   color: var(--color-random-shapes-pattern);
