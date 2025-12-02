@@ -5,6 +5,10 @@ import utilStyles from 'shared/ui/styles/utils.module.scss';
 import styles from './BoardWorkspaceSkeleton.module.scss';
 import Skeleton from './Skeleton';
 
+// Default canvas dimensions (same as BoardConstants)
+const DEFAULT_CANVAS_WIDTH = 1200;
+const DEFAULT_CANVAS_HEIGHT = 800;
+
 /**
  * Message skeleton data for chat panel
  */
@@ -30,6 +34,12 @@ interface BoardWorkspaceSkeletonProps {
   splitRatio?: number;
   /** Container style for background CSS variables */
   containerStyle?: React.CSSProperties;
+  /** Canvas zoom scale. Default: 1.0 */
+  zoomScale?: number;
+  /** Canvas width in pixels. Default: 1200 */
+  canvasWidth?: number;
+  /** Canvas height in pixels. Default: 800 */
+  canvasHeight?: number;
 }
 
 /**
@@ -42,10 +52,16 @@ interface BoardWorkspaceSkeletonProps {
  *
  * @param splitRatio - Canvas panel width percentage (default: 70)
  * @param containerStyle - CSS variables for background sizing
+ * @param zoomScale - Canvas zoom level (default: 1.0)
+ * @param canvasWidth - Canvas width in pixels (default: 1200)
+ * @param canvasHeight - Canvas height in pixels (default: 800)
  */
 const BoardWorkspaceSkeleton: React.FC<BoardWorkspaceSkeletonProps> = ({
   splitRatio = 70,
   containerStyle,
+  zoomScale = 1.0,
+  canvasWidth = DEFAULT_CANVAS_WIDTH,
+  canvasHeight = DEFAULT_CANVAS_HEIGHT,
 }) => {
   const isMobile = useIsMobile();
 
@@ -58,6 +74,15 @@ const BoardWorkspaceSkeleton: React.FC<BoardWorkspaceSkeletonProps> = ({
     [splitRatio],
   );
 
+  // Calculate the scaled canvas size
+  const scaledCanvasStyle = useMemo(
+    () => ({
+      width: `${canvasWidth * zoomScale}px`,
+      height: `${canvasHeight * zoomScale}px`,
+    }),
+    [canvasWidth, canvasHeight, zoomScale],
+  );
+
   return (
     <div
       className={`${styles.workspaceSkeleton} ${utilStyles.unifiedDotBackground}`}
@@ -65,7 +90,10 @@ const BoardWorkspaceSkeleton: React.FC<BoardWorkspaceSkeletonProps> = ({
     >
       {/* Canvas Panel */}
       <div className={styles.canvasPanel} style={panelStyles.canvas}>
-        <div className={styles.canvasArea} />
+        <div className={styles.canvasArea}>
+          {/* Canvas rectangle - centered and scaled */}
+          <div className={styles.canvasRectangle} style={scaledCanvasStyle} />
+        </div>
       </div>
 
       {/* Resize Handle - Between panels */}

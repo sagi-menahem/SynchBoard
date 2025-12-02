@@ -23,24 +23,24 @@
 }
 
 // Canvas scroll area - mimics the actual canvas container
+// Uses overflow: auto to allow scrolling if canvas is larger than viewport
 .canvasArea {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  // Dark background matching typical canvas - very subtle skeleton color
-  background: rgba(30, 30, 35, 0.6);
+  overflow: auto;
+  position: relative;
+  // Transparent background - the SVG pattern shows through
+  background: transparent;
 }
 
-// Canvas placeholder - represents the actual drawing canvas
-.canvasPlaceholder {
-  width: 60%;
-  height: 70%;
-  max-width: 500px;
-  max-height: 400px;
-  border-radius: theme.$border-radius-sm;
-  // Very subtle, dark skeleton
-  background: rgba(50, 50, 60, 0.5);
+// Canvas rectangle - represents the actual drawing canvas
+// Size and position set via inline styles based on zoom and canvas dimensions
+.canvasRectangle {
+  flex-shrink: 0;
+  // Dark background matching the actual canvas background color (#222)
+  background: #222;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
