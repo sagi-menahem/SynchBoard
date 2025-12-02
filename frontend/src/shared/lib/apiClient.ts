@@ -143,26 +143,17 @@ apiClient.interceptors.response.use(
         backendKey,
       ];
 
-      let translated = false;
       for (const key of possibleKeys) {
         if (i18n.exists(key)) {
           toast.error(i18n.t(key), { id: key });
-          translated = true;
           break;
         }
       }
-
-      // Fallback to generic error message if no translation found
-      if (!translated) {
-        toast.error(i18n.t('common:errors.common.unexpected'), { id: 'unexpected-error' });
-      }
-    } else {
-      // Handle unexpected errors without structured backend messages
-      // Skip for auth form requests as they have their own error handling
-      if (!isAuthFormRequest) {
-        logger.error('Unexpected error without backend message', error);
-        toast.error(i18n.t('common:errors.common.unexpected'), { id: 'unexpected-error' });
-      }
+      // No fallback toast - let specific error handlers show their own messages
+    } else if (!isAuthFormRequest) {
+      // Log unexpected errors without structured backend messages, but don't show generic toast
+      // Specific error handlers will show appropriate messages
+      logger.error('Unexpected error without backend message', error);
     }
 
     return Promise.reject(error);
