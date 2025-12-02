@@ -12,10 +12,6 @@ import styles from './satellites.module.scss';
 interface LinesSatelliteProps {
   /** Callback to close the satellite after line tool selection */
   onClose: () => void;
-  /** Whether device is mobile */
-  isMobile: boolean;
-  /** Handler to collapse the toolbar (mobile only) */
-  onCollapse: () => void;
 }
 
 /**
@@ -45,11 +41,7 @@ const LINE_TOOLS: LineTool[] = [
  *
  * Phase 3C Implementation
  */
-export const LinesSatellite: React.FC<LinesSatelliteProps> = ({
-  onClose,
-  isMobile,
-  onCollapse,
-}) => {
+export const LinesSatellite: React.FC<LinesSatelliteProps> = ({ onClose }) => {
   const { preferences, updateTool } = useToolPreferences();
 
   const handleLineSelect = useCallback(
@@ -58,16 +50,12 @@ export const LinesSatellite: React.FC<LinesSatelliteProps> = ({
         await updateTool(tool as Tool);
         // Close satellite after successful selection
         onClose();
-        // Auto-collapse toolbar on mobile after line selection
-        if (isMobile) {
-          onCollapse();
-        }
       } catch {
         // Error handling is managed by useToolPreferences
         // Errors are displayed via the preferences context error state
       }
     },
-    [updateTool, onClose, isMobile, onCollapse],
+    [updateTool, onClose],
   );
 
   return (

@@ -239,14 +239,9 @@ export const RadialDock: React.FC<RadialDockProps> = ({
     (tool: Tool) => {
       void updateTool(tool);
       setActiveSatellite(null);
-
-      // Auto-collapse toolbar on mobile after tool selection
-      if (isMobile) {
-        setIsExpanded(false);
-        void updateDockMinimized(true);
-      }
+      // Toolbar stays open until user explicitly closes it (via chevron or drag)
     },
-    [updateTool, isMobile, updateDockMinimized],
+    [updateTool],
   );
 
   const handleOpenSatellite = useCallback((satelliteType: string) => {
@@ -700,7 +695,6 @@ export const RadialDock: React.FC<RadialDockProps> = ({
         activeSatellite={activeSatellite}
         onClose={() => setActiveSatellite(null)}
         isMobile={isMobile}
-        onCollapse={handleToggleExpand}
         isVerticalLayout={useVerticalLayout}
         canvasWidthPx={canvasWidthPx}
         toolbarStyle={getDesktopToolbarStyle}

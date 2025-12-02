@@ -12,10 +12,6 @@ import styles from './satellites.module.scss';
 interface ShapesSatelliteProps {
   /** Callback to close the satellite after shape selection */
   onClose: () => void;
-  /** Whether device is mobile */
-  isMobile: boolean;
-  /** Handler to collapse the toolbar (mobile only) */
-  onCollapse: () => void;
 }
 
 /**
@@ -48,11 +44,7 @@ const SHAPE_TOOLS: ShapeTool[] = [
  *
  * Phase 3B Implementation
  */
-export const ShapesSatellite: React.FC<ShapesSatelliteProps> = ({
-  onClose,
-  isMobile,
-  onCollapse,
-}) => {
+export const ShapesSatellite: React.FC<ShapesSatelliteProps> = ({ onClose }) => {
   const { preferences, updateTool } = useToolPreferences();
 
   const handleShapeSelect = useCallback(
@@ -61,16 +53,12 @@ export const ShapesSatellite: React.FC<ShapesSatelliteProps> = ({
         await updateTool(tool as Tool);
         // Close satellite after successful selection
         onClose();
-        // Auto-collapse toolbar on mobile after shape selection
-        if (isMobile) {
-          onCollapse();
-        }
       } catch {
         // Error handling is managed by useToolPreferences
         // Errors are displayed via the preferences context error state
       }
     },
-    [updateTool, onClose, isMobile, onCollapse],
+    [updateTool, onClose],
   );
 
   return (

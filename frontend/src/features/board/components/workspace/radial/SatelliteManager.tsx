@@ -19,8 +19,6 @@ interface SatelliteManagerProps {
   onClose: () => void;
   /** Whether device is mobile */
   isMobile: boolean;
-  /** Handler to collapse the toolbar (mobile only) */
-  onCollapse: () => void;
   /** Whether toolbar is in vertical layout mode */
   isVerticalLayout?: boolean;
   /** Canvas width in pixels (for positioning) */
@@ -64,7 +62,6 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   activeSatellite,
   onClose,
   isMobile: isMobileProp,
-  onCollapse,
   isVerticalLayout = false,
   canvasWidthPx = 0,
   toolbarStyle = {},
@@ -208,13 +205,13 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
   const renderSatelliteContent = () => {
     switch (activeSatellite) {
       case 'shapes':
-        return <ShapesSatellite onClose={onClose} isMobile={isMobile} onCollapse={onCollapse} />;
+        return <ShapesSatellite onClose={onClose} />;
 
       case 'lines':
-        return <LinesSatellite onClose={onClose} isMobile={isMobile} onCollapse={onCollapse} />;
+        return <LinesSatellite onClose={onClose} />;
 
       case 'colorPalette':
-        return <ColorPaletteSatellite isMobile={isMobile} onCollapse={onCollapse} />;
+        return <ColorPaletteSatellite />;
 
       case 'strokeProps':
         return <StrokeWidthSatellite />;

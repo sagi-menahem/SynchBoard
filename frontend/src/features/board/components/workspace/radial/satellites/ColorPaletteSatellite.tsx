@@ -9,12 +9,7 @@ import styles from './satellites.module.scss';
 /**
  * Props for ColorPaletteSatellite component.
  */
-interface ColorPaletteSatelliteProps {
-  /** Whether device is mobile */
-  isMobile: boolean;
-  /** Handler to collapse the toolbar (mobile only) */
-  onCollapse: () => void;
-}
+type ColorPaletteSatelliteProps = Record<string, never>;
 
 /**
  * ColorPaletteSatellite component - Interactive color picker for stroke colors.
@@ -30,10 +25,7 @@ interface ColorPaletteSatelliteProps {
  *
  * Phase 3D Implementation
  */
-export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
-  isMobile,
-  onCollapse,
-}) => {
+export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = () => {
   const { preferences, updateStrokeColor } = useToolPreferences();
   const [showCustomPicker, setShowCustomPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -49,15 +41,11 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
     async (color: string) => {
       try {
         await updateStrokeColor(color);
-        // Auto-collapse toolbar on mobile after preset color selection
-        if (isMobile) {
-          onCollapse();
-        }
       } catch {
         // Error handling is managed by useToolPreferences
       }
     },
-    [updateStrokeColor, isMobile, onCollapse],
+    [updateStrokeColor],
   );
 
   const handleCustomColorChange = useCallback(
@@ -80,7 +68,7 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
     setIsDragging(true);
   }, []);
 
-  // Close picker when user finishes selecting from saturation area
+  // Close custom picker section when user finishes selecting from saturation area
   const handlePointerUp = useCallback(
     (e: React.PointerEvent) => {
       if (!isDragging) return;
@@ -91,12 +79,9 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
       setIsDragging(false);
       if (isSaturationArea) {
         setShowCustomPicker(false);
-        if (isMobile) {
-          onCollapse();
-        }
       }
     },
-    [isDragging, isMobile, onCollapse],
+    [isDragging],
   );
 
   // Handle global pointer up for when drag ends outside the picker (works for both mouse and touch)
@@ -110,9 +95,6 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
       setIsDragging(false);
       if (isSaturationArea) {
         setShowCustomPicker(false);
-        if (isMobile) {
-          onCollapse();
-        }
       }
     };
 
@@ -120,7 +102,7 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = ({
     return () => {
       document.removeEventListener('pointerup', handleGlobalPointerUp);
     };
-  }, [isDragging, isMobile, onCollapse]);
+  }, [isDragging]);
 
   return (
     <div className={styles.satelliteContent}>
