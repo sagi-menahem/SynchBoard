@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +7,34 @@ import { useClickOutside } from 'shared/hooks';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import Button from './Button';
+
+// Animation variants for dropdown menu
+const dropdownVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.95,
+    transition: { duration: 0.1, ease: 'easeIn' as const },
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.15, ease: 'easeOut' as const },
+  },
+};
+
+// Animation variants for dropdown items (stagger effect)
+const itemVariants = {
+  hidden: { opacity: 0, x: -8 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.03,
+      duration: 0.15,
+      ease: 'easeOut' as const,
+    },
+  }),
+};
 
 /**
  * Represents a single tool item in the dropdown.
@@ -119,36 +148,50 @@ export const ToolDropdown: React.FC<ToolDropdownProps> = ({
         title={buttonTitle}
       >
         <currentToolItem.icon size={iconSize} />
-        <ChevronDown size={chevronSize} />
+        <motion.span
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+          style={{ display: 'flex', alignItems: 'center' }}
+        >
+          <ChevronDown size={chevronSize} />
+        </motion.span>
       </Button>
 
-      <div
-        className={clsx(
-          styles.dropdownContent,
-          (!isOpen || !isPositioned) && (styles.hidden ?? 'hidden'),
-        )}
-        style={
-          isOpen && isPositioned
-            ? {
-                top: `${dropdownPosition.top}px`,
-                left: `${dropdownPosition.left}px`,
-              }
-            : undefined
-        }
-      >
-        {toolItems.map(({ value, icon: Icon, labelKey }) => (
-          <Button
-            key={value}
-            variant="icon"
-            className={clsx(styles.dropdownItem, value === currentTool && styles.active)}
-            onClick={() => handleToolClick(value)}
-            title={t(`board:toolbar.tool.${labelKey}`)}
+      <AnimatePresence>
+        {isOpen && isPositioned && (
+          <motion.div
+            className={styles.dropdownContent}
+            style={{
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+            }}
+            variants={dropdownVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
           >
-            <Icon size={iconSize} />
-            {showLabels && <span>{t(`board:toolbar.tool.${labelKey}`)}</span>}
-          </Button>
-        ))}
-      </div>
+            {toolItems.map(({ value, icon: Icon, labelKey }, index) => (
+              <motion.div
+                key={value}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                custom={index}
+              >
+                <Button
+                  variant="icon"
+                  className={clsx(styles.dropdownItem, value === currentTool && styles.active)}
+                  onClick={() => handleToolClick(value)}
+                  title={t(`board:toolbar.tool.${labelKey}`)}
+                >
+                  <Icon size={iconSize} />
+                  {showLabels && <span>{t(`board:toolbar.tool.${labelKey}`)}</span>}
+                </Button>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
