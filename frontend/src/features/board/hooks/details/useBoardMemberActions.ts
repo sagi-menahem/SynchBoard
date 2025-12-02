@@ -53,9 +53,9 @@ export const useBoardMemberActions = (
   const handlePromoteMember = useCallback(
     async (member: Member) => {
       await toastPromise(boardService.promoteMember(boardId, member.email), {
-        loading: t('board:loading.member.promote'),
-        success: t('board:success.member.promote', { userName: member.firstName }),
-        error: t('board:errors.member.promote'),
+        loading: t('board:member.loading.promote'),
+        success: t('board:member.success.promote', { userName: member.firstName }),
+        error: t('board:member.errors.promote'),
       });
     },
     [boardId, t],
@@ -64,9 +64,9 @@ export const useBoardMemberActions = (
   const handleRemoveMember = useCallback(
     async (member: Member) => {
       await toastPromise(boardService.removeMember(boardId, member.email), {
-        loading: t('board:loading.member.remove'),
-        success: t('board:success.member.remove', { userName: member.firstName }),
-        error: t('board:errors.member.remove'),
+        loading: t('board:member.loading.remove'),
+        success: t('board:member.success.remove', { userName: member.firstName }),
+        error: t('board:member.errors.remove'),
       });
     },
     [boardId, t],
@@ -75,9 +75,9 @@ export const useBoardMemberActions = (
   const handleInviteMember = useCallback(
     async (inviteEmail: string) => {
       const newMember = await toastPromise(boardService.inviteMember(boardId, inviteEmail), {
-        loading: t('board:loading.member.invite'),
-        success: t('board:success.member.invite', { email: inviteEmail }),
-        error: t('board:errors.member.invite'),
+        loading: t('board:member.loading.invite'),
+        success: t('board:member.success.invite', { email: inviteEmail }),
+        error: t('board:member.errors.invite'),
       });
       return newMember;
     },

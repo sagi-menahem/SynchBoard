@@ -49,10 +49,14 @@ const BoardDetailsPage: React.FC = () => {
     setLeaveConfirmOpen,
     isDeleteConfirmOpen,
     setDeleteConfirmOpen,
+    isRemoveMemberConfirmOpen,
+    setRemoveMemberConfirmOpen,
+    memberToRemove,
     handleInviteSuccess,
     handlePromote,
-    handleRemove,
+    promptRemoveMember,
     handleUpdateName,
+    handleConfirmRemoveMember,
     handleUpdateDescription,
     handleRightClick,
     handleLeaveBoard,
@@ -182,7 +186,7 @@ const BoardDetailsPage: React.FC = () => {
         member={contextMenu.data}
         onClose={contextMenu.closeMenu}
         onPromote={handlePromote}
-        onRemove={handleRemove}
+        onRemove={promptRemoveMember}
       />
 
       <BoardEditModals
@@ -199,11 +203,15 @@ const BoardDetailsPage: React.FC = () => {
       <BoardConfirmDialogs
         isLeaveConfirmOpen={isLeaveConfirmOpen}
         isDeleteConfirmOpen={isDeleteConfirmOpen}
+        isRemoveMemberConfirmOpen={isRemoveMemberConfirmOpen}
         boardName={boardDetails.name}
+        memberName={memberToRemove?.firstName ?? memberToRemove?.email}
         onCloseLeave={() => setLeaveConfirmOpen(false)}
         onCloseDelete={() => setDeleteConfirmOpen(false)}
+        onCloseRemoveMember={() => setRemoveMemberConfirmOpen(false)}
         onConfirmLeave={handleLeaveBoard}
         onConfirmDelete={handleConfirmDeletePicture}
+        onConfirmRemoveMember={handleConfirmRemoveMember}
       />
 
       {isQuickSettingsOpen && (

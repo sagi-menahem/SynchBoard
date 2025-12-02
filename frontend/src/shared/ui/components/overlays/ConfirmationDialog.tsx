@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
 import React from 'react';
 
@@ -7,6 +8,35 @@ import styles from 'shared/ui/styles/CommonForm.module.scss';
 import Button from '../forms/Button';
 
 import Modal from './Modal';
+
+// Animation variants for warning icon - subtle shake/pulse effect
+const iconVariants = {
+  initial: { scale: 0.8, opacity: 0 },
+  animate: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 15,
+      delay: 0.1,
+    },
+  },
+};
+
+// Animation variants for button group - stagger effect
+const buttonGroupVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.15,
+      duration: 0.2,
+      ease: 'easeOut',
+    },
+  },
+};
 
 /**
  * Props for the ConfirmationDialog component.
@@ -49,18 +79,30 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
-          <AlertTriangle size={20} className={styles.warningIcon} />
+          <motion.div
+            variants={iconVariants}
+            initial="initial"
+            animate="animate"
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <AlertTriangle size={20} className={styles.warningIcon} />
+          </motion.div>
           <h3 className={styles.modalTitle}>{title}</h3>
         </div>
         <p className={styles.modalMessage}>{message}</p>
-        <div className={styles.buttonGroup}>
+        <motion.div
+          className={styles.buttonGroup}
+          variants={buttonGroupVariants}
+          initial="initial"
+          animate="animate"
+        >
           <Button variant="secondary-glass" onClick={onClose}>
             {t('common:button.cancel')}
           </Button>
           <Button variant="primary-glass" onClick={handleConfirm}>
             {t('common:button.confirm')}
           </Button>
-        </div>
+        </motion.div>
       </div>
     </Modal>
   );

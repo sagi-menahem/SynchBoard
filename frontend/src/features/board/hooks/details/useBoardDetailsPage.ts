@@ -44,6 +44,8 @@ export const useBoardDetailsPage = (boardId: number) => {
   const [editingField, setEditingField] = useState<EditingField | null>(null);
   const [isLeaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [isRemoveMemberConfirmOpen, setRemoveMemberConfirmOpen] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState<Member | null>(null);
 
   const handleInviteSuccess = useCallback((_newMember: Member) => {
     setInviteModalOpen(false);
@@ -60,16 +62,26 @@ export const useBoardDetailsPage = (boardId: number) => {
     }
   }, [contextMenu, handlePromoteMember]);
 
-  const handleRemove = useCallback(async () => {
+  const promptRemoveMember = useCallback(() => {
     if (!contextMenu.data) {
       return;
     }
-    try {
-      await handleRemoveMember(contextMenu.data);
-    } finally {
-      contextMenu.closeMenu();
+    setMemberToRemove(contextMenu.data);
+    setRemoveMemberConfirmOpen(true);
+    contextMenu.closeMenu();
+  }, [contextMenu]);
+
+  const handleConfirmRemoveMember = useCallback(async () => {
+    if (!memberToRemove) {
+      return;
     }
-  }, [contextMenu, handleRemoveMember]);
+    try {
+      await handleRemoveMember(memberToRemove);
+    } finally {
+      setRemoveMemberConfirmOpen(false);
+      setMemberToRemove(null);
+    }
+  }, [memberToRemove, handleRemoveMember]);
 
   const handleLeaveBoard = useCallback(async () => {
     if (!boardDetails) {
@@ -139,7 +151,7 @@ export const useBoardDetailsPage = (boardId: number) => {
 
     contextMenu,
     handlePromote,
-    handleRemove,
+    promptRemoveMember,
     handleRightClick,
 
     inviteForm,
@@ -156,8 +168,12 @@ export const useBoardDetailsPage = (boardId: number) => {
     setLeaveConfirmOpen,
     isDeleteConfirmOpen,
     setDeleteConfirmOpen,
+    isRemoveMemberConfirmOpen,
+    setRemoveMemberConfirmOpen,
+    memberToRemove,
 
     handleLeaveBoard,
+    handleConfirmRemoveMember,
     handlePictureUpload,
     promptPictureDelete,
     handleConfirmDeletePicture,

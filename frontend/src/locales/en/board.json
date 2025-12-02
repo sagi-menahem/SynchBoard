@@ -308,6 +308,10 @@
       "promote": "{{userName}} has been promoted to admin.",
       "remove": "{{userName}} has been removed from the board.",
       "invite": "Invitation sent to {{email}}!"
+    },
+    "removeConfirm": {
+      "title": "Remove Member?",
+      "message": "Are you sure you want to remove {{userName}} from this board? They will lose access to all board content."
     }
   },
   "user": {
