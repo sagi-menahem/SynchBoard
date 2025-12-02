@@ -12,6 +12,7 @@ import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { useIsMobile } from 'shared/hooks';
 import { AppHeader, Button, PageLoader, PageTransition } from 'shared/ui';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { hexToRgbString } from 'shared/utils/ColorUtils';
 
 import { FloatingActions } from '../components/workspace/FloatingActions';
@@ -42,6 +43,16 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Container style for loading state background
+  const containerStyle = useMemo(
+    () =>
+      ({
+        '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
+      }) as React.CSSProperties,
+    [isMobile],
+  );
 
   const { isLoading, boardName, boardDetails, objects, messages, instanceId, handleDrawAction } =
     useBoardContext();
@@ -176,7 +187,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
 
   if (isLoading) {
     return (
-      <PageTransition>
+      <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
         <AppHeader
           leading={
             <>
