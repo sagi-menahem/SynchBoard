@@ -129,8 +129,9 @@
   }
   
   // Move up when dock is expanded on mobile (use :global to escape CSS Modules)
+  // Position buttons just above the tab with chevron
   :global(body.dock-expanded) .container {
-    bottom: calc(160px + env(safe-area-inset-bottom)); // Float ~20px above expanded dock
+    bottom: calc(140px + env(safe-area-inset-bottom)); // Float just above expanded dock tab
   }
 
   .ltr {
