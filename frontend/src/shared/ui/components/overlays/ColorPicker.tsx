@@ -45,25 +45,72 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   const pickerRef = useRef<HTMLDivElement>(null);
   const swatchRef = useRef<HTMLButtonElement>(null);
 
+  // Track if we're closing to prevent label click from reopening
+  const isClosingRef = useRef(false);
+
   // Close picker when clicking outside, but prevent the click from
   // propagating to modal backdrop to avoid closing the modal too
   useEffect(() => {
-    if (!showPicker) return;
+    if (!showPicker) {
+      return;
+    }
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) {
-        // Stop the event from propagating to modal backdrop
-        event.stopPropagation();
-        setShowPicker(false);
+      const target = event.target as HTMLElement;
+
+      // Don't close if clicking inside the picker
+      if (pickerRef.current?.contains(target)) {
+        return;
       }
+
+      // Don't interfere if clicking the swatch button (let toggle handle it)
+      if (swatchRef.current?.contains(target)) {
+        return;
+      }
+
+      // Check if clicking on a label that's associated with our swatch button
+      // This prevents the label click from reopening the picker after we close it
+      if (target.tagName === 'LABEL' && id) {
+        const labelFor = target.getAttribute('for');
+        if (labelFor === id) {
+          // This label will trigger the swatch button - prevent that
+          event.stopPropagation();
+          event.preventDefault();
+          isClosingRef.current = true;
+          setShowPicker(false);
+          // Reset the flag after a short delay
+          setTimeout(() => {
+            isClosingRef.current = false;
+          }, 100);
+          return;
+        }
+      }
+
+      // Normal click outside - close picker
+      event.stopPropagation();
+      event.preventDefault();
+      setShowPicker(false);
     };
 
     // Use capture phase to intercept before other handlers
+    // Listen to both mousedown and click to fully prevent modal backdrop activation
     document.addEventListener('mousedown', handleClickOutside, true);
+    document.addEventListener('click', handleClickOutside, true);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside, true);
+      document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [showPicker]);
+  }, [showPicker, id]);
+
+  const handleSwatchClick = useCallback(() => {
+    // Don't reopen if we just closed via label click
+    if (isClosingRef.current) {
+      return;
+    }
+    if (!disabled) {
+      setShowPicker((prev) => !prev);
+    }
+  }, [disabled]);
 
   // Close picker when scrolling
   useEffect(() => {
@@ -110,12 +157,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       setPopoverPosition({ top, left });
     }
   }, [showPicker]);
-
-  const handleSwatchClick = useCallback(() => {
-    if (!disabled) {
-      setShowPicker((prev) => !prev);
-    }
-  }, [disabled]);
 
   const handleColorChange = useCallback(
     (newColor: string) => {
