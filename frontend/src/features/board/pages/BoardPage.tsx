@@ -12,7 +12,6 @@ import { APP_ROUTES } from 'shared/constants';
 import { UI_CONSTANTS } from 'shared/constants/UIConstants';
 import { useIsMobile } from 'shared/hooks';
 import { AppHeader, BoardWorkspaceSkeleton, Button, PageTransition } from 'shared/ui';
-import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { hexToRgbString } from 'shared/utils/ColorUtils';
 
 import { FloatingActions } from '../components/workspace/FloatingActions';
