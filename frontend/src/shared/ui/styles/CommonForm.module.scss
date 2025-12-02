@@ -59,38 +59,6 @@
   font-weight: bold;
 }
 
-// --- Date Input Styling ---
-
-.dateInput {
-  @include theme.input-base;
-  padding: theme.$spacing-3;
-  margin-top: 4px;
-  background-color: transparent;
-  border: 1px solid theme.$border-primary;
-  @include theme.rounded-medium;
-  color: theme.$text-primary;
-  font-size: 1rem;
-  @include theme.smooth-transition;
-}
-
-.dateInput:focus {
-  outline: none;
-  border-color: theme.$primary;
-  @include theme.focus-shadow;
-}
-
-// Custom styling for WebKit date picker icon
-.dateInput::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: invert(1);
-  opacity: 0.7;
-  @include theme.smooth-transition;
-}
-
-.dateInput::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-
 // --- Submit Button ---
 
 .submitButton {
