@@ -391,7 +391,6 @@ export const RadialDock: React.FC<RadialDockProps> = ({ onSatelliteChange }) => 
                             onPanStart={handleDragStart}
                             onPan={handleDrag}
                             onPanEnd={handleDragEnd}
-                            whileTap={{ scale: 0.98 }}
                             style={{ touchAction: 'none' }}
                         >
                             <div
