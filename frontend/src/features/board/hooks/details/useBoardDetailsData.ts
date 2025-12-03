@@ -4,7 +4,7 @@ import * as boardService from 'features/board/services/boardService';
 import type { BoardDetails } from 'features/board/types/BoardTypes';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import type { BoardUpdateDTO } from 'features/websocket/types/WebSocketTypes';
-import { useCallback, useEffect, useOptimistic, useState } from 'react';
+import { startTransition, useCallback, useEffect, useOptimistic, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -160,7 +160,9 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
         return;
       }
 
-      setOptimisticState({ name: newName });
+      startTransition(() => {
+        setOptimisticState({ name: newName });
+      });
 
       try {
         toast.loading(t('board:loading.nameUpdate'));
@@ -181,7 +183,9 @@ export const useBoardDetailsData = (boardId: number | undefined): UseBoardDetail
         return;
       }
 
-      setOptimisticState({ description: newDescription });
+      startTransition(() => {
+        setOptimisticState({ description: newDescription });
+      });
 
       try {
         toast.loading(t('board:loading.descriptionUpdate'));
