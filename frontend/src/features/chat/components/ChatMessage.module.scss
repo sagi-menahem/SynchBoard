@@ -184,7 +184,7 @@
 }
 
 .otherMessage .failureIcon {
-  color: theme.$error-color-alt !important;
+  color: theme.$error !important;
 }
 
 /* Smooth slide-in animation for new messages appearing in chat */
@@ -207,7 +207,7 @@
 }
 
 .messageContainer:focus-within {
-  outline: theme.$border-width-thick solid theme.$accent-purple;
+  outline: theme.$border-width-thick solid theme.$primary;
   outline-offset: theme.$border-width-thick;
   border-radius: theme.$border-radius-3xl;
 }

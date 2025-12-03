@@ -3,14 +3,14 @@
 // Main page container matching BoardDetailsPage layout
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + 24px);
+  padding-top: calc(var(--banner-height, 0px) + #{theme.$spacing-6});
   min-height: 100vh;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-inline-start: 24px;
-  padding-inline-end: 24px;
-  padding-bottom: 24px;
+  padding-inline-start: theme.$spacing-6;
+  padding-inline-end: theme.$spacing-6;
+  padding-bottom: theme.$spacing-6;
   box-sizing: border-box;
 
   display: grid;
@@ -31,8 +31,8 @@
 // Responsive
 @media (max-width: theme.$breakpoint-md) {
   .pageContent {
-    padding-inline-start: 16px;
-    padding-inline-end: 16px;
+    padding-inline-start: theme.$spacing-4;
+    padding-inline-end: theme.$spacing-4;
     grid-template-columns: 1fr;
     gap: theme.$spacing-6;
   }
@@ -45,8 +45,8 @@
 
 @media (max-width: theme.$breakpoint-sm) {
   .pageContent {
-    padding-inline-start: 12px;
-    padding-inline-end: 12px;
+    padding-inline-start: theme.$spacing-3;
+    padding-inline-end: theme.$spacing-3;
     gap: theme.$spacing-4;
   }
 

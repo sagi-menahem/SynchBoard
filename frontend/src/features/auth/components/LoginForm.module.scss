@@ -118,7 +118,7 @@
 }
 
 // Mobile responsive adjustments
-@media (max-width: 640px) {
+@media (max-width: theme.$breakpoint-sm) {
   .form {
     gap: theme.$spacing-4;
   }

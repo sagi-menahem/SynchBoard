@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  border-radius: 8px;
+  border-radius: theme.$border-radius-lg;
   @include theme.glass-background;
   @include theme.glass-border;
   box-shadow: theme.$shadow-card;
@@ -32,8 +32,8 @@
 .gridContent {
   display: flex;
   flex-direction: column;
-  padding: 8px 10px;
-  gap: 6px;
+  padding: theme.$spacing-2 theme.$spacing-2-5;
+  gap: theme.$spacing-1-5;
   align-items: center;
   @include theme.glass-border-top;
 }
@@ -46,7 +46,7 @@
 .gridMeta {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: theme.$spacing-1-5;
 }
 
 .gridColorDot {
@@ -69,9 +69,9 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 8px;
+  gap: theme.$spacing-3;
+  padding: theme.$spacing-2-5 theme.$spacing-3;
+  border-radius: theme.$border-radius-lg;
   min-height: 56px;
   @include theme.glass-background;
   @include theme.glass-border;
@@ -81,7 +81,7 @@
 .listLeftSection {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: theme.$spacing-3;
 }
 
 .listThumbnail {
@@ -99,7 +99,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: theme.$spacing-1-5;
   justify-self: center;
 }
 
@@ -111,7 +111,7 @@
 .listColorInfo {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: theme.$spacing-1-5;
 }
 
 .listColorDot {
@@ -143,8 +143,8 @@
   }
 
   .gridContent {
-    padding: 6px 8px;
-    gap: 4px;
+    padding: theme.$spacing-1-5 theme.$spacing-2;
+    gap: theme.$spacing-1;
   }
 
   .gridTitle {
@@ -158,12 +158,13 @@
 
   .listCard {
     grid-template-columns: auto 1fr;
-    gap: 8px;
-    padding: 8px 10px;
+    gap: theme.$spacing-2;
+    padding: theme.$spacing-2 theme.$spacing-2-5;
+    min-height: 56px;
   }
 
   .listLeftSection {
-    gap: 8px;
+    gap: theme.$spacing-2;
   }
 
   .listThumbnail {

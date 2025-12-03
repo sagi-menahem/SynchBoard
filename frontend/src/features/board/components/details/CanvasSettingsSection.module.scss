@@ -4,21 +4,21 @@
   @include theme.glass-background;
   @include theme.rounded-medium;
   padding: theme.$spacing-6;
-  margin-bottom: 1rem;
+  margin-bottom: theme.$spacing-4;
   @include theme.glass-border;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-glass-sm;
 }
 
 .sectionHeader {
   @include theme.flex-between;
-  margin-bottom: 1rem;
+  margin-bottom: theme.$spacing-4;
 }
 
 .sectionTitle {
   color: theme.$text-primary;
   margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: theme.$font-size-base-plus;
+  font-weight: theme.$font-weight-semibold;
 }
 
 .editButton {
@@ -41,15 +41,18 @@
 }
 
 .settingLabel {
+  display: block;
   color: theme.$text-muted;
-  font-weight: 500;
+  font-weight: theme.$font-weight-medium;
+  font-size: theme.$font-size-sm-plus;
   min-width: 120px;
+  margin-bottom: theme.$spacing-2;
   text-align: start;
 }
 
 .settingValue {
   color: theme.$text-primary;
-  font-size: 0.9rem;
+  font-size: theme.$font-size-sm-plus;
 }
 
 .colorPreview {
@@ -72,8 +75,8 @@
 .fieldLabel {
   @include theme.form-label;
   color: theme.$text-muted;
-  font-weight: 500;
-  font-size: 0.95rem;
+  font-weight: theme.$font-weight-medium;
+  font-size: theme.$font-size-sm-plus;
 }
 
 .colorInput {
@@ -101,9 +104,9 @@
 }
 
 .groupLabel {
-  color: theme.$text-light-gray;
-  font-size: 0.8rem;
-  font-weight: 600;
+  color: theme.$text-muted;
+  font-size: theme.$font-size-xs;
+  font-weight: theme.$font-weight-semibold;
   margin: 0 0 theme.$spacing-1 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -119,7 +122,7 @@
   gap: theme.$spacing-3;
   margin-top: theme.$spacing-3;
   color: theme.$text-muted;
-  font-size: 0.9rem;
+  font-size: theme.$font-size-sm-plus;
 }
 
 .customSizeInputs input {
@@ -165,31 +168,22 @@
 }
 
 .settingsContainer {
-  margin-bottom: 1rem;
+  margin-bottom: theme.$spacing-4;
 }
 
 .settingsContainerLarge {
-  margin-bottom: 1.5rem;
-}
-
-.settingLabel {
-  margin-bottom: 0.5rem;
-  display: block;
-  color: theme.$text-muted;
-  font-weight: 500;
-  font-size: 0.95rem;
-  text-align: start;
+  margin-bottom: theme.$spacing-6;
 }
 
 .flexRow {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: theme.$spacing-3;
 }
 
 .flexRowWithMargin {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  gap: theme.$spacing-3;
+  margin-top: theme.$spacing-2;
 }

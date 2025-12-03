@@ -180,6 +180,11 @@ body[data-theme='light'] {
   --glass-background: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(0, 0, 0, 0.1);
 
+  // Glass secondary colors (for secondary-glass buttons and similar elements)
+  --color-glass-secondary: rgba(120, 120, 128, 0.12);
+  --color-glass-secondary-hover: rgba(120, 120, 128, 0.2);
+  --color-glass-secondary-active: rgba(120, 120, 128, 0.25);
+
   // Admin badge colors - soft amber for light theme
   --admin-badge-bg: rgba(217, 119, 6, 0.12);
   --admin-badge-text: #b45309;
@@ -335,6 +340,12 @@ body[data-theme='dark'] {
   // Glass morphism variables for dark theme
   --glass-background: rgba(39, 39, 42, 0.75);
   --glass-border: rgba(255, 255, 255, 0.1);
+
+  // Glass secondary colors (for secondary-glass buttons and similar elements)
+  --color-glass-secondary: rgba(120, 120, 128, 0.15);
+  --color-glass-secondary-hover: rgba(120, 120, 128, 0.25);
+  --color-glass-secondary-active: rgba(120, 120, 128, 0.3);
+
   --google-button-hover-bg: #{dt.$google-button-hover-bg-dark};
   --google-button-hover-border: #{dt.$google-button-hover-border-dark};
   --google-button-active-bg: #{dt.$google-button-active-bg-dark};

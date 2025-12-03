@@ -134,7 +134,7 @@
   height: 126px !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: theme.$breakpoint-xl) {
   .modalContainer {
     max-width: 900px;
     padding: 0 theme.$spacing-3 theme.$spacing-3 theme.$spacing-3;

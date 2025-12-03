@@ -185,21 +185,21 @@
 
 // Secondary action button with glass design (for user pages)
 .secondary-glass {
-  background: rgba(120, 120, 128, 0.12);
+  background: var(--color-glass-secondary);
   color: var(--color-text-primary);
   @include theme.glass-border;
   font-weight: theme.$font-weight-medium;
   box-shadow: theme.$shadow-sm;
 
   &:hover:not(:disabled) {
-    background: rgba(120, 120, 128, 0.2);
+    background: var(--color-glass-secondary-hover);
     border-color: var(--glass-border);
     transform: translateY(theme.$transform-translate-y-xs);
     box-shadow: theme.$shadow-subtle;
   }
 
   &:active:not(:disabled) {
-    background: rgba(120, 120, 128, 0.25);
+    background: var(--color-glass-secondary-active);
     transform: translateY(theme.$spacing-0);
     box-shadow: theme.$shadow-sm;
   }

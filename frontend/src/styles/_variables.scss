@@ -24,10 +24,6 @@ $background: var(--color-background);
 $surface: var(--color-surface);
 $surface-elevated: var(--color-surface-elevated);
 $surface-hover: var(--color-surface-hover);
-
-// Semantic background aliases (used in components)
-$background-secondary: $surface;
-$background-tertiary: $surface;
 $background-overlay: var(--color-overlay-strong);
 
 // -----------------------------------------------------------------------------
@@ -50,14 +46,7 @@ $text-primary: var(--color-text-primary);
 $text-secondary: var(--color-text-secondary);
 $text-muted: var(--color-text-muted);
 $text-disabled: var(--color-text-disabled);
-
-// Semantic text aliases (used in components)
-$text-muted-light: $text-muted;
-$text-secondary-light: $text-secondary;
-$text-tertiary: $text-muted;
 $text-placeholder: $text-disabled;
-$text-light-gray: $text-muted;
-$text-hover: $text-primary;
 
 // -----------------------------------------------------------------------------
 // STATUS COLORS
@@ -69,13 +58,7 @@ $warning: var(--color-warning);
 $warning-light: var(--color-warning-light);
 $error: var(--color-error);
 $error-light: var(--color-error-light);
-
-// Semantic status aliases (used in components)
-$success-color: $success;
-$error-color: $error;
-$error-color-alt: $error;
 $error-overlay: $error-light;
-$accent-purple: $primary;
 
 // -----------------------------------------------------------------------------
 // OVERLAYS
@@ -109,10 +92,6 @@ $status-failed-bg: var(--color-status-failed-bg);
 
 // Empty state components
 $icon-empty-state: $text-muted;
-
-// Visual effects
-$success-glow: $success-light;
-$focus-outline: $primary;
 
 // -----------------------------------------------------------------------------
 // CANVAS

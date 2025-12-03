@@ -111,7 +111,7 @@
 
 // --- Responsive Design ---
 
-@media (max-width: 640px) {
+@media (max-width: theme.$breakpoint-sm) {
   .segmentedControl.horizontal {
     width: 100%;
   }

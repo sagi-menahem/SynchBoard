@@ -3,12 +3,12 @@
 // Main page container matching SettingsPage layout
 .pageContent {
   position: relative;
-  padding-block-start: calc(var(--banner-height, 0px) + 24px);
+  padding-block-start: calc(var(--banner-height, 0px) + #{theme.$spacing-6});
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-inline: 24px;
-  padding-block-end: 24px;
+  padding-inline: theme.$spacing-6;
+  padding-block-end: theme.$spacing-6;
   box-sizing: border-box;
 
   display: grid;
@@ -29,7 +29,7 @@
 // Responsive
 @media (max-width: theme.$breakpoint-md) {
   .pageContent {
-    padding-inline: 16px;
+    padding-inline: theme.$spacing-4;
     grid-template-columns: 1fr;
     gap: theme.$spacing-6;
   }
@@ -42,7 +42,7 @@
 
 @media (max-width: theme.$breakpoint-sm) {
   .pageContent {
-    padding-inline: 12px;
+    padding-inline: theme.$spacing-3;
     gap: theme.$spacing-4;
   }
 

@@ -188,6 +188,15 @@ $shadow-primary-glow: 0 0 12px rgba(59, 130, 246, 0.5);
 $shadow-overlay-hack: 0 0 0px 1000px;
 $shadow-none: none;
 
+// Glass morphism shadows (for floating glass components)
+$shadow-glass-sm: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+$shadow-glass-md: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
+$shadow-glass-hover: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
+
+// Drop shadows for floating elements (used with filter: drop-shadow)
+$shadow-drop-up-light: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.15));
+$shadow-drop-up-dark: drop-shadow(0 -4px 12px rgba(0, 0, 0, 0.4));
+
 // --- Background Pattern Colors ---
 
 $color-random-shapes-bg-light: #fafafa;

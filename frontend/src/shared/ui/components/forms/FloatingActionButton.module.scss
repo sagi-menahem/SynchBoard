@@ -14,9 +14,7 @@
   background: var(--color-primary);
   color: var(--color-text-on-primary);
   cursor: pointer;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-card, theme.$shadow-sm;
 
   // Smooth transitions for all interactive states AND visibility
   // opacity and transform work together for smooth show/hide
@@ -31,9 +29,7 @@
 
   &:hover:not(:disabled):not(.hidden) {
     background: var(--color-primary-hover);
-    box-shadow:
-      0 6px 16px rgba(0, 0, 0, 0.2),
-      0 3px 6px rgba(0, 0, 0, 0.12);
+    box-shadow: theme.$shadow-card-hover, theme.$shadow-md;
     transform: scale(1.05);
   }
 
@@ -49,9 +45,9 @@
   &:focus-visible:not(.hidden) {
     outline: none;
     box-shadow:
-      0 4px 12px rgba(0, 0, 0, 0.15),
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      0 0 0 3px var(--color-primary-light, rgba(99, 102, 241, 0.3));
+      theme.$shadow-card,
+      theme.$shadow-sm,
+      theme.$shadow-focus-ring var(--color-primary-light, rgba(99, 102, 241, 0.3));
   }
 
   &:disabled {
