@@ -164,7 +164,10 @@ $shadow-button: 0 2px 4px rgba(0, 0, 0, 0.2);
 $shadow-button-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
 $shadow-button-active: 0 2px 8px rgba(0, 0, 0, 0.15);
 $shadow-button-small: 0 1px 4px rgba(0, 0, 0, 0.15);
+$shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.08);
 $shadow-card: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.12);
+$shadow-card-hover-lg: 0 12px 28px rgba(0, 0, 0, 0.15);
 $shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.3);
 $shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.1);
 $shadow-focus-outline: 0 0 0 2px;
@@ -331,6 +334,13 @@ $border-width-thick: 2px;
 $transform-translate-y-xs: -1px;
 $transform-translate-y-xxs: -0.5px;
 $transform-translate-y-sm: -2px;
+
+// Scale transforms for hover/active states
+$scale-subtle: 1.01;      // List card hover
+$scale-moderate: 1.02;    // Grid card hover
+$scale-emphasis: 1.1;     // Color swatches, icon hover
+$scale-strong: 1.2;       // Preset color hover
+$scale-press: 0.95;       // Button/element press effect
 
 $pattern-repeat-sm: 10px;
 $pattern-repeat-md: 20px;
