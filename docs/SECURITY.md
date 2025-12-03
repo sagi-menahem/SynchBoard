@@ -342,7 +342,7 @@ All security events logged with `[SECURITY]` prefix:
 Production Nginx configuration includes:
 
 - `X-Content-Type-Options: nosniff`
-- `X-Frame-Options: SAMEORIGIN`
+- `X-Frame-Options: DENY`
 - `X-XSS-Protection: 1; mode=block`
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - Content Security Policy (CSP) for script sources

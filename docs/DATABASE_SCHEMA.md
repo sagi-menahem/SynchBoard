@@ -316,7 +316,4 @@ The schema is managed through JPA/Hibernate DDL auto-update:
 JPA_DDL_AUTO=update
 ```
 
-- **Development:** Uses `update` mode for automatic schema evolution
-- **Production:** Consider using `validate` with manual migrations
-
-No explicit migration tool (Flyway/Liquibase) is currently configured. Schema changes are applied automatically based on entity modifications.
+Schema changes are applied automatically based on entity modifications.

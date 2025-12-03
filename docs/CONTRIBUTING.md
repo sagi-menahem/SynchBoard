@@ -248,18 +248,6 @@ Use the following format for branch names:
 
 ---
 
-## Testing
-
-> **Note:** The project currently does not have a test suite. This is an area for future improvement.
-
-When tests are added, they should:
-
-- Cover critical business logic
-- Include both unit and integration tests
-- Be placed alongside the code they test or in a `__tests__` directory
-
----
-
 ## Documentation
 
 ### Code Documentation
