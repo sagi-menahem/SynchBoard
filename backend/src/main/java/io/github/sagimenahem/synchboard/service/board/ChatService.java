@@ -1,5 +1,6 @@
 package io.github.sagimenahem.synchboard.service.board;
 
+import static io.github.sagimenahem.synchboard.constants.LoggingConstants.DIAGNOSTIC_PREFIX;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 
 import io.github.sagimenahem.synchboard.constants.LoggingConstants;
@@ -41,6 +42,13 @@ public class ChatService {
     private final GroupMemberRepository groupMemberRepository;
     private final SimpMessageSendingOperations messagingTemplate;
 
+    /**
+     * Processes and saves a chat message, then broadcasts it to all board subscribers.
+     *
+     * @param request the chat message request containing content and board ID
+     * @param principal the authenticated user's principal
+     * @throws ResourceNotFoundException if the sender user or board is not found
+     */
     @Transactional
     public void processAndSaveMessage(ChatMessageDTO.Request request, Principal principal) {
         String userEmail = principal.getName();
@@ -67,7 +75,7 @@ public class ChatService {
         log.info(LoggingConstants.CHAT_MESSAGE_SENT, request.getBoardId(), userEmail, messageToSave.getMessageId());
 
         log.debug(
-            "[DIAGNOSTIC] Message saved to DB. MessageID: {}, InstanceID to be broadcasted: {}",
+            DIAGNOSTIC_PREFIX + " Message saved to DB. MessageID: {}, InstanceID to be broadcasted: {}",
             messageToSave.getMessageId(),
             request.getInstanceId()
         );
@@ -76,7 +84,7 @@ public class ChatService {
 
         String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
 
-        log.info("[DIAGNOSTIC] Broadcasting chat message. Topic: {}, Payload: {}", destination, response.toString());
+        log.info(DIAGNOSTIC_PREFIX + " Broadcasting chat message. Topic: {}, Payload: {}", destination, response.toString());
 
         messagingTemplate.convertAndSend(destination, response);
         log.debug("Chat message broadcasted to topic: {} with instanceId: {}", destination, request.getInstanceId());

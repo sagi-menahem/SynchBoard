@@ -53,6 +53,12 @@ public final class LoggingConstants {
      */
     public static final String FILE_PREFIX = "[FILE]";
 
+    /**
+     * Log prefix for diagnostic/debugging events. Used for temporary troubleshooting and tracing
+     * message flow through the system.
+     */
+    public static final String DIAGNOSTIC_PREFIX = "[DIAGNOSTIC]";
+
     // Authentication and Authorization Log Messages
 
     /**

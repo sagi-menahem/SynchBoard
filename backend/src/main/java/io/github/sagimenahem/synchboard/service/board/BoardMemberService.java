@@ -32,6 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BoardMemberService {
 
+    /**
+     * Context object encapsulating board leaving operation data. Holds all state needed to process
+     * a member leaving a board, including determining if cleanup or admin transfer is required.
+     */
     private static class BoardLeavingContext {
 
         private final Long boardId;
@@ -77,6 +81,18 @@ public class BoardMemberService {
     private final FileStorageService fileStorageService;
     private final BoardNotificationService notificationService;
 
+    /**
+     * Invites a user to join a board as a member.
+     *
+     * @param boardId the ID of the board to invite to
+     * @param invitedUserEmail email of the user being invited
+     * @param invitingUserEmail email of the admin user sending the invitation
+     * @return the newly created member DTO
+     * @throws AccessDeniedException if the inviting user is not a member or not an admin
+     * @throws InvalidRequestException if the user tries to invite themselves
+     * @throws ResourceNotFoundException if the invited user is not found
+     * @throws ResourceConflictException if the user is already a member of the board
+     */
     @Transactional
     public MemberDTO inviteMember(Long boardId, String invitedUserEmail, String invitingUserEmail) {
         log.debug(

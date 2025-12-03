@@ -129,7 +129,10 @@ All WebSocket connections require JWT authentication via STOMP headers.
 | Topic                    | Description                                      |
 | ------------------------ | ------------------------------------------------ |
 | `/topic/board/{boardId}` | Board-specific updates (drawing, chat, settings) |
+| `/topic/user/{userEmail}` | Personal notifications (board invites, updates) |
 | `/user/queue/errors`     | User-specific error messages                     |
+
+> **Note:** The backend sends errors via `messagingTemplate.convertAndSendToUser(email, "/topic/errors", ...)`. Spring STOMP automatically translates this to `/user/queue/errors` for user-specific delivery.
 
 ---
 

@@ -53,6 +53,14 @@ public class BoardService {
         return boards;
     }
 
+    /**
+     * Creates a new collaborative board with the specified settings.
+     *
+     * @param request the board creation request containing name, description, and canvas settings
+     * @param ownerEmail email of the user creating the board
+     * @return the created board DTO
+     * @throws ResourceNotFoundException if the owner user is not found
+     */
     @Transactional
     public BoardDTO createBoard(CreateBoardRequest request, String ownerEmail) {
         log.debug("Creating board: {} for user: {}", request.getName(), ownerEmail);

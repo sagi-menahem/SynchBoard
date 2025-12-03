@@ -99,42 +99,68 @@ class Logger {
     }
   }
 
+  /**
+   * Starts a console group in development mode. Groups related log messages together.
+   * @param label - The label for the console group
+   */
   group(label: string): void {
     if (this.isDevelopment) {
       console.group(label);
     }
   }
 
+  /**
+   * Starts a collapsed console group in development mode.
+   * @param label - The label for the collapsed group
+   */
   groupCollapsed(label: string): void {
     if (this.isDevelopment) {
       console.groupCollapsed(label);
     }
   }
 
+  /**
+   * Ends the current console group in development mode.
+   */
   groupEnd(): void {
     if (this.isDevelopment) {
       console.groupEnd();
     }
   }
 
+  /**
+   * Displays tabular data in the console in development mode.
+   * @param data - Data to display as a table
+   */
   table(data: unknown): void {
     if (this.isDevelopment) {
       console.table(data);
     }
   }
 
+  /**
+   * Starts a timer with the specified label in development mode.
+   * @param label - The timer label for identification
+   */
   time(label: string): void {
     if (this.isDevelopment) {
       console.time(label);
     }
   }
 
+  /**
+   * Stops a timer and logs the elapsed time in development mode.
+   * @param label - The timer label to stop
+   */
   timeEnd(label: string): void {
     if (this.isDevelopment) {
       console.timeEnd(label);
     }
   }
 
+  /**
+   * Clears the console in development mode.
+   */
   clear(): void {
     if (this.isDevelopment) {
       console.clear();

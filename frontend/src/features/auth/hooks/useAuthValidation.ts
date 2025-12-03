@@ -6,12 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
 import logger from 'shared/utils/logger';
 
+/**
+ * Result of JWT token validation including validation status and user identity.
+ * Used by useAuthValidation hook to determine token viability and cleanup requirements.
+ */
 interface AuthValidationResult {
-  // Whether the authentication token is valid and user is authenticated
+  /** Whether the authentication token is valid and user is authenticated */
   isValid: boolean;
-  // Email address from the decoded token, null if invalid
+  /** Email address from the decoded token, null if invalid */
   userEmail: string | null;
-  // Whether the token should be removed from storage due to invalidity
+  /** Whether the token should be removed from storage due to invalidity */
   shouldClearToken: boolean;
 }
 

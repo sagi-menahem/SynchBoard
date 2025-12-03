@@ -383,6 +383,39 @@ The application uses environment variables for configuration. See `.env.example`
 - **Email Service**: SendGrid API configuration (optional)
 - **OAuth2**: Google OAuth credentials (optional)
 
+### Frontend Build Variables
+
+The frontend uses Vite build-time environment variables that are baked into the static build:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VITE_API_BASE_URL` | `/api` | Base URL for API requests |
+| `VITE_WEBSOCKET_URL` | `/ws` | WebSocket endpoint path |
+| `VITE_GOOGLE_CLIENT_ID` | - | Google OAuth client ID for One Tap |
+
+**Important Notes:**
+
+- These variables are set as Docker build arguments in `docker-compose.yml`
+- Changes require rebuilding the frontend container (not just restarting)
+- In Docker, relative paths (`/api`, `/ws`) work because Nginx proxies to backend
+- For local development without Docker, the frontend uses `http://localhost:8080` directly
+
+**Docker Configuration:**
+
+```yaml
+# docker-compose.yml
+frontend:
+  build:
+    args:
+      VITE_API_BASE_URL: /api
+      VITE_WEBSOCKET_URL: /ws
+      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+```
+
+**Local Development:**
+
+When running frontend with `npm run dev` (outside Docker), API calls go to `http://localhost:8080` via Vite's proxy configuration in `vite.config.ts`.
+
 ### Default Credentials
 
 For development/testing with default configuration:

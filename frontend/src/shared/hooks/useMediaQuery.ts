@@ -163,6 +163,15 @@ export const useDeviceType = (): DeviceType => {
   return deviceType;
 };
 
+/**
+ * Hook to detect tablet viewport (768px-1023px width).
+ * @returns boolean indicating if screen width matches tablet breakpoint
+ */
 export const useIsTablet = (): boolean =>
   useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+
+/**
+ * Hook to detect desktop viewport (1024px+ width).
+ * @returns boolean indicating if screen width matches desktop breakpoint
+ */
 export const useIsDesktop = (): boolean => useMediaQuery('(min-width: 1024px)');
