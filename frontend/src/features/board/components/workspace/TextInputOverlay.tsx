@@ -116,6 +116,8 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
       animate="animate"
     >
       <Textarea
+        id="canvas-text-input"
+        name="canvasText"
         ref={textareaRef}
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -123,6 +125,7 @@ const TextInputOverlay: React.FC<TextInputOverlayProps> = ({
         onBlur={handleSubmit}
         className={styles.textInput}
         placeholder={t('board:textInput.placeholder')}
+        autoComplete="off"
         dir="ltr"
         style={{
           color,

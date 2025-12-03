@@ -38,6 +38,7 @@ interface ColorPickerProps {
   className?: string;
   label?: string; // Optional label text for accessibility
   id?: string; // HTML id attribute for the color picker
+  'aria-labelledby'?: string; // ID of element that labels this color picker
 }
 
 /**
@@ -59,6 +60,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   className = '',
   label,
   id,
+  'aria-labelledby': ariaLabelledBy,
 }) => {
   const { t } = useTranslation(['common']);
   const [showPicker, setShowPicker] = useState(false);
@@ -209,6 +211,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           onClick={handleSwatchClick}
           disabled={disabled}
           aria-label={label ?? t('common:chooseColor')}
+          aria-labelledby={ariaLabelledBy}
         >
           <div className={styles.colorFill} style={{ backgroundColor: color ?? '#FFFFFF' }} />
         </Button>

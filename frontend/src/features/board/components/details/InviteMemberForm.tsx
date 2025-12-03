@@ -46,12 +46,14 @@ const InviteMemberForm: React.FC<InviteMemberFormProps> = ({ inviteForm, onInvit
           </label>
           <Input
             id="member-email"
+            name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t('board:inviteMemberForm.placeholder')}
             required
             disabled={isSubmitting}
+            autoComplete="email"
           />
         </div>
         <div className={styles.buttonGroup}>

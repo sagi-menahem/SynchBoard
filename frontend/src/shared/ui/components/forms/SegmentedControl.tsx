@@ -20,6 +20,7 @@ interface SegmentedControlProps {
   orientation?: 'vertical' | 'horizontal';
   required?: boolean;
   id?: string;
+  'aria-labelledby'?: string;
 }
 
 /**
@@ -49,6 +50,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   orientation = 'horizontal',
   required = false,
   id,
+  'aria-labelledby': ariaLabelledBy,
 }) => {
   const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
   const currentValue = value ?? internalValue;
@@ -98,6 +100,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       className={`${styles.segmentedControl} ${styles[orientation]} ${className}`}
       role="radiogroup"
       aria-required={required}
+      aria-labelledby={ariaLabelledBy}
     >
       {options.map((option, index) => {
         const isSelected = currentValue === option.value;

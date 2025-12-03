@@ -78,12 +78,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       <div className={styles.searchContainer}>
         <Search size={16} className={styles.searchIcon} />
         <input
+          id="search-input"
+          name="search"
           type="text"
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           className={styles.searchInput}
+          autoComplete="off"
         />
         {inputValue && (
           <Button

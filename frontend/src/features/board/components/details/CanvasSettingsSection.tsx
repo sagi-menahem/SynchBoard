@@ -68,9 +68,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
     return (
       <SectionCard title={t('board:details.canvasSettings.title')} variant="default">
         <div className={styles.settingsContainer}>
-          <label className={styles.settingLabel}>
+          <span className={styles.settingLabel}>
             {t('board:details.canvasSettings.backgroundColor')}:
-          </label>
+          </span>
           <div className={styles.flexRow}>
             <div
               className={styles.colorPreview}
@@ -88,7 +88,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
         </div>
         <div>
-          <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</label>
+          <span className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</span>
           <p>
             {boardDetails.canvasWidth} × {boardDetails.canvasHeight}{' '}
             {t('board:details.canvasSettings.pixels')}
@@ -118,15 +118,16 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       {isEditing ? (
         <>
           <div className={styles.settingsContainerLarge}>
-            <label className={styles.settingLabel}>
+            <span id="background-color-label" className={styles.settingLabel}>
               {t('board:details.canvasSettings.backgroundColor')}
-            </label>
+            </span>
             <div className={styles.flexRowWithMargin}>
               <div className={utilStyles.colorPickerPopupWrapper}>
                 <ColorPicker
                   color={backgroundColor}
                   onChange={setBackgroundColor}
                   disabled={isUpdating}
+                  aria-labelledby="background-color-label"
                 />
               </div>
               <span>
@@ -139,7 +140,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
           </div>
 
           <div className={styles.settingsContainerLarge}>
-            <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}</label>
+            <span id="canvas-size-label" className={styles.settingLabel}>
+              {t('board:details.canvasSettings.size')}
+            </span>
             <div style={{ marginTop: '0.5rem' }}>
               <SegmentedControl
                 value={canvasSize}
@@ -147,11 +150,14 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                 disabled={isUpdating}
                 orientation="vertical"
                 options={presetOptions}
+                aria-labelledby="canvas-size-label"
               />
             </div>
             {canvasSize === 'custom' && (
               <div className={styles.customSizeInputs}>
                 <Input
+                  id="canvas-width"
+                  name="canvasWidth"
                   type="number"
                   value={customWidth}
                   onChange={(e) => handleCustomWidthChange(e.target.value)}
@@ -159,9 +165,12 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                   max={CANVAS_CONFIG.MAX_WIDTH}
                   disabled={isUpdating}
                   placeholder={t('board:details.canvasSettings.width')}
+                  aria-label={t('board:details.canvasSettings.width')}
                 />
                 <span>×</span>
                 <Input
+                  id="canvas-height"
+                  name="canvasHeight"
                   type="number"
                   value={customHeight}
                   onChange={(e) => handleCustomHeightChange(e.target.value)}
@@ -169,6 +178,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                   max={CANVAS_CONFIG.MAX_HEIGHT}
                   disabled={isUpdating}
                   placeholder={t('board:details.canvasSettings.height')}
+                  aria-label={t('board:details.canvasSettings.height')}
                 />
               </div>
             )}
@@ -190,9 +200,9 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
       ) : (
         <>
           <div className={styles.settingsContainer}>
-            <label className={styles.settingLabel}>
+            <span className={styles.settingLabel}>
               {t('board:details.canvasSettings.backgroundColor')}:
-            </label>
+            </span>
             <div className={styles.flexRow}>
               <div
                 className={styles.colorPreview}
@@ -210,7 +220,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
             </div>
           </div>
           <div>
-            <label className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</label>
+            <span className={styles.settingLabel}>{t('board:details.canvasSettings.size')}:</span>
             <p>
               {boardDetails.canvasWidth} × {boardDetails.canvasHeight}{' '}
               {t('board:details.canvasSettings.pixels')}
