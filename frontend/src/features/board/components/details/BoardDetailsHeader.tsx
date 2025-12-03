@@ -22,6 +22,10 @@ interface BoardDetailsHeaderProps {
   onUpdateDescription: (description: string) => Promise<void>;
   /** Handler for removing the current board picture */
   onDeletePicture: () => void;
+  /** Show only the picture section */
+  showPictureOnly?: boolean;
+  /** Show only the description section */
+  showDescriptionOnly?: boolean;
 }
 
 /**
@@ -43,7 +47,13 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
     onPictureUpload,
     onUpdateDescription,
     onDeletePicture,
+    showPictureOnly = false,
+    showDescriptionOnly = false,
   } = props;
+
+  // Determine what to show - if neither flag is set, show both (default behavior)
+  const showPicture = showPictureOnly || (!showPictureOnly && !showDescriptionOnly);
+  const showDescription = showDescriptionOnly || (!showPictureOnly && !showDescriptionOnly);
 
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -66,82 +76,87 @@ const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
 
   return (
     <>
-      <SectionCard title={t('board:detailsPage.changePicture')} variant="default">
-        <PictureManager
-          imageUrl={boardDetails.pictureUrl}
-          defaultImage={defaultBoardImage}
-          altText={boardDetails.name}
-          onUpload={onPictureUpload}
-          onDelete={currentUserIsAdmin ? onDeletePicture : undefined}
-          showDeleteButton={currentUserIsAdmin}
-          uploadButtonText={t('board:detailsPage.changePicture')}
-          deleteButtonText={t('board:detailsPage.deletePicture')}
-          className={styles.pictureManager}
-        />
-      </SectionCard>
+      {showPicture && (
+        <SectionCard title={t('board:detailsPage.changePicture')} variant="default">
+          <PictureManager
+            imageUrl={boardDetails.pictureUrl}
+            defaultImage={defaultBoardImage}
+            altText={boardDetails.name}
+            onUpload={onPictureUpload}
+            onDelete={currentUserIsAdmin ? onDeletePicture : undefined}
+            showDeleteButton={currentUserIsAdmin}
+            uploadButtonText={t('board:detailsPage.changePicture')}
+            deleteButtonText={t('board:detailsPage.deletePicture')}
+            className={styles.pictureManager}
+            imageClassName={styles.smallerPicture}
+          />
+        </SectionCard>
+      )}
 
-      <SectionCard
-        title={t('board:detailsPage.boardDescription')}
-        variant="default"
-        headerActions={
-          currentUserIsAdmin && !isEditingDescription ? (
-            <Button
-              onClick={() => setIsEditingDescription(true)}
-              variant="secondary-glass"
-              className={`${styles.editButton} ${styles.themeButton}`}
-            >
-              <PencilLine size={16} />
-              {t('board:detailsPage.editDescription')}
-            </Button>
-          ) : undefined
-        }
-      >
-        {isEditingDescription ? (
-          <div className={styles.editForm}>
-            <div>
-              <Textarea
-                value={descriptionValue}
-                onChange={(e) => setDescriptionValue(e.target.value)}
-                placeholder={t('board:detailsPage.descriptionPlaceholder')}
-                disabled={isUpdating}
-                rows={4}
-                className={styles.descriptionTextarea}
-              />
-            </div>
-            <div className={styles.buttonGroup}>
+      {showDescription && (
+        <SectionCard
+          title={t('board:detailsPage.boardDescription')}
+          variant="default"
+          headerActions={
+            currentUserIsAdmin && !isEditingDescription ? (
               <Button
-                onClick={handleCancelDescriptionEdit}
-                disabled={isUpdating}
+                onClick={() => setIsEditingDescription(true)}
                 variant="secondary-glass"
+                className={`${styles.editButton} ${styles.themeButton}`}
               >
-                <X size={16} />
-                {t('common:button.cancel')}
+                <PencilLine size={16} />
+                {t('board:detailsPage.editDescription')}
               </Button>
-              <Button onClick={handleSaveDescription} disabled={isUpdating} variant="primary-glass">
-                <Save size={16} />
-                {isUpdating ? t('common:button.saving') : t('common:button.save')}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            {boardDetails.description ? (
-              <p className={styles.description}>{boardDetails.description}</p>
-            ) : (
-              <div className={styles.emptyDescription}>
-                <label className={styles.emptyDescriptionLabel}>
-                  {t('board:detailsPage.noDescription')}
-                </label>
-                {currentUserIsAdmin && (
-                  <label className={styles.emptyDescriptionLabel}>
-                    {t('board:detailsPage.noDescriptionHint')}
-                  </label>
-                )}
+            ) : undefined
+          }
+        >
+          {isEditingDescription ? (
+            <div className={styles.editForm}>
+              <div>
+                <Textarea
+                  value={descriptionValue}
+                  onChange={(e) => setDescriptionValue(e.target.value)}
+                  placeholder={t('board:detailsPage.descriptionPlaceholder')}
+                  disabled={isUpdating}
+                  rows={4}
+                  className={styles.descriptionTextarea}
+                />
               </div>
-            )}
-          </div>
-        )}
-      </SectionCard>
+              <div className={styles.buttonGroup}>
+                <Button
+                  onClick={handleCancelDescriptionEdit}
+                  disabled={isUpdating}
+                  variant="secondary-glass"
+                >
+                  <X size={16} />
+                  {t('common:button.cancel')}
+                </Button>
+                <Button onClick={handleSaveDescription} disabled={isUpdating} variant="primary-glass">
+                  <Save size={16} />
+                  {isUpdating ? t('common:button.saving') : t('common:button.save')}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {boardDetails.description ? (
+                <p className={styles.description}>{boardDetails.description}</p>
+              ) : (
+                <div className={styles.emptyDescription}>
+                  <label className={styles.emptyDescriptionLabel}>
+                    {t('board:detailsPage.noDescription')}
+                  </label>
+                  {currentUserIsAdmin && (
+                    <label className={styles.emptyDescriptionLabel}>
+                      {t('board:detailsPage.noDescriptionHint')}
+                    </label>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </SectionCard>
+      )}
     </>
   );
 };

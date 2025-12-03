@@ -157,7 +157,7 @@ const BoardDetailsPage: React.FC = () => {
         }
       />
       <main className={styles.pageContent}>
-        {/* Left Column - Board Visual & Description */}
+        {/* Left Column - Board Picture & Members */}
         <div className={styles.leftColumn}>
           <BoardDetailsHeader
             boardDetails={boardDetails}
@@ -165,15 +165,7 @@ const BoardDetailsPage: React.FC = () => {
             onPictureUpload={handlePictureUpload}
             onUpdateDescription={handleUpdateDescription}
             onDeletePicture={promptPictureDelete}
-          />
-        </div>
-
-        {/* Right Column - Settings & Members */}
-        <div className={styles.rightColumn}>
-          <CanvasSettingsSection
-            boardDetails={boardDetails}
-            isAdmin={currentUserIsAdmin}
-            onUpdateSettings={handleCanvasSettingsUpdate}
+            showPictureOnly
           />
 
           <SectionCard
@@ -197,6 +189,24 @@ const BoardDetailsPage: React.FC = () => {
               <MemberList members={boardDetails.members} onMemberContextMenu={handleRightClick} />
             </ul>
           </SectionCard>
+        </div>
+
+        {/* Right Column - Description & Canvas Settings */}
+        <div className={styles.rightColumn}>
+          <BoardDetailsHeader
+            boardDetails={boardDetails}
+            currentUserIsAdmin={currentUserIsAdmin}
+            onPictureUpload={handlePictureUpload}
+            onUpdateDescription={handleUpdateDescription}
+            onDeletePicture={promptPictureDelete}
+            showDescriptionOnly
+          />
+
+          <CanvasSettingsSection
+            boardDetails={boardDetails}
+            isAdmin={currentUserIsAdmin}
+            onUpdateSettings={handleCanvasSettingsUpdate}
+          />
         </div>
       </main>
 
