@@ -50,6 +50,16 @@ const MobileChatDrawer: React.FC<MobileChatDrawerProps> = ({
   const chatWindowRef = useRef<ChatWindowHandle>(null);
   const previousMessageCount = useRef<number>(messages.length);
 
+  // Scroll to bottom when drawer opens to show latest messages
+  useEffect(() => {
+    if (isOpen) {
+      // Use requestAnimationFrame to ensure DOM has updated before scrolling
+      requestAnimationFrame(() => {
+        chatWindowRef.current?.scrollToBottom();
+      });
+    }
+  }, [isOpen]);
+
   // Handle scrolling when new messages arrive on mobile
   // Uses requestAnimationFrame to ensure DOM has updated before scrolling
   // This avoids the race condition with keyboard/viewport that causes gaps
