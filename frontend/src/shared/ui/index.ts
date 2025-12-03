@@ -18,6 +18,7 @@ export { default as PageLoader } from './components/display/PageLoader';
 export { default as RelativeTimestamp } from './components/display/RelativeTimestamp';
 
 export { default as Skeleton } from './components/feedback/Skeleton';
+export { default as AuthPageSkeleton } from './components/feedback/AuthPageSkeleton';
 export { default as BoardCardSkeleton } from './components/feedback/BoardCardSkeleton';
 export { default as BoardListSkeleton } from './components/feedback/BoardListSkeleton';
 export { default as SectionCardSkeleton } from './components/feedback/SectionCardSkeleton';

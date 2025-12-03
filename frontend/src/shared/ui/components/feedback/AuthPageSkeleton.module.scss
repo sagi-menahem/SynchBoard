@@ -1,0 +1,250 @@
+@use '@/styles' as theme;
+
+// Full viewport layout matching AuthPage
+.pageContent {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  margin-top: calc(-1 * var(--banner-height, 0px));
+  margin-left: calc(-1 * var(--app-padding-x, 0px));
+  margin-right: calc(-1 * var(--app-padding-x, 0px));
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.splitContainer {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+// Hero section with gradient background (matches AuthPage)
+.heroSection {
+  flex: 0 0 60%;
+  min-width: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.85) 100%);
+  @include theme.flex-center;
+  padding: theme.$spacing-6;
+  position: relative;
+  overflow: hidden;
+
+  // Subtle glass overlay for depth
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: theme.$z-index-base;
+  max-width: 500px;
+  width: 100%;
+}
+
+.titleRow {
+  @include theme.flex-start;
+  gap: theme.$spacing-3;
+  margin-bottom: theme.$spacing-6;
+}
+
+// White skeleton elements for hero section
+.iconSkeleton,
+.titleSkeleton,
+.subtitleSkeleton {
+  --skeleton-base: rgba(255, 255, 255, 0.2);
+  --skeleton-shimmer: rgba(255, 255, 255, 0.3);
+}
+
+.subtitleSkeleton {
+  margin-bottom: theme.$spacing-2;
+}
+
+.featuresContainer {
+  @include theme.flex-column;
+  gap: theme.$spacing-4;
+  margin-top: theme.$spacing-8;
+}
+
+.featureRow {
+  @include theme.flex-start;
+  gap: theme.$spacing-3;
+  align-items: center;
+}
+
+.featureIcon {
+  --skeleton-base: rgba(255, 255, 255, 0.15);
+  --skeleton-shimmer: rgba(255, 255, 255, 0.25);
+}
+
+// Form section
+.formSection {
+  flex: 0 0 40%;
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+  @include theme.glass-background(false);
+  overflow: hidden;
+}
+
+.authCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  @include theme.glass-background(false);
+  @include theme.glass-border;
+  border-radius: theme.$card-border-radius;
+  box-shadow: theme.$shadow-lg;
+  box-sizing: border-box;
+}
+
+.authContainer {
+  @include theme.flex-column;
+  gap: theme.$spacing-4;
+  flex: 1;
+  padding-block: theme.$spacing-6;
+  padding-inline: theme.$spacing-6;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.formHeader {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: theme.$spacing-2;
+}
+
+.formTitleRow {
+  @include theme.flex-start;
+  gap: theme.$spacing-2;
+}
+
+.formFields {
+  @include theme.flex-column;
+  gap: theme.$spacing-4;
+  width: 100%;
+  max-width: 320px;
+}
+
+.field {
+  @include theme.flex-column;
+  gap: theme.$spacing-1;
+}
+
+.labelSkeleton {
+  margin-bottom: theme.$spacing-1;
+}
+
+.buttonSkeleton {
+  margin-top: theme.$spacing-2;
+}
+
+.dividerRow {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-3;
+  width: 100%;
+  margin: theme.$spacing-2 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: var(--glass-border);
+}
+
+.googleButtonSkeleton {
+  --skeleton-base: rgba(128, 128, 128, 0.08);
+}
+
+.authActions {
+  @include theme.flex-column-center;
+  gap: theme.$spacing-2;
+  margin-top: theme.$spacing-4;
+  padding-top: theme.$spacing-4;
+  @include theme.glass-border-top;
+  width: 100%;
+  max-width: 320px;
+}
+
+// Mobile breakpoint
+@media (max-width: theme.$breakpoint-md) {
+  .splitContainer {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .heroSection {
+    flex: 0 0 auto;
+    min-height: 35vh;
+    padding: theme.$spacing-4;
+  }
+
+  .heroContent {
+    max-width: 100%;
+  }
+
+  .titleRow {
+    margin-bottom: theme.$spacing-3;
+  }
+
+  .featuresContainer {
+    margin-top: theme.$spacing-4;
+    gap: theme.$spacing-2;
+  }
+
+  .formSection {
+    flex: 1;
+    padding: theme.$spacing-3;
+    min-height: auto;
+  }
+
+  .authContainer {
+    padding-block: theme.$spacing-4;
+    padding-inline: theme.$spacing-5;
+  }
+}
+
+// Dark theme
+:global(body[data-theme='dark']) {
+  .heroSection {
+    background: linear-gradient(135deg, rgba(55, 65, 81, 0.9) 0%, rgba(31, 41, 55, 0.85) 100%);
+
+    &::before {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(0, 0, 0, 0.15) 100%
+      );
+    }
+  }
+
+  .formSection {
+    @include theme.glass-background(false);
+  }
+
+  .authCard {
+    @include theme.glass-background(false);
+    @include theme.glass-border;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}

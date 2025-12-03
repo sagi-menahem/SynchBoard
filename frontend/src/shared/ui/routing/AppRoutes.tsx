@@ -7,6 +7,7 @@ import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import { useIsMobile } from 'shared/hooks';
 import {
   AppHeader,
+  AuthPageSkeleton,
   BoardWorkspaceSkeleton,
   Button,
   PageLoader,
@@ -93,7 +94,7 @@ export function AppRoutes() {
         path="/auth"
         element={
           <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
+            <Suspense fallback={<AuthPageSkeleton />}>
               <AuthPage />
             </Suspense>
           </ErrorBoundary>
@@ -103,7 +104,7 @@ export function AppRoutes() {
         path={APP_ROUTES.AUTH_CALLBACK}
         element={
           <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
+            <Suspense fallback={<AuthPageSkeleton />}>
               <AuthPage />
             </Suspense>
           </ErrorBoundary>
@@ -113,7 +114,7 @@ export function AppRoutes() {
         path={APP_ROUTES.AUTH_ERROR}
         element={
           <ErrorBoundary>
-            <Suspense fallback={<LazyPageLoader />}>
+            <Suspense fallback={<AuthPageSkeleton />}>
               <AuthPage />
             </Suspense>
           </ErrorBoundary>
