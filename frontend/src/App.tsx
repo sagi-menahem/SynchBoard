@@ -37,7 +37,7 @@ function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <ConnectionStatusBanner onHeightChange={handleBannerHeightChange} />
-        <div
+        <main
           className="app-content"
           style={
             {
@@ -51,7 +51,7 @@ function App() {
         >
           <ToasterConfig />
           <AppRoutes />
-        </div>
+        </main>
       </BrowserRouter>
     </ErrorBoundary>
   );

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -121,8 +121,19 @@
       </div>
     </div>
     <script>
-      // Apply dark theme to initial loader if user prefers dark mode
+      // Apply initial language direction and dark theme to prevent flash
       (function() {
+        // Set language and direction from stored preference
+        var guestLang = localStorage.getItem('guest-language');
+        var storedLang = localStorage.getItem('i18nextLng');
+        var lang = (guestLang && ['en', 'he'].includes(guestLang)) ? guestLang :
+                   (storedLang && ['en', 'he'].includes(storedLang)) ? storedLang : 'en';
+        var isRTL = lang === 'he';
+
+        document.documentElement.lang = lang;
+        document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+
+        // Apply dark theme to initial loader if user prefers dark mode
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         var storedTheme = localStorage.getItem('theme');
         var isDark = storedTheme === 'dark' || (!storedTheme && prefersDark);

@@ -36,10 +36,11 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
   const isRTL = i18n.language === 'he';
 
   // Size configuration for different toggle variants
+  // Font sizes meet WCAG AA minimum of 12px for adequate contrast
   const sizeConfig = {
-    sm: { height: 28, width: 56, fontSize: 11 },
-    md: { height: 32, width: 64, fontSize: 12 },
-    lg: { height: 36, width: 72, fontSize: 14 },
+    sm: { height: 28, width: 56, fontSize: 12, activeFontSize: 10 },
+    md: { height: 32, width: 64, fontSize: 12, activeFontSize: 11 },
+    lg: { height: 36, width: 72, fontSize: 14, activeFontSize: 12 },
   };
 
   const config = sizeConfig[size];
@@ -99,8 +100,8 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
             top: '2px',
             insetInlineStart: '2px',
             borderRadius: '9999px',
-            backgroundColor: 'rgba(59, 130, 246, 0.9)',
-            boxShadow: '0 2px 8px rgba(59, 130, 246, 0.4)',
+            backgroundColor: '#2563eb',
+            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.4)',
             transform: isHebrew
               ? `translateX(${isRTL ? '-' : ''}${config.width - config.height}px)`
               : 'translateX(0px)',
@@ -110,9 +111,9 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
         >
           <span
             style={{
-              fontSize: `${config.fontSize - 2}px`,
+              fontSize: `${config.activeFontSize}px`,
               fontWeight: '700',
-              color: 'white',
+              color: '#ffffff',
             }}
           >
             {isHebrew ? 'HE' : 'EN'}
@@ -140,8 +141,8 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
               style={{
                 fontSize: `${config.fontSize}px`,
                 fontWeight: '600',
-                color: 'var(--color-text-muted)',
-                opacity: isHebrew ? 0.6 : 0,
+                color: 'var(--color-text-secondary)',
+                opacity: isHebrew ? 1 : 0,
               }}
             >
               EN
@@ -159,8 +160,8 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({
               style={{
                 fontSize: `${config.fontSize}px`,
                 fontWeight: '600',
-                color: 'var(--color-text-muted)',
-                opacity: isHebrew ? 0 : 0.6,
+                color: 'var(--color-text-secondary)',
+                opacity: isHebrew ? 0 : 1,
               }}
             >
               HE

@@ -224,8 +224,8 @@ body[data-theme='dark'] {
 
   --color-text-primary: #{dt.$color-gray-50};
   --color-text-secondary: #{dt.$color-gray-300};
-  --color-text-muted: #{dt.$color-gray-400};
-  --color-text-disabled: #{dt.$color-gray-500};
+  --color-text-muted: #{dt.$color-gray-300};
+  --color-text-disabled: #{dt.$color-gray-400};
 
   --color-success: #{dt.$color-success};
   --color-success-light: rgba(16, 185, 129, 0.15);
