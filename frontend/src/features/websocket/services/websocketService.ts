@@ -294,7 +294,19 @@ class WebSocketService {
       },
       onStompError: (frame) => {
         const errorMessage = frame.headers['message'] ?? 'Unknown broker error';
-        logger.warn(`Server error: ${errorMessage}`);
+
+        // TTL timeouts and broker disconnections are expected when browser throttles
+        // background tabs - log as debug instead of warn to reduce production noise
+        const isExpectedDisconnection =
+          errorMessage.includes('AMQ229014') ||
+          errorMessage.includes('connection TTL') ||
+          errorMessage.includes('Connection to broker closed');
+
+        if (isExpectedDisconnection) {
+          logger.debug(`Expected broker disconnection: ${errorMessage}`);
+        } else {
+          logger.warn(`Server error: ${errorMessage}`);
+        }
 
         this.handleDisconnection();
       },
