@@ -237,7 +237,10 @@
       "focusCanvas": "Focus Canvas",
       "balanced": "Balanced",
       "focusChat": "Focus Chat",
-      "lines": "Lines"
+      "lines": "Lines",
+      "shapes": "Shapes",
+      "strokeWidth": "Stroke Width",
+      "palette": "Palette"
     },
     "search": {
       "boardName": "Search boards",

@@ -237,7 +237,10 @@
       "focusCanvas": "התמקד בקנבס",
       "balanced": "מאוזן",
       "focusChat": "התמקד בצ'אט",
-      "lines": "קווים"
+      "lines": "קווים",
+      "shapes": "צורות",
+      "strokeWidth": "עובי קו",
+      "palette": "לוח צבעים"
     },
     "search": {
       "boardName": "חיפוש לוחות",

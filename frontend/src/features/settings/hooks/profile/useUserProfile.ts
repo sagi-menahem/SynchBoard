@@ -3,6 +3,7 @@ import type { UpdateUserProfileRequest, UserProfile } from 'features/settings/ty
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { ensureMinimumDelay } from 'shared/utils';
 import logger from 'shared/utils/logger';
 
 /**
@@ -31,9 +32,7 @@ export const useUserProfile = () => {
   // Memoize to prevent infinite loops when used in useEffect dependencies
   const fetchUser = useCallback(() => {
     setIsLoading(true);
-    // Track timing for minimum loading delay to prevent flashing
     const startTime = Date.now();
-    const minDelay = 200; // Minimum loading time in ms to prevent flashing UI
 
     userService
       .getUserProfile()
@@ -52,13 +51,7 @@ export const useUserProfile = () => {
         toast.error(t('settings:errors.profile.fetch'));
       })
       .finally(() => {
-        // Ensure minimum loading time for smooth UX
-        const elapsed = Date.now() - startTime;
-        const remainingDelay = Math.max(0, minDelay - elapsed);
-
-        setTimeout(() => {
-          setIsLoading(false);
-        }, remainingDelay);
+        ensureMinimumDelay(startTime, () => setIsLoading(false));
       });
   }, [t]);
 

@@ -41,7 +41,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   className,
   variant = 'default',
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['common']);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
     if (value) {
@@ -169,7 +169,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           readOnly
           disabled={disabled}
           className={`${styles.input} ${className ?? ''}`}
-          placeholder="DD/MM/YYYY"
+          placeholder={t('common:datePicker.placeholder')}
           aria-haspopup="dialog"
           aria-expanded={isOpen}
         />
@@ -179,7 +179,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           onClick={handleInputClick}
           disabled={disabled}
           tabIndex={-1}
-          aria-label="Open calendar"
+          aria-label={t('common:accessibility.openCalendar')}
         >
           <Calendar size={18} />
         </button>

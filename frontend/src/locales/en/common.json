@@ -225,7 +225,12 @@
     "resizePanels": "Resize panels",
     "sizeSlider": "Size: {{size}}",
     "userAvatar": "Avatar for {{email}}",
-    "memberAvatar": "Member avatar for {{email}}"
+    "memberAvatar": "Member avatar for {{email}}",
+    "openCalendar": "Open calendar",
+    "strokeWidth": "Stroke width"
+  },
+  "datePicker": {
+    "placeholder": "DD/MM/YYYY"
   },
   "dates": {
     "invalidDate": "Invalid date",

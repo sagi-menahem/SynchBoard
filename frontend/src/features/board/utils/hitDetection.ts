@@ -1,10 +1,22 @@
 import type { ActionPayload, Point } from 'features/board/types/BoardObjectTypes';
 
+// =============================================================================
+// TYPES
+// =============================================================================
+
 export interface HitResult {
   hit: boolean;
   object?: ActionPayload;
   hitType?: 'fill' | 'stroke' | 'object';
 }
+
+interface HitTestContext {
+  clickPoint: Point;
+  canvasWidth: number;
+  canvasHeight: number;
+}
+
+type HitTestHandler = (obj: ActionPayload, ctx: HitTestContext) => HitResult | null;
 
 /**
  * Tests if a point lies within the bounds of a rectangle using normalized coordinates.
@@ -478,6 +490,211 @@ export const isPointInTextBox = (
   return isPointInRectangle(point, x, y, width, height, canvasWidth, canvasHeight);
 };
 
+// =============================================================================
+// HIT TEST HANDLERS (Strategy Pattern)
+// =============================================================================
+
+/**
+ * Hit test handler for rectangle and square shapes.
+ * Checks both fill area and stroke border, prioritizing stroke hits.
+ */
+const hitTestRectangle: HitTestHandler = (obj, ctx) => {
+  if (!('x' in obj && 'y' in obj && 'width' in obj && 'height' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const rect = obj as { x: number; y: number; width: number; height: number; strokeWidth?: number };
+
+  if (!isPointInRectangle(clickPoint, rect.x, rect.y, rect.width, rect.height, canvasWidth, canvasHeight)) {
+    return null;
+  }
+
+  // Prioritize stroke hit over fill hit
+  if (
+    rect.strokeWidth !== undefined &&
+    isPointOnRectangleBorder(clickPoint, rect.x, rect.y, rect.width, rect.height, rect.strokeWidth, canvasWidth, canvasHeight)
+  ) {
+    return { hit: true, object: obj, hitType: 'stroke' };
+  }
+  return { hit: true, object: obj, hitType: 'fill' };
+};
+
+/**
+ * Hit test handler for circle shapes.
+ * Checks both fill area and stroke border, prioritizing stroke hits.
+ */
+const hitTestCircle: HitTestHandler = (obj, ctx) => {
+  if (!('x' in obj && 'y' in obj && 'radius' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const circle = obj as { x: number; y: number; radius: number; strokeWidth?: number };
+
+  if (!isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)) {
+    return null;
+  }
+
+  // Prioritize stroke hit over fill hit
+  if (
+    circle.strokeWidth !== undefined &&
+    isPointOnCircleBorder(clickPoint, circle.x, circle.y, circle.radius, circle.strokeWidth, canvasWidth, canvasHeight)
+  ) {
+    return { hit: true, object: obj, hitType: 'stroke' };
+  }
+  return { hit: true, object: obj, hitType: 'fill' };
+};
+
+/**
+ * Hit test handler for triangle shapes.
+ * Checks both fill area and stroke border, prioritizing stroke hits.
+ */
+const hitTestTriangle: HitTestHandler = (obj, ctx) => {
+  if (!('x1' in obj && 'y1' in obj && 'x2' in obj && 'y2' in obj && 'x3' in obj && 'y3' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const triangle = obj as { x1: number; y1: number; x2: number; y2: number; x3: number; y3: number; strokeWidth?: number };
+
+  if (!isPointInTriangle(clickPoint, triangle.x1, triangle.y1, triangle.x2, triangle.y2, triangle.x3, triangle.y3, canvasWidth, canvasHeight)) {
+    return null;
+  }
+
+  // Prioritize stroke hit over fill hit
+  if (
+    triangle.strokeWidth !== undefined &&
+    isPointOnTriangleBorder(clickPoint, triangle.x1, triangle.y1, triangle.x2, triangle.y2, triangle.x3, triangle.y3, triangle.strokeWidth, canvasWidth, canvasHeight)
+  ) {
+    return { hit: true, object: obj, hitType: 'stroke' };
+  }
+  return { hit: true, object: obj, hitType: 'fill' };
+};
+
+/**
+ * Hit test handler for polygon shapes (pentagon, hexagon).
+ * Only checks fill area as polygons don't have separate stroke detection.
+ */
+const hitTestPolygon: HitTestHandler = (obj, ctx) => {
+  if (!('x' in obj && 'y' in obj && 'radius' in obj && 'sides' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const polygon = obj as { x: number; y: number; radius: number; sides: number };
+
+  if (isPointInPolygon(clickPoint, polygon.x, polygon.y, polygon.radius, polygon.sides, canvasWidth, canvasHeight)) {
+    return { hit: true, object: obj, hitType: 'fill' };
+  }
+  return null;
+};
+
+/**
+ * Hit test handler for star shapes.
+ * Only checks fill area as stars don't have separate stroke detection.
+ */
+const hitTestStar: HitTestHandler = (obj, ctx) => {
+  if (!('x' in obj && 'y' in obj && 'radius' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const star = obj as { x: number; y: number; radius: number };
+
+  if (isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)) {
+    return { hit: true, object: obj, hitType: 'fill' };
+  }
+  return null;
+};
+
+/**
+ * Hit test handler for line shapes (solid and dotted lines).
+ * Uses line segment distance for hit detection.
+ */
+const hitTestLine: HitTestHandler = (obj, ctx) => {
+  if (!('x1' in obj && 'y1' in obj && 'x2' in obj && 'y2' in obj && 'strokeWidth' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const line = obj as { x1: number; y1: number; x2: number; y2: number; strokeWidth: number };
+
+  if (isPointOnLine(clickPoint, line.x1, line.y1, line.x2, line.y2, line.strokeWidth, canvasWidth, canvasHeight)) {
+    return { hit: true, object: obj, hitType: 'object' };
+  }
+  return null;
+};
+
+/**
+ * Hit test handler for text boxes.
+ * Uses rectangular bounds for hit detection.
+ */
+const hitTestText: HitTestHandler = (obj, ctx) => {
+  if (!('x' in obj && 'y' in obj && 'width' in obj && 'height' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const textBox = obj as { x: number; y: number; width: number; height: number };
+
+  if (isPointInTextBox(clickPoint, textBox.x, textBox.y, textBox.width, textBox.height, canvasWidth, canvasHeight)) {
+    return { hit: true, object: obj, hitType: 'object' };
+  }
+  return null;
+};
+
+/**
+ * Hit test handler for brush and eraser strokes.
+ * Checks each line segment in the stroke path.
+ */
+const hitTestBrushStroke: HitTestHandler = (obj, ctx) => {
+  if (!('points' in obj && 'lineWidth' in obj)) {
+    return null;
+  }
+
+  const { clickPoint, canvasWidth, canvasHeight } = ctx;
+  const stroke = obj as { points: { x: number; y: number }[]; lineWidth: number };
+
+  // Check each line segment in the brush stroke
+  for (let j = 0; j < stroke.points.length - 1; j++) {
+    const p1 = stroke.points[j];
+    const p2 = stroke.points[j + 1];
+    if (isPointOnLine(clickPoint, p1.x, p1.y, p2.x, p2.y, stroke.lineWidth, canvasWidth, canvasHeight)) {
+      return { hit: true, object: obj, hitType: 'object' };
+    }
+  }
+  return null;
+};
+
+// =============================================================================
+// HIT TEST HANDLER MAP
+// =============================================================================
+
+/**
+ * Map of tool types to their hit test handlers.
+ * Uses strategy pattern for cleaner, more maintainable hit detection logic.
+ */
+const hitTestHandlers: Record<string, HitTestHandler> = {
+  square: hitTestRectangle,
+  rectangle: hitTestRectangle,
+  circle: hitTestCircle,
+  triangle: hitTestTriangle,
+  pentagon: hitTestPolygon,
+  hexagon: hitTestPolygon,
+  star: hitTestStar,
+  line: hitTestLine,
+  dottedLine: hitTestLine,
+  arrow: hitTestLine,
+  text: hitTestText,
+  brush: hitTestBrushStroke,
+  eraser: hitTestBrushStroke,
+};
+
+// =============================================================================
+// MAIN HIT DETECTION
+// =============================================================================
+
 /**
  * Detects which canvas object (if any) was clicked at a given point.
  * Iterates through canvas objects in reverse order (top to bottom) to find
@@ -497,231 +714,18 @@ export const detectObjectHit = (
   canvasWidth: number,
   canvasHeight: number,
 ): HitResult => {
+  const ctx: HitTestContext = { clickPoint, canvasWidth, canvasHeight };
+
   // Iterate through objects in reverse order (top to bottom) to find topmost hit
   // Reverse iteration ensures the most recently drawn object (highest z-index) is checked first
   for (let i = objects.length - 1; i >= 0; i--) {
     const obj = objects[i];
+    const handler = hitTestHandlers[obj.tool];
 
-    if (obj.tool === 'square' || obj.tool === 'rectangle') {
-      const rect = obj;
-
-      if (
-        'x' in rect &&
-        'y' in rect &&
-        'width' in rect &&
-        'height' in rect &&
-        isPointInRectangle(
-          clickPoint,
-          rect.x,
-          rect.y,
-          rect.width,
-          rect.height,
-          canvasWidth,
-          canvasHeight,
-        )
-      ) {
-        // Prioritize stroke hit over fill hit (border detection takes precedence for user interaction)
-        if (
-          'strokeWidth' in rect &&
-          isPointOnRectangleBorder(
-            clickPoint,
-            rect.x,
-            rect.y,
-            rect.width,
-            rect.height,
-            rect.strokeWidth,
-            canvasWidth,
-            canvasHeight,
-          )
-        ) {
-          return { hit: true, object: obj, hitType: 'stroke' };
-        }
-        return { hit: true, object: obj, hitType: 'fill' };
-      }
-    } else if (obj.tool === 'circle') {
-      const circle = obj;
-
-      if (
-        'x' in circle &&
-        'y' in circle &&
-        'radius' in circle &&
-        isPointInCircle(clickPoint, circle.x, circle.y, circle.radius, canvasWidth, canvasHeight)
-      ) {
-        if (
-          'strokeWidth' in circle &&
-          isPointOnCircleBorder(
-            clickPoint,
-            circle.x,
-            circle.y,
-            circle.radius,
-            circle.strokeWidth,
-            canvasWidth,
-            canvasHeight,
-          )
-        ) {
-          return { hit: true, object: obj, hitType: 'stroke' };
-        }
-        return { hit: true, object: obj, hitType: 'fill' };
-      }
-    } else if (obj.tool === 'triangle') {
-      const triangle = obj;
-
-      if (
-        'x1' in triangle &&
-        'y1' in triangle &&
-        'x2' in triangle &&
-        'y2' in triangle &&
-        'x3' in triangle &&
-        'y3' in triangle &&
-        isPointInTriangle(
-          clickPoint,
-          triangle.x1,
-          triangle.y1,
-          triangle.x2,
-          triangle.y2,
-          triangle.x3,
-          triangle.y3,
-          canvasWidth,
-          canvasHeight,
-        )
-      ) {
-        if (
-          'strokeWidth' in triangle &&
-          isPointOnTriangleBorder(
-            clickPoint,
-            triangle.x1,
-            triangle.y1,
-            triangle.x2,
-            triangle.y2,
-            triangle.x3,
-            triangle.y3,
-            triangle.strokeWidth,
-            canvasWidth,
-            canvasHeight,
-          )
-        ) {
-          return { hit: true, object: obj, hitType: 'stroke' };
-        }
-        return { hit: true, object: obj, hitType: 'fill' };
-      }
-    } else if (obj.tool === 'pentagon' || obj.tool === 'hexagon') {
-      const polygon = obj;
-
-      if (
-        'x' in polygon &&
-        'y' in polygon &&
-        'radius' in polygon &&
-        'sides' in polygon &&
-        isPointInPolygon(
-          clickPoint,
-          polygon.x,
-          polygon.y,
-          polygon.radius,
-          polygon.sides,
-          canvasWidth,
-          canvasHeight,
-        )
-      ) {
-        return { hit: true, object: obj, hitType: 'fill' };
-      }
-    } else if (obj.tool === 'star') {
-      const star = obj;
-
-      if (
-        'x' in star &&
-        'y' in star &&
-        'radius' in star &&
-        isPointInStar(clickPoint, star.x, star.y, star.radius, canvasWidth, canvasHeight)
-      ) {
-        return { hit: true, object: obj, hitType: 'fill' };
-      }
-    } else if (obj.tool === 'line' || obj.tool === 'dottedLine') {
-      const line = obj;
-
-      if (
-        'x1' in line &&
-        'y1' in line &&
-        'x2' in line &&
-        'y2' in line &&
-        'strokeWidth' in line &&
-        isPointOnLine(
-          clickPoint,
-          line.x1,
-          line.y1,
-          line.x2,
-          line.y2,
-          line.strokeWidth,
-          canvasWidth,
-          canvasHeight,
-        )
-      ) {
-        return { hit: true, object: obj, hitType: 'object' };
-      }
-    } else if (obj.tool === 'arrow') {
-      const arrow = obj;
-
-      if (
-        'x1' in arrow &&
-        'y1' in arrow &&
-        'x2' in arrow &&
-        'y2' in arrow &&
-        'strokeWidth' in arrow &&
-        isPointOnLine(
-          clickPoint,
-          arrow.x1,
-          arrow.y1,
-          arrow.x2,
-          arrow.y2,
-          arrow.strokeWidth,
-          canvasWidth,
-          canvasHeight,
-        )
-      ) {
-        return { hit: true, object: obj, hitType: 'object' };
-      }
-    } else if (obj.tool === 'text') {
-      const textBox = obj;
-
-      if (
-        'x' in textBox &&
-        'y' in textBox &&
-        'width' in textBox &&
-        'height' in textBox &&
-        isPointInTextBox(
-          clickPoint,
-          textBox.x,
-          textBox.y,
-          textBox.width,
-          textBox.height,
-          canvasWidth,
-          canvasHeight,
-        )
-      ) {
-        return { hit: true, object: obj, hitType: 'object' };
-      }
-    } else if (obj.tool === 'brush' || obj.tool === 'eraser') {
-      if ('points' in obj && 'lineWidth' in obj) {
-        const line = obj as { points: { x: number; y: number }[]; lineWidth: number };
-
-        // Check each line segment in the brush stroke for hit detection (sequential segment checking)
-        for (let j = 0; j < line.points.length - 1; j++) {
-          const p1 = line.points[j];
-          const p2 = line.points[j + 1];
-          if (
-            isPointOnLine(
-              clickPoint,
-              p1.x,
-              p1.y,
-              p2.x,
-              p2.y,
-              line.lineWidth,
-              canvasWidth,
-              canvasHeight,
-            )
-          ) {
-            return { hit: true, object: obj, hitType: 'object' };
-          }
-        }
+    if (handler) {
+      const result = handler(obj, ctx);
+      if (result) {
+        return result;
       }
     }
   }

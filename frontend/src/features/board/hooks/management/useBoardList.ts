@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES, WEBSOCKET_TOPICS } from 'shared/constants';
 import { useContextMenu } from 'shared/hooks';
+import { ensureMinimumDelay } from 'shared/utils';
 import logger from 'shared/utils/logger';
 
 /**
@@ -71,7 +72,6 @@ export const useBoardList = () => {
     }
 
     const startTime = Date.now();
-    const minDelay = 200; // Minimum delay ensures smooth UI transitions and prevents jarring loading flashes
 
     BoardService.getBoards()
       .then((userBoards: Board[]) => {
@@ -82,12 +82,7 @@ export const useBoardList = () => {
         toast.error(t('board:errors.fetch'));
       })
       .finally(() => {
-        const elapsed = Date.now() - startTime;
-        const remainingDelay = Math.max(0, minDelay - elapsed);
-
-        setTimeout(() => {
-          setIsLoading(false);
-        }, remainingDelay);
+        ensureMinimumDelay(startTime, () => setIsLoading(false));
       });
   }, [boards.length, t]);
 

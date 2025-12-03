@@ -1,23 +1,29 @@
-import { useAuth } from 'features/auth/hooks';
 import * as userService from 'features/settings/services/userService';
 import type { DockAnchor } from 'features/settings/types/UserTypes';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import type { Tool } from 'shared/types/CommonTypes';
-import logger from 'shared/utils/logger';
+import {
+  usePreferencesService,
+  type PreferencesServiceAdapter,
+} from 'shared/hooks/usePreferencesService';
+
+// =============================================================================
+// TYPES
+// =============================================================================
 
 /**
  * Interface defining user tool preferences for drawing and canvas operations.
  */
 export interface ToolPreferences {
-  // Default drawing tool selection for new canvas sessions
+  /** Default drawing tool selection for new canvas sessions */
   defaultTool: Tool;
-  // Default stroke color in hex format for drawing operations
+  /** Default stroke color in hex format for drawing operations */
   defaultStrokeColor: string;
-  // Default stroke width in pixels for drawing tools
+  /** Default stroke width in pixels for drawing tools */
   defaultStrokeWidth: number;
-  // Dock anchor position for floating toolbar placement
+  /** Dock anchor position for floating toolbar placement */
   dockAnchor: DockAnchor;
-  // Whether the floating dock is minimized/collapsed
+  /** Whether the floating dock is minimized/collapsed */
   isDockMinimized: boolean;
 }
 
@@ -29,6 +35,24 @@ const defaultToolPreferences: ToolPreferences = {
   isDockMinimized: false,
 };
 
+// =============================================================================
+// SERVICE ADAPTER
+// =============================================================================
+
+const toolPreferencesAdapter: PreferencesServiceAdapter<ToolPreferences> = {
+  fetchPreferences: () => userService.getToolPreferences(),
+  updatePreferences: async (prefs) => {
+    // The API expects full preferences, so we need to merge with current
+    // This is handled by getting current and merging before sending
+    await userService.updateToolPreferences(prefs as ToolPreferences);
+  },
+  getDefaultPreferences: () => defaultToolPreferences,
+};
+
+// =============================================================================
+// HOOK
+// =============================================================================
+
 /**
  * Custom hook for managing user drawing tool preferences with optimistic updates and error handling.
  * Provides comprehensive tool preference management including default tool selection, stroke properties,
@@ -39,93 +63,57 @@ const defaultToolPreferences: ToolPreferences = {
  * @returns Object containing current tool preferences, loading states, and preference update functions
  */
 export const useToolPreferencesAPI = () => {
-  const [preferences, setPreferences] = useState<ToolPreferences>(defaultToolPreferences);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { token } = useAuth();
-  const isAuthenticated = !!token;
+  const {
+    preferences,
+    isLoading,
+    error,
+    refreshPreferences,
+    updatePreferences: updateToolPreferences,
+    updatePreferencesSilent,
+    resetError,
+    isAuthenticated,
+  } = usePreferencesService({
+    service: toolPreferencesAdapter,
+    serviceName: 'tool',
+    fetchErrorMessage: 'Failed to load tool preferences',
+    updateErrorMessage: 'Failed to save tool preferences',
+  });
 
-  // Memoize to prevent infinite loops when used in useEffect dependency array
-  const refreshPreferences = useCallback(async () => {
-    if (!isAuthenticated) {
-      return;
-    }
+  // Convenience methods for updating individual preferences
+  const updateTool = useCallback(
+    async (tool: Tool) => {
+      await updatePreferencesSilent({ defaultTool: tool });
+    },
+    [updatePreferencesSilent],
+  );
 
-    setIsLoading(true);
-    setError(null);
+  const updateStrokeColor = useCallback(
+    async (color: string) => {
+      await updatePreferencesSilent({ defaultStrokeColor: color });
+    },
+    [updatePreferencesSilent],
+  );
 
-    try {
-      const toolPrefs = await userService.getToolPreferences();
-      setPreferences(toolPrefs);
-    } catch (error) {
-      logger.error('Failed to load tool preferences:', error);
-      setError('Failed to load tool preferences');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated]);
+  const updateStrokeWidth = useCallback(
+    async (width: number) => {
+      await updatePreferencesSilent({ defaultStrokeWidth: width });
+    },
+    [updatePreferencesSilent],
+  );
 
-  const updatePreference = async <K extends keyof ToolPreferences>(
-    key: K,
-    value: ToolPreferences[K],
-  ) => {
-    if (!isAuthenticated) {
-      return;
-    }
+  const updateDockAnchor = useCallback(
+    async (anchor: DockAnchor) => {
+      await updatePreferencesSilent({ dockAnchor: anchor });
+    },
+    [updatePreferencesSilent],
+  );
 
-    // Store previous value for potential rollback
-    const previousValue = preferences[key];
-    setPreferences((prev) => ({ ...prev, [key]: value }));
-    setError(null);
-
-    try {
-      const updatedPrefs = { ...preferences, [key]: value };
-      await userService.updateToolPreferences(updatedPrefs);
-    } catch (error) {
-      logger.error(`Failed to update ${key}:`, error);
-      // Rollback to previous value on failure
-      setPreferences((prev) => ({ ...prev, [key]: previousValue }));
-      setError(`Failed to save ${key} preference`);
-      throw error;
-    }
-  };
-
-  const updateTool = (tool: Tool) => updatePreference('defaultTool', tool);
-  const updateStrokeColor = (color: string) => updatePreference('defaultStrokeColor', color);
-  const updateStrokeWidth = (width: number) => updatePreference('defaultStrokeWidth', width);
-  const updateDockAnchor = (anchor: DockAnchor) => updatePreference('dockAnchor', anchor);
-  const updateDockMinimized = (minimized: boolean) =>
-    updatePreference('isDockMinimized', minimized);
-
-  const updateToolPreferences = async (newPrefs: Partial<ToolPreferences>) => {
-    if (!isAuthenticated) {
-      return;
-    }
-
-    // Store current state for rollback capability
-    const oldPrefs = preferences;
-    setPreferences((prev) => ({ ...prev, ...newPrefs }));
-    setError(null);
-
-    try {
-      const updatedPrefs = { ...preferences, ...newPrefs };
-      await userService.updateToolPreferences(updatedPrefs);
-    } catch (error) {
-      logger.error('Failed to save tool preferences:', error);
-      // Restore previous state on failure
-      setPreferences(oldPrefs);
-      setError('Failed to save tool preferences');
-      throw error;
-    }
-  };
-
-  const resetError = () => setError(null);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      void refreshPreferences();
-    }
-  }, [isAuthenticated, refreshPreferences]);
+  const updateDockMinimized = useCallback(
+    async (minimized: boolean) => {
+      await updatePreferencesSilent({ isDockMinimized: minimized });
+    },
+    [updatePreferencesSilent],
+  );
 
   return {
     preferences,
@@ -139,5 +127,6 @@ export const useToolPreferencesAPI = () => {
     updateToolPreferences,
     refreshPreferences,
     resetError,
+    isAuthenticated,
   };
 };

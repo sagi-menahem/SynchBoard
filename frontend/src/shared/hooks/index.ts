@@ -8,4 +8,13 @@ export {
   useIsTablet,
   useMediaQuery,
 } from './useMediaQuery';
+export { useModalState } from './useModalState';
+export { usePreferencesService } from './usePreferencesService';
 export type { DeviceType } from './useMediaQuery';
+export type { UseModalStateReturn } from './useModalState';
+export type {
+  PreferencesServiceAdapter,
+  PreferencesState,
+  UsePreferencesServiceOptions,
+  UsePreferencesServiceResult,
+} from './usePreferencesService';

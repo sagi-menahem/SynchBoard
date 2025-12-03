@@ -1,6 +1,7 @@
 import { STROKE_WIDTH_RANGE } from 'features/board/constants/BoardConstants';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Slider } from 'shared/ui/components/forms/Slider';
 
 import styles from './satellites.module.scss';
@@ -18,6 +19,7 @@ import styles from './satellites.module.scss';
  * Phase 3A Implementation - First satellite component
  */
 export const StrokeWidthSatellite: React.FC = () => {
+  const { t } = useTranslation(['board', 'common']);
   const { preferences, updateStrokeWidth } = useToolPreferences();
 
   const handleWidthChange = useCallback(
@@ -34,7 +36,7 @@ export const StrokeWidthSatellite: React.FC = () => {
 
   return (
     <div className={styles.satelliteContent}>
-      <div className={styles.satelliteHeader}>Stroke Width</div>
+      <div className={styles.satelliteHeader}>{t('board:toolbar.tool.strokeWidth')}</div>
 
       {/* Slider Control */}
       <Slider
@@ -43,7 +45,7 @@ export const StrokeWidthSatellite: React.FC = () => {
         min={STROKE_WIDTH_RANGE.MIN}
         max={STROKE_WIDTH_RANGE.MAX}
         step={1}
-        aria-label="Stroke width"
+        aria-label={t('common:accessibility.strokeWidth')}
         className={styles.centeredSlider}
       />
     </div>

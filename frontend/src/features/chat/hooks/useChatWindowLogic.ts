@@ -84,10 +84,6 @@ export const useChatWindowLogic = ({
     [],
   );
 
-  // Memoized to provide stable function reference for pending timer operations
-  // Prevents unnecessary re-renders when managing transaction timeout handlers
-  const startPendingTimer = useCallback((_transactionId: string) => {}, []);
-
   // Memoized to prevent unnecessary re-renders when scrolling chat to bottom
   // Avoids creating new function references that could trigger effect dependencies
   // On mobile, use instant scroll to prevent layout jumps with keyboard
@@ -135,14 +131,7 @@ export const useChatWindowLogic = ({
       userProfilePictureUrl: undefined,
     };
 
-    return await sendMessage(
-      content,
-      boardId,
-      userEmail,
-      userInfo,
-      addOptimisticMessage,
-      startPendingTimer,
-    );
+    return await sendMessage(content, boardId, userEmail, userInfo, addOptimisticMessage);
   };
 
   // Memoized to avoid recalculating enhanced messages when pending states haven't changed

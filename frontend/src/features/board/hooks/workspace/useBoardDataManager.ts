@@ -6,6 +6,7 @@ import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { ensureMinimumDelay } from 'shared/utils';
 import logger from 'shared/utils/logger';
 
 /**
@@ -30,9 +31,7 @@ export const useBoardDataManager = (boardId: number) => {
 
   const fetchInitialData = useCallback(() => {
     setIsLoading(true);
-
     const startTime = Date.now();
-    const minDelay = 200; // Minimum loading delay ensures smooth UI transition and prevents jarring flashes
 
     Promise.all([
       boardService.getBoardDetails(boardId),
@@ -57,12 +56,7 @@ export const useBoardDataManager = (boardId: number) => {
         }
       })
       .finally(() => {
-        const elapsed = Date.now() - startTime;
-        const remainingDelay = Math.max(0, minDelay - elapsed);
-
-        setTimeout(() => {
-          setIsLoading(false);
-        }, remainingDelay);
+        ensureMinimumDelay(startTime, () => setIsLoading(false));
       });
   }, [boardId, t]);
 

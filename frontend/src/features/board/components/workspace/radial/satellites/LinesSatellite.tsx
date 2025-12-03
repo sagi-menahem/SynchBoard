@@ -2,6 +2,7 @@ import { TOOLS } from 'features/board/constants/BoardConstants';
 import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { ArrowRight, Minus, MoreHorizontal } from 'lucide-react';
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import styles from './satellites.module.scss';
@@ -19,14 +20,15 @@ interface LinesSatelliteProps {
  */
 interface LineTool {
   tool: string;
-  label: string;
+  /** i18n key under 'board:toolbar.tool' namespace */
+  labelKey: string;
   icon: React.ReactNode;
 }
 
 const LINE_TOOLS: LineTool[] = [
-  { tool: TOOLS.LINE, label: 'Line', icon: <Minus size={24} /> },
-  { tool: TOOLS.ARROW, label: 'Arrow', icon: <ArrowRight size={24} /> },
-  { tool: TOOLS.DOTTED_LINE, label: 'Dotted Line', icon: <MoreHorizontal size={24} /> },
+  { tool: TOOLS.LINE, labelKey: 'line', icon: <Minus size={24} /> },
+  { tool: TOOLS.ARROW, labelKey: 'arrow', icon: <ArrowRight size={24} /> },
+  { tool: TOOLS.DOTTED_LINE, labelKey: 'dottedLine', icon: <MoreHorizontal size={24} /> },
 ];
 
 /**
@@ -42,6 +44,7 @@ const LINE_TOOLS: LineTool[] = [
  * Phase 3C Implementation
  */
 export const LinesSatellite: React.FC<LinesSatelliteProps> = ({ onClose }) => {
+  const { t } = useTranslation(['board']);
   const { preferences, updateTool } = useToolPreferences();
 
   const handleLineSelect = useCallback(
@@ -60,18 +63,19 @@ export const LinesSatellite: React.FC<LinesSatelliteProps> = ({ onClose }) => {
 
   return (
     <div className={styles.satelliteContent}>
-      <div className={styles.satelliteHeader}>Lines</div>
+      <div className={styles.satelliteHeader}>{t('board:toolbar.tool.lines')}</div>
 
       <div className={styles.lineGrid}>
         {LINE_TOOLS.map((lineTool) => {
           const isActive = preferences.defaultTool === lineTool.tool;
+          const label = t(`board:toolbar.tool.${lineTool.labelKey}`);
           return (
             <button
               key={lineTool.tool}
               className={`${styles.lineButton} ${isActive ? styles.active : ''}`}
               onClick={() => handleLineSelect(lineTool.tool)}
-              title={lineTool.label}
-              aria-label={lineTool.label}
+              title={label}
+              aria-label={label}
               aria-pressed={isActive}
             >
               {lineTool.icon}

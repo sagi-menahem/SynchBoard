@@ -225,7 +225,12 @@
     "resizePanels": "שנה גודל פאנלים",
     "sizeSlider": "גודל: {{size}}",
     "userAvatar": "תמונה עבור {{email}}",
-    "memberAvatar": "תמונת חבר עבור {{email}}"
+    "memberAvatar": "תמונת חבר עבור {{email}}",
+    "openCalendar": "פתח לוח שנה",
+    "strokeWidth": "עובי קו"
+  },
+  "datePicker": {
+    "placeholder": "DD/MM/YYYY"
   },
   "dates": {
     "invalidDate": "תאריך לא תקין",
