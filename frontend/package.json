@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "kill-port 5173 && vite",
-    "kill-port": "kill-port 8080",
+    "kill-port": "kill-port 5173",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

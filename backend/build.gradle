@@ -1,7 +1,17 @@
+/**
+ * SynchBoard Backend - Gradle Build Configuration
+ *
+ * This file configures the Spring Boot backend application build process,
+ * including plugins, dependencies, and Java toolchain settings.
+ *
+ * @author Sagi Menahem
+ */
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.5'
 	id 'io.spring.dependency-management' version '1.1.7'
+	// Dependency version checker - run: ./gradlew dependencyUpdates
 	id 'com.github.ben-manes.versions' version '0.51.0'
 }
 
@@ -25,43 +35,86 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-activemq'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'io.projectreactor.netty:reactor-netty'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	// ==========================================================================
+	// Spring Boot Starters
+	// ==========================================================================
+	// ActiveMQ Artemis integration for STOMP message broker relay
+	implementation 'org.springframework.boot:spring-boot-starter-activemq'
+	// JPA/Hibernate for database access with PostgreSQL
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Bean validation (Jakarta Validation API)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// REST API support with embedded Tomcat
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// WebSocket/STOMP support for real-time communication
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	// Spring Security for authentication and authorization
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// OAuth2 client for Google login integration
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	// Health checks and monitoring endpoints
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// Thymeleaf templating engine for email templates
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-    // Environment variables support (.env file loading)
-    implementation 'io.github.cdimascio:dotenv-java:3.2.0'
+	// ==========================================================================
+	// Networking & Reactive Support
+	// ==========================================================================
+	// Reactor Netty for non-blocking I/O (required by WebSocket relay)
+	implementation 'io.projectreactor.netty:reactor-netty'
 
-    implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+	// ==========================================================================
+	// Configuration & Tooling
+	// ==========================================================================
+	// Generates metadata for application.properties IDE autocompletion
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	// Environment variables support (.env file loading)
+	implementation 'io.github.cdimascio:dotenv-java:3.2.0'
 
-    // SendGrid for email
-    implementation 'com.sendgrid:sendgrid-java:4.10.3'
+	// ==========================================================================
+	// JWT Authentication
+	// ==========================================================================
+	// JJWT library for creating and validating JSON Web Tokens
+	implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 
-    // Google API Client for ID Token verification (Google One Tap)
-    implementation 'com.google.api-client:google-api-client:2.7.2'
-    
-    // Thymeleaf for email templates
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// ==========================================================================
+	// Email Services
+	// ==========================================================================
+	// SendGrid SDK for sending verification and password reset emails
+	implementation 'com.sendgrid:sendgrid-java:4.10.3'
 
-    // OpenAPI/Swagger documentation
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	// ==========================================================================
+	// OAuth2 & External Authentication
+	// ==========================================================================
+	// Google API Client for verifying Google One Tap ID tokens
+	implementation 'com.google.api-client:google-api-client:2.7.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.42'
-    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+	// ==========================================================================
+	// API Documentation
+	// ==========================================================================
+	// SpringDoc OpenAPI for Swagger UI at /swagger-ui.html
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	// ==========================================================================
+	// Code Generation & Boilerplate Reduction
+	// ==========================================================================
+	// Lombok for @Slf4j, @RequiredArgsConstructor, @Builder, @Data, etc.
+	compileOnly 'org.projectlombok:lombok:1.18.42'
+	annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
-    runtimeOnly 'org.postgresql:postgresql:42.7.8'
+	// ==========================================================================
+	// Development Tools
+	// ==========================================================================
+	// Hot reload and automatic restart during development
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+	// ==========================================================================
+	// Database Driver
+	// ==========================================================================
+	// PostgreSQL JDBC driver
+	runtimeOnly 'org.postgresql:postgresql:42.7.8'
 }
 
 // Configure bootRun to suppress Java 24 deprecation warnings

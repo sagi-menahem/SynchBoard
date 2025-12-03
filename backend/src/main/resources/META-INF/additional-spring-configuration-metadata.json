@@ -71,18 +71,6 @@
       "type": "java.lang.Integer",
       "description": "Minutes until password reset code expires",
       "defaultValue": 60
-    },
-    {
-      "name": "email.verification.expiry-minutes",
-      "type": "java.lang.Integer",
-      "description": "Minutes until email verification code expires (for templates)",
-      "defaultValue": 15
-    },
-    {
-      "name": "email.password-reset.expiry-hours",
-      "type": "java.lang.Integer",
-      "description": "Hours until password reset code expires (for templates)",
-      "defaultValue": 1
     }
   ]
 }

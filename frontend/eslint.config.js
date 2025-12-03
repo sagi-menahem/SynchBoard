@@ -1,3 +1,19 @@
+/**
+ * @fileoverview ESLint flat configuration for SynchBoard frontend.
+ *
+ * Configures linting rules for TypeScript, React 19, and accessibility.
+ * Uses ESLint flat config format (eslint.config.js) with the following plugins:
+ * - @typescript-eslint: TypeScript-specific linting rules
+ * - react & react-hooks: React best practices and hooks rules
+ * - jsx-a11y: Accessibility checks for JSX elements
+ * - import: Import/export syntax validation and ordering
+ * - prettier: Disables formatting rules handled by Prettier
+ *
+ * Run with: npm run lint (check) or npm run lint:fix (auto-fix)
+ *
+ * @author Sagi Menahem
+ */
+
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
