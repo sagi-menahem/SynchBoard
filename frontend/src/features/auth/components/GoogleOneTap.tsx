@@ -9,7 +9,7 @@ import logger from 'shared/utils/logger';
 
 import { useAuth } from '../hooks';
 import * as authService from '../services/authService';
-import type { CredentialResponse } from '../types/google';
+import type { CredentialResponse } from '../types/google.d';
 
 /**
  * Module-level flag to track if Google One Tap has been initialized.
@@ -85,6 +85,8 @@ const GoogleOneTap: React.FC = () => {
           use_fedcm_for_prompt: true,
         });
 
+        // With FedCM enabled, we don't use the moment notification callback
+        // as it triggers deprecation warnings and FedCM handles UI state internally
         window.google.accounts.id.prompt();
         logger.info('[GoogleOneTap] One Tap initialized and prompt displayed');
         return true;
