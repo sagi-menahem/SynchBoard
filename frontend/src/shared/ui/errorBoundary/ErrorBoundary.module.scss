@@ -17,8 +17,8 @@
 
 // Error information card with responsive design and backdrop blur
 .errorCard {
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: theme.$border-radius-xl;
   padding: theme.$spacing-10;
   max-width: 640px;

@@ -122,7 +122,7 @@
   align-items: stretch;
   justify-content: stretch;
   padding: 0;
-  background: var(--glass-background);
+  @include theme.glass-background(false);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -131,8 +131,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--glass-background);
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background(false);
+  @include theme.glass-border;
   border-radius: theme.$card-border-radius;
   box-shadow: theme.$shadow-lg;
   box-sizing: border-box;
@@ -169,7 +169,7 @@
   gap: theme.$spacing-1;
   margin-top: theme.$spacing-2;
   padding-top: theme.$spacing-2;
-  border-top: 1px solid var(--glass-border);
+  @include theme.glass-border-top;
 }
 
 .toggleText {
@@ -300,12 +300,12 @@
   }
 
   .formSection {
-    background: var(--glass-background);
+    @include theme.glass-background(false);
   }
 
   .authCard {
-    background: var(--glass-background);
-    border: 1px solid var(--glass-border);
+    @include theme.glass-background(false);
+    @include theme.glass-border;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   }
 
@@ -318,6 +318,6 @@
   }
 
   .authActions {
-    border-top: 1px solid var(--glass-border);
+    @include theme.glass-border-top;
   }
 }

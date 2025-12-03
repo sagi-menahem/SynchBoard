@@ -182,10 +182,10 @@ $border-radius-mobile: 20px;
     flex-shrink: 0; // Don't shrink
 
     // Match toolbar background exactly - must override glass-panel mixin
-    background: var(--user-chosen-color, var(--glass-background));
+    @include theme.glass-background;
 
     // Top border wrapping around the tab - left, top, right (no bottom)
-    border: 1px solid var(--glass-border);
+    @include theme.glass-border;
     border-bottom: none; // No bottom border - connects to toolbar
 
     // Subtle inset shadow at top for depth
@@ -286,7 +286,7 @@ $border-radius-mobile: 20px;
 
     // Override glass-panel opacity to make it fully opaque on mobile
     opacity: 1;
-    background: var(--user-chosen-color, var(--glass-background));
+    @include theme.glass-background;
 
     box-shadow: none; // No shadow - container handles the shadow
   }

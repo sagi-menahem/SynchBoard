@@ -2,9 +2,9 @@
 
 // Section card skeleton container
 .sectionCardSkeleton {
-  background: var(--user-chosen-color, var(--glass-background));
+  @include theme.glass-background;
   opacity: 0.98;
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$card-border-radius;
   overflow: hidden;
   width: 100%;

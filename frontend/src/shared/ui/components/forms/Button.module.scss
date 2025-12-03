@@ -80,7 +80,7 @@
 .icon {
   @include theme.interactive-button;
   background: var(--icon-btn-bg);
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   color: var(--btn-icon-text);
   cursor: pointer;
   padding: theme.$spacing-2;
@@ -187,7 +187,7 @@
 .secondary-glass {
   background: rgba(120, 120, 128, 0.12);
   color: var(--color-text-primary);
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   font-weight: theme.$font-weight-medium;
   box-shadow: theme.$shadow-sm;
 

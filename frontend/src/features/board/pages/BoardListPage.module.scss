@@ -50,7 +50,7 @@
   z-index: theme.$z-index-fixed-secondary;
   background: var(--user-chosen-color, rgba(255, 255, 255, 0.85));
   opacity: 0.99;
-  border-bottom: 1px solid var(--glass-border);
+  @include theme.glass-border-bottom;
   padding: theme.$spacing-3 theme.$spacing-4;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
@@ -84,8 +84,8 @@
   max-width: 420px;
   position: relative;
   cursor: pointer;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: 12px;
   box-shadow: theme.$shadow-card;
   @include theme.smooth-transition;

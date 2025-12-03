@@ -4,22 +4,80 @@
 // Mixins for glass-style UI components.
 // CSS variables --glass-background and --glass-border are defined in index.scss
 // for proper theme support (light/dark mode).
+//
+// Usage Guidelines:
+// - Use `glass-surface` for basic glass background + border (most common)
+// - Use `glass-panel` when you also need shadow and optional opacity
+// - Use `glass-border` for just the border styling
+// - Use `glass-background` for just the background (no border)
 // =============================================================================
 
 @use 'design-tokens' as theme;
 
-// Glass Panel Mixin
-// Creates a glass-style panel using user's Board Appearance color or theme default
-// @param $opacity - Optional opacity override (default: 1)
-@mixin glass-panel($opacity: 1) {
-  background: var(--user-chosen-color, var(--glass-background));
-  opacity: $opacity;
-  border: 1px solid var(--glass-border);
-  box-shadow: theme.$shadow-sm;
+// -----------------------------------------------------------------------------
+// CORE GLASS MIXINS
+// -----------------------------------------------------------------------------
+
+/// Glass Surface Mixin (Recommended for most components)
+/// Applies glass background and border without shadow
+/// @param {Boolean} $use-user-color - Whether to use user's chosen color as fallback (default: true)
+@mixin glass-surface($use-user-color: true) {
+  @if $use-user-color {
+    background: var(--user-chosen-color, var(--glass-background));
+  } @else {
+    background: var(--glass-background);
+  }
+  border: theme.$border-width solid var(--glass-border);
 }
 
-// Pill Shape Mixin
-// Creates a fully rounded pill/capsule shape
+/// Glass Panel Mixin (For elevated components)
+/// Creates a glass-style panel with shadow
+/// @param {Boolean} $use-user-color - Whether to use user's chosen color (default: true)
+/// @param {Boolean} $include-shadow - Whether to include box-shadow (default: true)
+@mixin glass-panel($use-user-color: true, $include-shadow: true) {
+  @include glass-surface($use-user-color);
+  @if $include-shadow {
+    box-shadow: theme.$shadow-sm;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// INDIVIDUAL GLASS PROPERTIES
+// -----------------------------------------------------------------------------
+
+/// Glass Background Only
+/// Use when you only need the background without border
+/// @param {Boolean} $use-user-color - Whether to use user's chosen color (default: true)
+@mixin glass-background($use-user-color: true) {
+  @if $use-user-color {
+    background: var(--user-chosen-color, var(--glass-background));
+  } @else {
+    background: var(--glass-background);
+  }
+}
+
+/// Glass Border Only
+/// Use when you only need the border (e.g., for dividers)
+@mixin glass-border {
+  border: theme.$border-width solid var(--glass-border);
+}
+
+/// Glass Border Bottom (for headers/dividers)
+@mixin glass-border-bottom {
+  border-bottom: theme.$border-width solid var(--glass-border);
+}
+
+/// Glass Border Top (for footers/dividers)
+@mixin glass-border-top {
+  border-top: theme.$border-width solid var(--glass-border);
+}
+
+// -----------------------------------------------------------------------------
+// UTILITY MIXINS
+// -----------------------------------------------------------------------------
+
+/// Pill Shape Mixin
+/// Creates a fully rounded pill/capsule shape
 @mixin pill-shape {
   border-radius: theme.$border-radius-pill;
 }

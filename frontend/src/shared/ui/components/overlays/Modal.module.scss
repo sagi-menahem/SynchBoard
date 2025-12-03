@@ -51,8 +51,8 @@
   @include theme.rounded-medium;
   @include theme.shadow-heavy;
   @include theme.theme-scrollbar;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   min-width: theme.$modal-min-width;
   max-width: theme.$modal-max-width;
   max-height: 90vh;
@@ -75,7 +75,7 @@
   top: theme.$spacing-5;
   inset-inline-end: theme.$spacing-2;
   z-index: theme.$z-index-elevated;
-  background: var(--user-chosen-color, var(--glass-background));
+  @include theme.glass-background;
   border: theme.$border-width solid theme.$border-strong;
   border-radius: theme.$border-radius-sm;
   padding: theme.$spacing-2;

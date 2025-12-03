@@ -35,7 +35,7 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--user-chosen-color, var(--glass-background));
+    @include theme.glass-background;
     border: 1px solid rgba(120, 120, 128, 0.3);
     @include theme.rounded-medium;
   }
@@ -55,7 +55,7 @@
   }
 
   &::-webkit-scrollbar-corner {
-    background: var(--user-chosen-color, var(--glass-background));
+    @include theme.glass-background;
   }
 }
 

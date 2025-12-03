@@ -120,8 +120,8 @@
 }
 
 .quickSettingsContent {
-  background: var(--user-chosen-color, var(--glass-background));
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   @include theme.rounded-large;
   @include theme.theme-scrollbar;
   padding: theme.$spacing-8;
@@ -139,7 +139,7 @@
   top: theme.$spacing-4;
   inset-inline-end: theme.$spacing-4;
   background: var(--color-surface-hover);
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   color: var(--color-text-secondary);
   width: 32px;
   height: 32px;

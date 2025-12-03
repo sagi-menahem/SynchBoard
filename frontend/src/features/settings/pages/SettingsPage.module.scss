@@ -193,7 +193,7 @@
 .dateInput {
   @include theme.input-base;
   background-color: transparent;
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   color: var(--color-text-primary);
   font-size: theme.$font-size-base;
   margin-top: theme.$spacing-1;

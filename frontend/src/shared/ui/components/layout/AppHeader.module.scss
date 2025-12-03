@@ -9,8 +9,8 @@
   min-height: theme.$header-height;
   padding-inline: theme.$spacing-4;
   // Solid background using user's chosen color or glass background
-  background: var(--user-chosen-color, var(--glass-background));
-  border-bottom: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border-bottom;
   // Use sticky positioning (acts as relative for child absolute positioning)
   position: sticky;
   top: 0;
@@ -36,7 +36,7 @@
 
 // Variant: Elevated (more prominent)
 .elevated {
-  background: var(--user-chosen-color, var(--glass-background));
+  @include theme.glass-background;
   box-shadow: theme.$shadow-sm;
 }
 

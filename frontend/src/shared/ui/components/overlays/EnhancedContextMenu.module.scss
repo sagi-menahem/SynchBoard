@@ -6,8 +6,8 @@
 .menu {
   position: fixed;
   z-index: theme.$z-index-popover;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: theme.$card-border-radius;
   @include theme.shadow-heavy;
   padding: theme.$spacing-1-5;

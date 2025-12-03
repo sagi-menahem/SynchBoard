@@ -62,7 +62,7 @@
 // Text overlay on divider line
 .dividerText {
   position: relative;
-  background: var(--glass-background);
+  @include theme.glass-background(false);
   padding: 0 theme.$spacing-4;
   color: theme.$text-disabled;
   font-size: 0.875rem;
@@ -87,7 +87,7 @@
   gap: theme.$spacing-2;
   padding: theme.$spacing-2 theme.$spacing-3;
   border-radius: 6px;
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   background: rgba(120, 120, 128, 0.08);
   margin: theme.$spacing-2 0;
 

@@ -47,7 +47,7 @@
 // Background track styling - Thinner with glass effect
 .sliderTrack {
   background-color: var(--glass-background);
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   position: relative;
   flex-grow: 1;
   height: 4px; // Thinner track (Apple style)
@@ -71,7 +71,7 @@
   width: 20px; // Larger thumb
   height: 20px;
   background-color: var(--glass-background);
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: 50%;
   box-shadow: 0 2px 4px var(--color-overlay-light); // Drop shadow
   cursor: pointer;

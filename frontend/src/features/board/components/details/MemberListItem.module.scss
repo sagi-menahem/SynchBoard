@@ -1,8 +1,8 @@
 @use '@/styles' as theme;
 
 .memberItem {
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   padding: theme.$spacing-3 theme.$spacing-4;
   margin-bottom: 0.75rem;

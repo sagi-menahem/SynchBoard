@@ -150,7 +150,7 @@
   padding: theme.$spacing-1-5 theme.$spacing-2;
   margin-top: theme.$spacing-1;
   background: var(--icon-btn-bg);
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all theme.$transition-normal ease;
@@ -279,7 +279,7 @@
   align-items: center;
   justify-content: center;
   background: var(--icon-btn-bg);
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all theme.$transition-normal ease;
@@ -328,7 +328,7 @@
   align-items: center;
   justify-content: center;
   background: var(--icon-btn-bg);
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all theme.$transition-normal ease;

@@ -90,8 +90,8 @@
   z-index: theme.$z-index-popover;
 
   // Glass panel styling
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: theme.$border-radius-xl;
   box-shadow: theme.$shadow-lg;
   padding: theme.$spacing-3;
@@ -163,7 +163,7 @@
   width: 28px;
   height: 28px;
   background: transparent;
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   color: var(--color-text-secondary);
@@ -193,7 +193,7 @@
 .dropdown {
   appearance: none;
   background-color: transparent;
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   padding: theme.$spacing-1 theme.$spacing-3;
   padding-inline-end: theme.$spacing-6;
@@ -232,7 +232,7 @@
 
   // Style the dropdown options
   option {
-    background: var(--glass-background);
+    @include theme.glass-background(false);
     color: var(--color-text-primary);
   }
 }
@@ -351,7 +351,7 @@
   }
 
   .popover {
-    background: var(--user-chosen-color, var(--glass-background));
+    @include theme.glass-background;
   }
 }
 
@@ -368,7 +368,7 @@
 
   .popover {
     // Auth pages don't have user-chosen color, use standard glass background
-    background: var(--glass-background);
+    @include theme.glass-background(false);
   }
 }
 

@@ -17,7 +17,7 @@
   @include theme.flex-center;
   background: var(--user-chosen-color, rgba(255, 255, 255, 0.15));
   opacity: 0.99;
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   @include theme.rounded-medium;
   padding: theme.$spacing-1-5 theme.$spacing-3;
   gap: theme.$spacing-2;

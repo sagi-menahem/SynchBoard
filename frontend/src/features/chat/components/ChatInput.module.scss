@@ -12,8 +12,8 @@
   display: flex;
   align-items: center;
   // Solid glass design - no transparency
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: 24px;
   padding: theme.$spacing-2 theme.$spacing-4;
   width: 100%;
@@ -94,8 +94,8 @@
   padding: 10px;
   transition: all theme.$transition-normal ease-in-out;
   // Solid glass design - no transparency
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   cursor: not-allowed;
   color: var(--color-text-secondary);
 

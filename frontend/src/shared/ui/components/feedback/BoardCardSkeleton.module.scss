@@ -6,8 +6,8 @@
   flex-direction: column;
   padding: 0;
   border-radius: 8px;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   box-shadow: theme.$shadow-card;
   overflow: hidden;
 }
@@ -35,7 +35,7 @@
   padding: 8px 10px;
   gap: 6px;
   align-items: center;
-  border-top: 1px solid var(--glass-border);
+  @include theme.glass-border-top;
 }
 
 .gridTitle {
@@ -73,8 +73,8 @@
   padding: 10px 14px;
   border-radius: 8px;
   min-height: 56px;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   box-shadow: theme.$shadow-card;
 }
 

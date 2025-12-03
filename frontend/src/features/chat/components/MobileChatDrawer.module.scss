@@ -30,8 +30,8 @@
   max-height: 90dvh;
 
   // Glass design - solid background using user's chosen color
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-bottom: none; // No bottom border at screen edge
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -72,7 +72,7 @@
   padding: 0 16px 12px;
   margin: 0;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--glass-border);
+  @include theme.glass-border-bottom;
 }
 
 // Chat content container - fills remaining space

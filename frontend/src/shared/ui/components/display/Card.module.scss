@@ -32,9 +32,9 @@
 
 // Empty state card with solid background (no transparency)
 .empty-state {
-  background: var(--user-chosen-color, var(--glass-background));
+  @include theme.glass-background;
   opacity: 1;
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   box-shadow: theme.$shadow-card;
 
   // Override general hoverable styles - keep background color and use scale instead of color change
@@ -47,9 +47,9 @@
 
 // Glass morphism card with user-chosen color and transparency
 .glass {
-  background: var(--user-chosen-color, var(--glass-background));
+  @include theme.glass-background;
   opacity: 0.98;
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   box-shadow: theme.$shadow-card;
   border-radius: theme.$card-border-radius;
   padding: theme.$card-padding;

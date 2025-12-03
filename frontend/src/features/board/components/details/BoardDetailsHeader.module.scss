@@ -1,8 +1,8 @@
 @use '@/styles' as theme;
 
 .section {
-  background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   @include theme.rounded-medium;
   padding: theme.$spacing-6;
   margin-bottom: 2rem;
@@ -89,7 +89,7 @@
   width: 100%;
   padding: theme.$spacing-3;
   background-color: var(--user-chosen-color);
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   @include theme.rounded-small;
   color: theme.$text-primary;
   font-size: theme.$font-size-base;
@@ -121,7 +121,7 @@
 .emptyDescription {
   padding: theme.$spacing-6;
   background-color: var(--user-chosen-color);
-  border: 1px solid var(--glass-border);
+  @include theme.glass-border;
   border-radius: theme.$border-radius-md;
   margin: theme.$spacing-2 0;
   @include theme.smooth-transition;

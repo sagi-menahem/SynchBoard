@@ -9,8 +9,8 @@
   z-index: theme.$z-index-banner;
   @include theme.flex-center;
   padding: theme.$spacing-3 theme.$spacing-4;
-  background: var(--user-chosen-color, var(--glass-background));
-  border-bottom: 1px solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border-bottom;
   @include theme.smooth-transition;
 }
 

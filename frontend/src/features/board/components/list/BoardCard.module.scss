@@ -36,8 +36,8 @@
   @include theme.flex-column;
   padding: 0;
   border-radius: theme.$border-radius-lg;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   box-shadow: theme.$shadow-card;
 }
 
@@ -122,7 +122,7 @@
   width: theme.$spacing-1-5;
   height: theme.$spacing-1-5;
   border-radius: theme.$border-radius-full;
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   flex-shrink: 0;
 }
 
@@ -148,8 +148,8 @@
   padding: theme.$spacing-2-5 theme.$spacing-3;
   border-radius: theme.$border-radius-lg;
   min-height: 56px;
-  background: var(--user-chosen-color, var(--glass-background));
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   box-shadow: theme.$shadow-card;
 }
 
@@ -225,7 +225,7 @@
   width: theme.$spacing-2;
   height: theme.$spacing-2;
   border-radius: theme.$border-radius-full;
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-border;
   flex-shrink: 0;
 }
 

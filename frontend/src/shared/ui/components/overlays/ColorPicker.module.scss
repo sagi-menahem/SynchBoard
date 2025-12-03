@@ -94,8 +94,8 @@
   pointer-events: auto;
 
   // Use user-chosen color for settings pages, fallback to glass-background
-  background: var(--user-chosen-color, var(--glass-background));
-  border: theme.$border-width solid var(--glass-border);
+  @include theme.glass-background;
+  @include theme.glass-border;
   border-radius: theme.$border-radius-xl;
   box-shadow: theme.$shadow-lg;
   padding: theme.$spacing-4;
