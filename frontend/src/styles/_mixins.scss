@@ -95,6 +95,40 @@
 }
 
 /**
+ * Resets button styling to transparent/minimal appearance.
+ * Use !important to override Button component base styles when needed.
+ * This mixin is for buttons that need to appear invisible or minimal
+ * (e.g., icon buttons inside search bars, color swatches, floating action buttons).
+ *
+ * @param {boolean} $use-important - Whether to use !important (default: true)
+ *        Set to false if not overriding Button component styles
+ * @example
+ *   .clear-button {
+ *     @include button-reset;
+ *   }
+ *   .simple-icon {
+ *     @include button-reset($use-important: false);
+ *   }
+ */
+@mixin button-reset($use-important: true) {
+  @if $use-important {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width: unset !important;
+    min-height: unset !important;
+    padding: 0 !important;
+  } @else {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    min-width: unset;
+    min-height: unset;
+    padding: 0;
+  }
+}
+
+/**
  * Adds subtle lift animation on hover for enhanced button interactivity.
  * @example
  *   .primary-button {

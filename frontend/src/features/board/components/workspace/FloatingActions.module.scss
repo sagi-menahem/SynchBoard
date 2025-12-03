@@ -81,12 +81,12 @@
 // These buttons require a minimal, transparent appearance that differs significantly
 // from standard buttons, and the Button component's base styles would otherwise win.
 .actionButton {
+  // Reset button to transparent base
+  @include theme.button-reset;
   min-width: 32px !important;
   min-height: 32px !important;
   padding: theme.$spacing-1-5 !important;
   border-radius: theme.$border-radius-full !important;
-  background: transparent !important;
-  border: none !important;
   outline: none !important;
   -webkit-tap-highlight-color: transparent;
 
@@ -113,7 +113,7 @@
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: theme.$opacity-50;
     cursor: not-allowed;
   }
 }
