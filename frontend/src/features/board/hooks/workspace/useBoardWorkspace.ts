@@ -8,7 +8,6 @@ import type {
 } from 'features/board/types/BoardObjectTypes';
 import { useSocketSubscription } from 'features/websocket/hooks/useSocket';
 import { useWebSocketHandler } from 'features/websocket/hooks/useWebSocketHandler';
-import WebSocketService from 'features/websocket/services/websocketService';
 import type { BoardUpdateDTO, UserUpdateDTO } from 'features/websocket/types/WebSocketTypes';
 import {
   startTransition,
@@ -29,6 +28,12 @@ import {
   WEBSOCKET_TOPICS,
 } from 'shared/constants';
 import logger from 'shared/utils/logger';
+
+// Lazy-load websocket service to reduce initial bundle size
+const getWebSocketService = async () => {
+  const module = await import('features/websocket/services/websocketService');
+  return module.default;
+};
 
 /**
  * Custom hook that orchestrates the complete board workspace functionality including real-time collaboration.
@@ -157,7 +162,8 @@ export const useBoardWorkspace = (boardId: number) => {
       });
 
       try {
-        WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionRequest);
+        const service = await getWebSocketService();
+        service.sendMessage(WEBSOCKET_DESTINATIONS.DRAW_ACTION, actionRequest);
         incrementUndo();
       } catch (error) {
         logger.error('Failed to send drawing action:', error);

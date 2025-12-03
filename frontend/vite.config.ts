@@ -45,10 +45,10 @@ export default defineConfig({
           ],
 
           // UI and Animation libraries - Visual enhancements
-          'ui-vendor': ['framer-motion', 'react-hot-toast', 'react-colorful'],
+          'ui-vendor': ['react-hot-toast', 'react-colorful'],
 
-          // WebSocket and communication - Real-time features
-          'websocket-vendor': ['@stomp/stompjs'],
+          // Note: @stomp/stompjs is lazy-loaded via dynamic import in websocketService.ts
+          // to reduce initial bundle size on auth page (only loaded when user authenticates)
 
           // Internationalization - Language support
           'i18n-vendor': ['i18next', 'react-i18next'],

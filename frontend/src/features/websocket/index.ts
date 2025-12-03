@@ -1,5 +1,6 @@
 export { WebSocketProvider } from './WebSocketProvider';
 
-export * as WebSocketService from './services/websocketService';
+// Note: WebSocketService is no longer exported from barrel to enable lazy-loading
+// Import directly from 'features/websocket/services/websocketService' when needed
 
 export type * from './types/WebSocketTypes';

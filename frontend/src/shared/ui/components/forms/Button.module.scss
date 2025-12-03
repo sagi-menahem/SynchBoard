@@ -215,15 +215,17 @@
 }
 
 // Primary action button with glass design (for user pages)
+// Uses darker primary color for WCAG contrast compliance on transparent backgrounds
 .primary-glass {
   background: color-mix(in srgb, var(--color-primary) 15%, transparent);
-  color: var(--btn-primary-bg);
+  color: var(--btn-primary-bg-hover);
   border: theme.$border-width solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
   box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-primary) 10%, transparent);
 
   &:hover:not(:disabled) {
     background: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    color: var(--btn-primary-bg-hover);
     border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
     box-shadow: theme.$shadow-card color-mix(in srgb, var(--color-primary) 20%, transparent);

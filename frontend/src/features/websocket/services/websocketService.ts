@@ -1,4 +1,4 @@
-import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs';
+import type { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import {
   type MessageValidationSchema,
   sanitizeObject,
@@ -9,6 +9,16 @@ import { AUTH_HEADER_CONFIG, getWebSocketUrl } from 'shared/constants/ApiConstan
 import { WEBSOCKET_CONFIG } from 'shared/constants/AppConstants';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
+
+// Lazy-load STOMP client to reduce initial bundle size on auth page
+let StompClientClass: typeof Client | null = null;
+const getStompClient = async (): Promise<typeof Client> => {
+  if (!StompClientClass) {
+    const { Client } = await import('@stomp/stompjs');
+    StompClientClass = Client;
+  }
+  return StompClientClass;
+};
 
 /**
  * Comprehensive WebSocket service managing STOMP-based real-time communication with the backend.
@@ -223,11 +233,12 @@ class WebSocketService {
   /**
    * Internal method that performs the actual WebSocket connection setup.
    * Configures STOMP client with authentication headers, event handlers, and connection parameters.
+   * Uses lazy-loaded STOMP library to reduce initial bundle size.
    *
    * @param token - JWT token for authentication headers
    * @param onConnectedCallback - Callback to execute upon successful connection
    */
-  private connectInternal(token: string, onConnectedCallback: () => void): void {
+  private async connectInternal(token: string, onConnectedCallback: () => void): Promise<void> {
     this.connectionState = 'connecting';
 
     if (this.stompClient) {
@@ -244,7 +255,10 @@ class WebSocketService {
       this.handleDisconnection();
     }, TIMING_CONSTANTS.WEBSOCKET_CONNECTION_TIMEOUT);
 
-    this.stompClient = new Client({
+    // Lazy-load STOMP client library
+    const ClientClass = await getStompClient();
+
+    this.stompClient = new ClientClass({
       brokerURL: getWebSocketUrl(),
       connectHeaders: {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,

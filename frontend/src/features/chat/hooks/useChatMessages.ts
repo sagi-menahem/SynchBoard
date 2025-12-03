@@ -1,10 +1,15 @@
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
-import WebSocketService from 'features/websocket/services/websocketService';
 import { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { WEBSOCKET_DESTINATIONS } from 'shared/constants/ApiConstants';
 import logger from 'shared/utils/logger';
+
+// Lazy-load websocket service to reduce initial bundle size
+const getWebSocketService = async () => {
+  const module = await import('features/websocket/services/websocketService');
+  return module.default;
+};
 
 /**
  * User information structure for chat message attribution and display.
@@ -150,7 +155,8 @@ export const useChatMessages = () => {
       });
 
       try {
-        WebSocketService.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
+        const service = await getWebSocketService();
+        service.sendMessage(WEBSOCKET_DESTINATIONS.SEND_MESSAGE, payload);
         return instanceId;
       } catch (error) {
         logger.error('Failed to send chat message:', error);

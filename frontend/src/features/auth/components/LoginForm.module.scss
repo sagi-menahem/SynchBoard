@@ -64,7 +64,7 @@
   position: relative;
   @include theme.glass-background(false);
   padding: 0 theme.$spacing-4;
-  color: theme.$text-disabled;
+  color: theme.$text-muted;
   font-size: 0.875rem;
 }
 

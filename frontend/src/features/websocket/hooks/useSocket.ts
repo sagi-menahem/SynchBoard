@@ -1,9 +1,19 @@
-import WebSocketService from 'features/websocket/services/websocketService';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 
 import logger from 'shared/utils/logger';
 
 import { WebSocketContext } from '../WebSocketContext';
+
+// Lazy-load websocket service to reduce initial bundle size
+type WebSocketServiceModule = typeof import('../services/websocketService');
+let cachedService: WebSocketServiceModule['default'] | null = null;
+const getWebSocketService = async () => {
+  if (!cachedService) {
+    const module = await import('../services/websocketService');
+    cachedService = module.default;
+  }
+  return cachedService;
+};
 
 /**
  * Custom hook that provides access to WebSocket context and connection state.
@@ -74,17 +84,22 @@ export const useSocketSubscription = <T>(
       return;
     }
 
-    let subscription: ReturnType<typeof WebSocketService.subscribe> = null;
+    let subscription: { unsubscribe: () => void } | null = null;
+    let isEffectActive = true;
 
     // Short delay to ensure connection is fully established before subscribing
     const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
-      if (WebSocketService.isConnected()) {
-        subscription = WebSocketService.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
-      }
+      void getWebSocketService().then((service) => {
+        if (!isEffectActive) return;
+        if (service.isConnected()) {
+          subscription = service.subscribe<T>(topic, stableOnMessageReceived, schemaKey);
+        }
+      });
     }, 100); // Brief delay ensures WebSocket connection is fully established before subscribing
 
     // Cleanup subscription and timeout on effect cleanup
     return () => {
+      isEffectActive = false;
       clearTimeout(timeoutId);
       if (subscription) {
         try {

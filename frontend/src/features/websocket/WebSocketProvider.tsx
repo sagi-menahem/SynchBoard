@@ -1,9 +1,20 @@
 import { useAuth } from 'features/auth/hooks';
-import websocketService from 'features/websocket/services/websocketService';
-import React, { useEffect, useState, useMemo, useCallback, type ReactNode } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef, type ReactNode } from 'react';
 import logger from 'shared/utils/logger';
 
 import { WebSocketContext } from './WebSocketContext';
+
+// Lazy-load websocket service to reduce initial bundle size
+// The service and @stomp/stompjs are only loaded when user authenticates
+type WebSocketServiceType = typeof import('./services/websocketService').default;
+let websocketServiceInstance: WebSocketServiceType | null = null;
+const getWebSocketService = async (): Promise<WebSocketServiceType> => {
+  if (!websocketServiceInstance) {
+    const module = await import('./services/websocketService');
+    websocketServiceInstance = module.default;
+  }
+  return websocketServiceInstance;
+};
 
 /**
  * Properties for the WebSocketProvider component defining child component wrapping.
@@ -35,13 +46,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const [connectionState, setConnectionState] = useState<
     'disconnected' | 'connecting' | 'connected'
   >('disconnected');
+  // Track loaded service instance for cleanup
+  const serviceRef = useRef<WebSocketServiceType | null>(null);
 
   // Synchronize React state with underlying WebSocket service state
   // Memoized to prevent unnecessary re-renders when WebSocket connection state changes
   const updateConnectionState = useCallback(() => {
-    const currentState = websocketService.getConnectionState();
-    setConnectionState(currentState);
-    setIsSocketConnected(currentState === 'connected');
+    if (serviceRef.current) {
+      const currentState = serviceRef.current.getConnectionState();
+      setConnectionState(currentState);
+      setIsSocketConnected(currentState === 'connected');
+    }
   }, []);
 
   // Manages WebSocket connection lifecycle and connection state polling
@@ -69,21 +84,27 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     if (token) {
       setConnectionState('connecting');
-      // Establish STOMP connection with JWT authentication
-      websocketService.connect(token, () => {
+      // Lazy-load and establish STOMP connection with JWT authentication
+      void getWebSocketService().then((websocketService) => {
         if (!isEffectActive) {
           return;
         }
+        serviceRef.current = websocketService;
+        websocketService.connect(token, () => {
+          if (!isEffectActive) {
+            return;
+          }
 
-        setIsSocketConnected(true);
-        setConnectionState('connected');
+          setIsSocketConnected(true);
+          setConnectionState('connected');
 
-        // Subscribe to server error notifications for authenticated users
-        if (userEmail) {
-          websocketService.subscribe('/user/queue/errors', (errorMessage: unknown) => {
-            logger.error('Server error received:', errorMessage);
-          });
-        }
+          // Subscribe to server error notifications for authenticated users
+          if (userEmail) {
+            websocketService.subscribe('/user/queue/errors', (errorMessage: unknown) => {
+              logger.error('Server error received:', errorMessage);
+            });
+          }
+        });
       });
     } else {
       // No token means user is not authenticated
@@ -97,7 +118,9 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     return () => {
       isEffectActive = false;
       clearInterval(pollInterval);
-      websocketService.disconnect();
+      if (serviceRef.current) {
+        serviceRef.current.disconnect();
+      }
       setIsSocketConnected(false);
       setConnectionState('disconnected');
     };
