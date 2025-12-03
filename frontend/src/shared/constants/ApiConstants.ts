@@ -64,6 +64,7 @@ export const PUBLIC_API_ENDPOINTS: readonly string[] = [
   API_ENDPOINTS.FORGOT_PASSWORD,
   API_ENDPOINTS.RESET_PASSWORD,
   API_ENDPOINTS.GOOGLE_ONE_TAP,
+  '/config/features',
 ];
 
 export const WEBSOCKET_DESTINATIONS = {
