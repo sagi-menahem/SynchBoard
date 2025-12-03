@@ -11,7 +11,7 @@ public final class ApiConstants {
 
     private ApiConstants() {}
 
-    public static final String APPLICATION_VERSION = "1.0.0";
+    public static final String APPLICATION_VERSION = "1.1.0";
 
     public static final String API_AUTH_BASE_PATH = "/api/auth";
     public static final String API_BOARDS_BASE_PATH = "/api/boards";

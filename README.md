@@ -142,8 +142,6 @@ For detailed production setup instructions, see the [Installation Guide](docs/IN
 
 ## 📚 Full Documentation
 
-- **[User Manual](docs/User_Manual.pdf)** - Comprehensive technical guide covering all features and functionality.
-- **[Functional Document](docs/Functional_Document.pdf)** - Screen-by-screen feature walkthrough with visual examples.
 - **[API Documentation](docs/API_DOCUMENTATION.md)** - Detailed API endpoint guide for developers.
 - **[Installation Guide](docs/INSTALLATION.md)** - Advanced setup instructions and local development guide.
 
