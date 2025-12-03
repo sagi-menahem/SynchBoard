@@ -1,0 +1,25 @@
+@use '@/styles' as theme;
+
+// Full-viewport layout with dynamic positioning based on header presence
+.pageContent {
+  position: fixed;
+  top: calc(var(--banner-height, 0px) + #{theme.$header-height});
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @include theme.flex-column;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+// Flexible container for board workspace with overflow handling
+.boardWorkspaceArea {
+  flex: 1;
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
