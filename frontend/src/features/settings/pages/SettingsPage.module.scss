@@ -3,18 +3,18 @@
 // Main page container with responsive grid layout and proper spacing
 .pageContent {
   position: relative;
-  padding-block-start: calc(var(--banner-height, 0px) + 24px);
+  padding-block-start: calc(var(--banner-height, 0px) + theme.$spacing-6);
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-inline: 24px;
-  padding-block-end: 24px;
+  padding-inline: theme.$spacing-6;
+  padding-block-end: theme.$spacing-6;
   box-sizing: border-box;
   text-align: start;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: theme.$spacing-8;
   align-items: start;
   justify-content: center;
 }
@@ -41,16 +41,16 @@
 
 @media (max-width: theme.$breakpoint-md) {
   .pageContent {
-    padding-inline: 16px;
+    padding-inline: theme.$spacing-4;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
   }
 }
 
 @media (max-width: theme.$breakpoint-sm) {
   .pageContent {
-    padding-inline: 12px;
-    gap: 1rem;
+    padding-inline: theme.$spacing-3;
+    gap: theme.$spacing-4;
   }
 }
 
@@ -68,21 +68,21 @@
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: theme.$spacing-8;
 }
 
 // Reduce gap between cards on smaller screens
 @media (max-width: theme.$breakpoint-md) {
   .leftColumn,
   .rightColumn {
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
   }
 }
 
 @media (max-width: theme.$breakpoint-sm) {
   .leftColumn,
   .rightColumn {
-    gap: 1rem;
+    gap: theme.$spacing-4;
   }
 }
 
@@ -94,20 +94,20 @@
 }
 
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: theme.$spacing-8;
 }
 
 .sectionHeader {
   @include theme.section-header;
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: theme.$spacing-4;
   text-align: start;
 }
 
 .sectionTitle {
   color: theme.$text-primary;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
   margin: 0;
   text-align: start;
 }
@@ -131,7 +131,7 @@
 
 .field p {
   margin: 0;
-  font-size: 1.1em;
+  font-size: theme.$font-size-base-plus;
 }
 
 // Color picker container layout for background selection
@@ -176,13 +176,13 @@
 
 .buttonGroup {
   @include theme.button-group;
-  margin-top: 1rem;
+  margin-top: theme.$spacing-4;
   gap: theme.$spacing-2;
 }
 
 .required {
   color: theme.$error-color;
-  font-weight: bold;
+  font-weight: theme.$font-weight-bold;
 }
 
 // Settings page input with transparent background to show page background
@@ -193,10 +193,10 @@
 .dateInput {
   @include theme.input-base;
   background-color: transparent;
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   color: var(--color-text-primary);
-  font-size: 1rem;
-  margin-top: 4px;
+  font-size: theme.$font-size-base;
+  margin-top: theme.$spacing-1;
   @include theme.smooth-transition;
 
   // Date picker popup styling - follows user's theme preference

@@ -46,14 +46,14 @@
   position: relative;
 
   .errorIcon {
-    font-size: 4rem;
+    font-size: theme.$font-size-4xl;
     line-height: 1;
     display: inline-block;
     filter: drop-shadow(0 2px 8px var(--color-overlay-light));
     animation: pulseIcon 2s ease-in-out infinite;
 
     @media (max-width: theme.$breakpoint-sm) {
-      font-size: 3rem;
+      font-size: theme.$font-size-3xl;
     }
   }
 }
@@ -75,27 +75,27 @@
 // Primary error title with responsive typography
 .title {
   color: var(--color-text-primary);
-  font-size: 2rem;
+  font-size: theme.$font-size-2xl;
   font-weight: 700;
   margin: 0 0 theme.$spacing-4 0;
   line-height: 1.2;
 
   @media (max-width: theme.$breakpoint-sm) {
-    font-size: 1.75rem;
+    font-size: theme.$font-size-2xl;
   }
 }
 
 // Secondary error description with constrained width
 .message {
   color: var(--color-text-secondary);
-  font-size: 1.125rem;
+  font-size: theme.$font-size-md;
   line-height: 1.6;
   margin: 0 0 theme.$spacing-8 0;
   max-width: 500px;
   margin-inline: auto;
 
   @media (max-width: theme.$breakpoint-sm) {
-    font-size: 1rem;
+    font-size: theme.$font-size-base;
     margin-bottom: theme.$spacing-6;
   }
 }

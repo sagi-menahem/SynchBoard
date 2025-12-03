@@ -15,7 +15,7 @@
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: theme.$spacing-8;
   align-items: start;
   justify-content: center;
 }
@@ -25,7 +25,7 @@
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: theme.$spacing-8;
 }
 
 // Responsive
@@ -34,12 +34,12 @@
     padding-inline-start: 16px;
     padding-inline-end: 16px;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
   }
 
   .leftColumn,
   .rightColumn {
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
   }
 }
 
@@ -47,11 +47,11 @@
   .pageContent {
     padding-inline-start: 12px;
     padding-inline-end: 12px;
-    gap: 1rem;
+    gap: theme.$spacing-4;
   }
 
   .leftColumn,
   .rightColumn {
-    gap: 1rem;
+    gap: theme.$spacing-4;
   }
 }

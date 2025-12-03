@@ -15,38 +15,38 @@
 // Dynamic padding calculation to account for banner and AppHeader heights
 .pageContent {
   position: relative;
-  padding-top: calc(var(--banner-height, 0px) + 24px);
+  padding-top: calc(var(--banner-height, 0px) + theme.$spacing-6);
   min-height: 100vh;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-inline-start: 24px;
-  padding-inline-end: 24px;
-  padding-bottom: 24px;
+  padding-inline-start: theme.$spacing-6;
+  padding-inline-end: theme.$spacing-6;
+  padding-bottom: theme.$spacing-6;
   box-sizing: border-box;
   text-align: start;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: theme.$spacing-8;
   align-items: start;
   justify-content: center;
 }
 
 @media (max-width: theme.$breakpoint-md) {
   .pageContent {
-    padding-inline-start: 16px;
-    padding-inline-end: 16px;
+    padding-inline-start: theme.$spacing-4;
+    padding-inline-end: theme.$spacing-4;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
   }
 }
 
 @media (max-width: theme.$breakpoint-sm) {
   .pageContent {
-    padding-inline-start: 12px;
-    padding-inline-end: 12px;
-    gap: 1rem;
+    padding-inline-start: theme.$spacing-3;
+    padding-inline-end: theme.$spacing-3;
+    gap: theme.$spacing-4;
   }
 }
 
@@ -63,34 +63,34 @@
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: theme.$spacing-8;
 }
 
 // Reduce gap between cards on smaller screens
 @media (max-width: theme.$breakpoint-md) {
   .leftColumn,
   .rightColumn {
-    gap: 1.5rem;
+    gap: theme.$spacing-6;
   }
 }
 
 @media (max-width: theme.$breakpoint-sm) {
   .leftColumn,
   .rightColumn {
-    gap: 1rem;
+    gap: theme.$spacing-4;
   }
 }
 
 .membersSection {
-  margin-top: 2rem;
+  margin-top: theme.$spacing-8;
 }
 
 .sectionTitle {
   color: theme.$text-primary;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
+  margin-bottom: theme.$spacing-4;
+  padding-bottom: theme.$spacing-2;
   border-bottom: 1px solid theme.$border-light;
 }
 
@@ -121,7 +121,7 @@
 
 .quickSettingsContent {
   background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   @include theme.rounded-large;
   @include theme.theme-scrollbar;
   padding: theme.$spacing-8;
@@ -136,10 +136,10 @@
 .closeQuickSettings {
   @include theme.button-base;
   position: absolute;
-  top: 1rem;
-  inset-inline-end: 1rem;
+  top: theme.$spacing-4;
+  inset-inline-end: theme.$spacing-4;
   background: var(--color-surface-hover);
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   color: var(--color-text-secondary);
   width: 32px;
   height: 32px;

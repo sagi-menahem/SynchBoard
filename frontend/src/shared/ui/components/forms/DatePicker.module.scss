@@ -33,7 +33,7 @@
   width: 100%;
   padding: theme.$input-padding;
   padding-inline-end: theme.$spacing-10; // Space for calendar icon
-  height: 2.5rem;
+  height: theme.$spacing-10;
   box-sizing: border-box;
   cursor: pointer;
   text-align: center;
