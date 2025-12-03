@@ -390,6 +390,8 @@ a {
 body {
   margin: 0;
   min-width: 320px;
+  // Disable blue tap highlight on mobile devices
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1 {
