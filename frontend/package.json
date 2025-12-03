@@ -2,6 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "1.0.0",
+  "author": "Sagi Menahem",
   "type": "module",
   "scripts": {
     "dev": "kill-port 5173 && vite",
