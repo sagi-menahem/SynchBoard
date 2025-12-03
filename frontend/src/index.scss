@@ -33,29 +33,12 @@ body[data-theme='light'] {
   // Dynamic layout properties
   --banner-height: 0px;
 
-  // Transitions
-  --transition-duration-fast: #{dt.$transition-fast};
+  // Transitions (used by ErrorBoundary)
   --transition-duration-normal: #{dt.$transition-normal};
-  --transition-duration-slow: #{dt.$transition-slow};
-  --transition-slow: #{dt.$transition-slow};
   --transition-ease-in-out: #{dt.$transition-ease-in-out};
 
-  // Spacing
-  --spacing-0-5: #{dt.$spacing-0-5};
-  --spacing-1: #{dt.$spacing-1};
-  --spacing-2: #{dt.$spacing-2};
-  --spacing-3: #{dt.$spacing-3};
-
-  // Z-index layers
-  --z-index-base: #{dt.$z-index-base};
-  --z-index-elevated: #{dt.$z-index-elevated};
-  --z-index-dropdown: #{dt.$z-index-dropdown};
-  --z-index-toolbar: #{dt.$z-index-toolbar};
-  --z-index-overlay: #{dt.$z-index-overlay};
+  // Z-index (used by ErrorBoundary)
   --z-index-modal: #{dt.$z-index-modal};
-  --z-index-banner: #{dt.$z-index-banner};
-  --z-index-tooltip: #{dt.$z-index-tooltip};
-  --z-index-popover: #{dt.$z-index-popover};
 
   --color-primary: #{dt.$color-primary};
   --color-primary-hover: #{dt.$color-primary-hover};
