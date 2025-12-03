@@ -50,6 +50,9 @@ public class SecurityConfig {
         http
             .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
             .csrf((csrf) -> csrf.disable())
+            // Disable Spring Security's default headers - Nginx handles these in production
+            // This prevents duplicate headers (X-Frame-Options, X-Content-Type-Options, etc.)
+            .headers((headers) -> headers.disable())
             .authorizeHttpRequests((auth) ->
                 auth
                     .requestMatchers(API_AUTH_PATH_PATTERN)
