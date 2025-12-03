@@ -9,7 +9,7 @@ import logger from 'shared/utils/logger';
 
 import { useAuth } from '../hooks';
 import * as authService from '../services/authService';
-import type { CredentialResponse, PromptMomentNotification } from '../types/google';
+import type { CredentialResponse } from '../types/google';
 
 /**
  * Module-level flag to track if Google One Tap has been initialized.
@@ -85,7 +85,7 @@ const GoogleOneTap: React.FC = () => {
           use_fedcm_for_prompt: true,
         });
 
-        window.google.accounts.id.prompt(handlePromptMoment);
+        window.google.accounts.id.prompt();
         logger.info('[GoogleOneTap] One Tap initialized and prompt displayed');
         return true;
       } catch (error) {
@@ -165,25 +165,6 @@ const GoogleOneTap: React.FC = () => {
       toast.error(t('oauth.error.processing'));
     } finally {
       setIsProcessing(false);
-    }
-  };
-
-  /**
-   * Handles prompt moment notifications from Google SDK.
-   * Used for debugging and understanding why One Tap might not be displayed.
-   */
-  const handlePromptMoment = (notification: PromptMomentNotification) => {
-    if (notification.isDisplayed()) {
-      logger.debug('[GoogleOneTap] Prompt displayed');
-    } else if (notification.isNotDisplayed()) {
-      const reason = notification.getNotDisplayedReason();
-      logger.debug(`[GoogleOneTap] Prompt not displayed: ${reason}`);
-    } else if (notification.isSkippedMoment()) {
-      const reason = notification.getSkippedReason();
-      logger.debug(`[GoogleOneTap] Prompt skipped: ${reason}`);
-    } else if (notification.isDismissedMoment()) {
-      const reason = notification.getDismissedReason();
-      logger.debug(`[GoogleOneTap] Prompt dismissed: ${reason}`);
     }
   };
 
