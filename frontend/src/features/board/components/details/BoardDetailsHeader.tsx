@@ -37,8 +37,13 @@ interface BoardDetailsHeaderProps {
  */
 const BoardDetailsHeader: React.FC<BoardDetailsHeaderProps> = (props) => {
   const { t } = useTranslation(['board', 'common']);
-  const { boardDetails, currentUserIsAdmin, onPictureUpload, onUpdateDescription, onDeletePicture } =
-    props;
+  const {
+    boardDetails,
+    currentUserIsAdmin,
+    onPictureUpload,
+    onUpdateDescription,
+    onDeletePicture,
+  } = props;
 
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);

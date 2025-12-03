@@ -158,8 +158,8 @@
 .cancelButton,
 .saveButton {
   @include theme.button-base;
-  font-size: 0.9rem !important;
-  padding: theme.$spacing-2 theme.$spacing-4 !important;
+  font-size: theme.$font-size-sm;
+  padding: theme.$spacing-2 theme.$spacing-4;
 }
 
 .buttonGroup {

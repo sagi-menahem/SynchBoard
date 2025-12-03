@@ -35,7 +35,9 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = () =>
   const paletteColors = PRESET_COLORS.slice(0, 18);
 
   // Check if current color is a preset color
-  const isPresetColor = paletteColors.includes(preferences.defaultStrokeColor as typeof paletteColors[number]);
+  const isPresetColor = paletteColors.includes(
+    preferences.defaultStrokeColor as (typeof paletteColors)[number],
+  );
 
   const handleColorSelect = useCallback(
     async (color: string) => {
@@ -136,7 +138,9 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = () =>
       >
         <span
           className={styles.customColorPreview}
-          style={{ backgroundColor: !isPresetColor ? preferences.defaultStrokeColor : 'transparent' }}
+          style={{
+            backgroundColor: !isPresetColor ? preferences.defaultStrokeColor : 'transparent',
+          }}
         />
         <span className={styles.customColorLabel}>Custom</span>
         {showCustomPicker ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

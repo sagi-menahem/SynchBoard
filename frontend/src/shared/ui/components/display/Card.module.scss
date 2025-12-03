@@ -38,10 +38,13 @@
   box-shadow: theme.$shadow-card;
 
   // Override general hoverable styles - keep background color and use scale instead of color change
-  &.hoverable:hover {
-    background: var(--user-chosen-color, var(--glass-background)) !important;
-    transform: scale(1.02) !important;
-    box-shadow: theme.$shadow-lg;
+  // Using compound selector for higher specificity
+  &.hoverable {
+    &:hover {
+      background: var(--user-chosen-color, var(--glass-background));
+      transform: scale(theme.$scale-moderate);
+      box-shadow: theme.$shadow-lg;
+    }
   }
 }
 
@@ -55,11 +58,14 @@
   padding: theme.$card-padding;
 
   // Override general hoverable styles - keep background color and use scale instead of translateY
-  &.hoverable:hover {
-    background: var(--user-chosen-color, var(--glass-background)) !important;
-    opacity: 0.99;
-    transform: scale(1.02) !important;
-    box-shadow: theme.$shadow-lg;
+  // Using compound selector for higher specificity
+  &.hoverable {
+    &:hover {
+      background: var(--user-chosen-color, var(--glass-background));
+      opacity: 0.99;
+      transform: scale(theme.$scale-moderate);
+      box-shadow: theme.$shadow-lg;
+    }
   }
 }
 

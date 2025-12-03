@@ -110,7 +110,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) =
         </motion.div>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };
 

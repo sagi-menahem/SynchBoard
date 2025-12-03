@@ -118,6 +118,7 @@ const ChatInput: React.FC<ChatInputProps> = React.memo(
             disabled={isDisabled}
             className={styles.input}
             aria-label={t('chat:window.placeholder')}
+            autoComplete="off"
           />
           <Button
             type="submit"

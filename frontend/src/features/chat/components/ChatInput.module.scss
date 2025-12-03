@@ -14,7 +14,7 @@
   // Solid glass design - no transparency
   @include theme.glass-background;
   @include theme.glass-border;
-  border-radius: 24px;
+  border-radius: theme.$border-radius-pill;
   padding: theme.$spacing-2 theme.$spacing-4;
   width: 100%;
   max-width: 100%;
@@ -51,10 +51,10 @@
   border: none;
   background: transparent;
   padding: theme.$spacing-2-5 theme.$spacing-2;
-  font-size: 0.95rem;
+  font-size: theme.$font-size-base;
   color: theme.$text-primary;
   font-family: inherit;
-  line-height: 1.4;
+  line-height: theme.$line-height-normal;
   resize: none;
   outline: none;
   @include theme.smooth-transition;
@@ -90,8 +90,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  padding: 10px;
+  border-radius: theme.$border-radius-full;
+  padding: theme.$spacing-2-5;
   transition: all theme.$transition-normal ease-in-out;
   // Solid glass design - no transparency
   @include theme.glass-background;
@@ -101,7 +101,7 @@
 
   svg {
     stroke: currentColor;
-    opacity: 0.5;
+    opacity: theme.$opacity-50;
     transition: opacity theme.$transition-normal ease-in-out;
   }
 
@@ -114,12 +114,12 @@
     }
 
     &:hover {
-      transform: scale(1.1);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transform: scale(theme.$scale-emphasis);
+      box-shadow: theme.$shadow-card;
     }
 
     &:active {
-      transform: scale(0.95);
+      transform: scale(theme.$scale-press);
     }
   }
 }
@@ -134,25 +134,25 @@
   }
 
   .inputContainer {
-    padding: 6px 12px;
-    border-radius: 20px;
+    padding: theme.$spacing-1-5 theme.$spacing-3;
+    border-radius: theme.$border-radius-xl;
   }
 
   .input {
-    padding: 8px 6px;
+    padding: theme.$spacing-2 theme.$spacing-1-5;
     // Minimum 16px to prevent iOS auto-zoom on focus
     font-size: theme.$font-size-base;
     // Prevent text selection issues on mobile
     -webkit-user-select: text;
     user-select: text;
-    // Ensure touch targets are large enough
-    min-height: 44px;
+    // Ensure touch targets are large enough (44px minimum for iOS)
+    min-height: theme.$button-standard-height;
   }
 
   .sendButton {
-    min-width: 44px;
-    min-height: 44px;
-    margin-inline-start: 6px;
+    min-width: theme.$button-standard-height;
+    min-height: theme.$button-standard-height;
+    margin-inline-start: theme.$spacing-1-5;
   }
 }
 

@@ -132,7 +132,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const displayValue = selectedDate ? format(selectedDate, 'dd/MM/yyyy') : '';
 
   // Determine the variant class
-  const variantClass = variant === 'settings' ? styles.settings : variant === 'auth' ? styles.auth : '';
+  const variantClass =
+    variant === 'settings' ? styles.settings : variant === 'auth' ? styles.auth : '';
 
   // Custom chevron component for navigation
   const CustomChevron = ({

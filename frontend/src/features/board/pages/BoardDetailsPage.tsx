@@ -3,7 +3,13 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useIsMobile } from 'shared/hooks';
-import { AppHeader, BoardDetailsPageSkeleton, Button, PageTransition, SectionCard } from 'shared/ui';
+import {
+  AppHeader,
+  BoardDetailsPageSkeleton,
+  Button,
+  PageTransition,
+  SectionCard,
+} from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { getBackArrowIcon } from 'shared/utils/rtlUtils';
 

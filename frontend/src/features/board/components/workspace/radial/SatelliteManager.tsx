@@ -248,14 +248,17 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
       // Toolbar is positioned at bottom: 32px and extends upward
       // Center satellite vertically with the toolbar
       const toolbarRight = toolbarStyle.right;
-      const rightOffset = typeof toolbarRight === 'string'
-        ? parseInt(toolbarRight, 10)
-        : (typeof toolbarRight === 'number' ? toolbarRight : 20);
+      const rightOffset =
+        typeof toolbarRight === 'string'
+          ? parseInt(toolbarRight, 10)
+          : typeof toolbarRight === 'number'
+            ? toolbarRight
+            : 20;
 
       // Toolbar bottom edge is 32px from viewport bottom
       // Toolbar center is at: 32px + (toolbarHeight / 2) from bottom
       const TOOLBAR_BOTTOM = 32;
-      const toolbarCenterFromBottom = TOOLBAR_BOTTOM + (VERTICAL_TOOLBAR_HEIGHT / 2);
+      const toolbarCenterFromBottom = TOOLBAR_BOTTOM + VERTICAL_TOOLBAR_HEIGHT / 2;
 
       // The y: '50%' transform is applied by Framer Motion
       return {
@@ -289,10 +292,10 @@ export const SatelliteManager: React.FC<SatelliteManagerProps> = ({
       // Toolbar is shifted - centered in available space
       const availableWidth = availableRight - availableLeft;
       if (TOOLBAR_WIDTH <= availableWidth) {
-        toolbarCenterPx = availableLeft + (availableWidth / 2);
+        toolbarCenterPx = availableLeft + availableWidth / 2;
       } else {
         // Toolbar positioned from right edge
-        toolbarCenterPx = availableRight - (TOOLBAR_WIDTH / 2);
+        toolbarCenterPx = availableRight - TOOLBAR_WIDTH / 2;
       }
     } else {
       // Toolbar is perfectly centered in canvas

@@ -163,7 +163,9 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   const [isMobile, setIsMobile] = useState(detectMobileDevice());
   // On mobile, always start collapsed regardless of saved preference
   const initialMobile = detectMobileDevice();
-  const [isExpanded, setIsExpanded] = useState(initialMobile ? false : !preferences.isDockMinimized);
+  const [isExpanded, setIsExpanded] = useState(
+    initialMobile ? false : !preferences.isDockMinimized,
+  );
   const [activeSatellite, setActiveSatellite] = useState<string | null>(null);
 
   // Drag state for mobile pull-up gesture

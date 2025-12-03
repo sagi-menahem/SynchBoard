@@ -142,9 +142,7 @@
     // Use CSS custom property set by RadialDock for smooth sync during drag
     // --dock-toolbar-height is updated in real-time during drag gestures
     // Add 48px for the tab height + 8px gap
-    bottom: calc(
-      var(--dock-toolbar-height, 0px) + 10px + 8px + env(safe-area-inset-bottom)
-    );
+    bottom: calc(var(--dock-toolbar-height, 0px) + 10px + 8px + env(safe-area-inset-bottom));
     // No transition - we want instant sync with drag gesture
   }
 

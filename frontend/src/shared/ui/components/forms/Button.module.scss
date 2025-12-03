@@ -241,7 +241,8 @@
 
   &:focus-visible {
     outline: none;
-    box-shadow: theme.$shadow-focus-outline color-mix(in srgb, var(--color-primary) 40%, transparent);
+    box-shadow: theme.$shadow-focus-outline
+      color-mix(in srgb, var(--color-primary) 40%, transparent);
   }
 }
 

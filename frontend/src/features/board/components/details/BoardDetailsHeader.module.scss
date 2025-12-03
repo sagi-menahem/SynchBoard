@@ -5,8 +5,8 @@
   @include theme.glass-border;
   @include theme.rounded-medium;
   padding: theme.$spacing-6;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: theme.$spacing-8;
+  box-shadow: theme.$shadow-card;
 }
 
 .sectionHeader {
@@ -16,8 +16,8 @@
 
 .sectionTitle {
   color: theme.$text-primary;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: theme.$font-size-xl;
+  font-weight: theme.$font-weight-semibold;
   margin: 0;
   text-align: start;
 }
@@ -51,15 +51,6 @@
   padding: 0;
 }
 
-.description {
-  color: theme.$text-secondary;
-  font-size: theme.$font-size-base;
-  line-height: 1.6;
-  margin: 0;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-}
-
 .editForm {
   @include theme.flex-column;
   gap: theme.$spacing-5;
@@ -80,8 +71,8 @@
 .cancelButton,
 .saveButton {
   @include theme.button-base;
-  font-size: 0.9rem !important;
-  padding: theme.$spacing-2 theme.$spacing-4 !important;
+  font-size: theme.$font-size-sm;
+  padding: theme.$spacing-2 theme.$spacing-4;
 }
 
 .descriptionTextarea {
@@ -132,8 +123,8 @@
 
   label {
     color: theme.$text-muted;
-    font-size: 0.875rem;
-    font-weight: normal;
+    font-size: theme.$font-size-sm;
+    font-weight: theme.$font-weight-normal;
     cursor: default;
     margin: 0;
     padding: 0;
@@ -143,8 +134,8 @@
 
 .description {
   color: theme.$text-primary;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: theme.$font-size-base;
+  line-height: theme.$line-height-relaxed;
   margin: 0;
   padding: theme.$spacing-2 0;
   white-space: pre-wrap;
@@ -153,11 +144,11 @@
 }
 
 .emptyDescriptionLabel {
-  margin-bottom: 0.5rem;
+  margin-bottom: theme.$spacing-2;
   display: block;
   color: theme.$text-muted;
-  font-size: 0.875rem;
-  font-weight: normal;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-normal;
   cursor: default;
   margin: 0;
   padding: 0;

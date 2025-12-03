@@ -29,14 +29,7 @@
 
 // Logout button label - visible on desktop, hidden on mobile
 .logoutLabel {
-  margin-inline-start: theme.$spacing-1-5;
-  font-size: theme.$font-size-sm;
-  font-weight: theme.$font-weight-medium;
-  white-space: nowrap;
-
-  @media (max-width: theme.$breakpoint-md) {
-    display: none;
-  }
+  @include theme.button-label-responsive;
 }
 
 @media (max-width: theme.$breakpoint-md) {

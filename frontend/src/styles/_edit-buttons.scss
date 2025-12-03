@@ -2,14 +2,18 @@
 @use './mixins' as *;
 
 // Specialized button styling for board editing controls with compact sizing
+// Note: Uses specific selectors to override button-base without !important
 @mixin edit-button {
   @include button-base;
 
-  padding: theme.$spacing-2 theme.$spacing-3 !important;
-  font-size: theme.$font-size-sm !important;
-
-  margin-right: 0 !important;
-  margin-left: 0 !important;
+  // Override button-base padding and font-size for compact edit buttons
+  &,
+  &.editButton {
+    padding: theme.$spacing-2 theme.$spacing-3;
+    font-size: theme.$font-size-sm;
+    margin-right: 0;
+    margin-left: 0;
+  }
 
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-color);
@@ -28,7 +32,7 @@
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: theme.$opacity-60;
     cursor: not-allowed;
   }
 
@@ -43,11 +47,15 @@
 
 // Button styled with user's chosen theme background color
 // Used for color preview buttons that show the current theme color
+// Note: Uses higher specificity via &[class] to override secondary button styles
 @mixin theme-button {
-  background-color: var(--user-chosen-color) !important;
-  border-color: var(--user-chosen-color) !important;
-  color: var(--color-text-primary) !important;
-  box-shadow: 0 0 0 1px var(--glass-border) !important;
+  &,
+  &[class] {
+    background-color: var(--user-chosen-color);
+    border-color: var(--user-chosen-color);
+    color: var(--color-text-primary);
+    box-shadow: 0 0 0 1px var(--glass-border);
+  }
 
   &:hover:not(:disabled) {
     opacity: 0.9;

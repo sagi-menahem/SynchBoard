@@ -16,10 +16,13 @@
   max-width: 100%;
   flex-shrink: 1;
 
-  // Global form styling override
-  :global(.form) {
-    min-width: unset !important;
-    width: 100% !important;
+  // Ensure child forms respect container width
+  // Using descendant selector with higher specificity instead of !important
+  form,
+  [class*='form'] {
+    min-width: unset;
+    width: 100%;
+    max-width: 100%;
   }
 
   // Ensure all child elements respect container bounds
@@ -80,8 +83,9 @@
 }
 
 // Danger state with red border only
-.danger {
-  border: 1px solid var(--btn-destructive-bg) !important;
+// Using &.danger for higher specificity to override base .sectionCard border
+.danger.danger {
+  border: 1px solid var(--btn-destructive-bg);
   box-shadow: theme.$shadow-card;
 
   &:hover {

@@ -737,3 +737,22 @@
     clear: both;
   }
 }
+
+/**
+ * Button label that hides on mobile screens, commonly used in headers.
+ * Shows text on desktop, hides on mobile to save space (icon-only buttons).
+ * @example
+ *   .logoutLabel {
+ *     @include button-label-responsive;
+ *   }
+ */
+@mixin button-label-responsive {
+  margin-inline-start: theme.$spacing-1-5;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  white-space: nowrap;
+
+  @media (max-width: theme.$breakpoint-md) {
+    display: none;
+  }
+}
