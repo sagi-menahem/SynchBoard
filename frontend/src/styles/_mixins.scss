@@ -716,7 +716,7 @@
   width: theme.$spacing-px !important;
   height: theme.$spacing-px !important;
   padding: theme.$spacing-0 !important;
-  margin: -theme.$spacing-px !important;
+  margin: calc(-1 * theme.$spacing-px) !important;
   overflow: hidden !important;
   clip: rect(theme.$spacing-0, theme.$spacing-0, theme.$spacing-0, theme.$spacing-0) !important;
   white-space: nowrap !important;

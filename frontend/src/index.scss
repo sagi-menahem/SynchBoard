@@ -5,6 +5,7 @@
  * Import order: design tokens first, then component-specific styles.
  */
 @use 'styles/design-tokens' as dt;
+@use 'styles/mixins' as mixins;
 
 .app-content {
   padding-top: var(--banner-height, 0px);
@@ -435,16 +436,9 @@ button:focus-visible {
 }
 
 // Screen reader only utility class - hides elements visually but keeps them accessible
+// Uses the visually-hidden mixin from _mixins.scss for consistency
 .sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+  @include mixins.visually-hidden;
 }
 
 // Vaul drawer styles - prevent body scroll when drawer is open
