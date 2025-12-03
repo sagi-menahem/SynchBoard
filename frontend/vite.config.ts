@@ -48,7 +48,7 @@ export default defineConfig({
           'ui-vendor': ['framer-motion', 'react-hot-toast', 'react-colorful'],
 
           // WebSocket and communication - Real-time features
-          'websocket-vendor': ['@stomp/stompjs', 'sockjs-client'],
+          'websocket-vendor': ['@stomp/stompjs'],
 
           // Internationalization - Language support
           'i18n-vendor': ['i18next', 'react-i18next'],

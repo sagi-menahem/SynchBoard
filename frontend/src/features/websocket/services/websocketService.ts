@@ -5,11 +5,10 @@ import {
   validateBoardMessage,
   validateMessage,
 } from 'features/auth/utils/SecurityUtils';
-import { AUTH_HEADER_CONFIG, WEBSOCKET_URL } from 'shared/constants/ApiConstants';
+import { AUTH_HEADER_CONFIG, getWebSocketUrl } from 'shared/constants/ApiConstants';
 import { WEBSOCKET_CONFIG } from 'shared/constants/AppConstants';
 import { TIMING_CONSTANTS } from 'shared/constants/TimingConstants';
 import logger from 'shared/utils/logger';
-import SockJS from 'sockjs-client';
 
 /**
  * Comprehensive WebSocket service managing STOMP-based real-time communication with the backend.
@@ -17,7 +16,7 @@ import SockJS from 'sockjs-client';
  * Implements security features including message sanitization, schema validation, and size limits.
  *
  * Key features:
- * - JWT-authenticated STOMP connections over SockJS
+ * - JWT-authenticated STOMP connections over native WebSocket
  * - Exponential backoff reconnection strategy with configurable limits
  * - Message validation and sanitization for security
  * - Pending subscription queue for connection interruptions
@@ -246,7 +245,7 @@ class WebSocketService {
     }, TIMING_CONSTANTS.WEBSOCKET_CONNECTION_TIMEOUT);
 
     this.stompClient = new Client({
-      webSocketFactory: () => new SockJS(WEBSOCKET_URL),
+      brokerURL: getWebSocketUrl(),
       connectHeaders: {
         [AUTH_HEADER_CONFIG.HEADER_NAME]: `${AUTH_HEADER_CONFIG.TOKEN_PREFIX}${token}`,
       },

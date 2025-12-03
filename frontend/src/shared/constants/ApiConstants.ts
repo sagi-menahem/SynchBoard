@@ -9,7 +9,40 @@
 // In Docker, these will be proxied through Nginx, so we use relative URLs
 // In development, these will use the environment variables or default to localhost
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
-export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL ?? '/ws';
+export const WEBSOCKET_PATH = import.meta.env.VITE_WEBSOCKET_URL ?? '/ws';
+
+/**
+ * Constructs the full WebSocket URL for native WebSocket connections.
+ * Handles both development (direct backend connection) and production (nginx proxy) scenarios.
+ * Automatically determines the correct protocol (ws:// or wss://) based on the current page protocol.
+ *
+ * Supported VITE_WEBSOCKET_URL formats:
+ * - Full WebSocket URL: 'ws://localhost:8080/ws' or 'wss://example.com/ws'
+ * - Full HTTP URL (converted to WS): 'http://localhost:8080/ws' or 'https://example.com/ws'
+ * - Relative path: '/ws' (uses current page host)
+ *
+ * @returns Full WebSocket URL (e.g., 'ws://localhost:8080/ws' or 'wss://synchboard.com/ws')
+ */
+export function getWebSocketUrl(): string {
+  // If already a WebSocket URL, use it directly
+  if (WEBSOCKET_PATH.startsWith('ws://') || WEBSOCKET_PATH.startsWith('wss://')) {
+    return WEBSOCKET_PATH;
+  }
+
+  // If it's an HTTP/HTTPS URL, convert to WebSocket protocol
+  if (WEBSOCKET_PATH.startsWith('http://')) {
+    return WEBSOCKET_PATH.replace('http://', 'ws://');
+  }
+  if (WEBSOCKET_PATH.startsWith('https://')) {
+    return WEBSOCKET_PATH.replace('https://', 'wss://');
+  }
+
+  // Otherwise, it's a relative path - construct the URL from the current page location
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const host = window.location.host;
+
+  return `${protocol}//${host}${WEBSOCKET_PATH}`;
+}
 
 export const API_ENDPOINTS = {
   LOGIN: '/auth/login',

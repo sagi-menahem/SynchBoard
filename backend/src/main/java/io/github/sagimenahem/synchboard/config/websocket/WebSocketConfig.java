@@ -62,9 +62,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     /**
-     * Registers STOMP WebSocket endpoints with SockJS support for client connections. Configures
-     * CORS allowed origins, connection limits, and fallback options for browsers without WebSocket
-     * support.
+     * Registers STOMP WebSocket endpoint for client connections using native WebSocket. Configures
+     * CORS allowed origins for cross-origin WebSocket connections. Native WebSocket is supported by
+     * all modern browsers (95%+ coverage) and provides better performance than SockJS fallbacks.
      *
      * @param registry the STOMP endpoint registry to configure
      */
@@ -72,11 +72,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
         registry
             .addEndpoint(WEBSOCKET_ENDPOINT)
-            .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins())
-            .withSockJS()
-            .setStreamBytesLimit(1024 * 1024)
-            .setHttpMessageCacheSize(1000)
-            .setDisconnectDelay(30 * 1000);
+            .setAllowedOrigins(appProperties.getSecurity().getAllowedOrigins());
     }
 
     /**
