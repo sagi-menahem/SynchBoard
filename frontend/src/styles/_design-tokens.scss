@@ -289,9 +289,20 @@ $google-button-max-width: $spacing-container-xs;
 // --- Interactive Element Sizing ---
 
 $icon-button-size: 36px;
+$icon-button-size-sm: 28px;
+$icon-button-size-md: 32px;
+$icon-button-size-lg: 40px;
 $button-compact-height: 28px;
 $button-standard-height: 44px;
 $edit-button-height: 32px;
+
+// --- Avatar Sizing ---
+
+$avatar-size-xs: 24px;
+$avatar-size-sm: 40px;
+$avatar-size-md: 48px;
+$avatar-size-lg: 75px;
+$avatar-size-xl: 90px;
 
 // --- Color Picker Dimensions ---
 
@@ -299,6 +310,9 @@ $color-picker-width: 250px;
 $color-picker-height: 150px;
 $color-picker-slider-height: 20px;
 $color-picker-pointer-size: 16px;
+$color-swatch-size: 32px;
+$color-swatch-size-sm: 20px;
+$color-swatch-size-xs: 18px;
 
 // --- Board Card Layout ---
 
@@ -306,6 +320,8 @@ $board-card-grid-height: 280px;
 $board-card-grid-max-width: 700px;
 $board-card-image-height-grid: 120px;
 $board-card-image-size-list: 60px;
+$board-card-preview-height: 130px;
+$board-card-preview-height-mobile: 110px;
 
 // --- Visual Effects ---
 
