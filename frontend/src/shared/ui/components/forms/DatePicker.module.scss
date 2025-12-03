@@ -369,8 +369,8 @@
   }
 
   .popover {
-    // Auth pages don't have user-chosen color, use standard glass background
-    @include theme.glass-background(false);
+    // Auth pages should have opaque background (not transparent glass)
+    background: var(--color-surface-elevated);
   }
 }
 
