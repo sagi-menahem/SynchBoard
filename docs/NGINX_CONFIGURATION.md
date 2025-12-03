@@ -5,6 +5,7 @@ This document describes the Nginx configuration for SynchBoard in Docker develop
 ## Overview
 
 SynchBoard uses two Nginx configurations:
+
 1. **Docker Development** (`frontend/nginx.conf`) - Frontend container serving SPA and proxying to backend
 2. **Production Server** (`server-config/synchboard.conf`) - External Nginx with SSL termination
 
@@ -25,14 +26,14 @@ index index.html;
 
 Applied globally to all responses:
 
-| Header | Value | Purpose |
-|--------|-------|---------|
-| `X-Frame-Options` | `DENY` | Prevent clickjacking |
-| `X-Content-Type-Options` | `nosniff` | Prevent MIME sniffing |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` | Control referrer info |
-| `Permissions-Policy` | Disable geolocation, camera, etc. | Restrict browser APIs |
-| `Content-Security-Policy` | See below | XSS protection |
-| `Strict-Transport-Security` | `max-age=63072000` | Force HTTPS |
+| Header                      | Value                             | Purpose               |
+| --------------------------- | --------------------------------- | --------------------- |
+| `X-Frame-Options`           | `DENY`                            | Prevent clickjacking  |
+| `X-Content-Type-Options`    | `nosniff`                         | Prevent MIME sniffing |
+| `Referrer-Policy`           | `strict-origin-when-cross-origin` | Control referrer info |
+| `Permissions-Policy`        | Disable geolocation, camera, etc. | Restrict browser APIs |
+| `Content-Security-Policy`   | See below                         | XSS protection        |
+| `Strict-Transport-Security` | `max-age=63072000`                | Force HTTPS           |
 
 ### Content Security Policy
 
@@ -51,13 +52,13 @@ form-action 'self' https://accounts.google.com;
 
 ### Caching Strategy
 
-| Location | Cache Duration | Headers |
-|----------|----------------|---------|
-| JS/CSS/Fonts | 1 year | `public, immutable` |
-| Images/SVGs | 7 days | `public, must-revalidate` |
-| index.html | Never | `no-store, no-cache` |
-| SPA routes | Never | `no-store, no-cache` |
-| Uploaded images | 30 days | `public, no-transform` |
+| Location        | Cache Duration | Headers                   |
+| --------------- | -------------- | ------------------------- |
+| JS/CSS/Fonts    | 1 year         | `public, immutable`       |
+| Images/SVGs     | 7 days         | `public, must-revalidate` |
+| index.html      | Never          | `no-store, no-cache`      |
+| SPA routes      | Never          | `no-store, no-cache`      |
+| Uploaded images | 30 days        | `public, no-transform`    |
 
 Vite adds content hashes to JS/CSS filenames, enabling aggressive caching.
 
@@ -250,13 +251,13 @@ Internet
 
 ## Key Differences
 
-| Aspect | Docker Dev | Production |
-|--------|------------|------------|
-| SSL | None | Let's Encrypt |
-| Port | 80 | 443 |
-| Backend | Docker network | localhost |
-| Images | Shared volume | Via Docker |
-| Timeouts | 7d WebSocket | 3600s all |
+| Aspect   | Docker Dev     | Production    |
+| -------- | -------------- | ------------- |
+| SSL      | None           | Let's Encrypt |
+| Port     | 80             | 443           |
+| Backend  | Docker network | localhost     |
+| Images   | Shared volume  | Via Docker    |
+| Timeouts | 7d WebSocket   | 3600s all     |
 
 ## Troubleshooting
 
@@ -286,7 +287,7 @@ Internet
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `frontend/nginx.conf` | Docker container configuration |
+| File                            | Purpose                         |
+| ------------------------------- | ------------------------------- |
+| `frontend/nginx.conf`           | Docker container configuration  |
 | `server-config/synchboard.conf` | Production server configuration |

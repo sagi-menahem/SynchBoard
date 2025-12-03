@@ -49,7 +49,10 @@ public class BoardActivityController {
     public void sendMessage(@Payload ChatMessageDTO.Request request, Principal principal) {
         String userEmail = principal.getName();
 
-        log.debug(DIAGNOSTIC_PREFIX + " Received WebSocket message at /app/chat.sendMessage. Payload: {}", request.toString());
+        log.debug(
+            DIAGNOSTIC_PREFIX + " Received WebSocket message at /app/chat.sendMessage. Payload: {}",
+            request.toString()
+        );
 
         log.debug(WEBSOCKET_MESSAGE_RECEIVED, "CHAT_MESSAGE", request.getBoardId(), userEmail);
 

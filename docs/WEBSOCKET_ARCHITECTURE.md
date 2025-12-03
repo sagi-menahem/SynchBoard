@@ -5,6 +5,7 @@ This document describes the real-time communication system in SynchBoard, includ
 ## Overview
 
 SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The architecture consists of:
+
 - **Frontend**: Singleton `WebSocketService` managing STOMP client lifecycle
 - **Backend**: Spring WebSocket with ActiveMQ Artemis as external message broker
 - **Security**: JWT authentication on STOMP CONNECT frames
@@ -38,19 +39,19 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 
 ### Client → Server (Application Prefix: `/app`)
 
-| Destination | Purpose | DTO |
-|-------------|---------|-----|
-| `/app/board.drawAction` | Canvas drawing operations | `BoardActionDTO.Request` |
-| `/app/chat.sendMessage` | Chat messages | `ChatMessageDTO.Request` |
-| `/app/board.canvasSettingsUpdate` | Canvas size/background changes | `CanvasSettingsDTO` |
+| Destination                       | Purpose                        | DTO                      |
+| --------------------------------- | ------------------------------ | ------------------------ |
+| `/app/board.drawAction`           | Canvas drawing operations      | `BoardActionDTO.Request` |
+| `/app/chat.sendMessage`           | Chat messages                  | `ChatMessageDTO.Request` |
+| `/app/board.canvasSettingsUpdate` | Canvas size/background changes | `CanvasSettingsDTO`      |
 
 ### Server → Client (Topic Prefix: `/topic`)
 
-| Destination | Purpose | DTO |
-|-------------|---------|-----|
-| `/topic/board/{boardId}` | Board updates, drawings, chat | Various |
-| `/topic/user/{userEmail}` | Personal notifications | `UserUpdateDTO` |
-| `/user/queue/errors` | User-specific errors | Error object |
+| Destination               | Purpose                       | DTO             |
+| ------------------------- | ----------------------------- | --------------- |
+| `/topic/board/{boardId}`  | Board updates, drawings, chat | Various         |
+| `/topic/user/{userEmail}` | Personal notifications        | `UserUpdateDTO` |
+| `/user/queue/errors`      | User-specific errors          | Error object    |
 
 > **Note:** Backend sends errors via `messagingTemplate.convertAndSendToUser(email, "/topic/errors", ...)`. Spring STOMP automatically translates this to `/user/queue/errors` for the recipient.
 
@@ -59,6 +60,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ### Drawing Actions
 
 **Request (`BoardActionDTO.Request`):**
+
 ```json
 {
   "boardId": 123,
@@ -76,16 +78,20 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ```
 
 **Response (`BoardActionDTO.Response`):**
+
 ```json
 {
   "type": "OBJECT_ADD",
-  "payload": { /* same as request payload */ },
+  "payload": {
+    /* same as request payload */
+  },
   "sender": "user@example.com",
   "instanceId": "uuid-v4"
 }
 ```
 
 **Action Types:**
+
 - `OBJECT_ADD` - Create new canvas object
 - `OBJECT_UPDATE` - Modify existing object
 - `OBJECT_DELETE` - Remove object (soft delete)
@@ -93,6 +99,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ### Chat Messages
 
 **Request (`ChatMessageDTO.Request`):**
+
 ```json
 {
   "content": "Hello team!",
@@ -102,6 +109,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ```
 
 **Response (`ChatMessageDTO.Response`):**
+
 ```json
 {
   "id": 456,
@@ -120,6 +128,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ### Board Updates
 
 **`BoardUpdateDTO`:**
+
 ```json
 {
   "updateType": "MEMBERS_UPDATED",
@@ -128,6 +137,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ```
 
 **Update Types:**
+
 - `DETAILS_UPDATED` - Name, description, or picture changed
 - `MEMBERS_UPDATED` - Members added or removed
 - `CANVAS_UPDATED` - Canvas settings changed
@@ -135,6 +145,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ### User Notifications
 
 **`UserUpdateDTO`:**
+
 ```json
 {
   "updateType": "BOARD_LIST_CHANGED"
@@ -142,6 +153,7 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ```
 
 **Update Types:**
+
 - `BOARD_LIST_CHANGED` - User's board access modified
 - `BOARD_DETAILS_CHANGED` - A board visible to user was updated
 
@@ -163,14 +175,14 @@ export const websocketService = new WebSocketService();
 
 ### Key Methods
 
-| Method | Purpose |
-|--------|---------|
-| `connect(token, callback)` | Establish authenticated connection |
-| `disconnect()` | Clean disconnection with state reset |
-| `subscribe(topic, callback, schemaKey?)` | Subscribe to STOMP topic |
-| `sendMessage(destination, body)` | Publish message to destination |
-| `registerRollbackCallback(fn)` | Register optimistic update rollback |
-| `registerQueueProcessor(fn)` | Register offline message processor |
+| Method                                   | Purpose                              |
+| ---------------------------------------- | ------------------------------------ |
+| `connect(token, callback)`               | Establish authenticated connection   |
+| `disconnect()`                           | Clean disconnection with state reset |
+| `subscribe(topic, callback, schemaKey?)` | Subscribe to STOMP topic             |
+| `sendMessage(destination, body)`         | Publish message to destination       |
+| `registerRollbackCallback(fn)`           | Register optimistic update rollback  |
+| `registerQueueProcessor(fn)`             | Register offline message processor   |
 
 ### Connection States
 
@@ -203,6 +215,7 @@ maxAttempts = 5
 ```
 
 **Example progression:**
+
 1. Attempt 1: 2s delay
 2. Attempt 2: 4s delay
 3. Attempt 3: 8s delay
@@ -240,15 +253,15 @@ Messages are validated before callback invocation:
 
 ```typescript
 const schemas = {
-  'board': {},
-  'user': {
+  board: {},
+  user: {
     requiredFields: ['updateType'],
-    allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED', 'CANVAS_SETTINGS_CHANGED']
+    allowedTypes: ['BOARD_LIST_CHANGED', 'BOARD_DETAILS_CHANGED', 'CANVAS_SETTINGS_CHANGED'],
   },
-  'chat': {
+  chat: {
     requiredFields: ['type', 'content', 'timestamp', 'senderEmail'],
-    maxLength: 5000
-  }
+    maxLength: 5000,
+  },
 };
 ```
 
@@ -268,21 +281,21 @@ const schemas = {
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay("/topic")
-              .setRelayHost(brokerHost)
-              .setRelayPort(brokerPort)
-              .setClientLogin(brokerUser)
-              .setClientPasscode(brokerPassword);
-        config.setApplicationDestinationPrefixes("/app");
-    }
+  @Override
+  public void configureMessageBroker(MessageBrokerRegistry config) {
+    config
+      .enableStompBrokerRelay("/topic")
+      .setRelayHost(brokerHost)
+      .setRelayPort(brokerPort)
+      .setClientLogin(brokerUser)
+      .setClientPasscode(brokerPassword);
+    config.setApplicationDestinationPrefixes("/app");
+  }
 
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOrigins(allowedOrigins);
-    }
+  @Override
+  public void registerStompEndpoints(StompEndpointRegistry registry) {
+    registry.addEndpoint("/ws").setAllowedOrigins(allowedOrigins);
+  }
 }
 ```
 
@@ -293,25 +306,25 @@ Authenticates WebSocket connections:
 ```java
 @Override
 public Message<?> preSend(Message<?> message, MessageChannel channel) {
-    if (command == StompCommand.CONNECT) {
-        String authHeader = accessor.getFirstNativeHeader("Authorization");
-        String jwt = authHeader.substring(7); // Remove "Bearer "
+  if (command == StompCommand.CONNECT) {
+    String authHeader = accessor.getFirstNativeHeader("Authorization");
+    String jwt = authHeader.substring(7); // Remove "Bearer "
 
-        if (jwtService.isTokenValid(jwt, userDetails)) {
-            accessor.setUser(authToken);
-        }
+    if (jwtService.isTokenValid(jwt, userDetails)) {
+      accessor.setUser(authToken);
     }
-    return message;
+  }
+  return message;
 }
 ```
 
 ## Size Limits
 
-| Layer | Limit | Purpose |
-|-------|-------|---------|
-| Frontend message | 480 KB | Prevent oversized drawings |
-| Backend transport | 1 MB | STOMP frame limit |
-| Backend buffer | 1 MB | Per-connection send buffer |
+| Layer             | Limit  | Purpose                    |
+| ----------------- | ------ | -------------------------- |
+| Frontend message  | 480 KB | Prevent oversized drawings |
+| Backend transport | 1 MB   | STOMP frame limit          |
+| Backend buffer    | 1 MB   | Per-connection send buffer |
 
 ## Heartbeat Configuration
 
@@ -342,7 +355,7 @@ stompClient.onStompError = (frame) => {
 
 stompClient.onWebSocketClose = () => {
   if (this.rollbackCallbacks.size > 0) {
-    this.rollbackCallbacks.forEach(callback => callback());
+    this.rollbackCallbacks.forEach((callback) => callback());
   }
 };
 ```
@@ -363,12 +376,12 @@ catch (Exception e) {
 
 ## Timing Constants
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| Connection timeout | 10s | Max wait for STOMP CONNECT |
-| Heartbeat interval | 10s | Keep-alive frequency |
-| Base reconnect delay | 2s | Initial retry delay |
-| Max reconnect delay | 30s | Capped retry delay |
-| Max reconnect attempts | 5 | Before giving up |
-| Subscription delay | 100ms | Stability buffer |
-| State poll interval | 3s | UI sync frequency |
+| Constant               | Value | Purpose                    |
+| ---------------------- | ----- | -------------------------- |
+| Connection timeout     | 10s   | Max wait for STOMP CONNECT |
+| Heartbeat interval     | 10s   | Keep-alive frequency       |
+| Base reconnect delay   | 2s    | Initial retry delay        |
+| Max reconnect delay    | 30s   | Capped retry delay         |
+| Max reconnect attempts | 5     | Before giving up           |
+| Subscription delay     | 100ms | Stability buffer           |
+| State poll interval    | 3s    | UI sync frequency          |

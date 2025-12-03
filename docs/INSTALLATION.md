@@ -387,11 +387,11 @@ The application uses environment variables for configuration. See `.env.example`
 
 The frontend uses Vite build-time environment variables that are baked into the static build:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VITE_API_BASE_URL` | `/api` | Base URL for API requests |
-| `VITE_WEBSOCKET_URL` | `/ws` | WebSocket endpoint path |
-| `VITE_GOOGLE_CLIENT_ID` | - | Google OAuth client ID for One Tap |
+| Variable                | Default | Description                        |
+| ----------------------- | ------- | ---------------------------------- |
+| `VITE_API_BASE_URL`     | `/api`  | Base URL for API requests          |
+| `VITE_WEBSOCKET_URL`    | `/ws`   | WebSocket endpoint path            |
+| `VITE_GOOGLE_CLIENT_ID` | -       | Google OAuth client ID for One Tap |
 
 **Important Notes:**
 

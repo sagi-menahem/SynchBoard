@@ -5,6 +5,7 @@ This document describes the undo/redo history system in SynchBoard, including ac
 ## Overview
 
 SynchBoard uses a database-backed action history system that:
+
 - Tracks all drawing operations per board
 - Stores object state snapshots for restoration
 - Uses soft deletion for reversible object removal
@@ -14,11 +15,11 @@ SynchBoard uses a database-backed action history system that:
 
 Three action types are tracked:
 
-| Action | Description | Undo Behavior | Redo Behavior |
-|--------|-------------|---------------|---------------|
-| `OBJECT_ADD` | New object created | Soft delete object | Restore object |
-| `OBJECT_UPDATE` | Object modified | Restore previous state | Apply new state |
-| `OBJECT_DELETE` | Object deleted | Restore object | Soft delete object |
+| Action          | Description        | Undo Behavior          | Redo Behavior      |
+| --------------- | ------------------ | ---------------------- | ------------------ |
+| `OBJECT_ADD`    | New object created | Soft delete object     | Restore object     |
+| `OBJECT_UPDATE` | Object modified    | Restore previous state | Apply new state    |
+| `OBJECT_DELETE` | Object deleted     | Restore object         | Soft delete object |
 
 ## Data Model
 
@@ -28,38 +29,40 @@ Three action types are tracked:
 @Entity
 @Table(name = "action_history")
 public class ActionHistory {
-    @Id @GeneratedValue
-    private Long actionId;
 
-    @ManyToOne
-    private GroupBoard board;
+  @Id
+  @GeneratedValue
+  private Long actionId;
 
-    @ManyToOne
-    private User user;
+  @ManyToOne
+  private GroupBoard board;
 
-    @ManyToOne
-    private BoardObject boardObject;
+  @ManyToOne
+  private User user;
 
-    private String actionType;        // CREATE, UPDATE, DELETE
-    private LocalDateTime timestamp;
+  @ManyToOne
+  private BoardObject boardObject;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private String stateBefore;       // Object state before action
+  private String actionType; // CREATE, UPDATE, DELETE
+  private LocalDateTime timestamp;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private String stateAfter;        // Object state after action
+  @JdbcTypeCode(SqlTypes.JSON)
+  private String stateBefore; // Object state before action
 
-    private boolean isUndone;         // Tracks undo state
+  @JdbcTypeCode(SqlTypes.JSON)
+  private String stateAfter; // Object state after action
+
+  private boolean isUndone; // Tracks undo state
 }
 ```
 
 ### State Snapshots
 
-| Action | stateBefore | stateAfter |
-|--------|-------------|------------|
-| ADD | `null` | Object JSON |
-| UPDATE | Previous JSON | New JSON |
-| DELETE | Object JSON | `null` |
+| Action | stateBefore   | stateAfter  |
+| ------ | ------------- | ----------- |
+| ADD    | `null`        | Object JSON |
+| UPDATE | Previous JSON | New JSON    |
+| DELETE | Object JSON   | `null`      |
 
 ### Soft Delete
 
@@ -67,10 +70,11 @@ Objects use `isActive` flag for soft deletion:
 
 ```java
 @Column(name = "is_active")
-private boolean isActive;  // true: visible, false: deleted
+private boolean isActive; // true: visible, false: deleted
 ```
 
 This allows:
+
 - Reversible deletion
 - Audit trail preservation
 - Clean undo/redo semantics
@@ -119,17 +123,19 @@ New actions clear the redo stack (standard UX pattern).
 
 ## API Endpoints
 
-| Method | Path | Response |
-|--------|------|----------|
-| POST | `/api/boards/{boardId}/undo` | 200 with action or 204 No Content |
-| POST | `/api/boards/{boardId}/redo` | 200 with action or 204 No Content |
+| Method | Path                         | Response                          |
+| ------ | ---------------------------- | --------------------------------- |
+| POST   | `/api/boards/{boardId}/undo` | 200 with action or 204 No Content |
+| POST   | `/api/boards/{boardId}/redo` | 200 with action or 204 No Content |
 
 ### Response Format
 
 ```json
 {
   "type": "OBJECT_DELETE",
-  "payload": { /* restored object data */ },
+  "payload": {
+    /* restored object data */
+  },
   "sender": "system-undo-redo",
   "instanceId": "abc123"
 }
@@ -141,14 +147,14 @@ New actions clear the redo stack (standard UX pattern).
 
 ```typescript
 const {
-  undoCount,           // Number of undoable actions
-  redoCount,           // Number of redoable actions
-  isUndoAvailable,     // Boolean for button state
-  isRedoAvailable,     // Boolean for button state
-  handleUndo,          // Trigger undo
-  handleRedo,          // Trigger redo
-  resetCounts,         // Initialize on board load
-  incrementUndo,       // Called when new action created
+  undoCount, // Number of undoable actions
+  redoCount, // Number of redoable actions
+  isUndoAvailable, // Boolean for button state
+  isRedoAvailable, // Boolean for button state
+  handleUndo, // Trigger undo
+  handleRedo, // Trigger redo
+  resetCounts, // Initialize on board load
+  incrementUndo, // Called when new action created
 } = useBoardActions(boardId);
 ```
 
@@ -172,6 +178,7 @@ The `FloatingActions` component displays undo/redo buttons:
 ```
 
 Features:
+
 - Buttons disabled when stack empty
 - Toast notifications for empty stacks
 - RTL/LTR aware positioning
@@ -243,34 +250,35 @@ CREATE INDEX idx_action_history_board_undone
 ## History Limits
 
 Currently, all actions are retained indefinitely. Cleanup occurs:
+
 - When board is deleted: `deleteAllByBoard_BoardGroupId()`
 - When user account is deleted: `deleteAllByUser_Email()`
 
 ## Error Handling
 
-| Scenario | Backend Response | Frontend Behavior |
-|----------|-----------------|-------------------|
-| No actions to undo | 204 No Content | Toast: "Nothing to undo" |
-| No actions to redo | 204 No Content | Toast: "Nothing to redo" |
-| User not member | 403 Forbidden | Error toast |
-| Object not found | 404 Not Found | Error toast |
+| Scenario           | Backend Response | Frontend Behavior        |
+| ------------------ | ---------------- | ------------------------ |
+| No actions to undo | 204 No Content   | Toast: "Nothing to undo" |
+| No actions to redo | 204 No Content   | Toast: "Nothing to redo" |
+| User not member    | 403 Forbidden    | Error toast              |
+| Object not found   | 404 Not Found    | Error toast              |
 
 ## Key Files
 
 ### Backend
 
-| File | Purpose |
-|------|---------|
-| `entity/ActionHistory.java` | History entity |
-| `entity/BoardObject.java` | Object with soft delete |
-| `service/board/ActionHistoryService.java` | Undo/redo logic |
-| `repository/ActionHistoryRepository.java` | History queries |
-| `controller/GroupBoardController.java` | REST endpoints |
+| File                                      | Purpose                 |
+| ----------------------------------------- | ----------------------- |
+| `entity/ActionHistory.java`               | History entity          |
+| `entity/BoardObject.java`                 | Object with soft delete |
+| `service/board/ActionHistoryService.java` | Undo/redo logic         |
+| `repository/ActionHistoryRepository.java` | History queries         |
+| `controller/GroupBoardController.java`    | REST endpoints          |
 
 ### Frontend
 
-| File | Purpose |
-|------|---------|
-| `features/board/hooks/workspace/useBoardActions.ts` | State management |
-| `features/board/components/workspace/FloatingActions.tsx` | UI buttons |
-| `features/board/services/boardService.ts` | API calls |
+| File                                                      | Purpose          |
+| --------------------------------------------------------- | ---------------- |
+| `features/board/hooks/workspace/useBoardActions.ts`       | State management |
+| `features/board/components/workspace/FloatingActions.tsx` | UI buttons       |
+| `features/board/services/boardService.ts`                 | API calls        |

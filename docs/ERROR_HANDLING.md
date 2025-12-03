@@ -6,15 +6,15 @@ This document describes the error handling architecture in SynchBoard, including
 
 ### Exception Hierarchy
 
-| Exception | HTTP Status | Purpose |
-|-----------|-------------|---------|
-| `ResourceNotFoundException` | 404 | Entity not found in database |
-| `ResourceConflictException` | 409 | Duplicate or conflicting data |
-| `InvalidRequestException` | 400 | Invalid input or business rule violation |
-| `AccessDeniedException` | 403 | Insufficient permissions |
-| `BadCredentialsException` | 401 | Invalid login credentials |
-| `MethodArgumentNotValidException` | 400 | Bean validation failure |
-| `Exception` (fallback) | 500 | Unexpected errors |
+| Exception                         | HTTP Status | Purpose                                  |
+| --------------------------------- | ----------- | ---------------------------------------- |
+| `ResourceNotFoundException`       | 404         | Entity not found in database             |
+| `ResourceConflictException`       | 409         | Duplicate or conflicting data            |
+| `InvalidRequestException`         | 400         | Invalid input or business rule violation |
+| `AccessDeniedException`           | 403         | Insufficient permissions                 |
+| `BadCredentialsException`         | 401         | Invalid login credentials                |
+| `MethodArgumentNotValidException` | 400         | Bean validation failure                  |
+| `Exception` (fallback)            | 500         | Unexpected errors                        |
 
 ### Global Exception Handler
 
@@ -24,13 +24,14 @@ Located at `exception/GlobalExceptionHandler.java`:
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(
-        ResourceNotFoundException ex) {
-        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
-    }
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(
+    ResourceNotFoundException ex
+  ) {
+    return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+  }
 
-    // ... other handlers
+  // ... other handlers
 }
 ```
 
@@ -40,11 +41,12 @@ All exceptions are logged with appropriate severity before response generation.
 
 ```java
 public class ErrorResponseDTO {
-    private String message;        // Human-readable message
-    private String errorCode;      // Programmatic error code
-    private Integer statusCode;    // HTTP status
-    private String details;        // Technical details
-    private LocalDateTime timestamp; // When error occurred
+
+  private String message; // Human-readable message
+  private String errorCode; // Programmatic error code
+  private Integer statusCode; // HTTP status
+  private String details; // Technical details
+  private LocalDateTime timestamp; // When error occurred
 }
 ```
 
@@ -95,46 +97,46 @@ Error messages are centralized in `MessageConstants.java`:
 
 ### Authentication
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `AUTH_BAD_CREDENTIALS` | auth.badCredentials | Invalid login |
-| `AUTH_FAILED_TRY_AGAIN` | auth.failedTryAgain | General auth failure |
+| Constant                        | Value                       | Purpose                |
+| ------------------------------- | --------------------------- | ---------------------- |
+| `AUTH_BAD_CREDENTIALS`          | auth.badCredentials         | Invalid login          |
+| `AUTH_FAILED_TRY_AGAIN`         | auth.failedTryAgain         | General auth failure   |
 | `AUTH_EMAIL_ALREADY_REGISTERED` | auth.emailAlreadyRegistered | Duplicate registration |
-| `AUTH_NOT_ADMIN` | error.auth.notAdmin | Not an admin |
-| `AUTH_NOT_MEMBER` | error.auth.notMember | Not a board member |
+| `AUTH_NOT_ADMIN`                | error.auth.notAdmin         | Not an admin           |
+| `AUTH_NOT_MEMBER`               | error.auth.notMember        | Not a board member     |
 
 ### User
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `USER_NOT_FOUND` | error.user.notFound | User doesn't exist |
-| `USER_ALREADY_MEMBER` | error.user.alreadyMember | Already board member |
-| `CANNOT_INVITE_SELF` | error.user.cannotInviteSelf | Self-invitation |
-| `USER_IS_ALREADY_ADMIN` | error.user.alreadyAdmin | Already admin |
+| Constant                | Value                       | Purpose              |
+| ----------------------- | --------------------------- | -------------------- |
+| `USER_NOT_FOUND`        | error.user.notFound         | User doesn't exist   |
+| `USER_ALREADY_MEMBER`   | error.user.alreadyMember    | Already board member |
+| `CANNOT_INVITE_SELF`    | error.user.cannotInviteSelf | Self-invitation      |
+| `USER_IS_ALREADY_ADMIN` | error.user.alreadyAdmin     | Already admin        |
 
 ### Board
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `BOARD_NOT_FOUND` | error.board.notFound | Board doesn't exist |
-| `BOARD_NAME_CANT_BE_EMPTY` | error.board.nameCannotBeEmpty | Empty name |
-| `BOARD_NAME_LENGTH` | error.board.nameLength | Invalid name length |
-| `BOARD_CANNOT_REMOVE_SELF` | error.board.cannotRemoveSelf | Self-removal |
+| Constant                   | Value                         | Purpose             |
+| -------------------------- | ----------------------------- | ------------------- |
+| `BOARD_NOT_FOUND`          | error.board.notFound          | Board doesn't exist |
+| `BOARD_NAME_CANT_BE_EMPTY` | error.board.nameCannotBeEmpty | Empty name          |
+| `BOARD_NAME_LENGTH`        | error.board.nameLength        | Invalid name length |
+| `BOARD_CANNOT_REMOVE_SELF` | error.board.cannotRemoveSelf  | Self-removal        |
 
 ### Validation
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `ERROR_EMAIL_CANT_BE_EMPTY` | error.email.cannotBeEmpty | Empty email |
-| `ERROR_EMAIL_SHOULD_BE_VALID` | error.email.shouldBeValid | Invalid email |
+| Constant                       | Value                        | Purpose        |
+| ------------------------------ | ---------------------------- | -------------- |
+| `ERROR_EMAIL_CANT_BE_EMPTY`    | error.email.cannotBeEmpty    | Empty email    |
+| `ERROR_EMAIL_SHOULD_BE_VALID`  | error.email.shouldBeValid    | Invalid email  |
 | `ERROR_PASSWORD_CANT_BE_EMPTY` | error.password.cannotBeEmpty | Empty password |
 
 ### General
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `UNEXPECTED_ERROR` | error.unexpected | Fallback error |
-| `PASSWORD_INCORRECT` | password.incorrect | Wrong password |
+| Constant               | Value              | Purpose            |
+| ---------------------- | ------------------ | ------------------ |
+| `UNEXPECTED_ERROR`     | error.unexpected   | Fallback error     |
+| `PASSWORD_INCORRECT`   | password.incorrect | Wrong password     |
 | `PASSWORD_SAME_AS_OLD` | password.sameAsOld | Password unchanged |
 
 ## Bean Validation Errors
@@ -143,10 +145,14 @@ Validation annotations trigger `MethodArgumentNotValidException`:
 
 ```java
 public class CreateBoardRequest {
-    @NotBlank(message = MessageConstants.BOARD_NAME_CANT_BE_EMPTY)
-    @Size(min = BOARD_NAME_MIN_LENGTH, max = BOARD_NAME_MAX_LENGTH,
-          message = MessageConstants.BOARD_NAME_LENGTH)
-    private String name;
+
+  @NotBlank(message = MessageConstants.BOARD_NAME_CANT_BE_EMPTY)
+  @Size(
+    min = BOARD_NAME_MIN_LENGTH,
+    max = BOARD_NAME_MAX_LENGTH,
+    message = MessageConstants.BOARD_NAME_LENGTH
+  )
+  private String name;
 }
 ```
 
@@ -155,13 +161,15 @@ Handler aggregates all validation errors:
 ```java
 @ExceptionHandler(MethodArgumentNotValidException.class)
 public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
-    MethodArgumentNotValidException ex) {
-    String errorMessage = ex.getBindingResult()
-        .getFieldErrors()
-        .stream()
-        .map(error -> error.getDefaultMessage())
-        .collect(Collectors.joining(", "));
-    return buildErrorResponse(HttpStatus.BAD_REQUEST, errorMessage);
+  MethodArgumentNotValidException ex
+) {
+  String errorMessage = ex
+    .getBindingResult()
+    .getFieldErrors()
+    .stream()
+    .map((error) -> error.getDefaultMessage())
+    .collect(Collectors.joining(", "));
+  return buildErrorResponse(HttpStatus.BAD_REQUEST, errorMessage);
 }
 ```
 
@@ -169,18 +177,18 @@ public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
 
 Defined in `MessageConstants.java`:
 
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `BOARD_NAME_MIN_LENGTH` | 3 | Min board name |
-| `BOARD_NAME_MAX_LENGTH` | 100 | Max board name |
-| `CANVAS_WIDTH_MIN` | 400 | Min canvas width |
-| `CANVAS_WIDTH_MAX` | 4000 | Max canvas width |
-| `CANVAS_HEIGHT_MIN` | 300 | Min canvas height |
-| `CANVAS_HEIGHT_MAX` | 4000 | Max canvas height |
-| `CANVAS_CHAT_SPLIT_RATIO_MIN` | 30 | Min split ratio |
-| `CANVAS_CHAT_SPLIT_RATIO_MAX` | 70 | Max split ratio |
-| `DEFAULT_STROKE_WIDTH_MIN` | 1 | Min stroke width |
-| `DEFAULT_STROKE_WIDTH_MAX` | 50 | Max stroke width |
+| Constant                      | Value | Purpose           |
+| ----------------------------- | ----- | ----------------- |
+| `BOARD_NAME_MIN_LENGTH`       | 3     | Min board name    |
+| `BOARD_NAME_MAX_LENGTH`       | 100   | Max board name    |
+| `CANVAS_WIDTH_MIN`            | 400   | Min canvas width  |
+| `CANVAS_WIDTH_MAX`            | 4000  | Max canvas width  |
+| `CANVAS_HEIGHT_MIN`           | 300   | Min canvas height |
+| `CANVAS_HEIGHT_MAX`           | 4000  | Max canvas height |
+| `CANVAS_CHAT_SPLIT_RATIO_MIN` | 30    | Min split ratio   |
+| `CANVAS_CHAT_SPLIT_RATIO_MAX` | 70    | Max split ratio   |
+| `DEFAULT_STROKE_WIDTH_MIN`    | 1     | Min stroke width  |
+| `DEFAULT_STROKE_WIDTH_MAX`    | 50    | Max stroke width  |
 
 ## WebSocket Errors
 
@@ -211,7 +219,7 @@ api.interceptors.response.use(
       // Redirect to login
     }
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
@@ -230,13 +238,13 @@ try {
 
 ### Error Display Patterns
 
-| Scenario | Display Method |
-|----------|----------------|
-| API errors | Toast notification |
-| Validation errors | Form field errors |
-| Network errors | Toast notification |
-| Auth errors | Redirect to login |
-| WebSocket errors | Toast notification |
+| Scenario          | Display Method     |
+| ----------------- | ------------------ |
+| API errors        | Toast notification |
+| Validation errors | Form field errors  |
+| Network errors    | Toast notification |
+| Auth errors       | Redirect to login  |
+| WebSocket errors  | Toast notification |
 
 ## Logging
 
@@ -249,44 +257,45 @@ log.warn(LoggingConstants.AUTH_LOGIN_FAILED, "unknown", ex.getMessage());
 ```
 
 Log levels:
+
 - `ERROR`: Unexpected exceptions (500)
 - `WARN`: Expected exceptions (400, 403, 404, 409)
 - `DEBUG`: Detailed troubleshooting
 
 ## HTTP Status Code Summary
 
-| Status | Exception | Meaning |
-|--------|-----------|---------|
-| 200 | - | Success |
-| 201 | - | Created |
-| 204 | - | No Content |
-| 400 | `InvalidRequestException`, validation | Bad request |
-| 401 | `BadCredentialsException` | Unauthorized |
-| 403 | `AccessDeniedException` | Forbidden |
-| 404 | `ResourceNotFoundException` | Not found |
-| 409 | `ResourceConflictException` | Conflict |
-| 500 | `Exception` | Server error |
+| Status | Exception                             | Meaning      |
+| ------ | ------------------------------------- | ------------ |
+| 200    | -                                     | Success      |
+| 201    | -                                     | Created      |
+| 204    | -                                     | No Content   |
+| 400    | `InvalidRequestException`, validation | Bad request  |
+| 401    | `BadCredentialsException`             | Unauthorized |
+| 403    | `AccessDeniedException`               | Forbidden    |
+| 404    | `ResourceNotFoundException`           | Not found    |
+| 409    | `ResourceConflictException`           | Conflict     |
+| 500    | `Exception`                           | Server error |
 
 ## Key Files
 
 ### Backend
 
-| File | Purpose |
-|------|---------|
-| `exception/GlobalExceptionHandler.java` | Centralized handler |
-| `exception/ResourceNotFoundException.java` | 404 exception |
-| `exception/ResourceConflictException.java` | 409 exception |
-| `exception/InvalidRequestException.java` | 400 exception |
-| `dto/error/ErrorResponseDTO.java` | Error response format |
-| `constants/MessageConstants.java` | Error message keys |
+| File                                       | Purpose               |
+| ------------------------------------------ | --------------------- |
+| `exception/GlobalExceptionHandler.java`    | Centralized handler   |
+| `exception/ResourceNotFoundException.java` | 404 exception         |
+| `exception/ResourceConflictException.java` | 409 exception         |
+| `exception/InvalidRequestException.java`   | 400 exception         |
+| `dto/error/ErrorResponseDTO.java`          | Error response format |
+| `constants/MessageConstants.java`          | Error message keys    |
 
 ### Frontend
 
-| File | Purpose |
-|------|---------|
-| `shared/lib/apiClient.ts` | HTTP error handling |
+| File                         | Purpose                |
+| ---------------------------- | ---------------------- |
+| `shared/lib/apiClient.ts`    | HTTP error handling    |
 | `locales/en/validation.json` | English error messages |
-| `locales/he/validation.json` | Hebrew error messages |
+| `locales/he/validation.json` | Hebrew error messages  |
 
 ## Best Practices
 

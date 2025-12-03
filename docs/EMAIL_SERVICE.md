@@ -5,6 +5,7 @@ This document describes the email service in SynchBoard, including configuration
 ## Overview
 
 SynchBoard uses **SendGrid** for transactional emails:
+
 - Email verification during registration
 - Password reset codes
 
@@ -14,23 +15,24 @@ Email functionality is **optional** - if not configured, registration proceeds w
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `SENDGRID_API_KEY` | For email | - | SendGrid API key |
-| `SENDGRID_FROM_EMAIL` | No | noreply@synchboard.com | Sender email |
-| `SENDGRID_FROM_NAME` | No | SynchBoard Team | Sender display name |
-| `VERIFICATION_EXPIRY_MINUTES` | No | 15 | Verification code lifetime |
-| `PASSWORD_RESET_EXPIRY_MINUTES` | No | 60 | Reset code lifetime |
+| Variable                        | Required  | Default                | Description                |
+| ------------------------------- | --------- | ---------------------- | -------------------------- |
+| `SENDGRID_API_KEY`              | For email | -                      | SendGrid API key           |
+| `SENDGRID_FROM_EMAIL`           | No        | noreply@synchboard.com | Sender email               |
+| `SENDGRID_FROM_NAME`            | No        | SynchBoard Team        | Sender display name        |
+| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15                     | Verification code lifetime |
+| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60                     | Reset code lifetime        |
 
 ### Feature Detection
 
 ```java
 public boolean isEmailEnabled() {
-    return sendGridApiKey != null && !sendGridApiKey.trim().isEmpty();
+  return sendGridApiKey != null && !sendGridApiKey.trim().isEmpty();
 }
 ```
 
 When disabled:
+
 - Registration creates users immediately without verification
 - Password reset is unavailable
 - Warning logged for skipped emails
@@ -44,6 +46,7 @@ When disabled:
 **Code Format**: 6-digit numeric (`000000` - `999999`)
 
 **Template Variables**:
+
 - `verificationCode`: The 6-digit code
 - `expiryMinutes`: Minutes until code expires (default 15)
 
@@ -54,6 +57,7 @@ When disabled:
 **Code Format**: 6-digit numeric
 
 **Template Variables**:
+
 - `resetCode`: The 6-digit code
 - `expiryMinutes`: Minutes until code expires (default 60)
 
@@ -61,7 +65,7 @@ When disabled:
 
 ```java
 public String generateVerificationCode() {
-    return String.format("%06d", (int) (Math.random() * 1000000));
+  return String.format("%06d", (int) (Math.random() * 1000000));
 }
 ```
 
@@ -87,16 +91,14 @@ Uses **Thymeleaf** for HTML rendering:
 ```html
 <div class="code" th:text="${verificationCode}">123456</div>
 <p th:utext="#{email.verification.expiry(${expiryMinutes})}">
-    This code will expire in <strong>15 minutes</strong>
+  This code will expire in <strong>15 minutes</strong>
 </p>
 ```
 
 ### Template Selection
 
 ```java
-String templateName = isHebrewLocale(locale)
-    ? "email/verification_he"
-    : "email/verification";
+String templateName = isHebrewLocale(locale) ? "email/verification_he" : "email/verification";
 ```
 
 Locale determined by user's language preference.
@@ -107,23 +109,23 @@ Locale determined by user's language preference.
 
 Located in `backend/src/main/resources/messages/`:
 
-| Key | English | Purpose |
-|-----|---------|---------|
-| `email.verification.subject` | Verify Your Email | Subject line |
-| `email.verification.header` | Welcome to SynchBoard! | Header text |
-| `email.verification.title` | Verify Your Email Address | Title |
-| `email.verification.intro` | Thank you for registering... | Introduction |
-| `email.verification.important` | Important: | Label |
-| `email.verification.expiry` | This code will expire in {0} minutes | Expiry notice |
-| `email.verification.exactCode` | Enter the code exactly as shown | Instruction |
-| `email.verification.ignore` | If you didn't request this... | Disclaimer |
-| `email.footer.automated` | This is an automated message... | Footer |
+| Key                            | English                              | Purpose       |
+| ------------------------------ | ------------------------------------ | ------------- |
+| `email.verification.subject`   | Verify Your Email                    | Subject line  |
+| `email.verification.header`    | Welcome to SynchBoard!               | Header text   |
+| `email.verification.title`     | Verify Your Email Address            | Title         |
+| `email.verification.intro`     | Thank you for registering...         | Introduction  |
+| `email.verification.important` | Important:                           | Label         |
+| `email.verification.expiry`    | This code will expire in {0} minutes | Expiry notice |
+| `email.verification.exactCode` | Enter the code exactly as shown      | Instruction   |
+| `email.verification.ignore`    | If you didn't request this...        | Disclaimer    |
+| `email.footer.automated`       | This is an automated message...      | Footer        |
 
 ### Locale Detection
 
 ```java
 private boolean isHebrewLocale(Locale locale) {
-    return locale != null && "he".equals(locale.getLanguage());
+  return locale != null && "he".equals(locale.getLanguage());
 }
 ```
 
@@ -205,20 +207,20 @@ Templates use inline CSS for email client compatibility:
 
 ### Color Scheme
 
-| Element | Color |
-|---------|-------|
-| Header | `#3b82f6` (Blue) |
-| Code box | `#1f2937` (Dark gray) |
+| Element  | Color                  |
+| -------- | ---------------------- |
+| Header   | `#3b82f6` (Blue)       |
+| Code box | `#1f2937` (Dark gray)  |
 | Info box | `#e0f2fe` (Light blue) |
-| Text | `#333333` |
+| Text     | `#333333`              |
 
 ## Error Handling
 
-| Scenario | Behavior |
-|----------|----------|
-| API key missing | Log warning, return false |
-| SendGrid error | Log error, return false |
-| IOException | Catch exception, return false |
+| Scenario        | Behavior                      |
+| --------------- | ----------------------------- |
+| API key missing | Log warning, return false     |
+| SendGrid error  | Log error, return false       |
+| IOException     | Catch exception, return false |
 
 Service failures don't throw exceptions - callers check return value.
 
@@ -231,24 +233,26 @@ implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 ## Key Files
 
-| File | Purpose |
-|------|---------|
-| `service/auth/EmailService.java` | Email sending logic |
-| `templates/email/verification.html` | English verification template |
-| `templates/email/verification_he.html` | Hebrew verification template |
-| `templates/email/password-reset.html` | English reset template |
-| `templates/email/password-reset_he.html` | Hebrew reset template |
-| `messages/messages.properties` | English strings |
-| `messages/messages_he.properties` | Hebrew strings |
+| File                                     | Purpose                       |
+| ---------------------------------------- | ----------------------------- |
+| `service/auth/EmailService.java`         | Email sending logic           |
+| `templates/email/verification.html`      | English verification template |
+| `templates/email/verification_he.html`   | Hebrew verification template  |
+| `templates/email/password-reset.html`    | English reset template        |
+| `templates/email/password-reset_he.html` | Hebrew reset template         |
+| `messages/messages.properties`           | English strings               |
+| `messages/messages_he.properties`        | Hebrew strings                |
 
 ## Testing Locally
 
 Without SendGrid:
+
 1. Leave `SENDGRID_API_KEY` unset
 2. Registration works without verification
 3. Password reset unavailable
 
 With SendGrid:
+
 1. Create SendGrid account
 2. Generate API key with Mail Send permission
 3. Set `SENDGRID_API_KEY` in `.env`

@@ -95,11 +95,7 @@ export const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
             })}
 
             {/* Close button integrated into toolbar */}
-            <button
-              className={styles.closeButton}
-              onClick={onToggleExpand}
-              title={collapseLabel}
-            >
+            <button className={styles.closeButton} onClick={onToggleExpand} title={collapseLabel}>
               <ChevronUp size={20} className={styles.closeIcon} />
             </button>
           </motion.div>

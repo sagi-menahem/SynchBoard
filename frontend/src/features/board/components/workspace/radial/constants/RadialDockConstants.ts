@@ -81,11 +81,26 @@ export const LINE_TOOLS = [TOOLS.LINE, TOOLS.ARROW, TOOLS.DOTTED_LINE] as const;
 
 /** Configuration for dock tool items - labels are i18n keys under 'board:toolbar.tool' namespace */
 export const DOCK_TOOLS: ToolItem[] = [
-  { tool: TOOLS.BRUSH, type: 'direct', labelKey: 'brush', icon: React.createElement(Brush, { size: 20 }) },
-  { tool: TOOLS.ERASER, type: 'direct', labelKey: 'eraser', icon: React.createElement(Eraser, { size: 20 }) },
+  {
+    tool: TOOLS.BRUSH,
+    type: 'direct',
+    labelKey: 'brush',
+    icon: React.createElement(Brush, { size: 20 }),
+  },
+  {
+    tool: TOOLS.ERASER,
+    type: 'direct',
+    labelKey: 'eraser',
+    icon: React.createElement(Eraser, { size: 20 }),
+  },
   { tool: 'shapes', type: 'satellite', labelKey: 'shapes', isDynamic: true },
   { tool: 'lines', type: 'satellite', labelKey: 'lines', isDynamic: true },
-  { tool: TOOLS.TEXT, type: 'direct', labelKey: 'text', icon: React.createElement(Type, { size: 20 }) },
+  {
+    tool: TOOLS.TEXT,
+    type: 'direct',
+    labelKey: 'text',
+    icon: React.createElement(Type, { size: 20 }),
+  },
   {
     tool: TOOLS.COLOR_PICKER,
     type: 'direct',

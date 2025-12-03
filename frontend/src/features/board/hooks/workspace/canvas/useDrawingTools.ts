@@ -85,7 +85,16 @@ const handleBrushOrEraser = (ctx: ToolHandlerContext, tool: 'brush' | 'eraser'):
  * Creates a square with equal width and height.
  */
 const handleSquare: ToolPointerUpHandler = (ctx) => {
-  const { canvas, startPoint, currentPoint, strokeColor, strokeWidth, senderId, onDraw, isShapeSizeValid } = ctx;
+  const {
+    canvas,
+    startPoint,
+    currentPoint,
+    strokeColor,
+    strokeWidth,
+    senderId,
+    onDraw,
+    isShapeSizeValid,
+  } = ctx;
 
   const width = currentPoint.x - startPoint.x;
   const height = currentPoint.y - startPoint.y;
@@ -121,7 +130,16 @@ const handleSquare: ToolPointerUpHandler = (ctx) => {
  * Creates a rectangle with independent width and height.
  */
 const handleRectangle: ToolPointerUpHandler = (ctx) => {
-  const { canvas, startPoint, currentPoint, strokeColor, strokeWidth, senderId, onDraw, isShapeSizeValid } = ctx;
+  const {
+    canvas,
+    startPoint,
+    currentPoint,
+    strokeColor,
+    strokeWidth,
+    senderId,
+    onDraw,
+    isShapeSizeValid,
+  } = ctx;
 
   // Calculate top-left corner (handles drag in any direction)
   const rectX = Math.min(startPoint.x, currentPoint.x) / canvas.width;
@@ -150,7 +168,16 @@ const handleRectangle: ToolPointerUpHandler = (ctx) => {
  * Creates a circle with radius based on distance from start point.
  */
 const handleCircle: ToolPointerUpHandler = (ctx) => {
-  const { canvas, startPoint, currentPoint, strokeColor, strokeWidth, senderId, onDraw, isRadiusValid } = ctx;
+  const {
+    canvas,
+    startPoint,
+    currentPoint,
+    strokeColor,
+    strokeWidth,
+    senderId,
+    onDraw,
+    isRadiusValid,
+  } = ctx;
 
   const radius =
     Math.sqrt(
@@ -177,7 +204,16 @@ const handleCircle: ToolPointerUpHandler = (ctx) => {
  * Creates an isosceles triangle.
  */
 const handleTriangle: ToolPointerUpHandler = (ctx) => {
-  const { canvas, startPoint, currentPoint, strokeColor, strokeWidth, senderId, onDraw, isShapeSizeValid } = ctx;
+  const {
+    canvas,
+    startPoint,
+    currentPoint,
+    strokeColor,
+    strokeWidth,
+    senderId,
+    onDraw,
+    isShapeSizeValid,
+  } = ctx;
 
   const width = Math.abs(currentPoint.x - startPoint.x) / canvas.width;
   const height = Math.abs(currentPoint.y - startPoint.y) / canvas.height;
@@ -208,7 +244,16 @@ const handleTriangle: ToolPointerUpHandler = (ctx) => {
  * Creates a regular polygon with the specified number of sides.
  */
 const handlePolygon = (ctx: ToolHandlerContext, tool: 'pentagon' | 'hexagon'): void => {
-  const { canvas, startPoint, currentPoint, strokeColor, strokeWidth, senderId, onDraw, isRadiusValid } = ctx;
+  const {
+    canvas,
+    startPoint,
+    currentPoint,
+    strokeColor,
+    strokeWidth,
+    senderId,
+    onDraw,
+    isRadiusValid,
+  } = ctx;
 
   const pixelRadius = Math.sqrt(
     Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),
@@ -237,7 +282,16 @@ const handlePolygon = (ctx: ToolHandlerContext, tool: 'pentagon' | 'hexagon'): v
  * Creates a 5-pointed star.
  */
 const handleStar: ToolPointerUpHandler = (ctx) => {
-  const { canvas, startPoint, currentPoint, strokeColor, strokeWidth, senderId, onDraw, isRadiusValid } = ctx;
+  const {
+    canvas,
+    startPoint,
+    currentPoint,
+    strokeColor,
+    strokeWidth,
+    senderId,
+    onDraw,
+    isRadiusValid,
+  } = ctx;
 
   const pixelRadius = Math.sqrt(
     Math.pow(currentPoint.x - startPoint.x, 2) + Math.pow(currentPoint.y - startPoint.y, 2),

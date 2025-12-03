@@ -7,11 +7,13 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 ### JWT Token System
 
 **Configuration:**
+
 - Algorithm: HMAC SHA (jjwt library)
 - Expiration: 24 hours (configurable via `JWT_EXPIRATION_HOURS`)
 - Secret: Base64-encoded key from `JWT_SECRET_KEY` environment variable
 
 **Token Structure:**
+
 ```json
 {
   "sub": "user@example.com",
@@ -21,12 +23,14 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 ```
 
 **Token Flow:**
+
 1. User authenticates (login, OAuth2, or registration)
 2. Backend generates JWT with user email as subject
 3. Frontend stores token in localStorage
 4. Token attached to all protected requests via `Authorization: Bearer {token}` header
 
 **Token Validation:**
+
 - Backend: `JwtService.isTokenValid()` verifies signature and expiration
 - Frontend: `isTokenValid()` checks expiration for proactive refresh
 - Refresh threshold: Token refreshed if expiring within 5 minutes
@@ -34,6 +38,7 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 ### HTTP Request Authentication
 
 `JwtAuthFilter` (extends `OncePerRequestFilter`):
+
 1. Extracts `Authorization` header
 2. Validates `Bearer ` prefix (7 characters)
 3. Parses and validates JWT
@@ -43,6 +48,7 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 ### WebSocket Authentication
 
 `JwtChannelInterceptor` intercepts STOMP CONNECT frames:
+
 1. Extracts JWT from `Authorization` native header
 2. Validates token against user database
 3. Sets authentication on STOMP accessor
@@ -53,6 +59,7 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 ### Endpoint Security
 
 **Public Endpoints (no authentication required):**
+
 - `/api/auth/**` - Registration, login, verification
 - `/api/config/**` - Feature flags
 - `/ws/**` - WebSocket endpoint (auth via STOMP)
@@ -60,6 +67,7 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 - `GET /images/**` - Image serving
 
 **Protected Endpoints:**
+
 - `/api/users/**` - User profile operations
 - `/api/boards/**` - Board CRUD and management
 - All other endpoints - Authenticated users only
@@ -68,18 +76,20 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 
 `BoardAccessService` provides role-based access:
 
-| Method | Checks | Use Case |
-|--------|--------|----------|
-| `validateBoardAccess` | Member OR creator | View board, send messages |
-| `validateAdminAccess` | Admin member OR creator | Manage members, settings |
-| `validateCreatorAccess` | Creator only | Delete board, transfer ownership |
+| Method                  | Checks                  | Use Case                         |
+| ----------------------- | ----------------------- | -------------------------------- |
+| `validateBoardAccess`   | Member OR creator       | View board, send messages        |
+| `validateAdminAccess`   | Admin member OR creator | Manage members, settings         |
+| `validateCreatorAccess` | Creator only            | Delete board, transfer ownership |
 
 **Roles:**
+
 - **Creator**: User who created the board (stored in `GroupBoard.createdByUser`)
 - **Admin**: Member with `GroupMember.isAdmin = true`
 - **Member**: User in `GroupMember` table for the board
 
 **Access Denial:**
+
 - Throws `AccessDeniedException` (403) when access denied
 - Throws `ResourceNotFoundException` (404) when resource missing
 
@@ -114,6 +124,7 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 `SecurityUtils.ts` provides XSS prevention:
 
 **Blocked Patterns:**
+
 - Script tags: `<script>...</script>`
 - iFrame tags: `<iframe>...</iframe>`
 - JavaScript protocol: `javascript:`
@@ -121,16 +132,18 @@ This document describes the security mechanisms implemented in SynchBoard, inclu
 - Data URLs: `data:text/html`
 
 **Functions:**
+
 ```typescript
-sanitizeString(input)      // Remove XSS patterns from string
-sanitizeObject(obj)        // Recursively sanitize object properties
-isSafeUrl(url)            // Validate URL protocol
-validateMessage(data)      // Validate WebSocket message structure
+sanitizeString(input); // Remove XSS patterns from string
+sanitizeObject(obj); // Recursively sanitize object properties
+isSafeUrl(url); // Validate URL protocol
+validateMessage(data); // Validate WebSocket message structure
 ```
 
 ### Prototype Pollution Prevention
 
 All incoming objects checked for:
+
 - `__proto__` key
 - `prototype` key
 - `constructor.prototype` modifications
@@ -162,31 +175,36 @@ SVG Scanning (if SVG) → Size Check → Secure Path Resolution → Storage
 
 Binary header verification for each format:
 
-| Format | Signature |
-|--------|-----------|
-| JPEG | `0xFF 0xD8` |
-| PNG | `0x89 0x50 0x4E 0x47 0x0D 0x0A 0x1A 0x0A` |
-| GIF | `0x47 0x49 0x46 0x38` |
-| WebP | `0x52 0x49 0x46 0x46` + `WEBP` at offset 8 |
+| Format | Signature                                  |
+| ------ | ------------------------------------------ |
+| JPEG   | `0xFF 0xD8`                                |
+| PNG    | `0x89 0x50 0x4E 0x47 0x0D 0x0A 0x1A 0x0A`  |
+| GIF    | `0x47 0x49 0x46 0x38`                      |
+| WebP   | `0x52 0x49 0x46 0x46` + `WEBP` at offset 8 |
 
 ### SVG Security Scanning
 
 SVG files scanned for dangerous patterns (case-insensitive):
 
 **Script Execution:**
+
 - `<script`, `javascript:`, `vbscript:`, `livescript:`
 - `eval(`, `import(`
 
 **Event Handlers:**
+
 - `onclick`, `onload`, `onerror`, `onmouseover`, `onfocus`, `onblur`, `oninput`, `onchange`, `onsubmit`
 
 **Embedded Content:**
+
 - `<iframe`, `<embed`, `<object`, `<foreignobject`, `<applet`
 
 **Data URLs:**
+
 - `data:text/html`, `data:text/javascript`
 
 **DOM Manipulation:**
+
 - `document.cookie`, `document.write`, `window.location`
 - `.innerHTML`, `.outerHTML`, `expression(`
 
@@ -224,6 +242,7 @@ SVG files scanned for dangerous patterns (case-insensitive):
 ### Account Linking
 
 When Google user has existing local account:
+
 - Accounts merged if emails match
 - Password preserved (LOCAL auth provider kept)
 - Google profile data updates local profile
@@ -242,6 +261,7 @@ AllowCredentials: true
 ### Message Validation
 
 Frontend validates all incoming WebSocket messages:
+
 - Size limit: 480 KB (configurable)
 - Required field validation per message type
 - Type allowlisting for update messages
@@ -249,11 +269,11 @@ Frontend validates all incoming WebSocket messages:
 
 ### Message Size Limits
 
-| Layer | Limit |
-|-------|-------|
-| Frontend | 480 KB |
-| Backend transport | 1 MB |
-| Backend buffer | 1 MB |
+| Layer             | Limit  |
+| ----------------- | ------ |
+| Frontend          | 480 KB |
+| Backend transport | 1 MB   |
+| Backend buffer    | 1 MB   |
 
 ## Session Management
 
@@ -274,19 +294,20 @@ Frontend validates all incoming WebSocket messages:
 
 ### Exception Mapping
 
-| Exception | HTTP Status |
-|-----------|-------------|
-| `BadCredentialsException` | 401 Unauthorized |
-| `AccessDeniedException` | 403 Forbidden |
-| `ResourceNotFoundException` | 404 Not Found |
-| `InvalidRequestException` | 400 Bad Request |
-| `ResourceConflictException` | 409 Conflict |
-| `MethodArgumentNotValidException` | 400 Bad Request |
-| All others | 500 Internal Server Error |
+| Exception                         | HTTP Status               |
+| --------------------------------- | ------------------------- |
+| `BadCredentialsException`         | 401 Unauthorized          |
+| `AccessDeniedException`           | 403 Forbidden             |
+| `ResourceNotFoundException`       | 404 Not Found             |
+| `InvalidRequestException`         | 400 Bad Request           |
+| `ResourceConflictException`       | 409 Conflict              |
+| `MethodArgumentNotValidException` | 400 Bad Request           |
+| All others                        | 500 Internal Server Error |
 
 ### Security Logging
 
 All security events logged with `[SECURITY]` prefix:
+
 - Successful authentications
 - Failed login attempts
 - Access denials
@@ -297,28 +318,29 @@ All security events logged with `[SECURITY]` prefix:
 
 ### Required Environment Variables
 
-| Variable | Purpose |
-|----------|---------|
-| `JWT_SECRET_KEY` | Base64-encoded JWT signing key |
-| `CLIENT_ORIGIN_URL` | CORS allowed origin |
-| `GOOGLE_CLIENT_ID` | OAuth2 client ID (optional) |
+| Variable               | Purpose                         |
+| ---------------------- | ------------------------------- |
+| `JWT_SECRET_KEY`       | Base64-encoded JWT signing key  |
+| `CLIENT_ORIGIN_URL`    | CORS allowed origin             |
+| `GOOGLE_CLIENT_ID`     | OAuth2 client ID (optional)     |
 | `GOOGLE_CLIENT_SECRET` | OAuth2 client secret (optional) |
 
 ### Security Constants
 
-| Constant | Value |
-|----------|-------|
-| JWT expiration | 24 hours |
+| Constant                   | Value      |
+| -------------------------- | ---------- |
+| JWT expiration             | 24 hours   |
 | Email verification timeout | 15 minutes |
-| Password reset timeout | 60 minutes |
-| Max verification attempts | 3 |
-| BCrypt rounds | 10 |
-| Max file size | 5 MB |
-| WebSocket message limit | 1 MB |
+| Password reset timeout     | 60 minutes |
+| Max verification attempts  | 3          |
+| BCrypt rounds              | 10         |
+| Max file size              | 5 MB       |
+| WebSocket message limit    | 1 MB       |
 
 ## Security Headers
 
 Production Nginx configuration includes:
+
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: SAMEORIGIN`
 - `X-XSS-Protection: 1; mode=block`

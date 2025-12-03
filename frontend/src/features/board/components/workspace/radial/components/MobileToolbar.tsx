@@ -55,8 +55,7 @@ export const MobileToolbar: React.FC<MobileToolbarProps> = ({
         <div
           className={styles.mobileTabToolIcon}
           style={{
-            color:
-              defaultTool === TOOLS.ERASER ? 'var(--color-text-primary)' : defaultStrokeColor,
+            color: defaultTool === TOOLS.ERASER ? 'var(--color-text-primary)' : defaultStrokeColor,
           }}
         >
           {activeToolIcon}

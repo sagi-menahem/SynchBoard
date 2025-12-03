@@ -17,6 +17,7 @@ Canvas.tsx
 ```
 
 Key features:
+
 - Two-finger panning and pinch-to-zoom via Pointer Events API
 - Normalized coordinates (0-1) for platform-independent storage
 - Inverted Y-axis scroll container positions scrollbar at top
@@ -25,20 +26,21 @@ Key features:
 
 All drawing objects are defined in `frontend/src/features/board/types/BoardObjectTypes.ts`:
 
-| Type | Properties | Description |
-|------|------------|-------------|
-| **Line** | points[], color, lineWidth, tool (brush/eraser) | Freehand strokes |
-| **Rectangle** | x, y, width, height, color, fillColor?, strokeWidth | Rectangles and squares |
-| **Circle** | x, y, radius, color, fillColor?, strokeWidth | Perfect circles |
-| **Triangle** | x1, y1, x2, y2, x3, y3, color, fillColor?, strokeWidth | Isosceles triangles |
-| **Polygon** | x, y, radius, sides, color, fillColor?, strokeWidth | Regular polygons (pentagon, hexagon) |
-| **TextBox** | x, y, width, height, text, fontSize, color | Text elements |
-| **StraightLine** | x1, y1, x2, y2, color, strokeWidth, dashPattern? | Lines and dotted lines |
-| **Arrow** | x1, y1, x2, y2, color, strokeWidth | Lines with arrowheads |
+| Type             | Properties                                             | Description                          |
+| ---------------- | ------------------------------------------------------ | ------------------------------------ |
+| **Line**         | points[], color, lineWidth, tool (brush/eraser)        | Freehand strokes                     |
+| **Rectangle**    | x, y, width, height, color, fillColor?, strokeWidth    | Rectangles and squares               |
+| **Circle**       | x, y, radius, color, fillColor?, strokeWidth           | Perfect circles                      |
+| **Triangle**     | x1, y1, x2, y2, x3, y3, color, fillColor?, strokeWidth | Isosceles triangles                  |
+| **Polygon**      | x, y, radius, sides, color, fillColor?, strokeWidth    | Regular polygons (pentagon, hexagon) |
+| **TextBox**      | x, y, width, height, text, fontSize, color             | Text elements                        |
+| **StraightLine** | x1, y1, x2, y2, color, strokeWidth, dashPattern?       | Lines and dotted lines               |
+| **Arrow**        | x1, y1, x2, y2, color, strokeWidth                     | Lines with arrowheads                |
 
 ### Common Properties
 
 All objects include:
+
 - `instanceId`: Client-generated UUID for deduplication
 - `tool`: Source tool type for rendering logic
 - Coordinates normalized to 0-1 range
@@ -49,24 +51,24 @@ All objects include:
 
 Defined in `BoardConstants.ts`:
 
-| Tool | Type | Description |
-|------|------|-------------|
-| `brush` | Freehand | Draw with stroke color |
-| `eraser` | Freehand | Remove portions of drawing |
-| `square` | Shape | Perfect squares (equal width/height) |
-| `rectangle` | Shape | Independent width/height |
-| `circle` | Shape | Perfect circles |
-| `triangle` | Shape | Isosceles triangles |
-| `pentagon` | Shape | 5-sided regular polygon |
-| `hexagon` | Shape | 6-sided regular polygon |
-| `star` | Shape | 5-pointed stars |
-| `line` | Line | Straight lines |
-| `dottedLine` | Line | Dashed lines |
-| `arrow` | Line | Lines with arrowheads |
-| `text` | Text | Text boxes |
-| `colorPicker` | Utility | Sample colors from canvas |
-| `recolor` | Utility | Change colors of existing objects |
-| `download` | Utility | Export canvas as image |
+| Tool          | Type     | Description                          |
+| ------------- | -------- | ------------------------------------ |
+| `brush`       | Freehand | Draw with stroke color               |
+| `eraser`      | Freehand | Remove portions of drawing           |
+| `square`      | Shape    | Perfect squares (equal width/height) |
+| `rectangle`   | Shape    | Independent width/height             |
+| `circle`      | Shape    | Perfect circles                      |
+| `triangle`    | Shape    | Isosceles triangles                  |
+| `pentagon`    | Shape    | 5-sided regular polygon              |
+| `hexagon`     | Shape    | 6-sided regular polygon              |
+| `star`        | Shape    | 5-pointed stars                      |
+| `line`        | Line     | Straight lines                       |
+| `dottedLine`  | Line     | Dashed lines                         |
+| `arrow`       | Line     | Lines with arrowheads                |
+| `text`        | Text     | Text boxes                           |
+| `colorPicker` | Utility  | Sample colors from canvas            |
+| `recolor`     | Utility  | Change colors of existing objects    |
+| `download`    | Utility  | Export canvas as image               |
 
 ### Tool Handler Architecture
 
@@ -97,7 +99,7 @@ const toolHandlers = {
 interface SendBoardActionRequest {
   boardId: number;
   type: 'OBJECT_ADD' | 'OBJECT_UPDATE' | 'OBJECT_DELETE';
-  payload: ActionPayload;  // Union of all payload types
+  payload: ActionPayload; // Union of all payload types
   instanceId: string;
   sender: string;
 }
@@ -117,24 +119,26 @@ interface BoardActionResponse {
 @Entity
 @Table(name = "board_objects")
 public class BoardObject {
-    @Id @GeneratedValue
-    private Long objectId;
 
-    private String instanceId;      // Client-generated ID
+  @Id
+  @GeneratedValue
+  private Long objectId;
 
-    @ManyToOne
-    private GroupBoard board;
+  private String instanceId; // Client-generated ID
 
-    @ManyToOne
-    private User createdByUser;
+  @ManyToOne
+  private GroupBoard board;
 
-    private String objectType;      // Shape type
+  @ManyToOne
+  private User createdByUser;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private String objectData;      // Complete payload as JSONB
+  private String objectType; // Shape type
 
-    private boolean isActive;       // Soft delete flag
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(columnDefinition = "jsonb")
+  private String objectData; // Complete payload as JSONB
+
+  private boolean isActive; // Soft delete flag
 }
 ```
 
@@ -158,9 +162,9 @@ User A (Draw)              Backend                  User B (View)
 
 ### WebSocket Destinations
 
-| Direction | Destination | Purpose |
-|-----------|-------------|---------|
-| Client → Server | `/app/board.drawAction` | Send drawing actions |
+| Direction        | Destination              | Purpose                  |
+| ---------------- | ------------------------ | ------------------------ |
+| Client → Server  | `/app/board.drawAction`  | Send drawing actions     |
 | Server → Clients | `/topic/board/{boardId}` | Broadcast canvas updates |
 
 ### Action Types
@@ -182,23 +186,23 @@ User A (Draw)              Backend                  User B (View)
 
 The canvas system uses multiple specialized hooks orchestrated by `useCanvas.ts`:
 
-| Hook | Responsibility |
-|------|----------------|
-| `useCanvasState` | Core refs, dimensions, drawing state |
-| `useCanvasEvents` | Pointer event handling, pan detection |
-| `useCanvasInteractions` | Color picker, recolor, text input |
-| `useDrawingTools` | Tool-specific drawing logic |
-| `useCanvasPreview` | Real-time shape preview rendering |
-| `useCanvasPanning` | Pan and pinch-to-zoom |
+| Hook                    | Responsibility                        |
+| ----------------------- | ------------------------------------- |
+| `useCanvasState`        | Core refs, dimensions, drawing state  |
+| `useCanvasEvents`       | Pointer event handling, pan detection |
+| `useCanvasInteractions` | Color picker, recolor, text input     |
+| `useDrawingTools`       | Tool-specific drawing logic           |
+| `useCanvasPreview`      | Real-time shape preview rendering     |
+| `useCanvasPanning`      | Pan and pinch-to-zoom                 |
 
 ### State Refs
 
 ```typescript
-const canvasRef = useRef<HTMLCanvasElement>();      // Canvas element
-const containerRef = useRef<HTMLDivElement>();      // Scroll container
+const canvasRef = useRef<HTMLCanvasElement>(); // Canvas element
+const containerRef = useRef<HTMLDivElement>(); // Scroll container
 const contextRef = useRef<CanvasRenderingContext2D>();
-const startPoint = useRef<Point>();                 // Drawing start
-const currentPath = useRef<Point[]>();              // Brush path
+const startPoint = useRef<Point>(); // Drawing start
+const currentPath = useRef<Point[]>(); // Brush path
 ```
 
 ## Coordinate System
@@ -216,6 +220,7 @@ const pixelX = normalizedX * canvasWidth;
 ```
 
 This enables:
+
 - Platform-independent storage
 - Canvas resizing without data loss
 - Consistent rendering across devices
@@ -223,6 +228,7 @@ This enables:
 ### Conversion Functions
 
 Located in `CanvasUtils.ts`:
+
 - `normalizeCoordinates`: pixel → normalized
 - `denormalizeCoordinates`: normalized → pixel
 
@@ -230,13 +236,14 @@ Located in `CanvasUtils.ts`:
 
 ### Dimensions
 
-| Setting | Value |
-|---------|-------|
-| Default | 1200 × 800 px |
-| Minimum | 400 × 300 px |
+| Setting | Value          |
+| ------- | -------------- |
+| Default | 1200 × 800 px  |
+| Minimum | 400 × 300 px   |
 | Maximum | 4000 × 4000 px |
 
 **Presets**:
+
 - Widescreen: 1920 × 1080
 - Square: 1200 × 1200
 - Portrait: 1080 × 1920
@@ -244,19 +251,19 @@ Located in `CanvasUtils.ts`:
 
 ### Drawing Parameters
 
-| Parameter | Default | Range |
-|-----------|---------|-------|
+| Parameter    | Default | Range   |
+| ------------ | ------- | ------- |
 | Stroke Color | #FFFFFF | Any hex |
-| Stroke Width | 3px | 1-50px |
-| Line Style | round | - |
+| Stroke Width | 3px     | 1-50px  |
+| Line Style   | round   | -       |
 
 ### Zoom
 
-| Setting | Value |
-|---------|-------|
-| Min Zoom | 0.1× |
-| Max Zoom | 5.0× |
-| Default | 1.0× |
+| Setting  | Value |
+| -------- | ----- |
+| Min Zoom | 0.1×  |
+| Max Zoom | 5.0×  |
+| Default  | 1.0×  |
 
 Zoom persisted in user preferences (debounced 500ms).
 
@@ -277,16 +284,16 @@ ctx.globalCompositeOperation = 'source-over';
 
 Located in `CanvasUtils.ts`:
 
-| Function | Object Type |
-|----------|-------------|
-| `drawLinePayload` | Brush/eraser strokes |
-| `drawRectanglePayload` | Rectangles and squares |
-| `drawCirclePayload` | Circles |
-| `drawTrianglePayload` | Triangles |
-| `drawPolygonPayload` | Regular polygons |
-| `drawTextPayload` | Text boxes |
-| `drawStraightLinePayload` | Straight/dotted lines |
-| `drawArrowPayload` | Arrows |
+| Function                  | Object Type            |
+| ------------------------- | ---------------------- |
+| `drawLinePayload`         | Brush/eraser strokes   |
+| `drawRectanglePayload`    | Rectangles and squares |
+| `drawCirclePayload`       | Circles                |
+| `drawTrianglePayload`     | Triangles              |
+| `drawPolygonPayload`      | Regular polygons       |
+| `drawTextPayload`         | Text boxes             |
+| `drawStraightLinePayload` | Straight/dotted lines  |
+| `drawArrowPayload`        | Arrows                 |
 
 ### Point Optimization
 
@@ -342,7 +349,7 @@ For color picker and recolor tools:
 
 ```typescript
 const pixelData = ctx.getImageData(x, y, 1, 1).data;
-const isTransparent = pixelData[3] === 0;  // Alpha channel
+const isTransparent = pixelData[3] === 0; // Alpha channel
 ```
 
 Coordinates adjusted for zoom: `(clientX - rect.left) / zoomScale`
@@ -351,21 +358,21 @@ Coordinates adjusted for zoom: `(clientX - rect.left) / zoomScale`
 
 ### Frontend
 
-| File | Purpose |
-|------|---------|
-| `features/board/components/workspace/Canvas.tsx` | Main canvas component |
-| `features/board/hooks/workspace/canvas/useCanvas.ts` | Hook orchestrator |
-| `features/board/hooks/workspace/canvas/useDrawingTools.ts` | Tool handlers |
-| `features/board/utils/CanvasUtils.ts` | Drawing functions |
-| `features/board/types/BoardObjectTypes.ts` | TypeScript types |
-| `features/board/constants/BoardConstants.ts` | Configuration |
+| File                                                       | Purpose               |
+| ---------------------------------------------------------- | --------------------- |
+| `features/board/components/workspace/Canvas.tsx`           | Main canvas component |
+| `features/board/hooks/workspace/canvas/useCanvas.ts`       | Hook orchestrator     |
+| `features/board/hooks/workspace/canvas/useDrawingTools.ts` | Tool handlers         |
+| `features/board/utils/CanvasUtils.ts`                      | Drawing functions     |
+| `features/board/types/BoardObjectTypes.ts`                 | TypeScript types      |
+| `features/board/constants/BoardConstants.ts`               | Configuration         |
 
 ### Backend
 
-| File | Purpose |
-|------|---------|
-| `entity/BoardObject.java` | JPA entity |
-| `service/board/BoardObjectService.java` | CRUD operations |
+| File                                      | Purpose           |
+| ----------------------------------------- | ----------------- |
+| `entity/BoardObject.java`                 | JPA entity        |
+| `service/board/BoardObjectService.java`   | CRUD operations   |
 | `controller/BoardActivityController.java` | WebSocket handler |
-| `dto/websocket/BoardActionDTO.java` | Message DTOs |
-| `repository/BoardObjectRepository.java` | Data access |
+| `dto/websocket/BoardActionDTO.java`       | Message DTOs      |
+| `repository/BoardObjectRepository.java`   | Data access       |

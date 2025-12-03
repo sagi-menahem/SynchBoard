@@ -39,7 +39,8 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   // =========================================================================
 
   const { t } = useTranslation(['board']);
-  const { state, actions, preferences, updateDockMinimized } = useRadialDockState(onSatelliteChange);
+  const { state, actions, preferences, updateDockMinimized } =
+    useRadialDockState(onSatelliteChange);
 
   const { canvasWidthPx, useVerticalLayout, toolbarStyle } = useToolbarPosition({
     isMobile: state.isMobile,
@@ -75,7 +76,12 @@ export const RadialDock: React.FC<RadialDockProps> = ({
   );
 
   const activeToolIcon = useMemo(() => {
-    return getActiveToolIcon(DOCK_TOOLS, preferences.defaultTool, preferences.defaultStrokeColor, getToolIcon);
+    return getActiveToolIcon(
+      DOCK_TOOLS,
+      preferences.defaultTool,
+      preferences.defaultStrokeColor,
+      getToolIcon,
+    );
   }, [preferences.defaultTool, preferences.defaultStrokeColor, getToolIcon]);
 
   const getToolLabel = useCallback(

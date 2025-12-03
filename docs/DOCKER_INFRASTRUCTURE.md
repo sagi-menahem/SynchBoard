@@ -4,13 +4,13 @@ This document describes the Docker Compose setup for SynchBoard, including servi
 
 ## Services Overview
 
-| Service | Image | Purpose | Port |
-|---------|-------|---------|------|
-| postgres | postgres:17-alpine | Database | 5432 |
-| activemq | apache/activemq-artemis:2.37.0 | Message broker | 8161, 61613, 61616 |
-| backend | Custom (Spring Boot) | REST API, WebSocket | 8080 |
-| frontend | Custom (Nginx) | SPA, proxy | 80 |
-| pgadmin | dpage/pgadmin4 | DB management (optional) | 5050 |
+| Service  | Image                          | Purpose                  | Port               |
+| -------- | ------------------------------ | ------------------------ | ------------------ |
+| postgres | postgres:17-alpine             | Database                 | 5432               |
+| activemq | apache/activemq-artemis:2.37.0 | Message broker           | 8161, 61613, 61616 |
+| backend  | Custom (Spring Boot)           | REST API, WebSocket      | 8080               |
+| frontend | Custom (Nginx)                 | SPA, proxy               | 80                 |
+| pgadmin  | dpage/pgadmin4                 | DB management (optional) | 5050               |
 
 ## Architecture
 
@@ -67,7 +67,7 @@ activemq:
     ARTEMIS_PASSWORD: ${ACTIVEMQ_PASSWORD}
     ANONYMOUS_LOGIN: false
   ports:
-    - '8161:8161'   # Web console
+    - '8161:8161' # Web console
     - '61616:61616' # TCP (OpenWire)
     - '61613:61613' # STOMP
 ```
@@ -100,6 +100,7 @@ ENTRYPOINT ["java", "--add-opens=java.base/sun.misc=ALL-UNNAMED", "-jar", "app.j
 ```
 
 Features:
+
 - Multi-stage build reduces image size
 - Non-root user for security
 - Dependencies cached in separate layer
@@ -132,13 +133,13 @@ Build arguments baked into static files at build time.
 
 ## Volumes
 
-| Volume | Container Path | Purpose |
-|--------|----------------|---------|
-| `postgres_data` | `/var/lib/postgresql/data` | Database persistence |
-| `activemq_data` | `/var/lib/artemis-instance` | Message broker state |
-| `backend_uploads` | `/app/uploads` | File uploads |
-| `backend_logs` | `/app/logs` | Application logs |
-| `pgadmin_data` | `/var/lib/pgadmin` | pgAdmin config |
+| Volume            | Container Path              | Purpose              |
+| ----------------- | --------------------------- | -------------------- |
+| `postgres_data`   | `/var/lib/postgresql/data`  | Database persistence |
+| `activemq_data`   | `/var/lib/artemis-instance` | Message broker state |
+| `backend_uploads` | `/app/uploads`              | File uploads         |
+| `backend_logs`    | `/app/logs`                 | Application logs     |
+| `pgadmin_data`    | `/var/lib/pgadmin`          | pgAdmin config       |
 
 The `backend_uploads` volume is shared with frontend (read-only) for direct image serving.
 
@@ -146,37 +147,37 @@ The `backend_uploads` volume is shared with frontend (read-only) for direct imag
 
 ### Required
 
-| Variable | Description |
-|----------|-------------|
-| `POSTGRES_DB` | Database name |
-| `POSTGRES_USER` | Database username |
-| `POSTGRES_PASSWORD` | Database password |
-| `ACTIVEMQ_USER` | Broker username |
-| `ACTIVEMQ_PASSWORD` | Broker password |
-| `JWT_SECRET_KEY` | JWT signing key (min 32 chars) |
+| Variable            | Description                    |
+| ------------------- | ------------------------------ |
+| `POSTGRES_DB`       | Database name                  |
+| `POSTGRES_USER`     | Database username              |
+| `POSTGRES_PASSWORD` | Database password              |
+| `ACTIVEMQ_USER`     | Broker username                |
+| `ACTIVEMQ_PASSWORD` | Broker password                |
+| `JWT_SECRET_KEY`    | JWT signing key (min 32 chars) |
 
 ### Optional
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `JPA_DDL_AUTO` | `update` | Schema management |
-| `JWT_EXPIRATION_HOURS` | `24` | Token lifetime |
-| `CLIENT_ORIGIN_URL` | `http://localhost` | CORS origin |
-| `SENDGRID_API_KEY` | - | Email service |
-| `GOOGLE_CLIENT_ID` | - | OAuth2 client |
-| `GOOGLE_CLIENT_SECRET` | - | OAuth2 secret |
-| `MAX_FILE_SIZE_MB` | `10` | Upload limit |
+| Variable               | Default            | Description       |
+| ---------------------- | ------------------ | ----------------- |
+| `JPA_DDL_AUTO`         | `update`           | Schema management |
+| `JWT_EXPIRATION_HOURS` | `24`               | Token lifetime    |
+| `CLIENT_ORIGIN_URL`    | `http://localhost` | CORS origin       |
+| `SENDGRID_API_KEY`     | -                  | Email service     |
+| `GOOGLE_CLIENT_ID`     | -                  | OAuth2 client     |
+| `GOOGLE_CLIENT_SECRET` | -                  | OAuth2 secret     |
+| `MAX_FILE_SIZE_MB`     | `10`               | Upload limit      |
 
 ### Port Bindings
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `POSTGRES_PORT` | `5432` | Database port |
-| `ACTIVEMQ_WEB_PORT` | `8161` | Broker console |
-| `ACTIVEMQ_STOMP_PORT` | `61613` | STOMP port |
-| `BACKEND_PORT` | `8080` | Backend API |
-| `FRONTEND_BINDING` | `80:80` | Frontend |
-| `PGADMIN_PORT` | `5050` | pgAdmin |
+| Variable              | Default | Description    |
+| --------------------- | ------- | -------------- |
+| `POSTGRES_PORT`       | `5432`  | Database port  |
+| `ACTIVEMQ_WEB_PORT`   | `8161`  | Broker console |
+| `ACTIVEMQ_STOMP_PORT` | `61613` | STOMP port     |
+| `BACKEND_PORT`        | `8080`  | Backend API    |
+| `FRONTEND_BINDING`    | `80:80` | Frontend       |
+| `PGADMIN_PORT`        | `5050`  | pgAdmin        |
 
 ## Commands
 
@@ -229,12 +230,12 @@ This removes external port exposure, making services accessible only within the 
 
 ## Health Checks
 
-| Service | Check | Interval | Start Period |
-|---------|-------|----------|--------------|
-| postgres | `pg_isready` | 10s | - |
-| activemq | HTTP :8161 | 30s | - |
-| backend | `/actuator/health` | 30s | 60s |
-| frontend | HTTP :80 | 30s | 5s |
+| Service  | Check              | Interval | Start Period |
+| -------- | ------------------ | -------- | ------------ |
+| postgres | `pg_isready`       | 10s      | -            |
+| activemq | HTTP :8161         | 30s      | -            |
+| backend  | `/actuator/health` | 30s      | 60s          |
+| frontend | HTTP :80           | 30s      | 5s           |
 
 Backend depends on postgres and activemq being healthy before starting.
 
@@ -255,11 +256,11 @@ Internal DNS resolves service names (e.g., `postgres`, `backend`).
 
 Frontend build arguments (set in docker-compose.yml):
 
-| Argument | Value | Description |
-|----------|-------|-------------|
-| `VITE_API_BASE_URL` | `/api` | API endpoint prefix |
-| `VITE_WEBSOCKET_URL` | `/ws` | WebSocket endpoint |
-| `VITE_GOOGLE_CLIENT_ID` | `${GOOGLE_CLIENT_ID}` | OAuth client ID |
+| Argument                | Value                 | Description         |
+| ----------------------- | --------------------- | ------------------- |
+| `VITE_API_BASE_URL`     | `/api`                | API endpoint prefix |
+| `VITE_WEBSOCKET_URL`    | `/ws`                 | WebSocket endpoint  |
+| `VITE_GOOGLE_CLIENT_ID` | `${GOOGLE_CLIENT_ID}` | OAuth client ID     |
 
 These are baked into the static build and cannot be changed at runtime.
 
@@ -301,11 +302,11 @@ docker-compose down -v --rmi all
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `docker-compose.yml` | Main configuration |
-| `docker-compose.prod.yml` | Production overrides |
-| `backend/Dockerfile` | Backend build |
-| `frontend/Dockerfile` | Frontend build |
-| `.env` | Environment variables |
-| `.env.example` | Variable template |
+| File                      | Purpose               |
+| ------------------------- | --------------------- |
+| `docker-compose.yml`      | Main configuration    |
+| `docker-compose.prod.yml` | Production overrides  |
+| `backend/Dockerfile`      | Backend build         |
+| `frontend/Dockerfile`     | Frontend build        |
+| `.env`                    | Environment variables |
+| `.env.example`            | Variable template     |

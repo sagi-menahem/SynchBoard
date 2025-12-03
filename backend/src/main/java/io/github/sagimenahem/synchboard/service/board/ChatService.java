@@ -84,7 +84,11 @@ public class ChatService {
 
         String destination = WEBSOCKET_BOARD_TOPIC_PREFIX + request.getBoardId();
 
-        log.info(DIAGNOSTIC_PREFIX + " Broadcasting chat message. Topic: {}, Payload: {}", destination, response.toString());
+        log.info(
+            DIAGNOSTIC_PREFIX + " Broadcasting chat message. Topic: {}, Payload: {}",
+            destination,
+            response.toString()
+        );
 
         messagingTemplate.convertAndSend(destination, response);
         log.debug("Chat message broadcasted to topic: {} with instanceId: {}", destination, request.getInstanceId());

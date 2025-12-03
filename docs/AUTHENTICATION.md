@@ -5,6 +5,7 @@ This document describes the authentication system in SynchBoard, including JWT-b
 ## Overview
 
 SynchBoard uses:
+
 - **JWT tokens** for stateless authentication
 - **BCrypt** for password hashing
 - **OAuth2** for Google login
@@ -13,13 +14,14 @@ SynchBoard uses:
 
 ## JWT Configuration
 
-| Setting | Value |
-|---------|-------|
-| Algorithm | HMAC SHA |
-| Expiration | 24 hours |
+| Setting      | Value     |
+| ------------ | --------- |
+| Algorithm    | HMAC SHA  |
+| Expiration   | 24 hours  |
 | Token Prefix | `Bearer ` |
 
 Token structure:
+
 - `sub`: User email (primary identifier)
 - `iat`: Issued at timestamp
 - `exp`: Expiration timestamp
@@ -59,6 +61,7 @@ Frontend                        Backend                    SendGrid
 ```
 
 **Verification Code**:
+
 - Format: 6-digit numeric (`000000` - `999999`)
 - Expiry: 15 minutes
 - Max attempts: 3 (then must resend)
@@ -80,6 +83,7 @@ Frontend                        Backend                    SendGrid
 ```
 
 **Reset Code**:
+
 - Format: 6-digit numeric
 - Expiry: 60 minutes
 
@@ -139,6 +143,7 @@ Authorization: Bearer <token>
 ```
 
 The `JwtChannelInterceptor` validates the token on CONNECT:
+
 1. Extract token from Authorization header
 2. Validate using `JwtService.isTokenValid()`
 3. Set authentication on message accessor
@@ -148,14 +153,14 @@ The `JwtChannelInterceptor` validates the token on CONNECT:
 
 ### Public Endpoints
 
-| Path | Purpose |
-|------|---------|
-| `/api/auth/**` | All auth routes |
-| `/ws/**` | WebSocket (JWT in STOMP headers) |
-| `/api/images/**` | Image serving (GET only) |
-| `/login/oauth2/**` | OAuth2 authorization |
-| `/oauth2/**` | OAuth2 callbacks |
-| `/api/config/**` | Feature flags |
+| Path               | Purpose                          |
+| ------------------ | -------------------------------- |
+| `/api/auth/**`     | All auth routes                  |
+| `/ws/**`           | WebSocket (JWT in STOMP headers) |
+| `/api/images/**`   | Image serving (GET only)         |
+| `/login/oauth2/**` | OAuth2 authorization             |
+| `/oauth2/**`       | OAuth2 callbacks                 |
+| `/api/config/**`   | Feature flags                    |
 
 ### Protected Endpoints
 
@@ -187,6 +192,7 @@ The frontend displays a warning toast 5 minutes before token expiry, allowing us
 ## Protected Routes
 
 `ProtectedRoute` component:
+
 1. Checks React context token
 2. Validates via `isTokenValid()`
 3. Redirects to `/auth` if invalid
@@ -194,6 +200,7 @@ The frontend displays a warning toast 5 minutes before token expiry, allowing us
 ## API Client
 
 Axios instance automatically:
+
 - Attaches JWT to all requests
 - Clears token on 401 responses
 
@@ -201,15 +208,15 @@ Axios instance automatically:
 
 ### Endpoints
 
-| Method | Path | Request | Response |
-|--------|------|---------|----------|
-| POST | `/api/auth/register` | RegisterRequest | AuthResponseDTO or message |
-| POST | `/api/auth/login` | LoginRequest | AuthResponseDTO |
-| POST | `/api/auth/verify-email` | VerifyEmailRequest | AuthResponseDTO |
-| POST | `/api/auth/resend-verification` | ResendVerificationRequest | message |
-| POST | `/api/auth/forgot-password` | ForgotPasswordRequest | message |
-| POST | `/api/auth/reset-password` | ResetPasswordRequest | AuthResponseDTO |
-| POST | `/api/auth/google-one-tap` | GoogleOneTapRequest | AuthResponseDTO |
+| Method | Path                            | Request                   | Response                   |
+| ------ | ------------------------------- | ------------------------- | -------------------------- |
+| POST   | `/api/auth/register`            | RegisterRequest           | AuthResponseDTO or message |
+| POST   | `/api/auth/login`               | LoginRequest              | AuthResponseDTO            |
+| POST   | `/api/auth/verify-email`        | VerifyEmailRequest        | AuthResponseDTO            |
+| POST   | `/api/auth/resend-verification` | ResendVerificationRequest | message                    |
+| POST   | `/api/auth/forgot-password`     | ForgotPasswordRequest     | message                    |
+| POST   | `/api/auth/reset-password`      | ResetPasswordRequest      | AuthResponseDTO            |
+| POST   | `/api/auth/google-one-tap`      | GoogleOneTapRequest       | AuthResponseDTO            |
 
 ### Request/Response DTOs
 
@@ -250,15 +257,16 @@ Axios instance automatically:
 
 ### Environment Variables
 
-| Variable | Required | Default |
-|----------|----------|---------|
-| `SENDGRID_API_KEY` | For email | - |
-| `SENDGRID_FROM_EMAIL` | No | noreply@synchboard.com |
-| `SENDGRID_FROM_NAME` | No | SynchBoard Team |
+| Variable              | Required  | Default                |
+| --------------------- | --------- | ---------------------- |
+| `SENDGRID_API_KEY`    | For email | -                      |
+| `SENDGRID_FROM_EMAIL` | No        | noreply@synchboard.com |
+| `SENDGRID_FROM_NAME`  | No        | SynchBoard Team        |
 
 ### Templates
 
 Located in `backend/src/main/resources/templates/email/`:
+
 - `verification.html` - English verification email
 - `verification_he.html` - Hebrew verification email
 - Password reset templates follow same pattern
@@ -271,11 +279,11 @@ Email templates use user's preferred language stored in profile.
 
 ### Environment Variables
 
-| Variable | Required | Default |
-|----------|----------|---------|
-| `GOOGLE_CLIENT_ID` | For OAuth | - |
-| `GOOGLE_CLIENT_SECRET` | For OAuth | - |
-| `GOOGLE_REDIRECT_URI` | No | http://localhost:8080/login/oauth2/code/google |
+| Variable               | Required  | Default                                        |
+| ---------------------- | --------- | ---------------------------------------------- |
+| `GOOGLE_CLIENT_ID`     | For OAuth | -                                              |
+| `GOOGLE_CLIENT_SECRET` | For OAuth | -                                              |
+| `GOOGLE_REDIRECT_URI`  | No        | http://localhost:8080/login/oauth2/code/google |
 
 ### Google API Settings
 
@@ -288,11 +296,11 @@ Email templates use user's preferred language stored in profile.
 
 Authentication features auto-enable based on configuration:
 
-| Feature | Required Config |
-|---------|-----------------|
-| Email verification | `SENDGRID_API_KEY` |
-| Password reset | `SENDGRID_API_KEY` |
-| Google login | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` |
+| Feature            | Required Config                             |
+| ------------------ | ------------------------------------------- |
+| Email verification | `SENDGRID_API_KEY`                          |
+| Password reset     | `SENDGRID_API_KEY`                          |
+| Google login       | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` |
 
 Frontend checks `/api/config/features` endpoint for enabled features.
 
@@ -326,48 +334,50 @@ Frontend checks `/api/config/features` endpoint for enabled features.
 
 ### Backend
 
-| File | Purpose |
-|------|---------|
-| `config/security/SecurityConfig.java` | Security rules |
-| `config/security/JwtAuthFilter.java` | HTTP JWT filter |
-| `config/websocket/JwtChannelInterceptor.java` | WebSocket auth |
-| `service/auth/JwtService.java` | Token generation/validation |
-| `service/auth/AuthService.java` | Auth business logic |
-| `service/auth/GoogleAuthService.java` | OAuth processing |
-| `service/auth/EmailService.java` | Email sending |
-| `controller/AuthController.java` | REST endpoints |
+| File                                          | Purpose                     |
+| --------------------------------------------- | --------------------------- |
+| `config/security/SecurityConfig.java`         | Security rules              |
+| `config/security/JwtAuthFilter.java`          | HTTP JWT filter             |
+| `config/websocket/JwtChannelInterceptor.java` | WebSocket auth              |
+| `service/auth/JwtService.java`                | Token generation/validation |
+| `service/auth/AuthService.java`               | Auth business logic         |
+| `service/auth/GoogleAuthService.java`         | OAuth processing            |
+| `service/auth/EmailService.java`              | Email sending               |
+| `controller/AuthController.java`              | REST endpoints              |
 
 ### Frontend
 
-| File | Purpose |
-|------|---------|
-| `features/auth/AuthProvider.tsx` | Auth context |
-| `features/auth/services/authService.ts` | API calls |
-| `shared/utils/authUtils.ts` | Token utilities |
-| `shared/ui/routing/ProtectedRoute.tsx` | Route protection |
-| `features/auth/components/` | Auth forms |
+| File                                    | Purpose          |
+| --------------------------------------- | ---------------- |
+| `features/auth/AuthProvider.tsx`        | Auth context     |
+| `features/auth/services/authService.ts` | API calls        |
+| `shared/utils/authUtils.ts`             | Token utilities  |
+| `shared/ui/routing/ProtectedRoute.tsx`  | Route protection |
+| `features/auth/components/`             | Auth forms       |
 
 ## User Entity
 
 ```java
 public class User implements UserDetails {
-    @Id
-    private String email;              // Primary identifier
 
-    private String password;           // Nullable (Google-only)
-    private String firstName;
-    private String lastName;
+  @Id
+  private String email; // Primary identifier
 
-    @Enumerated(EnumType.STRING)
-    private AuthProvider authProvider; // LOCAL or GOOGLE
-    private String providerId;         // Google sub claim
+  private String password; // Nullable (Google-only)
+  private String firstName;
+  private String lastName;
 
-    private String resetCode;          // Password reset
-    private LocalDateTime resetExpiry;
+  @Enumerated(EnumType.STRING)
+  private AuthProvider authProvider; // LOCAL or GOOGLE
 
-    private String emailVerificationToken;
+  private String providerId; // Google sub claim
 
-    // UserDetails methods...
+  private String resetCode; // Password reset
+  private LocalDateTime resetExpiry;
+
+  private String emailVerificationToken;
+
+  // UserDetails methods...
 }
 ```
 
@@ -394,6 +404,6 @@ implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 ```json
 {
-  "jwt-decode": "^4.0.0"  // Token decoding
+  "jwt-decode": "^4.0.0" // Token decoding
 }
 ```

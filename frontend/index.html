@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SynchBoard - Real-time Collaborative Whiteboard</title>
-    <meta name="description" content="A full-stack collaborative whiteboard application featuring real-time synchronization." />
+    <meta
+      name="description"
+      content="A full-stack collaborative whiteboard application featuring real-time synchronization."
+    />
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -18,14 +21,20 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://synchboard.com" />
     <meta property="og:title" content="SynchBoard - Real-time Collaborative Whiteboard" />
-    <meta property="og:description" content="A full-stack collaborative whiteboard application featuring real-time synchronization." />
+    <meta
+      property="og:description"
+      content="A full-stack collaborative whiteboard application featuring real-time synchronization."
+    />
     <meta property="og:image" content="https://synchboard.com/og_image.png" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://synchboard.com" />
     <meta name="twitter:title" content="SynchBoard - Real-time Collaborative Whiteboard" />
-    <meta name="twitter:description" content="A full-stack collaborative whiteboard application featuring real-time synchronization." />
+    <meta
+      name="twitter:description"
+      content="A full-stack collaborative whiteboard application featuring real-time synchronization."
+    />
     <meta name="twitter:image" content="https://synchboard.com/og_image.png" />
 
     <!-- Google Identity Services SDK for One Tap authentication -->
@@ -35,99 +44,254 @@
   <body>
     <div id="root">
       <!-- Initial loading skeleton - replaced when React mounts -->
-      <div id="initial-loader" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-      ">
-        <!-- Hero section -->
-        <div style="
-          flex: 0 0 60%;
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.85) 100%);
+      <div
+        id="initial-loader"
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
           display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-        ">
-          <div style="max-width: 500px; width: 100%;">
+          width: 100vw;
+          height: 100vh;
+          overflow: hidden;
+        "
+      >
+        <!-- Hero section -->
+        <div
+          style="
+            flex: 0 0 60%;
+            background: linear-gradient(
+              135deg,
+              rgba(59, 130, 246, 0.9) 0%,
+              rgba(37, 99, 235, 0.85) 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+          "
+        >
+          <div style="max-width: 500px; width: 100%">
             <!-- Title skeleton -->
-            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-              <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.2);"></div>
-              <div style="width: 60%; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.2);"></div>
+            <div style="display: flex; gap: 12px; margin-bottom: 24px">
+              <div
+                style="
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  background: rgba(255, 255, 255, 0.2);
+                "
+              ></div>
+              <div
+                style="
+                  width: 60%;
+                  height: 40px;
+                  border-radius: 8px;
+                  background: rgba(255, 255, 255, 0.2);
+                "
+              ></div>
             </div>
             <!-- Subtitle skeletons -->
-            <div style="width: 90%; height: 20px; border-radius: 4px; background: rgba(255,255,255,0.2); margin-bottom: 8px;"></div>
-            <div style="width: 75%; height: 20px; border-radius: 4px; background: rgba(255,255,255,0.2); margin-bottom: 32px;"></div>
+            <div
+              style="
+                width: 90%;
+                height: 20px;
+                border-radius: 4px;
+                background: rgba(255, 255, 255, 0.2);
+                margin-bottom: 8px;
+              "
+            ></div>
+            <div
+              style="
+                width: 75%;
+                height: 20px;
+                border-radius: 4px;
+                background: rgba(255, 255, 255, 0.2);
+                margin-bottom: 32px;
+              "
+            ></div>
             <!-- Feature items -->
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.15);"></div>
-                <div style="width: 70%; height: 18px; border-radius: 4px; background: rgba(255,255,255,0.2);"></div>
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; gap: 12px; align-items: center">
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: rgba(255, 255, 255, 0.15);
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 70%;
+                    height: 18px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.2);
+                  "
+                ></div>
               </div>
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.15);"></div>
-                <div style="width: 70%; height: 18px; border-radius: 4px; background: rgba(255,255,255,0.2);"></div>
+              <div style="display: flex; gap: 12px; align-items: center">
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: rgba(255, 255, 255, 0.15);
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 70%;
+                    height: 18px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.2);
+                  "
+                ></div>
               </div>
-              <div style="display: flex; gap: 12px; align-items: center;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.15);"></div>
-                <div style="width: 70%; height: 18px; border-radius: 4px; background: rgba(255,255,255,0.2);"></div>
+              <div style="display: flex; gap: 12px; align-items: center">
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: rgba(255, 255, 255, 0.15);
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 70%;
+                    height: 18px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.2);
+                  "
+                ></div>
               </div>
             </div>
           </div>
         </div>
         <!-- Form section -->
-        <div style="
-          flex: 0 0 40%;
-          background: rgba(255, 255, 255, 0.75);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-        ">
-          <div style="width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 16px;">
+        <div
+          style="
+            flex: 0 0 40%;
+            background: rgba(255, 255, 255, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+          "
+        >
+          <div
+            style="width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 16px"
+          >
             <!-- Form header -->
-            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-              <div style="width: 24px; height: 24px; border-radius: 50%; background: rgba(128,128,128,0.12);"></div>
-              <div style="width: 120px; height: 24px; border-radius: 4px; background: rgba(128,128,128,0.12);"></div>
+            <div style="display: flex; gap: 8px; margin-bottom: 8px">
+              <div
+                style="
+                  width: 24px;
+                  height: 24px;
+                  border-radius: 50%;
+                  background: rgba(128, 128, 128, 0.12);
+                "
+              ></div>
+              <div
+                style="
+                  width: 120px;
+                  height: 24px;
+                  border-radius: 4px;
+                  background: rgba(128, 128, 128, 0.12);
+                "
+              ></div>
             </div>
             <!-- Email field -->
             <div>
-              <div style="width: 80px; height: 14px; border-radius: 4px; background: rgba(128,128,128,0.12); margin-bottom: 8px;"></div>
-              <div style="width: 100%; height: 40px; border-radius: 8px; background: rgba(128,128,128,0.12);"></div>
+              <div
+                style="
+                  width: 80px;
+                  height: 14px;
+                  border-radius: 4px;
+                  background: rgba(128, 128, 128, 0.12);
+                  margin-bottom: 8px;
+                "
+              ></div>
+              <div
+                style="
+                  width: 100%;
+                  height: 40px;
+                  border-radius: 8px;
+                  background: rgba(128, 128, 128, 0.12);
+                "
+              ></div>
             </div>
             <!-- Password field -->
             <div>
-              <div style="width: 80px; height: 14px; border-radius: 4px; background: rgba(128,128,128,0.12); margin-bottom: 8px;"></div>
-              <div style="width: 100%; height: 40px; border-radius: 8px; background: rgba(128,128,128,0.12);"></div>
+              <div
+                style="
+                  width: 80px;
+                  height: 14px;
+                  border-radius: 4px;
+                  background: rgba(128, 128, 128, 0.12);
+                  margin-bottom: 8px;
+                "
+              ></div>
+              <div
+                style="
+                  width: 100%;
+                  height: 40px;
+                  border-radius: 8px;
+                  background: rgba(128, 128, 128, 0.12);
+                "
+              ></div>
             </div>
             <!-- Submit button -->
-            <div style="width: 100%; height: 44px; border-radius: 8px; background: rgba(128,128,128,0.12); margin-top: 8px;"></div>
+            <div
+              style="
+                width: 100%;
+                height: 44px;
+                border-radius: 8px;
+                background: rgba(128, 128, 128, 0.12);
+                margin-top: 8px;
+              "
+            ></div>
             <!-- Divider -->
-            <div style="display: flex; align-items: center; gap: 12px; margin: 8px 0;">
-              <div style="flex: 1; height: 1px; background: rgba(128,128,128,0.2);"></div>
-              <div style="width: 30px; height: 14px; border-radius: 4px; background: rgba(128,128,128,0.12);"></div>
-              <div style="flex: 1; height: 1px; background: rgba(128,128,128,0.2);"></div>
+            <div style="display: flex; align-items: center; gap: 12px; margin: 8px 0">
+              <div style="flex: 1; height: 1px; background: rgba(128, 128, 128, 0.2)"></div>
+              <div
+                style="
+                  width: 30px;
+                  height: 14px;
+                  border-radius: 4px;
+                  background: rgba(128, 128, 128, 0.12);
+                "
+              ></div>
+              <div style="flex: 1; height: 1px; background: rgba(128, 128, 128, 0.2)"></div>
             </div>
             <!-- Google button -->
-            <div style="width: 100%; height: 44px; border-radius: 8px; background: rgba(128,128,128,0.08);"></div>
+            <div
+              style="
+                width: 100%;
+                height: 44px;
+                border-radius: 8px;
+                background: rgba(128, 128, 128, 0.08);
+              "
+            ></div>
           </div>
         </div>
       </div>
     </div>
     <script>
       // Apply initial language direction and dark theme to prevent flash
-      (function() {
+      (function () {
         // Set language and direction from stored preference
         var guestLang = localStorage.getItem('guest-language');
         var storedLang = localStorage.getItem('i18nextLng');
-        var lang = (guestLang && ['en', 'he'].includes(guestLang)) ? guestLang :
-                   (storedLang && ['en', 'he'].includes(storedLang)) ? storedLang : 'en';
+        var lang =
+          guestLang && ['en', 'he'].includes(guestLang)
+            ? guestLang
+            : storedLang && ['en', 'he'].includes(storedLang)
+              ? storedLang
+              : 'en';
         var isRTL = lang === 'he';
 
         document.documentElement.lang = lang;
@@ -142,7 +306,8 @@
           var loader = document.getElementById('initial-loader');
           if (loader) {
             // Update hero section for dark theme
-            loader.children[0].style.background = 'linear-gradient(135deg, rgba(55, 65, 81, 0.9) 0%, rgba(31, 41, 55, 0.85) 100%)';
+            loader.children[0].style.background =
+              'linear-gradient(135deg, rgba(55, 65, 81, 0.9) 0%, rgba(31, 41, 55, 0.85) 100%)';
             // Update form section for dark theme
             loader.children[1].style.background = 'rgba(39, 39, 42, 0.75)';
           }

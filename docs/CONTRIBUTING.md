@@ -82,11 +82,11 @@ npm run dev
 
 ### Access Points
 
-| Service         | URL                      |
-| --------------- | ------------------------ |
-| Frontend        | http://localhost:5173    |
-| Backend API     | http://localhost:8080    |
-| ActiveMQ Console| http://localhost:8161    |
+| Service          | URL                   |
+| ---------------- | --------------------- |
+| Frontend         | http://localhost:5173 |
+| Backend API      | http://localhost:8080 |
+| ActiveMQ Console | http://localhost:8161 |
 
 ---
 
@@ -162,17 +162,17 @@ We follow a conventional commit format. Each commit message should be structured
 
 ### Scopes
 
-| Scope      | Description                    |
-| ---------- | ------------------------------ |
-| `auth`     | Authentication feature         |
-| `board`    | Board/canvas feature           |
-| `chat`     | Chat feature                   |
-| `settings` | User settings feature          |
-| `websocket`| WebSocket/real-time feature    |
-| `api`      | Backend API changes            |
-| `ui`       | Shared UI components           |
-| `config`   | Configuration changes          |
-| `deps`     | Dependency updates             |
+| Scope       | Description                 |
+| ----------- | --------------------------- |
+| `auth`      | Authentication feature      |
+| `board`     | Board/canvas feature        |
+| `chat`      | Chat feature                |
+| `settings`  | User settings feature       |
+| `websocket` | WebSocket/real-time feature |
+| `api`       | Backend API changes         |
+| `ui`        | Shared UI components        |
+| `config`    | Configuration changes       |
+| `deps`      | Dependency updates          |
 
 ### Examples
 
@@ -238,13 +238,13 @@ Use the following format for branch names:
 
 ### Examples
 
-| Branch Name                     | Description                          |
-| ------------------------------- | ------------------------------------ |
-| `feat/radial-dock-toolbar`      | New radial dock feature              |
-| `fix/websocket-reconnection`    | Fix for WebSocket reconnection       |
-| `docs/api-examples`             | Documentation improvements           |
-| `refactor/auth-hooks`           | Refactoring authentication hooks     |
-| `chore/update-dependencies`     | Dependency updates                   |
+| Branch Name                  | Description                      |
+| ---------------------------- | -------------------------------- |
+| `feat/radial-dock-toolbar`   | New radial dock feature          |
+| `fix/websocket-reconnection` | Fix for WebSocket reconnection   |
+| `docs/api-examples`          | Documentation improvements       |
+| `refactor/auth-hooks`        | Refactoring authentication hooks |
+| `chore/update-dependencies`  | Dependency updates               |
 
 ---
 
@@ -272,13 +272,13 @@ When tests are added, they should:
 
 Documentation files are located in the `docs/` directory:
 
-| File                       | Purpose                              |
-| -------------------------- | ------------------------------------ |
-| `API_DOCUMENTATION.md`     | REST API reference                   |
-| `INSTALLATION.md`          | Setup and deployment guide           |
-| `DATABASE_SCHEMA.md`       | Database structure                   |
-| `WEBSOCKET_ARCHITECTURE.md`| Real-time communication details      |
-| `SECURITY.md`              | Security considerations              |
+| File                        | Purpose                         |
+| --------------------------- | ------------------------------- |
+| `API_DOCUMENTATION.md`      | REST API reference              |
+| `INSTALLATION.md`           | Setup and deployment guide      |
+| `DATABASE_SCHEMA.md`        | Database structure              |
+| `WEBSOCKET_ARCHITECTURE.md` | Real-time communication details |
+| `SECURITY.md`               | Security considerations         |
 
 When making significant changes, please update the relevant documentation.
 

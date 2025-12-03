@@ -58,13 +58,23 @@ const AuthPageSkeleton: React.FC = () => {
               <div className={styles.formFields}>
                 {/* Email field */}
                 <div className={styles.field}>
-                  <Skeleton variant="text" width={80} height={14} className={styles.labelSkeleton} />
+                  <Skeleton
+                    variant="text"
+                    width={80}
+                    height={14}
+                    className={styles.labelSkeleton}
+                  />
                   <Skeleton variant="rounded" width="100%" height={40} />
                 </div>
 
                 {/* Password field */}
                 <div className={styles.field}>
-                  <Skeleton variant="text" width={80} height={14} className={styles.labelSkeleton} />
+                  <Skeleton
+                    variant="text"
+                    width={80}
+                    height={14}
+                    className={styles.labelSkeleton}
+                  />
                   <Skeleton variant="rounded" width="100%" height={40} />
                 </div>
 
