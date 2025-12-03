@@ -29,8 +29,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const hasValidToken = contextToken ?? (localStorageToken && isTokenValid(localStorageToken));
 
   if (!hasValidToken) {
-    // Log security event for unauthorized access attempt
-    logger.warn('[ProtectedRoute] SECURITY: No valid token found - redirecting to login', {
+    // Log redirect to login (expected behavior when not authenticated)
+    logger.debug('[ProtectedRoute] No valid token found - redirecting to login', {
       attemptedPath: window.location.pathname,
       hasContextToken: !!contextToken,
       hasLocalStorageToken: !!localStorageToken,
