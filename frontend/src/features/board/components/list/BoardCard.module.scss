@@ -6,18 +6,18 @@
   display: block;
 
   &:hover .boardCard.grid {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    transform: translateY(theme.$transform-translate-y-sm) scale(theme.$scale-moderate);
+    box-shadow: theme.$shadow-card-hover-lg;
   }
 
   &:hover .boardCard.list {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(theme.$transform-translate-y-sm) scale(theme.$scale-subtle);
+    box-shadow: theme.$shadow-card-hover;
   }
 
   &:active .boardCard {
     transform: translateY(0) scale(1);
-    transition-duration: 0.1s;
+    transition-duration: theme.$transition-instant;
   }
 }
 
@@ -26,8 +26,8 @@
   position: relative;
   overflow: hidden;
   transition:
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform theme.$transition-normal cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow theme.$transition-normal cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, box-shadow;
 }
 
@@ -35,17 +35,17 @@
 .boardCard.grid {
   @include theme.flex-column;
   padding: 0;
-  border-radius: 8px;
+  border-radius: theme.$border-radius-lg;
   background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   box-shadow: theme.$shadow-card;
 }
 
 .previewArea {
   width: 100%;
-  height: 130px;
+  height: theme.$board-card-preview-height;
   position: relative;
-  border-radius: 8px 8px 0 0;
+  border-radius: theme.$border-radius-lg theme.$border-radius-lg 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,12 +59,12 @@
 
 .gridAvatar {
   position: relative;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
+  width: theme.$avatar-size-xl;
+  height: theme.$avatar-size-xl;
+  border-radius: theme.$border-radius-full;
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: theme.$shadow-card;
   z-index: theme.$z-index-base;
   background: var(--color-surface-elevated);
 }
@@ -77,52 +77,52 @@
 
 .adminBadge {
   position: absolute;
-  top: 6px;
-  inset-inline-end: 6px;
+  top: theme.$spacing-1-5;
+  inset-inline-end: theme.$spacing-1-5;
   background: var(--admin-badge-bg);
   color: var(--admin-badge-text);
-  padding: 4px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--admin-badge-text);
+  padding: theme.$spacing-1 theme.$spacing-2;
+  border-radius: theme.$border-radius-md;
+  border: theme.$border-width solid var(--admin-badge-text);
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: theme.$spacing-1;
+  font-size: theme.$font-size-2xs-plus;
+  font-weight: theme.$font-weight-semibold;
+  box-shadow: theme.$shadow-sm;
 }
 
 .boardCard.grid .boardCardContent {
   @include theme.flex-column;
-  padding: 8px 10px;
-  gap: 4px;
+  padding: theme.$spacing-2 theme.$spacing-2-5;
+  gap: theme.$spacing-1;
   flex-shrink: 0;
   align-items: center;
   text-align: center;
-  border-top: 1px solid var(--glass-border);
+  border-top: theme.$border-width solid var(--glass-border);
 }
 
 .boardName {
   font-size: theme.$font-size-xs-plus;
-  font-weight: 600;
+  font-weight: theme.$font-weight-semibold;
   color: var(--color-text-primary);
   margin: 0;
-  line-height: 1.2;
+  line-height: theme.$line-height-tight;
   @include theme.text-clamp(1);
 }
 
 .metadataRow {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: theme.$spacing-1;
   font-size: theme.$font-size-2xs;
 }
 
 .colorDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  border: 1px solid var(--glass-border);
+  width: theme.$spacing-1-5;
+  height: theme.$spacing-1-5;
+  border-radius: theme.$border-radius-full;
+  border: theme.$border-width solid var(--glass-border);
   flex-shrink: 0;
 }
 
@@ -130,13 +130,13 @@
   font-size: theme.$font-size-2xs;
   color: var(--color-text-secondary);
   font-family: monospace;
-  line-height: 1;
+  line-height: theme.$line-height-tight;
 }
 
 .timestamp {
   font-size: theme.$font-size-2xs;
   color: var(--color-text-muted);
-  line-height: 1;
+  line-height: theme.$line-height-tight;
 }
 
 // ===== LIST VIEW STYLES =====
@@ -144,42 +144,42 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 8px;
+  gap: theme.$spacing-3;
+  padding: theme.$spacing-2-5 theme.$spacing-3;
+  border-radius: theme.$border-radius-lg;
   min-height: 56px;
   background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   box-shadow: theme.$shadow-card;
 }
 
 .listLeftSection {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: theme.$spacing-3;
   grid-column: 1;
   min-width: 0;
 }
 
 .listThumbnail {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  width: theme.$avatar-size-md;
+  height: theme.$avatar-size-md;
+  border-radius: theme.$border-radius-full;
   flex-shrink: 0;
-  border: 2px solid var(--glass-border);
+  border: theme.$border-width-thick solid var(--glass-border);
   object-fit: cover;
 }
 
 .listName {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: theme.$spacing-1-5;
   min-width: 0;
 
   h3 {
     margin: 0;
     font-size: theme.$font-size-sm;
-    font-weight: 600;
+    font-weight: theme.$font-weight-semibold;
     color: var(--color-text-primary);
     @include theme.text-clamp(1);
   }
@@ -197,7 +197,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: theme.$spacing-1;
   text-align: center;
   grid-column: 2;
   justify-self: center;
@@ -217,15 +217,15 @@
 .listColorInfo {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: theme.$spacing-1-5;
   flex-shrink: 0;
 }
 
 .listColorDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px solid var(--glass-border);
+  width: theme.$spacing-2;
+  height: theme.$spacing-2;
+  border-radius: theme.$border-radius-full;
+  border: theme.$border-width solid var(--glass-border);
   flex-shrink: 0;
 }
 
@@ -253,18 +253,18 @@
   }
 
   .previewArea {
-    height: 110px;
+    height: theme.$board-card-preview-height-mobile;
   }
 
   .gridAvatar {
-    width: 75px;
-    height: 75px;
-    border-width: 2px;
+    width: theme.$avatar-size-lg;
+    height: theme.$avatar-size-lg;
+    border-width: theme.$border-width-thick;
   }
 
   .boardCard.grid .boardCardContent {
-    padding: 6px 8px;
-    gap: 3px;
+    padding: theme.$spacing-1-5 theme.$spacing-2;
+    gap: theme.$spacing-0-5;
   }
 
   .boardName {
@@ -278,28 +278,28 @@
 
   .metadataRow {
     font-size: theme.$font-size-3xs;
-    gap: 3px;
+    gap: theme.$spacing-0-5;
   }
 
   .colorDot {
-    width: 5px;
-    height: 5px;
+    width: theme.$spacing-1;
+    height: theme.$spacing-1;
   }
 
   .boardCard.list {
     grid-template-columns: auto 1fr;
-    gap: 8px;
-    padding: 8px 10px;
+    gap: theme.$spacing-2;
+    padding: theme.$spacing-2 theme.$spacing-2-5;
   }
 
   .listLeftSection {
-    gap: 8px;
+    gap: theme.$spacing-2;
     grid-column: 1;
   }
 
   .listThumbnail {
-    width: 40px;
-    height: 40px;
+    width: theme.$avatar-size-sm;
+    height: theme.$avatar-size-sm;
   }
 
   .listName {
@@ -347,8 +347,8 @@
 
 @media (max-width: theme.$breakpoint-sm) {
   .boardCard.grid .boardCardContent {
-    padding: 8px;
-    gap: 4px;
+    padding: theme.$spacing-2;
+    gap: theme.$spacing-1;
   }
 
   .boardName {
@@ -356,13 +356,13 @@
   }
 
   .boardCard.list {
-    gap: 8px;
-    padding: 8px 10px;
+    gap: theme.$spacing-2;
+    padding: theme.$spacing-2 theme.$spacing-2-5;
   }
 
   .listThumbnail {
-    width: 40px;
-    height: 40px;
+    width: theme.$avatar-size-sm;
+    height: theme.$avatar-size-sm;
   }
 
   .listName h3 {
