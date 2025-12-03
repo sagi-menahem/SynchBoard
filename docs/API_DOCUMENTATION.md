@@ -50,10 +50,11 @@ This endpoint allows the frontend to determine which optional features are avail
 | ------------------------------------ | ----------------------------------- | ------------------------------- | ---------------- |
 | `POST /api/auth/register`            | Register a new user account         | User registration details       | Success message  |
 | `POST /api/auth/login`               | Authenticate user and get JWT token | Login credentials               | JWT auth token   |
+| `POST /api/auth/google-one-tap`      | Authenticate via Google One Tap     | Google credential (ID Token)    | JWT auth token   |
 | `POST /api/auth/verify-email`        | Verify email with verification code | Email and 6-digit code          | JWT auth token   |
 | `POST /api/auth/resend-verification` | Resend email verification code      | Email address                   | Success message  |
 | `POST /api/auth/forgot-password`     | Initiate password reset process     | Email address                   | Success message  |
-| `POST /api/auth/reset-password`      | Reset password with reset code      | Email, reset code, new password | Success message  |
+| `POST /api/auth/reset-password`      | Reset password with reset code      | Email, reset code, new password | JWT auth token   |
 
 ---
 

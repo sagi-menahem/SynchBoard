@@ -498,6 +498,14 @@ export const setupCanvasContext = (
   return ctx;
 };
 
+/**
+ * Determines opacity level based on transaction status for visual feedback.
+ * Returns reduced opacity for pending or failed transactions to indicate
+ * the current state of optimistic updates in collaborative drawing.
+ *
+ * @param payload - Enhanced action payload containing transaction metadata
+ * @returns Opacity value (0.5-1.0) based on transaction status
+ */
 const getTransactionOpacity = (payload: EnhancedActionPayload): number => {
   if (!payload.transactionId) {
     return 1.0;
