@@ -1,26 +1,25 @@
-// Glass effect variables for light and dark themes
-// Using solid colors instead of transparent for cleaner appearance
-:root,
-body[data-theme='light'] {
-  --glass-background: #ffffff;
-  --glass-border: rgba(0, 0, 0, 0.1);
-}
+// =============================================================================
+// GLASS MORPHISM SYSTEM
+// =============================================================================
+// Mixins for glass-style UI components.
+// CSS variables --glass-background and --glass-border are defined in index.scss
+// for proper theme support (light/dark mode).
+// =============================================================================
 
-body[data-theme='dark'] {
-  --glass-background: #27272a;
-  --glass-border: rgba(255, 255, 255, 0.1);
-}
+@use 'design-tokens' as theme;
 
 // Glass Panel Mixin
-// Creates a solid panel using user's Board Appearance color
+// Creates a glass-style panel using user's Board Appearance color or theme default
+// @param $opacity - Optional opacity override (default: 1)
 @mixin glass-panel($opacity: 1) {
   background: var(--user-chosen-color, var(--glass-background));
   opacity: $opacity;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-sm;
 }
 
 // Pill Shape Mixin
+// Creates a fully rounded pill/capsule shape
 @mixin pill-shape {
-  border-radius: 9999px;
+  border-radius: theme.$border-radius-pill;
 }
