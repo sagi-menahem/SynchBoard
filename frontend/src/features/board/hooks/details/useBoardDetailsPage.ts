@@ -38,7 +38,7 @@ export const useBoardDetailsPage = (boardId: number) => {
   } = useBoardDetailsData(boardId);
 
   const { handlePromoteMember, handleRemoveMember, handleRightClick, contextMenu, inviteForm } =
-    useBoardMemberActions(boardId, permissions.currentUserIsAdmin);
+    useBoardMemberActions(boardId, permissions.currentUserIsAdmin, boardDetails?.members ?? []);
 
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [editingField, setEditingField] = useState<EditingField | null>(null);

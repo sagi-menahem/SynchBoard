@@ -8,6 +8,8 @@ import { useContextMenu } from 'shared/hooks';
 import logger from 'shared/utils/logger';
 import { toastPromise } from 'shared/utils/toastUtils';
 
+import { useMemberValidation } from '../management/useMemberValidation';
+
 export interface UseBoardMemberActionsReturn {
   handlePromoteMember: (member: Member) => Promise<void>;
   handleRemoveMember: (member: Member) => Promise<void>;
@@ -37,15 +39,18 @@ export interface UseBoardMemberActionsReturn {
  *
  * @param boardId - ID of the board for which to manage members
  * @param currentUserIsAdmin - Whether the current user has admin privileges for member operations
+ * @param existingMembers - List of existing board members for duplicate validation
  * @returns Object containing member action handlers, context menu controls, and invite form state management
  */
 export const useBoardMemberActions = (
   boardId: number,
   currentUserIsAdmin: boolean,
+  existingMembers: Member[] = [],
 ): UseBoardMemberActionsReturn => {
   const { t } = useTranslation(['board', 'common']);
   const { userEmail } = useAuth();
   const contextMenu = useContextMenu<Member>();
+  const { validateMemberEmail } = useMemberValidation();
 
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -107,6 +112,15 @@ export const useBoardMemberActions = (
       setIsSubmitting(true);
 
       try {
+        // Validate the email before attempting to invite
+        const existingEmails = existingMembers.map((m) => m.email.toLowerCase());
+        const validationResult = await validateMemberEmail(email, existingEmails);
+
+        if (!validationResult.isValid) {
+          logger.warn('[useBoardMemberActions] Email validation failed:', validationResult.error);
+          return;
+        }
+
         const newMember = await handleInviteMember(email);
         onSuccess(newMember);
         setEmail('');
@@ -116,7 +130,7 @@ export const useBoardMemberActions = (
         setIsSubmitting(false);
       }
     },
-    [email, handleInviteMember, t],
+    [email, existingMembers, handleInviteMember, t, validateMemberEmail],
   );
 
   return {
