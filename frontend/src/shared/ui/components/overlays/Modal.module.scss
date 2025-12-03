@@ -79,11 +79,11 @@
   border: theme.$border-width solid theme.$border-strong;
   border-radius: theme.$border-radius-sm;
   padding: theme.$spacing-2;
-  line-height: 1;
-  min-width: 36px;
-  min-height: 36px;
-  width: 36px;
-  height: 36px;
+  line-height: theme.$line-height-tight;
+  min-width: theme.$icon-button-size;
+  min-height: theme.$icon-button-size;
+  width: theme.$icon-button-size;
+  height: theme.$icon-button-size;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,10 +122,10 @@
 
   .content {
     min-width: 280px;
-    width: calc(100vw - 32px);
-    max-width: calc(100vw - 32px);
-    max-height: calc(100vh - 32px);
-    margin: 0;
+    width: calc(100vw - theme.$spacing-8);
+    max-width: calc(100vw - theme.$spacing-8);
+    max-height: calc(100vh - theme.$spacing-8);
+    margin: theme.$spacing-0;
     border-radius: theme.$border-radius-md;
     padding: theme.$spacing-4;
     overflow-y: auto;
@@ -134,10 +134,10 @@
   .closeButton {
     top: theme.$spacing-2;
     inset-inline-end: theme.$spacing-2;
-    min-width: 32px;
-    min-height: 32px;
-    width: 32px;
-    height: 32px;
+    min-width: theme.$icon-button-size-md;
+    min-height: theme.$icon-button-size-md;
+    width: theme.$icon-button-size-md;
+    height: theme.$icon-button-size-md;
   }
 }
 

@@ -20,15 +20,15 @@
 .satelliteContent {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem; // Compact spacing matching StrokeWidthSatellite
+  gap: theme.$spacing-1-5; // Compact spacing matching StrokeWidthSatellite
   align-items: center;
   width: 100%;
 }
 
 /* Satellite Header */
 .satelliteHeader {
-  font-size: 0.6875rem; // 11px
-  font-weight: 600;
+  font-size: theme.$font-size-2xs-plus; // 11px
+  font-weight: theme.$font-weight-semibold;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-primary);
@@ -56,7 +56,7 @@
 
   :global(.sliderWrapper) {
     justify-content: center;
-    gap: 0.5rem; // Tighter spacing between slider and value
+    gap: theme.$spacing-2; // Tighter spacing between slider and value
   }
 }
 
@@ -65,34 +65,34 @@
 .strokeWidthControl {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: theme.$spacing-4;
 }
 
 .strokePreviewContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  gap: theme.$spacing-2;
+  padding: theme.$spacing-3;
   background: var(--color-surface-hover);
-  border-radius: 8px;
+  border-radius: theme.$border-radius-lg;
   transition: background theme.$transition-normal ease;
 }
 
 .strokePreviewSvg {
   display: block;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(theme.$shadow-button-small);
 }
 
 .strokePreviewLine {
   transition:
-    stroke-width 0.15s ease,
-    stroke 0.2s ease;
+    stroke-width theme.$transition-fast ease,
+    stroke theme.$transition-normal ease;
 }
 
 .strokeValueLabel {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-semibold;
   color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
   min-width: 3ch;
@@ -104,14 +104,14 @@
 .colorGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0.375rem;
+  gap: theme.$spacing-1-5;
 }
 
 .colorButton {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%; /* Circular color buttons */
-  border: 2px solid transparent;
+  width: theme.$icon-button-size-sm;
+  height: theme.$icon-button-size-sm;
+  border-radius: theme.$border-radius-full; /* Circular color buttons */
+  border: theme.$border-width-thick solid transparent;
   cursor: pointer;
   transition: all theme.$transition-normal ease;
   position: relative;
@@ -119,33 +119,25 @@
   outline: none;
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px var(--color-overlay-medium);
+    transform: scale(theme.$scale-emphasis);
+    box-shadow: theme.$shadow-card var(--color-overlay-medium);
   }
 
   &.active {
     border-color: var(--color-text-primary);
-    box-shadow: 0 0 0 2px var(--color-primary-light);
+    box-shadow: theme.$shadow-focus-ring-lg var(--color-primary-light);
   }
 
   /* Smaller on mobile to fit 6-column grid */
   @media (max-width: theme.$breakpoint-md) {
-    width: 24px;
-    height: 24px;
+    width: theme.$avatar-size-xs;
+    height: theme.$avatar-size-xs;
   }
 }
 
 /* Screen reader only text */
 .srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+  @include theme.visually-hidden;
 }
 
 /* Custom color toggle button */
@@ -153,18 +145,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
+  gap: theme.$spacing-1-5;
   width: 100%;
-  padding: 0.375rem 0.5rem;
-  margin-top: 0.25rem;
+  padding: theme.$spacing-1-5 theme.$spacing-2;
+  margin-top: theme.$spacing-1;
   background: var(--icon-btn-bg);
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all theme.$transition-normal ease;
   color: var(--color-text-secondary);
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: theme.$font-size-2xs-plus;
+  font-weight: theme.$font-weight-medium;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 
@@ -181,14 +173,14 @@
 
   &.hasCustomColor .customColorPreview {
     border-color: var(--color-text-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
+    box-shadow: theme.$shadow-focus-outline var(--color-primary-light);
   }
 }
 
 .customColorPreview {
   width: 14px;
   height: 14px;
-  border-radius: 50%;
+  border-radius: theme.$border-radius-full;
   border: 1.5px solid var(--glass-border);
   background: linear-gradient(
     135deg,
@@ -211,16 +203,16 @@
 /* Custom color picker section */
 .customPickerSection {
   width: 100%;
-  margin-top: 0.375rem;
-  padding-top: 0.375rem;
-  border-top: 1px solid var(--glass-border);
-  animation: expandIn 0.2s ease-out;
+  margin-top: theme.$spacing-1-5;
+  padding-top: theme.$spacing-1-5;
+  border-top: theme.$border-width solid var(--glass-border);
+  animation: expandIn theme.$transition-normal ease-out;
 }
 
 @keyframes expandIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(calc(-1 * theme.$spacing-2));
   }
   to {
     opacity: 1;
@@ -235,22 +227,22 @@
   :global(.react-colorful) {
     width: 100% !important;
     height: auto !important;
-    gap: 0.5rem;
+    gap: theme.$spacing-2;
   }
 
   :global(.react-colorful__saturation) {
     width: 100% !important;
     height: 100px !important;
     border-radius: theme.$border-radius-md !important;
-    border: 1px solid var(--glass-border) !important;
+    border: theme.$border-width solid var(--glass-border) !important;
   }
 
   :global(.react-colorful__saturation-pointer) {
-    width: 16px !important;
-    height: 16px !important;
-    border: 2px solid white !important;
+    width: theme.$color-picker-pointer-size !important;
+    height: theme.$color-picker-pointer-size !important;
+    border: theme.$border-width-thick solid white !important;
     box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.2),
+      theme.$shadow-button,
       inset 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
   }
 
@@ -258,16 +250,16 @@
     width: 100% !important;
     height: 12px !important;
     border-radius: theme.$border-radius-full !important;
-    margin-top: 0.25rem;
-    border: 1px solid var(--glass-border) !important;
+    margin-top: theme.$spacing-1;
+    border: theme.$border-width solid var(--glass-border) !important;
   }
 
   :global(.react-colorful__hue-pointer) {
     width: 14px !important;
     height: 14px !important;
-    border: 2px solid white !important;
+    border: theme.$border-width-thick solid white !important;
     box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.2),
+      theme.$shadow-button,
       inset 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
   }
 }
@@ -277,17 +269,17 @@
 .shapeGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.375rem;
+  gap: theme.$spacing-1-5;
 }
 
 .shapeButton {
   aspect-ratio: 1;
-  min-height: 40px; /* Compact but still usable touch target */
+  min-height: theme.$icon-button-size-lg; /* Compact but still usable touch target */
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--icon-btn-bg);
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all theme.$transition-normal ease;
@@ -296,15 +288,15 @@
   &:hover {
     background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: theme.$shadow-subtle;
   }
 
   &.active {
     background: var(--icon-btn-bg-active);
     border-color: var(--glass-border);
     color: var(--color-text-primary);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: theme.$shadow-button-small;
   }
 
   &.active:hover {
@@ -316,8 +308,8 @@
   }
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: theme.$avatar-size-xs;
+    height: theme.$avatar-size-xs;
   }
 }
 
@@ -326,17 +318,17 @@
 .lineGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.375rem;
+  gap: theme.$spacing-1-5;
 }
 
 .lineButton {
   aspect-ratio: 1;
-  min-height: 40px; /* Compact but still usable touch target */
+  min-height: theme.$icon-button-size-lg; /* Compact but still usable touch target */
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--icon-btn-bg);
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   border-radius: theme.$border-radius-md;
   cursor: pointer;
   transition: all theme.$transition-normal ease;
@@ -345,15 +337,15 @@
   &:hover {
     background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: theme.$shadow-subtle;
   }
 
   &.active {
     background: var(--icon-btn-bg-active);
     border-color: var(--glass-border);
     color: var(--color-text-primary);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: theme.$shadow-button-small;
   }
 
   &.active:hover {
@@ -365,8 +357,8 @@
   }
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: theme.$avatar-size-xs;
+    height: theme.$avatar-size-xs;
   }
 }
 
@@ -374,22 +366,22 @@
 
 @media (max-width: theme.$breakpoint-md) {
   .satelliteContent {
-    gap: 1rem;
+    gap: theme.$spacing-4;
   }
 
   .satelliteHeader {
-    font-size: 0.8125rem;
+    font-size: theme.$font-size-xs-plus;
   }
 
   .strokeWidthControl {
-    gap: 0.875rem;
+    gap: theme.$spacing-3;
   }
 
   .toolGrid {
-    gap: 0.625rem;
+    gap: theme.$spacing-2-5;
   }
 
   .colorGrid {
-    gap: 0.375rem; /* Tighter spacing on mobile for 6-column grid */
+    gap: theme.$spacing-1-5; /* Tighter spacing on mobile for 6-column grid */
   }
 }

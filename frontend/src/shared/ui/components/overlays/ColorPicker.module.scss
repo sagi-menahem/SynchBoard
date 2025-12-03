@@ -18,13 +18,13 @@
 
 .label {
   @include theme.flex-start;
-  margin-right: 8px;
+  margin-right: theme.$spacing-2;
   color: theme.$text-muted;
   font-size: theme.$font-size-xs;
-  font-weight: 300;
+  font-weight: theme.$font-weight-normal;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  height: 28px;
+  height: theme.$icon-button-size-sm;
 }
 
 // -----------------------------------------------------------------------------
@@ -59,16 +59,16 @@
 }
 
 .colorFill {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid var(--glass-border);
+  width: theme.$color-swatch-size;
+  height: theme.$color-swatch-size;
+  border-radius: theme.$border-radius-full;
+  border: theme.$border-width-thick solid var(--glass-border);
   cursor: pointer;
   @include theme.smooth-transition;
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(theme.$scale-emphasis);
+    box-shadow: theme.$shadow-subtle;
   }
 }
 
@@ -95,7 +95,7 @@
 
   // Use user-chosen color for settings pages, fallback to glass-background
   background: var(--user-chosen-color, var(--glass-background));
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   border-radius: theme.$border-radius-xl;
   box-shadow: theme.$shadow-lg;
   padding: theme.$spacing-4;
@@ -107,7 +107,7 @@
 @keyframes popoverIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(calc(-1 * theme.$spacing-2));
   }
   to {
     opacity: 1;
@@ -139,35 +139,35 @@
 
   :global(.react-colorful__saturation) {
     width: 100% !important;
-    height: 150px !important;
+    height: theme.$color-picker-height !important;
     border-radius: theme.$border-radius-lg !important;
-    border: 1px solid var(--glass-border) !important;
+    border: theme.$border-width solid var(--glass-border) !important;
   }
 
   :global(.react-colorful__saturation-pointer) {
-    width: 20px !important;
-    height: 20px !important;
+    width: theme.$color-swatch-size-sm !important;
+    height: theme.$color-swatch-size-sm !important;
     border: 3px solid white !important;
     box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.2),
+      theme.$shadow-button,
       inset 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
   }
 
   // Hue slider
   :global(.react-colorful__hue) {
     width: 100% !important;
-    height: 14px !important;
+    height: theme.$color-picker-slider-height !important;
     border-radius: theme.$border-radius-full !important;
     margin-top: theme.$spacing-2;
-    border: 1px solid var(--glass-border) !important;
+    border: theme.$border-width solid var(--glass-border) !important;
   }
 
   :global(.react-colorful__hue-pointer) {
-    width: 18px !important;
-    height: 18px !important;
+    width: theme.$color-swatch-size-xs !important;
+    height: theme.$color-swatch-size-xs !important;
     border: 3px solid white !important;
     box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.2),
+      theme.$shadow-button,
       inset 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
   }
 }
@@ -178,7 +178,7 @@
 
 .divider {
   width: 100%;
-  height: 1px;
+  height: theme.$border-width;
   background: var(--glass-border);
   margin: theme.$spacing-1 0;
 }
@@ -204,21 +204,21 @@
 .presetColors {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 6px;
+  gap: theme.$spacing-1-5;
 }
 
 .presetColor {
   // Reset button for color preset swatches
   @include theme.button-reset;
-  width: 20px;
-  height: 20px;
+  width: theme.$color-swatch-size-sm;
+  height: theme.$color-swatch-size-sm;
   border: 1.5px solid var(--glass-border) !important;
   border-radius: theme.$border-radius-sm;
   cursor: pointer;
   @include theme.smooth-transition;
 
   &:hover {
-    transform: scale(1.2);
+    transform: scale(theme.$scale-strong);
     box-shadow: theme.$shadow-button-hover;
     z-index: theme.$z-index-base;
   }
@@ -230,7 +230,7 @@
   }
 
   &:active {
-    transform: scale(0.95);
+    transform: scale(theme.$scale-press);
   }
 
   &.active {
@@ -250,11 +250,11 @@
 
   // Keep 9 columns on mobile (same as desktop) for consistent grid layout
   .presetColors {
-    gap: 4px;
+    gap: theme.$spacing-1;
   }
 
   .presetColor {
-    width: 18px;
-    height: 18px;
+    width: theme.$color-swatch-size-xs;
+    height: theme.$color-swatch-size-xs;
   }
 }

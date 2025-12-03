@@ -80,7 +80,7 @@
 .icon {
   @include theme.interactive-button;
   background: var(--icon-btn-bg);
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   color: var(--btn-icon-text);
   cursor: pointer;
   padding: theme.$spacing-2;
@@ -103,8 +103,8 @@
     background: var(--icon-btn-bg-hover);
     border-color: var(--glass-border);
     color: theme.$text-primary;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(theme.$transform-translate-y-xs);
+    box-shadow: theme.$shadow-subtle;
   }
 
   &:disabled {
@@ -120,7 +120,7 @@
   background: var(--icon-btn-bg-active);
   color: theme.$text-primary;
   border-color: var(--glass-border);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: theme.$shadow-button-small;
 }
 
 .icon.active:hover,
@@ -135,9 +135,9 @@
 .cta {
   background: color-mix(in srgb, var(--color-success) 10%, transparent);
   color: var(--btn-cta-bg);
-  border: 1px solid color-mix(in srgb, var(--color-success) 30%, transparent);
+  border: theme.$border-width solid color-mix(in srgb, var(--color-success) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-success) 10%, transparent);
+  box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-success) 10%, transparent);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
   font-size: theme.$font-size-xs;
@@ -147,13 +147,13 @@
     color: var(--btn-cta-bg);
     border-color: color-mix(in srgb, var(--color-success) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-success) 20%, transparent);
+    box-shadow: theme.$shadow-card color-mix(in srgb, var(--color-success) 20%, transparent);
   }
 
   &:active:not(:disabled) {
     background: color-mix(in srgb, var(--color-success) 25%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-success) 15%, transparent);
+    box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-success) 15%, transparent);
   }
 }
 
@@ -161,9 +161,9 @@
 .warning {
   background: color-mix(in srgb, var(--color-warning) 10%, transparent);
   color: var(--btn-warning-bg);
-  border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent);
+  border: theme.$border-width solid color-mix(in srgb, var(--color-warning) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-warning) 10%, transparent);
+  box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-warning) 10%, transparent);
   min-height: theme.$button-compact-height;
   padding: theme.$spacing-1 theme.$spacing-2;
   font-size: theme.$font-size-xs;
@@ -173,13 +173,13 @@
     color: var(--btn-warning-bg);
     border-color: color-mix(in srgb, var(--color-warning) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-warning) 20%, transparent);
+    box-shadow: theme.$shadow-card color-mix(in srgb, var(--color-warning) 20%, transparent);
   }
 
   &:active:not(:disabled) {
     background: color-mix(in srgb, var(--color-warning) 25%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-warning) 15%, transparent);
+    box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-warning) 15%, transparent);
   }
 }
 
@@ -187,21 +187,21 @@
 .secondary-glass {
   background: rgba(120, 120, 128, 0.12);
   color: var(--color-text-primary);
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   font-weight: theme.$font-weight-medium;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: theme.$shadow-sm;
 
   &:hover:not(:disabled) {
     background: rgba(120, 120, 128, 0.2);
     border-color: var(--glass-border);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: theme.$shadow-subtle;
   }
 
   &:active:not(:disabled) {
     background: rgba(120, 120, 128, 0.25);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: theme.$shadow-sm;
   }
 
   &:focus {
@@ -210,7 +210,7 @@
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--glass-border);
+    box-shadow: theme.$shadow-focus-outline var(--glass-border);
   }
 }
 
@@ -218,21 +218,21 @@
 .primary-glass {
   background: color-mix(in srgb, var(--color-primary) 15%, transparent);
   color: var(--btn-primary-bg);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border: theme.$border-width solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 10%, transparent);
+  box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-primary) 10%, transparent);
 
   &:hover:not(:disabled) {
     background: color-mix(in srgb, var(--color-primary) 25%, transparent);
     border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 20%, transparent);
+    box-shadow: theme.$shadow-card color-mix(in srgb, var(--color-primary) 20%, transparent);
   }
 
   &:active:not(:disabled) {
     background: color-mix(in srgb, var(--color-primary) 30%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 15%, transparent);
+    box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-primary) 15%, transparent);
   }
 
   &:focus {
@@ -241,7 +241,7 @@
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 40%, transparent);
+    box-shadow: theme.$shadow-focus-outline color-mix(in srgb, var(--color-primary) 40%, transparent);
   }
 }
 
@@ -249,21 +249,21 @@
 .destructive-glass {
   background: color-mix(in srgb, var(--color-error) 15%, transparent);
   color: var(--btn-destructive-bg);
-  border: 1px solid color-mix(in srgb, var(--color-error) 30%, transparent);
+  border: theme.$border-width solid color-mix(in srgb, var(--color-error) 30%, transparent);
   font-weight: theme.$font-weight-semibold;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-error) 10%, transparent);
+  box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-error) 10%, transparent);
 
   &:hover:not(:disabled) {
     background: color-mix(in srgb, var(--color-error) 25%, transparent);
     border-color: color-mix(in srgb, var(--color-error) 50%, transparent);
     transform: translateY(theme.$transform-translate-y-xs);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-error) 20%, transparent);
+    box-shadow: theme.$shadow-card color-mix(in srgb, var(--color-error) 20%, transparent);
   }
 
   &:active:not(:disabled) {
     background: color-mix(in srgb, var(--color-error) 30%, transparent);
     transform: translateY(theme.$spacing-0);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-error) 15%, transparent);
+    box-shadow: theme.$shadow-subtle color-mix(in srgb, var(--color-error) 15%, transparent);
   }
 
   &:focus {
@@ -272,7 +272,7 @@
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-error) 40%, transparent);
+    box-shadow: theme.$shadow-focus-outline color-mix(in srgb, var(--color-error) 40%, transparent);
   }
 }
 
@@ -280,9 +280,9 @@
 .link {
   background: none;
   border: none;
-  padding: 0;
-  margin: 0;
-  box-shadow: none;
+  padding: theme.$spacing-0;
+  margin: theme.$spacing-0;
+  box-shadow: theme.$shadow-none;
   color: var(--color-text-muted);
   text-decoration: none;
   font-weight: theme.$font-weight-normal;
@@ -296,12 +296,12 @@
     background: none;
     border: none;
     transform: none;
-    box-shadow: none;
+    box-shadow: theme.$shadow-none;
   }
 
   &:focus {
-    outline: 2px solid theme.$primary-light;
-    outline-offset: 2px;
+    outline: theme.$border-width-thick solid theme.$primary-light;
+    outline-offset: theme.$border-width-thick;
     text-decoration: underline;
     color: var(--color-text-primary);
   }
@@ -309,13 +309,13 @@
   &:active:not(:disabled) {
     color: theme.$primary;
     transform: none;
-    box-shadow: none;
+    box-shadow: theme.$shadow-none;
   }
 
   &:disabled {
     color: theme.$text-disabled;
     cursor: not-allowed;
     text-decoration: none;
-    opacity: 0.5;
+    opacity: theme.$opacity-50;
   }
 }

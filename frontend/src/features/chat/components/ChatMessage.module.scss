@@ -4,14 +4,14 @@
 /* Main message container with slide-in animation for new messages */
 .messageContainer {
   width: 100%;
-  padding: theme.$spacing-1 16px;
-  margin-bottom: 8px;
+  padding: theme.$spacing-1 theme.$spacing-4;
+  margin-bottom: theme.$spacing-2;
   box-sizing: border-box;
   animation: messageSlideIn theme.$transition-slow ease-out;
 
   /* Grouped consecutive messages from same user with reduced spacing */
   &.grouped {
-    margin-bottom: 4px;
+    margin-bottom: theme.$spacing-1;
 
     .messageBubble {
       padding: theme.$spacing-2 theme.$spacing-3;
@@ -42,14 +42,14 @@
 /* Rounded message bubble with word wrapping and responsive width */
 .messageBubble {
   padding: theme.$spacing-3;
-  border-radius: 20px;
+  border-radius: theme.$border-radius-3xl;
   max-width: 70%;
   position: relative;
   box-sizing: border-box;
   overflow: visible;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  border: 1px solid transparent;
+  border: theme.$border-width solid transparent;
 }
 
 .myMessage .messageBubble {
@@ -67,7 +67,7 @@
   color: var(--chat-my-bubble-text);
   margin-inline-start: auto;
   position: relative;
-  border: 1px solid var(--chat-my-bubble-border);
+  border: theme.$border-width solid var(--chat-my-bubble-border);
 }
 
 .otherMessage .messageBubble {
@@ -75,24 +75,24 @@
   // Allows background shapes to show through slightly
   background: var(--chat-other-bubble-bg);
   color: var(--chat-other-bubble-text);
-  border: 1px solid var(--chat-other-bubble-border);
+  border: theme.$border-width solid var(--chat-other-bubble-border);
   position: relative;
 }
 
 .avatar {
-  width: 24px;
-  height: 24px;
+  width: theme.$avatar-size-xs;
+  height: theme.$avatar-size-xs;
   @include theme.rounded-circle;
   object-fit: cover;
-  border: 2px solid theme.$border-light;
+  border: theme.$border-width-thick solid theme.$border-light;
   flex-shrink: 0;
   align-self: flex-start;
 }
 
 // Invisible spacer that takes same space as avatar for grouped messages
 .avatarSpacer {
-  width: 24px;
-  height: 24px;
+  width: theme.$avatar-size-xs;
+  height: theme.$avatar-size-xs;
   flex-shrink: 0;
   visibility: hidden;
 }
@@ -111,8 +111,8 @@
 
 .senderName {
   color: var(--color-text-secondary);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-semibold;
   @include theme.text-ellipsis;
   max-width: 100%;
 }
@@ -136,13 +136,13 @@
 }
 
 .messageText {
-  line-height: 1.4;
+  line-height: theme.$line-height-normal;
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: theme.$font-size-base;
+  font-weight: theme.$font-weight-medium;
   margin-bottom: theme.$spacing-0-5;
   max-width: 100%;
   white-space: pre-wrap;
@@ -159,7 +159,7 @@
 }
 
 .timestamp {
-  font-size: 0.75rem;
+  font-size: theme.$font-size-xs;
   white-space: nowrap;
   display: inline-block;
 }
@@ -175,12 +175,12 @@
 .failureIcon {
   position: absolute;
   bottom: theme.$spacing-0-5;
-  right: 6px;
+  right: theme.$spacing-1-5;
   font-size: theme.$font-size-xs;
   color: theme.$text-primary !important;
   z-index: theme.$z-index-base;
   cursor: help;
-  opacity: 0.8;
+  opacity: theme.$opacity-75;
 }
 
 .otherMessage .failureIcon {
@@ -191,7 +191,7 @@
 @keyframes messageSlideIn {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(theme.$spacing-5) scale(theme.$scale-press);
   }
 
   to {
@@ -201,20 +201,20 @@
 }
 
 .messageBubble:hover {
-  transform: translateY(-1px);
+  transform: translateY(theme.$transform-translate-y-xs);
   @include theme.shadow-light;
   @include theme.smooth-transition;
 }
 
 .messageContainer:focus-within {
-  outline: 2px solid theme.$accent-purple;
-  outline-offset: 2px;
+  outline: theme.$border-width-thick solid theme.$accent-purple;
+  outline-offset: theme.$border-width-thick;
   border-radius: theme.$border-radius-3xl;
 }
 
 @media (prefers-contrast: high) {
   .messageBubble {
-    border: 1px solid theme.$border-strong;
+    border: theme.$border-width solid theme.$border-strong;
   }
 
   .myMessage .messageBubble {
@@ -222,7 +222,7 @@
   }
 
   .messageText {
-    font-weight: 500;
+    font-weight: theme.$font-weight-medium;
   }
 }
 

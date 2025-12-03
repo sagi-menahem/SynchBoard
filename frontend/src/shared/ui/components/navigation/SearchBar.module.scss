@@ -4,8 +4,8 @@
 
 // Form wrapper for search functionality
 .searchForm {
-  margin: 0;
-  padding: 0;
+  margin: theme.$spacing-0;
+  padding: theme.$spacing-0;
   width: 100%; // Take full width of parent container
   max-width: 100%; // Prevent overflow
   box-sizing: border-box; // Include padding in width calculation
@@ -17,21 +17,21 @@
   @include theme.flex-center;
   background: var(--user-chosen-color, rgba(255, 255, 255, 0.15));
   opacity: 0.99;
-  border: 1px solid var(--glass-border);
+  border: theme.$border-width solid var(--glass-border);
   @include theme.rounded-medium;
-  padding: 6px theme.$spacing-3;
+  padding: theme.$spacing-1-5 theme.$spacing-3;
   gap: theme.$spacing-2;
   @include theme.smooth-transition;
   width: 100%; // Take full width of form
   max-width: 100%; // Allow expansion to full width
   min-width: 0; // Allow shrinking
   box-sizing: border-box; // Include padding and border in width
-  height: 36px; // Fixed height to prevent expansion when typing
+  height: theme.$icon-button-size; // Fixed height to prevent expansion when typing
 
   &:focus-within {
     opacity: 0.99;
     border-color: var(--glass-border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: theme.$shadow-subtle;
   }
 }
 
@@ -52,15 +52,15 @@
   flex: 1;
   min-width: 0;
   text-align: center;
-  height: 20px;
-  line-height: 20px;
-  padding: 0;
+  height: theme.$color-swatch-size-sm;
+  line-height: theme.$color-swatch-size-sm;
+  padding: theme.$spacing-0;
 
   &::placeholder {
     color: var(--color-text-secondary);
-    opacity: 0.7;
+    opacity: theme.$opacity-75;
     text-align: center;
-    line-height: 20px;
+    line-height: theme.$color-swatch-size-sm;
   }
 }
 
