@@ -97,8 +97,4 @@
 .hoverable {
   cursor: pointer;
   @include theme.smooth-transition;
-
-  &:hover {
-    @include theme.card-hover-effect;
-  }
 }
