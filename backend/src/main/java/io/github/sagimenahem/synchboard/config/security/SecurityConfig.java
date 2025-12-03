@@ -45,6 +45,16 @@ public class SecurityConfig {
     @Value("${GOOGLE_CLIENT_ID:}")
     private String googleClientId;
 
+    /**
+     * Configures the security filter chain with JWT authentication, OAuth2 integration, and CORS.
+     * Defines public endpoints (auth, WebSocket, images, config) and protected endpoints requiring
+     * authentication. Uses stateless session management and conditionally enables OAuth2 login
+     * when Google credentials are configured.
+     *
+     * @param http the HTTP security configuration builder
+     * @return the configured security filter chain
+     * @throws Exception if security configuration fails
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -84,6 +94,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Creates the CORS configuration source with allowed origins, methods, and headers. Configures
+     * cross-origin requests based on application properties, permitting credentials and standard
+     * HTTP methods (GET, POST, PUT, DELETE, OPTIONS) for all endpoints.
+     *
+     * @return URL-based CORS configuration source applied to all request paths
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

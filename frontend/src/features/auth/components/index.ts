@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Authentication UI components barrel export.
+ * Exports login, registration, email verification, and OAuth components.
+ */
+
 export { default as EmailVerificationModal } from './EmailVerificationModal';
 export { default as ForgotPasswordModal } from './ForgotPasswordModal';
 export { default as GoogleOneTap } from './GoogleOneTap';

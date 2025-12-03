@@ -56,6 +56,68 @@ This endpoint allows the frontend to determine which optional features are avail
 | `POST /api/auth/forgot-password`     | Initiate password reset process     | Email address                   | Success message  |
 | `POST /api/auth/reset-password`      | Reset password with reset code      | Email, reset code, new password | JWT auth token   |
 
+### Authentication Examples
+
+**Register a new user:**
+
+```bash
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "SecurePass123!",
+    "firstName": "John",
+    "lastName": "Doe",
+    "gender": "male"
+  }'
+```
+
+Response (when email verification is enabled):
+
+```json
+{
+  "message": "Verification code sent to your email"
+}
+```
+
+**Login:**
+
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "SecurePass123!"
+  }'
+```
+
+Response:
+
+```json
+{
+  "token": "***REDACTED_JWT_HEADER***..."
+}
+```
+
+**Verify email:**
+
+```bash
+curl -X POST http://localhost:8080/api/auth/verify-email \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "code": "123456"
+  }'
+```
+
+Response:
+
+```json
+{
+  "token": "***REDACTED_JWT_HEADER***..."
+}
+```
+
 ---
 
 ## Board Management Endpoints
@@ -79,6 +141,107 @@ This endpoint allows the frontend to determine which optional features are avail
 | `GET /api/boards/{boardId}/messages`                      | Get chat messages for board       | N/A                        | Array of chat messages           |
 | `PUT /api/boards/{boardId}/canvas-settings`               | Update canvas settings            | Canvas configuration       | Updated board object             |
 
+### Board Management Examples
+
+**Create a new board:**
+
+```bash
+curl -X POST http://localhost:8080/api/boards \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "name": "Project Brainstorm",
+    "description": "Team collaboration board",
+    "canvasWidth": 3000,
+    "canvasHeight": 2000,
+    "canvasBackgroundColor": "#FFFFFF"
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": 1,
+  "name": "Project Brainstorm",
+  "description": "Team collaboration board",
+  "isAdmin": true,
+  "createdByEmail": "user@example.com",
+  "canvasWidth": 3000,
+  "canvasHeight": 2000,
+  "canvasBackgroundColor": "#FFFFFF",
+  "creationDate": "2025-01-15T10:30:00",
+  "lastModifiedDate": "2025-01-15T10:30:00"
+}
+```
+
+**Get all user boards:**
+
+```bash
+curl -X GET http://localhost:8080/api/boards \
+  -H "Authorization: Bearer <your-jwt-token>"
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Project Brainstorm",
+    "description": "Team collaboration board",
+    "isAdmin": true,
+    "groupPictureUrl": null,
+    "creationDate": "2025-01-15T10:30:00"
+  },
+  {
+    "id": 2,
+    "name": "Design Review",
+    "description": null,
+    "isAdmin": false,
+    "groupPictureUrl": "/images/board-2.png",
+    "creationDate": "2025-01-14T09:00:00"
+  }
+]
+```
+
+**Invite a member:**
+
+```bash
+curl -X POST http://localhost:8080/api/boards/1/members \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "email": "colleague@example.com"
+  }'
+```
+
+Response:
+
+```json
+{
+  "email": "colleague@example.com",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "isAdmin": false,
+  "joinDate": "2025-01-15T11:00:00",
+  "profilePictureUrl": null
+}
+```
+
+**Update canvas settings:**
+
+```bash
+curl -X PUT http://localhost:8080/api/boards/1/canvas-settings \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "canvasWidth": 4000,
+    "canvasHeight": 3000,
+    "canvasBackgroundColor": "#F5F5F5"
+  }'
+```
+
 ---
 
 ## User Management Endpoints
@@ -101,6 +264,71 @@ This endpoint allows the frontend to determine which optional features are avail
 | `PUT /api/user/language-preferences` | Update language preferences     | Language setting         | Updated preferences        |
 | `GET /api/user/theme-preferences`    | Get theme preferences           | N/A                      | Theme preference object    |
 | `PUT /api/user/theme-preferences`    | Update theme preferences        | Theme setting            | Updated preferences        |
+
+### User Management Examples
+
+**Get user profile:**
+
+```bash
+curl -X GET http://localhost:8080/api/user/profile \
+  -H "Authorization: Bearer <your-jwt-token>"
+```
+
+Response:
+
+```json
+{
+  "email": "user@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": "male",
+  "phoneNumber": "+1234567890",
+  "dateOfBirth": "1990-05-15",
+  "profilePictureUrl": "/images/profile-user.png",
+  "creationDate": "2025-01-10T08:00:00",
+  "authProvider": "LOCAL"
+}
+```
+
+**Update user profile:**
+
+```bash
+curl -X PUT http://localhost:8080/api/user/profile \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "firstName": "John",
+    "lastName": "Smith",
+    "phoneNumber": "+1987654321"
+  }'
+```
+
+**Change password:**
+
+```bash
+curl -X PUT http://localhost:8080/api/user/password \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "currentPassword": "OldPass123!",
+    "newPassword": "NewSecurePass456!"
+  }'
+```
+
+Response: `204 No Content`
+
+**Update tool preferences:**
+
+```bash
+curl -X PUT http://localhost:8080/api/user/tool-preferences \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "defaultTool": "brush",
+    "defaultStrokeColor": "#FF5733",
+    "defaultStrokeWidth": 5
+  }'
+```
 
 ---
 
@@ -161,3 +389,53 @@ All WebSocket connections require JWT authentication via STOMP headers.
 - **Language**: "en" or "he"
 - **Hex colors**: Valid hex format (e.g., #FF0000)
 - **File uploads**: Max 10MB, common image formats
+
+---
+
+## Error Responses
+
+All error responses follow a consistent format:
+
+```json
+{
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Validation failed: email must be a valid email address",
+  "timestamp": "2025-01-15T12:00:00.000Z"
+}
+```
+
+### Common Error Examples
+
+**401 Unauthorized (Invalid/expired token):**
+
+```json
+{
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "JWT token has expired",
+  "timestamp": "2025-01-15T12:00:00.000Z"
+}
+```
+
+**404 Not Found (Resource doesn't exist):**
+
+```json
+{
+  "status": 404,
+  "error": "Not Found",
+  "message": "Board not found with id: 999",
+  "timestamp": "2025-01-15T12:00:00.000Z"
+}
+```
+
+**409 Conflict (Duplicate resource):**
+
+```json
+{
+  "status": 409,
+  "error": "Conflict",
+  "message": "User already exists with this email",
+  "timestamp": "2025-01-15T12:00:00.000Z"
+}
+```

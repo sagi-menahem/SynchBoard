@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Authentication form hooks barrel export.
+ * Exports form state management hooks for login, registration, and verification flows.
+ */
+
 export {
   authErrorHandling,
   authToastMessages,

@@ -29,11 +29,25 @@ public class OAuth2Config {
     @Value("${GOOGLE_REDIRECT_URI:http://localhost:8080/login/oauth2/code/google}")
     private String googleRedirectUri;
 
+    /**
+     * Creates the client registration repository for OAuth2 authentication. Provides an in-memory
+     * repository containing the Google OAuth2 client registration, enabling Spring Security to
+     * handle OAuth2 login flows.
+     *
+     * @return configured in-memory client registration repository with Google provider
+     */
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(googleClientRegistration());
     }
 
+    /**
+     * Builds the Google OAuth2 client registration with configured credentials and endpoints.
+     * Configures authorization code grant flow with email and profile scopes, using Google's
+     * OAuth2 endpoints for authentication, token exchange, and user info retrieval.
+     *
+     * @return configured Google client registration for OAuth2 authentication
+     */
     private ClientRegistration googleClientRegistration() {
         return ClientRegistration.withRegistrationId("google")
             .clientId(googleClientId)

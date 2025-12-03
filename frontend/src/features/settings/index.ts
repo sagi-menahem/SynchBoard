@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Settings feature module exports.
+ * Provides components, hooks, providers, and services for user preferences,
+ * profile management, theme, and canvas settings.
+ */
+
 export { default as BoardAppearanceSection } from './components/BoardAppearanceSection';
 export { default as ChangePasswordForm } from './components/ChangePasswordForm';
 export { default as DangerZoneSection } from './components/DangerZoneSection';

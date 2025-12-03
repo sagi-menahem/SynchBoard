@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Authentication feature module exports.
+ * Provides components, hooks, context, and utilities for user authentication,
+ * including login, registration, email verification, and OAuth integration.
+ */
+
 export { default as EmailVerificationModal } from './components/EmailVerificationModal';
 export { default as ForgotPasswordModal } from './components/ForgotPasswordModal';
 export { default as GoogleLoginButton } from './components/GoogleLoginButton';

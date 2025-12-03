@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Board feature module exports.
+ * Provides components, hooks, context, services, and utilities for collaborative
+ * whiteboard functionality including canvas, drawing tools, and board management.
+ */
+
 export { default as BoardWorkspace } from './components/workspace/BoardWorkspace';
 export { default as Canvas } from './components/workspace/Canvas';
 export { default as TextInputOverlay } from './components/workspace/TextInputOverlay';

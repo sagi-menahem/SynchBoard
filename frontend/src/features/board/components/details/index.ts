@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Board details components barrel export.
+ * Exports components for board settings, member management, and canvas configuration.
+ */
+
 export { default as BoardConfirmDialogs } from './BoardConfirmDialogs';
 export { default as BoardDetailsHeader } from './BoardDetailsHeader';
 export { default as BoardEditModals } from './BoardEditModals';

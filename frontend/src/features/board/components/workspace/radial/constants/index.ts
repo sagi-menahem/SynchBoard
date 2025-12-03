@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Radial dock constants barrel export.
+ * Exports layout constants, tool configurations, and threshold values.
+ */
+
 export {
   DEFAULT_WINDOW_WIDTH,
   DOCK_TOOLS,
