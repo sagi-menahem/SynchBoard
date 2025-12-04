@@ -95,7 +95,7 @@ Response:
 
 ```json
 {
-  "token": "***REDACTED_JWT_HEADER***..."
+  "token": "<jwt-token-here>"
 }
 ```
 
@@ -114,7 +114,7 @@ Response:
 
 ```json
 {
-  "token": "***REDACTED_JWT_HEADER***..."
+  "token": "<jwt-token-here>"
 }
 ```
 

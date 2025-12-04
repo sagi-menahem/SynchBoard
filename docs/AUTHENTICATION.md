@@ -237,7 +237,7 @@ Axios instance automatically:
 
 // AuthResponseDTO
 {
-  "token": "<jwt-token>..."
+  "token": "<jwt-token-here>"
 }
 
 // VerifyEmailRequest

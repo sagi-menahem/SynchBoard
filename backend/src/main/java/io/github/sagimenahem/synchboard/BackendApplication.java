@@ -2,6 +2,7 @@ package io.github.sagimenahem.synchboard;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.sagimenahem.synchboard.config.AppProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,6 +14,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  *
  * @author Sagi Menahem
  */
+@Slf4j
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
 public class BackendApplication {
@@ -45,9 +47,9 @@ public class BackendApplication {
                     System.setProperty(entry.getKey(), entry.getValue());
                 });
 
-            System.out.println("Loaded " + dotenv.entries().size() + " environment variables from .env file");
+            log.info("Loaded {} environment variables from .env file", dotenv.entries().size());
         } catch (Exception e) {
-            System.err.println("Warning: Could not load .env file: " + e.getMessage());
+            log.warn("Could not load .env file: {}", e.getMessage());
         }
     }
 }
