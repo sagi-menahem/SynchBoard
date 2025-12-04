@@ -110,8 +110,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
+            aria-label={t('chat:searchPlaceholder')}
           />
-          <Button variant="icon" onClick={handleSearchClose} className={styles.searchCloseButton}>
+          <Button
+            variant="icon"
+            onClick={handleSearchClose}
+            className={styles.searchCloseButton}
+            aria-label={t('common:close')}
+          >
             ✕
           </Button>
           {searchTerm && (

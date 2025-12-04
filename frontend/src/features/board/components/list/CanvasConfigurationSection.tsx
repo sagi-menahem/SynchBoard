@@ -153,8 +153,9 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
               max={CANVAS_CONFIG.MAX_WIDTH}
               disabled={disabled}
               placeholder={t('board:createForm.placeholder.width')}
+              aria-label={t('board:createForm.placeholder.width')}
             />
-            <span>×</span>
+            <span aria-hidden="true">×</span>
             <Input
               id="canvas-custom-height"
               name="customHeight"
@@ -167,6 +168,7 @@ const CanvasConfigurationSection: React.FC<CanvasConfigurationSectionProps> = ({
               max={CANVAS_CONFIG.MAX_HEIGHT}
               disabled={disabled}
               placeholder={t('board:createForm.placeholder.height')}
+              aria-label={t('board:createForm.placeholder.height')}
             />
           </div>
         )}

@@ -160,7 +160,7 @@ const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ onBoardCreated, onClo
               padding="md"
             >
               <div className={styles.field}>
-                <label htmlFor="board-invite-members">
+                <label id="board-invite-members-label">
                   <Users size={14} />
                   {t('board:createForm.label.inviteMembersDescription')}
                 </label>

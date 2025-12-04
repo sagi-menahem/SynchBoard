@@ -149,13 +149,19 @@ const SettingsPage: React.FC = () => {
             variant="icon"
             onClick={() => navigate(APP_ROUTES.BOARD_LIST)}
             title={t('settings:page.boardListButton')}
+            aria-label={t('settings:page.boardListButton')}
           >
             <ArrowLeft size={20} />
           </Button>
         }
         title={<span className={styles.pageTitle}>{t('settings:page.heading')}</span>}
         trailing={
-          <Button variant="icon" onClick={logout} title={t('settings:page.logoutButton')}>
+          <Button
+            variant="icon"
+            onClick={logout}
+            title={t('settings:page.logoutButton')}
+            aria-label={t('settings:page.logoutButton')}
+          >
             <LogOut size={20} />
             <span className={styles.logoutLabel}>{t('settings:page.logoutButton')}</span>
           </Button>

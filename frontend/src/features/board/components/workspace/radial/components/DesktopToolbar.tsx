@@ -88,6 +88,7 @@ export const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
                       : onOpenSatellite(item.tool as string)
                   }
                   title={label}
+                  aria-label={label}
                 >
                   {getToolIcon(item, 20)}
                 </button>
@@ -95,7 +96,12 @@ export const DesktopToolbar: React.FC<DesktopToolbarProps> = ({
             })}
 
             {/* Close button integrated into toolbar */}
-            <button className={styles.closeButton} onClick={onToggleExpand} title={collapseLabel}>
+            <button
+              className={styles.closeButton}
+              onClick={onToggleExpand}
+              title={collapseLabel}
+              aria-label={collapseLabel}
+            >
               <ChevronUp size={20} className={styles.closeIcon} />
             </button>
           </motion.div>

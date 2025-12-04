@@ -77,9 +77,6 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({
 
   return (
     <div className={styles.container} id={id}>
-      <label htmlFor="member-invite-email" className="sr-only">
-        {t('board:createForm.placeholder.inviteEmails')}
-      </label>
       <div className={styles.inputContainer}>
         <Input
           id="member-invite-email"
@@ -89,6 +86,8 @@ const MemberInviteInput: React.FC<MemberInviteInputProps> = ({
           onKeyDown={handleKeyPress}
           placeholder={t('board:createForm.placeholder.inviteEmails')}
           disabled={disabled}
+          autoComplete="email"
+          aria-label={t('board:createForm.placeholder.inviteEmails')}
         />
         <Button
           type="button"

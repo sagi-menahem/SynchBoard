@@ -245,7 +245,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
               >
                 <div className={styles.colorfulWrapper}>
                   {/* Color picker area */}
-                  <div className={styles.pickerArea}>
+                  <div
+                    className={styles.pickerArea}
+                    role="group"
+                    aria-label={t('common:chooseColor')}
+                  >
                     <HexColorPicker color={color} onChange={handleColorChange} />
                   </div>
 

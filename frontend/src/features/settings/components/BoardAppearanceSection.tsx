@@ -20,8 +20,12 @@ const BoardAppearanceSection: React.FC = () => {
   return (
     <SectionCard title={t('settings:page.appAppearanceHeader')} variant="default">
       <div className={styles.field}>
-        <label>{t('settings:page.boardBackgroundColorLabel')}</label>
-        <ul className={styles.colorSwatchContainer}>
+        <span id="board-bg-color-label">{t('settings:page.boardBackgroundColorLabel')}</span>
+        <ul
+          className={styles.colorSwatchContainer}
+          role="listbox"
+          aria-labelledby="board-bg-color-label"
+        >
           {CHAT_BACKGROUND_OPTIONS.map((option) => (
             <li key={option.color}>
               <Button

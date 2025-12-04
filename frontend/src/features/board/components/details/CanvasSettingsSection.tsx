@@ -167,7 +167,7 @@ const CanvasSettingsSection: React.FC<CanvasSettingsSectionProps> = ({
                   placeholder={t('board:details.canvasSettings.width')}
                   aria-label={t('board:details.canvasSettings.width')}
                 />
-                <span>×</span>
+                <span aria-hidden="true">×</span>
                 <Input
                   id="canvas-height"
                   name="canvasHeight"

@@ -53,7 +53,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onForgotPassword }) => {
           <Mail size={14} />
           {t('common:form.label.email')}
         </label>
-        <Input id="login-email" name="email" type="email" required disabled={isPending} />
+        <Input
+          id="login-email"
+          name="email"
+          type="email"
+          required
+          disabled={isPending}
+          autoComplete="email"
+        />
       </div>
 
       <div className={styles.field}>

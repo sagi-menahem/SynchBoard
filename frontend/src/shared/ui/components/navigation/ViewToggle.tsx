@@ -42,6 +42,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, classNa
         className={clsx(styles.toggleButton, value === 'grid' && styles.active)}
         onClick={() => onChange('grid')}
         title={t('board:toolbar.view.grid')}
+        aria-label={t('board:toolbar.view.grid')}
       >
         <Grid3X3 size={16} />
       </Button>
@@ -51,6 +52,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ value, onChange, classNa
         className={clsx(styles.toggleButton, value === 'list' && styles.active)}
         onClick={() => onChange('list')}
         title={t('board:toolbar.view.list')}
+        aria-label={t('board:toolbar.view.list')}
       >
         <List size={16} />
       </Button>

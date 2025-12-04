@@ -65,6 +65,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           onChange={onInputChange}
           required
           className={styles.settingsInput}
+          autoComplete="given-name"
         />
       </div>
       <div className={styles.field}>
@@ -75,6 +76,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           value={formData.lastName !== null ? formData.lastName : ''}
           onChange={onInputChange}
           className={styles.settingsInput}
+          autoComplete="family-name"
         />
       </div>
       <div className={styles.field}>
@@ -114,6 +116,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           value={formData.phoneNumber !== null ? formData.phoneNumber : ''}
           onChange={onInputChange}
           className={styles.settingsInput}
+          autoComplete="tel"
         />
       </div>
       <div className={styles.buttonGroup}>

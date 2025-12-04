@@ -97,6 +97,7 @@ export const MobileToolbar: React.FC<MobileToolbarProps> = ({
                       : onOpenSatellite(item.tool as string)
                   }
                   title={label}
+                  aria-label={label}
                 >
                   {/* Wrapper for icon + indicator (same structure as colorPaletteIcon) */}
                   <div className={styles.toolIconWrapper}>

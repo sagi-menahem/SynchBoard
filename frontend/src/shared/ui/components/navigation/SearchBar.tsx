@@ -87,6 +87,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           placeholder={placeholder}
           className={styles.searchInput}
           autoComplete="off"
+          aria-label={placeholder}
         />
         {inputValue && (
           <Button
@@ -95,6 +96,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             onClick={handleClear}
             className={styles.clearButton}
             title={t('board:toolbar.search.clear')}
+            aria-label={t('board:toolbar.search.clear')}
           >
             <X size={16} />
           </Button>

@@ -91,7 +91,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           {t('common:form.label.email')}
           <span className={styles.required}> *</span>
         </label>
-        <Input id="register-email" name="email" type="email" required disabled={isPending} />
+        <Input
+          id="register-email"
+          name="email"
+          type="email"
+          required
+          disabled={isPending}
+          autoComplete="email"
+        />
       </div>
 
       <div className={styles.field}>
@@ -142,7 +149,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           {t('common:form.label.firstName')}
           <span className={styles.required}> *</span>
         </label>
-        <Input id="register-firstName" name="firstName" type="text" required disabled={isPending} />
+        <Input
+          id="register-firstName"
+          name="firstName"
+          type="text"
+          required
+          disabled={isPending}
+          autoComplete="given-name"
+        />
       </div>
 
       <div className={styles.field}>
@@ -150,7 +164,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           <User size={14} />
           {t('common:form.label.lastName')}
         </label>
-        <Input id="register-lastName" name="lastName" type="text" disabled={isPending} />
+        <Input
+          id="register-lastName"
+          name="lastName"
+          type="text"
+          disabled={isPending}
+          autoComplete="family-name"
+        />
       </div>
 
       <div className={styles.field}>
@@ -194,7 +214,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegistrationSucce
           <Phone size={14} />
           {t('common:form.label.phoneNumber')}
         </label>
-        <Input id="register-phoneNumber" name="phoneNumber" type="tel" disabled={isPending} />
+        <Input
+          id="register-phoneNumber"
+          name="phoneNumber"
+          type="tel"
+          disabled={isPending}
+          autoComplete="tel"
+        />
       </div>
 
       {/* Show notice if email verification is disabled - config is guaranteed by FeatureConfigProvider */}

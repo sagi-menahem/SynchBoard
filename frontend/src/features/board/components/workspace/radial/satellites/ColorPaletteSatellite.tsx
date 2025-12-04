@@ -154,6 +154,8 @@ export const ColorPaletteSatellite: React.FC<ColorPaletteSatelliteProps> = () =>
             className={styles.customPickerWrapper}
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
+            role="group"
+            aria-label="Custom color picker"
           >
             <HexColorPicker
               color={preferences.defaultStrokeColor}

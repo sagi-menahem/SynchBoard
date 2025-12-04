@@ -81,6 +81,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
         onChange={handleFileChange}
         style={{ display: 'none' }}
         accept={APP_CONFIG.ALLOWED_IMAGE_TYPES}
+        aria-label={uploadButtonText ?? t('common:pictureManager.changeButton')}
       />
 
       <div className={styles.buttonGroup}>
