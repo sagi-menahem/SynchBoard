@@ -37,34 +37,39 @@ export const formatSmartTimestamp = (timestamp: number | Date | string): string 
     return i18n.t('common:dates.minutesAgo', { count: diffMinutes });
   }
 
+  // Get current app language for locale-aware formatting
+  const locale = i18n.language;
+
   // Use 24-hour boundary to group content by calendar day
   if (diffHours < 24 && date.getDate() === now.getDate()) {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
   }
 
   // Show "yesterday" label with time for content from previous day
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   if (date.getDate() === yesterday.getDate() && date.getMonth() === yesterday.getMonth()) {
-    return `${i18n.t('common:dates.yesterday')} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    return `${i18n.t('common:dates.yesterday')} ${date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false })}`;
   }
 
   // Show month/day/time for content from current year
   if (date.getFullYear() === now.getFullYear()) {
-    return date.toLocaleDateString([], {
+    return date.toLocaleDateString(locale, {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
     });
   }
   // Show full date/time for content from previous years
-  return date.toLocaleDateString([], {
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   });
 };
 
@@ -90,7 +95,7 @@ export const formatDetailedTimestamp = (timestamp: number | Date | string): stri
     return i18n.t('common:dates.invalidDate');
   }
 
-  return date.toLocaleString();
+  return date.toLocaleString(i18n.language, { hour12: false });
 };
 
 /**
@@ -131,15 +136,18 @@ export const formatDateSeparator = (timestamp: number | Date | string): string =
     return i18n.t('common:dates.yesterday');
   }
 
+  // Get current app language for locale-aware formatting
+  const locale = i18n.language;
+
   // Show month and day for current year content
   if (date.getFullYear() === now.getFullYear()) {
-    return date.toLocaleDateString([], {
+    return date.toLocaleDateString(locale, {
       month: 'long',
       day: 'numeric',
     });
   }
   // Show full date for content from previous years
-  return date.toLocaleDateString([], {
+  return date.toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
