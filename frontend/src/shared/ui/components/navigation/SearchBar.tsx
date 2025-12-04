@@ -12,10 +12,11 @@ import styles from './SearchBar.module.scss';
  */
 interface SearchBarProps {
   placeholder: string; // Placeholder text for the search input
-  value: string; // Initial value for the search input
-  onSearch: (query: string) => void; // Callback when search is performed
+  value?: string; // Initial value for the search input (optional when disabled)
+  onSearch?: (query: string) => void; // Callback when search is performed (optional when disabled)
   onClear?: () => void; // Optional callback when search is cleared
   className?: string;
+  disabled?: boolean; // Whether the search bar is disabled (for skeleton states)
 }
 
 /**
@@ -31,10 +32,11 @@ interface SearchBarProps {
  */
 export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
-  value,
+  value = '',
   onSearch,
   onClear,
   className,
+  disabled = false,
 }) => {
   const { t } = useTranslation(['board', 'common']);
   const [inputValue, setInputValue] = useState(value);
@@ -43,9 +45,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      onSearch(inputValue.trim());
+      if (!disabled && onSearch) {
+        onSearch(inputValue.trim());
+      }
     },
-    [inputValue, onSearch],
+    [inputValue, onSearch, disabled],
   );
 
   // Handle Enter key down for immediate search
@@ -53,21 +57,24 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        onSearch(inputValue.trim());
+        if (!disabled && onSearch) {
+          onSearch(inputValue.trim());
+        }
       }
     },
-    [inputValue, onSearch],
+    [inputValue, onSearch, disabled],
   );
 
   // Clear input and trigger appropriate callback
   const handleClear = useCallback(() => {
+    if (disabled) return;
     setInputValue('');
     if (onClear) {
       onClear();
-    } else {
+    } else if (onSearch) {
       onSearch('');
     }
-  }, [onClear, onSearch]);
+  }, [onClear, onSearch, disabled]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -88,6 +95,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           className={styles.searchInput}
           autoComplete="off"
           aria-label={placeholder}
+          disabled={disabled}
         />
         {inputValue && (
           <Button

@@ -23,3 +23,44 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+// Board list page content container for skeleton loader
+.boardListPageContent {
+  position: relative;
+  padding-top: calc(var(--banner-height, 0px) + 24px);
+  min-height: calc(100vh - var(--banner-height, 0px) - theme.$header-height - 36px);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+
+  @media (max-width: theme.$breakpoint-md) {
+    padding-top: calc(var(--banner-height, 0px) + 72px);
+  }
+}
+
+// Mobile search row for board list page loader
+.mobileSearchRow {
+  position: fixed;
+  top: calc(var(--banner-height, 0px) + theme.$header-height);
+  left: 0;
+  right: 0;
+  z-index: theme.$z-index-fixed-secondary;
+  background: var(--user-chosen-color, rgba(255, 255, 255, 0.85));
+  opacity: 0.99;
+  @include theme.glass-border-bottom;
+  padding: theme.$spacing-3 theme.$spacing-4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  :global(.searchForm) {
+    width: 100%;
+
+    .searchContainer {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+}

@@ -1,18 +1,21 @@
 import { lazy, Suspense, useMemo } from 'react';
 
-import { ArrowLeft, Info } from 'lucide-react';
+import { ArrowLeft, Info, LayoutGrid, Plus, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
-import { useIsMobile } from 'shared/hooks';
+import { useIsMobile, useMediaQuery } from 'shared/hooks';
 import {
   AppHeader,
   AuthPageSkeleton,
+  BoardListSkeleton,
   BoardWorkspaceSkeleton,
   Button,
   PageLoader,
   PageTransition,
+  SearchBar,
 } from 'shared/ui';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
 import { Layout } from 'shared/ui/layout';
 import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
@@ -32,6 +35,65 @@ const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
 const LazyPageLoader = () => {
   const { t } = useTranslation(['common']);
   return <PageLoader message={t('common:loading')} />;
+};
+
+/**
+ * Board list page skeleton that matches the actual board list layout.
+ * Shows immediately when navigating to board list, before the BoardListPage chunk loads.
+ */
+const BoardListPageLoader = () => {
+  const { t } = useTranslation(['board']);
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const isNarrowWindow = useMediaQuery('(max-width: 768px)');
+
+  const containerStyle = useMemo(
+    () =>
+      ({
+        '--background-blur': '0px',
+        '--background-size': isMobile ? '280px 280px' : '400px 400px',
+      }) as React.CSSProperties,
+    [isMobile],
+  );
+
+  return (
+    <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
+      <AppHeader
+        leading={
+          <Button
+            variant="icon"
+            onClick={() => navigate(APP_ROUTES.SETTINGS)}
+            title={t('board:listPage.setting')}
+          >
+            <Settings size={20} />
+          </Button>
+        }
+        center={
+          !isNarrowWindow ? (
+            <SearchBar placeholder={t('board:toolbar.search.boardName')} disabled />
+          ) : undefined
+        }
+        trailing={
+          <>
+            <Button variant="icon" disabled title={t('board:toolbar.view.list')}>
+              <LayoutGrid size={20} />
+            </Button>
+            <Button variant="icon" disabled title={t('board:listPage.createNewBoardButton')}>
+              <Plus size={20} />
+            </Button>
+          </>
+        }
+      />
+      {isNarrowWindow && (
+        <div className={styles.mobileSearchRow}>
+          <SearchBar placeholder={t('board:toolbar.search.boardName')} disabled />
+        </div>
+      )}
+      <main className={styles.boardListPageContent}>
+        <BoardListSkeleton viewMode="grid" />
+      </main>
+    </PageTransition>
+  );
 };
 
 /**
@@ -126,7 +188,7 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<LazyPageLoader />}>
+              <Suspense fallback={<BoardListPageLoader />}>
                 <BoardListPage />
               </Suspense>
             </ErrorBoundary>
