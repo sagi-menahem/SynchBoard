@@ -79,19 +79,19 @@ export const SHAPE_TOOLS = [
 /** Line tools that should trigger lines satellite active state */
 export const LINE_TOOLS = [TOOLS.LINE, TOOLS.ARROW, TOOLS.DOTTED_LINE] as const;
 
-/** Configuration for dock tool items - labels are i18n keys under 'board:toolbar.tool' namespace */
+/**
+ * Configuration for dock tool items - labels are i18n keys under 'board:toolbar.tool' namespace.
+ * Tools are ordered by usage frequency and logical workflow:
+ * 1. Primary drawing tools (brush, shapes, lines, text)
+ * 2. Utility/modification tools (eraser, colors, stroke)
+ */
 export const DOCK_TOOLS: ToolItem[] = [
+  // Primary drawing tools - most frequently used
   {
     tool: TOOLS.BRUSH,
     type: 'direct',
     labelKey: 'brush',
     icon: React.createElement(Brush, { size: 20 }),
-  },
-  {
-    tool: TOOLS.ERASER,
-    type: 'direct',
-    labelKey: 'eraser',
-    icon: React.createElement(Eraser, { size: 20 }),
   },
   { tool: 'shapes', type: 'satellite', labelKey: 'shapes', isDynamic: true },
   { tool: 'lines', type: 'satellite', labelKey: 'lines', isDynamic: true },
@@ -101,6 +101,14 @@ export const DOCK_TOOLS: ToolItem[] = [
     labelKey: 'text',
     icon: React.createElement(Type, { size: 20 }),
   },
+  // Utility and modification tools
+  {
+    tool: TOOLS.ERASER,
+    type: 'direct',
+    labelKey: 'eraser',
+    icon: React.createElement(Eraser, { size: 20 }),
+  },
+  { tool: 'colorPalette', type: 'satellite', labelKey: 'palette', isDynamic: true },
   {
     tool: TOOLS.COLOR_PICKER,
     type: 'direct',
@@ -113,7 +121,6 @@ export const DOCK_TOOLS: ToolItem[] = [
     labelKey: 'strokeWidth',
     icon: React.createElement(PenTool, { size: 20 }),
   },
-  { tool: 'colorPalette', type: 'satellite', labelKey: 'palette', isDynamic: true },
 ];
 
 // Icon components for dynamic rendering (to avoid creating them inline)
