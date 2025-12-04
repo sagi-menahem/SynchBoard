@@ -8,12 +8,13 @@ import { useIsMobile, useMediaQuery } from 'shared/hooks';
 import {
   AppHeader,
   AuthPageSkeleton,
+  BoardDetailsPageSkeleton,
   BoardListSkeleton,
   BoardWorkspaceSkeleton,
   Button,
-  PageLoader,
   PageTransition,
   SearchBar,
+  SettingsPageSkeleton,
 } from 'shared/ui';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
@@ -28,14 +29,6 @@ const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
 const BoardPage = lazy(() => import('features/board/pages/BoardPage'));
 const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
-
-/**
- * Loading component wrapper for lazy-loaded pages with localized messaging.
- */
-const LazyPageLoader = () => {
-  const { t } = useTranslation(['common']);
-  return <PageLoader message={t('common:loading')} />;
-};
 
 /**
  * Board list page skeleton that matches the actual board list layout.
@@ -212,7 +205,7 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<LazyPageLoader />}>
+              <Suspense fallback={<BoardDetailsPageSkeleton />}>
                 <BoardDetailsPage />
               </Suspense>
             </ErrorBoundary>
@@ -224,7 +217,7 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <ErrorBoundary>
-              <Suspense fallback={<LazyPageLoader />}>
+              <Suspense fallback={<SettingsPageSkeleton />}>
                 <SettingsPage />
               </Suspense>
             </ErrorBoundary>
