@@ -144,19 +144,24 @@
 ### Mobile Experience
 
 <table>
-<tr>
-<td align="center"><strong>Board List - Grid</strong></td>
-<td align="center"><strong>Board List - List</strong></td>
-<td align="center"><strong>Canvas</strong></td>
-<td align="center"><strong>Chat</strong></td>
-</tr>
-<tr>
-<td><img src="assets/screenshots/mobile-board-list-grid.jpg" alt="Mobile Board List Grid" width="180"/></td>
-<td><img src="assets/screenshots/mobile-board-list-list.jpg" alt="Mobile Board List" width="180"/></td>
-<td><img src="assets/screenshots/mobile-canvas.jpg" alt="Mobile Canvas" width="180"/></td>
-<td><img src="assets/screenshots/mobile-chat.jpg" alt="Mobile Chat" width="180"/></td>
-</tr>
+  <tr>
+    <td align="center"><strong>Board List - Grid</strong></td>
+    <td align="center"><strong>Board List - List</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/mobile-board-list-grid.jpg" alt="Mobile Board List Grid" width="250"/></td>
+    <td><img src="assets/screenshots/mobile-board-list-list.jpg" alt="Mobile Board List" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Canvas</strong></td>
+    <td align="center"><strong>Chat</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/mobile-canvas.jpg" alt="Mobile Canvas" width="250"/></td>
+    <td><img src="assets/screenshots/mobile-chat.jpg" alt="Mobile Chat" width="250"/></td>
+  </tr>
 </table>
+
 
 </div>
 
