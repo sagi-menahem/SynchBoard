@@ -123,23 +123,32 @@
 ### Application Pages
 
 <table>
-<tr>
-<td align="center"><strong>Board List</strong></td>
-<td align="center"><strong>Board Settings</strong></td>
-</tr>
-<tr>
-<td><img src="assets/screenshots/board-list.jpg" alt="Board List" width="400"/></td>
-<td><img src="assets/screenshots/board-settings.jpg" alt="Board Settings" width="400"/></td>
-</tr>
-<tr>
-<td align="center"><strong>User Settings</strong></td>
-<td align="center"><strong>Authentication</strong></td>
-</tr>
-<tr>
-<td><img src="assets/screenshots/user-settings.jpg" alt="User Settings" width="400"/></td>
-<td><img src="assets/screenshots/auth.jpg" alt="Authentication" width="400"/></td>
-</tr>
+  <tr>
+    <td align="center"><strong>Board List</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/board-list.jpg" alt="Board List" width="100%"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Board Settings</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/board-settings.jpg" alt="Board Settings" width="100%"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>User Settings</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/user-settings.jpg" alt="User Settings" width="100%"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Authentication</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/auth.jpg" alt="Authentication" width="100%"/></td>
+  </tr>
 </table>
+
 
 ### Mobile Experience
 
