@@ -245,5 +245,13 @@
   },
   "errorHandler": {
     "unexpectedError": "An unexpected error occurred"
+  },
+  "pictureManager": {
+    "changeButton": "Change Picture",
+    "deleteButton": "Delete Picture",
+    "clickToUpload": "Click to Upload",
+    "clickToChange": "Click to Change",
+    "orDragDrop": "or drag & drop",
+    "dropHere": "Drop Image Here"
   }
 }

@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import { Camera, Trash2, Upload } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from 'shared/constants/ApiConstants';
@@ -53,9 +54,12 @@ const PictureManager: React.FC<PictureManagerProps> = ({
 }) => {
   const { t } = useTranslation(['common']);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Construct full image URL or use default
   const imageSource = imageUrl ? `${API_BASE_URL.replace('/api', '')}${imageUrl}` : defaultImage;
+  const hasCustomImage = imageUrl !== null && imageUrl !== undefined;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -69,10 +73,84 @@ const PictureManager: React.FC<PictureManagerProps> = ({
     fileInputRef.current?.click();
   };
 
+  // Drag and drop handlers
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      onUpload(file);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      triggerFileInput();
+    }
+  };
+
   return (
     <div className={`${styles.container} ${className}`}>
-      <div className={styles.imageContainer}>
-        <img src={imageSource} alt={altText} className={`${styles.image} ${imageClassName}`} />
+      {/* Interactive Image Upload Area */}
+      <div
+        className={`${styles.imageWrapper} ${isDragging ? styles.dragging : ''} ${isHovering ? styles.hovering : ''}`}
+        onClick={triggerFileInput}
+        onKeyDown={handleKeyDown}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        tabIndex={0}
+        role="button"
+        aria-label={uploadButtonText ?? t('common:pictureManager.changeButton')}
+      >
+        <div className={styles.imageContainer}>
+          <img src={imageSource} alt={altText} className={`${styles.image} ${imageClassName}`} />
+        </div>
+
+        {/* Hover/Drag Overlay */}
+        <div className={`${styles.overlay} ${(isHovering || isDragging) ? styles.visible : ''}`}>
+          <div className={styles.overlayContent}>
+            {isDragging ? (
+              <>
+                <Upload size={32} strokeWidth={2} />
+                <span className={styles.overlayText}>{t('common:pictureManager.dropHere')}</span>
+              </>
+            ) : (
+              <>
+                <Camera size={32} strokeWidth={2} />
+                <span className={styles.overlayText}>
+                  {hasCustomImage
+                    ? t('common:pictureManager.clickToChange')
+                    : t('common:pictureManager.clickToUpload')}
+                </span>
+                <span className={styles.overlayHint}>{t('common:pictureManager.orDragDrop')}</span>
+              </>
+            )}
+          </div>
+        </div>
       </div>
 
       <input
@@ -84,22 +162,21 @@ const PictureManager: React.FC<PictureManagerProps> = ({
         aria-label={uploadButtonText ?? t('common:pictureManager.changeButton')}
       />
 
-      <div className={styles.buttonGroup}>
+      {/* Delete Button - Only show if image exists */}
+      {showDeleteButton && onDelete && hasCustomImage && (
         <Button
           type="button"
-          onClick={triggerFileInput}
-          variant="secondary-glass"
-          className={styles.themeButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          variant="destructive-glass"
+          className={styles.deleteButton}
         >
-          {uploadButtonText ?? t('common:pictureManager.changeButton')}
+          <Trash2 size={16} />
+          {deleteButtonText ?? t('common:pictureManager.deleteButton')}
         </Button>
-
-        {showDeleteButton && onDelete && imageUrl && (
-          <Button type="button" onClick={onDelete} variant="destructive-glass">
-            {deleteButtonText ?? t('common:pictureManager.deleteButton')}
-          </Button>
-        )}
-      </div>
+      )}
     </div>
   );
 };

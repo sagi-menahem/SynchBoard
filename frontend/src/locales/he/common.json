@@ -245,5 +245,13 @@
   },
   "errorHandler": {
     "unexpectedError": "אירעה שגיאה בלתי צפויה"
+  },
+  "pictureManager": {
+    "changeButton": "שנה תמונה",
+    "deleteButton": "מחק תמונה",
+    "clickToUpload": "לחץ להעלאה",
+    "clickToChange": "לחץ לשינוי",
+    "orDragDrop": "או גרור ושחרר",
+    "dropHere": "שחרר תמונה כאן"
   }
 }
