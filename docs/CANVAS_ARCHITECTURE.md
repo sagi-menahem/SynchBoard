@@ -151,10 +151,10 @@ User A (Draw)              Backend                  User B (View)
      |                        |                          |
      |--SendBoardActionRequest-->|                       |
      |                        |                          |
-     |               Save to DB (JSONB)                 |
-     |               Create ActionHistory               |
+     |               Save to DB (JSONB)                  |
+     |               Create ActionHistory                |
      |                        |                          |
-     |               Broadcast to /topic/board/{id}     |
+     |               Broadcast to /topic/board/{id}      |
      |                        |--BoardActionResponse-->  |
      |                        |                          |
      |<--Transaction Confirm--|                     Render

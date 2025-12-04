@@ -46,18 +46,18 @@ Frontend                        Backend
 
 ```
 Frontend                        Backend                    SendGrid
-   |                               |                          |
-   |-- POST /api/auth/register --->|                          |
-   |   (email, password, name)     |                          |
-   |                               | Create PendingRegistration
+   |                               |                           |
+   |-- POST /api/auth/register --->|                           |
+   |   (email, password, name)     |                           |
+   |                               | Create PendingRegistration|
    |                               |--- Send verification ---->|
-   |<---- "Check email" -----------|                          |
-   |                               |                          |
-   | User enters 6-digit code      |                          |
-   |-- POST /api/auth/verify ----->|                          |
-   |   (email, code)               | Validate code            |
-   |                               | Create User entity       |
-   |<---- AuthResponseDTO ---------|                          |
+   |<---- "Check email" -----------|                           |
+   |                               |                           |
+   | User enters 6-digit code      |                           |
+   |-- POST /api/auth/verify ----->|                           |
+   |   (email, code)               | Validate code             |
+   |                               | Create User entity        |
+   |<---- AuthResponseDTO ---------|                           |
 ```
 
 **Verification Code**:
@@ -90,33 +90,33 @@ Frontend                        Backend                    SendGrid
 ### OAuth2 Google Login (Redirect Flow)
 
 ```
-Frontend         Backend              Google
-   |                |                    |
-   | Click "Google" |                    |
-   |------------->|                    |
-   |   Redirect to /oauth2/authorization/google
-   |                |                    |
+Frontend         Backend                     Google
+   |                |                           |
+   | Click "Google" |                           |
+   |------------->|                             |
+   |   Redirect to /oauth2/authorization/google |
+   |                |                           |
    |<-----------------------------------| Google consent
-   |                |                    |
+   |                |                   |
    | Grant permission                   |
    |----------------------------------->| Callback
-   |                |<-------------------| Token exchange
-   |                | Process user       |
+   |                |<------------------| Token exchange
+   |                | Process user      |
    |<--- Redirect /auth/callback?token=-|
-   | Extract token  |                    |
+   | Extract token  |                   |
 ```
 
 ### Google One Tap (Passwordless)
 
 ```
-Frontend                        Backend
-   |                               |
-   | Google SDK returns credential |
+Frontend                             Backend
+   |                                    |
+   | Google SDK returns credential      |
    |-- POST /api/auth/google-one-tap -->|
-   |   (credential: ID Token)      |
-   |                               | Verify with GoogleIdTokenVerifier
-   |                               | Process user
-   |<---- AuthResponseDTO ---------|
+   |   (credential: ID Token)           |
+   |                                    | Verify with GoogleIdTokenVerifier
+   |                                    | Process user
+   |<---- AuthResponseDTO --------------|
 ```
 
 ## OAuth2 User Processing

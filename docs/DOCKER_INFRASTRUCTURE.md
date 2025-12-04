@@ -16,13 +16,13 @@ This document describes the Docker Compose setup for SynchBoard, including servi
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                   synchboard-network                     │
+│                   synchboard-network                    │
 ├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌─────────┐    ┌─────────┐    ┌─────────┐             │
-│  │ postgres │    │activemq │    │ backend │             │
-│  │  :5432   │◄───│ :61613  │◄───│  :8080  │             │
-│  └─────────┘    │ :61616  │    └────▲────┘             │
+│                                                         │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐              │
+│  │ postgres│    │activemq │    │ backend │              │
+│  │  :5432  │◄── │ :61613  │◄───│  :8080  │              │
+│  └─────────┘    │ :61616  │    └────▲────┘              │
 │       ▲         └─────────┘         │                   │
 │       │                             │                   │
 │       │         ┌───────────────────┘                   │
@@ -31,7 +31,7 @@ This document describes the Docker Compose setup for SynchBoard, including servi
 │       └────│frontend │                                  │
 │            │  :80    │◄─── External traffic             │
 │            └─────────┘                                  │
-│                                                          │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 

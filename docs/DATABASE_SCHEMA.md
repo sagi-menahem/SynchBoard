@@ -13,10 +13,10 @@ This document describes the PostgreSQL database schema for SynchBoard, including
           ├──────────────────────────────────────────────────────────┐
           │                                                          │
           ▼                                                          │
-┌─────────────────────┐      ┌─────────────────────┐                │
-│    GroupBoard       │◄─────│    GroupMember      │                │
-│  (PK: boardGroupId) │      │  (PK: email+boardId)│                │
-└─────────┬───────────┘      └────────────────────┬┘                │
+┌─────────────────────┐      ┌─────────────────────┐                 │
+│    GroupBoard       │◄─────│    GroupMember      │                 │
+│  (PK: boardGroupId) │      │  (PK: email+boardId)│                 │
+└─────────┬───────────┘      └────────────────────┬┘                 │
           │                                       │                  │
           ├──────────────────┬────────────────────┘                  │
           │                  │                                       │

@@ -16,13 +16,13 @@ SynchBoard uses WebSocket with STOMP protocol for real-time collaboration. The a
 ┌─────────────────────────────────────────────────────────────────────┐
 │  1. User authenticates → AuthContext provides JWT                   │
 │  2. WebSocketProvider triggers connection                           │
-│  3. Lazy-load @stomp/stompjs (reduces initial bundle)              │
+│  3. Lazy-load @stomp/stompjs (reduces initial bundle)               │
 │  4. websocketService.connect(token, callback)                       │
 │  5. STOMP CONNECT with Authorization header → Server                │
 └─────────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│  6. JwtChannelInterceptor validates token                          │
+│  6. JwtChannelInterceptor validates token                           │
 │  7. ActiveMQ Artemis accepts connection                             │
 │  8. Server sends CONNECTED frame                                    │
 └─────────────────────────────────────────────────────────────────────┘
