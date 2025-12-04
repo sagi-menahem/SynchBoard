@@ -1,10 +1,11 @@
 <div align="center">
-  <img src="assets/logo.png" alt="SynchBoard Logo" width="150"/>
-  <h1>SynchBoard - Real-time Collaborative Whiteboard</h1>
-  <p>A full-stack collaborative whiteboard application featuring real-time synchronization, user authentication, and team collaboration tools.</p>
+  <img src="assets/logo.png" alt="SynchBoard Logo" width="120"/>
+  <h1>SynchBoard</h1>
+  <p><strong>Real-time Collaborative Whiteboard</strong></p>
+  <p>A production-ready full-stack application featuring WebSocket-powered real-time synchronization, JWT authentication, and seamless team collaboration.</p>
 
   <a href="https://synchboard.com">
-    <img src="https://img.shields.io/badge/Live_Demo-synchboard.com-blue?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
+    <img src="https://img.shields.io/badge/Live_Demo-synchboard.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
   </a>
 </div>
 
@@ -12,54 +13,133 @@
 
 <div align="center">
 
-### Tech Stack
-
-![Java](https://img.shields.io/badge/Java-24-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.5-6DB33F?style=flat-square&logo=springboot&logoColor=white)
-![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat-square&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF?style=flat-square&logo=vite&logoColor=white)
-
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![ActiveMQ](https://img.shields.io/badge/ActiveMQ_Artemis-2.37-D22128?style=flat-square&logo=apache&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-Reverse_Proxy-009639?style=flat-square&logo=nginx&logoColor=white)
-![Google OAuth](https://img.shields.io/badge/Google-OAuth2-4285F4?style=flat-square&logo=google&logoColor=white)
+![Java](https://img.shields.io/badge/Java_24-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.5-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript_5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL_17-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 
 </div>
 
 ---
 
-## ✨ Preview
+## Preview
 
 <div align="center">
-  <img src="assets/preview.png" alt="SynchBoard Application Preview" />
-  <p><i>SynchBoard workspace showing real-time collaborative drawing and team chat functionality</i></p>
+  <img src="assets/preview.png" alt="SynchBoard - Collaborative Whiteboard" />
+  <p><em>Real-time collaborative drawing with integrated team chat</em></p>
 </div>
 
 ---
 
-## 🚀 Key Features
+## Features
 
-| Feature                     | Description                                                                                               |
-| --------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **Real-time Collaboration** | Multiple users can draw and edit simultaneously with instant WebSocket synchronization via STOMP protocol |
-| **User Authentication**     | Secure JWT-based authentication with email verification and password reset functionality                  |
-| **OAuth2 Integration**      | Sign in with Google for seamless, passwordless access                                                     |
-| **Board Management**        | Create, share, and manage collaborative boards with granular team permissions                             |
-| **Drawing Tools**           | Comprehensive toolset including shapes, freehand drawing, lines, text, and customizable colors            |
-| **Live Chat**               | Real-time messaging within boards for effective team communication                                        |
-| **Member Management**       | Invite users via email and manage board permissions (Admin/Member roles)                                  |
-| **Undo/Redo History**       | Full action history tracking per user with undo/redo support                                              |
-| **Internationalization**    | Full support for English and Hebrew (RTL) with i18next                                                    |
-| **Theme Support**           | Light and Dark visual themes for a personalized experience                                                |
-| **Responsive Design**       | Optimized for desktop and tablet devices                                                                  |
+<table>
+<tr>
+<td width="50%">
+
+### Real-time Collaboration
+- WebSocket/STOMP synchronization via ActiveMQ Artemis
+- Optimistic updates with automatic rollback
+- Exponential backoff reconnection strategy
+- Offline message queue processing
+
+### Drawing Tools
+- Freehand brush & eraser
+- Shapes: rectangle, square, circle, triangle, pentagon, hexagon, star
+- Lines: solid, dotted, arrow
+- Text boxes with customizable fonts
+- Color picker & recolor tool
+- Canvas download functionality
+
+### Board Management
+- Create, share, and manage boards
+- Role-based permissions (Admin/Member)
+- Invite members via email
+- Customizable canvas settings (size, background)
+
+</td>
+<td width="50%">
+
+### Authentication & Security
+- JWT-based authentication
+- Google OAuth2 integration
+- Email verification with SendGrid
+- Password reset functionality
+- XSS protection & message sanitization
+
+### User Experience
+- Light/Dark theme support
+- Internationalization (English & Hebrew RTL)
+- Responsive design for desktop & tablet
+- Full undo/redo history per user
+- Persistent user preferences
+
+### Developer Experience
+- Docker Compose orchestration
+- Production-ready deployment scripts
+- Swagger/OpenAPI documentation
+- Multi-stage Docker builds
+- Comprehensive type safety
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 🏗️ Architecture
+## Screenshots
 
-The production deployment uses a multi-layer architecture with SSL termination at the host Nginx level:
+<div align="center">
+
+### Theme & Language Support
+
+<table>
+<tr>
+<td align="center"><strong>English - Dark</strong></td>
+<td align="center"><strong>English - Light</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/workspace-en-dark.png" alt="Workspace - English Dark" width="400"/></td>
+<td><img src="assets/screenshots/workspace-en-light.png" alt="Workspace - English Light" width="400"/></td>
+</tr>
+<tr>
+<td align="center"><strong>Hebrew (RTL) - Dark</strong></td>
+<td align="center"><strong>Hebrew (RTL) - Light</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/workspace-he-dark.png" alt="Workspace - Hebrew Dark" width="400"/></td>
+<td><img src="assets/screenshots/workspace-he-light.png" alt="Workspace - Hebrew Light" width="400"/></td>
+</tr>
+</table>
+
+### Application Pages
+
+<table>
+<tr>
+<td align="center"><strong>Board List</strong></td>
+<td align="center"><strong>Board Settings</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/board-list.png" alt="Board List" width="400"/></td>
+<td><img src="assets/screenshots/board-settings.png" alt="Board Settings" width="400"/></td>
+</tr>
+<tr>
+<td align="center"><strong>User Settings</strong></td>
+<td align="center"><strong>Authentication</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/user-settings.png" alt="User Settings" width="400"/></td>
+<td><img src="assets/screenshots/auth.png" alt="Authentication" width="400"/></td>
+</tr>
+</table>
+
+</div>
+
+---
+
+## Architecture
 
 <div align="center">
 
@@ -69,92 +149,83 @@ The production deployment uses a multi-layer architecture with SSL termination a
 </div>
 
 **Traffic Flow:**
-
-1. User connects via HTTPS (port 443) with SSL/TLS encryption
-2. Host Nginx terminates SSL and proxies to Docker network (port 8080)
-3. Frontend Nginx container serves static assets and proxies API/WebSocket requests
-4. Backend handles business logic, persists data to PostgreSQL, and broadcasts real-time updates via ActiveMQ
-
----
-
-## 🌟 Features Showcase
-
-<div align="center">
-  <img src="assets/features-showcase.png" alt="Features Showcase" />
-  <p><i>Multiple screens showcasing different themes, languages, and collaborative features</i></p>
-</div>
+1. HTTPS requests terminate at host Nginx with SSL/TLS
+2. Frontend Nginx serves static assets and proxies API/WebSocket
+3. Spring Boot handles business logic with JWT validation
+4. Real-time updates broadcast via ActiveMQ STOMP relay to subscribed clients
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-|            Backend             |            Frontend             |      Infrastructure       |
-| :----------------------------: | :-----------------------------: | :-----------------------: |
-|  Java 24 + Spring Boot 3.5.5   | React 19.2.0 + TypeScript 5.9.2 |  Docker & Docker Compose  |
-|     Spring Security + JWT      |    Vite 7.2.4 + SCSS Modules    |    Nginx Reverse Proxy    |
-|    Spring WebSocket + STOMP    |    @stomp/stompjs WebSocket     |  PostgreSQL 17 Database   |
-| PostgreSQL + ActiveMQ Artemis  |     React Router + i18next      |  ActiveMQ Message Broker  |
-| SendGrid Email + OAuth2 Google |        Axios HTTP Client        | Multi-stage Docker Builds |
-
----
-
-## 🏁 Getting Started
-
-### Local Development (Docker)
-
-1.  **Clone the repository**
-
-    ```bash
-    git clone https://github.com/sagi-menahem/SynchBoard.git
-    cd SynchBoard
-    ```
-
-2.  **Copy environment file**
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    > **Note:** The `.env` file includes optional API keys for email and Google login features. For basic operation, no changes are needed.
-
-3.  **Start the application**
-
-    ```bash
-    docker-compose up --build
-    ```
-
-4.  **Access the application**
-    - **Frontend**: http://localhost
-    - **Backend API**: http://localhost:8080
-    - **ActiveMQ Console**: http://localhost:8161 (admin/admin)
-
-### Production Deployment
-
-SynchBoard includes production-ready infrastructure for VPS deployment:
-
-- **`deploy.sh`** - Automated deployment script for pulling updates and rebuilding containers
-- **`docker-compose.prod.yml`** - Production overrides that secure internal services (PostgreSQL, ActiveMQ, Backend) by removing external port bindings
-- **`server-config/synchboard.conf`** - Nginx reverse proxy configuration with SSL/TLS support
-
-For detailed production setup instructions, see the [Installation Guide](docs/INSTALLATION.md#production-deployment-vps).
+| Layer | Technologies |
+|:------|:-------------|
+| **Frontend** | React 19, TypeScript 5.9, Vite 7.2, SCSS Modules, Framer Motion |
+| **Backend** | Java 24, Spring Boot 3.5, Spring Security, Spring WebSocket |
+| **Database** | PostgreSQL 17, Spring Data JPA |
+| **Messaging** | ActiveMQ Artemis, STOMP Protocol |
+| **Infrastructure** | Docker, Nginx, Let's Encrypt SSL |
+| **Authentication** | JWT, OAuth2 (Google), SendGrid Email |
 
 ---
 
-## 📚 Full Documentation
+## Quick Start
 
-- **[API Documentation](docs/API_DOCUMENTATION.md)** - Detailed API endpoint guide for developers.
-- **[Installation Guide](docs/INSTALLATION.md)** - Advanced setup instructions and local development guide.
+### Using Docker (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/sagi-menahem/SynchBoard.git
+cd SynchBoard
+
+# Copy environment template
+cp .env.example .env
+
+# Start all services
+docker-compose up --build
+```
+
+**Access Points:**
+- Frontend: http://localhost
+- Backend API: http://localhost:8080
+- ActiveMQ Console: http://localhost:8161 (admin/admin)
+
+### Local Development
+
+```bash
+# Start infrastructure only
+docker-compose up -d postgres activemq
+
+# Backend (from backend/)
+gradlew.bat bootRun   # Windows
+./gradlew bootRun     # Linux/Mac
+
+# Frontend (from frontend/)
+npm install && npm run dev
+```
 
 ---
 
-## 📜 License
+## Documentation
+
+| Document | Description |
+|:---------|:------------|
+| [API Documentation](docs/API_DOCUMENTATION.md) | REST API reference with examples |
+| [Installation Guide](docs/INSTALLATION.md) | Local development & production deployment |
+
+---
+
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👤 Author
+<div align="center">
 
-**Sagi Menahem** - Full Stack Developer
-<br />
-GitHub: [@sagi-menahem](https://github.com/sagi-menahem)
+**Built by Sagi Menahem**
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/sagi-menahem)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sagi-menahem/)
+
+</div>
