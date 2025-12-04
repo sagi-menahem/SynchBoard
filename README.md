@@ -106,16 +106,16 @@
 <td align="center"><strong>English - Light</strong></td>
 </tr>
 <tr>
-<td><img src="assets/screenshots/workspace-en-dark.png" alt="Workspace - English Dark" width="400"/></td>
-<td><img src="assets/screenshots/workspace-en-light.png" alt="Workspace - English Light" width="400"/></td>
+<td><img src="assets/screenshots/workspace-en-dark.jpg" alt="Workspace - English Dark" width="400"/></td>
+<td><img src="assets/screenshots/workspace-en-light.jpg" alt="Workspace - English Light" width="400"/></td>
 </tr>
 <tr>
 <td align="center"><strong>Hebrew (RTL) - Dark</strong></td>
 <td align="center"><strong>Hebrew (RTL) - Light</strong></td>
 </tr>
 <tr>
-<td><img src="assets/screenshots/workspace-he-dark.png" alt="Workspace - Hebrew Dark" width="400"/></td>
-<td><img src="assets/screenshots/workspace-he-light.png" alt="Workspace - Hebrew Light" width="400"/></td>
+<td><img src="assets/screenshots/workspace-he-dark.jpg" alt="Workspace - Hebrew Dark" width="400"/></td>
+<td><img src="assets/screenshots/workspace-he-light.jpg" alt="Workspace - Hebrew Light" width="400"/></td>
 </tr>
 </table>
 
@@ -127,16 +127,16 @@
 <td align="center"><strong>Board Settings</strong></td>
 </tr>
 <tr>
-<td><img src="assets/screenshots/board-list.png" alt="Board List" width="400"/></td>
-<td><img src="assets/screenshots/board-settings.png" alt="Board Settings" width="400"/></td>
+<td><img src="assets/screenshots/board-list.jpg" alt="Board List" width="400"/></td>
+<td><img src="assets/screenshots/board-settings.jpg" alt="Board Settings" width="400"/></td>
 </tr>
 <tr>
 <td align="center"><strong>User Settings</strong></td>
 <td align="center"><strong>Authentication</strong></td>
 </tr>
 <tr>
-<td><img src="assets/screenshots/user-settings.png" alt="User Settings" width="400"/></td>
-<td><img src="assets/screenshots/auth.png" alt="Authentication" width="400"/></td>
+<td><img src="assets/screenshots/user-settings.jpg" alt="User Settings" width="400"/></td>
+<td><img src="assets/screenshots/auth.jpg" alt="Authentication" width="400"/></td>
 </tr>
 </table>
 
@@ -150,10 +150,10 @@
 <td align="center"><strong>Chat</strong></td>
 </tr>
 <tr>
-<td><img src="assets/screenshots/mobile-board-list-grid.png" alt="Mobile Board List Grid" width="180"/></td>
-<td><img src="assets/screenshots/mobile-board-list-list.png" alt="Mobile Board List" width="180"/></td>
-<td><img src="assets/screenshots/mobile-canvas.png" alt="Mobile Canvas" width="180"/></td>
-<td><img src="assets/screenshots/mobile-chat.png" alt="Mobile Chat" width="180"/></td>
+<td><img src="assets/screenshots/mobile-board-list-grid.jpg" alt="Mobile Board List Grid" width="180"/></td>
+<td><img src="assets/screenshots/mobile-board-list-list.jpg" alt="Mobile Board List" width="180"/></td>
+<td><img src="assets/screenshots/mobile-canvas.jpg" alt="Mobile Canvas" width="180"/></td>
+<td><img src="assets/screenshots/mobile-chat.jpg" alt="Mobile Chat" width="180"/></td>
 </tr>
 </table>
 
