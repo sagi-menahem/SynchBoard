@@ -102,12 +102,14 @@ export const useSocketSubscription = <T>(
       isEffectActive = false;
       clearTimeout(timeoutId);
       if (subscription) {
+        // Capture subscription reference for async callback
+        const sub = subscription;
         // Only unsubscribe if connection is still active to avoid
         // "WebSocket is already in CLOSING or CLOSED state" errors
         void getWebSocketService().then((service) => {
           if (service.isConnected()) {
             try {
-              subscription.unsubscribe();
+              sub.unsubscribe();
             } catch (error) {
               logger.warn(`Failed to unsubscribe from ${topic}:`, error);
             }
