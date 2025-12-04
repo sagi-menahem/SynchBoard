@@ -58,7 +58,7 @@
 .colorPreview {
   width: 24px;
   height: 24px;
-  @include theme.rounded-small;
+  border-radius: theme.$border-radius-full;
   @include theme.glass-border;
   flex-shrink: 0;
 }

@@ -208,11 +208,14 @@
 }
 
 .presetColor {
-  // Reset button for color preset swatches
-  @include theme.button-reset;
+  // Manually reset button properties (avoiding button-reset mixin to preserve inline backgroundColor)
+  border: 1.5px solid var(--glass-border) !important;
+  box-shadow: none !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  padding: 0 !important;
   width: theme.$color-swatch-size-sm;
   height: theme.$color-swatch-size-sm;
-  border: 1.5px solid var(--glass-border) !important;
   border-radius: theme.$border-radius-sm;
   cursor: pointer;
   @include theme.smooth-transition;
