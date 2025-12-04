@@ -28,7 +28,6 @@
 
 <div align="center">
   <img src="assets/preview.png" alt="SynchBoard - Collaborative Whiteboard" />
-  <p><em>Real-time collaborative drawing with integrated team chat</em></p>
 </div>
 
 ---
@@ -40,12 +39,14 @@
 <td width="50%">
 
 ### Real-time Collaboration
+
 - WebSocket/STOMP synchronization via ActiveMQ Artemis
 - Optimistic updates with automatic rollback
 - Exponential backoff reconnection strategy
 - Offline message queue processing
 
 ### Drawing Tools
+
 - Freehand brush & eraser
 - Shapes: rectangle, square, circle, triangle, pentagon, hexagon, star
 - Lines: solid, dotted, arrow
@@ -54,6 +55,7 @@
 - Canvas download functionality
 
 ### Board Management
+
 - Create, share, and manage boards
 - Role-based permissions (Admin/Member)
 - Invite members via email
@@ -63,6 +65,7 @@
 <td width="50%">
 
 ### Authentication & Security
+
 - JWT-based authentication
 - Google OAuth2 integration
 - Email verification with SendGrid
@@ -70,13 +73,15 @@
 - XSS protection & message sanitization
 
 ### User Experience
+
 - Light/Dark theme support
 - Internationalization (English & Hebrew RTL)
-- Responsive design for desktop & tablet
+- Fully responsive design (desktop, tablet & mobile)
 - Full undo/redo history per user
 - Persistent user preferences
 
 ### Developer Experience
+
 - Docker Compose orchestration
 - Production-ready deployment scripts
 - Swagger/OpenAPI documentation
@@ -135,6 +140,23 @@
 </tr>
 </table>
 
+### Mobile Experience
+
+<table>
+<tr>
+<td align="center"><strong>Board List - Grid</strong></td>
+<td align="center"><strong>Board List - List</strong></td>
+<td align="center"><strong>Canvas</strong></td>
+<td align="center"><strong>Chat</strong></td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/mobile-board-list-grid.png" alt="Mobile Board List Grid" width="180"/></td>
+<td><img src="assets/screenshots/mobile-board-list-list.png" alt="Mobile Board List" width="180"/></td>
+<td><img src="assets/screenshots/mobile-canvas.png" alt="Mobile Canvas" width="180"/></td>
+<td><img src="assets/screenshots/mobile-chat.png" alt="Mobile Chat" width="180"/></td>
+</tr>
+</table>
+
 </div>
 
 ---
@@ -149,6 +171,7 @@
 </div>
 
 **Traffic Flow:**
+
 1. HTTPS requests terminate at host Nginx with SSL/TLS
 2. Frontend Nginx serves static assets and proxies API/WebSocket
 3. Spring Boot handles business logic with JWT validation
@@ -158,14 +181,14 @@
 
 ## Tech Stack
 
-| Layer | Technologies |
-|:------|:-------------|
-| **Frontend** | React 19, TypeScript 5.9, Vite 7.2, SCSS Modules, Framer Motion |
-| **Backend** | Java 24, Spring Boot 3.5, Spring Security, Spring WebSocket |
-| **Database** | PostgreSQL 17, Spring Data JPA |
-| **Messaging** | ActiveMQ Artemis, STOMP Protocol |
-| **Infrastructure** | Docker, Nginx, Let's Encrypt SSL |
-| **Authentication** | JWT, OAuth2 (Google), SendGrid Email |
+| Layer              | Technologies                                                    |
+| :----------------- | :-------------------------------------------------------------- |
+| **Frontend**       | React 19, TypeScript 5.9, Vite 7.2, SCSS Modules, Framer Motion |
+| **Backend**        | Java 24, Spring Boot 3.5, Spring Security, Spring WebSocket     |
+| **Database**       | PostgreSQL 17, Spring Data JPA                                  |
+| **Messaging**      | ActiveMQ Artemis, STOMP Protocol                                |
+| **Infrastructure** | Docker, Nginx, Let's Encrypt SSL                                |
+| **Authentication** | JWT, OAuth2 (Google), SendGrid Email                            |
 
 ---
 
@@ -186,6 +209,7 @@ docker-compose up --build
 ```
 
 **Access Points:**
+
 - Frontend: http://localhost
 - Backend API: http://localhost:8080
 - ActiveMQ Console: http://localhost:8161 (admin/admin)
@@ -208,10 +232,10 @@ npm install && npm run dev
 
 ## Documentation
 
-| Document | Description |
-|:---------|:------------|
-| [API Documentation](docs/API_DOCUMENTATION.md) | REST API reference with examples |
-| [Installation Guide](docs/INSTALLATION.md) | Local development & production deployment |
+| Document                                       | Description                               |
+| :--------------------------------------------- | :---------------------------------------- |
+| [API Documentation](docs/API_DOCUMENTATION.md) | REST API reference with examples          |
+| [Installation Guide](docs/INSTALLATION.md)     | Local development & production deployment |
 
 ---
 
