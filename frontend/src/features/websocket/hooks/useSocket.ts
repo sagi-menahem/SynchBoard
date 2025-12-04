@@ -102,11 +102,17 @@ export const useSocketSubscription = <T>(
       isEffectActive = false;
       clearTimeout(timeoutId);
       if (subscription) {
-        try {
-          subscription.unsubscribe();
-        } catch (error) {
-          logger.warn(`Failed to unsubscribe from ${topic}:`, error);
-        }
+        // Only unsubscribe if connection is still active to avoid
+        // "WebSocket is already in CLOSING or CLOSED state" errors
+        void getWebSocketService().then((service) => {
+          if (service.isConnected()) {
+            try {
+              subscription.unsubscribe();
+            } catch (error) {
+              logger.warn(`Failed to unsubscribe from ${topic}:`, error);
+            }
+          }
+        });
       }
     };
   }, [isSocketConnected, topic, stableOnMessageReceived, schemaKey]);
