@@ -136,10 +136,8 @@ temp/
 *.old
 
 # =====================================================
-# Documentation (keep essential docs)
+# Documentation & Personal Notes
 # =====================================================
-# Keep CLAUDE.md as it's essential for development
-# Remove personal project notes
 personal-notes/
 todo.txt
 TODO.md
@@ -162,18 +160,13 @@ $RECYCLE.BIN/
 # =====================================================
 # Project Specific
 # =====================================================
-# Exclude cleanup scripts from submission
+# Cleanup scripts
 cleanup-project.sh
 cleanup-project.bat
 PROJECT_CLEANUP_REPORT.md
 
-# Keep important files
-!README.md
-!.env.example
-!docker-compose.yml
-!Dockerfile
-!nginx.conf
-
+# Claude Code development guide
 CLAUDE.md
-Synchboard Local.session.sql
+
+# Agent/tool specific
 .agent
