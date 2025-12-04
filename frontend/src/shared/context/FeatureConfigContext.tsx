@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import apiClient from 'shared/lib/apiClient';
-import { PageLoader } from 'shared/ui';
 import logger from 'shared/utils/logger';
 
 /**
@@ -62,9 +61,9 @@ export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ ch
     void fetchFeatureConfig();
   }, []);
 
-  // Block rendering until config is loaded to prevent UI flickering
+  // Return null during very brief config load - prevents showing spinner before page skeleton
   if (isLoading) {
-    return <PageLoader />;
+    return null;
   }
 
   return <FeatureConfigContext.Provider value={config}>{children}</FeatureConfigContext.Provider>;

@@ -3,7 +3,6 @@ import { useLanguageSync } from 'features/settings/hooks';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { updateDocumentDirection } from 'shared/lib/i18n';
-import { PageLoader, PageTransition } from 'shared/ui';
 
 /**
  * Return value from the useAppConfiguration hook.
@@ -19,10 +18,10 @@ interface UseAppConfigurationResult {
   isInitializing: boolean;
   // Fixed height of the toolbar in pixels
   toolbarHeight: number;
-  // Render function for OAuth loading screen
-  renderOAuthLoading: () => React.JSX.Element;
-  // Render function for app initialization loading screen
-  renderInitializingLoading: () => React.JSX.Element;
+  // Render function for OAuth loading screen (returns null to show nothing)
+  renderOAuthLoading: () => React.JSX.Element | null;
+  // Render function for app initialization loading screen (returns null to show nothing)
+  renderInitializingLoading: () => React.JSX.Element | null;
 }
 
 /**
@@ -35,7 +34,7 @@ interface UseAppConfigurationResult {
  */
 export function useAppConfiguration(): UseAppConfigurationResult {
   const [bannerHeight, setBannerHeight] = useState<number>(0);
-  const { i18n, t } = useTranslation(['common', 'auth']);
+  const { i18n } = useTranslation(['common', 'auth']);
   const { isInitializing } = useAuth();
 
   const toolbarHeight = 72;
@@ -59,20 +58,13 @@ export function useAppConfiguration(): UseAppConfigurationResult {
   // Check if OAuth authentication is currently being processed via session storage flag
   const isOAuthProcessing = sessionStorage.getItem('oauth_loading') === 'true';
 
+  // Return null for loading states - prevents showing spinner before page skeleton
   const renderOAuthLoading = () => {
-    return (
-      <PageTransition>
-        <PageLoader message={t('auth:signingInMessage')} />
-      </PageTransition>
-    );
+    return null;
   };
 
   const renderInitializingLoading = () => {
-    return (
-      <PageTransition>
-        <PageLoader message={t('common:loading')} />
-      </PageTransition>
-    );
+    return null;
   };
 
   return {
