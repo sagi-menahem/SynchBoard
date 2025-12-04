@@ -28,6 +28,7 @@
 
 <div align="center">
   <img src="assets/preview.png" alt="SynchBoard - Collaborative Whiteboard" />
+  <p><em>Real-time collaborative drawing with integrated team chat</em></p>
 </div>
 
 ---
@@ -232,10 +233,23 @@ npm install && npm run dev
 
 ## Documentation
 
-| Document                                       | Description                               |
-| :--------------------------------------------- | :---------------------------------------- |
-| [API Documentation](docs/API_DOCUMENTATION.md) | REST API reference with examples          |
-| [Installation Guide](docs/INSTALLATION.md)     | Local development & production deployment |
+| Document                                                     | Description                                  |
+| :----------------------------------------------------------- | :------------------------------------------- |
+| [Installation Guide](docs/INSTALLATION.md)                   | Local development & production deployment    |
+| [API Documentation](docs/API_DOCUMENTATION.md)               | REST API reference with examples             |
+| [WebSocket Architecture](docs/WEBSOCKET_ARCHITECTURE.md)     | Real-time communication & STOMP protocol     |
+| [Authentication](docs/AUTHENTICATION.md)                     | JWT, OAuth2, and security implementation     |
+| [Canvas Architecture](docs/CANVAS_ARCHITECTURE.md)           | Drawing system & object management           |
+| [Database Schema](docs/DATABASE_SCHEMA.md)                   | Entity relationships & data model            |
+| [Docker Infrastructure](docs/DOCKER_INFRASTRUCTURE.md)       | Container setup & orchestration              |
+| [Nginx Configuration](docs/NGINX_CONFIGURATION.md)           | Reverse proxy & SSL configuration            |
+| [Security](docs/SECURITY.md)                                 | Security measures & best practices           |
+| [Error Handling](docs/ERROR_HANDLING.md)                     | Exception handling & error responses         |
+| [Email Service](docs/EMAIL_SERVICE.md)                       | SendGrid integration & email templates       |
+| [File Storage](docs/FILE_STORAGE.md)                         | Image uploads & file management              |
+| [History Management](docs/HISTORY_MANAGEMENT.md)             | Undo/redo system implementation              |
+| [Performance](docs/PERFORMANCE.md)                           | Optimization strategies & caching            |
+| [Contributing](docs/CONTRIBUTING.md)                         | Contribution guidelines                      |
 
 ---
 
