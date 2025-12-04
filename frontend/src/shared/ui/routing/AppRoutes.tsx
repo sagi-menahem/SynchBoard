@@ -12,7 +12,6 @@ import {
   BoardListSkeleton,
   BoardWorkspaceSkeleton,
   Button,
-  PageTransition,
   SearchBar,
   SettingsPageSkeleton,
 } from 'shared/ui';
@@ -50,7 +49,7 @@ const BoardListPageLoader = () => {
   );
 
   return (
-    <PageTransition className={utilStyles.unifiedDotBackground} style={containerStyle}>
+    <div className={utilStyles.unifiedDotBackground} style={containerStyle}>
       <AppHeader
         leading={
           <Button
@@ -85,7 +84,7 @@ const BoardListPageLoader = () => {
       <main className={styles.boardListPageContent}>
         <BoardListSkeleton viewMode="grid" />
       </main>
-    </PageTransition>
+    </div>
   );
 };
 
@@ -112,7 +111,7 @@ const BoardPageLoader = () => {
   };
 
   return (
-    <PageTransition>
+    <div className={styles.skeletonWrapper}>
       <AppHeader
         leading={
           <>
@@ -131,7 +130,7 @@ const BoardPageLoader = () => {
           <BoardWorkspaceSkeleton containerStyle={containerStyle} />
         </div>
       </main>
-    </PageTransition>
+    </div>
   );
 };
 

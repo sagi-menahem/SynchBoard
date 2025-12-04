@@ -1,5 +1,11 @@
 @use '@/styles' as theme;
 
+// Wrapper for skeleton loaders - shows instantly without animation
+.skeletonWrapper {
+  min-height: 100vh;
+  width: 100%;
+}
+
 // Full-viewport layout with dynamic positioning based on header presence
 .pageContent {
   position: fixed;
