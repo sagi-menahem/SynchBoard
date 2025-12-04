@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { LOCAL_STORAGE_KEYS } from 'shared/constants/AppConstants';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import { useFeatureConfig } from 'shared/context/FeatureConfigContext';
 import logger from 'shared/utils/logger';
@@ -33,6 +34,7 @@ let oneTapInitialized = false;
 const GoogleOneTap: React.FC = () => {
   const { t } = useTranslation(['auth']);
   const navigate = useNavigate();
+  const location = useLocation();
   const { token, login: authLogin } = useAuth();
   const featureConfig = useFeatureConfig();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -46,8 +48,18 @@ const GoogleOneTap: React.FC = () => {
       return;
     }
 
-    // Skip if already authenticated
-    if (token) {
+    // Only show One Tap on the main auth page, not on callback or error routes
+    // This prevents the prompt from appearing during OAuth redirect processing
+    if (location.pathname !== APP_ROUTES.AUTH) {
+      logger.debug('[GoogleOneTap] Not on main auth page, skipping One Tap');
+      return;
+    }
+
+    // Skip if already authenticated - check both context token AND localStorage
+    // localStorage check is synchronous and handles race conditions where
+    // context hasn't updated yet after OAuth callback navigation
+    const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+    if (token || storedToken) {
       logger.debug('[GoogleOneTap] User already authenticated, skipping One Tap');
       return;
     }
@@ -136,7 +148,7 @@ const GoogleOneTap: React.FC = () => {
         timeoutRef.current = null;
       }
     };
-  }, [token, featureConfig.googleLoginEnabled]);
+  }, [token, featureConfig.googleLoginEnabled, location.pathname]);
 
   /**
    * Handles the credential response from Google One Tap.
