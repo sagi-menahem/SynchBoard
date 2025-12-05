@@ -131,7 +131,7 @@ const PictureManager: React.FC<PictureManagerProps> = ({
         </div>
 
         {/* Hover/Drag Overlay */}
-        <div className={`${styles.overlay} ${(isHovering || isDragging) ? styles.visible : ''}`}>
+        <div className={`${styles.overlay} ${isHovering || isDragging ? styles.visible : ''}`}>
           <div className={styles.overlayContent}>
             {isDragging ? (
               <>

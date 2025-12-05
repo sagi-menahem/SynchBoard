@@ -1,4 +1,3 @@
-
 import { ArrowLeft, Info, LayoutGrid, Plus, Settings } from 'lucide-react';
 import { lazy, Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

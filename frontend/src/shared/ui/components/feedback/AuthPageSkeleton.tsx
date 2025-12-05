@@ -3,7 +3,6 @@ import React from 'react';
 import styles from './AuthPageSkeleton.module.scss';
 import Skeleton from './Skeleton';
 
-
 /**
  * Skeleton placeholder for the Auth page during loading states.
  * Mimics the split-screen layout with hero section and form section.

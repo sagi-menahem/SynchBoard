@@ -9,7 +9,6 @@ import { SatelliteManager } from './SatelliteManager';
 import type { RadialDockProps, ToolItem } from './types';
 import { checkIsToolActive, createToolIcon, getActiveToolIcon } from './utils';
 
-
 // =============================================================================
 // COMPONENT
 // =============================================================================
