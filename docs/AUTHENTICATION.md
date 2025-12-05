@@ -9,7 +9,7 @@ SynchBoard uses:
 - **JWT tokens** for stateless authentication
 - **BCrypt** for password hashing
 - **OAuth2** for Google login
-- **Gmail SMTP** for email verification and password reset
+- **Gmail REST API** for email verification and password reset
 - **STOMP** header authentication for WebSocket connections
 
 ## JWT Configuration
@@ -45,7 +45,7 @@ Frontend                        Backend
 ### Registration with Email Verification
 
 ```
-Frontend                        Backend                    Gmail SMTP
+Frontend                        Backend                    Gmail API
    |                               |                           |
    |-- POST /api/auth/register --->|                           |
    |   (email, password, name)     |                           |
@@ -69,7 +69,7 @@ Frontend                        Backend                    Gmail SMTP
 ### Password Reset
 
 ```
-Frontend                        Backend                    Gmail SMTP
+Frontend                        Backend                    Gmail API
    |                               |                          |
    |-- POST /api/auth/forgot ----->|                          |
    |   (email)                     |                          |
@@ -257,13 +257,15 @@ Axios instance automatically:
 
 ### Environment Variables
 
-| Variable         | Required  | Default        | Description                        |
-| ---------------- | --------- | -------------- | ---------------------------------- |
-| `MAIL_HOST`      | For email | smtp.gmail.com | SMTP server hostname               |
-| `MAIL_PORT`      | For email | 587            | SMTP server port                   |
-| `MAIL_USERNAME`  | For email | -              | Gmail address (e.g., you@gmail.com)|
-| `MAIL_PASSWORD`  | For email | -              | Gmail App Password (16 characters) |
-| `MAIL_FROM_NAME` | No        | SynchBoard     | Sender display name                |
+| Variable              | Required  | Default    | Description                            |
+| --------------------- | --------- | ---------- | -------------------------------------- |
+| `GMAIL_CLIENT_ID`     | For email | -          | OAuth2 Client ID from Google Cloud     |
+| `GMAIL_CLIENT_SECRET` | For email | -          | OAuth2 Client Secret from Google Cloud |
+| `GMAIL_REFRESH_TOKEN` | For email | -          | OAuth2 Refresh Token (long-lived)      |
+| `GMAIL_SENDER_EMAIL`  | For email | -          | Gmail address used to send emails      |
+| `MAIL_FROM_NAME`      | No        | SynchBoard | Sender display name                    |
+
+See [docs/EMAIL_SERVICE.md](EMAIL_SERVICE.md) for detailed setup instructions.
 
 ### Templates
 
@@ -298,11 +300,11 @@ Email templates use user's preferred language stored in profile.
 
 Authentication features auto-enable based on configuration:
 
-| Feature            | Required Config                             |
-| ------------------ | ------------------------------------------- |
-| Email verification | `MAIL_USERNAME` + `MAIL_PASSWORD`           |
-| Password reset     | `MAIL_USERNAME` + `MAIL_PASSWORD`           |
-| Google login       | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` |
+| Feature            | Required Config                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| Email verification | `GMAIL_CLIENT_ID` + `GMAIL_CLIENT_SECRET` + `GMAIL_REFRESH_TOKEN` + `GMAIL_SENDER_EMAIL` |
+| Password reset     | `GMAIL_CLIENT_ID` + `GMAIL_CLIENT_SECRET` + `GMAIL_REFRESH_TOKEN` + `GMAIL_SENDER_EMAIL` |
+| Google login       | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET`                                         |
 
 Frontend checks `/api/config/features` endpoint for enabled features.
 
@@ -318,7 +320,7 @@ Frontend checks `/api/config/features` endpoint for enabled features.
 ### Brute Force Protection
 
 - Verification codes: 3 max attempts
-- Email throttling via SMTP server rate limits
+- Email throttling via Gmail API rate limits
 
 ### Account Linking
 

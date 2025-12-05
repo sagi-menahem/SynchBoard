@@ -158,16 +158,18 @@ The `backend_uploads` volume is shared with frontend (read-only) for direct imag
 
 ### Optional
 
-| Variable               | Default            | Description       |
-| ---------------------- | ------------------ | ----------------- |
-| `JPA_DDL_AUTO`         | `update`           | Schema management |
-| `JWT_EXPIRATION_HOURS` | `24`               | Token lifetime    |
-| `CLIENT_ORIGIN_URL`    | `http://localhost` | CORS origin       |
-| `MAIL_USERNAME`        | -                  | Gmail address     |
-| `MAIL_PASSWORD`        | -                  | Gmail App Password|
-| `GOOGLE_CLIENT_ID`     | -                  | OAuth2 client     |
-| `GOOGLE_CLIENT_SECRET` | -                  | OAuth2 secret     |
-| `MAX_FILE_SIZE_MB`     | `10`               | Upload limit      |
+| Variable               | Default            | Description                  |
+| ---------------------- | ------------------ | ---------------------------- |
+| `JPA_DDL_AUTO`         | `update`           | Schema management            |
+| `JWT_EXPIRATION_HOURS` | `24`               | Token lifetime               |
+| `CLIENT_ORIGIN_URL`    | `http://localhost` | CORS origin                  |
+| `GMAIL_CLIENT_ID`      | -                  | Gmail API OAuth2 client ID   |
+| `GMAIL_CLIENT_SECRET`  | -                  | Gmail API OAuth2 secret      |
+| `GMAIL_REFRESH_TOKEN`  | -                  | Gmail API OAuth2 refresh token |
+| `GMAIL_SENDER_EMAIL`   | -                  | Gmail sender address         |
+| `GOOGLE_CLIENT_ID`     | -                  | Google login OAuth2 client   |
+| `GOOGLE_CLIENT_SECRET` | -                  | Google login OAuth2 secret   |
+| `MAX_FILE_SIZE_MB`     | `10`               | Upload limit                 |
 
 ### Port Bindings
 

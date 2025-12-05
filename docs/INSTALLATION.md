@@ -105,10 +105,12 @@ POSTGRES_PASSWORD=<generate-strong-password>
 ACTIVEMQ_PASSWORD=<generate-strong-password>
 
 # Configure email (optional but recommended for production)
-# For Gmail: Enable 2FA, then create App Password at:
-# https://myaccount.google.com/apppasswords
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-16-char-app-password
+# Gmail REST API credentials from Google Cloud Console
+# See docs/EMAIL_SERVICE.md for setup instructions
+GMAIL_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GMAIL_CLIENT_SECRET=your-client-secret
+GMAIL_REFRESH_TOKEN=your-refresh-token
+GMAIL_SENDER_EMAIL=your-email@gmail.com
 ```
 
 ### Step 4: Configure Nginx
@@ -284,7 +286,7 @@ docker-compose up -d postgres activemq
 # 2. Configure backend
 cd backend
 cp .env.example .env
-# Edit .env with your credentials (OAuth, Gmail SMTP, etc.)
+# Edit .env with your credentials (OAuth, Gmail API, etc.)
 ./gradlew bootRun  # Or run from IDE with -Dspring.profiles.active=dev
 
 # 3. Configure frontend (in new terminal)
@@ -306,7 +308,7 @@ npm run dev
   - Development: OAuth redirects to `http://localhost:8080/login/oauth2/code/google`
   - Docker/Production: OAuth redirects to `http://localhost/api/login/oauth2/code/google`
   - Both URIs must be added to Google Cloud Console
-- **Email Features**: Optional. Leave `MAIL_USERNAME` and `MAIL_PASSWORD` empty to disable email verification
+- **Email Features**: Optional. Leave Gmail API credentials empty to disable email verification
 - **Google Login**: Optional. Leave `GOOGLE_CLIENT_ID` empty to disable OAuth2
 - **Default Credentials**: The `.env.example` includes working defaults for development
 - **Security**: Never use the default `JWT_SECRET_KEY` in production!
@@ -315,7 +317,7 @@ npm run dev
 
 The application gracefully handles missing API keys:
 
-- Without Gmail SMTP: Registration works without email verification
+- Without Gmail API: Registration works without email verification
 - Without Google OAuth: Traditional email/password login only
 - Check `/api/config/features` to see which features are enabled
 
@@ -330,7 +332,7 @@ The application gracefully handles missing API keys:
 - Spring WebSocket with STOMP protocol
 - PostgreSQL 17 for data persistence
 - ActiveMQ Artemis for message brokering
-- Gmail SMTP for email services
+- Gmail REST API for email services
 - OAuth2 with Google provider
 
 **Frontend:**
@@ -383,7 +385,7 @@ The application uses environment variables for configuration. See `.env.example`
 - **Database**: PostgreSQL connection settings
 - **Message Broker**: ActiveMQ configuration
 - **JWT Security**: Secret key for token signing
-- **Email Service**: Gmail SMTP configuration (optional)
+- **Email Service**: Gmail REST API configuration (optional)
 - **OAuth2**: Google OAuth credentials (optional)
 
 ### Frontend Build Variables
