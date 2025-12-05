@@ -7,6 +7,11 @@
   <a href="https://synchboard.com">
     <img src="https://img.shields.io/badge/Live_Demo-synchboard.com-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
   </a>
+
+  <br/>
+
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+  [![GitHub Stars](https://img.shields.io/github/stars/sagi-menahem/SynchBoard?style=flat-square)](https://github.com/sagi-menahem/SynchBoard/stargazers)
 </div>
 
 ---
@@ -34,10 +39,6 @@
 
 ## Features
 
-<table>
-<tr>
-<td width="50%">
-
 ### Real-time Collaboration
 
 - WebSocket/STOMP synchronization via ActiveMQ Artemis
@@ -60,9 +61,6 @@
 - Role-based permissions (Admin/Member)
 - Invite members via email
 - Customizable canvas settings (size, background)
-
-</td>
-<td width="50%">
 
 ### Authentication & Security
 
@@ -88,10 +86,6 @@
 - Multi-stage Docker builds
 - Comprehensive type safety
 
-</td>
-</tr>
-</table>
-
 ---
 
 ## Screenshots
@@ -100,74 +94,41 @@
 
 ### Theme & Language Support
 
-<table>
-<tr>
-<td align="center"><strong>English - Dark</strong></td>
-<td align="center"><strong>English - Light</strong></td>
-</tr>
-<tr>
-<td><img src="assets/screenshots/workspace-en-dark.jpg" alt="Workspace - English Dark" width="400"/></td>
-<td><img src="assets/screenshots/workspace-en-light.jpg" alt="Workspace - English Light" width="400"/></td>
-</tr>
-<tr>
-<td align="center"><strong>Hebrew (RTL) - Dark</strong></td>
-<td align="center"><strong>Hebrew (RTL) - Light</strong></td>
-</tr>
-<tr>
-<td><img src="assets/screenshots/workspace-he-dark.jpg" alt="Workspace - Hebrew Dark" width="400"/></td>
-<td><img src="assets/screenshots/workspace-he-light.jpg" alt="Workspace - Hebrew Light" width="400"/></td>
-</tr>
-</table>
+| English - Dark | English - Light |
+|:---:|:---:|
+| <img src="assets/screenshots/workspace-en-dark.jpg" alt="Workspace - English Dark" /> | <img src="assets/screenshots/workspace-en-light.jpg" alt="Workspace - English Light" /> |
+
+| Hebrew (RTL) - Dark | Hebrew (RTL) - Light |
+|:---:|:---:|
+| <img src="assets/screenshots/workspace-he-dark.jpg" alt="Workspace - Hebrew Dark" /> | <img src="assets/screenshots/workspace-he-light.jpg" alt="Workspace - Hebrew Light" /> |
 
 ### Application Pages
 
-<table>
-  <tr>
-    <td align="center"><strong>Board List</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/screenshots/board-list.jpg" alt="Board List" width="100%"/></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Board Settings</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/screenshots/board-settings.jpg" alt="Board Settings" width="100%"/></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>User Settings</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/screenshots/user-settings.jpg" alt="User Settings" width="100%"/></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Authentication</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/screenshots/auth.jpg" alt="Authentication" width="100%"/></td>
-  </tr>
-</table>
+**Board List**
+
+<img src="assets/screenshots/board-list.jpg" alt="Board List" />
+
+**Board Settings**
+
+<img src="assets/screenshots/board-settings.jpg" alt="Board Settings" />
+
+**User Settings**
+
+<img src="assets/screenshots/user-settings.jpg" alt="User Settings" />
+
+**Authentication**
+
+<img src="assets/screenshots/auth.jpg" alt="Authentication" />
 
 ### Mobile Experience
 
-<table>
-  <tr>
-    <td align="center"><strong>Board List - Grid</strong></td>
-    <td align="center"><strong>Board List - List</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/screenshots/mobile-board-list-grid.jpg" alt="Mobile Board List Grid" width="250"/></td>
-    <td><img src="assets/screenshots/mobile-board-list-list.jpg" alt="Mobile Board List" width="250"/></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Canvas</strong></td>
-    <td align="center"><strong>Chat</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/screenshots/mobile-canvas.jpg" alt="Mobile Canvas" width="250"/></td>
-    <td><img src="assets/screenshots/mobile-chat.jpg" alt="Mobile Chat" width="250"/></td>
-  </tr>
-</table>
+| Board List - Grid | Board List - List |
+|:---:|:---:|
+| <img src="assets/screenshots/mobile-board-list-grid.jpg" alt="Mobile Board List Grid" /> | <img src="assets/screenshots/mobile-board-list-list.jpg" alt="Mobile Board List" /> |
+
+| Canvas | Chat |
+|:---:|:---:|
+| <img src="assets/screenshots/mobile-canvas.jpg" alt="Mobile Canvas" /> | <img src="assets/screenshots/mobile-chat.jpg" alt="Mobile Chat" /> |
 
 </div>
 
@@ -182,12 +143,16 @@
 
 </div>
 
+<div align="center">
+
 **Traffic Flow:**
 
 1. HTTPS requests terminate at host Nginx with SSL/TLS
 2. Frontend Nginx serves static assets and proxies API/WebSocket
 3. Spring Boot handles business logic with JWT validation
 4. Real-time updates broadcast via ActiveMQ STOMP relay to subscribed clients
+
+</div>
 
 ---
 
@@ -201,6 +166,17 @@
 | **Messaging**      | ActiveMQ Artemis, STOMP Protocol                                |
 | **Infrastructure** | Docker, Nginx, Let's Encrypt SSL                                |
 | **Authentication** | JWT, OAuth2 (Google), SendGrid Email                            |
+
+---
+
+## Prerequisites
+
+- **Docker** (recommended) - [Install Docker](https://docs.docker.com/get-docker/)
+- Or for local development:
+  - Node.js >= 20.0.0
+  - Java 24+
+  - PostgreSQL 17
+  - ActiveMQ Artemis
 
 ---
 
