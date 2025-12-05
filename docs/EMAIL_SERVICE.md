@@ -4,7 +4,7 @@ This document describes the email service in SynchBoard, including configuration
 
 ## Overview
 
-SynchBoard uses **SendGrid** for transactional emails:
+SynchBoard uses **Gmail SMTP** (via Spring Mail) for transactional emails:
 
 - Email verification during registration
 - Password reset codes
@@ -15,19 +15,30 @@ Email functionality is **optional** - if not configured, registration proceeds w
 
 ### Environment Variables
 
-| Variable                        | Required  | Default                | Description                |
-| ------------------------------- | --------- | ---------------------- | -------------------------- |
-| `SENDGRID_API_KEY`              | For email | -                      | SendGrid API key           |
-| `SENDGRID_FROM_EMAIL`           | No        | noreply@synchboard.com | Sender email               |
-| `SENDGRID_FROM_NAME`            | No        | SynchBoard Team        | Sender display name        |
-| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15                     | Verification code lifetime |
-| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60                     | Reset code lifetime        |
+| Variable                        | Required  | Default                | Description                         |
+| ------------------------------- | --------- | ---------------------- | ----------------------------------- |
+| `MAIL_HOST`                     | For email | smtp.gmail.com         | SMTP server hostname                |
+| `MAIL_PORT`                     | For email | 587                    | SMTP server port                    |
+| `MAIL_USERNAME`                 | For email | -                      | Gmail address (e.g., you@gmail.com) |
+| `MAIL_PASSWORD`                 | For email | -                      | Gmail App Password (16 characters)  |
+| `MAIL_FROM_NAME`                | No        | SynchBoard             | Sender display name                 |
+| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15                     | Verification code lifetime          |
+| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60                     | Reset code lifetime                 |
+
+### Gmail App Password Setup
+
+1. Enable 2-Factor Authentication on your Google Account
+2. Go to [Google App Passwords](https://myaccount.google.com/apppasswords)
+3. Select "Mail" and your device
+4. Generate and copy the 16-character password
+5. Use this password as `MAIL_PASSWORD` (not your regular Gmail password)
 
 ### Feature Detection
 
 ```java
 public boolean isEmailEnabled() {
-  return sendGridApiKey != null && !sendGridApiKey.trim().isEmpty();
+  return mailUsername != null && !mailUsername.trim().isEmpty()
+      && mailPassword != null && !mailPassword.trim().isEmpty();
 }
 ```
 
@@ -131,34 +142,45 @@ private boolean isHebrewLocale(Locale locale) {
 
 Hebrew emails use RTL layout and Hebrew templates.
 
-## SendGrid Integration
+## Spring Mail Integration
 
-### API Call
+### Configuration
 
 ```java
-Email from = new Email(fromEmail, fromName);
-Email to = new Email(toEmail);
-Content content = new Content("text/html", body);
-Mail mail = new Mail(from, subject, to, content);
+@Configuration
+public class MailConfig {
+    @Bean
+    public JavaMailSender mailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(mailHost);
+        mailSender.setPort(mailPort);
+        mailSender.setUsername(mailUsername);
+        mailSender.setPassword(mailPassword);
 
-SendGrid sg = new SendGrid(sendGridApiKey);
-Request request = new Request();
-request.setMethod(Method.POST);
-request.setEndpoint("mail/send");
-request.setBody(mail.build());
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        return mailSender;
+    }
+}
+```
 
-Response response = sg.api(request);
+### Sending Email
+
+```java
+MimeMessage message = mailSender.createMimeMessage();
+MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+helper.setFrom(new InternetAddress(mailUsername, fromName));
+helper.setTo(toEmail);
+helper.setSubject(subject);
+helper.setText(htmlContent, true);
+mailSender.send(message);
 ```
 
 ### Success Detection
 
-```java
-if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-    return true;
-}
-```
-
-HTTP 2xx status codes indicate success.
+Exceptions indicate failure. Successful sends complete without exception.
 
 ## Email Flow
 
@@ -216,18 +238,18 @@ Templates use inline CSS for email client compatibility:
 
 ## Error Handling
 
-| Scenario        | Behavior                      |
-| --------------- | ----------------------------- |
-| API key missing | Log warning, return false     |
-| SendGrid error  | Log error, return false       |
-| IOException     | Catch exception, return false |
+| Scenario              | Behavior                      |
+| --------------------- | ----------------------------- |
+| Credentials missing   | Log warning, return false     |
+| SMTP connection error | Log error, return false       |
+| MailException         | Catch exception, return false |
 
 Service failures don't throw exceptions - callers check return value.
 
 ## Dependencies
 
 ```groovy
-implementation 'com.sendgrid:sendgrid-java:4.10.3'
+implementation 'org.springframework.boot:spring-boot-starter-mail'
 implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 ```
 
@@ -245,27 +267,33 @@ implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 ## Testing Locally
 
-Without SendGrid:
+Without Gmail SMTP:
 
-1. Leave `SENDGRID_API_KEY` unset
+1. Leave `MAIL_USERNAME` and `MAIL_PASSWORD` unset
 2. Registration works without verification
 3. Password reset unavailable
 
-With SendGrid:
+With Gmail SMTP:
 
-1. Create SendGrid account
-2. Generate API key with Mail Send permission
-3. Set `SENDGRID_API_KEY` in `.env`
-4. Set `SENDGRID_FROM_EMAIL` to verified sender
+1. Enable 2-Factor Authentication on your Google Account
+2. Create an App Password at https://myaccount.google.com/apppasswords
+3. Set `MAIL_USERNAME` to your Gmail address
+4. Set `MAIL_PASSWORD` to the 16-character App Password
 
 ## Troubleshooting
 
 ### Emails not sending
 
-1. Check `SENDGRID_API_KEY` is set
-2. Verify sender email in SendGrid
-3. Check SendGrid account status
-4. Review backend logs for errors
+1. Check `MAIL_USERNAME` and `MAIL_PASSWORD` are set
+2. Verify App Password is correct (16 characters, no spaces)
+3. Ensure 2FA is enabled on Google Account
+4. Review backend logs for SMTP errors
+
+### Authentication failed
+
+1. Ensure you're using an App Password, not your regular Gmail password
+2. Check that "Less secure app access" is NOT required (App Passwords bypass this)
+3. Verify the Gmail account is active and not locked
 
 ### Wrong language
 

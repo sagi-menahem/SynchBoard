@@ -19,13 +19,13 @@ public class FeatureConfigResponseDTO {
 
     /**
      * Indicates whether email verification is enabled.
-     * Depends on SendGrid API key being configured.
+     * Depends on SMTP credentials being configured.
      */
     private boolean emailVerificationEnabled;
 
     /**
      * Indicates whether password reset functionality is enabled.
-     * Depends on SendGrid API key being configured.
+     * Depends on SMTP credentials being configured.
      */
     private boolean passwordResetEnabled;
 

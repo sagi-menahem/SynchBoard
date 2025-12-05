@@ -9,7 +9,7 @@ SynchBoard uses:
 - **JWT tokens** for stateless authentication
 - **BCrypt** for password hashing
 - **OAuth2** for Google login
-- **SendGrid** for email verification and password reset
+- **Gmail SMTP** for email verification and password reset
 - **STOMP** header authentication for WebSocket connections
 
 ## JWT Configuration
@@ -45,7 +45,7 @@ Frontend                        Backend
 ### Registration with Email Verification
 
 ```
-Frontend                        Backend                    SendGrid
+Frontend                        Backend                    Gmail SMTP
    |                               |                           |
    |-- POST /api/auth/register --->|                           |
    |   (email, password, name)     |                           |
@@ -69,7 +69,7 @@ Frontend                        Backend                    SendGrid
 ### Password Reset
 
 ```
-Frontend                        Backend                    SendGrid
+Frontend                        Backend                    Gmail SMTP
    |                               |                          |
    |-- POST /api/auth/forgot ----->|                          |
    |   (email)                     |                          |
@@ -257,11 +257,13 @@ Axios instance automatically:
 
 ### Environment Variables
 
-| Variable              | Required  | Default                |
-| --------------------- | --------- | ---------------------- |
-| `SENDGRID_API_KEY`    | For email | -                      |
-| `SENDGRID_FROM_EMAIL` | No        | noreply@synchboard.com |
-| `SENDGRID_FROM_NAME`  | No        | SynchBoard Team        |
+| Variable         | Required  | Default        | Description                        |
+| ---------------- | --------- | -------------- | ---------------------------------- |
+| `MAIL_HOST`      | For email | smtp.gmail.com | SMTP server hostname               |
+| `MAIL_PORT`      | For email | 587            | SMTP server port                   |
+| `MAIL_USERNAME`  | For email | -              | Gmail address (e.g., you@gmail.com)|
+| `MAIL_PASSWORD`  | For email | -              | Gmail App Password (16 characters) |
+| `MAIL_FROM_NAME` | No        | SynchBoard     | Sender display name                |
 
 ### Templates
 
@@ -298,8 +300,8 @@ Authentication features auto-enable based on configuration:
 
 | Feature            | Required Config                             |
 | ------------------ | ------------------------------------------- |
-| Email verification | `SENDGRID_API_KEY`                          |
-| Password reset     | `SENDGRID_API_KEY`                          |
+| Email verification | `MAIL_USERNAME` + `MAIL_PASSWORD`           |
+| Password reset     | `MAIL_USERNAME` + `MAIL_PASSWORD`           |
 | Google login       | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` |
 
 Frontend checks `/api/config/features` endpoint for enabled features.
@@ -316,7 +318,7 @@ Frontend checks `/api/config/features` endpoint for enabled features.
 ### Brute Force Protection
 
 - Verification codes: 3 max attempts
-- Email throttling via SendGrid rate limits
+- Email throttling via SMTP server rate limits
 
 ### Account Linking
 
@@ -396,7 +398,7 @@ implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 implementation 'com.google.api-client:google-api-client:2.7.2'
 
 // Email
-implementation 'com.sendgrid:sendgrid-java:4.10.3'
+implementation 'org.springframework.boot:spring-boot-starter-mail'
 implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 ```
 

@@ -163,7 +163,8 @@ The `backend_uploads` volume is shared with frontend (read-only) for direct imag
 | `JPA_DDL_AUTO`         | `update`           | Schema management |
 | `JWT_EXPIRATION_HOURS` | `24`               | Token lifetime    |
 | `CLIENT_ORIGIN_URL`    | `http://localhost` | CORS origin       |
-| `SENDGRID_API_KEY`     | -                  | Email service     |
+| `MAIL_USERNAME`        | -                  | Gmail address     |
+| `MAIL_PASSWORD`        | -                  | Gmail App Password|
 | `GOOGLE_CLIENT_ID`     | -                  | OAuth2 client     |
 | `GOOGLE_CLIENT_SECRET` | -                  | OAuth2 secret     |
 | `MAX_FILE_SIZE_MB`     | `10`               | Upload limit      |

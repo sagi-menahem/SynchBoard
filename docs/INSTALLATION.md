@@ -105,8 +105,10 @@ POSTGRES_PASSWORD=<generate-strong-password>
 ACTIVEMQ_PASSWORD=<generate-strong-password>
 
 # Configure email (optional but recommended for production)
-SENDGRID_API_KEY=your-sendgrid-api-key
-SENDGRID_FROM_EMAIL=noreply@yourdomain.com
+# For Gmail: Enable 2FA, then create App Password at:
+# https://myaccount.google.com/apppasswords
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-16-char-app-password
 ```
 
 ### Step 4: Configure Nginx
@@ -282,7 +284,7 @@ docker-compose up -d postgres activemq
 # 2. Configure backend
 cd backend
 cp .env.example .env
-# Edit .env with your credentials (OAuth, SendGrid, etc.)
+# Edit .env with your credentials (OAuth, Gmail SMTP, etc.)
 ./gradlew bootRun  # Or run from IDE with -Dspring.profiles.active=dev
 
 # 3. Configure frontend (in new terminal)
@@ -304,7 +306,7 @@ npm run dev
   - Development: OAuth redirects to `http://localhost:8080/login/oauth2/code/google`
   - Docker/Production: OAuth redirects to `http://localhost/api/login/oauth2/code/google`
   - Both URIs must be added to Google Cloud Console
-- **Email Features**: Optional. Leave `SENDGRID_API_KEY` empty to disable email verification
+- **Email Features**: Optional. Leave `MAIL_USERNAME` and `MAIL_PASSWORD` empty to disable email verification
 - **Google Login**: Optional. Leave `GOOGLE_CLIENT_ID` empty to disable OAuth2
 - **Default Credentials**: The `.env.example` includes working defaults for development
 - **Security**: Never use the default `JWT_SECRET_KEY` in production!
@@ -313,7 +315,7 @@ npm run dev
 
 The application gracefully handles missing API keys:
 
-- Without SendGrid: Registration works without email verification
+- Without Gmail SMTP: Registration works without email verification
 - Without Google OAuth: Traditional email/password login only
 - Check `/api/config/features` to see which features are enabled
 
@@ -328,7 +330,7 @@ The application gracefully handles missing API keys:
 - Spring WebSocket with STOMP protocol
 - PostgreSQL 17 for data persistence
 - ActiveMQ Artemis for message brokering
-- SendGrid for email services
+- Gmail SMTP for email services
 - OAuth2 with Google provider
 
 **Frontend:**
@@ -381,7 +383,7 @@ The application uses environment variables for configuration. See `.env.example`
 - **Database**: PostgreSQL connection settings
 - **Message Broker**: ActiveMQ configuration
 - **JWT Security**: Secret key for token signing
-- **Email Service**: SendGrid API configuration (optional)
+- **Email Service**: Gmail SMTP configuration (optional)
 - **OAuth2**: Google OAuth credentials (optional)
 
 ### Frontend Build Variables

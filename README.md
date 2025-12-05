@@ -66,7 +66,7 @@
 
 - JWT-based authentication
 - Google OAuth2 integration
-- Email verification with SendGrid
+- Email verification with Gmail SMTP
 - Password reset functionality
 - XSS protection & message sanitization
 
@@ -165,7 +165,7 @@
 | **Database**       | PostgreSQL 17, Spring Data JPA                                  |
 | **Messaging**      | ActiveMQ Artemis, STOMP Protocol                                |
 | **Infrastructure** | Docker, Nginx, Let's Encrypt SSL                                |
-| **Authentication** | JWT, OAuth2 (Google), SendGrid Email                            |
+| **Authentication** | JWT, OAuth2 (Google), Gmail SMTP                                |
 
 ---
 
@@ -232,7 +232,7 @@ npm install && npm run dev
 | [Nginx Configuration](docs/NGINX_CONFIGURATION.md)       | Reverse proxy & SSL configuration         |
 | [Security](docs/SECURITY.md)                             | Security measures & best practices        |
 | [Error Handling](docs/ERROR_HANDLING.md)                 | Exception handling & error responses      |
-| [Email Service](docs/EMAIL_SERVICE.md)                   | SendGrid integration & email templates    |
+| [Email Service](docs/EMAIL_SERVICE.md)                   | Gmail SMTP integration & email templates  |
 | [File Storage](docs/FILE_STORAGE.md)                     | Image uploads & file management           |
 | [History Management](docs/HISTORY_MANAGEMENT.md)         | Undo/redo system implementation           |
 | [Performance](docs/PERFORMANCE.md)                       | Optimization strategies & caching         |
