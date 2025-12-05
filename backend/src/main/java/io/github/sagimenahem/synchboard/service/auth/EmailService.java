@@ -1,22 +1,29 @@
 package io.github.sagimenahem.synchboard.service.auth;
 
+import java.util.Base64;
+import com.google.api.services.gmail.Gmail;
+import com.google.api.services.gmail.model.Message;
 import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
+import java.util.Properties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 /**
- * Service for sending emails using Gmail SMTP. Handles email verification codes, password reset
- * codes, and other transactional emails with internationalization support.
+ * Service for sending emails using Gmail REST API with OAuth2 authentication. Handles email
+ * verification codes, password reset codes, and other transactional emails with internationalization
+ * support.
  *
  * @author Sagi Menahem
  */
@@ -36,21 +43,15 @@ public class EmailService {
     private final MessageSource messageSource;
 
     /**
-     * Spring Mail sender for SMTP email delivery
+     * Gmail API client (may be null if not configured)
      */
-    private final JavaMailSender mailSender;
+    private final Gmail gmail;
 
     /**
-     * SMTP username (email address used for sending)
+     * Sender email address for Gmail API
      */
-    @Value("${spring.mail.username:}")
-    private String mailUsername;
-
-    /**
-     * SMTP password (Gmail App Password)
-     */
-    @Value("${spring.mail.password:}")
-    private String mailPassword;
+    @Value("${GMAIL_SENDER_EMAIL:}")
+    private String senderEmail;
 
     /**
      * Sender display name
@@ -71,12 +72,17 @@ public class EmailService {
     private int passwordResetExpiryMinutes;
 
     /**
-     * Checks if email functionality is enabled by verifying the SMTP password is configured.
+     * Special user identifier for Gmail API (authenticated user)
+     */
+    private static final String GMAIL_USER_ME = "me";
+
+    /**
+     * Checks if email functionality is enabled by verifying the Gmail API client is configured.
      *
-     * @return true if SMTP password is available and not empty, false otherwise
+     * @return true if Gmail API client is available, false otherwise
      */
     public boolean isEmailEnabled() {
-        return mailPassword != null && !mailPassword.trim().isEmpty();
+        return gmail != null && isNotEmpty(senderEmail);
     }
 
     /**
@@ -101,7 +107,7 @@ public class EmailService {
     public boolean sendVerificationCode(String toEmail, String verificationCode, Locale locale) {
         if (!isEmailEnabled()) {
             log.warn(
-                "Email service disabled - SMTP password not configured. Skipping verification email to: {}",
+                "Email service disabled - Gmail API not configured. Skipping verification email to: {}",
                 toEmail
             );
             return false;
@@ -133,7 +139,7 @@ public class EmailService {
     public boolean sendPasswordResetCode(String toEmail, String resetCode, Locale locale) {
         if (!isEmailEnabled()) {
             log.warn(
-                "Email service disabled - SMTP password not configured. Skipping password reset email to: {}",
+                "Email service disabled - Gmail API not configured. Skipping password reset email to: {}",
                 toEmail
             );
             return false;
@@ -144,7 +150,7 @@ public class EmailService {
     }
 
     /**
-     * Sends an email using Spring JavaMailSender with SMTP.
+     * Sends an email using the Gmail REST API.
      *
      * @param toEmail the recipient's email address
      * @param subject the email subject
@@ -153,21 +159,59 @@ public class EmailService {
      */
     private boolean sendEmail(String toEmail, String subject, String body) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            MimeMessage mimeMessage = createMimeMessage(toEmail, subject, body);
+            Message gmailMessage = createGmailMessage(mimeMessage);
 
-            helper.setFrom(mailUsername, fromName);
-            helper.setTo(toEmail);
-            helper.setSubject(subject);
-            helper.setText(body, true); // true = HTML content
-
-            mailSender.send(message);
-            log.info("Email sent successfully to: {}", toEmail);
+            gmail.users().messages().send(GMAIL_USER_ME, gmailMessage).execute();
+            log.info("Email sent successfully via Gmail API to: {}", toEmail);
             return true;
-        } catch (MessagingException | UnsupportedEncodingException e) {
+        } catch (MessagingException | IOException e) {
             log.error("Failed to send email to {}: {}", toEmail, e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Creates a MimeMessage for the email.
+     *
+     * @param toEmail the recipient's email address
+     * @param subject the email subject
+     * @param body the HTML email body
+     * @return the constructed MimeMessage
+     * @throws MessagingException if message creation fails
+     * @throws UnsupportedEncodingException if encoding fails
+     */
+    private MimeMessage createMimeMessage(String toEmail, String subject, String body)
+        throws MessagingException, UnsupportedEncodingException {
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(senderEmail, fromName));
+        message.addRecipient(jakarta.mail.Message.RecipientType.TO, new InternetAddress(toEmail));
+        message.setSubject(subject, "UTF-8");
+        message.setContent(body, "text/html; charset=UTF-8");
+
+        return message;
+    }
+
+    /**
+     * Creates a Gmail API Message from a MimeMessage.
+     *
+     * @param mimeMessage the MimeMessage to convert
+     * @return the Gmail API Message
+     * @throws MessagingException if conversion fails
+     * @throws IOException if encoding fails
+     */
+    private Message createGmailMessage(MimeMessage mimeMessage) throws MessagingException, IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        mimeMessage.writeTo(buffer);
+        byte[] bytes = buffer.toByteArray();
+        String encodedEmail = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+
+        Message message = new Message();
+        message.setRaw(encodedEmail);
+        return message;
     }
 
     /**
@@ -223,5 +267,15 @@ public class EmailService {
         // Generate random 6-digit code: Math.random() * 1000000 produces 0-999999
         // %06d format ensures leading zeros for codes less than 100000 (e.g., "000123")
         return String.format("%06d", (int) (Math.random() * 1000000));
+    }
+
+    /**
+     * Helper method to check if a string is not null and not empty.
+     *
+     * @param value the string to check
+     * @return true if the string is not null and not empty after trimming
+     */
+    private boolean isNotEmpty(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 }

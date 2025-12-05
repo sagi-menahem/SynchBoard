@@ -18,8 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ConfigController {
 
-    @Value("${spring.mail.password:}")
-    private String mailPassword;
+    @Value("${GMAIL_CLIENT_ID:}")
+    private String gmailClientId;
+
+    @Value("${GMAIL_CLIENT_SECRET:}")
+    private String gmailClientSecret;
+
+    @Value("${GMAIL_REFRESH_TOKEN:}")
+    private String gmailRefreshToken;
+
+    @Value("${GMAIL_SENDER_EMAIL:}")
+    private String gmailSenderEmail;
 
     @Value("${GOOGLE_CLIENT_ID:}")
     private String googleClientId;
@@ -32,11 +41,24 @@ public class ConfigController {
      */
     @GetMapping("/features")
     public FeatureConfigResponseDTO getFeatures() {
+        boolean emailEnabled = isGmailConfigured();
         return FeatureConfigResponseDTO.builder()
-            .emailVerificationEnabled(isNotEmpty(mailPassword))
-            .passwordResetEnabled(isNotEmpty(mailPassword))
+            .emailVerificationEnabled(emailEnabled)
+            .passwordResetEnabled(emailEnabled)
             .googleLoginEnabled(isNotEmpty(googleClientId))
             .build();
+    }
+
+    /**
+     * Checks if Gmail API is fully configured with all required credentials.
+     *
+     * @return true if all Gmail API credentials are configured
+     */
+    private boolean isGmailConfigured() {
+        return isNotEmpty(gmailClientId)
+            && isNotEmpty(gmailClientSecret)
+            && isNotEmpty(gmailRefreshToken)
+            && isNotEmpty(gmailSenderEmail);
     }
 
     /**

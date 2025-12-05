@@ -4,41 +4,99 @@ This document describes the email service in SynchBoard, including configuration
 
 ## Overview
 
-SynchBoard uses **Gmail SMTP** (via Spring Mail) for transactional emails:
+SynchBoard uses the **Gmail REST API** with OAuth2 authentication for transactional emails:
 
 - Email verification during registration
 - Password reset codes
 
 Email functionality is **optional** - if not configured, registration proceeds without verification.
 
+### Why Gmail REST API?
+
+The Gmail REST API is used instead of SMTP because:
+
+1. **Cloud Provider Compatibility**: Most cloud providers (DigitalOcean, AWS, GCP, etc.) block SMTP ports (25, 465, 587) by default
+2. **Reliability**: OAuth2 tokens are more secure and reliable than app passwords
+3. **No Port Restrictions**: Gmail API uses HTTPS (port 443), which is never blocked
+
 ## Configuration
 
 ### Environment Variables
 
-| Variable                        | Required  | Default                | Description                         |
-| ------------------------------- | --------- | ---------------------- | ----------------------------------- |
-| `MAIL_HOST`                     | For email | smtp.gmail.com         | SMTP server hostname                |
-| `MAIL_PORT`                     | For email | 587                    | SMTP server port                    |
-| `MAIL_USERNAME`                 | For email | -                      | Gmail address (e.g., you@gmail.com) |
-| `MAIL_PASSWORD`                 | For email | -                      | Gmail App Password (16 characters)  |
-| `MAIL_FROM_NAME`                | No        | SynchBoard             | Sender display name                 |
-| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15                     | Verification code lifetime          |
-| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60                     | Reset code lifetime                 |
+| Variable                        | Required  | Default        | Description                              |
+| ------------------------------- | --------- | -------------- | ---------------------------------------- |
+| `GMAIL_CLIENT_ID`               | For email | -              | OAuth2 Client ID from Google Cloud       |
+| `GMAIL_CLIENT_SECRET`           | For email | -              | OAuth2 Client Secret from Google Cloud   |
+| `GMAIL_REFRESH_TOKEN`           | For email | -              | OAuth2 Refresh Token (long-lived)        |
+| `GMAIL_SENDER_EMAIL`            | For email | -              | Gmail address used to send emails        |
+| `MAIL_FROM_NAME`                | No        | SynchBoard     | Sender display name                      |
+| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15             | Verification code lifetime               |
+| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60             | Reset code lifetime                      |
 
-### Gmail App Password Setup
+### Gmail API Setup
 
-1. Enable 2-Factor Authentication on your Google Account
-2. Go to [Google App Passwords](https://myaccount.google.com/apppasswords)
-3. Select "Mail" and your device
-4. Generate and copy the 16-character password
-5. Use this password as `MAIL_PASSWORD` (not your regular Gmail password)
+#### Step 1: Create a Google Cloud Project
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project or select an existing one
+3. Enable the Gmail API:
+   - Navigate to **APIs & Services** > **Library**
+   - Search for "Gmail API"
+   - Click **Enable**
+
+#### Step 2: Configure OAuth Consent Screen
+
+1. Go to **APIs & Services** > **OAuth consent screen**
+2. Select **External** user type (or Internal for Google Workspace)
+3. Fill in the required fields:
+   - App name: `SynchBoard`
+   - User support email: your email
+   - Developer contact email: your email
+4. Add the scope: `https://www.googleapis.com/auth/gmail.send`
+5. Add your Gmail address as a test user (required for External apps)
+
+#### Step 3: Create OAuth2 Credentials
+
+1. Go to **APIs & Services** > **Credentials**
+2. Click **Create Credentials** > **OAuth client ID**
+3. Select **Web application**
+4. Name: `SynchBoard Email Service`
+5. Add Authorized redirect URI: `https://developers.google.com/oauthplayground`
+6. Click **Create**
+7. Copy the **Client ID** and **Client Secret**
+
+#### Step 4: Generate Refresh Token
+
+Use the OAuth 2.0 Playground to generate a refresh token:
+
+1. Go to [OAuth 2.0 Playground](https://developers.google.com/oauthplayground)
+2. Click the gear icon (Settings) in the top right
+3. Check **Use your own OAuth credentials**
+4. Enter your **Client ID** and **Client Secret**
+5. Close settings
+6. In Step 1, find **Gmail API v1** and select:
+   - `https://www.googleapis.com/auth/gmail.send`
+7. Click **Authorize APIs**
+8. Sign in with the Gmail account you want to send from
+9. Click **Exchange authorization code for tokens**
+10. Copy the **Refresh Token**
+
+#### Step 5: Update Environment Variables
+
+Add the credentials to your `.env` file:
+
+```env
+GMAIL_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GMAIL_CLIENT_SECRET=your-client-secret
+GMAIL_REFRESH_TOKEN=your-refresh-token
+GMAIL_SENDER_EMAIL=your-email@gmail.com
+```
 
 ### Feature Detection
 
 ```java
 public boolean isEmailEnabled() {
-  return mailUsername != null && !mailUsername.trim().isEmpty()
-      && mailPassword != null && !mailPassword.trim().isEmpty();
+    return gmail != null && isNotEmpty(senderEmail);
 }
 ```
 
@@ -76,7 +134,7 @@ When disabled:
 
 ```java
 public String generateVerificationCode() {
-  return String.format("%06d", (int) (Math.random() * 1000000));
+    return String.format("%06d", (int) (Math.random() * 1000000));
 }
 ```
 
@@ -136,32 +194,46 @@ Located in `backend/src/main/resources/messages/`:
 
 ```java
 private boolean isHebrewLocale(Locale locale) {
-  return locale != null && "he".equals(locale.getLanguage());
+    return locale != null && "he".equals(locale.getLanguage());
 }
 ```
 
 Hebrew emails use RTL layout and Hebrew templates.
 
-## Spring Mail Integration
+## Gmail API Integration
 
 ### Configuration
 
 ```java
 @Configuration
-public class MailConfig {
-    @Bean
-    public JavaMailSender mailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(mailHost);
-        mailSender.setPort(mailPort);
-        mailSender.setUsername(mailUsername);
-        mailSender.setPassword(mailPassword);
+public class GmailApiConfig {
 
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        return mailSender;
+    @Value("${GMAIL_CLIENT_ID:}")
+    private String clientId;
+
+    @Value("${GMAIL_CLIENT_SECRET:}")
+    private String clientSecret;
+
+    @Value("${GMAIL_REFRESH_TOKEN:}")
+    private String refreshToken;
+
+    @Bean
+    public Gmail gmail() {
+        if (!isGmailConfigured()) {
+            return null; // Email disabled
+        }
+
+        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        GoogleCredentials credentials = UserCredentials.newBuilder()
+            .setClientId(clientId)
+            .setClientSecret(clientSecret)
+            .setRefreshToken(refreshToken)
+            .build();
+
+        return new Gmail.Builder(httpTransport, GsonFactory.getDefaultInstance(),
+                new HttpCredentialsAdapter(credentials))
+            .setApplicationName("SynchBoard")
+            .build();
     }
 }
 ```
@@ -169,13 +241,23 @@ public class MailConfig {
 ### Sending Email
 
 ```java
-MimeMessage message = mailSender.createMimeMessage();
-MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-helper.setFrom(new InternetAddress(mailUsername, fromName));
-helper.setTo(toEmail);
-helper.setSubject(subject);
-helper.setText(htmlContent, true);
-mailSender.send(message);
+// Create MimeMessage
+MimeMessage mimeMessage = new MimeMessage(session);
+mimeMessage.setFrom(new InternetAddress(senderEmail, fromName));
+mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+mimeMessage.setSubject(subject, "UTF-8");
+mimeMessage.setContent(htmlContent, "text/html; charset=UTF-8");
+
+// Convert to Gmail API format
+ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+mimeMessage.writeTo(buffer);
+String encodedEmail = Base64.encodeBase64URLSafeString(buffer.toByteArray());
+
+Message message = new Message();
+message.setRaw(encodedEmail);
+
+// Send via Gmail API
+gmail.users().messages().send("me", message).execute();
 ```
 
 ### Success Detection
@@ -241,59 +323,77 @@ Templates use inline CSS for email client compatibility:
 | Scenario              | Behavior                      |
 | --------------------- | ----------------------------- |
 | Credentials missing   | Log warning, return false     |
-| SMTP connection error | Log error, return false       |
-| MailException         | Catch exception, return false |
+| API connection error  | Log error, return false       |
+| IOException           | Catch exception, return false |
 
 Service failures don't throw exceptions - callers check return value.
 
 ## Dependencies
 
 ```groovy
+// Gmail REST API
+implementation 'com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0'
+implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
+
+// For MimeMessage helper classes only (not SMTP)
 implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+// Template rendering
 implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 ```
 
 ## Key Files
 
-| File                                     | Purpose                       |
-| ---------------------------------------- | ----------------------------- |
-| `service/auth/EmailService.java`         | Email sending logic           |
-| `templates/email/verification.html`      | English verification template |
-| `templates/email/verification_he.html`   | Hebrew verification template  |
-| `templates/email/password-reset.html`    | English reset template        |
-| `templates/email/password-reset_he.html` | Hebrew reset template         |
-| `messages/messages.properties`           | English strings               |
-| `messages/messages_he.properties`        | Hebrew strings                |
+| File                                           | Purpose                       |
+| ---------------------------------------------- | ----------------------------- |
+| `config/email/GmailApiConfig.java`             | Gmail API client configuration|
+| `service/auth/EmailService.java`               | Email sending logic           |
+| `templates/email/verification.html`            | English verification template |
+| `templates/email/verification_he.html`         | Hebrew verification template  |
+| `templates/email/password-reset.html`          | English reset template        |
+| `templates/email/password-reset_he.html`       | Hebrew reset template         |
+| `messages/messages.properties`                 | English strings               |
+| `messages/messages_he.properties`              | Hebrew strings                |
 
 ## Testing Locally
 
-Without Gmail SMTP:
+Without Gmail API credentials:
 
-1. Leave `MAIL_USERNAME` and `MAIL_PASSWORD` unset
+1. Leave `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN`, and `GMAIL_SENDER_EMAIL` unset
 2. Registration works without verification
-3. Password reset unavailable
+3. Password reset is unavailable
 
-With Gmail SMTP:
+With Gmail API credentials:
 
-1. Enable 2-Factor Authentication on your Google Account
-2. Create an App Password at https://myaccount.google.com/apppasswords
-3. Set `MAIL_USERNAME` to your Gmail address
-4. Set `MAIL_PASSWORD` to the 16-character App Password
+1. Follow the setup steps above to obtain OAuth2 credentials
+2. Set all four Gmail environment variables
+3. Email verification and password reset will be fully functional
 
 ## Troubleshooting
 
 ### Emails not sending
 
-1. Check `MAIL_USERNAME` and `MAIL_PASSWORD` are set
-2. Verify App Password is correct (16 characters, no spaces)
-3. Ensure 2FA is enabled on Google Account
-4. Review backend logs for SMTP errors
+1. Check all Gmail environment variables are set correctly
+2. Verify the refresh token is valid (regenerate if expired)
+3. Ensure the Gmail API is enabled in Google Cloud Console
+4. Ensure your Gmail account is added as a test user (for External apps)
+5. Review backend logs for API errors
 
 ### Authentication failed
 
-1. Ensure you're using an App Password, not your regular Gmail password
-2. Check that "Less secure app access" is NOT required (App Passwords bypass this)
-3. Verify the Gmail account is active and not locked
+1. Regenerate the refresh token using OAuth 2.0 Playground
+2. Verify Client ID and Client Secret match your Google Cloud credentials
+3. Check that the Gmail API scope is correctly authorized
+
+### Token expired
+
+Refresh tokens can expire if:
+
+1. The app has been unused for 6 months
+2. The user revoked access
+3. The app is still in "Testing" mode and the token is older than 7 days
+
+Solution: Regenerate the refresh token following Step 4 above.
 
 ### Wrong language
 
@@ -305,3 +405,13 @@ With Gmail SMTP:
 
 1. Adjust `VERIFICATION_EXPIRY_MINUTES` (default 15)
 2. Adjust `PASSWORD_RESET_EXPIRY_MINUTES` (default 60)
+
+## Publishing Your App (Production)
+
+For production use, you should publish your OAuth consent screen:
+
+1. Go to **OAuth consent screen** in Google Cloud Console
+2. Click **PUBLISH APP**
+3. Complete Google's verification process (may require verification for sensitive scopes)
+
+Until published, only test users can authorize the app, and refresh tokens expire after 7 days.

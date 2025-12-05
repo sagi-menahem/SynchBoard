@@ -80,10 +80,14 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 
 	// ==========================================================================
-	// Email Services
+	// Email Services (Gmail REST API)
 	// ==========================================================================
-	// Spring Mail for sending verification and password reset emails via SMTP
+	// Spring Mail - used only for MimeMessage/InternetAddress helper classes
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// Gmail REST API for sending emails via OAuth2
+	implementation 'com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0'
+	// Google OAuth2 authentication library
+	implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
 
 	// ==========================================================================
 	// OAuth2 & External Authentication
