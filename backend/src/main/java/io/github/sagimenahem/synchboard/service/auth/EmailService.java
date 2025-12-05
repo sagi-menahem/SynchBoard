@@ -1,24 +1,21 @@
 package io.github.sagimenahem.synchboard.service.auth;
 
-import com.sendgrid.Method;
-import com.sendgrid.Request;
-import com.sendgrid.Response;
-import com.sendgrid.SendGrid;
-import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
-import java.io.IOException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 /**
- * Service for sending emails using SendGrid API. Handles email verification codes, password reset
+ * Service for sending emails using Gmail SMTP. Handles email verification codes, password reset
  * codes, and other transactional emails with internationalization support.
  *
  * @author Sagi Menahem
@@ -39,21 +36,26 @@ public class EmailService {
     private final MessageSource messageSource;
 
     /**
-     * SendGrid API key for authentication
+     * Spring Mail sender for SMTP email delivery
      */
-    @Value("${SENDGRID_API_KEY:}")
-    private String sendGridApiKey;
+    private final JavaMailSender mailSender;
 
     /**
-     * Sender email address
+     * SMTP username (email address used for sending)
      */
-    @Value("${SENDGRID_FROM_EMAIL:noreply@synchboard.com}")
-    private String fromEmail;
+    @Value("${spring.mail.username:}")
+    private String mailUsername;
+
+    /**
+     * SMTP password (Gmail App Password)
+     */
+    @Value("${spring.mail.password:}")
+    private String mailPassword;
 
     /**
      * Sender display name
      */
-    @Value("${SENDGRID_FROM_NAME:SynchBoard Team}")
+    @Value("${MAIL_FROM_NAME:SynchBoard Team}")
     private String fromName;
 
     /**
@@ -69,12 +71,12 @@ public class EmailService {
     private int passwordResetExpiryMinutes;
 
     /**
-     * Checks if email functionality is enabled by verifying the SendGrid API key is configured.
+     * Checks if email functionality is enabled by verifying the SMTP password is configured.
      *
-     * @return true if SendGrid API key is available and not empty, false otherwise
+     * @return true if SMTP password is available and not empty, false otherwise
      */
     public boolean isEmailEnabled() {
-        return sendGridApiKey != null && !sendGridApiKey.trim().isEmpty();
+        return mailPassword != null && !mailPassword.trim().isEmpty();
     }
 
     /**
@@ -99,7 +101,7 @@ public class EmailService {
     public boolean sendVerificationCode(String toEmail, String verificationCode, Locale locale) {
         if (!isEmailEnabled()) {
             log.warn(
-                "Email service disabled - SendGrid API key not configured. Skipping verification email to: {}",
+                "Email service disabled - SMTP password not configured. Skipping verification email to: {}",
                 toEmail
             );
             return false;
@@ -131,7 +133,7 @@ public class EmailService {
     public boolean sendPasswordResetCode(String toEmail, String resetCode, Locale locale) {
         if (!isEmailEnabled()) {
             log.warn(
-                "Email service disabled - SendGrid API key not configured. Skipping password reset email to: {}",
+                "Email service disabled - SMTP password not configured. Skipping password reset email to: {}",
                 toEmail
             );
             return false;
@@ -142,38 +144,28 @@ public class EmailService {
     }
 
     /**
-     * Sends an email using the SendGrid API.
+     * Sends an email using Spring JavaMailSender with SMTP.
      *
      * @param toEmail the recipient's email address
      * @param subject the email subject
      * @param body the HTML email body
-     * @return true if the email was sent successfully (2xx status code), false otherwise
+     * @return true if the email was sent successfully, false otherwise
      */
     private boolean sendEmail(String toEmail, String subject, String body) {
         try {
-            Email from = new Email(fromEmail, fromName);
-            Email to = new Email(toEmail);
-            Content content = new Content("text/html", body);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            Mail mail = new Mail(from, subject, to, content);
+            helper.setFrom(mailUsername, fromName);
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(body, true); // true = HTML content
 
-            SendGrid sg = new SendGrid(sendGridApiKey);
-            Request request = new Request();
-
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-
-            Response response = sg.api(request);
-
-            // Check if response status indicates success (2xx range)
-            if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (IOException ex) {
-            // Log the exception in a real application
+            mailSender.send(message);
+            log.info("Email sent successfully to: {}", toEmail);
+            return true;
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            log.error("Failed to send email to {}: {}", toEmail, e.getMessage());
             return false;
         }
     }

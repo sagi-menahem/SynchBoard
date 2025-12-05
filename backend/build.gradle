@@ -82,8 +82,8 @@ dependencies {
 	// ==========================================================================
 	// Email Services
 	// ==========================================================================
-	// SendGrid SDK for sending verification and password reset emails
-	implementation 'com.sendgrid:sendgrid-java:4.10.3'
+	// Spring Mail for sending verification and password reset emails via SMTP
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	// ==========================================================================
 	// OAuth2 & External Authentication

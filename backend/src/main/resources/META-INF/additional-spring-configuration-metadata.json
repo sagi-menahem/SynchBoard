@@ -32,23 +32,6 @@
       "description": "Allowed origins for CORS configuration"
     },
     {
-      "name": "sendgrid.api-key",
-      "type": "java.lang.String",
-      "description": "SendGrid API key for sending emails"
-    },
-    {
-      "name": "sendgrid.from-email",
-      "type": "java.lang.String",
-      "description": "Email address to send emails from",
-      "defaultValue": "noreply@synchboard.com"
-    },
-    {
-      "name": "sendgrid.from-name",
-      "type": "java.lang.String",
-      "description": "Name to display as sender",
-      "defaultValue": "SynchBoard Team"
-    },
-    {
       "name": "app.oauth2.frontend-base-url",
       "type": "java.lang.String",
       "description": "Base URL for frontend OAuth2 redirects",

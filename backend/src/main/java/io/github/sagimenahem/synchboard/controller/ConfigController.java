@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ConfigController {
 
-    @Value("${SENDGRID_API_KEY:}")
-    private String sendGridApiKey;
+    @Value("${spring.mail.password:}")
+    private String mailPassword;
 
     @Value("${GOOGLE_CLIENT_ID:}")
     private String googleClientId;
@@ -33,8 +33,8 @@ public class ConfigController {
     @GetMapping("/features")
     public FeatureConfigResponseDTO getFeatures() {
         return FeatureConfigResponseDTO.builder()
-            .emailVerificationEnabled(isNotEmpty(sendGridApiKey))
-            .passwordResetEnabled(isNotEmpty(sendGridApiKey))
+            .emailVerificationEnabled(isNotEmpty(mailPassword))
+            .passwordResetEnabled(isNotEmpty(mailPassword))
             .googleLoginEnabled(isNotEmpty(googleClientId))
             .build();
     }
