@@ -28,7 +28,6 @@
 
 <div align="center">
   <img src="assets/preview.png" alt="SynchBoard - Collaborative Whiteboard" />
-  <p><em>Real-time collaborative drawing with integrated team chat</em></p>
 </div>
 
 ---
