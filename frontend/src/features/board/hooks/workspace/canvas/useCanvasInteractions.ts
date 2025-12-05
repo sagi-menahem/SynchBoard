@@ -152,6 +152,7 @@ export const useCanvasInteractions = ({
       instanceId,
       onDraw,
       handlePointerDown,
+      zoomScale,
     ],
   );
 

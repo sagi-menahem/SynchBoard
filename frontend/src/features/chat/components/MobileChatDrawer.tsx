@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import type { ChatMessageResponse } from 'features/chat/types/MessageTypes';
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { Drawer } from 'vaul';
 
-import utilStyles from 'shared/ui/styles/utils.module.scss';
 import ChatWindow, { type ChatWindowHandle } from './ChatWindow';
 import styles from './MobileChatDrawer.module.scss';
 

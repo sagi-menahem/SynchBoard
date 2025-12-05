@@ -1,13 +1,13 @@
+import { TOOLS } from 'features/board/constants/BoardConstants';
 import { motion } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
 import React from 'react';
 
-import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import { DOCK_TOOLS, TOOLBAR_HEIGHT_MOBILE } from '../constants/RadialDockConstants';
-import type { MobileToolbarProps } from '../types/RadialDockTypes';
 import styles from '../RadialDock.module.scss';
+import type { MobileToolbarProps } from '../types/RadialDockTypes';
 
 /**
  * Mobile toolbar component with bottom sheet style.

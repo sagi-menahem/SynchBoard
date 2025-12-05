@@ -105,6 +105,7 @@ const BoardPageContent: React.FC<BoardPageContentProps> = ({ boardId }) => {
           await updateTool(previousToolRef.current);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Failed to update picked color:', error);
       }
     },

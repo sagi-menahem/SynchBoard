@@ -106,8 +106,30 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       );
     }
 
+    if (onClick) {
+      return (
+        <div
+          ref={ref}
+          className={cardClasses}
+          onClick={onClick}
+          onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          style={style}
+          title={title}
+        >
+          {children}
+        </div>
+      );
+    }
+
     return (
-      <div ref={ref} className={cardClasses} onClick={onClick} style={style} title={title}>
+      <div ref={ref} className={cardClasses} style={style} title={title}>
         {children}
       </div>
     );

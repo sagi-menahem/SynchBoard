@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { DesktopToolbar, MobileToolbar } from './components';
 import { DOCK_TOOLS } from './constants';
 import { useMobileDragGesture, useRadialDockState, useToolbarPosition } from './hooks';
+import styles from './RadialDock.module.scss';
 import { SatelliteManager } from './SatelliteManager';
 import type { RadialDockProps, ToolItem } from './types';
 import { checkIsToolActive, createToolIcon, getActiveToolIcon } from './utils';
 
-import styles from './RadialDock.module.scss';
 
 // =============================================================================
 // COMPONENT

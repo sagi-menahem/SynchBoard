@@ -1,7 +1,7 @@
+import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useToolPreferences } from 'features/settings/ToolPreferencesProvider';
 import type { Tool } from 'shared/types/CommonTypes';
 import { isRTL } from 'shared/utils/rtlUtils';
 

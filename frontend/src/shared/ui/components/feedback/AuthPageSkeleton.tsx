@@ -1,8 +1,8 @@
 import React from 'react';
 
+import styles from './AuthPageSkeleton.module.scss';
 import Skeleton from './Skeleton';
 
-import styles from './AuthPageSkeleton.module.scss';
 
 /**
  * Skeleton placeholder for the Auth page during loading states.

@@ -1,11 +1,11 @@
 import * as userService from 'features/settings/services/userService';
 import type { DockAnchor } from 'features/settings/types/UserTypes';
 import { useCallback } from 'react';
-import type { Tool } from 'shared/types/CommonTypes';
 import {
   usePreferencesService,
   type PreferencesServiceAdapter,
 } from 'shared/hooks/usePreferencesService';
+import type { Tool } from 'shared/types/CommonTypes';
 
 // =============================================================================
 // TYPES

@@ -1,13 +1,13 @@
+import { TOOLS } from 'features/board/constants/BoardConstants';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
 import React, { useRef } from 'react';
 
-import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import { DOCK_TOOLS } from '../constants/RadialDockConstants';
-import type { DesktopToolbarProps } from '../types/RadialDockTypes';
 import styles from '../RadialDock.module.scss';
+import type { DesktopToolbarProps } from '../types/RadialDockTypes';
 
 /**
  * Desktop toolbar component with horizontal or vertical layout.

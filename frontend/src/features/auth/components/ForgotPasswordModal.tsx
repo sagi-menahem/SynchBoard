@@ -49,6 +49,13 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   const { submitAction: submitEmailAction, isPending: isEmailPending } =
     useForgotPasswordForm(handleEmailSuccess);
 
+  const handleClose = useCallback(() => {
+    setStep('STEP_EMAIL');
+    setEmail('');
+    setResetError(null);
+    onClose();
+  }, [onClose]);
+
   // Step 2: Reset password with code
   const submitResetAction = useCallback(
     (formData: FormData) => {
@@ -87,15 +94,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
         }
       });
     },
-    [email, onSuccess, t],
+    [email, onSuccess, t, handleClose],
   );
-
-  const handleClose = () => {
-    setStep('STEP_EMAIL');
-    setEmail('');
-    setResetError(null);
-    onClose();
-  };
 
   const handleEmailSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

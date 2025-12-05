@@ -1,3 +1,4 @@
+import { TOOLS } from 'features/board/constants/BoardConstants';
 import {
   ArrowRight,
   Brush,
@@ -11,7 +12,6 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { ToolItem } from '../types/RadialDockTypes';
 
 // =============================================================================

@@ -1,6 +1,6 @@
-import { lazy, Suspense, useMemo } from 'react';
 
 import { ArrowLeft, Info, LayoutGrid, Plus, Settings } from 'lucide-react';
+import { lazy, Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
@@ -15,11 +15,11 @@ import {
   SearchBar,
   SettingsPageSkeleton,
 } from 'shared/ui';
-import utilStyles from 'shared/ui/styles/utils.module.scss';
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
 import { Layout } from 'shared/ui/layout';
 import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
 import RootRedirect from 'shared/ui/routing/RootRedirect';
+import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './AppRoutes.module.scss';
 

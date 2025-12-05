@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +40,41 @@ const GoogleOneTap: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /**
+   * Handles the credential response from Google One Tap.
+   * Sends the ID token to backend for verification and user processing.
+   */
+  const handleCredentialResponse = useCallback(
+    async (response: CredentialResponse) => {
+      if (isProcessing) {
+        return;
+      }
+
+      setIsProcessing(true);
+      logger.info('[GoogleOneTap] Received credential, processing...');
+
+      try {
+        const toastId = toast.loading(t('oauth.loading'));
+
+        const authResponse = await authService.googleOneTap(response.credential);
+
+        toast.dismiss(toastId);
+        toast.success(t('oauth.success'));
+
+        authLogin(authResponse.token);
+        logger.info('[GoogleOneTap] Authentication successful, navigating to boards');
+
+        navigate(APP_ROUTES.BOARD_LIST, { replace: true });
+      } catch (error) {
+        logger.error('[GoogleOneTap] Authentication failed:', error);
+        toast.error(t('oauth.error.processing'));
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [isProcessing, t, authLogin, navigate],
+  );
 
   useEffect(() => {
     // Skip if already initialized (Strict Mode safe)
@@ -148,39 +183,7 @@ const GoogleOneTap: React.FC = () => {
         timeoutRef.current = null;
       }
     };
-  }, [token, featureConfig.googleLoginEnabled, location.pathname]);
-
-  /**
-   * Handles the credential response from Google One Tap.
-   * Sends the ID token to backend for verification and user processing.
-   */
-  const handleCredentialResponse = async (response: CredentialResponse) => {
-    if (isProcessing) {
-      return;
-    }
-
-    setIsProcessing(true);
-    logger.info('[GoogleOneTap] Received credential, processing...');
-
-    try {
-      const toastId = toast.loading(t('oauth.loading'));
-
-      const authResponse = await authService.googleOneTap(response.credential);
-
-      toast.dismiss(toastId);
-      toast.success(t('oauth.success'));
-
-      authLogin(authResponse.token);
-      logger.info('[GoogleOneTap] Authentication successful, navigating to boards');
-
-      navigate(APP_ROUTES.BOARD_LIST, { replace: true });
-    } catch (error) {
-      logger.error('[GoogleOneTap] Authentication failed:', error);
-      toast.error(t('oauth.error.processing'));
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+  }, [token, featureConfig.googleLoginEnabled, location.pathname, handleCredentialResponse]);
 
   // This component doesn't render any visible UI
   // The One Tap prompt is rendered by Google SDK

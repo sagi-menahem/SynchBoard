@@ -1,3 +1,4 @@
+import { TOOLS } from 'features/board/constants/BoardConstants';
 import {
   ArrowRight,
   Brush,
@@ -13,12 +14,11 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-import { TOOLS } from 'features/board/constants/BoardConstants';
 import type { Tool } from 'shared/types/CommonTypes';
 
 import { LINE_TOOLS, SHAPE_TOOLS } from '../constants/RadialDockConstants';
-import type { ToolItem } from '../types/RadialDockTypes';
 import styles from '../RadialDock.module.scss';
+import type { ToolItem } from '../types/RadialDockTypes';
 
 /**
  * Gets the icon for shape tools based on current selection.
