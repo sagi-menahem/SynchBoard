@@ -219,6 +219,9 @@
         width: 100%;
         height: auto;
         display: block;
+        /* Blur the image to make it look like an intentional loading placeholder */
+        filter: blur(20px);
+        transform: scale(1.1); /* Slightly scale up to hide blur edges */
       }
 
       /* Show/hide based on color scheme */
