@@ -1,6 +1,8 @@
 import { ExternalLink, Globe, Mail } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { APP_ROUTES } from 'shared/constants';
 import { Button } from 'shared/ui';
 
 import { GITHUB_URL, LIVE_DEMO_URL } from '../../../constants/landingContent';
@@ -67,6 +69,19 @@ const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
                 {item.external && <ExternalLink size={12} />}
               </a>
             ))}
+          </div>
+        </div>
+
+        {/* Legal Column */}
+        <div className={styles.linksColumn}>
+          <p className={styles.columnTitle}>{t('landing:footer.legal.title')}</p>
+          <div className={styles.linksList}>
+            <Link to={APP_ROUTES.PRIVACY_POLICY} className={styles.link}>
+              {t('landing:footer.legal.privacy')}
+            </Link>
+            <Link to={APP_ROUTES.TERMS_OF_SERVICE} className={styles.link}>
+              {t('landing:footer.legal.terms')}
+            </Link>
           </div>
         </div>
       </div>

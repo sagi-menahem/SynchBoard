@@ -27,6 +27,8 @@ const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
 const BoardPage = lazy(() => import('features/board/pages/BoardPage'));
 const SettingsPage = lazy(() => import('features/settings/pages/SettingsPage'));
+const PrivacyPolicyPage = lazy(() => import('features/legal/pages/PrivacyPolicyPage'));
+const TermsOfServicePage = lazy(() => import('features/legal/pages/TermsOfServicePage'));
 
 /**
  * Board list page skeleton that matches the actual board list layout.
@@ -169,6 +171,28 @@ export function AppRoutes() {
           <ErrorBoundary>
             <Suspense fallback={<AuthPageSkeleton />}>
               <AuthPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+
+      {/* Legal pages - public, no authentication required */}
+      <Route
+        path={APP_ROUTES.PRIVACY_POLICY}
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={null}>
+              <PrivacyPolicyPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path={APP_ROUTES.TERMS_OF_SERVICE}
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={null}>
+              <TermsOfServicePage />
             </Suspense>
           </ErrorBoundary>
         }

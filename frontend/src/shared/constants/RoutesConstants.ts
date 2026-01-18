@@ -13,6 +13,10 @@ export const APP_ROUTES = {
   BOARD_LIST: '/boards',
   SETTINGS: '/settings',
 
+  // Legal pages
+  PRIVACY_POLICY: '/privacy',
+  TERMS_OF_SERVICE: '/terms',
+
   BOARD_DETAIL_PATTERN: '/board/:boardId',
   getBoardDetailRoute: (boardId: number | string) => `/board/${boardId}`,
 

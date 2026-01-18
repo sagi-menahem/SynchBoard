@@ -1,0 +1,193 @@
+{
+  "common": {
+    "backToHome": "Back to Home",
+    "lastUpdated": "Last Updated",
+    "contactEmail": "sagia1997@gmail.com"
+  },
+  "privacy": {
+    "pageTitle": "Privacy Policy",
+    "title": "Privacy Policy",
+    "lastUpdated": "January 2026",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content": "Welcome to SynchBoard. This Privacy Policy explains how we collect, use, and protect your personal information when you use our collaborative whiteboard application."
+      },
+      "informationCollected": {
+        "title": "Information We Collect",
+        "intro": "We collect the following types of information:",
+        "accountData": {
+          "title": "Account Information",
+          "items": {
+            "email": "Email address (used as your unique identifier)",
+            "name": "First and last name",
+            "phone": "Phone number (optional)",
+            "dob": "Date of birth (optional)",
+            "gender": "Gender (optional)"
+          }
+        },
+        "profileData": {
+          "title": "Profile Data",
+          "items": {
+            "picture": "Profile picture (if uploaded)",
+            "preferences": "User preferences (theme, language, canvas settings)"
+          }
+        },
+        "contentData": {
+          "title": "User Content",
+          "items": {
+            "boards": "Whiteboard content (drawings, shapes, text, images)",
+            "chat": "Chat messages within boards",
+            "history": "Drawing action history (for undo/redo functionality)"
+          }
+        }
+      },
+      "howWeUse": {
+        "title": "How We Use Your Information",
+        "intro": "We use your information to:",
+        "items": {
+          "service": "Provide and maintain the SynchBoard service",
+          "account": "Create and manage your account",
+          "sync": "Synchronize your content across devices and with collaborators",
+          "notifications": "Send service-related notifications (when email features are enabled)",
+          "improve": "Improve and optimize our service",
+          "security": "Protect against unauthorized access and abuse"
+        }
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "intro": "SynchBoard may integrate with the following third-party services when enabled:",
+        "google": {
+          "title": "Google OAuth",
+          "content": "When you sign in with Google, we receive your email address and basic profile information (name, profile picture). We only request the minimum required scopes: email and profile."
+        },
+        "gmail": {
+          "title": "Gmail API",
+          "content": "When email features are enabled, we use the Gmail API to send verification emails and password reset notifications. We do not read or access your Gmail inbox."
+        }
+      },
+      "dataStorage": {
+        "title": "Data Storage and Security",
+        "intro": "We take data security seriously:",
+        "items": {
+          "passwords": "Passwords are securely hashed using industry-standard algorithms",
+          "jwt": "Authentication uses secure JWT tokens",
+          "https": "All data transmission uses HTTPS encryption",
+          "files": "Uploaded files are stored securely on our servers",
+          "tokens": "Verification tokens expire after 15 minutes",
+          "resetCodes": "Password reset codes expire after 60 minutes"
+        }
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "intro": "You have the right to:",
+        "items": {
+          "access": "Access your personal data through your account settings",
+          "update": "Update or correct your information at any time",
+          "delete": "Delete your account and associated data",
+          "export": "Export your data",
+          "withdraw": "Withdraw consent for optional data processing"
+        }
+      },
+      "dataRetention": {
+        "title": "Data Retention",
+        "items": {
+          "account": "Account data is retained until you delete your account",
+          "boards": "Board content is retained as long as the board exists",
+          "verification": "Pending registration tokens are automatically deleted after 15 minutes",
+          "reset": "Password reset codes are automatically deleted after 60 minutes"
+        }
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions about this Privacy Policy, please contact us at:"
+      }
+    }
+  },
+  "terms": {
+    "pageTitle": "Terms of Service",
+    "title": "Terms of Service",
+    "lastUpdated": "January 2026",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "content": "By accessing or using SynchBoard, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the service."
+      },
+      "serviceDescription": {
+        "title": "Service Description",
+        "content": "SynchBoard is a collaborative whiteboard application that allows users to create, share, and collaborate on digital whiteboards in real-time. The service includes drawing tools, text editing, image uploads, and real-time synchronization features."
+      },
+      "userAccounts": {
+        "title": "User Accounts",
+        "registration": {
+          "title": "Registration",
+          "content": "To use SynchBoard, you must create an account by providing a valid email address and password. You may also sign in using Google OAuth if available. You are responsible for maintaining the confidentiality of your account credentials."
+        },
+        "security": {
+          "title": "Account Security",
+          "content": "You are responsible for all activities that occur under your account. Notify us immediately if you suspect any unauthorized use of your account."
+        }
+      },
+      "userContent": {
+        "title": "User Content",
+        "ownership": {
+          "title": "Ownership",
+          "content": "You retain ownership of all content you create on SynchBoard, including drawings, text, and uploaded images."
+        },
+        "license": {
+          "title": "License to SynchBoard",
+          "content": "By uploading content to SynchBoard, you grant us a limited license to store, display, and transmit your content as necessary to provide the service and enable collaboration with other users you invite."
+        },
+        "prohibited": {
+          "title": "Prohibited Content",
+          "intro": "You may not upload or create content that:",
+          "items": {
+            "illegal": "Is illegal or promotes illegal activities",
+            "harmful": "Is harmful, threatening, abusive, or harassing",
+            "infringing": "Infringes on intellectual property rights",
+            "malicious": "Contains malware or malicious code",
+            "private": "Violates the privacy of others"
+          }
+        }
+      },
+      "boardSharing": {
+        "title": "Board Sharing and Collaboration",
+        "roles": {
+          "title": "User Roles",
+          "content": "Boards have two roles: Admin and Member. Admins can manage board settings and invite/remove members. Members can view and edit board content based on permissions."
+        },
+        "invitations": {
+          "title": "Invitations",
+          "content": "You can invite other users to collaborate on your boards. Invited users will receive notifications and can accept or decline invitations."
+        }
+      },
+      "prohibitedUses": {
+        "title": "Prohibited Uses",
+        "intro": "You agree not to:",
+        "items": {
+          "unauthorized": "Access or use the service in any unauthorized manner",
+          "interfere": "Interfere with or disrupt the service or servers",
+          "scrape": "Scrape or collect data from the service without permission",
+          "impersonate": "Impersonate others or misrepresent your affiliation",
+          "spam": "Send spam or unsolicited communications through the service"
+        }
+      },
+      "serviceAvailability": {
+        "title": "Service Availability",
+        "content": "SynchBoard is provided \"as is\" without any guarantees of availability or uptime. We do not provide a Service Level Agreement (SLA). We may modify, suspend, or discontinue the service at any time without notice."
+      },
+      "limitation": {
+        "title": "Limitation of Liability",
+        "content": "To the maximum extent permitted by law, SynchBoard and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses."
+      },
+      "changes": {
+        "title": "Changes to Terms",
+        "content": "We may update these Terms of Service from time to time. We will notify users of significant changes by posting the new terms on this page. Your continued use of the service after changes constitutes acceptance of the new terms."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions about these Terms of Service, please contact us at:"
+      }
+    }
+  }
+}
