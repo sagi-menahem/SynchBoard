@@ -17,20 +17,23 @@
     <meta name="apple-mobile-web-app-title" content="SynchBoard" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preload hero images for faster LCP based on color scheme preference -->
-    <!-- Use 640w images matching actual display size (~600px on desktop) -->
+    <!-- Preload hero images for faster LCP with responsive srcset to match actual image selection -->
     <link
       rel="preload"
-      href="/screenshots/workspace-en-light-640w.webp"
       as="image"
       type="image/webp"
+      href="/screenshots/workspace-en-light-640w.webp"
+      imagesrcset="/screenshots/workspace-en-light-640w.webp 640w, /screenshots/workspace-en-light-1024w.webp 1024w, /screenshots/workspace-en-light.webp 1920w"
+      imagesizes="(max-width: 640px) 100vw, 640px"
       media="(prefers-color-scheme: light)"
     />
     <link
       rel="preload"
-      href="/screenshots/workspace-en-dark-640w.webp"
       as="image"
       type="image/webp"
+      href="/screenshots/workspace-en-dark-640w.webp"
+      imagesrcset="/screenshots/workspace-en-dark-640w.webp 640w, /screenshots/workspace-en-dark-1024w.webp 1024w, /screenshots/workspace-en-dark.webp 1920w"
+      imagesizes="(max-width: 640px) 100vw, 640px"
       media="(prefers-color-scheme: dark)"
     />
 
@@ -91,6 +94,8 @@
         align-items: center;
         gap: 8px;
         text-decoration: none;
+        /* Prevent non-composited animation when dark mode colors are applied */
+        transition: none !important;
       }
 
       .loader-logo-icon {
