@@ -17,6 +17,9 @@ import { isBackendError } from 'shared/utils';
 import { getToken, removeToken } from 'shared/utils/authUtils';
 import logger from 'shared/utils/logger';
 
+// Endpoints that fail silently without logging (expected to fail when backend is unavailable)
+const SILENT_ENDPOINTS = ['/config/features'];
+
 // Create configured axios instance with base URL and default headers
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -54,16 +57,23 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    // Format error details for logging
-    const errorDetails = [
-      `${error.config?.method?.toUpperCase() ?? 'UNKNOWN'} ${error.config?.url ?? 'unknown'}`,
-      `Status: ${error.response?.status ?? 'Network Error'}`,
-      error.response?.data ? `Response: ${JSON.stringify(error.response.data)}` : null,
-    ]
-      .filter(Boolean)
-      .join(' | ');
+    // Check if this is a silent endpoint (expected failures when backend unavailable)
+    const isSilentEndpoint = error.config?.url
+      ? SILENT_ENDPOINTS.some((endpoint) => error.config?.url?.includes(endpoint))
+      : false;
 
-    logger.error(`[API] ${errorDetails}`);
+    // Log error details for non-silent endpoints only
+    if (!isSilentEndpoint) {
+      const errorDetails = [
+        `${error.config?.method?.toUpperCase() ?? 'UNKNOWN'} ${error.config?.url ?? 'unknown'}`,
+        `Status: ${error.response?.status ?? 'Network Error'}`,
+        error.response?.data ? `Response: ${JSON.stringify(error.response.data)}` : null,
+      ]
+        .filter(Boolean)
+        .join(' | ');
+
+      logger.error(`[API] ${errorDetails}`);
+    }
 
     // Check if this is an auth form request (these have their own error handling)
     const isAuthFormRequest = error.config?.url
