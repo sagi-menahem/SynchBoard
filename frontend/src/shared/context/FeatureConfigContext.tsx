@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import apiClient from 'shared/lib/apiClient';
-import logger from 'shared/utils/logger';
 
 /**
  * Feature configuration flags indicating which optional features are enabled.
@@ -49,9 +48,9 @@ export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ ch
       try {
         const response = await apiClient.get<FeatureConfig>('/config/features');
         setConfig(response.data);
-      } catch (error) {
-        logger.error('Failed to load feature configuration:', error);
-        // Use default config on error to allow app to function
+      } catch {
+        // Feature config endpoint failure is expected when backend is unavailable
+        // Use default config silently to allow app to function
         setConfig(DEFAULT_CONFIG);
       } finally {
         setIsLoading(false);

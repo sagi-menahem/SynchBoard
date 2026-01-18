@@ -18,17 +18,17 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Preload hero images for faster LCP based on color scheme preference -->
-    <!-- Use 1024w images as they're more appropriate for typical display sizes -->
+    <!-- Use 640w images matching actual display size (~600px on desktop) -->
     <link
       rel="preload"
-      href="/screenshots/workspace-en-light-1024w.webp"
+      href="/screenshots/workspace-en-light-640w.webp"
       as="image"
       type="image/webp"
       media="(prefers-color-scheme: light)"
     />
     <link
       rel="preload"
-      href="/screenshots/workspace-en-dark-1024w.webp"
+      href="/screenshots/workspace-en-dark-640w.webp"
       as="image"
       type="image/webp"
       media="(prefers-color-scheme: dark)"
@@ -105,6 +105,8 @@
         font-weight: 600;
         color: var(--loader-text);
         letter-spacing: -0.02em;
+        /* Prevent non-composited animation warning from Lighthouse */
+        transition: none !important;
       }
 
       .loader-nav-links {

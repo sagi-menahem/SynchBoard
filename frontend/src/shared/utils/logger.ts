@@ -72,10 +72,16 @@ class Logger {
   error(message: string, error?: Error | unknown, ...data: unknown[]): void {
     const errorMessage = `[ERROR] ${message}`;
 
+    // Format the error for better console output
+    const formattedError = this.formatError(error);
+
     if (error instanceof Error) {
-      console.error(errorMessage, error, ...data);
-    } else if (error) {
-      console.error(errorMessage, error, ...data);
+      console.error(errorMessage, error.message, ...data);
+      if (error.stack && this.isDevelopment) {
+        console.error(error.stack);
+      }
+    } else if (formattedError) {
+      console.error(errorMessage, formattedError, ...data);
     } else {
       console.error(errorMessage, ...data);
     }
@@ -201,6 +207,44 @@ class Logger {
     if (this.logHistory.length > this.maxHistorySize) {
       this.logHistory = this.logHistory.slice(0, this.maxHistorySize);
     }
+  }
+
+  /**
+   * Formats an error object for console output.
+   * Handles Axios errors, plain objects, and other error types.
+   */
+  private formatError(error: unknown): string | null {
+    if (!error) return null;
+
+    // Handle Axios errors
+    if (typeof error === 'object' && error !== null) {
+      const axiosError = error as {
+        response?: { status?: number; statusText?: string; data?: unknown };
+        message?: string;
+        code?: string;
+      };
+
+      // Axios error with response
+      if (axiosError.response) {
+        const { status, statusText, data } = axiosError.response;
+        const dataStr = data ? JSON.stringify(data) : '';
+        return `HTTP ${status} ${statusText}${dataStr ? `: ${dataStr}` : ''}`;
+      }
+
+      // Axios network error
+      if (axiosError.code || axiosError.message) {
+        return axiosError.message || axiosError.code || 'Unknown error';
+      }
+
+      // Plain object - try to stringify
+      try {
+        return JSON.stringify(error);
+      } catch {
+        return String(error);
+      }
+    }
+
+    return String(error);
   }
 
   private reportToExternalService(

@@ -54,14 +54,16 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    logger.error('[API] Error Response', {
-      status: error.response?.status ?? 'Network Error',
-      method: error.config?.method?.toUpperCase(),
-      url: error.config?.url,
-      currentPath: window.location.pathname,
-      hasToken: !!getToken(),
-      errorData: error.response?.data,
-    });
+    // Format error details for logging
+    const errorDetails = [
+      `${error.config?.method?.toUpperCase() ?? 'UNKNOWN'} ${error.config?.url ?? 'unknown'}`,
+      `Status: ${error.response?.status ?? 'Network Error'}`,
+      error.response?.data ? `Response: ${JSON.stringify(error.response.data)}` : null,
+    ]
+      .filter(Boolean)
+      .join(' | ');
+
+    logger.error(`[API] ${errorDetails}`);
 
     // Check if this is an auth form request (these have their own error handling)
     const isAuthFormRequest = error.config?.url
