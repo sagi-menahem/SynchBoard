@@ -27,78 +27,84 @@ let gsiScriptLoading = false;
 let gsiScriptLoaded = false;
 
 /**
- * Dynamically loads the Google Identity Services SDK.
- * Returns a promise that resolves when the SDK is ready.
+ * Checks if the Google Identity Services SDK is ready to use.
  */
-const loadGsiScript = (): Promise<void> => {
+const isGsiReady = (): boolean => {
+  return Boolean(window.google?.accounts?.id);
+};
+
+/**
+ * Polls for GSI SDK readiness with a timeout.
+ */
+const waitForGsi = (timeoutMs: number): Promise<void> => {
   return new Promise((resolve, reject) => {
-    // If already loaded, resolve immediately
-    if (gsiScriptLoaded && window.google?.accounts?.id) {
+    if (isGsiReady()) {
       resolve();
       return;
     }
 
-    // If script is already being loaded, wait for it
-    if (gsiScriptLoading) {
-      const checkInterval = setInterval(() => {
-        if (window.google?.accounts?.id) {
-          clearInterval(checkInterval);
-          resolve();
-        }
-      }, 50);
-
-      // Timeout after 10 seconds
-      setTimeout(() => {
+    const checkInterval = setInterval(() => {
+      if (isGsiReady()) {
         clearInterval(checkInterval);
-        reject(new Error('GSI script load timeout'));
-      }, 10000);
-      return;
-    }
+        resolve();
+      }
+    }, 50);
 
-    // Check if script tag already exists
-    if (document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
-      gsiScriptLoading = true;
-      const checkInterval = setInterval(() => {
-        if (window.google?.accounts?.id) {
-          clearInterval(checkInterval);
-          gsiScriptLoaded = true;
-          gsiScriptLoading = false;
-          resolve();
-        }
-      }, 50);
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      reject(new Error('GSI script load timeout'));
+    }, timeoutMs);
+  });
+};
 
-      setTimeout(() => {
-        clearInterval(checkInterval);
-        gsiScriptLoading = false;
-        reject(new Error('GSI script load timeout'));
-      }, 10000);
-      return;
-    }
+/**
+ * Dynamically loads the Google Identity Services SDK.
+ * Returns a promise that resolves when the SDK is ready.
+ */
+const loadGsiScript = (): Promise<void> => {
+  // If already loaded, resolve immediately
+  if (gsiScriptLoaded && isGsiReady()) {
+    return Promise.resolve();
+  }
 
-    // Load the script
+  // If script is already being loaded, wait for it
+  if (gsiScriptLoading) {
+    return waitForGsi(10000);
+  }
+
+  // Check if script tag already exists (e.g., added by another component)
+  if (document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
     gsiScriptLoading = true;
+    return waitForGsi(10000).then(() => {
+      gsiScriptLoaded = true;
+      gsiScriptLoading = false;
+    }).catch((error) => {
+      gsiScriptLoading = false;
+      throw error;
+    });
+  }
+
+  // Load the script
+  gsiScriptLoading = true;
+
+  return new Promise((resolve, reject) => {
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
 
     script.onload = () => {
-      // Wait for the SDK to fully initialize
-      const checkInterval = setInterval(() => {
-        if (window.google?.accounts?.id) {
-          clearInterval(checkInterval);
+      waitForGsi(5000)
+        .then(() => {
           gsiScriptLoaded = true;
           gsiScriptLoading = false;
           logger.info('[GoogleOneTap] GSI script loaded successfully');
           resolve();
-        }
-      }, 50);
-
-      setTimeout(() => {
-        clearInterval(checkInterval);
-        gsiScriptLoading = false;
-        reject(new Error('GSI SDK initialization timeout'));
-      }, 5000);
+        })
+        .catch((error) => {
+          gsiScriptLoading = false;
+          reject(error);
+        });
     };
 
     script.onerror = () => {
@@ -207,7 +213,7 @@ const GoogleOneTap: React.FC = () => {
 
     // Initialize One Tap after loading the GSI script
     const initializeOneTap = () => {
-      if (!window.google?.accounts?.id) {
+      if (!isGsiReady()) {
         logger.debug('[GoogleOneTap] Google SDK not yet loaded');
         return false;
       }
@@ -219,7 +225,10 @@ const GoogleOneTap: React.FC = () => {
         // FedCM requires HTTPS - disable for local HTTP development
         const isSecureContext = window.location.protocol === 'https:';
 
-        window.google.accounts.id.initialize({
+        // Safe to use non-null assertion here - isGsiReady() already verified google.accounts.id exists
+        const googleId = window.google!.accounts.id;
+
+        googleId.initialize({
           client_id: clientId,
           callback: handleCredentialResponse,
           auto_select: true,
@@ -231,7 +240,7 @@ const GoogleOneTap: React.FC = () => {
         // When FedCM is enabled (HTTPS), we don't use the moment notification callback
         // as it triggers deprecation warnings and FedCM handles UI state internally.
         // On HTTP (local dev), FedCM is disabled and the legacy prompt is used.
-        window.google.accounts.id.prompt();
+        googleId.prompt();
         logger.info(`[GoogleOneTap] One Tap initialized (FedCM: ${isSecureContext ? 'enabled' : 'disabled'})`);
         return true;
       } catch (error) {
@@ -268,7 +277,7 @@ const GoogleOneTap: React.FC = () => {
           }, 5000);
         }
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         logger.error('[GoogleOneTap] Failed to load GSI script:', error);
       });
 
