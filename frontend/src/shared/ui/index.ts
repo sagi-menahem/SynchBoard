@@ -6,6 +6,7 @@ export { default as PasswordInput } from './components/forms/PasswordInput';
 export { default as PictureManager } from './components/forms/PictureManager';
 export { default as SegmentedControl } from './components/forms/SegmentedControl';
 export { Slider } from './components/forms/Slider';
+export { default as Switch } from './components/forms/Switch';
 export { default as Textarea } from './components/forms/Textarea';
 export { default as ThemeSwitcher } from './components/forms/ThemeSwitcher';
 export { ToolButton } from './components/forms/ToolButton';

@@ -37,15 +37,14 @@ export default defineConfig({
           'react-vendor': ['react', 'react-dom'],
           'react-router': ['react-router-dom'],
 
-          // UI Component libraries - Radix and Headless UI (stable APIs)
-          'ui-components': [
-            '@radix-ui/react-slider',
-            '@radix-ui/react-radio-group',
-            '@headlessui/react',
-          ],
+          // UI Component libraries - Radix (stable APIs)
+          'ui-components': ['@radix-ui/react-slider', '@radix-ui/react-radio-group'],
 
-          // UI and Animation libraries - Visual enhancements
+          // UI libraries - Visual enhancements
           'ui-vendor': ['react-hot-toast', 'react-colorful'],
+
+          // Animation library - Framer Motion for scroll animations
+          'animation-vendor': ['framer-motion'],
 
           // Note: @stomp/stompjs is lazy-loaded via dynamic import in websocketService.ts
           // to reduce initial bundle size on auth page (only loaded when user authenticates)

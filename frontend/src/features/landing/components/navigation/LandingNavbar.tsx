@@ -1,12 +1,12 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { GuestLanguageSwitcher } from 'features/settings/ui';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ExternalLink, Menu, X } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { Drawer } from 'vaul';
 import { Button } from 'shared/ui';
 import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
+import { Drawer } from 'vaul';
 
 import { NAV_LINKS } from '../../constants/landingContent';
 import { Container } from '../layout';
@@ -87,7 +87,7 @@ const Logo: React.FC<{ onClick?: () => void }> = ({ onClick }) => (
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }}
   >
-    <img src="/logo.png" alt="SynchBoard" className={styles.logoIcon} />
+    <img src="/favicon-96x96.png" alt="SynchBoard" className={styles.logoIcon} width={32} height={32} />
     <span className={styles.logoText}>SynchBoard</span>
   </a>
 );

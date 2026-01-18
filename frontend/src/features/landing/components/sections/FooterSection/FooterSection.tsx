@@ -3,8 +3,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 
-import { Dot } from '../../common';
 import { GITHUB_URL, LIVE_DEMO_URL } from '../../../constants/landingContent';
+import { Dot } from '../../common';
 import { GitHubLogo, LinkedInLogo } from '../../icons/TechLogos';
 import { Container } from '../../layout';
 
@@ -42,7 +42,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
         {/* Brand Column */}
         <div className={styles.brandColumn}>
           <div className={styles.logo}>
-            <img src="/logo.png" alt="SynchBoard" className={styles.logoIcon} />
+            <img src="/favicon-96x96.png" alt="SynchBoard" className={styles.logoIcon} width={32} height={32} />
             <span className={styles.logoText}>SynchBoard</span>
           </div>
           <p className={styles.description}>{t('landing:footer.description')}</p>

@@ -1,7 +1,7 @@
-import { Switch } from '@headlessui/react';
 import React from 'react';
-
 import { useTranslation } from 'react-i18next';
+
+import Switch from './Switch';
 
 /**
  * Props for the LanguageToggle component.

@@ -1,7 +1,9 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './ParallaxImage.module.scss';
+
+const THROTTLE_MS = 16; // ~60fps
 
 interface ParallaxImageProps {
   src: string;
@@ -16,6 +18,7 @@ interface ParallaxImageProps {
  */
 const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, className }) => {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const lastCallRef = useRef(0);
 
   useEffect(() => {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -36,6 +39,11 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, className }) =>
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (isTouchDevice) return;
+
+      // Throttle to prevent layout thrashing from getBoundingClientRect
+      const now = performance.now();
+      if (now - lastCallRef.current < THROTTLE_MS) return;
+      lastCallRef.current = now;
 
       const rect = event.currentTarget.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -58,7 +66,7 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, className }) =>
   if (isTouchDevice) {
     return (
       <div className={`${styles.container} ${className || ''}`}>
-        <img src={src} alt={alt} className={styles.image} />
+        <img src={src} alt={alt} className={styles.image} loading="lazy" decoding="async" width={1920} height={1080} />
       </div>
     );
   }
@@ -82,6 +90,10 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, className }) =>
           x: translateX,
           y: translateY,
         }}
+        loading="lazy"
+        decoding="async"
+        width={1920}
+        height={1080}
       />
     </motion.div>
   );

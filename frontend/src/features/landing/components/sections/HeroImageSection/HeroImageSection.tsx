@@ -1,11 +1,13 @@
 import { useTheme } from 'features/settings/ThemeProvider';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Dot } from '../../common';
 import { Container } from '../../layout';
 
 import styles from './HeroImageSection.module.scss';
+
+const THROTTLE_MS = 16; // ~60fps
 
 /**
  * Hero image section with parallax mouse-tracking effect.
@@ -15,6 +17,7 @@ import styles from './HeroImageSection.module.scss';
 const HeroImageSection: React.FC = () => {
   const { theme } = useTheme();
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const lastCallRef = useRef(0);
 
   // Motion values for mouse position
   const mouseX = useMotionValue(0);
@@ -52,6 +55,11 @@ const HeroImageSection: React.FC = () => {
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (isTouchDevice) return;
+
+      // Throttle to prevent layout thrashing from getBoundingClientRect
+      const now = performance.now();
+      if (now - lastCallRef.current < THROTTLE_MS) return;
+      lastCallRef.current = now;
 
       const rect = event.currentTarget.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -94,6 +102,10 @@ const HeroImageSection: React.FC = () => {
           className={styles.screenshot}
           style={isTouchDevice ? {} : { x: imageX, y: imageY }}
           draggable={false}
+          loading="lazy"
+          decoding="async"
+          width={1920}
+          height={1080}
         />
       </motion.div>
     </Container>

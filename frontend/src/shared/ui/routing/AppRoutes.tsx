@@ -1,3 +1,4 @@
+import LandingPage from 'features/landing/pages/LandingPage';
 import { ArrowLeft, Info, LayoutGrid, Plus, Settings } from 'lucide-react';
 import { lazy, Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +22,6 @@ import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './AppRoutes.module.scss';
 
-const LandingPage = lazy(() => import('features/landing/pages/LandingPage'));
 const AuthPage = lazy(() => import('features/auth/pages/AuthPage'));
 const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
@@ -138,20 +138,6 @@ const BoardPageLoader = () => {
  * Defines all application routes with authentication protection and progressive loading.
  * Wraps protected routes with authentication checks and provides error recovery for each route.
  */
-/**
- * Simple landing page skeleton for initial load.
- */
-const LandingPageSkeleton = () => (
-  <div className={styles.landingSkeleton}>
-    <div className={styles.landingSpinner} />
-  </div>
-);
-
-/**
- * Main application routing configuration with lazy loading and error boundaries.
- * Defines all application routes with authentication protection and progressive loading.
- * Wraps protected routes with authentication checks and provides error recovery for each route.
- */
 export function AppRoutes() {
   return (
     <Routes>
@@ -159,9 +145,7 @@ export function AppRoutes() {
         path="/"
         element={
           <ErrorBoundary>
-            <Suspense fallback={<LandingPageSkeleton />}>
-              <LandingPage />
-            </Suspense>
+            <LandingPage />
           </ErrorBoundary>
         }
       />

@@ -32,6 +32,9 @@ const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ src, alt, caption }) =>
             onLoad={() => setIsLoaded(true)}
             onError={() => setHasError(true)}
             loading="lazy"
+            decoding="async"
+            width={1920}
+            height={1080}
           />
         )}
       </div>

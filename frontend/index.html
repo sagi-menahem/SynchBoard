@@ -17,6 +17,10 @@
     <meta name="apple-mobile-web-app-title" content="SynchBoard" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <!-- Preconnect hints for Google APIs -->
+    <link rel="preconnect" href="https://accounts.google.com" />
+    <link rel="dns-prefetch" href="https://accounts.google.com" />
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://synchboard.com" />
@@ -43,7 +47,7 @@
 
   <body>
     <div id="root">
-      <!-- Initial loading skeleton - replaced when React mounts -->
+      <!-- Landing page skeleton - replaced when React mounts -->
       <div
         id="initial-loader"
         style="
@@ -53,227 +57,136 @@
           right: 0;
           bottom: 0;
           display: flex;
-          width: 100vw;
-          height: 100vh;
-          overflow: hidden;
+          flex-direction: column;
+          background: var(--loader-bg, #ffffff);
         "
       >
-        <!-- Hero section -->
+        <!-- Navbar skeleton -->
         <div
           style="
-            flex: 0 0 60%;
-            background: linear-gradient(
-              135deg,
-              rgba(59, 130, 246, 0.9) 0%,
-              rgba(37, 99, 235, 0.85) 100%
-            );
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 24px;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--loader-border, rgba(0, 0, 0, 0.08));
           "
         >
-          <div style="max-width: 500px; width: 100%">
-            <!-- Title skeleton -->
-            <div style="display: flex; gap: 12px; margin-bottom: 24px">
-              <div
-                style="
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 50%;
-                  background: rgba(255, 255, 255, 0.2);
-                "
-              ></div>
-              <div
-                style="
-                  width: 60%;
-                  height: 40px;
-                  border-radius: 8px;
-                  background: rgba(255, 255, 255, 0.2);
-                "
-              ></div>
-            </div>
-            <!-- Subtitle skeletons -->
-            <div
-              style="
-                width: 90%;
-                height: 20px;
-                border-radius: 4px;
-                background: rgba(255, 255, 255, 0.2);
-                margin-bottom: 8px;
-              "
-            ></div>
-            <div
-              style="
-                width: 75%;
-                height: 20px;
-                border-radius: 4px;
-                background: rgba(255, 255, 255, 0.2);
-                margin-bottom: 32px;
-              "
-            ></div>
-            <!-- Feature items -->
-            <div style="display: flex; flex-direction: column; gap: 16px">
-              <div style="display: flex; gap: 12px; align-items: center">
-                <div
-                  style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 8px;
-                    background: rgba(255, 255, 255, 0.15);
-                  "
-                ></div>
-                <div
-                  style="
-                    width: 70%;
-                    height: 18px;
-                    border-radius: 4px;
-                    background: rgba(255, 255, 255, 0.2);
-                  "
-                ></div>
-              </div>
-              <div style="display: flex; gap: 12px; align-items: center">
-                <div
-                  style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 8px;
-                    background: rgba(255, 255, 255, 0.15);
-                  "
-                ></div>
-                <div
-                  style="
-                    width: 70%;
-                    height: 18px;
-                    border-radius: 4px;
-                    background: rgba(255, 255, 255, 0.2);
-                  "
-                ></div>
-              </div>
-              <div style="display: flex; gap: 12px; align-items: center">
-                <div
-                  style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 8px;
-                    background: rgba(255, 255, 255, 0.15);
-                  "
-                ></div>
-                <div
-                  style="
-                    width: 70%;
-                    height: 18px;
-                    border-radius: 4px;
-                    background: rgba(255, 255, 255, 0.2);
-                  "
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Form section -->
-        <div
-          style="
-            flex: 0 0 40%;
-            background: rgba(255, 255, 255, 0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-          "
-        >
+          <!-- Logo placeholder -->
           <div
-            style="width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 16px"
-          >
-            <!-- Form header -->
-            <div style="display: flex; gap: 8px; margin-bottom: 8px">
-              <div
-                style="
-                  width: 24px;
-                  height: 24px;
-                  border-radius: 50%;
-                  background: rgba(128, 128, 128, 0.12);
-                "
-              ></div>
-              <div
-                style="
-                  width: 120px;
-                  height: 24px;
-                  border-radius: 4px;
-                  background: rgba(128, 128, 128, 0.12);
-                "
-              ></div>
-            </div>
-            <!-- Email field -->
-            <div>
-              <div
-                style="
-                  width: 80px;
-                  height: 14px;
-                  border-radius: 4px;
-                  background: rgba(128, 128, 128, 0.12);
-                  margin-bottom: 8px;
-                "
-              ></div>
-              <div
-                style="
-                  width: 100%;
-                  height: 40px;
-                  border-radius: 8px;
-                  background: rgba(128, 128, 128, 0.12);
-                "
-              ></div>
-            </div>
-            <!-- Password field -->
-            <div>
-              <div
-                style="
-                  width: 80px;
-                  height: 14px;
-                  border-radius: 4px;
-                  background: rgba(128, 128, 128, 0.12);
-                  margin-bottom: 8px;
-                "
-              ></div>
-              <div
-                style="
-                  width: 100%;
-                  height: 40px;
-                  border-radius: 8px;
-                  background: rgba(128, 128, 128, 0.12);
-                "
-              ></div>
-            </div>
-            <!-- Submit button -->
+            style="
+              width: 120px;
+              height: 28px;
+              border-radius: 6px;
+              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
+            "
+          ></div>
+          <!-- Nav links placeholder -->
+          <div style="display: flex; gap: 24px">
             <div
               style="
-                width: 100%;
-                height: 44px;
-                border-radius: 8px;
-                background: rgba(128, 128, 128, 0.12);
-                margin-top: 8px;
+                width: 60px;
+                height: 16px;
+                border-radius: 4px;
+                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
               "
             ></div>
-            <!-- Divider -->
-            <div style="display: flex; align-items: center; gap: 12px; margin: 8px 0">
-              <div style="flex: 1; height: 1px; background: rgba(128, 128, 128, 0.2)"></div>
-              <div
-                style="
-                  width: 30px;
-                  height: 14px;
-                  border-radius: 4px;
-                  background: rgba(128, 128, 128, 0.12);
-                "
-              ></div>
-              <div style="flex: 1; height: 1px; background: rgba(128, 128, 128, 0.2)"></div>
-            </div>
-            <!-- Google button -->
             <div
               style="
-                width: 100%;
+                width: 70px;
+                height: 16px;
+                border-radius: 4px;
+                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
+              "
+            ></div>
+            <div
+              style="
+                width: 50px;
+                height: 16px;
+                border-radius: 4px;
+                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
+              "
+            ></div>
+          </div>
+          <!-- CTA button placeholder -->
+          <div
+            style="
+              width: 100px;
+              height: 36px;
+              border-radius: 8px;
+              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
+            "
+          ></div>
+        </div>
+
+        <!-- Hero section skeleton -->
+        <div
+          style="
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            text-align: center;
+          "
+        >
+          <!-- Headline placeholder -->
+          <div
+            style="
+              width: min(90%, 500px);
+              height: 48px;
+              border-radius: 8px;
+              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
+              margin-bottom: 12px;
+            "
+          ></div>
+          <div
+            style="
+              width: min(70%, 380px);
+              height: 48px;
+              border-radius: 8px;
+              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
+              margin-bottom: 24px;
+            "
+          ></div>
+
+          <!-- Subheadline placeholder -->
+          <div
+            style="
+              width: min(85%, 420px);
+              height: 20px;
+              border-radius: 4px;
+              background: var(--loader-skeleton, rgba(0, 0, 0, 0.04));
+              margin-bottom: 8px;
+            "
+          ></div>
+          <div
+            style="
+              width: min(60%, 300px);
+              height: 20px;
+              border-radius: 4px;
+              background: var(--loader-skeleton, rgba(0, 0, 0, 0.04));
+              margin-bottom: 32px;
+            "
+          ></div>
+
+          <!-- CTA buttons placeholder -->
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center">
+            <div
+              style="
+                width: 140px;
                 height: 44px;
                 border-radius: 8px;
-                background: rgba(128, 128, 128, 0.08);
+                background: var(--loader-primary, #3b82f6);
+                opacity: 0.7;
+              "
+            ></div>
+            <div
+              style="
+                width: 160px;
+                height: 44px;
+                border-radius: 8px;
+                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
               "
             ></div>
           </div>
@@ -303,14 +216,10 @@
         var isDark = storedTheme === 'dark' || (!storedTheme && prefersDark);
 
         if (isDark) {
-          var loader = document.getElementById('initial-loader');
-          if (loader) {
-            // Update hero section for dark theme
-            loader.children[0].style.background =
-              'linear-gradient(135deg, rgba(55, 65, 81, 0.9) 0%, rgba(31, 41, 55, 0.85) 100%)';
-            // Update form section for dark theme
-            loader.children[1].style.background = 'rgba(39, 39, 42, 0.75)';
-          }
+          document.documentElement.style.setProperty('--loader-bg', '#09090b');
+          document.documentElement.style.setProperty('--loader-border', 'rgba(255, 255, 255, 0.08)');
+          document.documentElement.style.setProperty('--loader-skeleton', 'rgba(255, 255, 255, 0.06)');
+          document.documentElement.style.setProperty('--loader-primary', '#3b82f6');
         }
       })();
     </script>

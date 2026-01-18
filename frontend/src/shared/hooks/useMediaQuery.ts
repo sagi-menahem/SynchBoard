@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Custom hook for responsive design that tracks whether a CSS media query matches.
@@ -115,20 +115,27 @@ const detectMobileDevice = (): boolean => {
  */
 export const useIsMobile = (): boolean => {
   const [isMobile, setIsMobile] = useState<boolean>(() => detectMobileDevice());
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(detectMobileDevice());
+      // Debounce resize handler to prevent layout thrashing
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = window.setTimeout(() => {
+        setIsMobile(detectMobileDevice());
+      }, 100);
     };
-
-    // Set initial value
-    handleResize();
 
     // Listen for resize events
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
     };
   }, []);
 
@@ -143,20 +150,27 @@ export const useIsMobile = (): boolean => {
  */
 export const useDeviceType = (): DeviceType => {
   const [deviceType, setDeviceType] = useState<DeviceType>(() => detectDeviceType());
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
-      setDeviceType(detectDeviceType());
+      // Debounce resize handler to prevent layout thrashing
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = window.setTimeout(() => {
+        setDeviceType(detectDeviceType());
+      }, 100);
     };
-
-    // Set initial value
-    handleResize();
 
     // Listen for resize events
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
     };
   }, []);
 

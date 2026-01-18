@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './Dot.module.scss';
+
+const THROTTLE_MS = 32; // ~30fps for distance calculations
 
 interface DotProps {
   top?: boolean;
@@ -15,32 +17,37 @@ interface DotProps {
  * Positioned at container corners for grid intersection effect.
  */
 const Dot: React.FC<DotProps> = ({ top, left, right, bottom }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isNearMouse, setIsNearMouse] = useState(false);
   const dotRef = useRef<HTMLDivElement>(null);
+  const lastCallRef = useRef(0);
+
+  const checkDistance = useCallback((clientX: number, clientY: number) => {
+    if (!dotRef.current) return;
+
+    const dotRect = dotRef.current.getBoundingClientRect();
+    const dotCenterX = dotRect.left + dotRect.width / 2;
+    const dotCenterY = dotRect.top + dotRect.height / 2;
+
+    const distance = Math.sqrt(
+      Math.pow(clientX - dotCenterX, 2) + Math.pow(clientY - dotCenterY, 2)
+    );
+
+    setIsNearMouse(distance <= 100);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      // Throttle to prevent layout thrashing from getBoundingClientRect
+      const now = performance.now();
+      if (now - lastCallRef.current < THROTTLE_MS) return;
+      lastCallRef.current = now;
+
+      checkDistance(e.clientX, e.clientY);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    if (dotRef.current) {
-      const dotRect = dotRef.current.getBoundingClientRect();
-      const dotCenterX = dotRect.left + dotRect.width / 2;
-      const dotCenterY = dotRect.top + dotRect.height / 2;
-
-      const distance = Math.sqrt(
-        Math.pow(mousePosition.x - dotCenterX, 2) + Math.pow(mousePosition.y - dotCenterY, 2)
-      );
-
-      setIsNearMouse(distance <= 100);
-    }
-  }, [mousePosition]);
+  }, [checkDistance]);
 
   const positionClasses = [
     styles.dot,

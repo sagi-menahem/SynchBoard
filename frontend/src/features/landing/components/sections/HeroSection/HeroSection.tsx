@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
@@ -16,6 +15,7 @@ interface HeroSectionProps {
 /**
  * Main hero section with headline, subheadline, and CTAs.
  * Centered layout matching the template design.
+ * Uses CSS animations for faster LCP.
  */
 const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
   const { t } = useTranslation(['landing']);
@@ -28,33 +28,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
       <Dot bottom right />
 
       {/* Headline */}
-      <motion.h1
-        className={styles.headline}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <h1 className={`${styles.headline} ${styles.animateFadeInUp}`}>
         Collaborate in Real-Time on <br />
         Shared <span className={styles.highlight}>Whiteboards</span>
-      </motion.h1>
+      </h1>
 
       {/* Subheadline */}
-      <motion.p
-        className={styles.subheadline}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
+      <p className={`${styles.subheadline} ${styles.animateFadeInUp} ${styles.animateDelay1}`}>
         {t('landing:hero.subheadline')}
-      </motion.p>
+      </p>
 
       {/* CTAs */}
-      <motion.div
-        className={styles.ctaGroup}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
+      <div className={`${styles.ctaGroup} ${styles.animateFadeInUp} ${styles.animateDelay2}`}>
         <Button variant="primary" onClick={onGetStarted}>
           {t('landing:hero.ctaPrimary')}
         </Button>
@@ -64,7 +49,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
         >
           {t('landing:hero.ctaSecondary')}
         </Button>
-      </motion.div>
+      </div>
     </Container>
   );
 };

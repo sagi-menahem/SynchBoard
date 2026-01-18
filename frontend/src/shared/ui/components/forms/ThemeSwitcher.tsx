@@ -1,5 +1,5 @@
-import { Switch } from '@headlessui/react';
 import { useTheme } from 'features/settings/ThemeProvider';
+import Switch from './Switch';
 import { Moon, Sun } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dot } from '../../common';
 import { SCREENSHOTS } from '../../../constants/landingContent';
 import { FadeInView } from '../../animations';
+import { Dot } from '../../common';
 import { Container } from '../../layout';
 import ScreenshotCard from '../../ui/ScreenshotCard';
 

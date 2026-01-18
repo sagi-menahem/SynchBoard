@@ -51,8 +51,6 @@ const getInitialTheme = (): Theme => {
 const applyThemeToDOM = (theme: Theme) => {
   document.body.setAttribute('data-theme', theme);
   applyScrollbarTheme(theme);
-  // Force DOM reflow to ensure theme changes are applied immediately
-  void document.body.offsetHeight;
 };
 
 /**
