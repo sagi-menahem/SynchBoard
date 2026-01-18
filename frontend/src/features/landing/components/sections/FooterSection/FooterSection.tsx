@@ -1,11 +1,11 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Globe, Mail } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 
 import { Dot } from '../../common';
 import { GITHUB_URL, LIVE_DEMO_URL } from '../../../constants/landingContent';
-import { GitHubLogo, LinkedInLogo, TwitterLogo } from '../../icons/TechLogos';
+import { GitHubLogo, LinkedInLogo } from '../../icons/TechLogos';
 import { Container } from '../../layout';
 
 import styles from './FooterSection.module.scss';
@@ -28,9 +28,10 @@ const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
   ];
 
   const socialLinks = [
-    { icon: TwitterLogo, href: 'https://twitter.com', label: 'Twitter' },
+    { icon: Globe, href: 'https://www.sagimenahem.tech/', label: 'Portfolio' },
     { icon: LinkedInLogo, href: 'https://linkedin.com', label: 'LinkedIn' },
     { icon: GitHubLogo, href: GITHUB_URL, label: 'GitHub' },
+    { icon: Mail, href: 'mailto:sagia1997@gmail.com', label: 'Email' },
   ];
 
   return (
