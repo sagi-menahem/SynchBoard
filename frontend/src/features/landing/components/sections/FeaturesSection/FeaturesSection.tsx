@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dot } from '../../common';
 import { FEATURES } from '../../../constants/landingContent';
 import { FadeInView } from '../../animations';
+import { Dot } from '../../common';
 import { Container } from '../../layout';
 import FeatureCard from '../../ui/FeatureCard';
 
@@ -31,7 +31,7 @@ const FeaturesSection: React.FC = () => {
 
       <div className={styles.featureGrid}>
         {FEATURES.map((feature, index) => (
-          <FadeInView key={feature.id} delay={index * 0.1}>
+          <FadeInView key={feature.id} delay={index * 0.1} className={styles.featureItem}> 
             <FeatureCard
               icon={feature.icon}
               title={t(feature.titleKey)}

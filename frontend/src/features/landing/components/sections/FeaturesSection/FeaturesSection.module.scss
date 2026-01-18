@@ -43,7 +43,7 @@
 .featureGrid {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: start;
+  align-items: stretch;;
   gap: theme.$spacing-6;
 
   @media (min-width: theme.$breakpoint-sm) {
@@ -53,4 +53,7 @@
   @media (min-width: theme.$breakpoint-lg) {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+.featureItem {
+  display: flex;
 }
