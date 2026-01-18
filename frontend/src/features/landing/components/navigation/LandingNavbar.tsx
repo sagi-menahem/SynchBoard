@@ -3,6 +3,7 @@ import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ExternalLink, Menu, X } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Drawer } from 'vaul';
 import { Button } from 'shared/ui';
 import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
@@ -204,6 +205,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       <Drawer.Portal>
         <Drawer.Overlay className={styles.drawerOverlay} />
         <Drawer.Content className={styles.drawerContent}>
+          <VisuallyHidden>
+            <Drawer.Title>Mobile Navigation</Drawer.Title>
+            <Drawer.Description>
+              Navigation menu for SynchBoard landing page
+            </Drawer.Description>
+          </VisuallyHidden>
           <div className={styles.mobileMenu}>
 
             <div className={styles.mobileMenuHeader}>
