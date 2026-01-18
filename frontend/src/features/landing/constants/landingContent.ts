@@ -49,28 +49,28 @@ export const FEATURES = [
 
 export const SCREENSHOTS = [
   {
-    id: 'board-list',
-    src: '/screenshots/board-list.jpg',
-    captionKey: 'landing:screenshots.boardList',
-    alt: 'Board management interface',
+    id: 'workspace-en-light',
+    src: '/screenshots/workspace-en-light.jpg',
+    captionKey: 'landing:screenshots.workspaceEnLight',
+    alt: 'Workspace English Light Mode',
   },
   {
-    id: 'auth',
-    src: '/screenshots/auth.jpg',
-    captionKey: 'landing:screenshots.auth',
-    alt: 'Authentication page',
+    id: 'workspace-en-dark',
+    src: '/screenshots/workspace-en-dark.jpg',
+    captionKey: 'landing:screenshots.workspaceEnDark',
+    alt: 'Workspace English Dark Mode',
   },
   {
-    id: 'board-settings',
-    src: '/screenshots/board-settings.jpg',
-    captionKey: 'landing:screenshots.boardSettings',
-    alt: 'Board settings and member management',
+    id: 'workspace-he-light',
+    src: '/screenshots/workspace-he-light.jpg',
+    captionKey: 'landing:screenshots.workspaceHeLight',
+    alt: 'Workspace Hebrew Light Mode',
   },
   {
-    id: 'user-settings',
-    src: '/screenshots/user-settings.jpg',
-    captionKey: 'landing:screenshots.userSettings',
-    alt: 'User profile settings',
+    id: 'workspace-he-dark',
+    src: '/screenshots/workspace-he-dark.jpg',
+    captionKey: 'landing:screenshots.workspaceHeDark',
+    alt: 'Workspace Hebrew Dark Mode',
   },
 ] as const;
 
