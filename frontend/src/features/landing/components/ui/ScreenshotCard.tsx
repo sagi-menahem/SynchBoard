@@ -28,11 +28,10 @@ const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ src, alt, caption }) =>
         srcSet: isMobile
           ? `${basePath}.webp`
           : `${basePath}-640w.webp 640w, ${basePath}-1024w.webp 1024w, ${basePath}.webp 1920w`,
-        // Actual display sizes in 2-column grid:
-        // - Mobile (<640px): full width
-        // - Desktop: ~500px per card in grid (accounts for gap and padding)
-        // This ensures 640w is selected for 1x DPR, 1024w for 2x DPR
-        sizes: isMobile ? undefined : '(max-width: 640px) 100vw, 500px',
+        // Optimized for performance: declare smaller size to force 640w selection
+        // This slightly reduces sharpness on 2x DPR but significantly improves load time
+        // These are lazy-loaded below-the-fold images so the tradeoff is worthwhile
+        sizes: isMobile ? undefined : '(max-width: 640px) 100vw, 300px',
       },
       fallback: src,
     };

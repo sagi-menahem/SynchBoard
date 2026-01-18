@@ -1,10 +1,9 @@
 import { useAuth } from 'features/auth/hooks';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 
 import {
-  AuthModal,
   CTASection,
   DivideX,
   FeaturesSection,
@@ -15,6 +14,9 @@ import {
   LogoCloudSection,
   ScreenshotsSection,
 } from '../components';
+
+// Lazy load AuthModal to defer vaul, react-day-picker, and auth forms until user interaction
+const AuthModal = lazy(() => import('../components/ui/AuthModal'));
 
 import styles from './LandingPage.module.scss';
 
@@ -72,8 +74,12 @@ const LandingPage: React.FC = () => {
 
         <FooterSection onGetStarted={handleGetStarted} />
 
-        {/* Auth modal */}
-        <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
+        {/* Auth modal - lazy loaded to reduce initial bundle size */}
+        {isAuthModalOpen && (
+          <Suspense fallback={null}>
+            <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
+          </Suspense>
+        )}
     </div>
   );
 };

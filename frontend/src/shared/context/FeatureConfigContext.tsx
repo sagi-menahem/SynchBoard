@@ -23,9 +23,9 @@ const DEFAULT_CONFIG: FeatureConfig = {
 
 /**
  * Context for accessing feature configuration throughout the application.
- * Guaranteed to have a valid FeatureConfig value after provider initialization.
+ * Always has a valid FeatureConfig value (defaults are used until API responds).
  */
-const FeatureConfigContext = createContext<FeatureConfig | null>(null);
+const FeatureConfigContext = createContext<FeatureConfig>(DEFAULT_CONFIG);
 
 interface FeatureConfigProviderProps {
   children: ReactNode;
@@ -33,15 +33,14 @@ interface FeatureConfigProviderProps {
 
 /**
  * Provider component that fetches and caches feature configuration at app startup.
- * Blocks rendering of children until configuration is loaded to prevent UI flickering.
- * This ensures all child components have immediate access to feature flags without
- * needing to handle loading states individually.
+ * Renders children immediately with default config to avoid blocking LCP.
+ * Configuration is updated asynchronously when the API call completes.
  *
  * @param children - Child components that will have access to feature configuration
  */
 export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ children }) => {
-  const [config, setConfig] = useState<FeatureConfig | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Initialize with default config to render immediately (no blocking)
+  const [config, setConfig] = useState<FeatureConfig>(DEFAULT_CONFIG);
 
   useEffect(() => {
     const fetchFeatureConfig = async () => {
@@ -50,39 +49,24 @@ export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ ch
         setConfig(response.data);
       } catch {
         // Feature config endpoint failure is expected when backend is unavailable
-        // Use default config silently to allow app to function
-        setConfig(DEFAULT_CONFIG);
-      } finally {
-        setIsLoading(false);
+        // Keep default config silently to allow app to function
       }
     };
 
     void fetchFeatureConfig();
   }, []);
 
-  // Return null during very brief config load - prevents showing spinner before page skeleton
-  if (isLoading) {
-    return null;
-  }
-
   return <FeatureConfigContext.Provider value={config}>{children}</FeatureConfigContext.Provider>;
 };
 
 /**
  * Hook for accessing feature configuration from context.
- * Must be used within a FeatureConfigProvider.
+ * Can be used anywhere in the app - returns defaults if outside provider.
  *
  * @returns FeatureConfig object with boolean flags for each optional feature
- * @throws Error if used outside of FeatureConfigProvider
  */
 export const useFeatureConfig = (): FeatureConfig => {
-  const context = useContext(FeatureConfigContext);
-
-  if (context === null) {
-    throw new Error('useFeatureConfig must be used within a FeatureConfigProvider');
-  }
-
-  return context;
+  return useContext(FeatureConfigContext);
 };
 
 export { FeatureConfigContext };

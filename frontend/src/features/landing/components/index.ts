@@ -1,4 +1,4 @@
-export { FadeInView, OrbitingLogos, ParallaxImage } from './animations';
+export { FadeInView, OrbitingLogos } from './animations';
 export { Container, DivideX } from './layout';
 export { LandingNavbar } from './navigation';
 export {
@@ -10,4 +10,5 @@ export {
   LogoCloudSection,
   ScreenshotsSection,
 } from './sections';
-export { AuthModal, FeatureCard, ScreenshotCard } from './ui';
+// AuthModal is lazy-loaded directly in LandingPage for code splitting
+export { FeatureCard, ScreenshotCard } from './ui';

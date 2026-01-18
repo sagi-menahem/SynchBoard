@@ -118,7 +118,7 @@ const Logo: React.FC<{ onClick?: () => void }> = ({ onClick }) => (
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }}
   >
-    <img src="/favicon-96x96.png" alt="SynchBoard" className={styles.logoIcon} width={32} height={32} />
+    <img src="/favicon.svg" alt="SynchBoard" className={styles.logoIcon} width={32} height={32} />
     <span className={styles.logoText}>SynchBoard</span>
   </a>
 );
