@@ -2,7 +2,7 @@ import LandingPage from 'features/landing/pages/LandingPage';
 import { ArrowLeft, Info, LayoutGrid, Plus, Settings } from 'lucide-react';
 import { lazy, Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from 'shared/constants/RoutesConstants';
 import { useIsMobile, useMediaQuery } from 'shared/hooks';
 import {
@@ -150,16 +150,9 @@ export function AppRoutes() {
         }
       />
 
-      <Route
-        path="/auth"
-        element={
-          <ErrorBoundary>
-            <Suspense fallback={<AuthPageSkeleton />}>
-              <AuthPage />
-            </Suspense>
-          </ErrorBoundary>
-        }
-      />
+      {/* Redirect legacy /auth URL to landing page */}
+      <Route path="/auth" element={<Navigate to="/" replace />} />
+
       <Route
         path={APP_ROUTES.AUTH_CALLBACK}
         element={

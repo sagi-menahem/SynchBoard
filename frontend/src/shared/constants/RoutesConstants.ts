@@ -7,7 +7,7 @@
 
 export const APP_ROUTES = {
   LANDING: '/',
-  AUTH: '/auth',
+  AUTH: '/', // All auth redirects now go to landing page (which has login/registration modal)
   AUTH_CALLBACK: '/auth/callback',
   AUTH_ERROR: '/auth/error',
   BOARD_LIST: '/boards',

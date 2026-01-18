@@ -238,13 +238,13 @@ try {
 
 ### Error Display Patterns
 
-| Scenario          | Display Method     |
-| ----------------- | ------------------ |
-| API errors        | Toast notification |
-| Validation errors | Form field errors  |
-| Network errors    | Toast notification |
-| Auth errors       | Redirect to login  |
-| WebSocket errors  | Toast notification |
+| Scenario          | Display Method              |
+| ----------------- | --------------------------- |
+| API errors        | Toast notification          |
+| Validation errors | Form field errors           |
+| Network errors    | Toast notification          |
+| Auth errors       | Redirect to landing page    |
+| WebSocket errors  | Toast notification          |
 
 ## Logging
 

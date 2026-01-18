@@ -195,7 +195,7 @@ The frontend displays a warning toast 5 minutes before token expiry, allowing us
 
 1. Checks React context token
 2. Validates via `isTokenValid()`
-3. Redirects to `/auth` if invalid
+3. Redirects to `/` (landing page) if invalid
 
 ## API Client
 
