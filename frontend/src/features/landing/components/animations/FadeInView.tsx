@@ -1,5 +1,6 @@
-import { motion, useInView } from 'framer-motion';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
+import styles from './FadeInView.module.scss';
 
 interface FadeInViewProps {
   children: React.ReactNode;
@@ -12,7 +13,8 @@ interface FadeInViewProps {
 }
 
 /**
- * Scroll-triggered fade-in animation wrapper using Framer Motion.
+ * Scroll-triggered fade-in animation wrapper using CSS animations + IntersectionObserver.
+ * Uses GPU-accelerated CSS transforms for better performance than Framer Motion.
  * Wraps content and animates it into view when scrolled into the viewport.
  */
 const FadeInView: React.FC<FadeInViewProps> = ({
@@ -25,41 +27,46 @@ const FadeInView: React.FC<FadeInViewProps> = ({
   amount = 0.3,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, amount });
+  const [isVisible, setIsVisible] = useState(false);
 
-  const getInitialPosition = () => {
-    switch (direction) {
-      case 'up':
-        return { y: 40, x: 0 };
-      case 'down':
-        return { y: -40, x: 0 };
-      case 'left':
-        return { x: 40, y: 0 };
-      case 'right':
-        return { x: -40, y: 0 };
-      default:
-        return { y: 40, x: 0 };
-    }
-  };
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
 
-  const initial = getInitialPosition();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (once) {
+            observer.unobserve(element);
+          }
+        } else if (!once) {
+          setIsVisible(false);
+        }
+      },
+      { threshold: amount }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [once, amount]);
+
+  const directionClass = styles[direction] || styles.up;
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, ...initial }}
-      animate={
-        isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...initial }
-      }
-      transition={{
-        duration,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
-      className={className}
+      className={`${styles.fadeInView} ${directionClass} ${isVisible ? styles.visible : ''} ${className || ''}`}
+      style={{
+        '--fade-delay': `${delay}s`,
+        '--fade-duration': `${duration}s`,
+      } as React.CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 

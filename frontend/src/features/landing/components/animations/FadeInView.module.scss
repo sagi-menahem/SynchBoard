@@ -1,0 +1,33 @@
+// GPU-accelerated fade-in animations using CSS transforms
+// Better performance than Framer Motion for scroll-triggered animations
+
+.fadeInView {
+  opacity: 0;
+  transition:
+    opacity var(--fade-duration, 0.5s) cubic-bezier(0.25, 0.1, 0.25, 1) var(--fade-delay, 0s),
+    transform var(--fade-duration, 0.5s) cubic-bezier(0.25, 0.1, 0.25, 1) var(--fade-delay, 0s);
+  will-change: opacity, transform;
+}
+
+// Direction variants - initial positions
+.up {
+  transform: translateY(40px);
+}
+
+.down {
+  transform: translateY(-40px);
+}
+
+.left {
+  transform: translateX(40px);
+}
+
+.right {
+  transform: translateX(-40px);
+}
+
+// Visible state - animate to final position
+.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}

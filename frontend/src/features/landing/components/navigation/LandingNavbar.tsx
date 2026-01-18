@@ -1,8 +1,7 @@
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { GuestLanguageSwitcher } from 'features/settings/ui';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ExternalLink, Menu, X } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
@@ -20,11 +19,30 @@ interface LandingNavbarProps {
 /**
  * Landing page navbar with three variants:
  * - Desktop: Always visible at top
- * - Floating: Appears on scroll (desktop only)
+ * - Floating: Appears on scroll (desktop only) - uses CSS animations for better performance
  * - Mobile: Hamburger menu with slide-out drawer
  */
 const LandingNavbar: React.FC<LandingNavbarProps> = ({ onGetStarted }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFloatingVisible, setIsFloatingVisible] = useState(false);
+
+  // Handle scroll to show/hide floating nav - uses CSS animation instead of Framer Motion
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsFloatingVisible(window.scrollY > 120);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavClick = useCallback((href: string) => {
     setIsMobileMenuOpen(false);
@@ -55,11 +73,18 @@ const LandingNavbar: React.FC<LandingNavbarProps> = ({ onGetStarted }) => {
         />
       </Container>
 
-      {/* Floating Nav - Appears on scroll (desktop only) */}
-      <FloatingNav
-        onNavClick={handleNavClick}
-        onGetStarted={handleGetStartedClick}
-      />
+      {/* Floating Nav - Appears on scroll (desktop only) - CSS animated */}
+      <nav className={`${styles.floatingNav} ${isFloatingVisible ? styles.floatingNavVisible : ''}`}>
+        <Logo />
+        <NavLinks onNavClick={handleNavClick} />
+        <div className={styles.navActions}>
+          <GuestLanguageSwitcher />
+          <ThemeSwitcher />
+          <Button variant="primary" onClick={handleGetStartedClick}>
+            <FloatingNavCTA />
+          </Button>
+        </div>
+      </nav>
 
       {/* Mobile Menu Overlay */}
       <MobileMenu
@@ -70,6 +95,12 @@ const LandingNavbar: React.FC<LandingNavbarProps> = ({ onGetStarted }) => {
       />
     </>
   );
+};
+
+// Separate component to avoid re-rendering parent on translation changes
+const FloatingNavCTA: React.FC = () => {
+  const { t } = useTranslation(['landing']);
+  return <>{t('landing:nav.getStarted')}</>;
 };
 
 interface NavProps {
@@ -137,32 +168,6 @@ const DesktopNav: React.FC<NavProps> = ({ onNavClick, onGetStarted }) => {
   );
 };
 
-// ... rest of file
-const FloatingNav: React.FC<NavProps> = ({ onNavClick, onGetStarted }) => {
-  const { t } = useTranslation(['landing']);
-  const { scrollY } = useScroll();
-
-  const springConfig = { stiffness: 300, damping: 30 };
-  const y = useSpring(
-    useTransform(scrollY, [100, 120], [-100, 10]),
-    springConfig,
-  );
-
-  return (
-    <motion.nav className={styles.floatingNav} style={{ y }}>
-      <Logo />
-      <NavLinks onNavClick={onNavClick} />
-      <div className={styles.navActions}>
-        <GuestLanguageSwitcher />
-        <ThemeSwitcher />
-        <Button variant="primary" onClick={onGetStarted}>
-          {t('landing:nav.getStarted')}
-        </Button>
-      </div>
-    </motion.nav>
-  );
-};
-
 interface MobileNavHeaderProps {
   isOpen: boolean;
   onToggle: () => void;
@@ -185,8 +190,6 @@ interface MobileMenuProps extends NavProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-
 
 const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,

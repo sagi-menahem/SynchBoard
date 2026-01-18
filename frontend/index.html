@@ -17,14 +17,8 @@
     <meta name="apple-mobile-web-app-title" content="SynchBoard" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preload LCP image for faster initial render -->
-    <link
-      rel="preload"
-      href="/screenshots/workspace-en-light.jpg"
-      as="image"
-      type="image/jpeg"
-      fetchpriority="high"
-    />
+    <!-- Preload critical assets for faster LCP -->
+    <link rel="preload" href="/favicon-96x96.png" as="image" type="image/png" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -47,152 +41,186 @@
     <meta name="twitter:image" content="https://synchboard.com/og_image.png" />
 
     <!-- Google Identity Services SDK is lazy-loaded by GoogleOneTap component when needed -->
+
+    <!-- Critical inline styles for instant LCP -->
+    <style>
+      /* Base styles for initial render */
+      :root {
+        --loader-bg: #ffffff;
+        --loader-border: rgba(0, 0, 0, 0.08);
+        --loader-skeleton: rgba(0, 0, 0, 0.06);
+        --loader-primary: #3b82f6;
+        --loader-text: #09090b;
+      }
+
+      #initial-loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--loader-bg);
+      }
+
+      .loader-navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--loader-border);
+        max-width: 80rem;
+        margin: 0 auto;
+        width: calc(100% - 2rem);
+      }
+
+      .loader-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+      }
+
+      .loader-logo-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+      }
+
+      .loader-logo-text {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--loader-text);
+        letter-spacing: -0.02em;
+      }
+
+      .loader-nav-links {
+        display: flex;
+        gap: 24px;
+      }
+
+      .loader-nav-link {
+        width: 60px;
+        height: 16px;
+        border-radius: 4px;
+        background: var(--loader-skeleton);
+      }
+
+      .loader-cta {
+        width: 100px;
+        height: 36px;
+        border-radius: 8px;
+        background: var(--loader-skeleton);
+      }
+
+      .loader-hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+        text-align: center;
+      }
+
+      .loader-headline {
+        width: min(90%, 500px);
+        height: 48px;
+        border-radius: 8px;
+        background: var(--loader-skeleton);
+        margin-bottom: 12px;
+      }
+
+      .loader-headline-2 {
+        width: min(70%, 380px);
+        height: 48px;
+        border-radius: 8px;
+        background: var(--loader-skeleton);
+        margin-bottom: 24px;
+      }
+
+      .loader-subheadline {
+        width: min(85%, 420px);
+        height: 20px;
+        border-radius: 4px;
+        background: var(--loader-skeleton);
+        opacity: 0.7;
+        margin-bottom: 8px;
+      }
+
+      .loader-subheadline-2 {
+        width: min(60%, 300px);
+        height: 20px;
+        border-radius: 4px;
+        background: var(--loader-skeleton);
+        opacity: 0.7;
+        margin-bottom: 32px;
+      }
+
+      .loader-cta-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .loader-btn-primary {
+        width: 140px;
+        height: 44px;
+        border-radius: 8px;
+        background: var(--loader-primary);
+        opacity: 0.7;
+      }
+
+      .loader-btn-secondary {
+        width: 160px;
+        height: 44px;
+        border-radius: 8px;
+        background: var(--loader-skeleton);
+      }
+
+      /* Hide nav links and CTA on mobile */
+      @media (max-width: 768px) {
+        .loader-nav-links,
+        .loader-cta {
+          display: none;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div id="root">
-      <!-- Landing page skeleton - replaced when React mounts -->
-      <div
-        id="initial-loader"
-        style="
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          flex-direction: column;
-          background: var(--loader-bg, #ffffff);
-        "
-      >
-        <!-- Navbar skeleton -->
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--loader-border, rgba(0, 0, 0, 0.08));
-          "
-        >
-          <!-- Logo placeholder -->
-          <div
-            style="
-              width: 120px;
-              height: 28px;
-              border-radius: 6px;
-              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-            "
-          ></div>
-          <!-- Nav links placeholder -->
-          <div style="display: flex; gap: 24px">
-            <div
-              style="
-                width: 60px;
-                height: 16px;
-                border-radius: 4px;
-                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-              "
-            ></div>
-            <div
-              style="
-                width: 70px;
-                height: 16px;
-                border-radius: 4px;
-                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-              "
-            ></div>
-            <div
-              style="
-                width: 50px;
-                height: 16px;
-                border-radius: 4px;
-                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-              "
-            ></div>
+      <!-- Landing page skeleton with real LCP content - replaced when React mounts -->
+      <div id="initial-loader">
+        <!-- Navbar with actual logo text (LCP element) -->
+        <nav class="loader-navbar">
+          <a href="#" class="loader-logo">
+            <img
+              src="/favicon-96x96.png"
+              alt="SynchBoard"
+              class="loader-logo-icon"
+              width="32"
+              height="32"
+            />
+            <span class="loader-logo-text">SynchBoard</span>
+          </a>
+          <div class="loader-nav-links">
+            <div class="loader-nav-link"></div>
+            <div class="loader-nav-link" style="width: 70px"></div>
+            <div class="loader-nav-link" style="width: 50px"></div>
           </div>
-          <!-- CTA button placeholder -->
-          <div
-            style="
-              width: 100px;
-              height: 36px;
-              border-radius: 8px;
-              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-            "
-          ></div>
-        </div>
+          <div class="loader-cta"></div>
+        </nav>
 
         <!-- Hero section skeleton -->
-        <div
-          style="
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 48px 24px;
-            text-align: center;
-          "
-        >
-          <!-- Headline placeholder -->
-          <div
-            style="
-              width: min(90%, 500px);
-              height: 48px;
-              border-radius: 8px;
-              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-              margin-bottom: 12px;
-            "
-          ></div>
-          <div
-            style="
-              width: min(70%, 380px);
-              height: 48px;
-              border-radius: 8px;
-              background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-              margin-bottom: 24px;
-            "
-          ></div>
-
-          <!-- Subheadline placeholder -->
-          <div
-            style="
-              width: min(85%, 420px);
-              height: 20px;
-              border-radius: 4px;
-              background: var(--loader-skeleton, rgba(0, 0, 0, 0.04));
-              margin-bottom: 8px;
-            "
-          ></div>
-          <div
-            style="
-              width: min(60%, 300px);
-              height: 20px;
-              border-radius: 4px;
-              background: var(--loader-skeleton, rgba(0, 0, 0, 0.04));
-              margin-bottom: 32px;
-            "
-          ></div>
-
-          <!-- CTA buttons placeholder -->
-          <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center">
-            <div
-              style="
-                width: 140px;
-                height: 44px;
-                border-radius: 8px;
-                background: var(--loader-primary, #3b82f6);
-                opacity: 0.7;
-              "
-            ></div>
-            <div
-              style="
-                width: 160px;
-                height: 44px;
-                border-radius: 8px;
-                background: var(--loader-skeleton, rgba(0, 0, 0, 0.06));
-              "
-            ></div>
+        <div class="loader-hero">
+          <div class="loader-headline"></div>
+          <div class="loader-headline-2"></div>
+          <div class="loader-subheadline"></div>
+          <div class="loader-subheadline-2"></div>
+          <div class="loader-cta-group">
+            <div class="loader-btn-primary"></div>
+            <div class="loader-btn-secondary"></div>
           </div>
         </div>
       </div>
@@ -224,6 +252,7 @@
           document.documentElement.style.setProperty('--loader-border', 'rgba(255, 255, 255, 0.08)');
           document.documentElement.style.setProperty('--loader-skeleton', 'rgba(255, 255, 255, 0.06)');
           document.documentElement.style.setProperty('--loader-primary', '#3b82f6');
+          document.documentElement.style.setProperty('--loader-text', '#fafafa');
         }
       })();
     </script>
