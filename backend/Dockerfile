@@ -1,5 +1,5 @@
 # Multi-stage build for Spring Boot backend
-FROM eclipse-temurin:24-jdk-alpine AS builder
+FROM eclipse-temurin:25-jdk-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -19,7 +19,7 @@ COPY src ./src
 RUN ./gradlew bootJar --no-daemon
 
 # Runtime stage
-FROM eclipse-temurin:24-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 
 # Install curl for healthcheck
 RUN apk add --no-cache curl
@@ -48,7 +48,7 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8080/actuator/health || exit 1
 
-# JVM flags for Java 24
+# JVM flags for Java 25
 ENTRYPOINT ["java", \
     "--add-opens=java.base/sun.misc=ALL-UNNAMED", \
     "-XX:+UnlockExperimentalVMOptions", \
