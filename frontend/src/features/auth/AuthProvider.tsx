@@ -53,18 +53,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (needsBackendValidation && token) {
-      // Validate token with backend to ensure it's still accepted by server
-      getUserProfile()
-        .then(() => {
-          setNeedsBackendValidation(false);
-        })
-        .catch((error) => {
-          logger.warn('[AuthProvider] Backend validation failed - clearing token', error);
-          setToken(null);
-          setUserEmail(null);
-          clearTokenFromStorage();
-          setNeedsBackendValidation(false);
-        });
+      // Defer backend validation to after initial paint to avoid blocking LCP
+      const timeoutId = setTimeout(() => {
+        // Validate token with backend to ensure it's still accepted by server
+        getUserProfile()
+          .then(() => {
+            setNeedsBackendValidation(false);
+          })
+          .catch((error) => {
+            logger.warn('[AuthProvider] Backend validation failed - clearing token', error);
+            setToken(null);
+            setUserEmail(null);
+            clearTokenFromStorage();
+            setNeedsBackendValidation(false);
+          });
+      }, 200);
+
+      return () => clearTimeout(timeoutId);
     }
   }, [needsBackendValidation, token, clearTokenFromStorage]);
 

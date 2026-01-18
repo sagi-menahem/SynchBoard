@@ -1,11 +1,18 @@
 import { ConnectionStatusBanner } from 'features/board/ui';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { BrowserRouter } from 'react-router-dom';
 import { useAppConfiguration } from 'shared/hooks/useAppConfiguration';
 import { ToasterConfig } from 'shared/ui/components/ToasterConfig';
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
 import { AppRoutes } from 'shared/ui/routing';
+
+// Type declaration for the skeleton hiding function injected by index.html
+declare global {
+  interface Window {
+    __hideSkeletonWhenReady?: () => void;
+  }
+}
 
 /**
  * Main application component that serves as the root of the React component tree.
@@ -22,6 +29,18 @@ function App() {
     renderOAuthLoading,
     renderInitializingLoading,
   } = useAppConfiguration();
+
+  // Signal skeleton to hide after React has painted
+  // Uses double requestAnimationFrame to ensure browser has completed first paint
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (typeof window.__hideSkeletonWhenReady === 'function') {
+          window.__hideSkeletonWhenReady();
+        }
+      });
+    });
+  }, []);
 
   // Handle OAuth redirect processing - prevents app from rendering during OAuth flow
   if (isOAuthProcessing) {

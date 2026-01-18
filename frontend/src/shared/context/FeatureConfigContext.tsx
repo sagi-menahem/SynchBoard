@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import apiClient from 'shared/lib/apiClient';
 
 /**
@@ -41,9 +41,15 @@ interface FeatureConfigProviderProps {
 export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ children }) => {
   // Initialize with default config to render immediately (no blocking)
   const [config, setConfig] = useState<FeatureConfig>(DEFAULT_CONFIG);
+  const configFetchedRef = useRef(false);
 
   useEffect(() => {
-    const fetchFeatureConfig = async () => {
+    // Prevent double fetching in React StrictMode
+    if (configFetchedRef.current) return;
+    configFetchedRef.current = true;
+
+    // Defer the state update to after initial paint to avoid re-renders during LCP measurement
+    const timeoutId = setTimeout(async () => {
       try {
         const response = await apiClient.get<FeatureConfig>('/config/features');
         setConfig(response.data);
@@ -51,9 +57,9 @@ export const FeatureConfigProvider: React.FC<FeatureConfigProviderProps> = ({ ch
         // Feature config endpoint failure is expected when backend is unavailable
         // Keep default config silently to allow app to function
       }
-    };
+    }, 100);
 
-    void fetchFeatureConfig();
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return <FeatureConfigContext.Provider value={config}>{children}</FeatureConfigContext.Provider>;

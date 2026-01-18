@@ -76,6 +76,12 @@
         display: flex;
         flex-direction: column;
         background: var(--loader-bg);
+        transition: opacity 0.2s ease-out;
+      }
+
+      #initial-loader.hidden {
+        opacity: 0;
+        pointer-events: none;
       }
 
       .loader-navbar {
@@ -276,6 +282,16 @@
           document.documentElement.style.setProperty('--loader-text', '#fafafa');
         }
       })();
+    </script>
+    <script>
+      // Function to hide skeleton after React has painted
+      // Called by React after first meaningful paint to ensure skeleton LCP is measured
+      window.__hideSkeletonWhenReady = function () {
+        var skeleton = document.getElementById('initial-loader');
+        if (skeleton) {
+          skeleton.classList.add('hidden');
+        }
+      };
     </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
