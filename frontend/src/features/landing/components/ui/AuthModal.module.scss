@@ -77,17 +77,15 @@
   flex-direction: column;
   height: 90dvh;
   max-height: 95dvh;
-  @include glass.glass-surface($use-user-color: false);
+  // Use solid background instead of glass effect
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  box-shadow: theme.$shadow-xl;
   outline: none;
   padding-bottom: env(safe-area-inset-bottom, 0);
   will-change: transform;
-  background: rgba(255, 255, 255, 0.95);
-
-  :global([data-theme='dark']) & {
-    background: rgba(39, 39, 42, 0.97);
-  }
 
   @supports not (height: 1dvh) {
     height: 90vh;

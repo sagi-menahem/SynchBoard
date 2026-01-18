@@ -10,11 +10,15 @@ import { Container } from '../../layout';
 
 import styles from './FooterSection.module.scss';
 
+interface FooterSectionProps {
+  onGetStarted: () => void;
+}
+
 /**
  * Footer section with logo, links, tech stack, newsletter, and social links.
  * Multi-column layout matching the template design.
  */
-const FooterSection: React.FC = () => {
+const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
   const { t } = useTranslation(['landing']);
   const currentYear = new Date().getFullYear();
 
@@ -50,7 +54,9 @@ const FooterSection: React.FC = () => {
             <span className={styles.logoText}>SynchBoard</span>
           </div>
           <p className={styles.description}>{t('landing:footer.description')}</p>
-          <Button className={styles.ctaButton}>{t('landing:footer.cta')}</Button>
+          <Button className={styles.ctaButton} onClick={onGetStarted}>
+            {t('landing:footer.cta')}
+          </Button>
         </div>
 
         {/* Product Column */}

@@ -81,7 +81,7 @@ const LandingPage: React.FC = () => {
           <DivideX />
         </main>
 
-        <FooterSection />
+        <FooterSection onGetStarted={handleGetStarted} />
 
         {/* Auth modal */}
         <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
