@@ -22,6 +22,10 @@
 // Brand column
 .brandColumn {
   margin-bottom: theme.$spacing-6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 
   @media (min-width: theme.$breakpoint-sm) {
     grid-column: auto;
@@ -38,6 +42,7 @@
   display: flex;
   align-items: center;
   gap: theme.$spacing-2;
+  justify-content: center;
 }
 
 .logoIcon {
@@ -55,7 +60,7 @@
 .description {
   margin-top: theme.$spacing-4;
   max-width: 32rem;
-  text-align: start;
+  text-align: center;
   color: var(--color-text-secondary);
   font-size: theme.$font-size-sm;
   line-height: theme.$line-height-relaxed;
@@ -75,16 +80,19 @@
   display: flex;
   flex-direction: column;
   gap: theme.$spacing-4;
+  text-align: center;
+  align-items: center;
 
-  @media (min-width: theme.$breakpoint-md) {
-    text-align: right;
-    align-items: flex-end;
-  }
+  // @media (min-width: theme.$breakpoint-md) {
+  //   text-align: center;
+  //   align-items: center;
+  // }
 }
 
 .linksList {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: theme.$spacing-3;
 }
 
