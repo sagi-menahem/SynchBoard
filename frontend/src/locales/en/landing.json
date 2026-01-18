@@ -46,10 +46,10 @@
   "screenshots": {
     "sectionTitle": "See It in Action",
     "sectionSubtitle": "Explore the SynchBoard interface",
-    "workspaceDark": "Main workspace with dark theme - featuring the drawing canvas, chat panel, and toolbar",
-    "workspaceLight": "Light theme workspace with collaborative drawing in progress",
     "boardList": "Board management dashboard for organizing and sharing your whiteboards",
-    "mobileCanvas": "Fully responsive mobile interface with touch-optimized controls"
+    "auth": "Secure authentication with email/password and Google OAuth login options",
+    "boardSettings": "Board settings panel with member management and permission controls",
+    "userSettings": "User profile settings for customizing your experience"
   },
   "cta": {
     "headline": "Ready to See It in Action?",

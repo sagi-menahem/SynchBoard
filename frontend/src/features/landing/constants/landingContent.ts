@@ -49,28 +49,28 @@ export const FEATURES = [
 
 export const SCREENSHOTS = [
   {
-    id: 'workspace-dark',
-    src: '/screenshots/workspace-en-dark.jpg',
-    captionKey: 'landing:screenshots.workspaceDark',
-    alt: 'SynchBoard workspace in dark theme',
-  },
-  {
-    id: 'workspace-light',
-    src: '/screenshots/workspace-en-light.jpg',
-    captionKey: 'landing:screenshots.workspaceLight',
-    alt: 'SynchBoard workspace in light theme',
-  },
-  {
     id: 'board-list',
     src: '/screenshots/board-list.jpg',
     captionKey: 'landing:screenshots.boardList',
     alt: 'Board management interface',
   },
   {
-    id: 'mobile-canvas',
-    src: '/screenshots/mobile-canvas.jpg',
-    captionKey: 'landing:screenshots.mobileCanvas',
-    alt: 'Mobile responsive canvas',
+    id: 'auth',
+    src: '/screenshots/auth.jpg',
+    captionKey: 'landing:screenshots.auth',
+    alt: 'Authentication page',
+  },
+  {
+    id: 'board-settings',
+    src: '/screenshots/board-settings.jpg',
+    captionKey: 'landing:screenshots.boardSettings',
+    alt: 'Board settings and member management',
+  },
+  {
+    id: 'user-settings',
+    src: '/screenshots/user-settings.jpg',
+    captionKey: 'landing:screenshots.userSettings',
+    alt: 'User profile settings',
   },
 ] as const;
 
