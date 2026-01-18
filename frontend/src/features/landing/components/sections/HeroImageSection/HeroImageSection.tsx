@@ -26,12 +26,11 @@ const HeroImageSection: React.FC = () => {
   const themeVariant = theme === 'dark' ? 'dark' : 'light';
 
   // Image sources for responsive loading
-  // Force 640w selection on all devices: 320px * 2 DPR = 640px
-  // This significantly improves load time while maintaining acceptable quality
+  // Skeleton handles LCP with preloaded 640w image, so React can use proper sizes for quality
   const imageSources = useMemo(() => ({
     webp: {
       srcSet: `/screenshots/workspace-en-${themeVariant}-640w.webp 640w, /screenshots/workspace-en-${themeVariant}-1024w.webp 1024w, /screenshots/workspace-en-${themeVariant}.webp 1920w`,
-      sizes: '320px',
+      sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px',
     },
     fallback: `/screenshots/workspace-en-${themeVariant}.jpg`,
   }), [themeVariant]);
