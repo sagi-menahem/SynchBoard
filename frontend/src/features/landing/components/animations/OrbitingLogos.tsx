@@ -138,7 +138,9 @@ const OrbitingLogos: React.FC<OrbitingLogosProps> = ({
   return (
     <div
       className={clsx(styles.container, className)}
-      style={{ width: size, height: size }}
+      style={{
+        '--size': `${size}px`,
+      } as React.CSSProperties}
     >
       {/* Background rings */}
       {showRings && (

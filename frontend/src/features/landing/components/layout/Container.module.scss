@@ -4,9 +4,11 @@
   position: relative;
   box-sizing: border-box;
   max-width: 80rem;
-  width: 100%;
+  width: calc(100% - 2rem); // Ensure borders are visible on mobile by checking in slightly
   margin: 0 auto;
   padding: 0;
+
+
 }
 
 .withBorders {
