@@ -9,11 +9,13 @@ import enAuth from 'locales/en/auth.json';
 import enBoard from 'locales/en/board.json';
 import enChat from 'locales/en/chat.json';
 import enCommon from 'locales/en/common.json';
+import enLanding from 'locales/en/landing.json';
 import enSettings from 'locales/en/settings.json';
 import heAuth from 'locales/he/auth.json';
 import heBoard from 'locales/he/board.json';
 import heChat from 'locales/he/chat.json';
 import heCommon from 'locales/he/common.json';
+import heLanding from 'locales/he/landing.json';
 import heSettings from 'locales/he/settings.json';
 import { initReactI18next } from 'react-i18next';
 
@@ -24,6 +26,7 @@ const resources = {
     auth: enAuth,
     board: enBoard,
     chat: enChat,
+    landing: enLanding,
     settings: enSettings,
   },
   he: {
@@ -31,6 +34,7 @@ const resources = {
     auth: heAuth,
     board: heBoard,
     chat: heChat,
+    landing: heLanding,
     settings: heSettings,
   },
 };
@@ -66,7 +70,7 @@ void i18n.use(initReactI18next).init({
   fallbackLng: 'en',
 
   defaultNS: 'common',
-  ns: ['common', 'auth', 'board', 'chat', 'settings'],
+  ns: ['common', 'auth', 'board', 'chat', 'landing', 'settings'],
 
   interpolation: {
     escapeValue: false, // React already escapes by default

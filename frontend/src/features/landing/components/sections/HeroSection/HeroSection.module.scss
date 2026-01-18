@@ -1,0 +1,102 @@
+@use '@/styles' as theme;
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: theme.$spacing-10 theme.$spacing-4 theme.$spacing-10;
+  text-align: center;
+
+  @media (min-width: theme.$breakpoint-md) {
+    padding: theme.$spacing-20 theme.$spacing-4 theme.$spacing-20;
+  }
+}
+
+.badge {
+  display: inline-flex;
+  padding: theme.$spacing-1 theme.$spacing-3;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
+  font-size: theme.$font-size-xs;
+  font-weight: theme.$font-weight-medium;
+  border-radius: theme.$border-radius-pill;
+  border: 1px solid var(--color-border);
+}
+
+.headline {
+  margin-top: theme.$spacing-4;
+  font-size: theme.$font-size-3xl;
+  font-weight: theme.$font-weight-bold;
+  line-height: theme.$line-height-tight;
+  color: var(--color-text-primary);
+
+  @media (min-width: theme.$breakpoint-md) {
+    font-size: theme.$font-size-5xl;
+  }
+}
+
+.highlight {
+  color: var(--color-primary);
+}
+
+.subheadline {
+  margin-top: theme.$spacing-6;
+  max-width: 32rem;
+  margin-inline: auto;
+  font-size: theme.$font-size-base;
+  color: var(--color-text-secondary);
+  line-height: theme.$line-height-relaxed;
+
+  @media (min-width: theme.$breakpoint-md) {
+    font-size: theme.$font-size-lg;
+  }
+}
+
+.ctaGroup {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-4;
+  margin-top: theme.$spacing-6;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  margin-top: theme.$spacing-6;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.star {
+  color: #fbbf24; // Gold/amber color for stars
+}
+
+.ratingDivider {
+  height: 1rem;
+  width: 1px;
+  background: var(--color-border);
+  margin-inline: theme.$spacing-2;
+}
+
+.ratingText {
+  font-size: theme.$font-size-xs;
+  color: var(--color-text-tertiary);
+
+  @media (min-width: theme.$breakpoint-sm) {
+    font-size: theme.$font-size-sm;
+  }
+}
+
+.ratingIcon {
+  color: var(--color-text-tertiary);
+}

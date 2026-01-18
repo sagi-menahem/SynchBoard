@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "features": "תכונות",
+    "screenshots": "צילומי מסך",
+    "github": "GitHub",
+    "getStarted": "התחל עכשיו"
+  },
+  "logoCloud": {
+    "heading": "נבנה עם טכנולוגיות מודרניות"
+  },
+  "hero": {
+    "badge": "פרויקט פורטפוליו Full-Stack",
+    "headline": "שתפו פעולה בזמן אמת על לוחות משותפים",
+    "subheadline": "SynchBoard היא אפליקציית לוח לבן שיתופית מלאה שנבנתה עם React, Spring Boot ו-WebSockets. צרו, שתפו וציירו יחד בזמן אמת.",
+    "ctaPrimary": "התחל בחינם",
+    "ctaSecondary": "צפה ב-GitHub"
+  },
+  "features": {
+    "sectionTitle": "תכונות",
+    "sectionSubtitle": "כל מה שצריך לשיתוף פעולה חלק",
+    "realtime": {
+      "title": "שיתוף פעולה בזמן אמת",
+      "description": "עבדו יחד עם הצוות שלכם בזמן אמת. ראו מיקומי סמן, ציורים ושינויים מסונכרנים מיידית בין כל המשתמשים המחוברים."
+    },
+    "drawing": {
+      "title": "כלי ציור עשירים",
+      "description": "12+ כלי ציור מקצועיים כולל עט חופשי, צורות, קווים, חצים, טקסט, פתקיות והעלאת תמונות."
+    },
+    "boards": {
+      "title": "ניהול לוחות",
+      "description": "צרו לוחות ללא הגבלה, ארגנו אותם עם שמות מותאמים אישית, הזמינו חברי צוות ונהלו הרשאות עם בקרות מנהל."
+    },
+    "security": {
+      "title": "אימות מאובטח",
+      "description": "אבטחה ברמה ארגונית עם אימות JWT, התחברות OAuth2 עם Google, אימות אימייל ותהליכי איפוס סיסמה מאובטחים."
+    },
+    "themes": {
+      "title": "ערכות נושא ושפות",
+      "description": "חוויה מותאמת אישית לחלוטין עם ערכות נושא בהירות וכהות, הגדרות צבע קנבס מוגדרות מראש ותמיכה מלאה ב-RTL לאנגלית ועברית."
+    },
+    "mobile": {
+      "title": "תגובתיות למובייל",
+      "description": "מותאם לכל המכשירים עם פקדים ידידותיים למגע, פריסות תגובתיות והתאמות ממשק משתמש ספציפיות למובייל."
+    }
+  },
+  "screenshots": {
+    "sectionTitle": "ראו את זה בפעולה",
+    "sectionSubtitle": "חקרו את ממשק SynchBoard",
+    "workspaceDark": "סביבת עבודה ראשית עם ערכת נושא כהה - כולל קנבס ציור, פאנל צ'אט וסרגל כלים",
+    "workspaceLight": "סביבת עבודה עם ערכת נושא בהירה וציור שיתופי בתהליך",
+    "boardList": "לוח מחוונים לניהול לוחות לארגון ושיתוף הלוחות הלבנים שלכם",
+    "mobileCanvas": "ממשק מובייל תגובתי לחלוטין עם פקדים מותאמים למגע"
+  },
+  "cta": {
+    "headline": "מוכנים לראות את זה בפעולה?",
+    "subheadline": "נבנה עם React, TypeScript, Spring Boot, PostgreSQL, Docker ו-WebSockets",
+    "ctaPrimary": "נסו את SynchBoard",
+    "ctaSecondary": "צפו בקוד המקור"
+  },
+  "footer": {
+    "description": "אפליקציית לוח לבן שיתופית מלאה המדגימה שיטות פיתוח אינטרנט מודרניות.",
+    "cta": "התחל לבנות",
+    "links": {
+      "title": "קישורים",
+      "github": "מאגר GitHub",
+      "liveDemo": "הדגמה חיה",
+      "documentation": "תיעוד"
+    },
+    "tech": {
+      "title": "מחסנית טכנולוגית",
+      "frontend": "React + TypeScript",
+      "backend": "Spring Boot + Java",
+      "database": "PostgreSQL",
+      "realtime": "WebSocket + STOMP"
+    },
+    "legal": {
+      "title": "משפטי",
+      "privacy": "מדיניות פרטיות",
+      "terms": "תנאי שימוש"
+    },
+    "newsletter": {
+      "title": "עדכונים",
+      "placeholder": "האימייל שלך",
+      "description": "קבלו עדכונים וחדשות על הפרויקט."
+    },
+    "copyright": "שגיא מנחם. נבנה כפרויקט פורטפוליו."
+  },
+  "auth": {
+    "modalTitle": "ברוכים הבאים ל-SynchBoard",
+    "loginTab": "התחברות",
+    "registerTab": "יצירת חשבון"
+  }
+}

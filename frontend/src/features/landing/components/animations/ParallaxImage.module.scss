@@ -1,0 +1,18 @@
+@use '@/styles' as theme;
+
+.container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: theme.$border-radius-xl;
+  box-shadow: theme.$shadow-lg;
+  will-change: transform;
+}

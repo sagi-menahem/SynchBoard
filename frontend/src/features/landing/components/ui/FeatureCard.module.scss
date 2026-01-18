@@ -1,0 +1,42 @@
+@use '@/styles' as theme;
+@use '@/styles/glass' as glass;
+
+.card {
+  @include glass.glass-panel($use-user-color: false);
+  padding: theme.$spacing-6;
+  border-radius: theme.$border-radius-xl;
+  transition:
+    transform theme.$transition-normal,
+    box-shadow theme.$transition-normal;
+
+  &:hover {
+    transform: translateY(theme.$transform-translate-y-sm);
+    box-shadow: theme.$shadow-card-hover;
+  }
+}
+
+.iconWrapper {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: white;
+  border-radius: theme.$border-radius-lg;
+  margin-bottom: theme.$spacing-4;
+}
+
+.title {
+  font-size: theme.$font-size-lg;
+  font-weight: theme.$font-weight-semibold;
+  color: var(--color-text-primary);
+  margin: 0 0 theme.$spacing-2;
+}
+
+.description {
+  font-size: theme.$font-size-sm;
+  color: var(--color-text-secondary);
+  line-height: theme.$line-height-relaxed;
+  margin: 0;
+}

@@ -1,0 +1,103 @@
+@use '@/styles' as theme;
+
+.heading {
+  padding: theme.$spacing-8 0;
+  text-align: center;
+  font-family: monospace;
+  font-size: theme.$font-size-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-tertiary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--color-border);
+
+  @media (min-width: theme.$breakpoint-md) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.logoCell {
+  position: relative;
+  overflow: hidden;
+
+  // Mobile borders
+  &.borderRight {
+    border-inline-end: 1px solid var(--color-border);
+  }
+
+  &.borderBottomMobile {
+    border-bottom: 1px solid var(--color-border);
+
+    @media (min-width: theme.$breakpoint-md) {
+      border-bottom: none;
+    }
+  }
+
+  // Desktop borders
+  @media (min-width: theme.$breakpoint-md) {
+    &.borderRight {
+      border-inline-end: none;
+    }
+
+    &.borderRightDesktop {
+      border-inline-end: 1px solid var(--color-border);
+    }
+
+    &.borderBottomDesktop {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+}
+
+.hoverBg {
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all theme.$transition-normal;
+}
+
+.logoCell:hover .hoverBg {
+  transform: translateY(0);
+  opacity: 0.05;
+}
+
+.logoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 8rem;
+  padding: theme.$spacing-4;
+  gap: theme.$spacing-2;
+}
+
+.logo {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-text-secondary);
+  filter: grayscale(100%);
+  transition: filter theme.$transition-normal;
+
+  .logoCell:hover & {
+    filter: grayscale(0%);
+  }
+}
+
+.logoName {
+  font-size: theme.$font-size-xs;
+  color: var(--color-text-tertiary);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all theme.$transition-normal;
+
+  .logoCell:hover & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

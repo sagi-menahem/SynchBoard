@@ -1,0 +1,72 @@
+@use '@/styles' as theme;
+@use '@/styles/glass' as glass;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-4;
+}
+
+.imageWrapper {
+  position: relative;
+  border-radius: theme.$border-radius-xl;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  @include glass.glass-surface($use-user-color: false);
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-hover) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition:
+    opacity theme.$transition-normal,
+    transform theme.$transition-slow;
+
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+.card:hover .image.loaded {
+  transform: scale(1.02);
+}
+
+.errorPlaceholder {
+  @include theme.flex-center;
+  height: 100%;
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: theme.$font-size-sm;
+}
+
+.caption {
+  font-size: theme.$font-size-sm;
+  color: var(--color-text-secondary);
+  line-height: theme.$line-height-relaxed;
+  margin: 0;
+  text-align: center;
+}

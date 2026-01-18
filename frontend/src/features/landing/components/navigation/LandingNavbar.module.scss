@@ -1,0 +1,194 @@
+@use '@/styles' as theme;
+@use '@/styles/glass' as glass;
+
+// Desktop Nav - Always visible
+.desktopNav {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    display: flex;
+  }
+}
+
+// Floating Nav - Appears on scroll
+.floatingNav {
+  display: none;
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: theme.$z-index-toolbar;
+  max-width: calc(80rem - 4rem);
+  margin-inline: auto;
+  padding: theme.$spacing-2 theme.$spacing-4;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface-elevated);
+  backdrop-filter: blur(12px);
+  border-radius: 0 0 theme.$border-radius-xl theme.$border-radius-xl;
+  box-shadow: theme.$shadow-md;
+  @include glass.glass-border;
+  border-top: none;
+
+  @media (min-width: theme.$breakpoint-md) {
+    display: flex;
+  }
+
+  @media (min-width: theme.$breakpoint-xl) {
+    border-radius: theme.$border-radius-xl;
+    top: theme.$spacing-2;
+  }
+}
+
+// Logo
+.logo {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: white;
+  border-radius: theme.$border-radius-md;
+  font-weight: theme.$font-weight-bold;
+  font-size: theme.$font-size-md;
+}
+
+.logoText {
+  font-weight: theme.$font-weight-semibold;
+  font-size: theme.$font-size-md;
+  color: var(--color-text-primary);
+}
+
+// Nav Links
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-8;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-1;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  transition: color theme.$transition-normal;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+// Nav Actions
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+}
+
+// Mobile Nav Header
+.mobileNavHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: theme.$spacing-2;
+
+  @media (min-width: theme.$breakpoint-md) {
+    display: none;
+  }
+}
+
+.menuButton {
+  padding: theme.$spacing-2;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  border-radius: theme.$border-radius-md;
+  transition: background-color theme.$transition-normal;
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+  }
+}
+
+// Mobile Menu Overlay
+.mobileMenuOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: theme.$z-index-modal;
+  background: var(--color-surface);
+
+  @media (min-width: theme.$breakpoint-md) {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: theme.$spacing-2;
+}
+
+.mobileNavLinks {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-border);
+  margin-top: theme.$spacing-6;
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: theme.$spacing-3 theme.$spacing-4;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: theme.$font-size-base;
+  font-weight: theme.$font-weight-medium;
+  border-bottom: 1px solid var(--color-border);
+  transition: color theme.$transition-normal;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.mobileActions {
+  padding: theme.$spacing-4;
+  margin-top: theme.$spacing-4;
+}
+
+.mobileCta {
+  width: 100%;
+}
+
+.mobileThemeActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: theme.$spacing-4;
+  padding: theme.$spacing-4;
+  margin-top: auto;
+  border-top: 1px solid var(--color-border);
+}

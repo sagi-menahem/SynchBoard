@@ -1,0 +1,52 @@
+@use '@/styles' as theme;
+
+.cta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 15rem;
+  overflow: hidden;
+  padding: theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    min-height: 30rem;
+  }
+}
+
+.orbit {
+  position: absolute;
+  inset-inline: 0;
+  top: -30rem;
+
+  // Mask to fade bottom 30%
+  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%);
+}
+
+.headline {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  font-size: theme.$font-size-2xl;
+  font-weight: theme.$font-weight-bold;
+  color: var(--color-text-primary);
+  margin: 0;
+  max-width: 40rem;
+  line-height: theme.$line-height-tight;
+
+  @media (min-width: theme.$breakpoint-md) {
+    font-size: theme.$font-size-4xl;
+  }
+
+  @media (min-width: theme.$breakpoint-lg) {
+    font-size: theme.$font-size-5xl;
+  }
+}
+
+.ctaButton {
+  position: relative;
+  z-index: 20;
+  margin-top: theme.$spacing-4;
+}

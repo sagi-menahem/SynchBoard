@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "features": "Features",
+    "screenshots": "Screenshots",
+    "github": "GitHub",
+    "getStarted": "Get Started"
+  },
+  "logoCloud": {
+    "heading": "Built with Modern Technologies"
+  },
+  "hero": {
+    "badge": "Full-Stack Portfolio Project",
+    "headline": "Collaborate in Real-Time on Shared Whiteboards",
+    "subheadline": "SynchBoard is a full-stack collaborative whiteboard application built with React, Spring Boot, and WebSockets. Create, share, and draw together in real-time.",
+    "ctaPrimary": "Get Started Free",
+    "ctaSecondary": "View on GitHub"
+  },
+  "features": {
+    "sectionTitle": "Features",
+    "sectionSubtitle": "Everything you need for seamless collaboration",
+    "realtime": {
+      "title": "Real-time Collaboration",
+      "description": "Work together with your team in real-time. See cursor positions, drawings, and changes instantly synchronized across all connected users."
+    },
+    "drawing": {
+      "title": "Rich Drawing Tools",
+      "description": "12+ professional drawing tools including freehand pen, shapes, lines, arrows, text, sticky notes, and image uploads."
+    },
+    "boards": {
+      "title": "Board Management",
+      "description": "Create unlimited boards, organize them with custom names, invite team members, and manage permissions with admin controls."
+    },
+    "security": {
+      "title": "Secure Authentication",
+      "description": "Enterprise-grade security with JWT authentication, OAuth2 Google login, email verification, and secure password reset flows."
+    },
+    "themes": {
+      "title": "Themes & Languages",
+      "description": "Fully customizable experience with light and dark themes, canvas color presets, and full RTL support for English and Hebrew."
+    },
+    "mobile": {
+      "title": "Mobile Responsive",
+      "description": "Optimized for all devices with touch-friendly controls, responsive layouts, and mobile-specific UI adaptations."
+    }
+  },
+  "screenshots": {
+    "sectionTitle": "See It in Action",
+    "sectionSubtitle": "Explore the SynchBoard interface",
+    "workspaceDark": "Main workspace with dark theme - featuring the drawing canvas, chat panel, and toolbar",
+    "workspaceLight": "Light theme workspace with collaborative drawing in progress",
+    "boardList": "Board management dashboard for organizing and sharing your whiteboards",
+    "mobileCanvas": "Fully responsive mobile interface with touch-optimized controls"
+  },
+  "cta": {
+    "headline": "Ready to See It in Action?",
+    "subheadline": "Built with React, TypeScript, Spring Boot, PostgreSQL, Docker, and WebSockets",
+    "ctaPrimary": "Try SynchBoard",
+    "ctaSecondary": "View Source Code"
+  },
+  "footer": {
+    "description": "A full-stack collaborative whiteboard application demonstrating modern web development practices.",
+    "cta": "Start Building",
+    "links": {
+      "title": "Links",
+      "github": "GitHub Repository",
+      "liveDemo": "Live Demo",
+      "documentation": "Documentation"
+    },
+    "tech": {
+      "title": "Tech Stack",
+      "frontend": "React + TypeScript",
+      "backend": "Spring Boot + Java",
+      "database": "PostgreSQL",
+      "realtime": "WebSocket + STOMP"
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "placeholder": "Your email",
+      "description": "Get the latest updates and news about the project."
+    },
+    "copyright": "Sagi Menahem. Built as a portfolio project."
+  },
+  "auth": {
+    "modalTitle": "Welcome to SynchBoard",
+    "loginTab": "Sign In",
+    "registerTab": "Create Account"
+  }
+}

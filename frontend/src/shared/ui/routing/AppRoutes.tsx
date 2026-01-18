@@ -17,11 +17,11 @@ import {
 import { ErrorBoundary } from 'shared/ui/errorBoundary';
 import { Layout } from 'shared/ui/layout';
 import ProtectedRoute from 'shared/ui/routing/ProtectedRoute';
-import RootRedirect from 'shared/ui/routing/RootRedirect';
 import utilStyles from 'shared/ui/styles/utils.module.scss';
 
 import styles from './AppRoutes.module.scss';
 
+const LandingPage = lazy(() => import('features/landing/pages/LandingPage'));
 const AuthPage = lazy(() => import('features/auth/pages/AuthPage'));
 const BoardListPage = lazy(() => import('features/board/pages/BoardListPage'));
 const BoardDetailsPage = lazy(() => import('features/board/pages/BoardDetailsPage'));
@@ -138,10 +138,33 @@ const BoardPageLoader = () => {
  * Defines all application routes with authentication protection and progressive loading.
  * Wraps protected routes with authentication checks and provides error recovery for each route.
  */
+/**
+ * Simple landing page skeleton for initial load.
+ */
+const LandingPageSkeleton = () => (
+  <div className={styles.landingSkeleton}>
+    <div className={styles.landingSpinner} />
+  </div>
+);
+
+/**
+ * Main application routing configuration with lazy loading and error boundaries.
+ * Defines all application routes with authentication protection and progressive loading.
+ * Wraps protected routes with authentication checks and provides error recovery for each route.
+ */
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<RootRedirect />} />
+      <Route
+        path="/"
+        element={
+          <ErrorBoundary>
+            <Suspense fallback={<LandingPageSkeleton />}>
+              <LandingPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
 
       <Route
         path="/auth"

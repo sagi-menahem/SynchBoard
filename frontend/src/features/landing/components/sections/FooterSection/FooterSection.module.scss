@@ -1,0 +1,220 @@
+@use '@/styles' as theme;
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: theme.$spacing-6;
+  padding: theme.$spacing-20 theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: theme.$breakpoint-md) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: theme.$breakpoint-lg) {
+    grid-template-columns: 3fr 1fr 1fr 1fr 2fr;
+  }
+}
+
+// Brand column
+.brandColumn {
+  margin-bottom: theme.$spacing-6;
+
+  @media (min-width: theme.$breakpoint-sm) {
+    grid-column: span 2;
+  }
+
+  @media (min-width: theme.$breakpoint-md) {
+    grid-column: span 4;
+  }
+
+  @media (min-width: theme.$breakpoint-lg) {
+    grid-column: span 1;
+    margin-bottom: 0;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-2;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: white;
+  border-radius: theme.$border-radius-md;
+  font-weight: theme.$font-weight-bold;
+  font-size: theme.$font-size-md;
+}
+
+.logoText {
+  font-weight: theme.$font-weight-semibold;
+  font-size: theme.$font-size-md;
+  color: var(--color-text-primary);
+}
+
+.description {
+  margin-top: theme.$spacing-4;
+  max-width: 32rem;
+  text-align: start;
+  color: var(--color-text-secondary);
+  font-size: theme.$font-size-sm;
+  line-height: theme.$line-height-relaxed;
+}
+
+.ctaButton {
+  margin-top: theme.$spacing-4;
+  margin-bottom: theme.$spacing-8;
+
+  @media (min-width: theme.$breakpoint-lg) {
+    margin-bottom: 0;
+  }
+}
+
+// Links columns
+.linksColumn {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-2;
+  margin-bottom: theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    margin-bottom: 0;
+  }
+}
+
+.columnTitle {
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: theme.$spacing-1;
+  margin-block: theme.$spacing-2;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color theme.$transition-normal;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.techItem {
+  display: block;
+  margin-block: theme.$spacing-2;
+  font-size: theme.$font-size-sm;
+  font-weight: theme.$font-weight-medium;
+  color: var(--color-text-secondary);
+}
+
+// Newsletter column
+.newsletterColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  @media (min-width: theme.$breakpoint-lg) {
+    grid-column: span 1;
+  }
+}
+
+.newsletterInput {
+  display: flex;
+  width: 100%;
+  margin-top: theme.$spacing-2;
+  align-items: center;
+  border-radius: theme.$border-radius-xl;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-elevated);
+  padding: theme.$spacing-1;
+}
+
+.emailInput {
+  flex: 1;
+  background: transparent;
+  padding: theme.$spacing-2;
+  font-size: theme.$font-size-sm;
+  outline: none;
+  border: none;
+  color: var(--color-text-primary);
+
+  &::placeholder {
+    color: var(--color-text-tertiary);
+  }
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  flex-shrink: 0;
+  border-radius: theme.$border-radius-lg;
+}
+
+.newsletterDescription {
+  margin-top: theme.$spacing-4;
+  text-align: start;
+  font-size: theme.$font-size-sm;
+  color: var(--color-text-tertiary);
+  line-height: theme.$line-height-relaxed;
+}
+
+// Bottom bar
+.bottomBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: theme.$spacing-4;
+  padding: theme.$spacing-8 theme.$spacing-4;
+  margin-block: theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    flex-direction: row;
+  }
+}
+
+.copyright {
+  font-size: theme.$font-size-sm;
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  gap: theme.$spacing-4;
+}
+
+.socialLink {
+  color: var(--color-text-tertiary);
+  transition: color theme.$transition-normal;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}

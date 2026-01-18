@@ -70,3 +70,16 @@
     }
   }
 }
+
+// Landing page skeleton loader
+.landingSkeleton {
+  @include theme.flex-center;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.landingSpinner {
+  @include theme.spinner-base;
+  width: 40px;
+  height: 40px;
+}

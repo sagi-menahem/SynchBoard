@@ -1,0 +1,55 @@
+@use '@/styles' as theme;
+
+.features {
+  padding: theme.$spacing-16 theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    padding: theme.$spacing-20 theme.$spacing-4;
+  }
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: theme.$spacing-12;
+
+  @media (max-width: theme.$breakpoint-md) {
+    margin-bottom: theme.$spacing-8;
+  }
+}
+
+.sectionTitle {
+  font-size: theme.$font-size-2xl;
+  font-weight: theme.$font-weight-bold;
+  color: var(--color-text-primary);
+  margin: 0 0 theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    font-size: theme.$font-size-3xl;
+  }
+}
+
+.sectionSubtitle {
+  font-size: theme.$font-size-base;
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-inline: auto;
+
+  @media (min-width: theme.$breakpoint-md) {
+    font-size: theme.$font-size-lg;
+  }
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: theme.$spacing-6;
+
+  @media (min-width: theme.$breakpoint-sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: theme.$breakpoint-lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

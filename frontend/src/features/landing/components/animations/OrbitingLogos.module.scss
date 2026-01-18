@@ -1,0 +1,108 @@
+@use '@/styles' as theme;
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline: auto;
+}
+
+// Background rings
+.bgRings {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bgRing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bgRingInner {
+  background: var(--color-text-tertiary);
+  opacity: 0.2;
+}
+
+.bgRingMiddle {
+  background: var(--color-text-tertiary);
+  opacity: 0.15;
+}
+
+.bgRingOuter {
+  background: var(--color-text-tertiary);
+  opacity: 0.1;
+}
+
+// Animated rings
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.orbit {
+  animation: orbit var(--duration, 20s) linear infinite;
+}
+
+.counterOrbit {
+  animation: counterOrbit var(--duration, 20s) linear infinite;
+}
+
+.ringInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.logoPosition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: theme.$border-radius-md;
+  background: var(--color-surface);
+  box-shadow: theme.$shadow-md;
+}
+
+.logo {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+@keyframes orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes counterOrbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
