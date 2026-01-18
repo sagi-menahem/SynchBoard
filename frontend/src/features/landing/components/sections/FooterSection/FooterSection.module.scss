@@ -46,14 +46,7 @@
 .logoIcon {
   width: 32px;
   height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-primary);
-  color: white;
-  border-radius: theme.$border-radius-md;
-  font-weight: theme.$font-weight-bold;
-  font-size: theme.$font-size-md;
+  object-fit: contain;
 }
 
 .logoText {

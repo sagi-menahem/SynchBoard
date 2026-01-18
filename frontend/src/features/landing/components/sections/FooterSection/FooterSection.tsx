@@ -43,7 +43,7 @@ const FooterSection: React.FC = () => {
         {/* Brand Column */}
         <div className={styles.brandColumn}>
           <div className={styles.logo}>
-            <span className={styles.logoIcon}>S</span>
+            <img src="/logo.png" alt="SynchBoard" className={styles.logoIcon} />
             <span className={styles.logoText}>SynchBoard</span>
           </div>
           <p className={styles.description}>{t('landing:footer.description')}</p>
