@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "kill-port 5173 && vite",
     "kill-port": "kill-port 5173",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/optimize-html.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\"",

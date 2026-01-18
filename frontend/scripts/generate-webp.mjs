@@ -12,6 +12,8 @@ const screenshotsDir = path.join(__dirname, '../public/screenshots');
 const heroImages = [
   'workspace-en-light.jpg',
   'workspace-en-dark.jpg',
+  'workspace-he-light.jpg',
+  'workspace-he-dark.jpg',
 ];
 
 const responsiveSizes = [640, 1024];
