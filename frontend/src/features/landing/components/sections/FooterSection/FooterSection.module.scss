@@ -11,11 +11,11 @@
   }
 
   @media (min-width: theme.$breakpoint-md) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (min-width: theme.$breakpoint-lg) {
-    grid-template-columns: 3fr 1fr 1fr 1fr 2fr;
+    grid-template-columns: 1fr auto;
+    gap: theme.$spacing-20;
+    justify-content: space-between;
+    max-width: 64rem;
+    margin-inline: auto;
   }
 }
 
@@ -24,15 +24,12 @@
   margin-bottom: theme.$spacing-6;
 
   @media (min-width: theme.$breakpoint-sm) {
-    grid-column: span 2;
+    grid-column: auto;
   }
 
   @media (min-width: theme.$breakpoint-md) {
-    grid-column: span 4;
-  }
-
-  @media (min-width: theme.$breakpoint-lg) {
-    grid-column: span 1;
+    // grid-column: auto;
+    max-width: 400px;
     margin-bottom: 0;
   }
 }
@@ -77,12 +74,18 @@
 .linksColumn {
   display: flex;
   flex-direction: column;
-  gap: theme.$spacing-2;
-  margin-bottom: theme.$spacing-4;
+  gap: theme.$spacing-4;
 
   @media (min-width: theme.$breakpoint-md) {
-    margin-bottom: 0;
+    text-align: right;
+    align-items: flex-end;
   }
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: theme.$spacing-3;
 }
 
 .columnTitle {
@@ -108,68 +111,7 @@
   }
 }
 
-.techItem {
-  display: block;
-  margin-block: theme.$spacing-2;
-  font-size: theme.$font-size-sm;
-  font-weight: theme.$font-weight-medium;
-  color: var(--color-text-secondary);
-}
 
-// Newsletter column
-.newsletterColumn {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  @media (min-width: theme.$breakpoint-lg) {
-    grid-column: span 1;
-  }
-}
-
-.newsletterInput {
-  display: flex;
-  width: 100%;
-  margin-top: theme.$spacing-2;
-  align-items: center;
-  border-radius: theme.$border-radius-xl;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-elevated);
-  padding: theme.$spacing-1;
-}
-
-.emailInput {
-  flex: 1;
-  background: transparent;
-  padding: theme.$spacing-2;
-  font-size: theme.$font-size-sm;
-  outline: none;
-  border: none;
-  color: var(--color-text-primary);
-
-  &::placeholder {
-    color: var(--color-text-tertiary);
-  }
-}
-
-.sendButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  flex-shrink: 0;
-  border-radius: theme.$border-radius-lg;
-}
-
-.newsletterDescription {
-  margin-top: theme.$spacing-4;
-  text-align: start;
-  font-size: theme.$font-size-sm;
-  color: var(--color-text-tertiary);
-  line-height: theme.$line-height-relaxed;
-}
 
 // Bottom bar
 .bottomBar {

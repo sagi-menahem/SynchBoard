@@ -1,4 +1,4 @@
-import { ExternalLink, Send } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
@@ -9,25 +9,16 @@ import { GitHubLogo, LinkedInLogo, TwitterLogo } from '../../icons/TechLogos';
 import { Container } from '../../layout';
 
 import styles from './FooterSection.module.scss';
-
 interface FooterSectionProps {
   onGetStarted: () => void;
 }
 
 /**
- * Footer section with logo, links, tech stack, newsletter, and social links.
- * Multi-column layout matching the template design.
+ * Footer section with logo, links, and social connections.
  */
 const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
   const { t } = useTranslation(['landing']);
   const currentYear = new Date().getFullYear();
-
-  const productLinks = [
-    { title: t('landing:features.realtime.title'), href: '#features' },
-    { title: t('landing:features.drawing.title'), href: '#features' },
-    { title: t('landing:features.boards.title'), href: '#features' },
-    { title: t('landing:features.security.title'), href: '#features' },
-  ];
 
   const companyLinks = [
     { title: t('landing:nav.getStarted'), href: '#' },
@@ -59,58 +50,23 @@ const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
           </Button>
         </div>
 
-        {/* Product Column */}
-        <div className={styles.linksColumn}>
-          <p className={styles.columnTitle}>Features</p>
-          {productLinks.map((item) => (
-            <a key={item.title} href={item.href} className={styles.link}>
-              {item.title}
-            </a>
-          ))}
-        </div>
-
-        {/* Company Column */}
+        {/* Links Column */}
         <div className={styles.linksColumn}>
           <p className={styles.columnTitle}>{t('landing:footer.links.title')}</p>
-          {companyLinks.map((item) => (
-            <a
-              key={item.title}
-              href={item.href}
-              className={styles.link}
-              target={item.external ? '_blank' : undefined}
-              rel={item.external ? 'noopener noreferrer' : undefined}
-            >
-              {item.title}
-              {item.external && <ExternalLink size={12} />}
-            </a>
-          ))}
-        </div>
-
-        {/* Tech Stack Column */}
-        <div className={styles.linksColumn}>
-          <p className={styles.columnTitle}>{t('landing:footer.tech.title')}</p>
-          <span className={styles.techItem}>{t('landing:footer.tech.frontend')}</span>
-          <span className={styles.techItem}>{t('landing:footer.tech.backend')}</span>
-          <span className={styles.techItem}>{t('landing:footer.tech.database')}</span>
-          <span className={styles.techItem}>{t('landing:footer.tech.realtime')}</span>
-        </div>
-
-        {/* Newsletter Column */}
-        <div className={styles.newsletterColumn}>
-          <p className={styles.columnTitle}>{t('landing:footer.newsletter.title')}</p>
-          <div className={styles.newsletterInput}>
-            <input
-              type="email"
-              placeholder={t('landing:footer.newsletter.placeholder')}
-              className={styles.emailInput}
-            />
-            <Button className={styles.sendButton}>
-              <Send size={16} />
-            </Button>
+          <div className={styles.linksList}>
+            {companyLinks.map((item) => (
+              <a
+                key={item.title}
+                href={item.href}
+                className={styles.link}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+              >
+                {item.title}
+                {item.external && <ExternalLink size={12} />}
+              </a>
+            ))}
           </div>
-          <p className={styles.newsletterDescription}>
-            {t('landing:footer.newsletter.description')}
-          </p>
         </div>
       </div>
 
