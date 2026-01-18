@@ -78,7 +78,7 @@ const OrbitingLogos: React.FC<OrbitingLogosProps> = ({
       ? [(innerScale + outerScale) / 2]
       : Array.from(
           { length: numRings },
-          (_, i) => innerScale + ((outerScale - innerScale) * i) / (numRings - 1)
+          (_, i) => innerScale + ((outerScale - innerScale) * i) / (numRings - 1),
         );
 
   const renderRing = (ringIndex: number) => {
@@ -118,10 +118,7 @@ const OrbitingLogos: React.FC<OrbitingLogosProps> = ({
               >
                 <div style={{ transform: `rotate(${-angleDeg}deg)` }}>
                   <div
-                    className={clsx(
-                      styles.logoBox,
-                      reverse ? styles.orbit : styles.counterOrbit
-                    )}
+                    className={clsx(styles.logoBox, reverse ? styles.orbit : styles.counterOrbit)}
                     style={{ '--duration': `${duration}s` } as React.CSSProperties}
                   >
                     <Logo className={styles.logo} />
@@ -138,9 +135,11 @@ const OrbitingLogos: React.FC<OrbitingLogosProps> = ({
   return (
     <div
       className={clsx(styles.container, className)}
-      style={{
-        '--size': `${size}px`,
-      } as React.CSSProperties}
+      style={
+        {
+          '--size': `${size}px`,
+        } as React.CSSProperties
+      }
     >
       {/* Background rings */}
       {showRings && (
@@ -154,7 +153,7 @@ const OrbitingLogos: React.FC<OrbitingLogosProps> = ({
                   styles.bgRing,
                   i === 0 && styles.bgRingInner,
                   i === 1 && styles.bgRingMiddle,
-                  i === 2 && styles.bgRingOuter
+                  i === 2 && styles.bgRingOuter,
                 )}
                 style={{ width: diameter, height: diameter }}
               />
@@ -165,7 +164,7 @@ const OrbitingLogos: React.FC<OrbitingLogosProps> = ({
 
       {/* Animated rings */}
       {Array.from({ length: numRings }, (_, idx) => numRings - 1 - idx).map((ringIndex) =>
-        renderRing(ringIndex)
+        renderRing(ringIndex),
       )}
     </div>
   );

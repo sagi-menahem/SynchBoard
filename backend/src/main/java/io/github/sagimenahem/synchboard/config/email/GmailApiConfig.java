@@ -58,8 +58,8 @@ public class GmailApiConfig {
     public Gmail gmail() {
         if (!isGmailConfigured()) {
             log.warn(
-                "Gmail API credentials not configured. Email functionality will be disabled. "
-                    + "Set GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, and GMAIL_REFRESH_TOKEN to enable."
+                "Gmail API credentials not configured. Email functionality will be disabled. " +
+                "Set GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, and GMAIL_REFRESH_TOKEN to enable."
             );
             return null;
         }

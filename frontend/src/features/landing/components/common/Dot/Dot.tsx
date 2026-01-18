@@ -30,7 +30,7 @@ const Dot: React.FC<DotProps> = ({ top, left, right, bottom }) => {
     const dotCenterY = dotRect.top + dotRect.height / 2;
 
     const distance = Math.sqrt(
-      Math.pow(clientX - dotCenterX, 2) + Math.pow(clientY - dotCenterY, 2)
+      Math.pow(clientX - dotCenterX, 2) + Math.pow(clientY - dotCenterY, 2),
     );
 
     setIsNearMouse(distance <= 100);
@@ -59,7 +59,7 @@ const Dot: React.FC<DotProps> = ({ top, left, right, bottom }) => {
         bottom && styles.bottom,
         left && styles.left,
         right && styles.right,
-        isNearMouse && styles.active
+        isNearMouse && styles.active,
       )}
     />
   );

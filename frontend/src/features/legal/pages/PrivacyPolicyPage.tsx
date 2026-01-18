@@ -45,7 +45,9 @@ const PrivacyPolicyPage: React.FC = () => {
           <h3>{t('legal:privacy.sections.informationCollected.profileData.title')}</h3>
           <ul className={styles.list}>
             <li>{t('legal:privacy.sections.informationCollected.profileData.items.picture')}</li>
-            <li>{t('legal:privacy.sections.informationCollected.profileData.items.preferences')}</li>
+            <li>
+              {t('legal:privacy.sections.informationCollected.profileData.items.preferences')}
+            </li>
           </ul>
 
           <h3>{t('legal:privacy.sections.informationCollected.contentData.title')}</h3>

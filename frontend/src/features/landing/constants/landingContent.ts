@@ -1,12 +1,4 @@
-import {
-  Globe,
-  LayoutGrid,
-  Palette,
-  Pencil,
-  Shield,
-  Smartphone,
-  Users,
-} from 'lucide-react';
+import { Globe, LayoutGrid, Palette, Pencil, Shield, Smartphone, Users } from 'lucide-react';
 
 export const FEATURES = [
   {

@@ -1,7 +1,5 @@
 {
   "permissions": {
-    "additionalDirectories": [
-      "c:\\Users\\sagi menahem\\Documents\\Workspace\\SynchBoard"
-    ]
+    "additionalDirectories": ["c:\\Users\\sagi menahem\\Documents\\Workspace\\SynchBoard"]
   }
 }

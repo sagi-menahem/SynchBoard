@@ -157,9 +157,9 @@
   display: flex;
   flex-direction: column;
 
-  // Ensure it doesn't take full height unless needed, 
+  // Ensure it doesn't take full height unless needed,
   // but vaul handles height automatically based on content.
-  max-height: 85vh; 
+  max-height: 85vh;
 }
 
 .drawerHandle {

@@ -1,6 +1,5 @@
 package io.github.sagimenahem.synchboard.service.auth;
 
-import java.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import jakarta.mail.MessagingException;
@@ -10,6 +9,7 @@ import jakarta.mail.internet.MimeMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Locale;
 import java.util.Properties;
 import lombok.RequiredArgsConstructor;
@@ -110,10 +110,7 @@ public class EmailService {
      */
     public boolean sendVerificationCode(String toEmail, String verificationCode, Locale locale) {
         if (!isEmailEnabled()) {
-            log.warn(
-                "Email service disabled - Gmail API not configured. Skipping verification email to: {}",
-                toEmail
-            );
+            log.warn("Email service disabled - Gmail API not configured. Skipping verification email to: {}", toEmail);
             return false;
         }
         String subject = messageSource.getMessage("email.verification.subject", null, locale);

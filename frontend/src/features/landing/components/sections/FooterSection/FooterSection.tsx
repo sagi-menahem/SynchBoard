@@ -26,7 +26,11 @@ const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
     { title: t('landing:nav.getStarted'), href: '#' },
     { title: t('landing:footer.links.github'), href: GITHUB_URL, external: true },
     { title: t('landing:footer.links.liveDemo'), href: LIVE_DEMO_URL, external: true },
-    { title: t('landing:footer.links.documentation'), href: `${GITHUB_URL}#readme`, external: true },
+    {
+      title: t('landing:footer.links.documentation'),
+      href: `${GITHUB_URL}#readme`,
+      external: true,
+    },
   ];
 
   const socialLinks = [
@@ -44,7 +48,13 @@ const FooterSection: React.FC<FooterSectionProps> = ({ onGetStarted }) => {
         {/* Brand Column */}
         <div className={styles.brandColumn}>
           <div className={styles.logo}>
-            <img src="/favicon.svg" alt="SynchBoard" className={styles.logoIcon} width={32} height={32} />
+            <img
+              src="/favicon.svg"
+              alt="SynchBoard"
+              className={styles.logoIcon}
+              width={32}
+              height={32}
+            />
             <span className={styles.logoText}>SynchBoard</span>
           </div>
           <p className={styles.description}>{t('landing:footer.description')}</p>

@@ -10,8 +10,9 @@
 
   <br/>
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
-  [![GitHub Stars](https://img.shields.io/github/stars/sagi-menahem/SynchBoard?style=flat-square)](https://github.com/sagi-menahem/SynchBoard/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/sagi-menahem/SynchBoard?style=flat-square)](https://github.com/sagi-menahem/SynchBoard/stargazers)
+
 </div>
 
 ---
@@ -94,12 +95,12 @@
 
 ### Theme & Language Support
 
-| English - Dark | English - Light |
-|:---:|:---:|
+|                                    English - Dark                                     |                                     English - Light                                     |
+| :-----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
 | <img src="assets/screenshots/workspace-en-dark.jpg" alt="Workspace - English Dark" /> | <img src="assets/screenshots/workspace-en-light.jpg" alt="Workspace - English Light" /> |
 
-| Hebrew (RTL) - Dark | Hebrew (RTL) - Light |
-|:---:|:---:|
+|                                 Hebrew (RTL) - Dark                                  |                                  Hebrew (RTL) - Light                                  |
+| :----------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: |
 | <img src="assets/screenshots/workspace-he-dark.jpg" alt="Workspace - Hebrew Dark" /> | <img src="assets/screenshots/workspace-he-light.jpg" alt="Workspace - Hebrew Light" /> |
 
 ### Application Pages
@@ -122,12 +123,12 @@
 
 ### Mobile Experience
 
-| Board List - Grid | Board List - List |
-|:---:|:---:|
+|                                    Board List - Grid                                     |                                  Board List - List                                  |
+| :--------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------: |
 | <img src="assets/screenshots/mobile-board-list-grid.jpg" alt="Mobile Board List Grid" /> | <img src="assets/screenshots/mobile-board-list-list.jpg" alt="Mobile Board List" /> |
 
-| Canvas | Chat |
-|:---:|:---:|
+|                                 Canvas                                 |                                Chat                                |
+| :--------------------------------------------------------------------: | :----------------------------------------------------------------: |
 | <img src="assets/screenshots/mobile-canvas.jpg" alt="Mobile Canvas" /> | <img src="assets/screenshots/mobile-chat.jpg" alt="Mobile Chat" /> |
 
 </div>
@@ -220,23 +221,23 @@ npm install && npm run dev
 
 ## Documentation
 
-| Document                                                 | Description                               |
-| :------------------------------------------------------- | :---------------------------------------- |
-| [Installation Guide](docs/INSTALLATION.md)               | Local development & production deployment |
-| [API Documentation](docs/API_DOCUMENTATION.md)           | REST API reference with examples          |
-| [WebSocket Architecture](docs/WEBSOCKET_ARCHITECTURE.md) | Real-time communication & STOMP protocol  |
-| [Authentication](docs/AUTHENTICATION.md)                 | JWT, OAuth2, and security implementation  |
-| [Canvas Architecture](docs/CANVAS_ARCHITECTURE.md)       | Drawing system & object management        |
-| [Database Schema](docs/DATABASE_SCHEMA.md)               | Entity relationships & data model         |
-| [Docker Infrastructure](docs/DOCKER_INFRASTRUCTURE.md)   | Container setup & orchestration           |
-| [Nginx Configuration](docs/NGINX_CONFIGURATION.md)       | Reverse proxy & SSL configuration         |
-| [Security](docs/SECURITY.md)                             | Security measures & best practices        |
-| [Error Handling](docs/ERROR_HANDLING.md)                 | Exception handling & error responses      |
+| Document                                                 | Description                                  |
+| :------------------------------------------------------- | :------------------------------------------- |
+| [Installation Guide](docs/INSTALLATION.md)               | Local development & production deployment    |
+| [API Documentation](docs/API_DOCUMENTATION.md)           | REST API reference with examples             |
+| [WebSocket Architecture](docs/WEBSOCKET_ARCHITECTURE.md) | Real-time communication & STOMP protocol     |
+| [Authentication](docs/AUTHENTICATION.md)                 | JWT, OAuth2, and security implementation     |
+| [Canvas Architecture](docs/CANVAS_ARCHITECTURE.md)       | Drawing system & object management           |
+| [Database Schema](docs/DATABASE_SCHEMA.md)               | Entity relationships & data model            |
+| [Docker Infrastructure](docs/DOCKER_INFRASTRUCTURE.md)   | Container setup & orchestration              |
+| [Nginx Configuration](docs/NGINX_CONFIGURATION.md)       | Reverse proxy & SSL configuration            |
+| [Security](docs/SECURITY.md)                             | Security measures & best practices           |
+| [Error Handling](docs/ERROR_HANDLING.md)                 | Exception handling & error responses         |
 | [Email Service](docs/EMAIL_SERVICE.md)                   | Gmail REST API integration & email templates |
-| [File Storage](docs/FILE_STORAGE.md)                     | Image uploads & file management           |
-| [History Management](docs/HISTORY_MANAGEMENT.md)         | Undo/redo system implementation           |
-| [Performance](docs/PERFORMANCE.md)                       | Optimization strategies & caching         |
-| [Contributing](docs/CONTRIBUTING.md)                     | Contribution guidelines                   |
+| [File Storage](docs/FILE_STORAGE.md)                     | Image uploads & file management              |
+| [History Management](docs/HISTORY_MANAGEMENT.md)         | Undo/redo system implementation              |
+| [Performance](docs/PERFORMANCE.md)                       | Optimization strategies & caching            |
+| [Contributing](docs/CONTRIBUTING.md)                     | Contribution guidelines                      |
 
 ---
 

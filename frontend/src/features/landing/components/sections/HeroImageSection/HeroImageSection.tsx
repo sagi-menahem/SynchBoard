@@ -27,13 +27,16 @@ const HeroImageSection: React.FC = () => {
 
   // Image sources for responsive loading
   // Skeleton handles LCP with preloaded 640w image, so React can use proper sizes for quality
-  const imageSources = useMemo(() => ({
-    webp: {
-      srcSet: `/screenshots/workspace-en-${themeVariant}-640w.webp 640w, /screenshots/workspace-en-${themeVariant}-1024w.webp 1024w, /screenshots/workspace-en-${themeVariant}.webp 1920w`,
-      sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px',
-    },
-    fallback: `/screenshots/workspace-en-${themeVariant}.jpg`,
-  }), [themeVariant]);
+  const imageSources = useMemo(
+    () => ({
+      webp: {
+        srcSet: `/screenshots/workspace-en-${themeVariant}-640w.webp 640w, /screenshots/workspace-en-${themeVariant}-1024w.webp 1024w, /screenshots/workspace-en-${themeVariant}.webp 1920w`,
+        sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1024px',
+      },
+      fallback: `/screenshots/workspace-en-${themeVariant}.jpg`,
+    }),
+    [themeVariant],
+  );
 
   // Detect touch device and trigger entrance animation on mount
   useEffect(() => {
@@ -41,7 +44,7 @@ const HeroImageSection: React.FC = () => {
       setIsTouchDevice(
         'ontouchstart' in window ||
           navigator.maxTouchPoints > 0 ||
-          window.matchMedia('(pointer: coarse)').matches
+          window.matchMedia('(pointer: coarse)').matches,
       );
     };
     checkTouchDevice();
@@ -76,7 +79,7 @@ const HeroImageSection: React.FC = () => {
 
       imageRef.current.style.transform = `translate(${moveX}px, ${moveY}px)`;
     },
-    [isTouchDevice]
+    [isTouchDevice],
   );
 
   // Reset position when mouse leaves

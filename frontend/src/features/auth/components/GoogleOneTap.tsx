@@ -75,13 +75,15 @@ const loadGsiScript = (): Promise<void> => {
   // Check if script tag already exists (e.g., added by another component)
   if (document.querySelector('script[src*="accounts.google.com/gsi/client"]')) {
     gsiScriptLoading = true;
-    return waitForGsi(10000).then(() => {
-      gsiScriptLoaded = true;
-      gsiScriptLoading = false;
-    }).catch((error) => {
-      gsiScriptLoading = false;
-      throw error;
-    });
+    return waitForGsi(10000)
+      .then(() => {
+        gsiScriptLoaded = true;
+        gsiScriptLoading = false;
+      })
+      .catch((error) => {
+        gsiScriptLoading = false;
+        throw error;
+      });
   }
 
   // Load the script
@@ -241,7 +243,9 @@ const GoogleOneTap: React.FC = () => {
         // as it triggers deprecation warnings and FedCM handles UI state internally.
         // On HTTP (local dev), FedCM is disabled and the legacy prompt is used.
         googleId.prompt();
-        logger.info(`[GoogleOneTap] One Tap initialized (FedCM: ${isSecureContext ? 'enabled' : 'disabled'})`);
+        logger.info(
+          `[GoogleOneTap] One Tap initialized (FedCM: ${isSecureContext ? 'enabled' : 'disabled'})`,
+        );
         return true;
       } catch (error) {
         logger.error('[GoogleOneTap] Error initializing One Tap:', error);

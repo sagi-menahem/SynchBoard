@@ -63,10 +63,7 @@ const LandingNavbar: React.FC<LandingNavbarProps> = ({ onGetStarted }) => {
     <>
       {/* Desktop Nav - Always visible (no borders like Notus) */}
       <Container as="nav">
-        <DesktopNav
-          onNavClick={handleNavClick}
-          onGetStarted={handleGetStartedClick}
-        />
+        <DesktopNav onNavClick={handleNavClick} onGetStarted={handleGetStartedClick} />
         <MobileNavHeader
           isOpen={isMobileMenuOpen}
           onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -74,7 +71,9 @@ const LandingNavbar: React.FC<LandingNavbarProps> = ({ onGetStarted }) => {
       </Container>
 
       {/* Floating Nav - Appears on scroll (desktop only) - CSS animated */}
-      <nav className={`${styles.floatingNav} ${isFloatingVisible ? styles.floatingNavVisible : ''}`}>
+      <nav
+        className={`${styles.floatingNav} ${isFloatingVisible ? styles.floatingNavVisible : ''}`}
+      >
         <Logo />
         <NavLinks onNavClick={handleNavClick} />
         <div className={styles.navActions}>
@@ -191,38 +190,22 @@ interface MobileMenuProps extends NavProps {
   onClose: () => void;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({
-  isOpen,
-  onClose,
-  onNavClick,
-  onGetStarted,
-}) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onNavClick, onGetStarted }) => {
   const { t } = useTranslation(['landing']);
 
   return (
-    <Drawer.Root
-      open={isOpen}
-      onOpenChange={(open) => !open && onClose()}
-      direction="top"
-    >
+    <Drawer.Root open={isOpen} onOpenChange={(open) => !open && onClose()} direction="top">
       <Drawer.Portal>
         <Drawer.Overlay className={styles.drawerOverlay} />
         <Drawer.Content className={styles.drawerContent}>
           <VisuallyHidden>
             <Drawer.Title>Mobile Navigation</Drawer.Title>
-            <Drawer.Description>
-              Navigation menu for SynchBoard landing page
-            </Drawer.Description>
+            <Drawer.Description>Navigation menu for SynchBoard landing page</Drawer.Description>
           </VisuallyHidden>
           <div className={styles.mobileMenu}>
-
             <div className={styles.mobileMenuHeader}>
               <Logo onClick={onClose} />
-              <button
-                className={styles.menuButton}
-                onClick={onClose}
-                aria-label="Close menu"
-              >
+              <button className={styles.menuButton} onClick={onClose} aria-label="Close menu">
                 <X size={24} />
               </button>
             </div>

@@ -2,9 +2,6 @@ package io.github.sagimenahem.synchboard.service.board;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.DEFAULT_SENDER_EMAIL;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO.ActionType;
@@ -22,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Service for managing board drawing objects and canvas state persistence. Handles saving,

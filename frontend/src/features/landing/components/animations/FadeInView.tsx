@@ -44,7 +44,7 @@ const FadeInView: React.FC<FadeInViewProps> = ({
           setIsVisible(false);
         }
       },
-      { threshold: amount }
+      { threshold: amount },
     );
 
     observer.observe(element);
@@ -60,10 +60,12 @@ const FadeInView: React.FC<FadeInViewProps> = ({
     <div
       ref={ref}
       className={`${styles.fadeInView} ${directionClass} ${isVisible ? styles.visible : ''} ${className || ''}`}
-      style={{
-        '--fade-delay': `${delay}s`,
-        '--fade-duration': `${duration}s`,
-      } as React.CSSProperties}
+      style={
+        {
+          '--fade-delay': `${delay}s`,
+          '--fade-duration': `${duration}s`,
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>

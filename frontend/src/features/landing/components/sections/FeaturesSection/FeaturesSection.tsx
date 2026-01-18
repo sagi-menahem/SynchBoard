@@ -31,7 +31,7 @@ const FeaturesSection: React.FC = () => {
 
       <div className={styles.featureGrid}>
         {FEATURES.map((feature, index) => (
-          <FadeInView key={feature.id} delay={index * 0.1} className={styles.featureItem}> 
+          <FadeInView key={feature.id} delay={index * 0.1} className={styles.featureItem}>
             <FeatureCard
               icon={feature.icon}
               title={t(feature.titleKey)}

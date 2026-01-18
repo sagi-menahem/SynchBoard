@@ -27,7 +27,9 @@ const TermsOfServicePage: React.FC = () => {
 
       {/* Service Description */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>{t('legal:terms.sections.serviceDescription.title')}</h2>
+        <h2 className={styles.sectionTitle}>
+          {t('legal:terms.sections.serviceDescription.title')}
+        </h2>
         <div className={styles.sectionContent}>
           <p>{t('legal:terms.sections.serviceDescription.content')}</p>
         </div>

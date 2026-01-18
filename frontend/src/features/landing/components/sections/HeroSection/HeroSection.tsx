@@ -43,10 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
         <Button variant="primary" onClick={onGetStarted}>
           {t('landing:hero.ctaPrimary')}
         </Button>
-        <Button
-          variant="secondary-glass"
-          onClick={() => window.open(GITHUB_URL, '_blank')}
-        >
+        <Button variant="secondary-glass" onClick={() => window.open(GITHUB_URL, '_blank')}>
           {t('landing:hero.ctaSecondary')}
         </Button>
       </div>

@@ -75,7 +75,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         void navigate(APP_ROUTES.BOARD_LIST);
       }
     },
-    [authLogin, navigate, handleClose]
+    [authLogin, navigate, handleClose],
   );
 
   const handleForgotPasswordSuccess = useCallback(
@@ -85,7 +85,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       handleClose();
       void navigate(APP_ROUTES.BOARD_LIST);
     },
-    [authLogin, navigate, handleClose]
+    [authLogin, navigate, handleClose],
   );
 
   const handleEmailVerificationSuccess = useCallback(
@@ -95,7 +95,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       handleClose();
       void navigate(APP_ROUTES.BOARD_LIST);
     },
-    [authLogin, navigate, handleClose]
+    [authLogin, navigate, handleClose],
   );
 
   const toggleAuthMode = useCallback(() => {
@@ -186,12 +186,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   // Mobile: Use Vaul drawer
   if (isMobile) {
     return (
-      <Drawer.Root open={isOpen} onOpenChange={(open) => !open && onClose()} shouldScaleBackground={false} dismissible>
+      <Drawer.Root
+        open={isOpen}
+        onOpenChange={(open) => !open && onClose()}
+        shouldScaleBackground={false}
+        dismissible
+      >
         <Drawer.Portal>
           <Drawer.Overlay className={styles.drawerOverlay} />
           <Drawer.Content className={styles.drawerContent}>
             <Drawer.Handle className={styles.drawerHandle} />
-            <Drawer.Title className={styles.drawerTitle}>{t('landing:auth.modalTitle')}</Drawer.Title>
+            <Drawer.Title className={styles.drawerTitle}>
+              {t('landing:auth.modalTitle')}
+            </Drawer.Title>
             <VisuallyHidden.Root asChild>
               <Drawer.Description>Sign in or create an account</Drawer.Description>
             </VisuallyHidden.Root>
@@ -207,10 +214,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
-      className={clsx(styles.modalOverlay, isClosing && styles.closing)}
-      onClick={handleClose}
-    >
+    <div className={clsx(styles.modalOverlay, isClosing && styles.closing)} onClick={handleClose}>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>

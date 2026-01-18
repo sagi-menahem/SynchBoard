@@ -40,7 +40,7 @@ const Switch: React.FC<SwitchProps> = ({
         onChange(!checked);
       }
     },
-    [checked, onChange]
+    [checked, onChange],
   );
 
   return (

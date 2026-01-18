@@ -55,10 +55,12 @@ public class ConfigController {
      * @return true if all Gmail API credentials are configured
      */
     private boolean isGmailConfigured() {
-        return isNotEmpty(gmailClientId)
-            && isNotEmpty(gmailClientSecret)
-            && isNotEmpty(gmailRefreshToken)
-            && isNotEmpty(gmailSenderEmail);
+        return (
+            isNotEmpty(gmailClientId) &&
+            isNotEmpty(gmailClientSecret) &&
+            isNotEmpty(gmailRefreshToken) &&
+            isNotEmpty(gmailSenderEmail)
+        );
     }
 
     /**

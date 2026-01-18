@@ -300,11 +300,11 @@ Email templates use user's preferred language stored in profile.
 
 Authentication features auto-enable based on configuration:
 
-| Feature            | Required Config                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------- |
+| Feature            | Required Config                                                                          |
+| ------------------ | ---------------------------------------------------------------------------------------- |
 | Email verification | `GMAIL_CLIENT_ID` + `GMAIL_CLIENT_SECRET` + `GMAIL_REFRESH_TOKEN` + `GMAIL_SENDER_EMAIL` |
 | Password reset     | `GMAIL_CLIENT_ID` + `GMAIL_CLIENT_SECRET` + `GMAIL_REFRESH_TOKEN` + `GMAIL_SENDER_EMAIL` |
-| Google login       | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET`                                         |
+| Google login       | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET`                                              |
 
 Frontend checks `/api/config/features` endpoint for enabled features.
 

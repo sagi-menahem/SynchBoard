@@ -52,34 +52,34 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className={styles.landingPage}>
-        {/* Navbar - Desktop nav always visible, floating nav on scroll */}
-        <LandingNavbar onGetStarted={handleGetStarted} />
+      {/* Navbar - Desktop nav always visible, floating nav on scroll */}
+      <LandingNavbar onGetStarted={handleGetStarted} />
+      <DivideX />
+
+      {/* Main content sections with dividers */}
+      <main className={styles.main}>
+        <HeroSection onGetStarted={handleGetStarted} />
         <DivideX />
+        <HeroImageSection />
+        <DivideX />
+        <LogoCloudSection />
+        <DivideX />
+        <FeaturesSection />
+        <DivideX />
+        <ScreenshotsSection />
+        <DivideX />
+        <CTASection onGetStarted={handleGetStarted} />
+        <DivideX />
+      </main>
 
-        {/* Main content sections with dividers */}
-        <main className={styles.main}>
-          <HeroSection onGetStarted={handleGetStarted} />
-          <DivideX />
-          <HeroImageSection />
-          <DivideX />
-          <LogoCloudSection />
-          <DivideX />
-          <FeaturesSection />
-          <DivideX />
-          <ScreenshotsSection />
-          <DivideX />
-          <CTASection onGetStarted={handleGetStarted} />
-          <DivideX />
-        </main>
+      <FooterSection onGetStarted={handleGetStarted} />
 
-        <FooterSection onGetStarted={handleGetStarted} />
-
-        {/* Auth modal - lazy loaded to reduce initial bundle size */}
-        {isAuthModalOpen && (
-          <Suspense fallback={null}>
-            <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
-          </Suspense>
-        )}
+      {/* Auth modal - lazy loaded to reduce initial bundle size */}
+      {isAuthModalOpen && (
+        <Suspense fallback={null}>
+          <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
+        </Suspense>
+      )}
     </div>
   );
 };

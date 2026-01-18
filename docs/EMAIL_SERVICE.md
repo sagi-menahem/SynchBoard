@@ -23,15 +23,15 @@ The Gmail REST API is used instead of SMTP because:
 
 ### Environment Variables
 
-| Variable                        | Required  | Default        | Description                              |
-| ------------------------------- | --------- | -------------- | ---------------------------------------- |
-| `GMAIL_CLIENT_ID`               | For email | -              | OAuth2 Client ID from Google Cloud       |
-| `GMAIL_CLIENT_SECRET`           | For email | -              | OAuth2 Client Secret from Google Cloud   |
-| `GMAIL_REFRESH_TOKEN`           | For email | -              | OAuth2 Refresh Token (long-lived)        |
-| `GMAIL_SENDER_EMAIL`            | For email | -              | Gmail address used to send emails        |
-| `MAIL_FROM_NAME`                | No        | SynchBoard     | Sender display name                      |
-| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15             | Verification code lifetime               |
-| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60             | Reset code lifetime                      |
+| Variable                        | Required  | Default    | Description                            |
+| ------------------------------- | --------- | ---------- | -------------------------------------- |
+| `GMAIL_CLIENT_ID`               | For email | -          | OAuth2 Client ID from Google Cloud     |
+| `GMAIL_CLIENT_SECRET`           | For email | -          | OAuth2 Client Secret from Google Cloud |
+| `GMAIL_REFRESH_TOKEN`           | For email | -          | OAuth2 Refresh Token (long-lived)      |
+| `GMAIL_SENDER_EMAIL`            | For email | -          | Gmail address used to send emails      |
+| `MAIL_FROM_NAME`                | No        | SynchBoard | Sender display name                    |
+| `VERIFICATION_EXPIRY_MINUTES`   | No        | 15         | Verification code lifetime             |
+| `PASSWORD_RESET_EXPIRY_MINUTES` | No        | 60         | Reset code lifetime                    |
 
 ### Gmail API Setup
 
@@ -96,7 +96,7 @@ GMAIL_SENDER_EMAIL=your-email@gmail.com
 
 ```java
 public boolean isEmailEnabled() {
-    return gmail != null && isNotEmpty(senderEmail);
+  return gmail != null && isNotEmpty(senderEmail);
 }
 ```
 
@@ -134,7 +134,7 @@ When disabled:
 
 ```java
 public String generateVerificationCode() {
-    return String.format("%06d", (int) (Math.random() * 1000000));
+  return String.format("%06d", (int) (Math.random() * 1000000));
 }
 ```
 
@@ -194,7 +194,7 @@ Located in `backend/src/main/resources/messages/`:
 
 ```java
 private boolean isHebrewLocale(Locale locale) {
-    return locale != null && "he".equals(locale.getLanguage());
+  return locale != null && "he".equals(locale.getLanguage());
 }
 ```
 
@@ -208,33 +208,36 @@ Hebrew emails use RTL layout and Hebrew templates.
 @Configuration
 public class GmailApiConfig {
 
-    @Value("${GMAIL_CLIENT_ID:}")
-    private String clientId;
+  @Value("${GMAIL_CLIENT_ID:}")
+  private String clientId;
 
-    @Value("${GMAIL_CLIENT_SECRET:}")
-    private String clientSecret;
+  @Value("${GMAIL_CLIENT_SECRET:}")
+  private String clientSecret;
 
-    @Value("${GMAIL_REFRESH_TOKEN:}")
-    private String refreshToken;
+  @Value("${GMAIL_REFRESH_TOKEN:}")
+  private String refreshToken;
 
-    @Bean
-    public Gmail gmail() {
-        if (!isGmailConfigured()) {
-            return null; // Email disabled
-        }
-
-        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        GoogleCredentials credentials = UserCredentials.newBuilder()
-            .setClientId(clientId)
-            .setClientSecret(clientSecret)
-            .setRefreshToken(refreshToken)
-            .build();
-
-        return new Gmail.Builder(httpTransport, GsonFactory.getDefaultInstance(),
-                new HttpCredentialsAdapter(credentials))
-            .setApplicationName("SynchBoard")
-            .build();
+  @Bean
+  public Gmail gmail() {
+    if (!isGmailConfigured()) {
+      return null; // Email disabled
     }
+
+    NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+    GoogleCredentials credentials = UserCredentials.newBuilder()
+      .setClientId(clientId)
+      .setClientSecret(clientSecret)
+      .setRefreshToken(refreshToken)
+      .build();
+
+    return new Gmail.Builder(
+      httpTransport,
+      GsonFactory.getDefaultInstance(),
+      new HttpCredentialsAdapter(credentials)
+    )
+      .setApplicationName("SynchBoard")
+      .build();
+  }
 }
 ```
 
@@ -320,11 +323,11 @@ Templates use inline CSS for email client compatibility:
 
 ## Error Handling
 
-| Scenario              | Behavior                      |
-| --------------------- | ----------------------------- |
-| Credentials missing   | Log warning, return false     |
-| API connection error  | Log error, return false       |
-| IOException           | Catch exception, return false |
+| Scenario             | Behavior                      |
+| -------------------- | ----------------------------- |
+| Credentials missing  | Log warning, return false     |
+| API connection error | Log error, return false       |
+| IOException          | Catch exception, return false |
 
 Service failures don't throw exceptions - callers check return value.
 
@@ -344,16 +347,16 @@ implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 ## Key Files
 
-| File                                           | Purpose                       |
-| ---------------------------------------------- | ----------------------------- |
-| `config/email/GmailApiConfig.java`             | Gmail API client configuration|
-| `service/auth/EmailService.java`               | Email sending logic           |
-| `templates/email/verification.html`            | English verification template |
-| `templates/email/verification_he.html`         | Hebrew verification template  |
-| `templates/email/password-reset.html`          | English reset template        |
-| `templates/email/password-reset_he.html`       | Hebrew reset template         |
-| `messages/messages.properties`                 | English strings               |
-| `messages/messages_he.properties`              | Hebrew strings                |
+| File                                     | Purpose                        |
+| ---------------------------------------- | ------------------------------ |
+| `config/email/GmailApiConfig.java`       | Gmail API client configuration |
+| `service/auth/EmailService.java`         | Email sending logic            |
+| `templates/email/verification.html`      | English verification template  |
+| `templates/email/verification_he.html`   | Hebrew verification template   |
+| `templates/email/password-reset.html`    | English reset template         |
+| `templates/email/password-reset_he.html` | Hebrew reset template          |
+| `messages/messages.properties`           | English strings                |
+| `messages/messages_he.properties`        | Hebrew strings                 |
 
 ## Testing Locally
 

@@ -66,7 +66,15 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, className }) =>
   if (isTouchDevice) {
     return (
       <div className={`${styles.container} ${className || ''}`}>
-        <img src={src} alt={alt} className={styles.image} loading="lazy" decoding="async" width={1920} height={1080} />
+        <img
+          src={src}
+          alt={alt}
+          className={styles.image}
+          loading="lazy"
+          decoding="async"
+          width={1920}
+          height={1080}
+        />
       </div>
     );
   }

@@ -41,7 +41,7 @@ const LogoCloudSection: React.FC = () => {
 
   // Track which logos are displayed (indices)
   const [displayedIndices, setDisplayedIndices] = useState<number[]>(() =>
-    Array.from({ length: Math.min(8, TECH_LOGOS.length) }, (_, i) => i)
+    Array.from({ length: Math.min(8, TECH_LOGOS.length) }, (_, i) => i),
   );
 
   // Track which position is currently animating (exiting)
@@ -55,9 +55,9 @@ const LogoCloudSection: React.FC = () => {
     if (TECH_LOGOS.length <= displayedIndices.length) return;
 
     const interval = setInterval(() => {
-      const notDisplayedIndices = TECH_LOGOS
-        .map((_, index) => index)
-        .filter((index) => !displayedIndices.includes(index));
+      const notDisplayedIndices = TECH_LOGOS.map((_, index) => index).filter(
+        (index) => !displayedIndices.includes(index),
+      );
 
       if (notDisplayedIndices.length > 0) {
         const randomDisplayedPosition = Math.floor(Math.random() * displayedIndices.length);
@@ -105,7 +105,7 @@ const LogoCloudSection: React.FC = () => {
                 position % 2 === 0 && styles.borderRight,
                 position < 6 && styles.borderBottomMobile,
                 position % 4 !== 3 && styles.borderRightDesktop,
-                position < 4 && styles.borderBottomDesktop
+                position < 4 && styles.borderBottomDesktop,
               )}
             >
               <div className={styles.hoverBg} />
