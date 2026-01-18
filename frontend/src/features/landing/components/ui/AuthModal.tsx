@@ -1,4 +1,5 @@
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import clsx from 'clsx';
 import {
   EmailVerificationModal,
   ForgotPasswordModal,
@@ -8,7 +9,6 @@ import {
 } from 'features/auth/components';
 import { useAuth } from 'features/auth/hooks';
 import type { AuthResponse } from 'features/settings/types/UserTypes';
-import { AnimatePresence, motion } from 'framer-motion';
 import { LogIn, UserPlus, X } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,8 @@ import { Drawer } from 'vaul';
 
 import styles from './AuthModal.module.scss';
 
+const ANIMATION_DURATION = 200; // ms - matches CSS animation duration
+
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -27,7 +29,7 @@ interface AuthModalProps {
 
 /**
  * Auth modal component that shows login/registration forms.
- * Desktop: Modal overlay with glass morphism styling.
+ * Desktop: Modal overlay with glass morphism styling (CSS animations).
  * Mobile: Bottom sheet drawer using Vaul for smooth interactions.
  */
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
@@ -40,12 +42,27 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [pendingEmail, setPendingEmail] = useState('');
 
-  // Reset to login view when modal opens
+  // Track visibility for exit animation
+  const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  // Handle open/close with animations
   useEffect(() => {
     if (isOpen) {
+      setIsVisible(true);
+      setIsClosing(false);
       setIsLoginView(true);
     }
   }, [isOpen]);
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+      onClose();
+    }, ANIMATION_DURATION);
+  }, [onClose]);
 
   const handleRegistrationSuccess = useCallback(
     (emailOrToken: string | AuthResponse) => {
@@ -54,36 +71,50 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         setShowEmailVerification(true);
       } else {
         authLogin(emailOrToken.token);
-        onClose();
+        handleClose();
         void navigate(APP_ROUTES.BOARD_LIST);
       }
     },
-    [authLogin, navigate, onClose],
+    [authLogin, navigate, handleClose]
   );
 
   const handleForgotPasswordSuccess = useCallback(
     (token: string) => {
       authLogin(token);
       setShowForgotPassword(false);
-      onClose();
+      handleClose();
       void navigate(APP_ROUTES.BOARD_LIST);
     },
-    [authLogin, navigate, onClose],
+    [authLogin, navigate, handleClose]
   );
 
   const handleEmailVerificationSuccess = useCallback(
     (token: string) => {
       authLogin(token);
       setShowEmailVerification(false);
-      onClose();
+      handleClose();
       void navigate(APP_ROUTES.BOARD_LIST);
     },
-    [authLogin, navigate, onClose],
+    [authLogin, navigate, handleClose]
   );
 
   const toggleAuthMode = useCallback(() => {
     setIsLoginView((prev) => !prev);
   }, []);
+
+  // Handle escape key to close modal (desktop only)
+  useEffect(() => {
+    if (isMobile || !isVisible) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMobile, isVisible, handleClose]);
 
   const content = (
     <div className={styles.authContent}>
@@ -171,37 +202,26 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     );
   }
 
-  // Desktop: Use animated modal
+  // Desktop: Use CSS animated modal
+  if (!isVisible) return null;
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className={styles.modalOverlay}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={onClose}
-        >
-          <motion.div
-            className={styles.modal}
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>{t('landing:auth.modalTitle')}</h2>
-              <button className={styles.closeButton} onClick={onClose} aria-label="Close modal">
-                <X size={20} />
-              </button>
-            </div>
-            {content}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div
+      className={clsx(styles.modalOverlay, isClosing && styles.closing)}
+      onClick={handleClose}
+    >
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.modalTitle}>{t('landing:auth.modalTitle')}</h2>
+          <button className={styles.closeButton} onClick={handleClose} aria-label="Close modal">
+            <X size={20} />
+          </button>
+        </div>
+        {content}
+      </div>
+    </div>
   );
 };
 

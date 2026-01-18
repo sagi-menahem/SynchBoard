@@ -17,8 +17,21 @@
     <meta name="apple-mobile-web-app-title" content="SynchBoard" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preload critical assets for faster LCP -->
-    <link rel="preload" href="/favicon-96x96.png" as="image" type="image/png" />
+    <!-- Preload hero images for faster LCP based on color scheme preference -->
+    <link
+      rel="preload"
+      href="/screenshots/workspace-en-light.webp"
+      as="image"
+      type="image/webp"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="preload"
+      href="/screenshots/workspace-en-dark.webp"
+      as="image"
+      type="image/webp"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />

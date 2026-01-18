@@ -43,8 +43,8 @@ export default defineConfig({
           // UI libraries - Visual enhancements
           'ui-vendor': ['react-hot-toast', 'react-colorful'],
 
-          // Animation library - Framer Motion for scroll animations
-          'animation-vendor': ['framer-motion'],
+          // Note: framer-motion is not in a dedicated chunk - it's code-split naturally
+          // and only loaded when navigating to board workspace (not on landing page)
 
           // Note: @stomp/stompjs is lazy-loaded via dynamic import in websocketService.ts
           // to reduce initial bundle size on auth page (only loaded when user authenticates)

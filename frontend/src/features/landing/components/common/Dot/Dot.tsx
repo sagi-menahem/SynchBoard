@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './Dot.module.scss';
@@ -15,6 +15,7 @@ interface DotProps {
 /**
  * Interactive corner dot component that glows and scales when mouse is nearby.
  * Positioned at container corners for grid intersection effect.
+ * Uses pure CSS transitions for performance (no Framer Motion).
  */
 const Dot: React.FC<DotProps> = ({ top, left, right, bottom }) => {
   const [isNearMouse, setIsNearMouse] = useState(false);
@@ -49,32 +50,17 @@ const Dot: React.FC<DotProps> = ({ top, left, right, bottom }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [checkDistance]);
 
-  const positionClasses = [
-    styles.dot,
-    top && styles.top,
-    bottom && styles.bottom,
-    left && styles.left,
-    right && styles.right,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   return (
-    <motion.div
+    <div
       ref={dotRef}
-      className={positionClasses}
-      animate={{
-        backgroundColor: isNearMouse ? 'var(--color-primary)' : 'var(--color-border)',
-        boxShadow: isNearMouse
-          ? '0 0 20px var(--color-primary), 0 0 40px var(--color-primary)'
-          : 'none',
-        scale: isNearMouse ? 1.5 : 1,
-        borderRadius: isNearMouse ? '50%' : '0%',
-      }}
-      transition={{
-        duration: 0.3,
-        ease: 'easeOut',
-      }}
+      className={clsx(
+        styles.dot,
+        top && styles.top,
+        bottom && styles.bottom,
+        left && styles.left,
+        right && styles.right,
+        isNearMouse && styles.active
+      )}
     />
   );
 };

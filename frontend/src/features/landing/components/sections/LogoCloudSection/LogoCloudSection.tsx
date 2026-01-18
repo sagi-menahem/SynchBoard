@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dot } from '../../common';
@@ -30,9 +29,12 @@ const TECH_LOGOS = [
   { id: 'github', Icon: GitHubLogo, name: 'GitHub' },
 ];
 
+const ANIMATION_DURATION = 200; // ms - matches CSS animation duration
+
 /**
  * Logo cloud section showing technology stack used in SynchBoard.
  * Logos animate with a swap effect at random intervals.
+ * Uses pure CSS animations for performance (no Framer Motion).
  */
 const LogoCloudSection: React.FC = () => {
   const { t } = useTranslation(['landing']);
@@ -41,6 +43,12 @@ const LogoCloudSection: React.FC = () => {
   const [displayedIndices, setDisplayedIndices] = useState<number[]>(() =>
     Array.from({ length: Math.min(8, TECH_LOGOS.length) }, (_, i) => i)
   );
+
+  // Track which position is currently animating (exiting)
+  const [exitingPosition, setExitingPosition] = useState<number | null>(null);
+
+  // Use ref to track animation keys for each position
+  const animationKeysRef = useRef<number[]>(Array(8).fill(0));
 
   useEffect(() => {
     // Only animate if we have more logos than displayed
@@ -52,15 +60,24 @@ const LogoCloudSection: React.FC = () => {
         .filter((index) => !displayedIndices.includes(index));
 
       if (notDisplayedIndices.length > 0) {
-        const randomDisplayedIndex = Math.floor(Math.random() * displayedIndices.length);
+        const randomDisplayedPosition = Math.floor(Math.random() * displayedIndices.length);
         const randomNotDisplayedIndex = Math.floor(Math.random() * notDisplayedIndices.length);
         const newLogoIndex = notDisplayedIndices[randomNotDisplayedIndex];
 
-        setDisplayedIndices((prev) => {
-          const newIndices = [...prev];
-          newIndices[randomDisplayedIndex] = newLogoIndex;
-          return newIndices;
-        });
+        // Start exit animation
+        setExitingPosition(randomDisplayedPosition);
+
+        // After exit animation completes, swap the logo and trigger enter animation
+        setTimeout(() => {
+          setDisplayedIndices((prev) => {
+            const newIndices = [...prev];
+            newIndices[randomDisplayedPosition] = newLogoIndex;
+            return newIndices;
+          });
+          // Increment animation key to force re-render and trigger enter animation
+          animationKeysRef.current[randomDisplayedPosition]++;
+          setExitingPosition(null);
+        }, ANIMATION_DURATION);
       }
     }, 3000);
 
@@ -78,6 +95,7 @@ const LogoCloudSection: React.FC = () => {
         {displayedIndices.map((logoIndex, position) => {
           const logo = TECH_LOGOS[logoIndex];
           const { Icon } = logo;
+          const isExiting = exitingPosition === position;
 
           return (
             <div
@@ -91,20 +109,13 @@ const LogoCloudSection: React.FC = () => {
               )}
             >
               <div className={styles.hoverBg} />
-              <AnimatePresence initial={false} mode="wait">
-                <motion.div
-                  key={logoIndex}
-                  className={styles.logoWrapper}
-                  initial={{ y: 100, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ opacity: 0, y: -100 }}
-                  transition={{ duration: 0.2, ease: 'easeInOut' }}
-                  whileHover={{ opacity: 1 }}
-                >
-                  <Icon className={styles.logo} />
-                  <span className={styles.logoName}>{logo.name}</span>
-                </motion.div>
-              </AnimatePresence>
+              <div
+                key={`${logoIndex}-${animationKeysRef.current[position]}`}
+                className={clsx(styles.logoWrapper, isExiting && styles.logoExiting)}
+              >
+                <Icon className={styles.logo} />
+                <span className={styles.logoName}>{logo.name}</span>
+              </div>
             </div>
           );
         })}

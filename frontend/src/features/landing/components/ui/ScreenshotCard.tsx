@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import styles from './ScreenshotCard.module.scss';
 
@@ -11,10 +11,28 @@ interface ScreenshotCardProps {
 /**
  * Individual screenshot card with image and caption.
  * Includes loading state and hover effects.
+ * Uses WebP format with responsive srcSet for better performance.
  */
 const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ src, alt, caption }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  // Generate WebP sources from the original JPG path
+  const imageSources = useMemo(() => {
+    const basePath = src.replace(/\.jpg$/, '');
+    const isMobile = src.includes('mobile-');
+
+    return {
+      webp: {
+        // Mobile images don't have responsive sizes
+        srcSet: isMobile
+          ? `${basePath}.webp`
+          : `${basePath}-640w.webp 640w, ${basePath}-1024w.webp 1024w, ${basePath}.webp 1920w`,
+        sizes: isMobile ? undefined : '(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px',
+      },
+      fallback: src,
+    };
+  }, [src]);
 
   return (
     <div className={styles.card}>
@@ -25,17 +43,24 @@ const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ src, alt, caption }) =>
             <span>Image unavailable</span>
           </div>
         ) : (
-          <img
-            src={src}
-            alt={alt}
-            className={`${styles.image} ${isLoaded ? styles.loaded : ''}`}
-            onLoad={() => setIsLoaded(true)}
-            onError={() => setHasError(true)}
-            loading="lazy"
-            decoding="async"
-            width={1920}
-            height={1080}
-          />
+          <picture>
+            <source
+              srcSet={imageSources.webp.srcSet}
+              sizes={imageSources.webp.sizes}
+              type="image/webp"
+            />
+            <img
+              src={imageSources.fallback}
+              alt={alt}
+              className={`${styles.image} ${isLoaded ? styles.loaded : ''}`}
+              onLoad={() => setIsLoaded(true)}
+              onError={() => setHasError(true)}
+              loading="lazy"
+              decoding="async"
+              width={1920}
+              height={1080}
+            />
+          </picture>
         )}
       </div>
       <p className={styles.caption}>{caption}</p>

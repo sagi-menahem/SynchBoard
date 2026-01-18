@@ -12,6 +12,7 @@ const THROTTLE_MS = 16; // ~60fps
  * Hero image section with parallax mouse-tracking effect.
  * Displays the main workspace screenshot with smooth movement.
  * Uses CSS transforms for GPU-accelerated animations (no Framer Motion for better LCP).
+ * Serves optimized WebP images with responsive srcSet for better performance.
  */
 const HeroImageSection: React.FC = () => {
   const { theme } = useTheme();
@@ -22,11 +23,16 @@ const HeroImageSection: React.FC = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Select image based on current theme
-  const screenshotSrc = useMemo(() => {
-    return theme === 'dark'
-      ? '/screenshots/workspace-en-dark.jpg'
-      : '/screenshots/workspace-en-light.jpg';
-  }, [theme]);
+  const themeVariant = theme === 'dark' ? 'dark' : 'light';
+
+  // Image sources for responsive loading
+  const imageSources = useMemo(() => ({
+    webp: {
+      srcSet: `/screenshots/workspace-en-${themeVariant}-640w.webp 640w, /screenshots/workspace-en-${themeVariant}-1024w.webp 1024w, /screenshots/workspace-en-${themeVariant}.webp 1920w`,
+      sizes: '(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px',
+    },
+    fallback: `/screenshots/workspace-en-${themeVariant}.jpg`,
+  }), [themeVariant]);
 
   // Detect touch device and trigger entrance animation on mount
   useEffect(() => {
@@ -91,19 +97,28 @@ const HeroImageSection: React.FC = () => {
         className={`${styles.imageWrapper} ${isVisible ? styles.visible : ''}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        role="img"
+        aria-label="SynchBoard workspace preview"
       >
-        <img
-          ref={imageRef}
-          src={screenshotSrc}
-          alt="SynchBoard workspace preview"
-          className={styles.screenshot}
-          draggable={false}
-          // LCP image - NO lazy loading, high priority
-          fetchPriority="high"
-          decoding="async"
-          width={1920}
-          height={1080}
-        />
+        <picture>
+          <source
+            srcSet={imageSources.webp.srcSet}
+            sizes={imageSources.webp.sizes}
+            type="image/webp"
+          />
+          <img
+            ref={imageRef}
+            src={imageSources.fallback}
+            alt="SynchBoard workspace preview"
+            className={styles.screenshot}
+            draggable={false}
+            // LCP image - NO lazy loading, high priority
+            fetchPriority="high"
+            decoding="async"
+            width={1920}
+            height={1080}
+          />
+        </picture>
       </div>
     </Container>
   );
