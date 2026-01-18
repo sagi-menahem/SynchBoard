@@ -15,3 +15,10 @@
 @forward 'glass';
 @forward 'board-backgrounds';
 @forward 'edit-buttons';
+
+:root,
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
