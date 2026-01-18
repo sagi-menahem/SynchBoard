@@ -11,7 +11,7 @@
   position: relative;
   border-radius: theme.$border-radius-xl;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   @include glass.glass-surface($use-user-color: false);
 }
 
