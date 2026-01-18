@@ -23,8 +23,7 @@ const CTASection: React.FC<CTASectionProps> = ({ onGetStarted }) => {
     <Container withBorders className={styles.cta}>
       <Dot top left />
       <Dot top right />
-      <Dot bottom left />
-      <Dot bottom right />
+
       {/* Orbiting logos centered behind content */}
       <OrbitingLogos className={styles.orbit} size={600} />
 

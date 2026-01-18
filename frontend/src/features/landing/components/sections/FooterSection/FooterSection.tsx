@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 
+import { Dot } from '../../common';
 import { GITHUB_URL, LIVE_DEMO_URL } from '../../../constants/landingContent';
 import { GitHubLogo, LinkedInLogo, TwitterLogo } from '../../icons/TechLogos';
 import { Container } from '../../layout';
@@ -39,6 +40,8 @@ const FooterSection: React.FC = () => {
 
   return (
     <Container>
+      <Dot top left />
+      <Dot top right />
       <div className={styles.footerGrid}>
         {/* Brand Column */}
         <div className={styles.brandColumn}>
