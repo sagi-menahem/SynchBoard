@@ -41,7 +41,7 @@ const LandingNavbar: React.FC<LandingNavbarProps> = ({ onGetStarted }) => {
 
   return (
     <>
-      {/* Desktop Nav - Always visible */}
+      {/* Desktop Nav - Always visible (no borders like Notus) */}
       <Container as="nav">
         <DesktopNav
           onNavClick={handleNavClick}

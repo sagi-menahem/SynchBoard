@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Dot } from '../../common';
 import {
   DockerLogo,
   JavaLogo,
@@ -67,7 +68,11 @@ const LogoCloudSection: React.FC = () => {
   }, [displayedIndices]);
 
   return (
-    <Container withBorders>
+    <Container withBorders className={styles.section}>
+      <Dot top left />
+      <Dot top right />
+      <Dot bottom left />
+      <Dot bottom right />
       <h2 className={styles.heading}>{t('landing:logoCloud.heading')}</h2>
       <div className={styles.grid}>
         {displayedIndices.map((logoIndex, position) => {

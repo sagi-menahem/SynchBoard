@@ -1,0 +1,24 @@
+.dot {
+  position: absolute;
+  z-index: 10;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-border);
+}
+
+// Position dots at the exact corners, centered on the border intersection
+.top {
+  top: -4px;
+}
+
+.bottom {
+  bottom: -4px;
+}
+
+.left {
+  left: -4px;
+}
+
+.right {
+  right: -4px;
+}

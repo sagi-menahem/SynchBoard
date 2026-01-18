@@ -5,6 +5,7 @@ export {
   CTASection,
   FeaturesSection,
   FooterSection,
+  HeroImageSection,
   HeroSection,
   LogoCloudSection,
   ScreenshotsSection,

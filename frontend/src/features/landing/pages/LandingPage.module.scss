@@ -7,9 +7,8 @@
 }
 
 .main {
-  @include theme.flex-column;
-  max-width: calc(80rem - 4rem);
-  margin-inline: auto;
+  display: block;
+  width: 100%;
 }
 
 .loading {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Dot } from '../../common';
 import { SCREENSHOTS } from '../../../constants/landingContent';
 import { FadeInView } from '../../animations';
 import { Container } from '../../layout';
@@ -17,6 +18,10 @@ const ScreenshotsSection: React.FC = () => {
 
   return (
     <Container withBorders as="section" id="screenshots" className={styles.screenshots}>
+      <Dot top left />
+      <Dot top right />
+      <Dot bottom left />
+      <Dot bottom right />
       <FadeInView>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>{t('landing:screenshots.sectionTitle')}</h2>

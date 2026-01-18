@@ -10,6 +10,7 @@ import {
   DivideX,
   FeaturesSection,
   FooterSection,
+  HeroImageSection,
   HeroSection,
   LandingNavbar,
   LogoCloudSection,
@@ -62,10 +63,13 @@ const LandingPage: React.FC = () => {
       <div className={styles.landingPage}>
         {/* Navbar - Desktop nav always visible, floating nav on scroll */}
         <LandingNavbar onGetStarted={handleGetStarted} />
+        <DivideX />
 
         {/* Main content sections with dividers */}
         <main className={styles.main}>
           <HeroSection onGetStarted={handleGetStarted} />
+          <DivideX />
+          <HeroImageSection />
           <DivideX />
           <LogoCloudSection />
           <DivideX />

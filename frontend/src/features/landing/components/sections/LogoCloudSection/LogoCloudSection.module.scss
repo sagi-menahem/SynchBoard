@@ -1,7 +1,11 @@
 @use '@/styles' as theme;
 
+.section {
+  padding: theme.$spacing-8 theme.$spacing-4;
+}
+
 .heading {
-  padding: theme.$spacing-8 0;
+  padding-bottom: theme.$spacing-4;
   text-align: center;
   font-family: monospace;
   font-size: theme.$font-size-sm;

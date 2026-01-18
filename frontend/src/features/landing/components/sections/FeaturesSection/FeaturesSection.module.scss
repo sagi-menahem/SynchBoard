@@ -43,6 +43,7 @@
 .featureGrid {
   display: grid;
   grid-template-columns: 1fr;
+  align-items: start;
   gap: theme.$spacing-6;
 
   @media (min-width: theme.$breakpoint-sm) {

@@ -1,0 +1,65 @@
+@use '@/styles' as theme;
+
+.heroImage {
+  position: relative;
+  padding: theme.$spacing-8 theme.$spacing-4;
+
+  @media (min-width: theme.$breakpoint-md) {
+    padding: theme.$spacing-16 theme.$spacing-4;
+  }
+}
+
+.gridBackground {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+      0deg,
+      var(--color-border) 0,
+      var(--color-border) 1px,
+      transparent 1px,
+      transparent 48px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--color-border) 0,
+      var(--color-border) 1px,
+      transparent 1px,
+      transparent 48px
+    );
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+
+  :global([data-theme='dark']) & {
+    opacity: 0.3;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  cursor: default;
+  padding: theme.$spacing-4;
+}
+
+.screenshot {
+  width: 100%;
+  height: auto;
+  border-radius: theme.$border-radius-xl;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  user-select: none;
+
+  :global([data-theme='dark']) & {
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.6),
+      0 0 60px -15px rgba(59, 130, 246, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+}

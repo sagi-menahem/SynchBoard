@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 
 import { GITHUB_URL } from '../../../constants/landingContent';
+import { Dot } from '../../common';
 import { Container } from '../../layout';
 
 import styles from './HeroSection.module.scss';
@@ -22,6 +23,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
 
   return (
     <Container withBorders className={styles.hero}>
+      <Dot top left />
+      <Dot top right />
+      <Dot bottom left />
+      <Dot bottom right />
       {/* Badge */}
       <motion.div
         className={styles.badge}

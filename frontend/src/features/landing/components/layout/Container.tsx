@@ -13,6 +13,7 @@ interface ContainerProps extends React.HTMLAttributes<HTMLElement> {
 /**
  * Container component for consistent max-width and optional border styling.
  * Matches the template's Container component with border-x styling.
+ * Corner dots should be added explicitly to specific sections (like HeroImageSection).
  */
 const Container: React.FC<ContainerProps> = ({
   children,

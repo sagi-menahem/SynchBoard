@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'shared/ui';
 
+import { Dot } from '../../common';
 import { OrbitingLogos } from '../../animations';
 import { Container } from '../../layout';
 
@@ -20,6 +21,10 @@ const CTASection: React.FC<CTASectionProps> = ({ onGetStarted }) => {
 
   return (
     <Container withBorders className={styles.cta}>
+      <Dot top left />
+      <Dot top right />
+      <Dot bottom left />
+      <Dot bottom right />
       {/* Orbiting logos positioned at top */}
       <OrbitingLogos className={styles.orbit} size={800} />
 
