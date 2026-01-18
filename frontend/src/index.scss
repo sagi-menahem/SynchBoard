@@ -131,8 +131,8 @@ body[data-theme='light'] {
 
   --language-toggle-bg: #e5e7eb;
 
-  --btn-primary-bg: #{dt.$color-primary};
-  --btn-primary-bg-hover: #{dt.$color-primary-hover};
+  --btn-primary-bg: #{dt.$color-primary-hover};
+  --btn-primary-bg-hover: #{dt.$color-primary-dark};
   --btn-primary-text: #{dt.$color-white};
 
   --btn-secondary-bg: #{dt.$color-gray-50};
@@ -297,8 +297,8 @@ body[data-theme='dark'] {
 
   --language-toggle-bg: #374151;
 
-  --btn-primary-bg: #{dt.$color-primary};
-  --btn-primary-bg-hover: #{dt.$color-primary-hover};
+  --btn-primary-bg: #{dt.$color-primary-hover};
+  --btn-primary-bg-hover: #{dt.$color-primary-dark};
   --btn-primary-text: #{dt.$color-gray-50};
 
   --btn-secondary-bg: #{dt.$color-gray-700};
