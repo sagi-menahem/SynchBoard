@@ -25,8 +25,8 @@ const CTASection: React.FC<CTASectionProps> = ({ onGetStarted }) => {
       <Dot top right />
       <Dot bottom left />
       <Dot bottom right />
-      {/* Orbiting logos positioned at top */}
-      <OrbitingLogos className={styles.orbit} size={800} />
+      {/* Orbiting logos centered behind content */}
+      <OrbitingLogos className={styles.orbit} size={600} />
 
       {/* Content - centered and positioned above orbit */}
       <h2 className={styles.headline}>{t('landing:cta.headline')}</h2>

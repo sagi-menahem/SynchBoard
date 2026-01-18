@@ -6,22 +6,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 15rem;
-  padding: theme.$spacing-4;
+  min-height: 28rem;
+  padding: theme.$spacing-8 theme.$spacing-4;
+  overflow: hidden;
 
   @media (min-width: theme.$breakpoint-md) {
-    min-height: 30rem;
+    min-height: 36rem;
+  }
+
+  @media (min-width: theme.$breakpoint-lg) {
+    min-height: 42rem;
   }
 }
 
 .orbit {
   position: absolute;
-  inset-inline: 0;
-  top: -30rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 0.6;
 
-  // Mask to fade bottom 30%
-  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%);
+  // Mask to fade edges
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 70%);
 }
 
 .headline {
