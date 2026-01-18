@@ -1,7 +1,7 @@
 @use '@/styles' as theme;
 
 .section {
-  padding: theme.$spacing-8 theme.$spacing-4;
+  padding: theme.$spacing-8 theme.$spacing-4 0;
 }
 
 .heading {
