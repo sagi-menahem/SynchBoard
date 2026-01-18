@@ -1,8 +1,9 @@
 import { GuestLanguageSwitcher } from 'features/settings/ui';
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ExternalLink, Menu, X } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Drawer } from 'vaul';
 import { Button } from 'shared/ui';
 import ThemeSwitcher from 'shared/ui/components/forms/ThemeSwitcher';
 
@@ -135,6 +136,7 @@ const DesktopNav: React.FC<NavProps> = ({ onNavClick, onGetStarted }) => {
   );
 };
 
+// ... rest of file
 const FloatingNav: React.FC<NavProps> = ({ onNavClick, onGetStarted }) => {
   const { t } = useTranslation(['landing']);
   const { scrollY } = useScroll();
@@ -183,6 +185,8 @@ interface MobileMenuProps extends NavProps {
   onClose: () => void;
 }
 
+
+
 const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onClose,
@@ -192,16 +196,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   const { t } = useTranslation(['landing']);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className={styles.mobileMenuOverlay}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
+    <Drawer.Root
+      open={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+      direction="top"
+    >
+      <Drawer.Portal>
+        <Drawer.Overlay className={styles.drawerOverlay} />
+        <Drawer.Content className={styles.drawerContent}>
           <div className={styles.mobileMenu}>
+
             <div className={styles.mobileMenuHeader}>
               <Logo onClick={onClose} />
               <button
@@ -214,8 +218,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </div>
 
             <div className={styles.mobileNavLinks}>
-              {NAV_LINKS.map((link, index) => (
-                <motion.a
+              {NAV_LINKS.map((link) => (
+                <a
                   key={link.id}
                   href={link.href}
                   className={styles.mobileNavLink}
@@ -229,13 +233,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   }}
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2, delay: index * 0.1 }}
                 >
                   {t(link.labelKey)}
                   {link.external && <ExternalLink size={16} />}
-                </motion.a>
+                </a>
               ))}
             </div>
 
@@ -250,9 +251,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <ThemeSwitcher />
             </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          <div className={styles.drawerHandle} />
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
   );
 };
 

@@ -116,38 +116,67 @@
   &:hover {
     background-color: var(--color-surface-hover);
   }
-}
 
-// Mobile Menu Overlay
-.mobileMenuOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: theme.$z-index-modal;
-  background: var(--color-surface);
-
-  @media (min-width: theme.$breakpoint-md) {
-    display: none;
+  &:focus-visible {
+    outline: none;
   }
 }
 
-.mobileMenu {
-  height: 100%;
+// Drawer Styles
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: theme.$z-index-modal;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.drawerContent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: theme.$z-index-modal;
+  background: var(--color-surface);
+  border-bottom-left-radius: theme.$border-radius-xl;
+  border-bottom-right-radius: theme.$border-radius-xl;
+  box-shadow: theme.$shadow-xl;
+  outline: none;
   display: flex;
   flex-direction: column;
+
+  // Ensure it doesn't take full height unless needed, 
+  // but vaul handles height automatically based on content.
+  max-height: 85vh; 
+}
+
+.drawerHandle {
+  margin: theme.$spacing-3 auto;
+  width: 3rem;
+  height: 0.25rem;
+  border-radius: 9999px;
+  background: var(--color-border);
+  opacity: 0.5;
+}
+
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: theme.$spacing-6;
+  // Removed height: 100% to let it be dynamic
 }
 
 .mobileMenuHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: theme.$spacing-2;
+  padding: theme.$spacing-2 theme.$spacing-4;
 }
 
 .mobileNavLinks {
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--color-border);
-  margin-top: theme.$spacing-6;
+  margin-top: theme.$spacing-2;
 }
 
 .mobileNavLink {
@@ -169,7 +198,7 @@
 
 .mobileActions {
   padding: theme.$spacing-4;
-  margin-top: theme.$spacing-4;
+  // margin-top no longer needed to push it down, standard spacing is fine
 }
 
 .mobileCta {
@@ -181,7 +210,7 @@
   align-items: center;
   justify-content: center;
   gap: theme.$spacing-4;
-  padding: theme.$spacing-4;
-  margin-top: auto;
-  border-top: 1px solid var(--color-border);
+  padding: 0 theme.$spacing-4;
+  // Removed margin-top: auto
+  // Removed border-top
 }
