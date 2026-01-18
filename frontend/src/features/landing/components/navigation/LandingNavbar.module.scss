@@ -182,7 +182,8 @@
 .mobileNavLink {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: theme.$spacing-2;
   padding: theme.$spacing-3 theme.$spacing-4;
   color: var(--color-text-secondary);
   text-decoration: none;
