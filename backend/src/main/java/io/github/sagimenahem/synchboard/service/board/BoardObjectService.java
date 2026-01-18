@@ -2,9 +2,9 @@ package io.github.sagimenahem.synchboard.service.board;
 
 import static io.github.sagimenahem.synchboard.constants.FileConstants.DEFAULT_SENDER_EMAIL;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO.ActionType;
@@ -70,7 +70,7 @@ public class BoardObjectService {
                 default:
                     throw new InvalidRequestException("Unsupported action type: " + request.getType());
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             log.error(
                 "Failed to process JSON payload for board action on board {}: {}",
                 request.getBoardId(),
@@ -187,7 +187,7 @@ public class BoardObjectService {
                 .sender(senderEmail)
                 .instanceId(entity.getInstanceId())
                 .build();
-        } catch (JsonProcessingException | IllegalArgumentException e) {
+        } catch (JacksonException | IllegalArgumentException e) {
             log.error("Failed to parse BoardObject data for object ID: {}", entity.getObjectId(), e);
             return BoardActionDTO.Response.builder()
                 .type(ActionType.OBJECT_DELETE)

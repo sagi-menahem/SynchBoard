@@ -6,7 +6,7 @@ import static io.github.sagimenahem.synchboard.constants.SecurityConstants.JWT_P
 import io.github.sagimenahem.synchboard.service.auth.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;

@@ -123,19 +123,23 @@ const GoogleOneTap: React.FC = () => {
       oneTapInitialized = true;
 
       try {
+        // FedCM requires HTTPS - disable for local HTTP development
+        const isSecureContext = window.location.protocol === 'https:';
+
         window.google.accounts.id.initialize({
           client_id: clientId,
           callback: handleCredentialResponse,
           auto_select: true,
           cancel_on_tap_outside: true,
           context: 'signin',
-          use_fedcm_for_prompt: true,
+          use_fedcm_for_prompt: isSecureContext,
         });
 
-        // With FedCM enabled, we don't use the moment notification callback
-        // as it triggers deprecation warnings and FedCM handles UI state internally
+        // When FedCM is enabled (HTTPS), we don't use the moment notification callback
+        // as it triggers deprecation warnings and FedCM handles UI state internally.
+        // On HTTP (local dev), FedCM is disabled and the legacy prompt is used.
         window.google.accounts.id.prompt();
-        logger.info('[GoogleOneTap] One Tap initialized and prompt displayed');
+        logger.info(`[GoogleOneTap] One Tap initialized (FedCM: ${isSecureContext ? 'enabled' : 'disabled'})`);
         return true;
       } catch (error) {
         logger.error('[GoogleOneTap] Error initializing One Tap:', error);

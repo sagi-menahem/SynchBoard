@@ -5,9 +5,9 @@ import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_
 import static io.github.sagimenahem.synchboard.constants.ActionConstants.OBJECT_UPDATE_ACTION;
 import static io.github.sagimenahem.synchboard.constants.WebSocketConstants.WEBSOCKET_BOARD_TOPIC_PREFIX;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import io.github.sagimenahem.synchboard.constants.MessageConstants;
 import io.github.sagimenahem.synchboard.dto.websocket.BoardActionDTO;
 import io.github.sagimenahem.synchboard.entity.ActionHistory;
@@ -334,7 +334,7 @@ public class ActionHistoryService {
                 .payload(payload)
                 .sender("system-undo-redo")
                 .build();
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             log.error("Failed to create {} response: {}", operation, e.getMessage(), e);
             throw new InvalidRequestException(operation + " operation failed due to corrupted data");
         }
