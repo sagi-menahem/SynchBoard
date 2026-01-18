@@ -45,6 +45,26 @@
   margin: 0 auto;
   cursor: default;
   padding: theme.$spacing-4;
+
+  // Initial state for entrance animation
+  opacity: 0;
+  transform: translateY(40px);
+
+  // Entrance animation with CSS (faster than Framer Motion for LCP)
+  &.visible {
+    animation: fadeInUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .screenshot {
@@ -55,6 +75,9 @@
     0 25px 50px -12px rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(0, 0, 0, 0.05);
   user-select: none;
+  // GPU-accelerated transform with spring-like transition
+  transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
 
   :global([data-theme='dark']) & {
     box-shadow:

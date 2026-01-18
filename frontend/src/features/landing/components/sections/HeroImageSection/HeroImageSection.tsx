@@ -1,5 +1,4 @@
 import { useTheme } from 'features/settings/ThemeProvider';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Dot } from '../../common';
@@ -12,25 +11,15 @@ const THROTTLE_MS = 16; // ~60fps
 /**
  * Hero image section with parallax mouse-tracking effect.
  * Displays the main workspace screenshot with smooth movement.
- * Uses theme-aware images (light/dark variants).
+ * Uses CSS transforms for GPU-accelerated animations (no Framer Motion for better LCP).
  */
 const HeroImageSection: React.FC = () => {
   const { theme } = useTheme();
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const lastCallRef = useRef(0);
-
-  // Motion values for mouse position
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Spring configuration for smooth movement
-  const springConfig = { stiffness: 300, damping: 30 };
-  const x = useSpring(mouseX, springConfig);
-  const y = useSpring(mouseY, springConfig);
-
-  // Transform mouse position to image movement (inverted for parallax effect)
-  const imageX = useTransform(x, [-1, 1], [40, -40]);
-  const imageY = useTransform(y, [-1, 1], [40, -40]);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Select image based on current theme
   const screenshotSrc = useMemo(() => {
@@ -39,7 +28,7 @@ const HeroImageSection: React.FC = () => {
       : '/screenshots/workspace-en-light.jpg';
   }, [theme]);
 
-  // Detect touch device on mount
+  // Detect touch device and trigger entrance animation on mount
   useEffect(() => {
     const checkTouchDevice = () => {
       setIsTouchDevice(
@@ -49,12 +38,17 @@ const HeroImageSection: React.FC = () => {
       );
     };
     checkTouchDevice();
+
+    // Trigger entrance animation after a brief delay
+    requestAnimationFrame(() => {
+      setIsVisible(true);
+    });
   }, []);
 
-  // Handle mouse move over the section
+  // Handle mouse move over the section - update CSS custom properties
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (isTouchDevice) return;
+      if (isTouchDevice || !imageRef.current) return;
 
       // Throttle to prevent layout thrashing from getBoundingClientRect
       const now = performance.now();
@@ -65,21 +59,25 @@ const HeroImageSection: React.FC = () => {
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Normalize to -1 to 1 range
+      // Normalize to -1 to 1 range, then multiply by movement amount
       const normalizedX = (event.clientX - centerX) / (rect.width / 2);
       const normalizedY = (event.clientY - centerY) / (rect.height / 2);
 
-      mouseX.set(normalizedX);
-      mouseY.set(normalizedY);
+      // Apply parallax movement (inverted for parallax effect)
+      const moveX = -normalizedX * 40;
+      const moveY = -normalizedY * 40;
+
+      imageRef.current.style.transform = `translate(${moveX}px, ${moveY}px)`;
     },
-    [isTouchDevice, mouseX, mouseY]
+    [isTouchDevice]
   );
 
   // Reset position when mouse leaves
   const handleMouseLeave = useCallback(() => {
-    mouseX.set(0);
-    mouseY.set(0);
-  }, [mouseX, mouseY]);
+    if (imageRef.current) {
+      imageRef.current.style.transform = 'translate(0px, 0px)';
+    }
+  }, []);
 
   return (
     <Container withBorders className={styles.heroImage}>
@@ -88,26 +86,25 @@ const HeroImageSection: React.FC = () => {
       <Dot bottom left />
       <Dot bottom right />
       <div className={styles.gridBackground} />
-      <motion.div
-        className={styles.imageWrapper}
+      <div
+        ref={wrapperRef}
+        className={`${styles.imageWrapper} ${isVisible ? styles.visible : ''}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <motion.img
+        <img
+          ref={imageRef}
           src={screenshotSrc}
           alt="SynchBoard workspace preview"
           className={styles.screenshot}
-          style={isTouchDevice ? {} : { x: imageX, y: imageY }}
           draggable={false}
-          loading="lazy"
+          // LCP image - NO lazy loading, high priority
+          fetchPriority="high"
           decoding="async"
           width={1920}
           height={1080}
         />
-      </motion.div>
+      </div>
     </Container>
   );
 };

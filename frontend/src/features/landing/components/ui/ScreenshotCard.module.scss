@@ -15,25 +15,35 @@
   @include glass.glass-surface($use-user-color: false);
 }
 
+// GPU-accelerated shimmer using transform instead of background-position
 .skeleton {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 25%,
-    var(--color-surface-hover) 50%,
-    var(--color-surface) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  background-color: var(--color-surface);
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-surface-hover) 50%,
+      transparent 100%
+    );
+    // GPU-accelerated animation using transform
+    animation: shimmer 1.5s infinite;
+    will-change: transform;
+  }
 }
 
 @keyframes shimmer {
   0% {
-    background-position: 200% 0;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: -200% 0;
+    transform: translateX(100%);
   }
 }
 

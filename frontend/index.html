@@ -17,9 +17,14 @@
     <meta name="apple-mobile-web-app-title" content="SynchBoard" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preconnect hints for Google APIs -->
-    <link rel="preconnect" href="https://accounts.google.com" />
-    <link rel="dns-prefetch" href="https://accounts.google.com" />
+    <!-- Preload LCP image for faster initial render -->
+    <link
+      rel="preload"
+      href="/screenshots/workspace-en-light.jpg"
+      as="image"
+      type="image/jpeg"
+      fetchpriority="high"
+    />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -41,8 +46,7 @@
     />
     <meta name="twitter:image" content="https://synchboard.com/og_image.png" />
 
-    <!-- Google Identity Services SDK for One Tap authentication -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Google Identity Services SDK is lazy-loaded by GoogleOneTap component when needed -->
   </head>
 
   <body>
