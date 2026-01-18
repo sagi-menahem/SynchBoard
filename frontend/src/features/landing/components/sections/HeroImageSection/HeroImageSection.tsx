@@ -26,13 +26,12 @@ const HeroImageSection: React.FC = () => {
   const themeVariant = theme === 'dark' ? 'dark' : 'light';
 
   // Image sources for responsive loading
-  // Hero image is in a padded container, actual display width is ~600px on desktop
-  // - Mobile (<640px): 100% of viewport
-  // - Desktop: ~600px actual display width (rounded to 640px for proper srcSet selection)
+  // Force 640w selection on all devices: 320px * 2 DPR = 640px
+  // This significantly improves load time while maintaining acceptable quality
   const imageSources = useMemo(() => ({
     webp: {
       srcSet: `/screenshots/workspace-en-${themeVariant}-640w.webp 640w, /screenshots/workspace-en-${themeVariant}-1024w.webp 1024w, /screenshots/workspace-en-${themeVariant}.webp 1920w`,
-      sizes: '(max-width: 640px) 100vw, 640px',
+      sizes: '320px',
     },
     fallback: `/screenshots/workspace-en-${themeVariant}.jpg`,
   }), [themeVariant]);

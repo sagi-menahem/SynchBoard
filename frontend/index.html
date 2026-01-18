@@ -17,14 +17,14 @@
     <meta name="apple-mobile-web-app-title" content="SynchBoard" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preload hero images for faster LCP with responsive srcset to match actual image selection -->
+    <!-- Preload hero images for faster LCP - force 640w selection on all devices -->
     <link
       rel="preload"
       as="image"
       type="image/webp"
       href="/screenshots/workspace-en-light-640w.webp"
       imagesrcset="/screenshots/workspace-en-light-640w.webp 640w, /screenshots/workspace-en-light-1024w.webp 1024w, /screenshots/workspace-en-light.webp 1920w"
-      imagesizes="(max-width: 640px) 100vw, 640px"
+      imagesizes="320px"
       media="(prefers-color-scheme: light)"
     />
     <link
@@ -33,7 +33,7 @@
       type="image/webp"
       href="/screenshots/workspace-en-dark-640w.webp"
       imagesrcset="/screenshots/workspace-en-dark-640w.webp 640w, /screenshots/workspace-en-dark-1024w.webp 1024w, /screenshots/workspace-en-dark.webp 1920w"
-      imagesizes="(max-width: 640px) 100vw, 640px"
+      imagesizes="320px"
       media="(prefers-color-scheme: dark)"
     />
 
@@ -205,6 +205,31 @@
         background: var(--loader-skeleton);
       }
 
+      /* Hero image container - this becomes the LCP element */
+      .loader-hero-image-wrapper {
+        width: 100%;
+        max-width: 640px;
+        margin-top: 32px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      }
+
+      .loader-hero-image {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* Show/hide based on color scheme */
+      .loader-hero-image-light {
+        display: block;
+      }
+
+      .loader-hero-image-dark {
+        display: none;
+      }
+
       /* Hide nav links and CTA on mobile */
       @media (max-width: 768px) {
         .loader-nav-links,
@@ -249,6 +274,25 @@
             <div class="loader-btn-primary"></div>
             <div class="loader-btn-secondary"></div>
           </div>
+          <!-- Hero image - becomes LCP element (larger than logo text) -->
+          <div class="loader-hero-image-wrapper">
+            <img
+              src="/screenshots/workspace-en-light-640w.webp"
+              alt="SynchBoard workspace"
+              class="loader-hero-image loader-hero-image-light"
+              width="640"
+              height="360"
+              fetchpriority="high"
+            />
+            <img
+              src="/screenshots/workspace-en-dark-640w.webp"
+              alt="SynchBoard workspace"
+              class="loader-hero-image loader-hero-image-dark"
+              width="640"
+              height="360"
+              fetchpriority="high"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -280,6 +324,11 @@
           document.documentElement.style.setProperty('--loader-skeleton', 'rgba(255, 255, 255, 0.06)');
           document.documentElement.style.setProperty('--loader-primary', '#3b82f6');
           document.documentElement.style.setProperty('--loader-text', '#fafafa');
+          // Toggle hero images for dark mode
+          var lightImg = document.querySelector('.loader-hero-image-light');
+          var darkImg = document.querySelector('.loader-hero-image-dark');
+          if (lightImg) lightImg.style.display = 'none';
+          if (darkImg) darkImg.style.display = 'block';
         }
       })();
     </script>

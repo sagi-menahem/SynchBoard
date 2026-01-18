@@ -28,10 +28,10 @@ const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ src, alt, caption }) =>
         srcSet: isMobile
           ? `${basePath}.webp`
           : `${basePath}-640w.webp 640w, ${basePath}-1024w.webp 1024w, ${basePath}.webp 1920w`,
-        // Optimized for performance: declare smaller size to force 640w selection
-        // This slightly reduces sharpness on 2x DPR but significantly improves load time
+        // Force 640w selection on all devices: 320px * 2 DPR = 640px
+        // This slightly reduces sharpness but significantly improves load time
         // These are lazy-loaded below-the-fold images so the tradeoff is worthwhile
-        sizes: isMobile ? undefined : '(max-width: 640px) 100vw, 300px',
+        sizes: isMobile ? undefined : '320px',
       },
       fallback: src,
     };
