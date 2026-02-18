@@ -104,7 +104,7 @@ Features:
 - Multi-stage build reduces image size
 - Non-root user for security
 - Dependencies cached in separate layer
-- JVM flags for Java 24 compatibility
+- JVM flags for Java 25 compatibility
 
 ### Frontend (Nginx)
 

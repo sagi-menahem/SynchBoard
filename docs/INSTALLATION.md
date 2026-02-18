@@ -277,7 +277,7 @@ For development and debugging with IDE support.
 
 - PostgreSQL 17+ running locally
 - ActiveMQ Artemis 2.37+ running locally
-- Java 24+ and Node.js 20+
+- Java 25+ and Node.js 20+
 
 ```bash
 # 1. Set up infrastructure (using Docker for databases only)
@@ -327,7 +327,7 @@ The application gracefully handles missing API keys:
 
 **Backend:**
 
-- Java 24 with Spring Boot 3.5.5
+- Java 25 with Spring Boot 4.0.2
 - Spring Security with JWT authentication
 - Spring WebSocket with STOMP protocol
 - PostgreSQL 17 for data persistence
@@ -337,8 +337,8 @@ The application gracefully handles missing API keys:
 
 **Frontend:**
 
-- React 19.2.0 with TypeScript 5.9.2
-- Vite 7.2.4 build tool
+- React 19.2.4 with TypeScript 5.9.3
+- Vite 7.3.1 build tool
 - SCSS modules for styling
 - @stomp/stompjs for WebSocket communication
 - React Router for navigation

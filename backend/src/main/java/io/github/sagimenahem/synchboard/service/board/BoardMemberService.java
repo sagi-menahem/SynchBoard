@@ -373,8 +373,8 @@ public class BoardMemberService {
             );
             throw new RuntimeException(
                 "Failed to completely delete board " +
-                boardId +
-                ". Please contact administrator to verify data consistency.",
+                    boardId +
+                    ". Please contact administrator to verify data consistency.",
                 e
             );
         }

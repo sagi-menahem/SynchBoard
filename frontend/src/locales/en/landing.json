@@ -10,7 +10,9 @@
   },
   "hero": {
     "badge": "Full-Stack Portfolio Project",
-    "headline": "Collaborate in Real-Time on Shared Whiteboards",
+    "headlineLine1": "Collaborate in Real-Time on",
+    "headlineLine2": "Shared",
+    "headlineHighlight": "Whiteboards",
     "subheadline": "SynchBoard is a full-stack collaborative whiteboard application built with React, Spring Boot, and WebSockets. Create, share, and draw together in real-time.",
     "ctaPrimary": "Get Started Free",
     "ctaSecondary": "View on GitHub"

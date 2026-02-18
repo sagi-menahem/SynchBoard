@@ -10,7 +10,9 @@
   },
   "hero": {
     "badge": "פרויקט פורטפוליו Full-Stack",
-    "headline": "שתפו פעולה בזמן אמת על לוחות משותפים",
+    "headlineLine1": "שתפו פעולה בזמן אמת על",
+    "headlineLine2": "לוחות",
+    "headlineHighlight": "משותפים",
     "subheadline": "SynchBoard היא אפליקציית לוח לבן שיתופית מלאה שנבנתה עם React, Spring Boot ו-WebSockets. צרו, שתפו וציירו יחד בזמן אמת.",
     "ctaPrimary": "התחל בחינם",
     "ctaSecondary": "צפה ב-GitHub"

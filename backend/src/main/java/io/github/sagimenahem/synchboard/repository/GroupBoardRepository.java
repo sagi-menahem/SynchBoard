@@ -46,9 +46,9 @@ public interface GroupBoardRepository extends JpaRepository<GroupBoard, Long> {
      */
     @Query(
         "SELECT DISTINCT gm FROM GroupMember gm " +
-        "JOIN FETCH gm.groupBoard " +
-        "JOIN FETCH gm.user " +
-        "WHERE gm.boardGroupId = :boardId"
+            "JOIN FETCH gm.groupBoard " +
+            "JOIN FETCH gm.user " +
+            "WHERE gm.boardGroupId = :boardId"
     )
     List<GroupMember> findMembersWithDetails(@Param("boardId") Long boardId);
 

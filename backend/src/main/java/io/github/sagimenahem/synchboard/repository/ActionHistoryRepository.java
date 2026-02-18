@@ -51,12 +51,12 @@ public interface ActionHistoryRepository extends JpaRepository<ActionHistory, Lo
      */
     @Query(
         "SELECT ah FROM ActionHistory ah " +
-        "JOIN FETCH ah.boardObject bo " +
-        "JOIN FETCH ah.user " +
-        "LEFT JOIN FETCH bo.createdByUser " +
-        "LEFT JOIN FETCH bo.lastEditedByUser " +
-        "WHERE ah.board.boardGroupId = :boardGroupId AND ah.isUndone = false " +
-        "ORDER BY ah.timestamp DESC LIMIT 1"
+            "JOIN FETCH ah.boardObject bo " +
+            "JOIN FETCH ah.user " +
+            "LEFT JOIN FETCH bo.createdByUser " +
+            "LEFT JOIN FETCH bo.lastEditedByUser " +
+            "WHERE ah.board.boardGroupId = :boardGroupId AND ah.isUndone = false " +
+            "ORDER BY ah.timestamp DESC LIMIT 1"
     )
     Optional<ActionHistory> findTopByBoardWithRelationsAndIsUndoneFalseOrderByTimestampDesc(
         @Param("boardGroupId") Long boardGroupId
@@ -74,12 +74,12 @@ public interface ActionHistoryRepository extends JpaRepository<ActionHistory, Lo
      */
     @Query(
         "SELECT ah FROM ActionHistory ah " +
-        "JOIN FETCH ah.boardObject bo " +
-        "JOIN FETCH ah.user " +
-        "LEFT JOIN FETCH bo.createdByUser " +
-        "LEFT JOIN FETCH bo.lastEditedByUser " +
-        "WHERE ah.board.boardGroupId = :boardGroupId AND ah.isUndone = true " +
-        "ORDER BY ah.timestamp DESC LIMIT 1"
+            "JOIN FETCH ah.boardObject bo " +
+            "JOIN FETCH ah.user " +
+            "LEFT JOIN FETCH bo.createdByUser " +
+            "LEFT JOIN FETCH bo.lastEditedByUser " +
+            "WHERE ah.board.boardGroupId = :boardGroupId AND ah.isUndone = true " +
+            "ORDER BY ah.timestamp DESC LIMIT 1"
     )
     Optional<ActionHistory> findTopByBoardWithRelationsAndIsUndoneTrueOrderByTimestampDesc(
         @Param("boardGroupId") Long boardGroupId

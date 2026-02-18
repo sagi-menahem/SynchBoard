@@ -29,8 +29,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
 
       {/* Headline */}
       <h1 className={`${styles.headline} ${styles.animateFadeInUp}`}>
-        Collaborate in Real-Time on <br />
-        Shared <span className={styles.highlight}>Whiteboards</span>
+        {t('landing:hero.headlineLine1')} <br />
+        {t('landing:hero.headlineLine2')}{' '}
+        <span className={styles.highlight}>{t('landing:hero.headlineHighlight')}</span>
       </h1>
 
       {/* Subheadline */}

@@ -83,9 +83,9 @@ const debouncedSave = useDebouncedCallback(saveCanvas, 500);
 // GroupMemberRepository
 @Query(
   "SELECT gm FROM GroupMember gm " +
-  "JOIN FETCH gm.groupBoard gb " +
-  "WHERE gm.userEmail = :userEmail " +
-  "ORDER BY gb.lastModifiedDate DESC"
+    "JOIN FETCH gm.groupBoard gb " +
+    "WHERE gm.userEmail = :userEmail " +
+    "ORDER BY gb.lastModifiedDate DESC"
 )
 List<GroupMember> findByUserWithBoard(String userEmail);
 ```
@@ -269,7 +269,7 @@ Uses Docker DNS for internal service resolution.
 -Djava.security.egd=file:/dev/./urandom
 ```
 
-- Suppresses Java 24 deprecation warnings
+- Suppresses Java 25 deprecation warnings
 - Faster entropy source for cryptography
 
 ## Configuration Constants
