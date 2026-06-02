@@ -5,8 +5,8 @@ set -e
 
 echo "🚀 Starting Deployment..."
 
-# 1. Enter the folder (for safety)
-cd /root/SynchBoard
+# 1. Move to the script's own directory (portable across any install path)
+cd "$(dirname "$(readlink -f "$0")")"
 
 # 2. Revert local changes (prevents conflicts)
 git checkout .
