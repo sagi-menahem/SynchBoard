@@ -22,7 +22,7 @@
 ![Java](https://img.shields.io/badge/Java_25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot_4.0-6DB33F?style=flat-square&logo=springboot&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript_5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript_6.0-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL_17-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 
@@ -161,7 +161,7 @@
 
 | Layer              | Technologies                                                    |
 | :----------------- | :-------------------------------------------------------------- |
-| **Frontend**       | React 19, TypeScript 5.9, Vite 7.3, SCSS Modules, Framer Motion |
+| **Frontend**       | React 19, TypeScript 6.0, Vite 8, SCSS Modules, Framer Motion |
 | **Backend**        | Java 25, Spring Boot 4.0, Spring Security, Spring WebSocket     |
 | **Database**       | PostgreSQL 17, Spring Data JPA                                  |
 | **Messaging**      | ActiveMQ Artemis, STOMP Protocol                                |

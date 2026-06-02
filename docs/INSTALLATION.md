@@ -327,7 +327,7 @@ The application gracefully handles missing API keys:
 
 **Backend:**
 
-- Java 25 with Spring Boot 4.0.2
+- Java 25 with Spring Boot 4.0.6
 - Spring Security with JWT authentication
 - Spring WebSocket with STOMP protocol
 - PostgreSQL 17 for data persistence
@@ -337,8 +337,8 @@ The application gracefully handles missing API keys:
 
 **Frontend:**
 
-- React 19.2.4 with TypeScript 5.9.3
-- Vite 7.3.1 build tool
+- React 19.2.7 with TypeScript 6.0.3
+- Vite 8.0.16 build tool
 - SCSS modules for styling
 - @stomp/stompjs for WebSocket communication
 - React Router for navigation
