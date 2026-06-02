@@ -1,23 +1,21 @@
 import path from 'path';
 
-import react from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        plugins: [
-          [
-            'babel-plugin-react-compiler',
-            {
-              target: '19', // Specify React 19 as the target
-            },
-          ],
-        ],
-      },
+    react(),
+    // React Compiler (Vite 8 / plugin-react 6: Babel is now a separate plugin)
+    babel({
+      presets: [
+        reactCompilerPreset({
+          target: '19', // Specify React 19 as the target
+        }),
+      ],
     }),
     tsconfigPaths(),
   ],
@@ -34,31 +32,38 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React ecosystem - Core React libraries (most stable)
-          'react-vendor': ['react', 'react-dom'],
-          'react-router': ['react-router-dom'],
+        // Vite 8 (Rolldown): object-form manualChunks was removed.
+        // Vendor splitting is expressed via codeSplitting.groups (first match wins).
+        codeSplitting: {
+          groups: [
+            // React Router (matched before react-vendor)
+            { name: 'react-router', test: /[\\/]node_modules[\\/]react-router/ },
 
-          // UI Component libraries - Radix (stable APIs)
-          'ui-components': ['@radix-ui/react-slider', '@radix-ui/react-radio-group'],
+            // UI Component libraries - Radix (stable APIs)
+            {
+              name: 'ui-components',
+              test: /[\\/]node_modules[\\/]@radix-ui[\\/](react-slider|react-radio-group)/,
+            },
 
-          // UI libraries - Visual enhancements
-          'ui-vendor': ['react-hot-toast', 'react-colorful'],
+            // UI libraries - Visual enhancements
+            { name: 'ui-vendor', test: /[\\/]node_modules[\\/](react-hot-toast|react-colorful)[\\/]/ },
 
-          // Note: framer-motion is not in a dedicated chunk - it's code-split naturally
-          // and only loaded when navigating to board workspace (not on landing page)
+            // Internationalization - Language support
+            { name: 'i18n-vendor', test: /[\\/]node_modules[\\/](i18next|react-i18next)[\\/]/ },
 
-          // Note: @stomp/stompjs is lazy-loaded via dynamic import in websocketService.ts
-          // to reduce initial bundle size on auth page (only loaded when user authenticates)
+            // HTTP and utilities - Core utilities
+            { name: 'utils-vendor', test: /[\\/]node_modules[\\/](axios|jwt-decode|clsx)[\\/]/ },
 
-          // Internationalization - Language support
-          'i18n-vendor': ['i18next', 'react-i18next'],
+            // Icons - Large icon library
+            { name: 'icons-vendor', test: /[\\/]node_modules[\\/]lucide-react[\\/]/ },
 
-          // HTTP and utilities - Core utilities
-          'utils-vendor': ['axios', 'jwt-decode', 'clsx'],
+            // React ecosystem - Core React libraries (most stable; matched last)
+            { name: 'react-vendor', test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
 
-          // Icons - Large icon library
-          'icons-vendor': ['lucide-react'],
+            // Note: framer-motion is not in a dedicated chunk - it's code-split naturally
+            // and only loaded when navigating to board workspace (not on landing page)
+            // Note: @stomp/stompjs is lazy-loaded via dynamic import in websocketService.ts
+          ],
         },
       },
     },

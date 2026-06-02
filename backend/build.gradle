@@ -9,10 +9,10 @@
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '4.0.2'
+	id 'org.springframework.boot' version '4.0.6'
 	id 'io.spring.dependency-management' version '1.1.7'
 	// Dependency version checker - run: ./gradlew dependencyUpdates
-	id 'com.github.ben-manes.versions' version '0.53.0'
+	id 'com.github.ben-manes.versions' version '0.54.0'
 }
 
 group = 'io.github.sagimenahem'
@@ -85,28 +85,28 @@ dependencies {
 	// Spring Mail - used only for MimeMessage/InternetAddress helper classes
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	// Gmail REST API for sending emails via OAuth2
-	implementation 'com.google.apis:google-api-services-gmail:v1-rev20260112-2.0.0'
+	implementation 'com.google.apis:google-api-services-gmail:v1-rev20260525-2.0.0'
 	// Google OAuth2 authentication library
-	implementation 'com.google.auth:google-auth-library-oauth2-http:1.42.1'
+	implementation 'com.google.auth:google-auth-library-oauth2-http:1.47.0'
 
 	// ==========================================================================
 	// OAuth2 & External Authentication
 	// ==========================================================================
 	// Google API Client for verifying Google One Tap ID tokens
-	implementation 'com.google.api-client:google-api-client:2.8.1'
+	implementation 'com.google.api-client:google-api-client:2.9.0'
 
 	// ==========================================================================
 	// API Documentation
 	// ==========================================================================
 	// SpringDoc OpenAPI for Swagger UI at /swagger-ui.html
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3'
 
 	// ==========================================================================
 	// Code Generation & Boilerplate Reduction
 	// ==========================================================================
 	// Lombok for @Slf4j, @RequiredArgsConstructor, @Builder, @Data, etc.
-	compileOnly 'org.projectlombok:lombok:1.18.42'
-	annotationProcessor 'org.projectlombok:lombok:1.18.42'
+	compileOnly 'org.projectlombok:lombok:1.18.46'
+	annotationProcessor 'org.projectlombok:lombok:1.18.46'
 
 	// ==========================================================================
 	// Null Safety Annotations (Spring Framework 7.0+)
@@ -124,7 +124,7 @@ dependencies {
 	// Database Driver
 	// ==========================================================================
 	// PostgreSQL JDBC driver
-	runtimeOnly 'org.postgresql:postgresql:42.7.10'
+	runtimeOnly 'org.postgresql:postgresql:42.7.11'
 }
 
 // Configure bootRun for Java 25 compatibility
