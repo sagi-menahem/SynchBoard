@@ -165,8 +165,5 @@ cleanup-project.sh
 cleanup-project.bat
 PROJECT_CLEANUP_REPORT.md
 
-# Claude Code development guide
-CLAUDE.md
-
 # Agent/tool specific
 .agent
