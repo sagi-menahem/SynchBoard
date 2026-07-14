@@ -30,6 +30,18 @@
 
 ---
 
+## How This Was Built
+
+As my degree final project, SynchBoard's core was written by hand (Java/Spring/WebSockets); across my other work I build **AI-first** — orchestrating AI coding agents (Claude Code, Codex) through a documented methodology. The same disciplined methodology applies here too:
+
+- **`AGENTS.md` as the single source of truth** — a rules file in the repo defines the architecture, conventions, and hard constraints every change must obey: JWT handling must stay valid across both HTTP and WebSocket/STOMP flows, translations are added to both English and Hebrew locale namespaces together, secrets never leave `.env`.
+- **Guardrail scripts & audit pipelines** — checks run on every change (Prettier formatting across Java/TypeScript/SCSS, independent frontend and backend builds, board-access validation before any board operation), so quality is enforced by tooling, not vigilance.
+- **The engineer decides, the agent executes** — every schema, WebSocket flow, and architectural choice on this page was designed and reviewed by me. Agents accelerate implementation; they never own the design.
+
+The result: one engineer delivering a production system at team-level velocity — with the discipline the decisions below reflect.
+
+---
+
 ## Preview
 
 <div align="center">
@@ -253,5 +265,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/sagi-menahem)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sagi-menahem/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-0D2440?style=flat-square&logo=googlechrome&logoColor=white)](https://sagimenahem.tech)
 
 </div>
