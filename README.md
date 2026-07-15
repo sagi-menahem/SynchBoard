@@ -32,13 +32,13 @@
 
 ## How This Was Built
 
-As my degree final project, SynchBoard's core was written by hand (Java/Spring/WebSockets); across my other work I build **AI-first** — orchestrating AI coding agents (Claude Code, Codex) through a documented methodology. The same disciplined methodology applies here too:
+My Computer-Science degree final project, built end-to-end as a single engineer under a documented methodology:
 
 - **`AGENTS.md` as the single source of truth** — a rules file in the repo defines the architecture, conventions, and hard constraints every change must obey: JWT handling must stay valid across both HTTP and WebSocket/STOMP flows, translations are added to both English and Hebrew locale namespaces together, secrets never leave `.env`.
 - **Guardrail scripts & audit pipelines** — checks run on every change (Prettier formatting across Java/TypeScript/SCSS, independent frontend and backend builds, board-access validation before any board operation), so quality is enforced by tooling, not vigilance.
-- **The engineer decides, the agent executes** — every schema, WebSocket flow, and architectural choice on this page was designed and reviewed by me. Agents accelerate implementation; they never own the design.
+- **The engineer decides** — every schema, WebSocket flow, and architectural choice on this page was designed and reviewed by me.
 
-The result: one engineer delivering a production system at team-level velocity — with the discipline the decisions below reflect.
+The result: a production system delivered with the discipline the decisions below reflect.
 
 ---
 
