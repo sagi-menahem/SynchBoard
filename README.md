@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
   <img src="assets/logo.png" alt="SynchBoard Logo" width="120"/>
   <h1>SynchBoard</h1>
   <p><strong>Real-time Collaborative Whiteboard</strong></p>
@@ -32,13 +32,7 @@
 
 ## How This Was Built
 
-My Computer-Science degree final project, built end-to-end as a single engineer under a documented methodology:
-
-- **`AGENTS.md` as the single source of truth** — a rules file in the repo defines the architecture, conventions, and hard constraints every change must obey: JWT handling must stay valid across both HTTP and WebSocket/STOMP flows, translations are added to both English and Hebrew locale namespaces together, secrets never leave `.env`.
-- **Guardrail scripts & audit pipelines** — checks run on every change (Prettier formatting across Java/TypeScript/SCSS, independent frontend and backend builds, board-access validation before any board operation), so quality is enforced by tooling, not vigilance.
-- **The engineer decides** — every schema, WebSocket flow, and architectural choice on this page was designed and reviewed by me.
-
-The result: a production system delivered with the discipline the decisions below reflect.
+My Computer-Science degree final project, built end-to-end as a single engineer — every schema, WebSocket flow, and architectural decision was designed and reviewed by me.
 
 ---
 
