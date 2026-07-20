@@ -30,7 +30,7 @@
 
 ---
 
-## How This Was Built
+## About
 
 My Computer-Science degree final project, built end-to-end as a single engineer — every schema, WebSocket flow, and architectural decision was designed and reviewed by me.
 
