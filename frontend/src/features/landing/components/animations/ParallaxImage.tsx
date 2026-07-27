@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './ParallaxImage.module.scss';

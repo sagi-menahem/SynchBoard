@@ -1,5 +1,5 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { ChevronUp } from 'lucide-react';
 import React, { useRef } from 'react';
 

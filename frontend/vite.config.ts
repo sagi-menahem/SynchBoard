@@ -60,7 +60,7 @@ export default defineConfig({
             // React ecosystem - Core React libraries (most stable; matched last)
             { name: 'react-vendor', test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
 
-            // Note: framer-motion is not in a dedicated chunk - it's code-split naturally
+            // Note: motion is not in a dedicated chunk - it's code-split naturally
             // and only loaded when navigating to board workspace (not on landing page)
             // Note: @stomp/stompjs is lazy-loaded via dynamic import in websocketService.ts
           ],

@@ -1,4 +1,4 @@
-import type { PanInfo } from 'framer-motion';
+import type { PanInfo } from 'motion/react';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
@@ -123,7 +123,7 @@ export const useMobileDragGesture = ({
           void updateDockMinimized(false);
         }
       }
-      // Otherwise framer-motion will snap back automatically due to dragConstraints
+      // Otherwise motion will snap back automatically due to dragConstraints
     },
     [isMobile, isExpanded, setIsExpanded, setActiveSatellite, updateDockMinimized],
   );

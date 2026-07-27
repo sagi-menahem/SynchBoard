@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import type { Board } from 'features/board/types/BoardTypes';
 import type { ViewMode } from 'features/board/types/ToolbarTypes';
 import { formatCanvasResolution } from 'features/board/utils/CanvasUtils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { Crown } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

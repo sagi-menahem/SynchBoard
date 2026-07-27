@@ -1,5 +1,5 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ChevronUp } from 'lucide-react';
 import React from 'react';
 

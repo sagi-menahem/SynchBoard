@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { AnimatePresence, motion, type Variants } from 'motion/react';
 import React, { useEffect, useState } from 'react';
 
 import styles from './RadialDock.module.scss';

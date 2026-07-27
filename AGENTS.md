@@ -30,8 +30,8 @@ auth.
 - HTTP: axios.
 - Real-time client: WebSocket/STOMP (`features/websocket`).
 - Styling: SCSS (`index.scss`, `styles/`). Use RTL logical props/classes only.
-- Motion: currently `framer-motion`. Standard is `motion/react`; migrate when
-  next touching animation code, not as a standalone production task.
+- Motion: `motion/react`. Never import from `framer-motion` — it is the
+  deprecated name of the same package and is no longer a dependency.
 - i18n: `locales/`. No hardcoded user-facing strings; keep Hebrew and English
   parity.
 
