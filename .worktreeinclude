@@ -1,0 +1,7 @@
+# Gitignored files copied into every Claude Code worktree (parallel sessions).
+# .gitignore syntax. Only files that match AND are gitignored are copied.
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local

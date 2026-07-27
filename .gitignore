@@ -167,3 +167,5 @@ PROJECT_CLEANUP_REPORT.md
 
 # Agent/tool specific
 .agent
+# Claude Code parallel-session worktrees
+.claude/worktrees/
