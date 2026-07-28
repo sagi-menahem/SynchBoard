@@ -68,13 +68,20 @@ sudo apt install certbot python3-certbot-nginx -y
 
 ### Step 2: Clone Repository
 
-```bash
-# Navigate to deployment directory
-cd /root  # or your preferred location
+The install path is up to you — nothing in the repo assumes a particular one.
+The rest of this guide refers to it as `$SYNCHBOARD_DIR`.
 
-# Clone using SSH (requires SSH key configured with GitHub)
-git clone git@github.com:sagi-menahem/SynchBoard.git
+```bash
+# Pick a deployment directory. Avoid /root unless you deploy as root;
+# a regular user's home (e.g. /home/ubuntu) is the usual choice.
+cd ~
+
+# The repository is public, so HTTPS needs no credentials
+git clone https://github.com/sagi-menahem/SynchBoard.git
 cd SynchBoard
+
+# Remember where it lives, for the Nginx step below
+export SYNCHBOARD_DIR="$PWD"
 
 # Set executable permissions
 chmod +x backend/gradlew
@@ -117,15 +124,19 @@ GMAIL_SENDER_EMAIL=your-email@gmail.com
 
 The repository includes a production Nginx configuration at `server-config/synchboard.conf`.
 
+This step applies only if a host-level Nginx fronts the stack. If TLS is
+terminated elsewhere — a separate reverse proxy, a tunnel, or a CDN — skip it;
+`deploy.sh` detects the absence of the service and skips the reload too.
+
 ```bash
 # Create symlink to enable the site
-sudo ln -s /root/SynchBoard/server-config/synchboard.conf /etc/nginx/sites-enabled/synchboard.conf
+sudo ln -s "$SYNCHBOARD_DIR/server-config/synchboard.conf" /etc/nginx/sites-enabled/synchboard.conf
 
 # Remove default site (optional)
 sudo rm /etc/nginx/sites-enabled/default
 
 # Update server_name in the config to match your domain
-sudo nano /root/SynchBoard/server-config/synchboard.conf
+sudo nano "$SYNCHBOARD_DIR/server-config/synchboard.conf"
 # Change: server_name synchboard.com www.synchboard.com;
 # To:     server_name yourdomain.com www.yourdomain.com;
 
@@ -173,14 +184,23 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
+Run it from anywhere — it changes to its own directory first, so it works
+whatever path the repository was cloned into.
+
 **What `deploy.sh` does:**
 
-1. Navigates to `/root/SynchBoard`
-2. Reverts any local file changes (`git checkout .`)
+1. Changes to the repository root, resolved from the script's own location
+2. Reverts any local file changes (`git checkout .`) — anything uncommitted on
+   the server is discarded
 3. Pulls the latest code from GitHub
 4. Sets executable permissions on scripts
-5. Rebuilds and restarts Docker containers with production overrides
-6. Reloads Nginx to apply any configuration changes
+5. Clears the Docker build cache and rebuilds the containers with the
+   production overrides
+6. Reloads Nginx **only if** a host-level `nginx` service exists; otherwise it
+   says so and continues
+
+It requires `sudo` only for that last step, and only when a host Nginx is
+present.
 
 ### Understanding docker-compose.prod.yml
 

@@ -32,8 +32,16 @@ echo "🐳 Rebuilding containers with fresh cache..."
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --force-recreate
 
 # 8. Refresh server settings (in case you changed synchboard.conf)
-echo "🔄 Reloading Nginx..."
-sudo systemctl reload nginx
+# Only relevant when a host-level Nginx fronts the stack. Deployments that
+# terminate TLS elsewhere (a reverse proxy, a tunnel, or a CDN) have no such
+# service, and `set -e` would otherwise fail the whole script here — after the
+# containers were already rebuilt, which reads as a failed deploy when it was not.
+if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files nginx.service >/dev/null 2>&1; then
+    echo "🔄 Reloading Nginx..."
+    sudo systemctl reload nginx
+else
+    echo "⏭️  No host Nginx service found — skipping reload."
+fi
 
 echo "✅ Deployment Finished Successfully!"
 echo ""
