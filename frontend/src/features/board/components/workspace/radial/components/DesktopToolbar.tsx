@@ -1,6 +1,6 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import { AnimatePresence, motion } from 'motion/react';
 import { ChevronUp } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import React, { useRef } from 'react';
 
 import type { Tool } from 'shared/types/CommonTypes';

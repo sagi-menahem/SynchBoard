@@ -165,14 +165,14 @@ My Computer-Science degree final project, built end-to-end as a single engineer 
 
 ## Tech Stack
 
-| Layer              | Technologies                                                    |
-| :----------------- | :-------------------------------------------------------------- |
+| Layer              | Technologies                                                  |
+| :----------------- | :------------------------------------------------------------ |
 | **Frontend**       | React 19, TypeScript 6.0, Vite 8, SCSS Modules, Framer Motion |
-| **Backend**        | Java 25, Spring Boot 4.0, Spring Security, Spring WebSocket     |
-| **Database**       | PostgreSQL 17, Spring Data JPA                                  |
-| **Messaging**      | ActiveMQ Artemis, STOMP Protocol                                |
-| **Infrastructure** | Docker, Nginx, Let's Encrypt SSL                                |
-| **Authentication** | JWT, OAuth2 (Google), Gmail REST API                            |
+| **Backend**        | Java 25, Spring Boot 4.0, Spring Security, Spring WebSocket   |
+| **Database**       | PostgreSQL 17, Spring Data JPA                                |
+| **Messaging**      | ActiveMQ Artemis, STOMP Protocol                              |
+| **Infrastructure** | Docker, Nginx, Let's Encrypt SSL                              |
+| **Authentication** | JWT, OAuth2 (Google), Gmail REST API                          |
 
 ---
 

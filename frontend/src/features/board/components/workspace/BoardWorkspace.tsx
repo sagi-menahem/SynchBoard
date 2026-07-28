@@ -214,7 +214,11 @@ const BoardWorkspace: React.FC<BoardWorkspaceProps> = ({
   // chat panel's onResize. A collapsible panel is either collapsed (~0%) or >= its
   // minSize, so anything below CHAT_MIN_SIZE is treated as collapsed.
   const handleChatResize = useCallback(
-    (panelSize: PanelSize, _id: string | number | undefined, prevPanelSize: PanelSize | undefined) => {
+    (
+      panelSize: PanelSize,
+      _id: string | number | undefined,
+      prevPanelSize: PanelSize | undefined,
+    ) => {
       const collapsedNow = panelSize.asPercentage < PANEL_CONSTRAINTS.CHAT_MIN_SIZE;
       // On mount prevPanelSize is undefined; treat it as the current state so we
       // don't fire a spurious preference update on the very first render.

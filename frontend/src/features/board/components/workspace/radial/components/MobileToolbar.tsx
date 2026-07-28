@@ -1,6 +1,6 @@
 import { TOOLS } from 'features/board/constants/BoardConstants';
-import { motion } from 'motion/react';
 import { ChevronUp } from 'lucide-react';
+import { motion } from 'motion/react';
 import React from 'react';
 
 import type { Tool } from 'shared/types/CommonTypes';

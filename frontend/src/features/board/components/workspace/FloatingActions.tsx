@@ -1,7 +1,7 @@
 import { useBoardContext } from 'features/board/hooks/context/useBoardContext';
 import { useCanvasPreferences } from 'features/settings/CanvasPreferencesProvider';
-import { motion } from 'motion/react';
 import { Minus, Plus, Redo2, RotateCcw, Undo2 } from 'lucide-react';
+import { motion } from 'motion/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from 'shared/hooks';
