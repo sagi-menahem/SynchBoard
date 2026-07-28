@@ -5,6 +5,8 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+import { nonBlockingCss } from './plugins/nonBlockingCss';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -18,6 +20,7 @@ export default defineConfig({
       ],
     }),
     tsconfigPaths(),
+    nonBlockingCss(),
   ],
   define: {
     global: 'globalThis',
@@ -46,7 +49,10 @@ export default defineConfig({
             },
 
             // UI libraries - Visual enhancements
-            { name: 'ui-vendor', test: /[\\/]node_modules[\\/](react-hot-toast|react-colorful)[\\/]/ },
+            {
+              name: 'ui-vendor',
+              test: /[\\/]node_modules[\\/](react-hot-toast|react-colorful)[\\/]/,
+            },
 
             // Internationalization - Language support
             { name: 'i18n-vendor', test: /[\\/]node_modules[\\/](i18next|react-i18next)[\\/]/ },
@@ -58,7 +64,10 @@ export default defineConfig({
             { name: 'icons-vendor', test: /[\\/]node_modules[\\/]lucide-react[\\/]/ },
 
             // React ecosystem - Core React libraries (most stable; matched last)
-            { name: 'react-vendor', test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
+            {
+              name: 'react-vendor',
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            },
 
             // Note: motion is not in a dedicated chunk - it's code-split naturally
             // and only loaded when navigating to board workspace (not on landing page)
