@@ -2,6 +2,9 @@
   "name": "synchboard",
   "version": "1.1.0",
   "private": true,
+  "volta": {
+    "node": "24.18.0"
+  },
   "author": "Sagi Menahem",
   "description": "Real-time collaborative whiteboard application",
   "scripts": {
