@@ -1,4 +1,4 @@
 {
-  "command": "npm --prefix frontend run lint",
-  "timeoutMs": 120000
+  "command": "npm run check",
+  "timeoutMs": 300000
 }
