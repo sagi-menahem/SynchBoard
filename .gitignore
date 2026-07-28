@@ -169,3 +169,6 @@ PROJECT_CLEANUP_REPORT.md
 .agent
 # Claude Code parallel-session worktrees
 .claude/worktrees/
+
+# Claude Code personal overrides (machine-specific; never commit)
+.claude/settings.local.json
