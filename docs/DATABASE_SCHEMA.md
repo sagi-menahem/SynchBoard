@@ -310,10 +310,30 @@ All JPA relationships use `FetchType.LAZY` to prevent N+1 query issues and reduc
 
 ## Schema Management
 
-The schema is managed through JPA/Hibernate DDL auto-update:
+The schema is managed by **Flyway**. Migrations are hand-written and forward-only, and live in
+`backend/src/main/resources/db/migration`. The SQL there is the authority for the schema; the JPA
+entities describe types only.
 
 ```properties
-JPA_DDL_AUTO=update
+JPA_DDL_AUTO=validate
 ```
 
-Schema changes are applied automatically based on entity modifications.
+Hibernate no longer creates or alters tables — it only checks that the entity mappings agree with
+what the migrations produced, and refuses to start if they do not.
+
+### Changing the schema
+
+1. Add a new `V<n>__<description>.sql` in `backend/src/main/resources/db/migration`. Never edit a
+   migration that has already run: Flyway validates checksums and will refuse to start.
+2. Update the JPA entities to match.
+3. Run `backend\gradlew.bat test`. `SchemaBaselineTest` regenerates the DDL from the entities and
+   fails if the migrations and the entities have diverged.
+
+There are no undo scripts. To reverse a change, write a new forward migration.
+
+### Baseline and existing databases
+
+`V1__baseline_schema.sql` is the cutover point from the previous Hibernate-managed schema.
+`spring.flyway.baseline-on-migrate=true` means an already-populated database is stamped at version 1
+and the baseline script is skipped; only a genuinely empty database runs it. This is what lets an
+existing environment adopt Flyway without being rebuilt.

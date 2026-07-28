@@ -68,6 +68,18 @@ Linux. Backend scripts go through `scripts/gradlew.mjs`, which selects
 The backend needs a JDK 25 with `JAVA_HOME` pointing at it — a JRE is not
 enough. The Gradle scripts fail early with instructions if it is unset.
 
+## Migrations
+
+- Migrations are hand-written and forward-only. The SQL files under
+  `backend/src/main/resources/db/migration` are the authority for the schema;
+  the JPA entities describe types only.
+- Never edit a migration that has already run — Flyway validates checksums and
+  will refuse to start. Reverse a change with a new forward migration.
+- There are no undo scripts, and `spring.flyway.clean-disabled=true`.
+- `JPA_DDL_AUTO` is `validate`. Hibernate must never create or alter tables.
+- After changing an entity, add the matching migration. `SchemaBaselineTest`
+  regenerates the DDL from the entities and fails if the two have diverged.
+
 ## Rules
 
 - Validate board access through the existing board access services before board

@@ -121,10 +121,13 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// ==========================================================================
-	// Database Driver
+	// Database Driver & Migrations
 	// ==========================================================================
 	// PostgreSQL JDBC driver
 	runtimeOnly 'org.postgresql:postgresql:42.7.11'
+	// Flyway owns the schema: versioned, forward-only SQL under db/migration
+	implementation 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 
 	// ==========================================================================
 	// Testing

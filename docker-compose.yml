@@ -58,7 +58,8 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
-      JPA_DDL_AUTO: ${JPA_DDL_AUTO:-update}
+      # Flyway owns the schema; Hibernate only validates the mappings against it.
+      JPA_DDL_AUTO: ${JPA_DDL_AUTO:-validate}
 
       # ActiveMQ Configuration
       ACTIVEMQ_BROKER_URL: tcp://activemq:61616?wireFormat.maxInactivityDuration=0
