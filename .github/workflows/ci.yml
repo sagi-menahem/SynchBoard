@@ -1,0 +1,65 @@
+name: CI
+
+# Deliberately no build step. Lint, typecheck and test are what catch regressions;
+# the production build is exercised by the deploy pipeline, so duplicating it here
+# would only add minutes without adding signal.
+on:
+  push:
+  pull_request:
+
+# A newer push to the same ref makes the in-flight run irrelevant.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend (lint, typecheck, test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      # Single gate shared with the local verify hook: lint && typecheck && format:check
+      - name: Check
+        run: npm run check
+
+      - name: Test
+        run: npm --prefix frontend run test
+
+  backend:
+    name: Backend (test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          # Must match the toolchain in backend/build.gradle
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Test
+        working-directory: backend
+        run: ./gradlew test --no-daemon
