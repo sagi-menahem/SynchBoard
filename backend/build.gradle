@@ -125,6 +125,37 @@ dependencies {
 	// ==========================================================================
 	// PostgreSQL JDBC driver
 	runtimeOnly 'org.postgresql:postgresql:42.7.11'
+
+	// ==========================================================================
+	// Testing
+	// ==========================================================================
+	// JUnit 5, AssertJ, Mockito and Spring test support
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// Security-specific test helpers (mock users, authentication contexts)
+	testImplementation 'org.springframework.security:spring-security-test'
+	// Hibernate Validator runtime, so Jakarta constraints can be exercised directly
+	testImplementation 'org.springframework.boot:spring-boot-starter-validation'
+	// Lombok is available to test sources too, for building entity fixtures
+	testCompileOnly 'org.projectlombok:lombok:1.18.46'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.46'
+	// JUnit 5 launcher required by Gradle's test runner
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Configure the test task for JUnit 5 on Java 25
+tasks.named('test') {
+	useJUnitPlatform()
+	// Mockito attaches its instrumentation agent at runtime; Java 25 warns loudly
+	// (and eventually refuses) unless dynamic agent loading is opted into.
+	jvmArgs = [
+		'-XX:+EnableDynamicAgentLoading',
+		'--add-opens=java.base/sun.misc=ALL-UNNAMED',
+		'-XX:+UnlockExperimentalVMOptions'
+	]
+	testLogging {
+		events 'passed', 'skipped', 'failed'
+		exceptionFormat = 'full'
+	}
 }
 
 // Configure bootRun for Java 25 compatibility
