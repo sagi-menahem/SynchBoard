@@ -8,6 +8,14 @@
       "cwd": "frontend",
       "port": 5173,
       "autoPort": false
+    },
+    {
+      "name": "synchboard-preview",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["run", "preview"],
+      "cwd": "frontend",
+      "port": 4173,
+      "autoPort": false
     }
   ]
 }

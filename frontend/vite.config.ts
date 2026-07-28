@@ -25,6 +25,18 @@ export default defineConfig({
   define: {
     global: 'globalThis',
   },
+  server: {
+    port: 5173,
+    // Fail instead of silently moving to 5174. The Google OAuth redirect URI and the
+    // backend CORS origin both hardcode 5173, so a shifted port produces confusing
+    // auth failures rather than an obvious "port in use" error. `npm run dev:frontend`
+    // frees the port first; this catches the case where something else grabbed it.
+    strictPort: true,
+  },
+  preview: {
+    port: 4173,
+    strictPort: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(process.cwd(), './src'),
