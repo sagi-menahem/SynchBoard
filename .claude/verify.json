@@ -1,4 +1,6 @@
 {
   "command": "npm run check",
+  "fast": "npm run typecheck && npm run lint",
+  "minIntervalMs": 600000,
   "timeoutMs": 300000
 }
