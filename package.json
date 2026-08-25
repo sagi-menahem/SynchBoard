@@ -21,7 +21,7 @@
     "test:frontend": "npm --prefix frontend run test",
     "test:backend": "node scripts/gradlew.mjs test",
     "gradle": "node scripts/gradlew.mjs",
-    "kill-port": "kill-port 5173 8080",
+    "kill-port": "kill-port 8080",
     "dev:backend": "kill-port 8080 && node scripts/gradlew.mjs bootRun",
     "dev:frontend": "npm --prefix frontend run dev",
     "build:backend": "node scripts/gradlew.mjs build",

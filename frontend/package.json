@@ -5,7 +5,7 @@
   "author": "Sagi Menahem",
   "type": "module",
   "scripts": {
-    "dev": "kill-port 5173 && vite",
+    "dev": "vite",
     "kill-port": "kill-port 5173",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

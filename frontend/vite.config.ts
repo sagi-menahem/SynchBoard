@@ -29,9 +29,18 @@ export default defineConfig({
     port: 5173,
     // Fail instead of silently moving to 5174. The Google OAuth redirect URI and the
     // backend CORS origin both hardcode 5173, so a shifted port produces confusing
-    // auth failures rather than an obvious "port in use" error. `npm run dev:frontend`
-    // frees the port first; this catches the case where something else grabbed it.
+    // auth failures rather than an obvious "port in use" error.
+    //
+    // This used to add "`npm run dev:frontend` frees the port first" — it did, with
+    // `kill-port 5173`, and that was actively harmful: kill-port matches any local
+    // ADDRESS ending in the port and TaskKills it, and `tailscale serve` maps 5173, so
+    // tailscaled was a match and died on every start (measured 2026-08-25). strictPort
+    // alone gives the obvious "port in use" error this comment already wanted.
     strictPort: true,
+    // 5173 is mapped in Tailscale and this project has a row in the port table, but the
+    // origin was never allowed here — so dev assets over `…ts.net:5173` were refused and
+    // the phone preview could not have worked. Found 2026-08-25 while removing kill-port.
+    allowedHosts: ['.ts.net'],
   },
   preview: {
     port: 4173,
